@@ -1,7 +1,7 @@
 # HyperFrames local cache, check artifacts and locks
-.hyperframes/cache/
-.hyperframes/artifacts/
-.hyperframes/*-lock
+**/.hyperframes/cache/
+**/.hyperframes/artifacts/
+**/.hyperframes/*-lock
 
 # Rendered output and snapshots
 renders/
