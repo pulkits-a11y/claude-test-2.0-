@@ -1,0 +1,16 @@
+# HyperFrames local cache, check artifacts and locks
+.hyperframes/cache/
+.hyperframes/artifacts/
+.hyperframes/*-lock
+
+# Rendered output and snapshots
+renders/
+snapshots/
+*.mp4
+*.webm
+*.mov
+
+# Dependencies
+node_modules/
+
+.DS_Store
