@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "historyId": "92b8bb50-2dff-4042-8f23-b7b5d5cfd841",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "AGENTS.md": {
+      "hash": "18bcca1593d1b29cd7442b3dc91d18ada440affb9b7acd577c1da57446f3d24f",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/18/18bcca1593d1b29cd7442b3dc91d18ada440affb9b7acd577c1da57446f3d24f"
+    },
+    "CLAUDE.md": {
+      "hash": "18bcca1593d1b29cd7442b3dc91d18ada440affb9b7acd577c1da57446f3d24f",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/18/18bcca1593d1b29cd7442b3dc91d18ada440affb9b7acd577c1da57446f3d24f"
+    },
+    "hyperframes.json": {
+      "hash": "35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/35/35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7"
+    },
+    "index.html": {
+      "hash": "bb26a8f483c4b8ed34f95e1a3fd8bd97e06440351dcb1c24c71d2abdbb1a1d15",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/bb/bb26a8f483c4b8ed34f95e1a3fd8bd97e06440351dcb1c24c71d2abdbb1a1d15"
+    },
+    "meta.json": {
+      "hash": "0127b5d2bd1590cecad830d8e063771ae13a3bdb5565c93cf8728717d6f9423f",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/01/0127b5d2bd1590cecad830d8e063771ae13a3bdb5565c93cf8728717d6f9423f"
+    },
+    "package.json": {
+      "hash": "d82b34bdbe8b13d8d0140368745c5e3e06eefa48215259a8d68bf513c3249dcb",
+      "content": "/root/.cache/hyperframes/history/92b8bb50-2dff-4042-8f23-b7b5d5cfd841/blobs/d8/d82b34bdbe8b13d8d0140368745c5e3e06eefa48215259a8d68bf513c3249dcb"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "e46b4504-b639-4333-ac50-7bb4cbf73ea7"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "e46b4504-b639-4333-ac50-7bb4cbf73ea7",
+        "scope": "project",
+        "report": "/home/user/claude-test-2.0-/my-video/.hyperframes/artifacts/checks/e46b4504-b639-4333-ac50-7bb4cbf73ea7.json",
+        "metadata": {
+          "ok": true,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 45000,
+            "cache": true,
+            "contrast": true,
+            "craft": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto",
+            "includeUnmounted": false
+          }
+        },
+        "createdAt": 1794237590865,
+        "contentHash": "b519d8eeb9db8cfc3469d26082451a075e109f3a5888c09590f2d38bcafcdcb4",
+        "revision": null,
+        "inputFingerprint": "f3884dcdec1dcd85e77569806ba7c1a2c0c34e4457a4257f6b3842f2d08380fb",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  }
+}
