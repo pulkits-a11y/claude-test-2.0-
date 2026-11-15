@@ -38,7 +38,7 @@ SKELETON = """<!doctype html>
     <!-- {beat} {comp_id}: beat {dur_f}f ({dur_s:.3f}s) + 6f handle each end = {frames}f.
          Local time 0 = beat start - 6f; the beat runs local {hs:.4f}s .. {he:.4f}s.
          Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/. -->
-    <div id="root" data-composition-id="{comp_id}" data-start="0" data-duration="{dur:.4f}" data-width="1920" data-height="1080">
+    <div id="root" data-composition-id="{comp_id}" data-start="0" data-duration="{dur:.7f}" data-width="1920" data-height="1080">
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>

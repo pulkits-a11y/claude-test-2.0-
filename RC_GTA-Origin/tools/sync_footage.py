@@ -19,7 +19,7 @@ def find_real(entry):
     hits = []
     for d in sorted(set([entry["folder"]] + [f"04_Broll/B{int(b[1:]):02d}" for b in entry["beats"].split(",") if b.startswith("B")] + ["04_Broll/Textures"])):
         for pat in (f"{rid}__*", f"{rid}.*", f"{rid}_*"):
-            hits += [h for h in glob.glob(f"{ROOT}/{d}/{pat}") if not h.endswith((".part", ".ytdl", ".json"))]
+            hits += [h for h in glob.glob(f"{ROOT}/{d}/{pat}") if h.lower().endswith((".mp4", ".mov", ".m4v", ".webm", ".mkv", ".png", ".jpg", ".jpeg", ".webp"))]
     return sorted(set(hits))
 
 

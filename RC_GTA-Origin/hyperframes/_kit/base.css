@@ -22,9 +22,11 @@
   --siren-red: #E3262E;          /* X9 wash, CANCELLED stamp, the 12 overrun squares (B12), B9 red arrow */
   --siren-blue: #2D5BFF;         /* X9 wash only */
 
-  /* Fonts (plan: Style kit > Fonts). Fallbacks per the plan. */
-  --sans: "Inter", "Helvetica Neue", "Neue Haas Grotesk", Helvetica, Arial, sans-serif;
-  --serif: "Instrument Serif", "Playfair Display", Georgia, serif;
+  /* Fonts (plan: Style kit > Fonts). Both families are bundled in fonts/ (OFL), so the plan's
+     fallbacks (Helvetica Neue / Neue Haas Grotesk for Inter, Playfair Display Italic for Instrument
+     Serif) are never needed, and HyperFrames' check rejects unresolvable family names in a stack. */
+  --sans: "Inter", sans-serif;
+  --serif: "Instrument Serif", serif;
   --w-caption: 500;   /* Medium: captions */
   --w-leadin: 600;    /* SemiBold: lead-in words */
   --w-year: 700;      /* Bold: year numerals */

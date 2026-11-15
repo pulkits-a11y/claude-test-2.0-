@@ -348,15 +348,16 @@
    "note": "1995 design-document title page (scans; still allowed <1.5 s with push-in). Also in the B16 rewind.",
    "official_required": false,
    "folder": "04_Broll/B04",
-   "file": null,
-   "status": "fetch-from-web",
+   "file": "04_Broll/B04/R4.5__design-doc-1995_title-page.png",
+   "status": "real-still",
    "source_in": null,
    "source_out": null,
    "links": [
     "https://gamedeveloper.com/design/original-design-documents-for-i-gta-i-describe-fast-multiplayer-car-racing-",
     "https://igrandtheftauto.com/gta/race-n-chase-game-design-docs",
     "https://www.engadget.com/2011/03/22/race-n-chase-original-gta-design-docs-posted/"
-   ]
+   ],
+   "source_detail": "1995 Race'n'Chase design document (Version 1.05, (c) 1995 DMA Design Ltd), page 1, scanned PDF linked from the plan's iGrandTheftAuto page: https://github.com/gheja/game-design-documents/blob/master/grand-theft-auto.pdf (rendered at 200 dpi, 1700x2200). Title page only: no robber-mode pages (plan: Accuracy notes)."
   },
   {
    "rid": "R5.1",
