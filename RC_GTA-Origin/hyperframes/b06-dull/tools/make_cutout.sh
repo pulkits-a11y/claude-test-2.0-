@@ -30,8 +30,10 @@ ffmpeg -nostdin -loglevel error -y -i "$SRC" -vf "crop=960:1080:${CROP_X}:0,fps=
   -c:v libx264 -crf 12 -preset medium -pix_fmt yuv420p "$TMP/R6.1_crop.mp4"
 if [ "${1:-}" = "--standin" ]; then
   python3 -I tools/bust_mask.py "$TMP/mask.png"
-  ffmpeg -nostdin -loglevel error -y -i "$TMP/R6.1_crop.mp4" -loop 1 -i "$TMP/mask.png" \
-    -filter_complex "[1:v]format=gray[m];[0:v][m]alphamerge,format=yuva420p[o]" -map "[o]" -shortest -an \
+  DUR=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$TMP/R6.1_crop.mp4")
+  # the looped mask input is limited to the clip's length (alphamerge would otherwise repeat the last frame forever)
+  ffmpeg -nostdin -loglevel error -y -i "$TMP/R6.1_crop.mp4" -loop 1 -framerate 30 -t "$DUR" -i "$TMP/mask.png" \
+    -filter_complex "[1:v]format=gray[m];[0:v][m]alphamerge,format=yuva420p[o]" -map "[o]" -t "$DUR" -an \
     -c:v libvpx-vp9 -pix_fmt yuva420p -b:v 0 -crf 24 -deadline realtime -cpu-used 8 -row-mt 1 -threads 2 -auto-alt-ref 0 "$OUT"
   echo "STAND-IN (drawn bust mask over the R6.1 placeholder, CROP_X=$CROP_X); replace with tools/make_cutout.sh on the real clip" > assets/footage/R6.1_cutout.SOURCE.txt
 else

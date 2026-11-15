@@ -1,5 +1,5 @@
 {
- "_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames, f0 = the beat's first word). Fallback used by tools/build_tesseract_audio.py only for beats whose hyperframes/<composition>/cues.json does not exist yet. '~29'/'~48' are taken as 29/48; a range a..b is stored as name=a, name_end=b.",
+ "_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames, f0 = the beat's first word). Fallback used by tools/build_tesseract_audio.py for every event that the beat's hyperframes/<composition>/cues.json does not list (or when that file does not exist yet). '~29'/'~48' are taken as 29/48; a range a..b is stored as name=a, name_end=b.",
  "B1": {
   "gta6_cell_full": 58,
   "cops": 127

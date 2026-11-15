@@ -1,0 +1,188 @@
+{
+ "beat": "B9",
+ "composition": "b09-throughyou",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 215,
+ "composition_frames": 227,
+ "edit_start_s": 35.3,
+ "voiceover": "The police cars stop following you and start trying to drive straight through you. They ram. They chase. They don't let go.",
+ "words": [
+  {
+   "text": "The",
+   "comp_t": 0.215,
+   "comp_end_t": 0.357,
+   "beat_t": 0.015,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "police",
+   "comp_t": 0.357,
+   "comp_end_t": 0.709,
+   "beat_t": 0.157,
+   "start_frame_local": 11,
+   "punct": ""
+  },
+  {
+   "text": "cars",
+   "comp_t": 0.709,
+   "comp_end_t": 0.937,
+   "beat_t": 0.509,
+   "start_frame_local": 21,
+   "punct": ""
+  },
+  {
+   "text": "stop",
+   "comp_t": 0.937,
+   "comp_end_t": 1.127,
+   "beat_t": 0.737,
+   "start_frame_local": 28,
+   "punct": ""
+  },
+  {
+   "text": "following",
+   "comp_t": 1.165,
+   "comp_end_t": 1.62,
+   "beat_t": 0.965,
+   "start_frame_local": 35,
+   "punct": ""
+  },
+  {
+   "text": "you",
+   "comp_t": 1.839,
+   "comp_end_t": 1.896,
+   "beat_t": 1.639,
+   "start_frame_local": 55,
+   "punct": ""
+  },
+  {
+   "text": "and",
+   "comp_t": 1.924,
+   "comp_end_t": 2.057,
+   "beat_t": 1.724,
+   "start_frame_local": 58,
+   "punct": ""
+  },
+  {
+   "text": "start",
+   "comp_t": 2.057,
+   "comp_end_t": 2.257,
+   "beat_t": 1.857,
+   "start_frame_local": 62,
+   "punct": ""
+  },
+  {
+   "text": "trying",
+   "comp_t": 2.352,
+   "comp_end_t": 2.646,
+   "beat_t": 2.152,
+   "start_frame_local": 71,
+   "punct": ""
+  },
+  {
+   "text": "to",
+   "comp_t": 2.646,
+   "comp_end_t": 2.751,
+   "beat_t": 2.446,
+   "start_frame_local": 79,
+   "punct": ""
+  },
+  {
+   "text": "drive",
+   "comp_t": 2.751,
+   "comp_end_t": 3.016,
+   "beat_t": 2.551,
+   "start_frame_local": 83,
+   "punct": ""
+  },
+  {
+   "text": "straight",
+   "comp_t": 3.016,
+   "comp_end_t": 3.33,
+   "beat_t": 2.816,
+   "start_frame_local": 90,
+   "punct": ""
+  },
+  {
+   "text": "through",
+   "comp_t": 3.548,
+   "comp_end_t": 3.814,
+   "beat_t": 3.348,
+   "start_frame_local": 106,
+   "punct": ""
+  },
+  {
+   "text": "you.",
+   "comp_t": 3.814,
+   "comp_end_t": 4.175,
+   "beat_t": 3.614,
+   "start_frame_local": 114,
+   "punct": "."
+  },
+  {
+   "text": "They",
+   "comp_t": 4.43,
+   "comp_end_t": 4.719,
+   "beat_t": 4.23,
+   "start_frame_local": 133,
+   "punct": ""
+  },
+  {
+   "text": "ram.",
+   "comp_t": 4.719,
+   "comp_end_t": 5.11,
+   "beat_t": 4.519,
+   "start_frame_local": 142,
+   "punct": "."
+  },
+  {
+   "text": "They",
+   "comp_t": 5.245,
+   "comp_end_t": 5.471,
+   "beat_t": 5.045,
+   "start_frame_local": 157,
+   "punct": ""
+  },
+  {
+   "text": "chase.",
+   "comp_t": 5.471,
+   "comp_end_t": 5.94,
+   "beat_t": 5.271,
+   "start_frame_local": 164,
+   "punct": "."
+  },
+  {
+   "text": "They",
+   "comp_t": 6.14,
+   "comp_end_t": 6.285,
+   "beat_t": 5.94,
+   "start_frame_local": 184,
+   "punct": ""
+  },
+  {
+   "text": "don't",
+   "comp_t": 6.375,
+   "comp_end_t": 6.724,
+   "beat_t": 6.175,
+   "start_frame_local": 191,
+   "punct": ""
+  },
+  {
+   "text": "let",
+   "comp_t": 6.733,
+   "comp_end_t": 6.949,
+   "beat_t": 6.533,
+   "start_frame_local": 202,
+   "punct": ""
+  },
+  {
+   "text": "go.",
+   "comp_t": 6.949,
+   "comp_end_t": 7.115,
+   "beat_t": 6.749,
+   "start_frame_local": 208,
+   "punct": "."
+  }
+ ]
+}

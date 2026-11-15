@@ -42,13 +42,15 @@ if have("X2_drift", [30, 31, 35, 40, 50, 60]):
         p = (f - 30) / 20
         print(f"X2 f{f}: offset {edge(f) - base:6.2f} px | expected {60 * (1 - p) ** 4:6.2f} (60 px, 20f, power3.out)")
 
-# X3: white opacity on a flat patch; cut at f110
-if have("X3_flash", range(107, 117)):
+# X3: white opacity on a flat patch; cut at f110 = C: ramp 2 frames (C-2, C-1), hold 1 frame (C), fade 4 frames (C+1..C+4)
+if have("X3_flash", range(106, 117)):
     def m(f):
         return load("X3_flash", f)[700:900, 200:600].mean()
-    exp = {107: 0, 108: 0, 109: .5, 110: 1, 111: 1, 112: .75, 113: .5, 114: .25, 115: 0, 116: 0}
+    exp = {106: 0, 107: 0, 108: 1 / 3, 109: 2 / 3, 110: 1, 111: .8, 112: .6, 113: .4, 114: .2, 115: 0, 116: 0}
     lo, ln = m(107), m(116)
-    for f in range(107, 117):
+    full = [f for f in range(106, 117) if np.all(load("X3_flash", f)[200:1000, 100:1800] == 255)]
+    print(f"X3 frames that are 100% white over the whole test area: {full} | expected [110] (hold 1 frame)")
+    for f in range(106, 117):
         u = lo if f < 110 else ln
         print(f"X3 f{f}: white {(m(f) - u) / (255 - u):.3f} | expected {exp[f]:.2f}")
 

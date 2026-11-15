@@ -44,7 +44,7 @@ Plan priority order on conflicts: (1) Locked script v2, (2) Beat-by-beat build, 
    "letterbox":{"bars_px":138,"slide_in_f":8},
    "grade":"archival","notes":"why / what moment to find"}]}
 ```
-`start_f`/`end_f` are **beat-relative frames** (0 = beat start). `grade` is one of `archival` (desaturate ~20%, slight warm lift, subtle grain, light vignette), `game` (punchy contrast, HUD colours untouched), `b9-sat60`, `b10-pop` (full colour, +10% saturation for 1 s), `none`. Screens: `L1`, `L2`, `L10`, `full`.
+`start_f`/`end_f` are **beat-relative frames** (0 = beat start). Since the real footage arrived (see `FOOTAGE_PASS.md`), each shot also carries `"source"` (the original download, `04_Broll/_originals/...`), `"source_in_s"` in seconds of that original file, and an optional `"crop"` (`w:h:x:y`, e.g. to remove a 4:3 pillarbox); the Tesseract assembly cuts its own H.264 working copies from the originals. `grade` is one of `archival` (desaturate ~20%, slight warm lift, subtle grain, light vignette), `game` (punchy contrast, HUD colours untouched), `b9-sat60`, `b10-pop` (full colour, +10% saturation for 1 s), `none`. Screens: `L1`, `L2`, `L10`, `full`.
 
 ## Timing rules (plan: Units, Style kit, What good looks like)
 

@@ -16,10 +16,46 @@
   </head>
   <body>
     <!-- B12 b12-thirty: beat 83f (2.767s) + 6f handle each end = 95f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.9667s.
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/. -->
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.9667s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B12 p.25).
+
+         The B4 L9 / M3 calendar returns: SAME kit component, SAME geometry (grid top-left 748, 520; 64 px squares, 8 px
+         gaps, 6 columns; gray card #E9E9E9), SAME T2 placement (--rc-y 390) and the same camera push (100% -> 104%
+         about 960, 540) as b04-racenchase, extended:
+         beat f0     18 squares filled (card ink) + the counter "18" (Inter Bold 120 px) at the grid's top-left
+                     (kit counterPos "left": right edge 32 px left of the grid, cap top on the grid top);
+                     T1 "Of course," (card ink, y 860 below the grid) until "turn".
+         beat f53    "turn": 12 more squares appear and fill siren red #E3262E, 2f apart (f53 ... f75) while the counter rolls
+                     18 -> 30 (12 odometer rolls, 2f each), landing on 30 on "thirty" (f69); T2 lead-in "turn into".
+         beat f69    T2 keyword "thirty." (6f blur-in); S11's hit lands here (Tesseract). T2 out: 4f fade f79-83.
+         No dates on the calendar (plan p.21/p.40). Optional R12.1 clock time-lapse: skipped while it is a stand-in
+         (STORYBOARD B12); see BEAT_NOTES.md. Tesseract owns all audio. -->
     <div id="root" data-composition-id="b12-thirty" data-start="0" data-duration="3.1666667" data-width="1920" data-height="1080">
+
+      <!-- gray card (history and facts), whole composition -->
+      <div id="b12-card" class="clip rc-card rc-full" data-start="0.0000" data-duration="3.1666" data-track-index="1" style="z-index: 1"></div>
+
+      <!-- OPTIONAL R12.1 clock time-lapse "faint behind the card at 10%" (plan p.25): skipped while R12.1 is a stand-in
+           (STORYBOARD B12). To use the real clip: add "R12.1" to footage.json, run tools/sync_footage.py, uncomment the
+           line below (clip at 10% opacity over the gray card, under the calendar), re-check, re-render.
+      <video id="b12-clock" class="clip rc-full" src="assets/footage/R12.1.mp4" data-start="0.0000" data-duration="3.1666" data-track-index="2" muted playsinline style="z-index: 2; opacity: 0.1; object-fit: cover"></video>
+      -->
+
+      <!-- untimed camera: the calendar + T2 push 100% -> 104% together (rule 7), exactly as in B4 -->
+      <div id="b12-cam" class="rc-full" style="z-index: 3">
+        <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.1666" data-track-index="3"></div>
+        <!-- T2 punch pair, card ink: lead-in on "turn" (f53), keyword "thirty." on "thirty" (f69) -->
+        <div id="b12-t2" class="clip rc-t2 rc-on-card" data-start="1.9666" data-duration="1.0000" data-track-index="4" style="--rc-y: 390px">
+          <div class="rc-t2__row"><span class="rc-t2__lead">turn into</span><span class="rc-t2__key">thirty.</span></div>
+        </div>
+      </div>
+
+      <!-- T1 running caption on the gray card (card ink): "Of course," on "Of" (f0) until "turn" (f53).
+           y 860 (rc-t1--low): the calendar grid occupies the centre (x 748-1172, y 520-728), so the caption drops below it
+           (T1 rule: "drop to y 860 if a face is in the centre", applied to the calendar). -->
+      <div id="b12-cap-1" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.2000" data-duration="1.7666" data-track-index="9" style="z-index: 20">Of course,</div>
     </div>
+
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
     <script src="assets/kit/transitions.js"></script>
@@ -27,7 +63,42 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // Build the beat here (kit helpers: see assets/kit/KIT.md).
+      const T = RCK.type, S = RCK.screens, M = RCK.motifs;
+      const B = (n) => (n + 6) / 30;                 // beat frame -> composition seconds (6f head handle)
+      const W = { turn: 1.954, thirty: 2.494 };      // words.json comp_t: beat f53, f69
+
+      // ---- M3 / L9: the B4 calendar, 18 filled + counter 18 (same component, same default geometry as B4) ----
+      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left' });
+
+      // LOCAL FIX (kit gap, reported): RCK.motifs.calendarExtend ties the counter to the squares (one 2f roll per square),
+      // so with the squares 2f apart from "turn" (f53-75, STORYBOARD/plan) the counter would land on 30 at f77, not on
+      // "thirty" (f69); its landAt option instead moves the squares to start before "turn". The storyboard pins both:
+      // squares f53-75 AND counter 18 -> 30 landing on "thirty" (f69). So the counter is detached while the kit fills
+      // the squares, then rolled on its own schedule with the kit's own roll (each digit strip slides up 1 em over 2f,
+      // power3.out): 12 rolls starting f53 ... f67, the last lands on f69.
+      const counter = cal.counter;
+      cal.counter = null;
+      M.calendarExtend(tl, '#b12-cal', B(53), { to: 30, stepF: 2, grow: 'with-fill' });   // red squares 19-30: f53, 55 ... 75
+      cal.counter = counter;
+      const rollStarts = [53, 54, 56, 57, 58, 59, 61, 62, 63, 64, 66, 67];                // beat frames; +2f = 30 on f69
+      let v = 18;
+      rollStarts.forEach((s) => {
+        const nv = v + 1;
+        counter.strips.forEach((strip) => {
+          const a = Math.floor(v / strip.place), b = Math.floor(nv / strip.place);
+          if (a !== b) tl.fromTo(strip.el, { y: -a * counter.fs }, { y: -b * counter.fs, duration: 2 / 30, ease: 'power3.out', immediateRender: false }, B(s));
+        });
+        v = nv;
+      });
+      cal.value = v;   // 30
+
+      // ---- T2: lead-in hard cut on "turn" (clip start), keyword "thirty." 6f blur-in on "thirty", 4f fade f79-83 ----
+      T.punchPair(tl, '#b12-t2', W.thirty, { outAt: B(79) });
+
+      // ---- rule 7 push, same as B4: 100% on beat f0 -> 104% on the beat end (f83), same rate through both handles ----
+      S.push(tl, '#b12-cam', 0, { until: 95 / 30, from: 1 - (6 * 0.04) / 83, to: 1 + (89 * 0.04) / 83, origin: '960px 540px' });
+
+      tl.to({}, { duration: 95 / 30 }, 0);
       window.__timelines["b12-thirty"] = tl;
     </script>
   </body>

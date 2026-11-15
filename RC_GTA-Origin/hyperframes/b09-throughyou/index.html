@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* B9 path diagram (plan p.24 step 2): one SVG on the 1920 x 1080 canvas. The untimed wrapper #b09-diagram is
+         pushed 100 -> 104% about the frame centre exactly like the Tesseract L1 shot under it (same anchor, same frames),
+         so the diagram stays "on" the footage. */
+      #b09-diagram { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #b09-dg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #b09-dg > svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    </style>
+  </head>
+  <body>
+    <!-- B9 b09-throughyou: beat 215f (7.167s) + 6f handle each end = 227f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.3667s.
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+
+         Plan p.23-24 (B9 build), STORYBOARD.md B9. Local frame = beat frame + 6.
+         beat     local    what
+         -6..0    0..6     head handle: transparent (Tesseract L1 R9.1 under it), path diagram's white dot already on the
+                           player's car (opening state continued backward), diagram push extrapolated backward (99.81%)
+         0        6        X1 hard cut from B8's black. TS+HF: Tesseract L1 R9.1 (~60% sat, 105%, soft edges, push
+                           100->104% f0-127). HF overlay = path diagram + T1. T1 "The police cars" on "The"
+         22       28       T1 "stop following you" on "stop"; the dotted yellow path (#FFE14D, 4 px dots) draws the normal
+                           chase path curving behind the dot, from the police position S (240,470) to the dot, 24f, linear
+                           (drawn by f46 = local 52, before "you" f49)
+         52       58       T1 "and start trying" on "and"
+         73       79       T1 "to drive straight" on "to"
+         84-92    90-98    on "straight": the solid red arrow (#E3262E, 10 px) shoots from S straight at the dot and through
+                           it, 8f, ease out (power3.out); its head passes the dot between local 92 and 93
+         87-95    93-101   the dot shakes (kit RCK.motifs.shake, 6 px decaying, 8f) from the first frame the arrow is through
+         100      106      T1 "through you." on "through"; diagram holds (on screen f0-127 = 4.2 s, plan: >= 1.5 s)
+         127      133      X1 hard cut on "They ram.": HF L3, three vertical strips (8 px ink-black gutters). Strip 1 GTA 1 ram
+                           (R9.2) pops (4f, 96->100% + fade) with a 4f punch-in to 115% + T4 "They ram." (strip 1)
+         151      157      strip 2 GTA 2 chase (R9.3) pops + punch + T4 "They chase." (strip 2)
+         178      184      strip 3 London 1969 (R9.5) pops + punch + T4 "They don't let go." (strip 3)
+         after each punch lands: slow push 115% -> x1.04 (rule 7, held shot), linear, to the "fun" cut in B10 (B10 f37)
+         215..221 221..227 tail handle: strips + T4 continue (closing state forward); B10 continues the same strips with
+                           continuous source time (b10-fun: data-media-start + 82f / 58f / 31f) and fades the T4 at its f0 -->
+    <div data-hf-id="hf-r7hg" id="root" data-composition-id="b09-throughyou" data-start="0" data-duration="7.5666667" data-width="1920" data-height="1080">
+
+      <!-- ===== L3 three vertical strips (HF-owned, opaque), beat f127 .. tail handle end. Grid + cells + media wrappers
+           untimed; ground and videos timed (kit KIT_screens.md section 1). Footage: media treatment = 60% saturation +
+           a little contrast (the B9 "still not full colour" look, matching the Tesseract L1 grade b9-sat60; B10 snaps back to
+           full colour on "fun"). ===== -->
+      <div data-hf-id="hf-opmk" id="b09-grid" class="rc-l3 rc-l3--strips" style="z-index: 2">
+        <div data-hf-id="hf-tlrj" id="b09-grid-ground" class="clip rc-l3__ground" data-start="4.4333" data-duration="3.1333" data-track-index="1"></div>
+        <div data-hf-id="hf-i8h9" id="b09-s1" class="rc-l3__cell"><div data-hf-id="hf-cu75" class="rc-l3__media">
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-n7a9" id="b09-s1-v" class="clip" src="assets/footage/R9.2.mp4" data-start="4.4333" data-duration="3.1333" data-media-start="1.0167" data-track-index="2" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-m6la" id="b09-s2" class="rc-l3__cell"><div data-hf-id="hf-s92t" class="rc-l3__media">
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-oupt" id="b09-s2-v" class="clip" src="assets/footage/R9.3.mp4" data-start="5.2333" data-duration="2.3333" data-media-start="2.0167" data-track-index="3" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-q4pb" id="b09-s3" class="rc-l3__cell"><div data-hf-id="hf-tfzw" class="rc-l3__media">
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-4pso" id="b09-s3-v" class="clip" src="assets/footage/R9.5.mp4" data-start="6.1333" data-duration="1.4333" data-media-start="3.0167" data-track-index="4" muted playsinline></video>
+        </div></div>
+      </div>
+
+      <!-- ===== Path diagram (HF overlay over the Tesseract L1 shot), local 0 .. 133 (beat f-6 .. f127).
+           Layer order inside the SVG: dotted yellow path < white dot < red arrow (the arrow crosses the dot = "through").
+           Geometry (frame px, before the push): white dot D (960,540) r 22 (44 px) = the player's car (GTA 1's camera keeps the
+           player's car at the screen centre; re-fit on the real R9.1); police position S (240,470); normal chase path =
+           cubic S -> C1 (330,170) -> C2 (830,170) -> D (ends under the dot); red arrow = straight line S -> D -> E, 200 px
+           past the dot centre (E 1159.06,559.35), 10 px, solid triangular head 36 x 32 px. All above the T1 caption band
+           (y 592-648). ===== -->
+      <div data-hf-id="hf-tb41" id="b09-diagram" style="z-index: 20">
+        <div data-hf-id="hf-ef0x" id="b09-dg" class="clip" data-start="0.0000" data-duration="4.4333" data-track-index="5">
+          <svg data-hf-id="hf-ji9f" viewBox="0 0 1920 1080" width="1920" height="1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs data-hf-id="hf-mh0t">
+              <!-- reveal mask for the dotted path: a solid stroke of the same curve, dash-offset 100 -> 0 (pathLength 100) -->
+              <mask data-hf-id="hf-zm5i" id="b09-path-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+                <path data-hf-id="hf-762r" id="b09-path-reveal" d="M240,470 C330,170 830,170 960,540" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
+              </mask>
+            </defs>
+            <!-- dotted yellow line: 4 px round dots, 12 px pitch -->
+            <path data-hf-id="hf-golg" id="b09-path" d="M240,470 C330,170 830,170 960,540" fill="none" style="stroke: var(--highlighter)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#b09-path-mask)" />
+            <!-- white dot = the player's car; the <g> shakes -->
+            <g data-hf-id="hf-uu6w" id="b09-dot">
+              <circle data-hf-id="hf-vx03" cx="960" cy="540" r="22" style="fill: var(--white)" />
+            </g>
+            <!-- solid red arrow: line S -> head base (E - 36 px), dash-offset reveal; the head rides the tip -->
+            <g data-hf-id="hf-qbnu" id="b09-arrow">
+              <line data-hf-id="hf-q9au" id="b09-arrow-line" x1="240" y1="470" x2="1123.2304" y2="555.8696" style="stroke: var(--siren-red)" stroke-width="10" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
+              <g data-hf-id="hf-rvmy" id="b09-arrow-tip">
+                <polygon data-hf-id="hf-slpz" points="0,0 -36,-16 -36,16" style="fill: var(--siren-red)" transform="rotate(5.55297)" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ===== T4 spread words, one phrase per strip (kit rc-t4--strip1/2/3), placed low in the strips (y 860) = empty space
+           under the action at the strip centre, and clear of B10's T2 line (y 540) while they fade at B10 f0. ===== -->
+      <div data-hf-id="hf-orc3" id="b09-t4" class="clip rc-t4" data-start="4.4333" data-duration="3.1333" data-track-index="9" style="z-index: 30">
+        <span data-hf-id="hf-cqyl" class="rc-t4__piece rc-t4--strip1" style="--rc-y: 860px">They ram.</span>
+        <span data-hf-id="hf-6vg2" class="rc-t4__piece rc-t4--strip2" style="--rc-y: 860px">They chase.</span>
+        <span data-hf-id="hf-wejs" class="rc-t4__piece rc-t4--strip3" style="--rc-y: 860px">They don't let go.</span>
+      </div>
+
+      <!-- ===== T1 running captions (kit T.captionPlan from words.json; plan On screen: "The police cars / stop following you /
+           and start trying / to drive straight / through you."), hard cut in on each chunk's first syllable (<= 0.45 f
+           from the voice), out on the next; the last one ends at "They" (T4 takes over). ===== -->
+      <div data-hf-id="hf-31y9" id="b09-cap-1" class="clip rc-t1" data-start="0.2000" data-duration="0.7333" data-track-index="10" style="z-index: 40">The police cars</div>
+      <div data-hf-id="hf-5ouv" id="b09-cap-2" class="clip rc-t1" data-start="0.9333" data-duration="1.0000" data-track-index="10" style="z-index: 40">stop following you</div>
+      <div data-hf-id="hf-30gl" id="b09-cap-3" class="clip rc-t1" data-start="1.9333" data-duration="0.7000" data-track-index="10" style="z-index: 40">and start trying</div>
+      <div data-hf-id="hf-l955" id="b09-cap-4" class="clip rc-t1" data-start="2.6333" data-duration="0.9000" data-track-index="10" style="z-index: 40">to drive straight</div>
+      <div data-hf-id="hf-wyxf" id="b09-cap-5" class="clip rc-t1" data-start="3.5333" data-duration="0.9000" data-track-index="10" style="z-index: 40">through you.</div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type, S = RCK.screens, M = RCK.motifs;
+      const f = (n) => n / 30;            // local frame -> seconds (local frame = beat frame + 6)
+
+      // Word onsets (words.json comp_t snapped to the nearest frame, local): The 6, police 11, cars 21, stop 28,
+      // following 35, you 55, and 58, start 62, trying 71, to 79, drive 83, straight 90, through 106, you. 114,
+      // They 133, ram. 142, They 157, chase. 164, They 184, don't 191, let 202, go. 208.
+      const W = { stop: 28, straight: 90, ram: 133, chase: 157, letgo: 184 };
+      const CUT_L3 = W.ram;               // beat f127: X1 to the L3 strips
+      const END = 227;                     // composition end (tail handle end)
+
+      // ---------------- Path diagram over the Tesseract L1 shot (beat f0-127) ----------------
+      // Push 100 -> 104% across the L1 shot exactly like Tesseract's (beat f0 = 100%, beat f127 = 104%, linear, centre
+      // anchor); the head handle continues the same line backward (local 0 = 99.811%).
+      const P0 = 1 - 0.04 * 6 / 127;
+      S.push(tl, '#b09-diagram', f(0), { until: f(CUT_L3), from: P0, to: 1.04 });
+
+      // Dotted yellow "normal chase path": draws from S to the dot from "stop" over 24f (linear: the steady path the
+      // cops follow), done local 52 (beat f46), before "you" (beat f49).
+      tl.fromTo('#b09-path-reveal', { attr: { 'stroke-dashoffset': 100 } },
+        { attr: { 'stroke-dashoffset': 0 }, duration: f(24), ease: 'none', immediateRender: false }, f(W.stop));
+
+      // Red arrow on "straight": invisible until local 90, then the line grows S -> E and the head rides its tip over 8f,
+      // power3.out (the plan's "ease out"). Line and head use the same ease and duration, so the head stays on the tip.
+      gsap.set('#b09-arrow', { opacity: 0 });
+      S.hard(tl, '#b09-arrow', { opacity: 0 }, { opacity: 1 }, f(W.straight));
+      tl.fromTo('#b09-arrow-line', { attr: { 'stroke-dashoffset': 100 } },
+        { attr: { 'stroke-dashoffset': 0 }, duration: f(8), ease: 'power3.out', immediateRender: false }, f(W.straight));
+      gsap.set('#b09-arrow-tip', { x: 275.8311, y: 473.4836 });                  // tip at S + 36 px along the line
+      tl.fromTo('#b09-arrow-tip', { x: 275.8311, y: 473.4836 },
+        { x: 1159.0614, y: 559.3532, duration: f(8), ease: 'power3.out', immediateRender: false }, f(W.straight));
+      // Tip passes the dot (723 px from S) between local 92 (643 px) and 93 (788 px): the dot shakes from local 93.
+      const HIT = W.straight + 3;
+      M.shake(tl, '#b09-dot', f(HIT), { amp: 6, frames: 8, seed: 9, decay: true });
+
+      // ---------------- L3 three vertical strips (beat f127 ..), one per phrase, with its T4 phrase ----------------
+      const POP = [W.ram, W.chase, W.letgo];
+      POP.forEach((t, i) => {
+        S.gridPop(tl, '#b09-s' + (i + 1), f(t), { punch: 1.15 });              // 4f pop + 4f punch-in to 115%
+        T.spreadIn(tl, document.querySelectorAll('#b09-t4 .rc-t4__piece')[i], f(t));
+      });
+      // Rule 7 (held shot): after its punch lands, each strip's footage keeps pushing in slowly, 115% -> 115% x 1.04,
+      // linear, ending on the B10 "fun" cut (beat f252 on this clock = B10 f37). b10-fun continues the same line.
+      const FUN = 258;                                                            // B10 f37 in this composition's local frames
+      const pushAt = (land, x) => 1.15 * (1 + 0.04 * (x - land) / (FUN - land));
+      POP.forEach((t, i) => {
+        const land = t + 4;
+        tl.fromTo('#b09-s' + (i + 1) + ' .rc-l3__media', { scale: 1.15 },
+          { scale: pushAt(land, END), duration: f(END - land), ease: 'none', immediateRender: false }, f(land));
+      });
+
+      window.__timelines["b09-throughyou"] = tl;
+    </script>
+  </body>
+</html>

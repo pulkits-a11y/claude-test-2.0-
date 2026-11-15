@@ -1,0 +1,156 @@
+{
+ "beat": "B11",
+ "composition": "b11-flip",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 162,
+ "composition_frames": 174,
+ "edit_start_s": 44.3667,
+ "voiceover": "So the team flips the whole game. You're not the cop anymore. Now you're the one being chased.",
+ "words": [
+  {
+   "text": "So",
+   "comp_t": 0.213,
+   "comp_end_t": 0.32,
+   "beat_t": 0.013,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 0.32,
+   "comp_end_t": 0.505,
+   "beat_t": 0.12,
+   "start_frame_local": 10,
+   "punct": ""
+  },
+  {
+   "text": "team",
+   "comp_t": 0.535,
+   "comp_end_t": 0.798,
+   "beat_t": 0.335,
+   "start_frame_local": 16,
+   "punct": ""
+  },
+  {
+   "text": "flips",
+   "comp_t": 0.798,
+   "comp_end_t": 1.148,
+   "beat_t": 0.598,
+   "start_frame_local": 24,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 1.148,
+   "comp_end_t": 1.353,
+   "beat_t": 0.948,
+   "start_frame_local": 34,
+   "punct": ""
+  },
+  {
+   "text": "whole",
+   "comp_t": 1.493,
+   "comp_end_t": 1.682,
+   "beat_t": 1.293,
+   "start_frame_local": 45,
+   "punct": ""
+  },
+  {
+   "text": "game.",
+   "comp_t": 1.823,
+   "comp_end_t": 2.043,
+   "beat_t": 1.623,
+   "start_frame_local": 55,
+   "punct": "."
+  },
+  {
+   "text": "You're",
+   "comp_t": 2.308,
+   "comp_end_t": 2.533,
+   "beat_t": 2.108,
+   "start_frame_local": 69,
+   "punct": ""
+  },
+  {
+   "text": "not",
+   "comp_t": 2.533,
+   "comp_end_t": 2.598,
+   "beat_t": 2.333,
+   "start_frame_local": 76,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 2.67,
+   "comp_end_t": 2.799,
+   "beat_t": 2.47,
+   "start_frame_local": 80,
+   "punct": ""
+  },
+  {
+   "text": "cop",
+   "comp_t": 2.799,
+   "comp_end_t": 2.928,
+   "beat_t": 2.599,
+   "start_frame_local": 84,
+   "punct": ""
+  },
+  {
+   "text": "anymore.",
+   "comp_t": 2.928,
+   "comp_end_t": 3.363,
+   "beat_t": 2.728,
+   "start_frame_local": 88,
+   "punct": "."
+  },
+  {
+   "text": "Now",
+   "comp_t": 3.648,
+   "comp_end_t": 3.795,
+   "beat_t": 3.448,
+   "start_frame_local": 109,
+   "punct": ""
+  },
+  {
+   "text": "you're",
+   "comp_t": 3.795,
+   "comp_end_t": 4.142,
+   "beat_t": 3.595,
+   "start_frame_local": 114,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 4.142,
+   "comp_end_t": 4.315,
+   "beat_t": 3.942,
+   "start_frame_local": 124,
+   "punct": ""
+  },
+  {
+   "text": "one",
+   "comp_t": 4.315,
+   "comp_end_t": 4.48,
+   "beat_t": 4.115,
+   "start_frame_local": 129,
+   "punct": ""
+  },
+  {
+   "text": "being",
+   "comp_t": 4.515,
+   "comp_end_t": 4.783,
+   "beat_t": 4.315,
+   "start_frame_local": 135,
+   "punct": ""
+  },
+  {
+   "text": "chased.",
+   "comp_t": 4.783,
+   "comp_end_t": 5.338,
+   "beat_t": 4.583,
+   "start_frame_local": 143,
+   "punct": "."
+  }
+ ]
+}

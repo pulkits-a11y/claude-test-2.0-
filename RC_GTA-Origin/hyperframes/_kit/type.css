@@ -308,13 +308,13 @@
 .rc-t8__name {
   position: relative;
   font-family: var(--serif);
-  font-style: normal;                     /* T library: "Name in Instrument Serif 72 px" (see KIT_type.md, conflict note) */
+  font-style: italic;                     /* Style kit > Fonts: "Instrument Serif Italic: ... quotes and names"; the T8 row ("Name in Instrument Serif 72 px") is silent on style, so no conflict */
   font-weight: 400;
   font-size: 72px;
   line-height: 1.3;                       /* = content area, so the baseline sits at 0.99 em */
   white-space: nowrap;
 }
-.rc-t8--name-italic .rc-t8__name { font-style: italic; }
+.rc-t8--name-italic .rc-t8__name { font-style: italic; }  /* kept for compatibility; italic is now the default */
 .rc-t8__underline {                       /* the line the B3 Lemming walks on; position/thickness from the font's post table */
   position: absolute;
   left: 0;

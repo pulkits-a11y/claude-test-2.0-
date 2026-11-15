@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- B10 b10-fun: beat 57f (1.900s) + 6f handle each end = 69f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.1000s.
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+
+         Plan p.24 (B10 build), STORYBOARD.md B10. Local frame = beat frame + 6.
+         beat     local    what
+         -6..0    0..6     head handle: B9's three L3 strips (R9.2 / R9.3 / R9.5) continue with their T4 phrases
+                           (B9's closing state continued backward; continuous source time and push with b09-throughyou)
+         0        6        X1 (B9 -> B10 boundary, same picture). T4 phrases fade out over 4f (local 6-10).
+                           T2 lead-in "And suddenly, it's" hard cuts in on "And" (Inter SemiBold 42, centred group at y 540)
+         35-41    41-48    X3 white flash centred on "fun": 0% local 41, 50% 42, 100% 43-44, 75/50/25% 45-47, 0 at 48 (silent)
+         37       43       "fun" = the flash's 100% frame = S09 + the MU5 music drop (cues.json fun = 37). Hard cut under
+                           the white: the strips end; from here this composition is transparent except the T2 pair and the
+                           fading flash: Tesseract L1 R10.1 (GTA 1 kill frenzy, full colour +10% sat, full speed) shows under it.
+                           T2 keyword "fun." (Instrument Serif Italic 140) blurs in 30 -> 0 px while scaling 108 -> 100%, 6f,
+                           power3.out (lands local 49)
+         53-57    59-63    T2 out: the pair fades 1 -> 0 over 4f, gone on the beat's last frame boundary (local 63)
+         57..63   63..69   tail handle: transparent (closing state = Tesseract footage only) -->
+    <div data-hf-id="hf-sral" id="root" data-composition-id="b10-fun" data-start="0" data-duration="2.3000000" data-width="1920" data-height="1080">
+
+      <!-- ===== B9's L3 strips, continued (no pops: landed state; same geometry, footage, crop and grade as b09-throughyou),
+           local 0 .. 43 (beat f-6 .. f37). data-media-start = b09's in-point + (B9 local 215 - the strip's B9 start)/30,
+           so the source time is continuous across the B9/B10 boundary. ===== -->
+      <div data-hf-id="hf-sm9q" id="b10-grid" class="rc-l3 rc-l3--strips" style="z-index: 2">
+        <div data-hf-id="hf-suk5" id="b10-grid-ground" class="clip rc-l3__ground" data-start="0.0000" data-duration="1.4333" data-track-index="1"></div>
+        <div data-hf-id="hf-x783" id="b10-s1" class="rc-l3__cell"><div data-hf-id="hf-cu75" class="rc-l3__media" data-layout-allow-overflow>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-nski" id="b10-s1-v" class="clip" src="assets/footage/R9.2.mp4" data-start="0.0000" data-duration="1.4333" data-media-start="3.7501" data-track-index="2" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-ojc8" id="b10-s2" class="rc-l3__cell"><div data-hf-id="hf-s92t" class="rc-l3__media" data-layout-allow-overflow>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-7a7r" id="b10-s2-v" class="clip" src="assets/footage/R9.3.mp4" data-start="0.0000" data-duration="1.4333" data-media-start="3.9501" data-track-index="3" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-pb01" id="b10-s3" class="rc-l3__cell"><div data-hf-id="hf-tfzw" class="rc-l3__media" data-layout-allow-overflow>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.1,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-zfch" id="b10-s3-v" class="clip" src="assets/footage/R9.5.mp4" data-start="0.0000" data-duration="1.4333" data-media-start="4.0501" data-track-index="4" muted playsinline></video>
+        </div></div>
+      </div>
+
+      <!-- ===== B9's T4 phrases (same positions as b09-throughyou), fully on in the head handle, fade out 4f from beat f0 ===== -->
+      <div data-hf-id="hf-zdhn" id="b10-t4" class="clip rc-t4" data-start="0.0000" data-duration="0.3333" data-track-index="9" style="z-index: 30">
+        <span data-hf-id="hf-cqyl" class="rc-t4__piece rc-t4--strip1" style="--rc-y: 860px">They ram.</span>
+        <span data-hf-id="hf-6vg2" class="rc-t4__piece rc-t4--strip2" style="--rc-y: 860px">They chase.</span>
+        <span data-hf-id="hf-wejs" class="rc-t4__piece rc-t4--strip3" style="--rc-y: 860px">They don't let go.</span>
+      </div>
+
+      <!-- ===== T2 punch pair (plan On screen: "T2: And suddenly, it's fun." with "fun." in the serif). Lead-in hard cut on
+           "And" (beat f0); keyword "fun." on "fun" (beat f37 = the flash's 100% frame); out = 4f fade ending on the beat's
+           end (local 63). White + soft shadow (text on footage). Under the X3 flash, so the flash covers it. ===== -->
+      <div data-hf-id="hf-svpa" id="b10-t2" class="clip rc-t2" data-start="0.2000" data-duration="1.9000" data-track-index="10" style="z-index: 35">
+        <div data-hf-id="hf-15le" class="rc-t2__row"><span data-hf-id="hf-xuwr" class="rc-t2__lead">And suddenly, it's</span><span data-hf-id="hf-3y3b" class="rc-t2__key">fun.</span></div>
+      </div>
+
+      <!-- ===== X3 white flash centred on "fun" (kit RCK.transitions.flash, C = local 43) ===== -->
+      <div data-hf-id="hf-a3g5" id="b10-x3" class="clip rc-x3" data-start="1.3666" data-duration="0.2667" data-track-index="11" style="z-index: 50"></div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type, S = RCK.screens, X = RCK.transitions;
+      const f = (n) => n / 30;            // local frame -> seconds (local frame = beat frame + 6)
+
+      // Word onsets (words.json comp_t snapped to the nearest frame, local): And 6, suddenly, 11, it's 35, fun. 43.
+      const W = { And: 6, fun: 43 };
+      const END_BEAT = 63;                // beat f57
+
+      // ---------------- B9's strips, continued ----------------
+      // Landed state (no pops). Their footage keeps b09's slow push (rule 7): 115% -> 115% x 1.04, linear, from each strip's
+      // punch landing (b09 local 137 / 161 / 188) to the "fun" cut (b09 local 258 = this local 43). This local L = b09 local L + 215.
+      const B9 = 215, FUN_B9 = 258, LAND_B9 = [137, 161, 188];
+      const pushAt = (land, x) => 1.15 * (1 + 0.04 * (x - land) / (FUN_B9 - land));
+      LAND_B9.forEach((land, i) => {
+        const m = '#b10-s' + (i + 1) + ' .rc-l3__media';
+        gsap.set(m, { scale: pushAt(land, B9), transformOrigin: '50% 50%' });
+        tl.fromTo(m, { scale: pushAt(land, B9) },
+          { scale: pushAt(land, B9 + W.fun), duration: f(W.fun), ease: 'none', immediateRender: false }, 0);
+      });
+
+      // ---------------- T4 phrases leave together: 4f fade from beat f0 (kit T.spreadOut) ----------------
+      T.spreadOut(tl, '#b10-t4', f(W.And));
+
+      // ---------------- X3 white flash centred on "fun": 100% on local 43 (beat f37) and 44 ----------------
+      X.flash(tl, '#b10-x3', f(W.fun));
+
+      // ---------------- T2: lead-in from "And" (clip start), keyword "fun." blur-in on "fun", 4f fade-out to the beat end ----
+      T.punchPair(tl, '#b10-t2', f(W.fun), { outAt: f(END_BEAT - 4) });
+
+      // keep the timeline as long as the composition (the tail handle is transparent)
+      tl.set({}, {}, f(69));
+      window.__timelines["b10-fun"] = tl;
+    </script>
+  </body>
+</html>

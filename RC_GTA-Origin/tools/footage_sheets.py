@@ -14,7 +14,7 @@ they are there for specific moments) get one thumbnail every 10 s on a first pas
 import argparse, glob, json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from sync_footage import find_real  # noqa
+from sync_footage import find_original  # noqa
 
 ROOT = "/home/user/claude-test-2.0-/RC_GTA-Origin"
 OUT = f"{ROOT}/04_Broll/_sheets"
@@ -41,10 +41,9 @@ def main():
     for e in man:
         if a.rids and e["rid"] not in a.rids:
             continue
-        real = [r for r in find_real(e) if r.lower().endswith((".mp4", ".mov", ".m4v", ".webm", ".mkv"))]
-        if not real:
+        src = find_original(e["rid"])
+        if not src:
             continue
-        src = real[0]
         info = probe(src)
         t0, t1 = 0.0, info["duration_s"]
         if a.range:
@@ -58,7 +57,8 @@ def main():
         vf = (f"fps=1/{every},scale=384:216:force_original_aspect_ratio=decrease,pad=384:216:(ow-iw)/2:(oh-ih)/2,"
               f"drawtext=fontfile={FONT}:text='%{{pts\\:hms\\:{t0}}}':x=6:y=6:fontsize=18:fontcolor=white:box=1:boxcolor=black@0.6,"
               f"tile=5x6:padding=4:color=black")
-        subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", str(t0), "-t", str(span), "-i", src,
+        fast = ["-skip_frame", "nokey"] if every >= 2 else []
+        subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", *fast, "-ss", str(t0), "-t", str(span), "-i", src,
                         "-vf", vf, "-q:v", "4", pattern], check=True)
         info.update({"rid": e["rid"], "file": os.path.relpath(src, ROOT), "every_s": every, "range": [t0, t1],
                      "need": e["note"], "beats": e["beats"]})

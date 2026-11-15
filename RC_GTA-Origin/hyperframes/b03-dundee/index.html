@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* L12 pile (kit choice of spots overridden): three 4:3 cards fanned across the upper frame, so the T8 name card
+         sits on the gray card below them in card ink (STORYBOARD B3: "#111111 on the gray card"). Picture 520 x 390. */
+      #b03-cards .rc-l12__card { --w: 520px; --h: 390px; }
+      #b03-cards .rc-l12__card[data-card="1"] { --x: 300px;  --y: 180px; }
+      #b03-cards .rc-l12__card[data-card="2"] { --x: 700px;  --y: 150px; }
+      #b03-cards .rc-l12__card[data-card="3"] { --x: 1100px; --y: 200px; }
+      /* T8 block centred on x 960, y 800 (content box 574..1026) */
+      #b03-t8 { padding-top: 574px; }
+      /* the tiny Lemming: a 28 x 36 window cut from R3.5 (Lemmings PC gameplay) shown at 50% (the source frame is
+         laid out 960 x 540), standing on the T8 underline. It lives outside the timed T8 element (a timed <video> may
+         not sit inside a timed element), so its walk is an x tween over the underline's measured span (LEM below).
+         Crop point = --lem-x / --lem-y in displayed (50%) px. PENDING real R3.5: pick a walking lemming + crop. */
+      #b03-lem-walk { position: absolute; left: 0; top: 0; width: 28px; height: 36px; opacity: 0; }
+      #b03-lem-win { position: absolute; left: 0; top: 0; width: 28px; height: 36px; overflow: hidden; }
+      #b03-lem { position: absolute; left: calc(-1 * var(--lem-x, 466px)); top: calc(-1 * var(--lem-y, 252px)); width: 960px; height: 540px; }
+    </style>
+  </head>
+  <body>
+    <!-- B3 b03-dundee: beat 215f (7.167s) + 6f handle each end = 227f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.3667s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B3 p.21).
+         Shot list (STORYBOARD.md B3):
+           beat f0-8     HF     X5 blinds OPEN (in half; shut through the head handle) onto the T3 year card; T1 "Here's how."
+           beat f8-58    HF     T3 year card "In 1995": In on "It's"@22, digits roll on "1995"@29 (S04), slow push
+           beat f58-103  TS+HF  Tesseract: L2 band, old Dundee (R3.1), X2 drift, archival grade. Here: TRANSPARENT except
+                                T4 "Dundee," (left) @58 / "Scotland." (right) @74, both out with a 4f fade ending f103
+           beat f103-180 HF     hard cut on "DMA": L12 stacked cards (R3.8, R3.7, R3.3) on #E9E9E9, T8 "DMA Design" @103,
+                                role @137, a tiny Lemming (crop of R3.5) walks the underline
+           beat f180-215 TS+HF  Tesseract: L2 band, BBC 1996 team at their computers (R3.7), archival grade. Here:
+                                TRANSPARENT except T1 "starts a new game." @180 (white, inside the band) -->
+    <div data-hf-id="hf-axsv" id="root" data-composition-id="b03-dundee" data-start="0" data-duration="7.5666667" data-width="1920" data-height="1080">
+
+      <!-- ===== T3 year card (local 0..64; hard cut out on "Dundee,"): small In + 1995, M6 (same design as B13) ===== -->
+      <div data-hf-id="hf-8tmb" id="b03-t3" class="clip rc-t3" data-start="0.0000" data-duration="2.1333" data-track-index="1" style="z-index: 1">
+        <div data-hf-id="hf-sx2m" class="rc-t3__block"><div data-hf-id="hf-wxpx" class="rc-t3__in">In</div>
+          <div data-hf-id="hf-071w" class="rc-t3__year"><span data-hf-id="hf-a9g0" class="rc-t3__num">1995</span></div></div>
+      </div>
+
+      <!-- ===== L12 stacked cards on the gray card (local 109..186 = beat f103..180) ===== -->
+      <div data-hf-id="hf-bbka" id="b03-l12-ground" class="clip rc-l12__ground" data-start="3.6333" data-duration="2.5667" data-track-index="2" style="z-index: 2"></div>
+      <div data-hf-id="hf-ucmi" id="b03-cards" class="rc-l12" style="z-index: 3">
+        <div data-hf-id="hf-q46e" class="rc-l12__card" data-card="1"><div data-hf-id="hf-cio6" class="rc-l12__drop">
+          <div data-hf-id="hf-lu1u" id="b03-cb1" class="clip rc-l12__border" data-start="3.6333" data-duration="2.5667" data-track-index="3"></div>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-6qti" id="b03-cv1" class="clip rc-l12__media" src="assets/footage/R3.8.mp4" data-start="3.6333" data-duration="2.5667" data-media-start="0" data-track-index="4" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-m62d" class="rc-l12__card" data-card="2"><div data-hf-id="hf-jafe" class="rc-l12__drop">
+          <div data-hf-id="hf-iss3" id="b03-cb2" class="clip rc-l12__border" data-start="3.6333" data-duration="2.5667" data-track-index="5"></div>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-285k" id="b03-cv2" class="clip rc-l12__media" src="assets/footage/R3.7.mp4" data-start="3.6333" data-duration="2.5667" data-media-start="0" data-track-index="6" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-leek" class="rc-l12__card" data-card="3"><div data-hf-id="hf-joqf" class="rc-l12__drop">
+          <div data-hf-id="hf-9q4k" id="b03-cb3" class="clip rc-l12__border" data-start="3.6333" data-duration="2.5667" data-track-index="7"></div>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-z0vb" id="b03-cv3" class="clip rc-l12__media" src="assets/footage/R3.3.mp4" data-start="3.6333" data-duration="2.5667" data-media-start="0" data-track-index="8" muted playsinline></video>
+        </div></div>
+      </div>
+
+      <!-- ===== T8 name card on top (card ink on the gray card): name on "DMA" (local 109), role on "the studio" (local 143) ===== -->
+      <div data-hf-id="hf-ro17" id="b03-t8" class="clip rc-t8 rc-on-card" data-start="3.6333" data-duration="2.5667" data-track-index="9" style="z-index: 5">
+        <div data-hf-id="hf-x6mb" class="rc-t8__block">
+          <div data-hf-id="hf-owhp" id="b03-t8-namewrap"><div data-hf-id="hf-kutx" class="rc-t8__name">DMA Design<span data-hf-id="hf-tvwt" class="rc-t8__underline"></span></div></div>
+          <div data-hf-id="hf-t3xk" id="b03-t8-rolewrap"><div data-hf-id="hf-vzpn" class="rc-t8__role">THE STUDIO BEHIND LEMMINGS</div></div>
+        </div>
+      </div>
+      <!-- the Lemming (R3.5 crop) walking along the underline of "DMA Design" -->
+      <div data-hf-id="hf-n2se" id="b03-lem-walk" style="z-index: 6"><div data-hf-id="hf-hhm5" id="b03-lem-win" data-layout-allow-overflow="">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-xuzt" id="b03-lem" class="clip" src="assets/footage/R3.5.mp4" data-start="3.6333" data-duration="2.5667" data-media-start="0" data-track-index="10" muted playsinline></video>
+      </div></div>
+
+      <!-- ===== T4 spread words over Tesseract's L2 Dundee band (picture area y 138-942): left / right of the subject ===== -->
+      <div data-hf-id="hf-as73" id="b03-t4" class="clip rc-t4" data-start="2.1333" data-duration="1.5000" data-track-index="11" style="z-index: 20">
+        <span data-hf-id="hf-ol35" class="rc-t4__piece rc-t4--left">Dundee,</span>
+        <span data-hf-id="hf-s0tb" class="rc-t4__piece rc-t4--right">Scotland.</span>
+      </div>
+
+      <!-- ===== T1 captions: "Here's how." on the gray card in card ink (local 7..28); "starts a new game." white inside
+           Tesseract's L2 BBC band (local 186 to the end: the closing state continues through the tail handle) ===== -->
+      <div data-hf-id="hf-4sja" id="b03-cap-1" class="clip rc-t1 rc-on-card" data-start="0.2333" data-duration="0.7000" data-track-index="20" style="z-index: 40">Here's how.</div>
+      <div data-hf-id="hf-wsf1" id="b03-cap-2" class="clip rc-t1" data-start="6.2000" data-duration="1.3666" data-track-index="20" style="z-index: 40">starts a new game.</div>
+
+      <!-- ===== X5 blinds OPEN (in half): shut through the head handle and the boundary frame, open over local 6..14 ===== -->
+      <div data-hf-id="hf-nvor" id="b03-x5" class="clip rc-x5" data-start="0.0000" data-duration="0.5000" data-track-index="21" style="z-index: 60"></div>
+    </div>
+
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type, M = RCK.motifs, X = RCK.transitions, S = RCK.screens;
+      const L = (n) => n / 30;                       // local frame -> seconds (local frame = beat frame + 6)
+      // words.json comp_t
+      const W = { its: 0.933, y1995: 1.175, Dundee: 2.124, Scotland: 2.666, DMA: 3.638, the: 4.763 };
+
+      // ---- X5 in half: slats shut until the boundary (local 6 = beat f0), rotate open over 8f, gone on local 14
+      X.blindsOpen(tl, '#b03-x5', L(6));
+
+      // ---- T3 year card: "In" appears (hard cut) on "It's" (local 28); digits roll up 40 px from their masks on "1995"
+      // (local 35, 37, 39, 41; 8f each, ease out; last lands local 49); slow push 100 -> 104% on the card content across
+      // the whole card (head handle to the hard cut out at local 64).
+      const tIn = document.querySelector('#b03-t3 .rc-t3__in');
+      gsap.set(tIn, { opacity: 0 });
+      S.hard(tl, tIn, { opacity: 0 }, { opacity: 1 }, W.its);
+      T.yearCard(tl, '#b03-t3', W.y1995, { pushFrom: 0, pushUntil: L(64) });
+
+      // ---- T4 over the Dundee band: "Dundee," on "Dundee," (local 64), "Scotland." on "Scotland." (local 80);
+      // each fades in over 4f while drifting 12 px up; both leave together with a 4f fade ending local 109 (beat f103).
+      T.spreadWords(tl, '#b03-t4', W.Dundee, { times: [W.Dundee, W.Scotland], outAt: L(105) });
+
+      // ---- L12 (hard cut on "DMA", local 109): cards drop in one at a time (8f each, ease out: local 109, 117, 125),
+      // slow parallax drift to the cut, and the held stack pushes 100 -> 104% (style rule 7); the T8 title stays still.
+      S.cardsDrop(tl, '#b03-cards', L(109), { durF: 8 });
+      S.cardsDrift(tl, '#b03-cards', L(109), { until: L(186) });
+      S.push(tl, '#b03-cards', L(109), { until: L(186), origin: '960px 390px' });
+
+      // ---- T8: name (+ underline) fades in over 6f on "DMA" (local 109); role fades to its 60% over 6f on "the studio"
+      // (local 143, STORYBOARD B3 interp: synced to the spoken words).
+      // LOCAL FIX: RCK.type.nameIn fades name and role together at one time (no per-part time), and calling it on a
+      // wrapper that holds only one part makes GSAP warn "target not found" for the empty other part. Same values as
+      // nameIn (linear, 6f, name 0 -> 1, role 0 -> 0.6), each part on its own word.
+      const t8Name = document.querySelector('#b03-t8 .rc-t8__name'), t8Role = document.querySelector('#b03-t8 .rc-t8__role');
+      gsap.set(t8Name, { opacity: 0 }); gsap.set(t8Role, { opacity: 0 });
+      tl.fromTo(t8Name, { opacity: 0 }, { opacity: 1, duration: L(6), ease: 'none', immediateRender: false }, L(109));
+      tl.fromTo(t8Role, { opacity: 0 }, { opacity: 0.6, duration: L(6), ease: 'none', immediateRender: false }, T.snap(W.the));
+
+      // ---- the Lemming walks the underline left -> right, linear, from the name's entrance to the cut (local 109 -> 186).
+      // LOCAL FIX (kit T8 markup puts the Lemming clip inside the timed T8 element, which lint rejects as
+      // video_nested_in_timed_element): the walker is a root-level wrapper placed on the underline's measured span.
+      // LEM = the underline in frame px, measured once on the rendered page with the kit fonts loaded (Instrument Serif
+      // 72 px "DMA Design", T8 block centred at y 800): left 812.03, top 819.44, width 295.92, height 2.73. Hard-coded so
+      // the build never depends on font-load timing; re-measure if the name, its size or the T8 position changes.
+      const LEM = { x0: 812, x1: 812 + 296 - 28, top: 819.44 - 36 };
+      gsap.set('#b03-lem-walk', { x: LEM.x0, y: LEM.top });
+      tl.fromTo('#b03-lem-walk', { opacity: 0 }, { opacity: 1, duration: L(6), ease: 'none', immediateRender: false }, L(109));
+      tl.fromTo('#b03-lem-walk', { x: LEM.x0 }, { x: LEM.x1, duration: L(186 - 109), ease: 'none', immediateRender: false }, L(109));
+
+      tl.set({}, {}, L(227));
+      window.__timelines["b03-dundee"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+ "stills": [
+  {"png": "assets/x4/c-old.png", "frame": 175, "hide": [".demo-tag"]},
+  {"png": "assets/x4/d-old.png", "frame": 250, "crop": [660, 300, 600, 450], "hide": [".demo-tag"]},
+  {"png": "assets/x4/e-old.png", "frame": 315, "hide": [".demo-tag"]}
+ ]
+}

@@ -1,0 +1,44 @@
+{
+ "beat": "B10",
+ "composition": "b10-fun",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 57,
+ "composition_frames": 69,
+ "edit_start_s": 42.4667,
+ "voiceover": "And suddenly, it's fun.",
+ "words": [
+  {
+   "text": "And",
+   "comp_t": 0.203,
+   "comp_end_t": 0.337,
+   "beat_t": 0.003,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "suddenly,",
+   "comp_t": 0.351,
+   "comp_end_t": 0.928,
+   "beat_t": 0.151,
+   "start_frame_local": 11,
+   "punct": ","
+  },
+  {
+   "text": "it's",
+   "comp_t": 1.178,
+   "comp_end_t": 1.433,
+   "beat_t": 0.978,
+   "start_frame_local": 35,
+   "punct": ""
+  },
+  {
+   "text": "fun.",
+   "comp_t": 1.433,
+   "comp_end_t": 1.848,
+   "beat_t": 1.233,
+   "start_frame_local": 43,
+   "punct": "."
+  }
+ ]
+}

@@ -120,8 +120,9 @@ If it feels busy, cut S12 first (plan p.38).
 10. **`check` warnings weighed:** `duplicate_media_discovery_risk` (the L6 back copy and framed clip share the source: by
     design), `nested_structure_needs_subcomposition` (kit T3/T6 markup), `first_frame_empty` (frame 0 is the head handle on the
     gray card, not a thumbnail), `line_unread` (T1 chunks follow the voice; T6 is not the film's last line).
-11. **M6 cross-check:** B3 (lane A) was not built when B13 was finished; both use the kit T3 with its default geometry
-    (`--rc-y` 540). If b03-dundee changes the T3 geometry, mirror it here.
+11. **M6 cross-check (done against b03-dundee):** same kit T3 component with the default geometry (`--rc-y` 540), *In* as a
+    hard cut on the first word of the spoken date phrase (B3 "It's", B13 "in"), digits rolling on the spoken year, content
+    push 100 -> 104% from the head handle to the hard cut out. Only the date text differs ("1995" vs "Nov 1997").
 
 ## Pending real footage
 

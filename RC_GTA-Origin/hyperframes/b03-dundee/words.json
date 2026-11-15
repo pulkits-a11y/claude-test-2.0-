@@ -1,0 +1,148 @@
+{
+ "beat": "B3",
+ "composition": "b03-dundee",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 215,
+ "composition_frames": 227,
+ "edit_start_s": 10.7667,
+ "voiceover": "Here's how. It's 1995 in Dundee, Scotland. DMA Design, the studio behind Lemmings, starts a new game.",
+ "words": [
+  {
+   "text": "Here's",
+   "comp_t": 0.223,
+   "comp_end_t": 0.423,
+   "beat_t": 0.023,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "how.",
+   "comp_t": 0.473,
+   "comp_end_t": 0.668,
+   "beat_t": 0.273,
+   "start_frame_local": 14,
+   "punct": "."
+  },
+  {
+   "text": "It's",
+   "comp_t": 0.933,
+   "comp_end_t": 1.175,
+   "beat_t": 0.733,
+   "start_frame_local": 28,
+   "punct": ""
+  },
+  {
+   "text": "1995",
+   "comp_t": 1.175,
+   "comp_end_t": 1.988,
+   "beat_t": 0.975,
+   "start_frame_local": 35,
+   "punct": ""
+  },
+  {
+   "text": "in",
+   "comp_t": 1.988,
+   "comp_end_t": 2.124,
+   "beat_t": 1.788,
+   "start_frame_local": 60,
+   "punct": ""
+  },
+  {
+   "text": "Dundee,",
+   "comp_t": 2.124,
+   "comp_end_t": 2.666,
+   "beat_t": 1.924,
+   "start_frame_local": 64,
+   "punct": ","
+  },
+  {
+   "text": "Scotland.",
+   "comp_t": 2.666,
+   "comp_end_t": 3.373,
+   "beat_t": 2.466,
+   "start_frame_local": 80,
+   "punct": "."
+  },
+  {
+   "text": "DMA",
+   "comp_t": 3.638,
+   "comp_end_t": 3.884,
+   "beat_t": 3.438,
+   "start_frame_local": 109,
+   "punct": ""
+  },
+  {
+   "text": "Design,",
+   "comp_t": 3.884,
+   "comp_end_t": 4.648,
+   "beat_t": 3.684,
+   "start_frame_local": 117,
+   "punct": ","
+  },
+  {
+   "text": "the",
+   "comp_t": 4.763,
+   "comp_end_t": 4.92,
+   "beat_t": 4.563,
+   "start_frame_local": 143,
+   "punct": ""
+  },
+  {
+   "text": "studio",
+   "comp_t": 4.92,
+   "comp_end_t": 5.234,
+   "beat_t": 4.72,
+   "start_frame_local": 148,
+   "punct": ""
+  },
+  {
+   "text": "behind",
+   "comp_t": 5.234,
+   "comp_end_t": 5.548,
+   "beat_t": 5.034,
+   "start_frame_local": 157,
+   "punct": ""
+  },
+  {
+   "text": "Lemmings,",
+   "comp_t": 5.548,
+   "comp_end_t": 6.093,
+   "beat_t": 5.348,
+   "start_frame_local": 166,
+   "punct": ","
+  },
+  {
+   "text": "starts",
+   "comp_t": 6.188,
+   "comp_end_t": 6.533,
+   "beat_t": 5.988,
+   "start_frame_local": 186,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 6.533,
+   "comp_end_t": 6.581,
+   "beat_t": 6.333,
+   "start_frame_local": 196,
+   "punct": ""
+  },
+  {
+   "text": "new",
+   "comp_t": 6.637,
+   "comp_end_t": 6.75,
+   "beat_t": 6.437,
+   "start_frame_local": 199,
+   "punct": ""
+  },
+  {
+   "text": "game.",
+   "comp_t": 6.782,
+   "comp_end_t": 7.143,
+   "beat_t": 6.582,
+   "start_frame_local": 203,
+   "punct": "."
+  }
+ ]
+}

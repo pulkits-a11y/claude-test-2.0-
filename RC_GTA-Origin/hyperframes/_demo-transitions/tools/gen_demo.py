@@ -3,18 +3,16 @@
 beat would (assets/kit/*.css + RCK.transitions), on the labelled stand-in footage from 04_Broll/_placeholders.
 
   python3 tools/gen_demo.py            -> index.html (the demo)
-  python3 tools/gen_demo.py --stills   -> index.html variant without labels and without the X4 tear layers, used once by
-                                          tools/make_stills.sh to capture the X4 "old frame" stills (assets/x4/*.png)
 
 All times are frames on the 30 fps grid; data-start/duration strings are floored to 1e-4 s (frame n is drawn at exactly
 n/30, so a value rounded up would start one frame late). After generating, tools/apply_treatments.sh persists the
 media-treatment controls with the CLI (blur controls for X6, 6 px channel split for the X4 live views).
+The X4 "old frame" stills (assets/x4/*.png) are captured exactly as a beat does it: they are registered in
+x4_stills.json and made by ../../tools/make_x4_stills.py (tools/make_stills.sh runs it).
 """
 import math
-import sys
 
 FPS = 30
-STILLS = "--stills" in sys.argv
 
 
 def attr(n):
@@ -47,8 +45,6 @@ def video(id_, rid, n0, n1, cls="demo-full", media_n0=0, extra="", z=None):
 
 
 def tag(id_, n0, n1, text, on_card=False):
-    if STILLS:
-        return ""
     return clip("div", id_, "demo-tag" + (" rc-on-card" if on_card else ""), n0, n1, inner=text, extra=" data-layout-ignore", z=60)
 
 
@@ -86,10 +82,9 @@ els += [
     clip("div", "c-card", "rc-card demo-full", C0, C_T + C_N, z=1),
     video("c-clip", "R7.1", C0, C_T + C_N, cls="demo-l5 demo-c-clip", z=2),
     clip("div", "c-black", "rc-ink demo-full", C_T + C_N, C1, z=1),
+    '<div id="c-x4" class="rc-x4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/c-old.png" alt=""></div>',
 ]
-if not STILLS:
-    els += ['<div id="c-x4" class="rc-x4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/c-old.png" alt=""></div>']
-    js.append(f"X.tear(tl, '#c-x4', {T(C_T)}, {{ frames: {C_N}, seed: 8 }});")
+js.append(f"X.tear(tl, '#c-x4', {T(C_T)}, {{ frames: {C_N}, seed: 8 }});")
 els += [
     tag("c-tag", C0, C_T, "DEMO · X4 still mode (B8): stamped L5 card stand-in; tear on 'breaks' at 5.833 s", on_card=True),
     tag("c-tag2", C_T, C1, "DEMO · X4: 10f, 16 x 9 blocks jump ±30 px, some freeze, 6 px RGB split, then cut to black"),
@@ -104,10 +99,9 @@ els += [
     "<!-- D  X4 live mode (B2 on 'broke': the tear stays on the CRT picture; 3 live views + still for frozen blocks; holds) -->",
     video("d-plate", "R3.9", D0, D1, z=1),
     video("d-pic", "R9.1", D0, D1, cls="demo-crtpic", z=2),
+    f'<div id="d-x4" class="rc-x4 demo-crtx4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/d-old.png" alt="">{views}</div>',
 ]
-if not STILLS:
-    els += [f'<div id="d-x4" class="rc-x4 demo-crtx4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/d-old.png" alt="">{views}</div>']
-    js.append(f"X.tear(tl, '#d-x4', {T(D_T)}, {{ frames: {D_N}, end: 'hold', until: {T(D1)}, seed: 2 }});")
+js.append(f"X.tear(tl, '#d-x4', {T(D_T)}, {{ frames: {D_N}, end: 'hold', until: {T(D1)}, seed: 2 }});")
 els += [
     tag("d-tag", D0, D_T, "DEMO · X4 live mode (B2): picture in a screen region of the CRT plate stand-in"),
     tag("d-tag2", D_T, D1, "DEMO · X4: 8f tear on the screen region only (live views + still), then holds the torn frame"),
@@ -119,10 +113,9 @@ els += [
     "<!-- E  X4 still mode, 6f (B17: final tear on the GTA 6 logo end card, then black) -->",
     video("e-logo", "R17.4", E0, E_T + E_N, z=1),
     clip("div", "e-black", "rc-ink demo-full", E_T + E_N, E1, z=1),
+    '<div id="e-x4" class="rc-x4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/e-old.png" alt=""></div>',
 ]
-if not STILLS:
-    els += ['<div id="e-x4" class="rc-x4" style="z-index: 10;"><img class="rc-x4__still" src="assets/x4/e-old.png" alt=""></div>']
-    js.append(f"X.tear(tl, '#e-x4', {T(E_T)}, {{ frames: {E_N}, seed: 17 }});")
+js.append(f"X.tear(tl, '#e-x4', {T(E_T)}, {{ frames: {E_N}, seed: 17 }});")
 els += [tag("e-tag", E0, E1, "DEMO · X4 still mode (B17): 6f tear on the logo end card stand-in (R17.4) at 10.5 s, then black")]
 
 # ------------------------------------------------------------------ F  X5 blinds (B2 -> B3 into the T3 year card; B14 -> B15)
@@ -144,37 +137,47 @@ js.append(f"RCK.type.yearCard(tl, '#f-t3', {T(F_B + 10)});")
 # ------------------------------------------------------------------ G  X6 OUT (B2: the GTA 6 frame shrinks into the CRT screen)
 G0, G_T, G_N, G1 = 420, 435, 8, 495
 G_PIC = (1040, 360, 320, 180)        # 16:9 picture letterboxed in a 4:3 CRT screen stand-in (1040, 330, 320, 240)
+
+
+def b1_push(n):
+    """B1's held R17.1 push as built in b01-hook: 100% on local 64 -> 104% on local 149 (the B2 boundary), linear, same
+    rate through the tail handle. Demo frame G_T plays b01 local 149 (= b02 local 6, the zoom's first frame)."""
+    return 1 + 0.04 * (n - (G_T - 85)) / 85
+
+
 els += [
-    "<!-- G  X6 OUT (B2): B1's last full-frame GTA 6 shot (g-b1) continues inside the world at 600% and shrinks into the",
-    "     CRT screen over 8f. Picture rect 320 x 180 = exactly 1/6 of the frame, so 600% is the full frame (seamless). -->",
-    video("g-b1", "R17.1", G0, G_T, z=1),
+    "<!-- G  X6 OUT (B2): B1's full-frame GTA 6 shot pushing in like b01-hook (104% on the boundary) continues in the handoff",
+    "     wrapper (g-hand) through the zoom's first frame (600%); from the next frame the world (plate + CRT screen picture laid",
+    "     out at 6x, inner push 104% = B1's end framing) shrinks 600% -> 100% into the screen over 8f. -->",
+    f'<div id="g-hand" class="rc-x6__handoff" style="z-index: 3;">{video("g-b1", "R17.1", G0, G_T + 3)}</div>',
     '<div id="g-world" class="rc-x6" style="z-index: 2;">',
     "  " + video("g-plate", "R3.9", G_T, G1, extra=' style="--hf-color-grading-blur: 0"'),
     "  " + clip("div", "g-crt", "demo-screen", G_T, G1, extra=' data-layout-ignore style="left: 1040px; top: 330px; width: 320px; height: 240px;"'),
-    f'  <div id="g-box" class="rc-x6__screen">{video("g-pic", "R17.1", G_T, G1, cls="demo-pic", media_n0=G_T - G0, extra=" style=\"--hf-color-grading-blur: 0\"")}</div>',
+    f'  <div id="g-box" class="rc-x6__screen"><div class="rc-x6__push" data-layout-allow-overflow>{video("g-pic", "R17.1", G_T, G1, cls="demo-pic", media_n0=G_T - G0, extra=" style=\"--hf-color-grading-blur: 0\"")}</div></div>',
     "</div>",
-    tag("g-tag", G0, G_T, "DEMO · X6 OUT (B2): B1's last frames, full-frame GTA 6 stand-in (R17.1)"),
-    tag("g-tag2", G_T, G1, "DEMO · X6 OUT: 600% -> 100% into the CRT screen over 8f (log-scale ease out), motion blur via media-treatment"),
+    tag("g-tag", G0, G_T, "DEMO · X6 OUT (B2): B1's last frames, full-frame GTA 6 stand-in (R17.1), push-in to 104% on the boundary like b01-hook"),
+    tag("g-tag2", G_T, G1, "DEMO · X6 OUT: 600% (B1's shot continued) -> 100% into the CRT screen over 8f, picture at B1's 104%, motion blur via media-treatment"),
 ]
-js.append(f"X.zoomFit('#g-box', {{ rect: [{G_PIC[0]}, {G_PIC[1]}, {G_PIC[2]}, {G_PIC[3]}] }}, {{ res: 6 }});")
-js.append(f"X.zoom(tl, '#g-world', {T(G_T)}, {{ screen: {{ rect: [{G_PIC[0]}, {G_PIC[1]}, {G_PIC[2]}, {G_PIC[3]}] }}, dir: 'out' }});")
+js.append(f"RCK.screens.push(tl, '#g-hand', {T(G0)}, {{ until: {T(G_T)}, from: {b1_push(G0):.6f}, to: {b1_push(G_T):.6f} }});")
+js.append(f"X.zoomFit('#g-box', {{ rect: [{G_PIC[0]}, {G_PIC[1]}, {G_PIC[2]}, {G_PIC[3]}] }}, {{ res: 6, push: {b1_push(G_T):.6f} }});")
+js.append(f"X.zoom(tl, '#g-world', {T(G_T)}, {{ screen: {{ rect: [{G_PIC[0]}, {G_PIC[1]}, {G_PIC[2]}, {G_PIC[3]}] }}, dir: 'out', handoff: '#g-hand' }});")
 
 # ------------------------------------------------------------------ H  X6 IN (B15: zoom through the cabinet screen into full-frame gameplay)
 H0, H_T, H_N, H1 = 495, 530, 8, 570
 H_PIC = (1200, 400, 320, 180)
 els += [
-    "<!-- H  X6 IN (B15): zoom through the cabinet screen 100% -> 600% over 8f; at 600% the screen picture IS the frame,",
-    "     so the plain full-frame R15.1 (h-full, same media time) takes over invisibly one frame after the landing -->",
+    "<!-- H  X6 IN (B15): zoom through the cabinet screen 100% -> 600% over 8f; the landing frame (600%) and everything after",
+    "     it is the plain full-frame R15.1 (h-full, same media time, the zoom's handoff): the 600% frame is the straight picture -->",
     '<div id="h-world" class="rc-x6" style="z-index: 2;">',
-    "  " + video("h-plate", "R15.3", H0, H_T + H_N + 1, extra=' style="--hf-color-grading-blur: 0"'),
-    "  " + clip("div", "h-bezel", "demo-screen", H0, H_T + H_N + 1, extra=' data-layout-ignore style="left: 1184px; top: 384px; width: 352px; height: 212px;"'),
-    f'  <div id="h-box" class="rc-x6__screen">{video("h-pic", "R15.1", H0, H_T + H_N + 1, cls="demo-pic", extra=" style=\"--hf-color-grading-blur: 0\"")}</div>',
+    "  " + video("h-plate", "R15.3", H0, H_T + H_N, extra=' style="--hf-color-grading-blur: 0"'),
+    "  " + clip("div", "h-bezel", "demo-screen", H0, H_T + H_N, extra=' data-layout-ignore style="left: 1184px; top: 384px; width: 352px; height: 212px;"'),
+    f'  <div id="h-box" class="rc-x6__screen">{video("h-pic", "R15.1", H0, H_T + H_N, cls="demo-pic", extra=" style=\"--hf-color-grading-blur: 0\"")}</div>',
     "</div>",
-    video("h-full", "R15.1", H_T + H_N + 1, H1, media_n0=H_T + H_N + 1 - H0, z=1),
-    tag("h-tag", H0, H1, "DEMO · X6 IN (B15): cabinet screen + bezel stand-in on the arcade plate (R15.3); 100% -> 600% over 8f at 17.667 s"),
+    video("h-full", "R15.1", H_T + H_N, H1, media_n0=H_T + H_N - H0, z=3),
+    tag("h-tag", H0, H1, "DEMO · X6 IN (B15): cabinet screen + bezel stand-in on the arcade plate (R15.3); 100% -> 600% over 8f at 17.667 s, full-frame R15.1 from the landing frame"),
 ]
 js.append(f"X.zoomFit('#h-box', {{ rect: [{H_PIC[0]}, {H_PIC[1]}, {H_PIC[2]}, {H_PIC[3]}] }}, {{ res: 6 }});")
-js.append(f"X.zoom(tl, '#h-world', {T(H_T)}, {{ screen: {{ rect: [{H_PIC[0]}, {H_PIC[1]}, {H_PIC[2]}, {H_PIC[3]}] }}, dir: 'in' }});")
+js.append(f"X.zoom(tl, '#h-world', {T(H_T)}, {{ screen: {{ rect: [{H_PIC[0]}, {H_PIC[1]}, {H_PIC[2]}, {H_PIC[3]}] }}, dir: 'in', handoff: '#h-full' }});")
 
 # ------------------------------------------------------------------ I  X7 light-leak dissolve (B16 into the T5 glow line on black)
 I0, I_T, I_N, I1 = 570, 600, 14, 645
@@ -216,10 +219,6 @@ html = f"""<!doctype html>
     <link rel="stylesheet" href="assets/kit/transitions.css" />
     <link rel="stylesheet" href="assets/kit/screens.css" />
     <style>
-      /* demo-only: base.css lists "Neue Haas Grotesk" as an Inter fallback; HyperFrames lint fails any family without an
-         @font-face (font_family_without_font_face). Alias it to the kit's own Inter file (never shown: Inter loads first).
-         Reported to the kit owner: base.css should drop the name or carry this alias. */
-      @font-face {{ font-family: "Neue Haas Grotesk"; src: url("assets/kit/fonts/Inter-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: block; }}
       html, body {{ margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }}
       #root {{ position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }}
       /* demo-only scaffolding: stand-ins for screens owned by other kit areas (not part of the transitions kit) */
@@ -264,4 +263,4 @@ html = f"""<!doctype html>
 </html>
 """
 open("index.html", "w").write(html)
-print("wrote index.html", "(stills variant)" if STILLS else "", f"{TOTAL} frames = {TOTAL / FPS:.3f} s")
+print("wrote index.html", f"{TOTAL} frames = {TOTAL / FPS:.3f} s")

@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-    <link rel="stylesheet" href="assets/kit/base.css" />
-    <link rel="stylesheet" href="assets/kit/type.css" />
-    <link rel="stylesheet" href="assets/kit/motifs.css" />
-    <link rel="stylesheet" href="assets/kit/transitions.css" />
-    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
@@ -27,22 +27,24 @@
          Owner: HF for the whole beat (opaque). Into the beat: X1 (hard cut). T1 only. No SFX (the X9 wash is visual only).
          Shared L11 frame: B6 (b06-dull) continues these two clips with continuous source time
          (B6 data-media-start = this beat's data-media-start + 88/30 s); B11 (b11-flip) returns to this exact frame. -->
-    <div id="root" data-composition-id="b05-copgame" data-start="0" data-duration="3.3333333" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-wl97" id="root" data-composition-id="b05-copgame" data-start="0" data-duration="3.3333333" data-width="1920" data-height="1080">
 
       <!-- L11 split screen (plan p.15, B5 p.22): two 958 px halves, 4 px black divider (the ink-black ground between them).
            Left: a police car in pursuit seen from the cop side (R5.4; plan alternative R5.2). Right: the car being chased (R5.1).
-           Source in-points are stand-in values: re-pick on the real clips (both cars clearly visible), see BEAT_NOTES.md. -->
-      <div id="b05-split" class="rc-l11" style="z-index: 1">
-        <div id="b05-ground" class="clip rc-l11__ground" data-start="0.0000" data-duration="3.3333" data-track-index="1"></div>
-        <div class="rc-l11__face rc-l11__face--front">
-          <div class="rc-l11__half rc-l11__half--left">
-            <div class="lc-push">
-              <video id="b05-l" class="clip" src="assets/footage/R5.4.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="2" muted playsinline></video>
+           Source in-points are stand-in values: re-pick on the real clips (both cars clearly visible), see BEAT_NOTES.md.
+           Look (plan p.10 "Game footage: punchy contrast; leave game HUD colours alone"): media treatment
+           {"adjust":{"contrast":0.15}} on both videos (written with the CLI; no hue/saturation change). Same grade in B6/B11. -->
+      <div data-hf-id="hf-y0iy" id="b05-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-z394" id="b05-ground" class="clip rc-l11__ground" data-start="0.0000" data-duration="3.3333" data-track-index="1"></div>
+        <div data-hf-id="hf-mc1t" class="rc-l11__face rc-l11__face--front">
+          <div data-hf-id="hf-tmjz" class="rc-l11__half rc-l11__half--left">
+            <div data-hf-id="hf-48st" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-eft1" id="b05-l" class="clip" src="assets/footage/R5.4.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="2" muted playsinline></video>
             </div>
           </div>
-          <div class="rc-l11__half rc-l11__half--right">
-            <div class="lc-push">
-              <video id="b05-r" class="clip" src="assets/footage/R5.1.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="3" muted playsinline></video>
+          <div data-hf-id="hf-cpwi" class="rc-l11__half rc-l11__half--right">
+            <div data-hf-id="hf-j3y9" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-w7hd" id="b05-r" class="clip" src="assets/footage/R5.1.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="3" muted playsinline></video>
             </div>
           </div>
         </div>
@@ -50,20 +52,20 @@
 
       <!-- X9 siren wash on "police officer" (plan p.16, p.22; M5): 4f overlay, siren red 35% Overlay 2f, then siren blue 2f.
            Above the footage, below the M2 arrow and the T1 captions (graphics stay clean). Visual only: no SFX in B5. -->
-      <div id="b05-x9" class="rc-x9" style="z-index: 15"></div>
+      <div data-hf-id="hf-38bt" id="b05-x9" class="rc-x9" style="z-index: 15"></div>
 
       <!-- M2 the "you" arrow (plan p.17, p.22): #FFE14D 6 px stroke, drawn on over 8f on "you", pointing at the police car
            (left half), with "you" in Inter SemiBold 36 px yellow. Screen space (does not move with the push-in).
            Geometry is a stand-in aim (tip on the presumed cop car): refit to the real R5.4 frame. Same seed/geometry as B11. -->
-      <div id="b05-arrow" class="clip m2-arrow" data-start="0.6666" data-duration="2.6667" data-track-index="5" style="z-index: 20"></div>
+      <div data-hf-id="hf-nqqh" id="b05-arrow" class="clip m2-arrow" data-start="0.6666" data-duration="2.6667" data-track-index="5" style="z-index: 20"></div>
 
       <!-- T1 running captions (plan p.11, B5 p.22 "On screen: T1: In it, / you play / a police officer / chasing criminals.").
            Timed with RCK.type.captionPlan from words.json (each chunk on its first word's frame, offsets <= 0.5f).
            Handles: the first chunk also holds the head handle (opening state), the last chunk holds the tail handle. -->
-      <div id="b05-cap-1" class="clip rc-t1" data-start="0.0000" data-duration="0.6666" data-track-index="10" style="z-index: 30">In it,</div>
-      <div id="b05-cap-2" class="clip rc-t1" data-start="0.6666" data-duration="0.4000" data-track-index="10" style="z-index: 30">you play</div>
-      <div id="b05-cap-3" class="clip rc-t1" data-start="1.0666" data-duration="0.8000" data-track-index="10" style="z-index: 30">a police officer</div>
-      <div id="b05-cap-4" class="clip rc-t1" data-start="1.8666" data-duration="1.4667" data-track-index="10" style="z-index: 30">chasing criminals.</div>
+      <div data-hf-id="hf-iqh2" id="b05-cap-1" class="clip rc-t1" data-start="0.0000" data-duration="0.6666" data-track-index="10" style="z-index: 30">In it,</div>
+      <div data-hf-id="hf-pnby" id="b05-cap-2" class="clip rc-t1" data-start="0.6666" data-duration="0.4000" data-track-index="10" style="z-index: 30">you play</div>
+      <div data-hf-id="hf-scwa" id="b05-cap-3" class="clip rc-t1" data-start="1.0666" data-duration="0.8000" data-track-index="10" style="z-index: 30">a police officer</div>
+      <div data-hf-id="hf-ja37" id="b05-cap-4" class="clip rc-t1" data-start="1.8666" data-duration="1.4667" data-track-index="10" style="z-index: 30">chasing criminals.</div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>

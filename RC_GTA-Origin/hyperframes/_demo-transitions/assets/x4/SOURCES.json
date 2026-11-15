@@ -1,0 +1,82 @@
+{
+ "tool": "tools/make_x4_stills.py",
+ "cli": "hyperframes@0.9.52",
+ "captured_utc": "2026-11-15T18:26:26Z",
+ "stills": {
+  "assets/x4/c-old.png": {
+   "frame": 175,
+   "at_s": 5.83338,
+   "crop": null,
+   "hide": [
+    ".demo-tag"
+   ],
+   "flatten": [],
+   "sha256": "0d79c4a33adf9db3d9529d910ce988d00e871c3eba4e382648d488235b7121bb"
+  },
+  "assets/x4/d-old.png": {
+   "frame": 250,
+   "at_s": 8.33338,
+   "crop": [
+    660,
+    300,
+    600,
+    450
+   ],
+   "hide": [
+    ".demo-tag"
+   ],
+   "flatten": [],
+   "sha256": "0ddfbab8b3825f258c168dd09293b10808773992103720497a65032e8f9331cc"
+  },
+  "assets/x4/e-old.png": {
+   "frame": 315,
+   "at_s": 10.50005,
+   "crop": null,
+   "hide": [
+    ".demo-tag"
+   ],
+   "flatten": [],
+   "sha256": "a45b0dea9815248f9ad5723e043c0d539c9b934ffcc07ce410e2eabbc199ffe6"
+  }
+ },
+ "inputs": {
+  "index.html": "184cab78fd2313543eb3f90df1387658e9c0c408c5142ad55bd0a485938d6b78",
+  "x4_stills.json": "094fbebf55b01a6c04ddf1325dfe58c624298b5ac7e75d4709626cbfdb2d7bb2",
+  "assets/footage/R1.2.mp4": "9d2fc4430b2bae231c07fd31ffca1771cee25a29f5fd25945c225e41d59c1c43",
+  "assets/footage/R1.3.mp4": "2e103c0f3cbfae7f221d2c7429a2092a593f3475287d0d1927c299fe7d936e9d",
+  "assets/footage/R10.1.mp4": "5bf73834c675acb1f141d709e77210689af9b5f4214538f7b36dab6baf96fe21",
+  "assets/footage/R14.1.mp4": "7a2d41032fe6b0f57aa17058f5f23d81fe6b328735d1f0294602674c5b11f6f6",
+  "assets/footage/R15.1.mp4": "0aac75b8a302bd57b424256136c31792c1cb48669460acfaa5491ffdd8aa3ed0",
+  "assets/footage/R15.3.mp4": "300d3bbe15fb6b56c3afdc202b5c5133f430a5cbf3d1120f23df33e534a9ad4b",
+  "assets/footage/R17.1.mp4": "291f80ad8b90d9577418f6105ca202e950857e45a580b99032dfd0886de67a7b",
+  "assets/footage/R17.4.mp4": "332e4dcae09168e3ac420416f87e11f0bbdc6ed514ff57c4b544a82409c253f8",
+  "assets/footage/R3.9.mp4": "c6caac64dae319b3d0e5a7d0aeaeca4f97794452fb939685d3e2fa56386eeb50",
+  "assets/footage/R5.1.mp4": "dfdfb09a109ebd6e4db49e1b1084fe02ee2c2b49caa6273cc1144d6ce1a950a4",
+  "assets/footage/R5.4.mp4": "4e9f4099ab73b946546a7f3f8f23076d855fbeb2971d6a3a61b67af208625e21",
+  "assets/footage/R6.1.mp4": "e3e59340e6fbc9ff5fa8e8be9e726d4954b89f9169ff238ed341dd6caa6dfbe5",
+  "assets/footage/R7.1.mp4": "c1e06af99b8cc68a14793669f820d20f4ba68654fb4cc44732802a07bdc2016f",
+  "assets/footage/R9.1.mp4": "ba2aea1d6768ca549f90c49cecbdc63dca23b8af3fd8f92dbe6cbfe5924d29da",
+  "assets/footage/R9.2.mp4": "25ceb1ada2311a5a24019f75e59ec2e838481e0715e6be15079e27a65815f168",
+  "assets/kit/base.css": "aa1b016aed3eef8c50d7d6d03bde9a5759a3a14cb50d011857e9fb98a826728e",
+  "assets/kit/motifs.css": "7d242bdc3fcca50c2b69b319c7ce916263cc4652e73311d047af19da25d69218",
+  "assets/kit/motifs.js": "ed3236c686326470fcb175b3d097f798f984b49761ccd5ea0b3ac96c9ccd1537",
+  "assets/kit/screens.css": "f58d1aea86933f9fd3b0b1e5d90d7c593d0fe65d6fe9a194cb7f2c1e572cf955",
+  "assets/kit/screens.js": "417b8a472892aa8b99cf6c1a34d005a21f451b4e5161931c834d399fade19bd7",
+  "assets/kit/transitions.css": "1ed6a0ad32e5bf644fe9b4af74b33d9409151ce1dc717e79817bf053f61d1b0d",
+  "assets/kit/transitions.js": "29c95db7364f9e014543950397d4ba944c17917a4c1ff7ec69c0f258fd296e96",
+  "assets/kit/type.css": "d9ebeba62e3740704d3b65c56ffc889cf7c2eb924ba046750af8d4d2d23dfb39",
+  "assets/kit/type.js": "ac5e3e219e2af9f801f04b8b5301afc21039ada9b859f1b451ccafcd8c4f639c",
+  "assets/kit/fonts/InstrumentSerif-Italic.ttf": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385",
+  "assets/kit/fonts/InstrumentSerif-OFL.txt": "129ed7618959716959f2941fdd5b49e0ad6e6c1d78726761786a00253d865521",
+  "assets/kit/fonts/InstrumentSerif-Regular.ttf": "498efd461f6ddfcb7a111bf9a565709d2085d48201d501ead960d93e84ffbb88",
+  "assets/kit/fonts/Inter-Black.ttf": "6342d3ea6dc088b43867f615e807d898adf100c93edb978b8e52c5eb71a264da",
+  "assets/kit/fonts/Inter-Bold.ttf": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f",
+  "assets/kit/fonts/Inter-Medium.ttf": "97ad806f526e41546d46365bb3a393145f75b7b1568913db74549ad8b8dba872",
+  "assets/kit/fonts/Inter-OFL-LICENSE.txt": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+  "assets/kit/fonts/Inter-Regular.ttf": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+  "assets/kit/fonts/Inter-SemiBold.ttf": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+  "assets/kit/svg/motifs-bug-chip.svg": "7f43c8c4d8df265b992d74c40c87e9747a7e3229076b0d709fad1cf8ea464a2e",
+  "assets/kit/svg/motifs-bug.svg": "e6974aeae7dd300d34a6cf3326a69cb9b3e7ca884c379ee623e191ac149999be",
+  "assets/kit/svg/motifs-star.svg": "9bbc41f576f06055b1fc5fd50b977b16be166645e7de39b45ab1cf2d900b3449"
+ }
+}

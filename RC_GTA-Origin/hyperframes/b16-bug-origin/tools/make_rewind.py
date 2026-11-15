@@ -11,9 +11,11 @@ rate 0.1-10), so the reversal is baked here (a cut/retime, not a look). The VHS 
 treatment on the <video> in index.html, and the tracking lines are drawn there.
 
 Re-run after `python3 ../../tools/sync_footage.py .` brings in real footage, then re-render. The source in-points
-below MIRROR the Tesseract shots they rewind: B14 = hyperframes/b14-since/tesseract_shots.json, B9 = the R9.1 L1
-shot in hyperframes/b09-throughyou/tesseract_shots.json (lane E; 0.0 until it exists), B4 = the R4.5 framing and
-the 100 -> 118% push of hyperframes/b04-racenchase/index.html (lane B). Keep them in sync (BEAT_NOTES "Pending").
+MIRROR the Tesseract shots they rewind and are read live by load_inpoints(): B14 = hyperframes/b14-since/
+tesseract_shots.json, B9 = the R9.1 shot in hyperframes/b09-throughyou/tesseract_shots.json (lane E; the default
+0.0 / f0 until that file exists). B4 = the R4.5 framing and the 100 -> 118% push of hyperframes/b04-racenchase/
+index.html (lane B), copied into DOC below: keep it in sync by hand (BEAT_NOTES "Pending").
+Usage: python3 tools/make_rewind.py [output_dir]   (default assets/rewind; another folder = dry run for comparisons)
 
 Output frame j = composition local frame j (local = beat + 6). An 8x rewind of an edit frame e steps e -> e - 8 per
 output frame; the B14 run is compressed (it jumps from shot to shot: 3 escape, 2 lights, 3 chase, then 1 frame per
@@ -31,7 +33,7 @@ W, H, FPS = 1920, 1080, 30
 N_FRAMES = 52                     # local 0..51 (the clip is used to local 50, the end of the X7 dissolve)
 
 # ---- source in-points of the shots being rewound (seconds into the R-ID file) ----
-B14 = {   # hyperframes/b14-since/tesseract_shots.json (beat-relative frames)
+B14 = {   # defaults; load_inpoints() replaces them from hyperframes/b14-since/tesseract_shots.json
     "escape": {"rid": "R14.5", "start_f": 163, "src_in": 8.0},
     "lights": {"rid": "RT3", "start_f": 133, "src_in": 1.0},
     "chase":  {"rid": "R1.3", "start_f": 60, "src_in": 2.0},
@@ -41,6 +43,33 @@ B14 = {   # hyperframes/b14-since/tesseract_shots.json (beat-relative frames)
 }
 B9_R91_SRC_IN = 0.0      # B9 L1 shot R9.1 (B9 f0-127): source_in_s from lane E's tesseract_shots.json when it exists
 B9_R91_START_F = 0
+HF = os.path.dirname(PROJ)
+
+
+def load_inpoints():
+    """Overrides the defaults above with the live Tesseract shot lists, so the rewind always mirrors what B14 and B9
+    actually show: hyperframes/b14-since/tesseract_shots.json (this lane) and hyperframes/b09-throughyou/... (lane E)."""
+    global B9_R91_SRC_IN, B9_R91_START_F
+    src = {"B14": "defaults", "B9": "defaults"}
+    p14 = os.path.join(HF, "b14-since", "tesseract_shots.json")
+    if os.path.exists(p14):
+        shots = json.load(open(p14))["shots"]
+        full = {s["id"]: s for s in shots}
+        for key, sid in (("escape", "B14-escape"), ("lights", "B14-police-lights"), ("chase", "B14-gta5-chase-stars")):
+            if sid in full:
+                B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "src_in": full[sid]["source_in_s"]}
+        burst = sorted([s for s in shots if s.get("screen") == "L10"], key=lambda s: s["start_f"])
+        if len(burst) == 10:
+            B14["burst"] = [(s["rid"], s["source_in_s"]) for s in burst]
+        src["B14"] = os.path.relpath(p14, HF)
+    p9 = os.path.join(HF, "b09-throughyou", "tesseract_shots.json")
+    if os.path.exists(p9):
+        r91 = [s for s in json.load(open(p9))["shots"] if s.get("rid") == "R9.1"]
+        if r91:
+            s = sorted(r91, key=lambda s: s["start_f"])[0]
+            B9_R91_SRC_IN, B9_R91_START_F = float(s["source_in_s"]), int(s["start_f"])
+            src["B9"] = os.path.relpath(p9, HF)
+    return src
 # B4 framing of the R4.5 title page (b04-racenchase): page drawn at 1.4 x page px, boxed-title centre (878, 307.5)
 # on screen (960, 400); L7 push 1.00 -> 1.18 about the spotlight-hole centre (959, 402) over B4 f0-44, linear.
 DOC = {"page_scale": 1.4, "title_page": (878.0, 307.5), "title_screen": (960.0, 400.0), "push_origin": (959.0, 402.0),
@@ -118,6 +147,10 @@ def doc_frame(page, z, dst_png):
 
 
 def main():
+    global OUT_DIR
+    if len(sys.argv) > 1:          # optional output folder (for comparisons); default assets/rewind
+        OUT_DIR = os.path.abspath(sys.argv[1])
+    inpoints_from = load_inpoints()
     frames = plan()
     os.makedirs(OUT_DIR, exist_ok=True)
     page = Image.open(os.path.join(FOOT, "R4.5.png")).convert("RGB")
@@ -135,7 +168,9 @@ def main():
                         "-g", "6", "-pix_fmt", "yuv420p", "-color_primaries", "bt709", "-color_trc", "bt709",
                         "-colorspace", "bt709", "-r", str(FPS), out], check=True)
         json.dump({"note": "local frame j of b16-bug-origin shows output frame j (beat = j - 6); see make_rewind.py",
-                   "sources": {"B14": B14, "B9_R9.1_src_in": B9_R91_SRC_IN, "B4_doc": DOC}, "frames": frames},
+                   "inpoints_from": inpoints_from,
+                   "sources": {"B14": B14, "B9_R9.1_src_in": B9_R91_SRC_IN, "B9_R9.1_start_f": B9_R91_START_F, "B4_doc": DOC},
+                   "frames": frames},
                   open(os.path.join(OUT_DIR, "b16-rewind.map.json"), "w"), indent=1)
         print(out, len(frames), "frames")
     finally:

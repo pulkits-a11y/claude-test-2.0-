@@ -32,6 +32,12 @@
 .rc-x6 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 .rc-x6__screen { position: absolute; left: 0; top: 0; overflow: hidden; }
 .rc-x6__screen > video, .rc-x6__screen > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+/* optional inner wrapper: the previous shot's end-of-push scale on the screen picture (zoomFit opts.push sets it; the box clips) */
+.rc-x6__push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.rc-x6__push > video, .rc-x6__push > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the plain full-frame element that shows the 600% frame (zoom opts.handoff): previous shot continued ('out') or next shot ('in') */
+.rc-x6__handoff { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.rc-x6__handoff > video, .rc-x6__handoff > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* ---------- X7 light-leak dissolve: Screen-blended leak. Layers adapted from registry "organic-light-leak-overlay"
    (same gradient geometry relative to the frame, 3 drifting layers), retinted to the palette's warm glow #FFF6E0

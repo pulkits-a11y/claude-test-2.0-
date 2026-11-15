@@ -94,19 +94,31 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
 
   /* ================================================================ X3 white flash */
-  // 100% white (#FFFFFF): ramp 2f, hold 1f, fade out 4f, centred on the cut. at = the cut frame C (the first frame of the
-  // new picture, the frame the flash "lands"). Linear opacity keyframes at C-2 (0), C (1), C+1 (1), C+5 (0), so the frames
-  // read C-2 0% | C-1 50% | C 100% | C+1 100% | C+2 75% | C+3 50% | C+4 25% | C+5 0%.
-  // opts.half: 'out' = only the ramp, then holds 100% (outgoing composition of a boundary flash); 'in' = 100% from the
-  // clip start, hold, fade (incoming composition). Default: whole flash. Returns C + 5f (C for half 'out').
+  // 100% white (#FFFFFF), counted in FRAMES ON SCREEN: ramp 2 frames, hold 1 frame at 100%, fade 4 frames, centred on
+  // the cut. at = the cut frame C = the first frame of the new picture = the flash's single 100% frame (S09 + the music
+  // drop land here in B10). Linear ramps, so the frames read
+  //   C-3 0 | C-2 33% | C-1 67% | C 100% | C+1 80% | C+2 60% | C+3 40% | C+4 20% | C+5 0
+  // (7 white frames C-2..C+4 = STORYBOARD B10 "ramp 35-37, hold 37, fade 38-41", B13 f83-89; PRODUCTION_SPEC "ramp 2f
+  // before the cut, hold 1f, fade 4f after"). opts.ramp / hold / fade = those frame counts (2 / 1 / 4).
+  // opts.half: 'out' = only the ramp, then holds 100% from C on (outgoing composition of a boundary flash); 'in' = 100%
+  // from the clip start through the hold, then the fade (incoming composition). Default: the whole flash.
+  // Returns C + hold + fade (the first frame without white; C for half 'out').
   function flash(tl, target, at, opts) {
     opts = opts || {};
-    var el = $(target), c = frame(at), r = num(opts.ramp, 2), h = num(opts.hold, 1), f = num(opts.fade, 4), half = opts.half;
+    var el = $(target), c = frame(at), r = num(opts.ramp, 2), h = Math.max(1, num(opts.hold, 1)), f = num(opts.fade, 4), half = opts.half;
     G().set(el, { opacity: half === 'in' ? 1 : 0 });
-    if (half !== 'in') tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: r * F, ease: 'none', immediateRender: false }, tF(Math.max(0, c - r)));
+    if (half !== 'in') linearOpacity(tl, el, c - r - 1, 0, c, 1);          // 0 on C-r-1 .. 100% on C (r frames between)
     if (half === 'out') return tF(c);
-    tl.fromTo(el, { opacity: 1 }, { opacity: 0, duration: f * F, ease: 'none', immediateRender: false }, tF(c + h));
-    return tF(c + h + f);
+    var last = c + h - 1;                                                  // last 100% frame
+    linearOpacity(tl, el, last, 1, last + f + 1, 0);                       // 100% on `last` .. 0 on last+f+1 (f frames between)
+    return tF(last + f + 1);
+  }
+  // Linear opacity v0 on frame n0 -> v1 on frame n1 (the frames between interpolate); clipped at the timeline start.
+  function linearOpacity(tl, el, n0, v0, n1, v1) {
+    if (n1 <= n0) return;
+    if (n1 <= 0) { G().set(el, { opacity: v1 }); return; }
+    var a = Math.max(0, n0), va = v0 + (v1 - v0) * (a - n0) / (n1 - n0);
+    tl.fromTo(el, { opacity: va }, { opacity: v1, duration: (n1 - a) * F, ease: 'none', immediateRender: false }, tF(a));
   }
 
   /* ================================================================ X4 pixel-block tear */
@@ -149,9 +161,15 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // </div>
   // tearInit adds the canvas, sizes it, and registers a window.__hf.buildReady promise (the still is decoded and split
   // into R/G/B planes before the first seek). Idempotent.
+  // The still is a SNAPSHOT of the composition: it goes stale whenever anything under the tear changes (footage sync,
+  // look, layout). tools/make_x4_stills.py <beat> re-captures every still the beat registers in x4_stills.json (it
+  // loads the composition with RCK.x4Capture = true: tear/tearInit then add nothing) and records the input hashes in
+  // assets/x4/SOURCES.json; `--check` fails while a still is older than its inputs.
+  function x4Capture() { return !!(window.RCK && window.RCK.x4Capture); }
   function tearInit(target, opts) {
     opts = opts || {};
     var root = $(target);
+    if (x4Capture()) return { root: root, capture: true, views: [], still: null, ready: Promise.resolve() };
     if (root.__rckTear) return root.__rckTear;
     var sz = boxSize(root);
     var still = root.querySelector('img.rc-x4__still');
@@ -169,6 +187,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var st = { root: root, w: Math.round(sz.w), h: Math.round(sz.h), still: still, views: views, canvas: cv, ctx: cv.getContext('2d'), planes: null, work: null };
     var prep = function () {
       if (!still) return;
+      if (still.naturalWidth !== st.w || still.naturalHeight !== st.h) warn('tear: still ' + still.getAttribute('src') + ' is ' + still.naturalWidth + ' x ' +
+        still.naturalHeight + ' but the container is ' + st.w + ' x ' + st.h + ' (it is stretched; re-capture it with tools/make_x4_stills.py)');
       var mkc = function () { var c = document.createElement('canvas'); c.width = st.w; c.height = st.h; return c; };
       st.planes = ['#FF0000', '#00FF00', '#0000FF'].map(function (mask) {      // channel masks (technical, never shown as colours)
         var c = mkc(), x = c.getContext('2d');
@@ -210,6 +230,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // until the nearest timed ancestor ends, else for good). Returns at + frames.
   function tear(tl, target, at, opts) {
     opts = opts || {};
+    if (x4Capture()) return tF(frame(at) + num(opts.frames, 8));   // still capture run: the old frame without the tear
     var st = tearInit(target, opts), g = G();
     var n0 = frame(at), N = num(opts.frames, 8);
     var grid = opts.grid || [0, 0, st.w, st.h];
@@ -447,11 +468,18 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // Lay the screen picture box out at `res` x its on-screen size (default res = the zoom scale, 6) and map it onto the
   // screen (rect: scale(1/res); corners: matrix3d homography). Media inside a box that GSAP later magnifies is rasterised
   // at its LAYOUT size; laid out at 6x it stays sharp at 600% (a box at 1x would be a 6x upscale, blocky once treated).
-  // Sets data-x6-res. Returns {w, h, W, H, res}: w/h = the on-screen size at 100% (use it for media-treatment maths,
-  // e.g. RCK.motifs.crtGrading({w, h})), W/H = layout size. Static inline transform: never animate this element.
+  // Sets data-x6-res. Returns {w, h, W, H, res, push}: w/h = the on-screen size at 100% (use it for media-treatment
+  // maths, e.g. RCK.motifs.crtGrading({w, h})), W/H = layout size. Static inline transform: never animate this element.
+  // opts.push (e.g. 1.04): static scale about the centre for every .rc-x6__push child (the media inside it), so the
+  // screen picture reproduces the previous shot's end-of-push framing (B2: B1's 104%); the box clips it.
   function zoomFit(target, screen, opts) {
     opts = opts || {};
     var el = $(target), sc = parseScreen(screen, el), res = num(opts.res, num(opts.scale, 6));
+    var pushK = num(opts.push, 1);
+    $$('.rc-x6__push', el).forEach(function (p) {
+      G().set(p, { scale: pushK, transformOrigin: '50% 50%' });
+      p.setAttribute('data-layout-allow-overflow', '');   // intended: the box clips the pushed picture
+    });
     var g = zoomGeometry(sc, { scale: res });
     var w = Math.round(g.size.w), h = Math.round(g.size.h), W = Math.round(w * res), H = Math.round(h * res);
     el.style.position = 'absolute';
@@ -467,7 +495,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       el.style.transform = 'matrix3d(' + m.map(function (v) { return Number(v.toFixed(10)); }).join(',') + ')';
     }
     el.setAttribute('data-x6-res', String(res));
-    return { w: w, h: h, W: W, H: H, res: res };
+    return { w: w, h: h, W: W, H: H, res: res, push: pushK };
   }
   // media-treatment blur control: value (0..1) -> blur in layout px, measured on 0.9.52 (2 px line, energy sigma).
   var BLUR_CAL = [[0, 0], [0.1, 0.43], [0.15, 0.69], [0.2, 1.16], [0.3, 2.23], [0.4, 3.45], [0.5, 5.24], [0.6, 8.9], [0.7, 11.63], [0.8, 14.58], [1, 21.78]];
@@ -510,7 +538,11 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // (sharp at rest, peaking with the zoom speed, sized for each element's on-screen scale); non-media elements listed in
   // opts.blurDom get the same blur as CSS filter: blur(). Before `at` the world holds its start scale (head handle), after
   // the end its end scale. opts: screen, dir, frames 8, scale 6 | 'fill', ease, blur true, blurMedia (selector/elements,
-  // default all media in the world with data-color-grading), blurDom, blurRef 540, blurMax 24. Returns at + 8f.
+  // default all media in the world with data-color-grading), blurDom, blurRef 540, blurMax 24, handoff. Returns at + 8f.
+  // opts.handoff: the plain full-frame element (outside the world, above it, opaque) that shows the 600% frame instead
+  // of the world, so that frame is exactly the neighbouring shot (no CRT look, no perspective warp, the previous shot's
+  // push). 'out': visible up to and including frame `at` (head handle + the zoom's first frame), gone from at+1 on.
+  // 'in': hidden until at+frames-1, visible from the landing frame at+frames on (it is the next shot).
   function zoom(tl, world, at, opts) {
     opts = opts || {};
     var el = $(world), sc = parseScreen(opts.screen, el), g = G();
@@ -518,6 +550,11 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var geo = zoomGeometry(sc, { scale: opts.scale });
     var S = geo.scale, n0 = frame(at);
     if (!geo.covers) warn('zoom: at ' + Math.round(S * 100) + '% the screen does not cover the frame (needs ' + Math.round(geo.fill * 100) + '%); frame the plate so the screen is at least 320 x 180 px');
+    if (sc.corners && !opts.handoff) warn('zoom: a corners screen is warped at ' + Math.round(S * 100) + '%; pass opts.handoff (a plain full-frame element) so the 600% frame is the straight picture');
+    $$(opts.handoff).forEach(function (h) {
+      if (dir === 'out') { g.set(h, { opacity: 1 }); hard(tl, h, { opacity: 1 }, { opacity: 0 }, n0 + 1); }
+      else { g.set(h, { opacity: 0 }); hard(tl, h, { opacity: 0 }, { opacity: 1 }, n0 + N); }
+    });
     var s0 = dir === 'out' ? S : 1, s1 = dir === 'out' ? 1 : S;
     var sAt = zoomCurve(dir, S, opts.ease);
     var easeFn = function (p) { return (sAt(p) - s0) / (s1 - s0); };   // GSAP ease = progress along s0 -> s1

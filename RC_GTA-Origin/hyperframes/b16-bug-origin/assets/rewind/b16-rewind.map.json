@@ -1,5 +1,9 @@
 {
  "note": "local frame j of b16-bug-origin shows output frame j (beat = j - 6); see make_rewind.py",
+ "inpoints_from": {
+  "B14": "b14-since/tesseract_shots.json",
+  "B9": "defaults"
+ },
  "sources": {
   "B14": {
    "escape": {
@@ -61,6 +65,7 @@
    ]
   },
   "B9_R9.1_src_in": 0.0,
+  "B9_R9.1_start_f": 0,
   "B4_doc": {
    "page_scale": 1.4,
    "title_page": [

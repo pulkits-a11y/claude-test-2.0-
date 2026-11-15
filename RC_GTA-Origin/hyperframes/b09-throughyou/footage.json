@@ -1,0 +1,5 @@
+{
+ "beat": "B9",
+ "rids": ["R9.1", "R9.2", "R9.3", "R9.4", "R9.5"],
+ "note": "R9.2, R9.3, R9.5 = the three L3 strips (this composition, f127-215). R9.1 = the L1 chase under the path diagram (f0-127): Tesseract-owned (tesseract_shots.json), synced here only as a reference to fit the white dot on the player's car. R9.4 (GTA 1 in 4K) = the plan's alternate GTA 1 source (higher-res stand-in for R9.1 / R9.2 if those are unusable); not placed."
+}

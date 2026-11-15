@@ -1,0 +1,124 @@
+{
+ "beat": "B17",
+ "composition": "b17-loop",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 196,
+ "composition_frames": 208,
+ "edit_start_s": 75.8667,
+ "voiceover": "And GTA 6? It opens with Lucia already caught. So who's chasing who now?",
+ "words": [
+  {
+   "text": "And",
+   "comp_t": 0.228,
+   "comp_end_t": 0.455,
+   "beat_t": 0.028,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "GTA",
+   "comp_t": 0.455,
+   "comp_end_t": 0.705,
+   "beat_t": 0.255,
+   "start_frame_local": 14,
+   "punct": ""
+  },
+  {
+   "text": "6?",
+   "comp_t": 0.705,
+   "comp_end_t": 1.223,
+   "beat_t": 0.505,
+   "start_frame_local": 21,
+   "punct": "?"
+  },
+  {
+   "text": "It",
+   "comp_t": 1.483,
+   "comp_end_t": 1.573,
+   "beat_t": 1.283,
+   "start_frame_local": 44,
+   "punct": ""
+  },
+  {
+   "text": "opens",
+   "comp_t": 1.573,
+   "comp_end_t": 1.809,
+   "beat_t": 1.373,
+   "start_frame_local": 47,
+   "punct": ""
+  },
+  {
+   "text": "with",
+   "comp_t": 1.899,
+   "comp_end_t": 2.107,
+   "beat_t": 1.699,
+   "start_frame_local": 57,
+   "punct": ""
+  },
+  {
+   "text": "Lucia",
+   "comp_t": 2.107,
+   "comp_end_t": 2.396,
+   "beat_t": 1.907,
+   "start_frame_local": 63,
+   "punct": ""
+  },
+  {
+   "text": "already",
+   "comp_t": 2.396,
+   "comp_end_t": 2.821,
+   "beat_t": 2.196,
+   "start_frame_local": 72,
+   "punct": ""
+  },
+  {
+   "text": "caught.",
+   "comp_t": 2.821,
+   "comp_end_t": 3.373,
+   "beat_t": 2.621,
+   "start_frame_local": 85,
+   "punct": "."
+  },
+  {
+   "text": "So",
+   "comp_t": 3.633,
+   "comp_end_t": 3.743,
+   "beat_t": 3.433,
+   "start_frame_local": 109,
+   "punct": ""
+  },
+  {
+   "text": "who's",
+   "comp_t": 3.743,
+   "comp_end_t": 4.082,
+   "beat_t": 3.543,
+   "start_frame_local": 112,
+   "punct": ""
+  },
+  {
+   "text": "chasing",
+   "comp_t": 4.082,
+   "comp_end_t": 4.565,
+   "beat_t": 3.882,
+   "start_frame_local": 122,
+   "punct": ""
+  },
+  {
+   "text": "who",
+   "comp_t": 4.565,
+   "comp_end_t": 4.769,
+   "beat_t": 4.365,
+   "start_frame_local": 137,
+   "punct": ""
+  },
+  {
+   "text": "now?",
+   "comp_t": 4.769,
+   "comp_end_t": 5.201,
+   "beat_t": 4.569,
+   "start_frame_local": 143,
+   "punct": "?"
+  }
+ ]
+}

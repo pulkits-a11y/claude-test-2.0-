@@ -44,7 +44,7 @@ Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`i
   Everything defaults inside title-safe (96 px left/right, 54 px top/bottom).
 * **Fonts** come from base.css: Inter 500 captions, 600 lead-ins, 700 year numerals and label, 900 giant type and
   glitch word; Instrument Serif Italic for the emotional word, the small *In*, glow line, quotes; Instrument Serif
-  (upright) for T8 names.
+  Italic for T8 names too (Style kit > Fonts: "quotes and names").
 * **Eases.** "Ease out" = GSAP `power3.out` (the plan's HyperFrames translation). Where the plan names no ease the
   kit uses: fades linear (`none`), moves `power3.out` (marked **kit choice** below).
 * `RCK.type.<helper>(tl, target, atSeconds, opts) -> endSeconds`. `target` is a selector or an Element.

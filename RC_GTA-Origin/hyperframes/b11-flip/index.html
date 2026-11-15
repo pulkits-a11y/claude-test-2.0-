@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* Lane C push-in wrapper inside each 958 px half (identical to b05-copgame / b06-dull): the L11 frame (halves
+         x 0-958 / 962-1920, 4 px divider) never moves or scales, only the picture inside each half pushes in (plan rule 7),
+         so B5 and B11 keep the same frame size and position (plan p.25 "Watch out", QA 7). */
+      .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
+    </style>
+  </head>
+  <body>
+    <!-- B11 b11-flip: beat 162f (5.400s) + 6f handle each end = 174f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.6000s (local frames 6 .. 168).
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B11 p.24-25).
+         Owner: HF for the whole beat (opaque). Into the beat: X1. T1 only (rotation p.13). Audio: S10 on the flip (cues.json).
+         local 0-24  : the B5 split screen returns in full colour (same clips, same in-points, same framing as b05-copgame).
+         local 24-34 : on "flips" the whole split screen rotates 180 deg on Y over 10f with motion blur (90 deg on 29).
+         local 34-174: back side: left the player's getaway car fleeing (R10.2), right police cars chasing (R5.4);
+                       on "Now" (local 109) the M2 arrow redraws over 8f and points at the getaway car.
+         Cover frame (plan p.39) = this back side with the arrow (hyperframes/cover). -->
+    <div data-hf-id="hf-sf56" id="root" data-composition-id="b11-flip" data-start="0" data-duration="5.8" data-width="1920" data-height="1080">
+
+      <!-- L11 split screen (plan p.15) incl. the B11 flip (kit splitFlip: front 0 -> 180 deg, back -180 -> 0 deg, perspective
+           2666.67 px, power2.inOut, edge-on = ink black on local 29). Motion blur = kit approximation: every face video carries
+           the media treatment {"effects":{"blur":1}} with inline --hf-color-grading-blur 0, ramped 0 -> 1 -> 0 across the flip.
+           Look: the B5 game grade {"adjust":{"contrast":0.15}} in the same treatment (plan p.10 "Game footage: punchy contrast").
+           Front = B5's clips at B5's in-points (R5.4 left / R5.1 right, data-media-start 1.0000), so B11 f0 is B5 f0 returned.
+           Back in-points are stand-in values: re-pick on the real clips (getaway car / chasing police clearly visible). -->
+      <div data-hf-id="hf-lh9f" id="b11-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-pc6j" id="b11-ground" class="clip rc-l11__ground" data-start="0.0000" data-duration="5.8000" data-track-index="1"></div>
+        <div data-hf-id="hf-mc1t" class="rc-l11__face rc-l11__face--front">
+          <div data-hf-id="hf-tmjz" class="rc-l11__half rc-l11__half--left">
+            <div data-hf-id="hf-48st" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-1b6d" id="b11-fl" class="clip" src="assets/footage/R5.4.mp4" data-start="0.0000" data-duration="1.1333" data-media-start="1.0000" data-track-index="2" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+          <div data-hf-id="hf-cpwi" class="rc-l11__half rc-l11__half--right">
+            <div data-hf-id="hf-j3y9" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-agyb" id="b11-fr" class="clip" src="assets/footage/R5.1.mp4" data-start="0.0000" data-duration="1.1333" data-media-start="1.0000" data-track-index="3" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+        </div>
+        <div data-hf-id="hf-zozp" class="rc-l11__face rc-l11__face--back">
+          <!-- left: the player's getaway car fleeing (R10.2 GTA 1 Liberty City gameplay; plan alternative R9.1) -->
+          <div data-hf-id="hf-io3z" class="rc-l11__half rc-l11__half--left">
+            <div data-hf-id="hf-kavc" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-eija" id="b11-bl" class="clip" src="assets/footage/R10.2.mp4" data-start="0.8000" data-duration="5.0000" data-media-start="2.0000" data-track-index="4" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+          <!-- right: police cars chasing (R5.4 LSPDFR, a different moment from the front's cop-side shot) -->
+          <div data-hf-id="hf-1pfq" class="rc-l11__half rc-l11__half--right">
+            <div data-hf-id="hf-jwkb" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-habt" id="b11-br" class="clip" src="assets/footage/R5.4.mp4" data-start="0.8000" data-duration="5.0000" data-media-start="6.0000" data-track-index="5" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- M2 the "you" arrow (plan p.17, p.24-25): the same arrow as B5 (same seed, same hand, same geometry) redraws on
+           "Now" over 8f and points at the getaway car (back side, left half). Screen space: outside the flipping split.
+           Geometry is a stand-in aim: refit the tip to the real R10.2 frame (see BEAT_NOTES.md). -->
+      <div data-hf-id="hf-wrpo" id="b11-arrow" class="clip m2-arrow" data-start="3.6333" data-duration="2.1667" data-track-index="6" style="z-index: 20"></div>
+
+      <!-- T1 running captions (plan B11 p.24 "T1: So the team / flips the whole game. / You're not the cop / anymore. /
+           Now you're the one / being chased."), timed with RCK.type.captionPlan from words.json. The first chunk also holds
+           the head handle (opening state), the last chunk the tail handle (closing state). No X9 on "cop": the siren wash
+           is only for "cops" (B1), "police officer" (B5) and "The sirens." (B14) (plan M5 "Never on any other word"). -->
+      <div data-hf-id="hf-0npp" id="b11-cap-1" class="clip rc-t1" data-start="0.0000" data-duration="0.8000" data-track-index="10" style="z-index: 30">So the team</div>
+      <div data-hf-id="hf-hbdm" id="b11-cap-2" class="clip rc-t1" data-start="0.8000" data-duration="1.5000" data-track-index="10" style="z-index: 30">flips the whole game.</div>
+      <div data-hf-id="hf-r8p6" id="b11-cap-3" class="clip rc-t1" data-start="2.3000" data-duration="0.6333" data-track-index="10" style="z-index: 30">You're not the cop</div>
+      <div data-hf-id="hf-ch18" id="b11-cap-4" class="clip rc-t1" data-start="2.9333" data-duration="0.7000" data-track-index="10" style="z-index: 30">anymore.</div>
+      <div data-hf-id="hf-nsfo" id="b11-cap-5" class="clip rc-t1" data-start="3.6333" data-duration="0.8667" data-track-index="10" style="z-index: 30">Now you're the one</div>
+      <div data-hf-id="hf-7q6g" id="b11-cap-6" class="clip rc-t1" data-start="4.5000" data-duration="1.3000" data-track-index="10" style="z-index: 30">being chased.</div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const S = RCK.screens, M = RCK.motifs;
+      const f = (n) => n / 30;                         // composition-local frame -> seconds (local = beat frame + 6)
+
+      // Word frames (local) from words.json: So 6, the 10, team 16, flips 24, the 34, whole 45, game. 55, You're 69, not 76,
+      // the 80, cop 84, anymore. 88, Now 109, you're 114, the 124, one 129, being 135, chased. 143 (voice ends 160).
+
+      // Front: the B5 split screen returns exactly as B5 opened: same in-points and the same push-in rate as b05-copgame
+      // (100% on local 0, +4% per 155 frames), so local 0-23 match B5 local 0-23 frame for frame (picture).
+      S.push(tl, '#b11-split .rc-l11__face--front .lc-push', 0, { until: f(34), from: 1, to: 1 + 0.04 * 34 / 155 });
+
+      // On "flips" (local 24): 180 deg on Y over 10f, power2.inOut; 90 deg edge-on on local 29 (beat f23 = flip_mid, S10 peak);
+      // the back side lands on local 34. Motion blur ramps on all four face videos (kit splitFlip).
+      S.splitFlip(tl, '#b11-split', f(24), { durF: 10 });
+
+      // Back side held shot (plan rule 7): push-in 100% on the landing (34) -> 104% at the beat end (168), same rate into
+      // the tail handle (174).
+      S.push(tl, '#b11-split .rc-l11__face--back .lc-push', f(34), { until: f(174), from: 1, to: 1 + 0.04 * (174 - 34) / (168 - 34) });
+
+      // M2 on "Now" (local 109): "you" hard-cuts in on 109, shaft + head drawn by 117 (8f, ease out). Same seed and geometry
+      // as b05-copgame (the same arrow), now on the getaway car.
+      M.arrowDraw(tl, '#b11-arrow', f(109), { from: [800, 290], to: [545, 520], bend: 0.16, seed: 7, label: 'you' });
+
+      window.__timelines["b11-flip"] = tl;
+    </script>
+  </body>
+</html>
