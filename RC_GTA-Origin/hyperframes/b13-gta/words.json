@@ -1,0 +1,124 @@
+{
+ "beat": "B13",
+ "composition": "b13-gta",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 214,
+ "composition_frames": 226,
+ "edit_start_s": 52.5333,
+ "voiceover": "Until finally, in November 1997, it ships with a new name: Grand Theft Auto.",
+ "words": [
+  {
+   "text": "Until",
+   "comp_t": 0.232,
+   "comp_end_t": 0.507,
+   "beat_t": 0.032,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "finally,",
+   "comp_t": 0.535,
+   "comp_end_t": 1.112,
+   "beat_t": 0.335,
+   "start_frame_local": 16,
+   "punct": ","
+  },
+  {
+   "text": "in",
+   "comp_t": 1.149,
+   "comp_end_t": 1.259,
+   "beat_t": 0.949,
+   "start_frame_local": 34,
+   "punct": ""
+  },
+  {
+   "text": "November",
+   "comp_t": 1.259,
+   "comp_end_t": 1.589,
+   "beat_t": 1.059,
+   "start_frame_local": 38,
+   "punct": ""
+  },
+  {
+   "text": "1997,",
+   "comp_t": 1.8,
+   "comp_end_t": 2.772,
+   "beat_t": 1.6,
+   "start_frame_local": 54,
+   "punct": ","
+  },
+  {
+   "text": "it",
+   "comp_t": 3.027,
+   "comp_end_t": 3.121,
+   "beat_t": 2.827,
+   "start_frame_local": 91,
+   "punct": ""
+  },
+  {
+   "text": "ships",
+   "comp_t": 3.121,
+   "comp_end_t": 3.439,
+   "beat_t": 2.921,
+   "start_frame_local": 94,
+   "punct": ""
+  },
+  {
+   "text": "with",
+   "comp_t": 3.439,
+   "comp_end_t": 3.688,
+   "beat_t": 3.239,
+   "start_frame_local": 103,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 3.688,
+   "comp_end_t": 3.714,
+   "beat_t": 3.488,
+   "start_frame_local": 111,
+   "punct": ""
+  },
+  {
+   "text": "new",
+   "comp_t": 3.766,
+   "comp_end_t": 3.912,
+   "beat_t": 3.566,
+   "start_frame_local": 113,
+   "punct": ""
+  },
+  {
+   "text": "name:",
+   "comp_t": 3.938,
+   "comp_end_t": 4.307,
+   "beat_t": 3.738,
+   "start_frame_local": 118,
+   "punct": ":"
+  },
+  {
+   "text": "Grand",
+   "comp_t": 4.597,
+   "comp_end_t": 4.799,
+   "beat_t": 4.397,
+   "start_frame_local": 138,
+   "punct": ""
+  },
+  {
+   "text": "Theft",
+   "comp_t": 4.799,
+   "comp_end_t": 5.174,
+   "beat_t": 4.599,
+   "start_frame_local": 144,
+   "punct": ""
+  },
+  {
+   "text": "Auto.",
+   "comp_t": 5.174,
+   "comp_end_t": 5.702,
+   "beat_t": 4.974,
+   "start_frame_local": 155,
+   "punct": "."
+  }
+ ]
+}

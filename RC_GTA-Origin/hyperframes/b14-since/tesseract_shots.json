@@ -1,0 +1,285 @@
+{
+ "beat": "B14",
+ "composition": "b14-since",
+ "render": "05_GFX/renders/b14-since.mov",
+ "shots": [
+  {
+   "id": "B14-burst-01-R14.1a",
+   "rid": "R14.1",
+   "screen": "L10",
+   "start_f": 0,
+   "end_f": 6,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 1/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 3 police-chase moment (first moment), full frame, no stretching. Head handle: extend this first clip 6f earlier (the overlay shows '2001' from local 0)."
+  },
+  {
+   "id": "B14-burst-02-R14.1b",
+   "rid": "R14.1",
+   "screen": "L10",
+   "start_f": 6,
+   "end_f": 12,
+   "source_in_s": 5.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 2/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 3 police-chase moment (second, different moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-03-R14.2a",
+   "rid": "R14.2",
+   "screen": "L10",
+   "start_f": 12,
+   "end_f": 18,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 3/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast Vice City police-chase moment (first moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-04-R14.2b",
+   "rid": "R14.2",
+   "screen": "L10",
+   "start_f": 18,
+   "end_f": 24,
+   "source_in_s": 5.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 4/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast Vice City police-chase moment (second, different moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-05-R14.3a",
+   "rid": "R14.3",
+   "screen": "L10",
+   "start_f": 24,
+   "end_f": 30,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 5/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast San Andreas police-chase moment (first moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-06-R14.3b",
+   "rid": "R14.3",
+   "screen": "L10",
+   "start_f": 30,
+   "end_f": 36,
+   "source_in_s": 5.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 6/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast San Andreas police-chase moment (second, different moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-07-R14.4a",
+   "rid": "R14.4",
+   "screen": "L10",
+   "start_f": 36,
+   "end_f": 42,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 7/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 4 police-chase moment (first moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-08-R14.4b",
+   "rid": "R14.4",
+   "screen": "L10",
+   "start_f": 42,
+   "end_f": 48,
+   "source_in_s": 5.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 8/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 4 police-chase moment (second, different moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-09-R14.5a",
+   "rid": "R14.5",
+   "screen": "L10",
+   "start_f": 48,
+   "end_f": 54,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 9/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 5 police-chase moment (first moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-burst-10-R14.5b",
+   "rid": "R14.5",
+   "screen": "L10",
+   "start_f": 54,
+   "end_f": 60,
+   "source_in_s": 5.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "L10 montage burst clip 10/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 5 police-chase moment (second, different moment), full frame, no stretching."
+  },
+  {
+   "id": "B14-gta5-chase-stars",
+   "rid": "R1.3",
+   "screen": "full",
+   "start_f": 60,
+   "end_f": 133,
+   "source_in_s": 2.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "Plan p.26 step 2: GTA 5 five-star chase (R1.3) under T1 'that chase.' (f62-96) and the M1 six stars (120 px, centred, pop 3f apart from f96, all in by f114 'stars.') + T4 'The wanted stars.' top-left (all HF overlay). Push-in 100->104% linear (held 2.4 s, rule 7). Pending real footage: source_in_s 2.0 is a stand-in; pick a moment with the car mid-chase and no busy detail in the centre (the six stars sit over x 540-1380, y 480-600); game HUD colours untouched. Prefer a different moment from the R1.3 cell in B1."
+  },
+  {
+   "id": "B14-police-lights",
+   "rid": "RT3",
+   "screen": "full",
+   "start_f": 133,
+   "end_f": 163,
+   "source_in_s": 1.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X8",
+   "letterbox": null,
+   "grade": "none",
+   "x8": {
+    "frames": 6,
+    "start_f": 160,
+    "mid_f": 163,
+    "end_f": 166,
+    "blur_px": 80,
+    "dir": "left",
+    "part": "out (160-163)"
+   },
+   "notes": "Plan p.26 step 3: police lights flashing (RT3) for 'The sirens.' (T4 centre-right from f133, HF overlay). The X9 siren wash on 'sirens' (f140-143) is drawn by the b14-since overlay OVER AN EMBEDDED COPY OF THIS SHOT (overlay opaque on f140-143 only, so the Overlay blend is correct in the alpha MOV): keep this shot exactly as specified - source_in_s 1.0 (embed media start = 1.0 + 7/30 = 1.2333 s), full frame cover at 100% (no push), grade none - or update the embed in b14-since/index.html (#b14-x9-plate) if any of these change. X8 whip pan f160-166 (6f horizontal move, 80 px directional blur, plan p.16), cut at the midpoint f163 (= cue whip_mid; S15 starts f161). Not a held shot (30f, constant flashing), so no push."
+  },
+  {
+   "id": "B14-escape",
+   "rid": "R14.5",
+   "screen": "full",
+   "start_f": 163,
+   "end_f": 188,
+   "source_in_s": 8.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
+   "enter": "X8",
+   "exit": "X5",
+   "letterbox": null,
+   "grade": "game",
+   "x8": {
+    "frames": 6,
+    "start_f": 160,
+    "mid_f": 163,
+    "end_f": 166,
+    "blur_px": 80,
+    "dir": "left",
+    "part": "in (163-166)"
+   },
+   "notes": "Plan p.26 step 4: 'The running.': X8 whip pan into an escape shot (R14.5, or R14.6 as the alternate). T4 'The running.' bottom-left from f162 (HF overlay). The overlay's X5 blinds CLOSE over f180-188 (12 ink-black slats, opaque) and stay shut through the tail handle; B15 opens them. Extend this shot through the tail handle (f188-194) under the shut slats. Pending real footage: source_in_s 8.0 is a stand-in; pick the player's car breaking away from the cops (a different moment from the 2013 burst clips)."
+  }
+ ]
+}

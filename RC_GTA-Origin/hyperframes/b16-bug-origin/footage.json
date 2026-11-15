@@ -1,0 +1,5 @@
+{
+ "beat": "B16",
+ "rids": ["R14.5", "RT3", "R1.3", "R14.4", "R14.3", "R14.2", "R14.1", "R9.1", "R4.5", "RT1", "RT6"],
+ "note": "B14 clips + B9 GTA 1 (R9.1) + the B4 design document (R4.5, real still) feed the VHS rewind (tools/make_rewind.py -> assets/rewind/b16-rewind.mp4, reversed at 8x). RT1 (VHS overlay) and RT6 (light leaks) are synced for when the real files exist but are NOT wired: their stand-ins are the media-treatment VHS look + drawn tracking lines (RT1) and the kit X7 leak layers (RT6)."
+}

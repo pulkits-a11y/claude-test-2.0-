@@ -1,0 +1,124 @@
+{
+ "beat": "B6",
+ "composition": "b06-dull",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 166,
+ "composition_frames": 178,
+ "edit_start_s": 24.4667,
+ "voiceover": "But there's a problem: it's dull. One developer later calls it \u201cawful\u2026 too sim-y.\u201d",
+ "words": [
+  {
+   "text": "But",
+   "comp_t": 0.203,
+   "comp_end_t": 0.307,
+   "beat_t": 0.003,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "there's",
+   "comp_t": 0.307,
+   "comp_end_t": 0.596,
+   "beat_t": 0.107,
+   "start_frame_local": 9,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 0.596,
+   "comp_end_t": 0.636,
+   "beat_t": 0.396,
+   "start_frame_local": 18,
+   "punct": ""
+  },
+  {
+   "text": "problem:",
+   "comp_t": 0.636,
+   "comp_end_t": 1.078,
+   "beat_t": 0.436,
+   "start_frame_local": 19,
+   "punct": ":"
+  },
+  {
+   "text": "it's",
+   "comp_t": 1.338,
+   "comp_end_t": 1.533,
+   "beat_t": 1.138,
+   "start_frame_local": 40,
+   "punct": ""
+  },
+  {
+   "text": "dull.",
+   "comp_t": 1.618,
+   "comp_end_t": 1.958,
+   "beat_t": 1.418,
+   "start_frame_local": 49,
+   "punct": "."
+  },
+  {
+   "text": "One",
+   "comp_t": 2.233,
+   "comp_end_t": 2.393,
+   "beat_t": 2.033,
+   "start_frame_local": 67,
+   "punct": ""
+  },
+  {
+   "text": "developer",
+   "comp_t": 2.393,
+   "comp_end_t": 2.944,
+   "beat_t": 2.193,
+   "start_frame_local": 72,
+   "punct": ""
+  },
+  {
+   "text": "later",
+   "comp_t": 2.997,
+   "comp_end_t": 3.29,
+   "beat_t": 2.797,
+   "start_frame_local": 90,
+   "punct": ""
+  },
+  {
+   "text": "calls",
+   "comp_t": 3.29,
+   "comp_end_t": 3.548,
+   "beat_t": 3.09,
+   "start_frame_local": 99,
+   "punct": ""
+  },
+  {
+   "text": "it",
+   "comp_t": 3.808,
+   "comp_end_t": 3.946,
+   "beat_t": 3.608,
+   "start_frame_local": 114,
+   "punct": ""
+  },
+  {
+   "text": "\u201cawful\u2026",
+   "comp_t": 3.946,
+   "comp_end_t": 4.293,
+   "beat_t": 3.746,
+   "start_frame_local": 118,
+   "punct": "\u2026"
+  },
+  {
+   "text": "too",
+   "comp_t": 4.558,
+   "comp_end_t": 4.782,
+   "beat_t": 4.358,
+   "start_frame_local": 137,
+   "punct": ""
+  },
+  {
+   "text": "sim-y.\u201d",
+   "comp_t": 4.782,
+   "comp_end_t": 5.463,
+   "beat_t": 4.582,
+   "start_frame_local": 143,
+   "punct": "."
+  }
+ ]
+}

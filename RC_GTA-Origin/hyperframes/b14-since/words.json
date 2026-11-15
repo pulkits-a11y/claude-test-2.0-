@@ -1,0 +1,140 @@
+{
+ "beat": "B14",
+ "composition": "b14-since",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 188,
+ "composition_frames": 200,
+ "edit_start_s": 59.6667,
+ "voiceover": "And every GTA since is built around that chase. The wanted stars. The sirens. The running.",
+ "words": [
+  {
+   "text": "And",
+   "comp_t": 0.203,
+   "comp_end_t": 0.507,
+   "beat_t": 0.003,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "every",
+   "comp_t": 0.507,
+   "comp_end_t": 0.812,
+   "beat_t": 0.307,
+   "start_frame_local": 15,
+   "punct": ""
+  },
+  {
+   "text": "GTA",
+   "comp_t": 0.812,
+   "comp_end_t": 1.117,
+   "beat_t": 0.612,
+   "start_frame_local": 24,
+   "punct": ""
+  },
+  {
+   "text": "since",
+   "comp_t": 1.117,
+   "comp_end_t": 1.342,
+   "beat_t": 0.917,
+   "start_frame_local": 34,
+   "punct": ""
+  },
+  {
+   "text": "is",
+   "comp_t": 1.342,
+   "comp_end_t": 1.483,
+   "beat_t": 1.142,
+   "start_frame_local": 40,
+   "punct": ""
+  },
+  {
+   "text": "built",
+   "comp_t": 1.483,
+   "comp_end_t": 1.837,
+   "beat_t": 1.283,
+   "start_frame_local": 44,
+   "punct": ""
+  },
+  {
+   "text": "around",
+   "comp_t": 1.837,
+   "comp_end_t": 2.262,
+   "beat_t": 1.637,
+   "start_frame_local": 55,
+   "punct": ""
+  },
+  {
+   "text": "that",
+   "comp_t": 2.262,
+   "comp_end_t": 2.525,
+   "beat_t": 2.062,
+   "start_frame_local": 68,
+   "punct": ""
+  },
+  {
+   "text": "chase.",
+   "comp_t": 2.538,
+   "comp_end_t": 3.143,
+   "beat_t": 2.338,
+   "start_frame_local": 76,
+   "punct": "."
+  },
+  {
+   "text": "The",
+   "comp_t": 3.403,
+   "comp_end_t": 3.572,
+   "beat_t": 3.203,
+   "start_frame_local": 102,
+   "punct": ""
+  },
+  {
+   "text": "wanted",
+   "comp_t": 3.582,
+   "comp_end_t": 4.005,
+   "beat_t": 3.382,
+   "start_frame_local": 107,
+   "punct": ""
+  },
+  {
+   "text": "stars.",
+   "comp_t": 4.005,
+   "comp_end_t": 4.503,
+   "beat_t": 3.805,
+   "start_frame_local": 120,
+   "punct": "."
+  },
+  {
+   "text": "The",
+   "comp_t": 4.648,
+   "comp_end_t": 4.861,
+   "beat_t": 4.448,
+   "start_frame_local": 139,
+   "punct": ""
+  },
+  {
+   "text": "sirens.",
+   "comp_t": 4.861,
+   "comp_end_t": 5.443,
+   "beat_t": 4.661,
+   "start_frame_local": 146,
+   "punct": "."
+  },
+  {
+   "text": "The",
+   "comp_t": 5.608,
+   "comp_end_t": 5.726,
+   "beat_t": 5.408,
+   "start_frame_local": 168,
+   "punct": ""
+  },
+  {
+   "text": "running.",
+   "comp_t": 5.738,
+   "comp_end_t": 6.188,
+   "beat_t": 5.538,
+   "start_frame_local": 172,
+   "punct": "."
+  }
+ ]
+}

@@ -1,0 +1,164 @@
+{
+ "beat": "B15",
+ "composition": "b15-proof",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 178,
+ "composition_frames": 190,
+ "edit_start_s": 65.9333,
+ "voiceover": "Don't believe me? Open GTA Online and buy an arcade. One of the machines is called Race and Chase.",
+ "words": [
+  {
+   "text": "Don't",
+   "comp_t": 0.202,
+   "comp_end_t": 0.364,
+   "beat_t": 0.002,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "believe",
+   "comp_t": 0.364,
+   "comp_end_t": 0.623,
+   "beat_t": 0.164,
+   "start_frame_local": 11,
+   "punct": ""
+  },
+  {
+   "text": "me?",
+   "comp_t": 0.623,
+   "comp_end_t": 0.827,
+   "beat_t": 0.423,
+   "start_frame_local": 19,
+   "punct": "?"
+  },
+  {
+   "text": "Open",
+   "comp_t": 1.087,
+   "comp_end_t": 1.352,
+   "beat_t": 0.887,
+   "start_frame_local": 33,
+   "punct": ""
+  },
+  {
+   "text": "GTA",
+   "comp_t": 1.352,
+   "comp_end_t": 1.57,
+   "beat_t": 1.152,
+   "start_frame_local": 41,
+   "punct": ""
+  },
+  {
+   "text": "Online",
+   "comp_t": 1.57,
+   "comp_end_t": 2.008,
+   "beat_t": 1.37,
+   "start_frame_local": 47,
+   "punct": ""
+  },
+  {
+   "text": "and",
+   "comp_t": 2.008,
+   "comp_end_t": 2.227,
+   "beat_t": 1.808,
+   "start_frame_local": 60,
+   "punct": ""
+  },
+  {
+   "text": "buy",
+   "comp_t": 2.227,
+   "comp_end_t": 2.437,
+   "beat_t": 2.027,
+   "start_frame_local": 67,
+   "punct": ""
+  },
+  {
+   "text": "an",
+   "comp_t": 2.437,
+   "comp_end_t": 2.446,
+   "beat_t": 2.237,
+   "start_frame_local": 73,
+   "punct": ""
+  },
+  {
+   "text": "arcade.",
+   "comp_t": 2.647,
+   "comp_end_t": 3.267,
+   "beat_t": 2.447,
+   "start_frame_local": 79,
+   "punct": "."
+  },
+  {
+   "text": "One",
+   "comp_t": 3.522,
+   "comp_end_t": 3.681,
+   "beat_t": 3.322,
+   "start_frame_local": 106,
+   "punct": ""
+  },
+  {
+   "text": "of",
+   "comp_t": 3.681,
+   "comp_end_t": 3.802,
+   "beat_t": 3.481,
+   "start_frame_local": 110,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 3.802,
+   "comp_end_t": 3.989,
+   "beat_t": 3.602,
+   "start_frame_local": 114,
+   "punct": ""
+  },
+  {
+   "text": "machines",
+   "comp_t": 3.989,
+   "comp_end_t": 4.485,
+   "beat_t": 3.789,
+   "start_frame_local": 120,
+   "punct": ""
+  },
+  {
+   "text": "is",
+   "comp_t": 4.485,
+   "comp_end_t": 4.606,
+   "beat_t": 4.285,
+   "start_frame_local": 135,
+   "punct": ""
+  },
+  {
+   "text": "called",
+   "comp_t": 4.606,
+   "comp_end_t": 4.905,
+   "beat_t": 4.406,
+   "start_frame_local": 138,
+   "punct": ""
+  },
+  {
+   "text": "Race",
+   "comp_t": 5.12,
+   "comp_end_t": 5.223,
+   "beat_t": 4.92,
+   "start_frame_local": 154,
+   "punct": ""
+  },
+  {
+   "text": "and",
+   "comp_t": 5.223,
+   "comp_end_t": 5.391,
+   "beat_t": 5.023,
+   "start_frame_local": 157,
+   "punct": ""
+  },
+  {
+   "text": "Chase.",
+   "comp_t": 5.419,
+   "comp_end_t": 5.877,
+   "beat_t": 5.219,
+   "start_frame_local": 163,
+   "punct": "."
+  }
+ ]
+}

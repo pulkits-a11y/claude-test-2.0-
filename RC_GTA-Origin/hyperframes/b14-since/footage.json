@@ -1,0 +1,5 @@
+{
+ "beat": "B14",
+ "rids": ["R14.1", "R14.2", "R14.3", "R14.4", "R14.5", "R1.3", "RT3"],
+ "note": "All B14 footage is Tesseract-owned (tesseract_shots.json). RT3 is ALSO embedded in this overlay for the 4 X9 wash frames (beat 140-143) so the Overlay blend has the picture under it (KIT_transitions X9 caveat); keep its media start = the RT3 shot source_in_s + 7/30. R14.6 (alternate escape) and RT7 (green-screen stars; M1 is built instead) are not used."
+}

@@ -1,0 +1,36 @@
+{
+ "beat": "B8",
+ "composition": "b08-break",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 63,
+ "composition_frames": 75,
+ "edit_start_s": 33.2,
+ "voiceover": "Then, something breaks.",
+ "words": [
+  {
+   "text": "Then,",
+   "comp_t": 0.205,
+   "comp_end_t": 0.585,
+   "beat_t": 0.005,
+   "start_frame_local": 6,
+   "punct": ","
+  },
+  {
+   "text": "something",
+   "comp_t": 0.875,
+   "comp_end_t": 1.366,
+   "beat_t": 0.675,
+   "start_frame_local": 26,
+   "punct": ""
+  },
+  {
+   "text": "breaks.",
+   "comp_t": 1.366,
+   "comp_end_t": 1.87,
+   "beat_t": 1.166,
+   "start_frame_local": 41,
+   "punct": "."
+  }
+ ]
+}

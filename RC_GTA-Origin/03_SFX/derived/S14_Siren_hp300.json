@@ -1,0 +1,11 @@
+{
+ "source": "03_SFX/S14_Siren.mp3",
+ "source_sha256": "2fa05c2adb242615048a0c0598a9bbc2f4908f8c0430a69f790b0f5e842e25a2",
+ "ffmpeg_filter": "highpass=f=300",
+ "codec": "pcm_f32le",
+ "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+ "note": "S14: plan 'high-pass at 300 Hz' (p.35)",
+ "made_by": "tools/build_tesseract_audio.py",
+ "output": "03_SFX/derived/S14_Siren_hp300.wav",
+ "output_sha256": "1bc23ae4b91bc4f4909e2451f3a2ac7792e55c2344a722ddcf6ddb3f0d44320d"
+}

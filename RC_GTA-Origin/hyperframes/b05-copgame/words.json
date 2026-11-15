@@ -1,0 +1,84 @@
+{
+ "beat": "B5",
+ "composition": "b05-copgame",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 88,
+ "composition_frames": 100,
+ "edit_start_s": 21.5333,
+ "voiceover": "In it, you play a police officer chasing criminals.",
+ "words": [
+  {
+   "text": "In",
+   "comp_t": 0.202,
+   "comp_end_t": 0.286,
+   "beat_t": 0.002,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "it,",
+   "comp_t": 0.286,
+   "comp_end_t": 0.497,
+   "beat_t": 0.086,
+   "start_frame_local": 9,
+   "punct": ","
+  },
+  {
+   "text": "you",
+   "comp_t": 0.682,
+   "comp_end_t": 0.846,
+   "beat_t": 0.482,
+   "start_frame_local": 20,
+   "punct": ""
+  },
+  {
+   "text": "play",
+   "comp_t": 0.846,
+   "comp_end_t": 1.063,
+   "beat_t": 0.646,
+   "start_frame_local": 25,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 1.063,
+   "comp_end_t": 1.072,
+   "beat_t": 0.863,
+   "start_frame_local": 32,
+   "punct": ""
+  },
+  {
+   "text": "police",
+   "comp_t": 1.123,
+   "comp_end_t": 1.444,
+   "beat_t": 0.923,
+   "start_frame_local": 34,
+   "punct": ""
+  },
+  {
+   "text": "officer",
+   "comp_t": 1.444,
+   "comp_end_t": 1.66,
+   "beat_t": 1.244,
+   "start_frame_local": 43,
+   "punct": ""
+  },
+  {
+   "text": "chasing",
+   "comp_t": 1.859,
+   "comp_end_t": 2.223,
+   "beat_t": 1.659,
+   "start_frame_local": 56,
+   "punct": ""
+  },
+  {
+   "text": "criminals.",
+   "comp_t": 2.223,
+   "comp_end_t": 2.872,
+   "beat_t": 2.023,
+   "start_frame_local": 67,
+   "punct": "."
+  }
+ ]
+}

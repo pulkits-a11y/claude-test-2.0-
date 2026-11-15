@@ -1,0 +1,108 @@
+{
+ "beat": "B7",
+ "composition": "b07-shutdown",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 96,
+ "composition_frames": 108,
+ "edit_start_s": 30.0,
+ "voiceover": "So the people above the team keep trying to shut it down.",
+ "words": [
+  {
+   "text": "So",
+   "comp_t": 0.205,
+   "comp_end_t": 0.283,
+   "beat_t": 0.005,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 0.283,
+   "comp_end_t": 0.447,
+   "beat_t": 0.083,
+   "start_frame_local": 8,
+   "punct": ""
+  },
+  {
+   "text": "people",
+   "comp_t": 0.447,
+   "comp_end_t": 0.775,
+   "beat_t": 0.247,
+   "start_frame_local": 13,
+   "punct": ""
+  },
+  {
+   "text": "above",
+   "comp_t": 0.775,
+   "comp_end_t": 1.034,
+   "beat_t": 0.575,
+   "start_frame_local": 23,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 1.069,
+   "comp_end_t": 1.207,
+   "beat_t": 0.869,
+   "start_frame_local": 32,
+   "punct": ""
+  },
+  {
+   "text": "team",
+   "comp_t": 1.207,
+   "comp_end_t": 1.44,
+   "beat_t": 1.007,
+   "start_frame_local": 36,
+   "punct": ""
+  },
+  {
+   "text": "keep",
+   "comp_t": 1.44,
+   "comp_end_t": 1.492,
+   "beat_t": 1.24,
+   "start_frame_local": 43,
+   "punct": ""
+  },
+  {
+   "text": "trying",
+   "comp_t": 1.682,
+   "comp_end_t": 2.045,
+   "beat_t": 1.482,
+   "start_frame_local": 50,
+   "punct": ""
+  },
+  {
+   "text": "to",
+   "comp_t": 2.045,
+   "comp_end_t": 2.165,
+   "beat_t": 1.845,
+   "start_frame_local": 61,
+   "punct": ""
+  },
+  {
+   "text": "shut",
+   "comp_t": 2.165,
+   "comp_end_t": 2.39,
+   "beat_t": 1.965,
+   "start_frame_local": 65,
+   "punct": ""
+  },
+  {
+   "text": "it",
+   "comp_t": 2.407,
+   "comp_end_t": 2.528,
+   "beat_t": 2.207,
+   "start_frame_local": 72,
+   "punct": ""
+  },
+  {
+   "text": "down.",
+   "comp_t": 2.528,
+   "comp_end_t": 2.96,
+   "beat_t": 2.328,
+   "start_frame_local": 76,
+   "punct": "."
+  }
+ ]
+}

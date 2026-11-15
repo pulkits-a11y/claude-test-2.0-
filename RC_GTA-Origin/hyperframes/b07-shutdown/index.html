@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- B7 b07-shutdown: beat 96f (3.200s) + 6f handle each end = 108f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.4000s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B7 p.23).
+
+         Plan B7 (p.23): L5 gray card with the early-1990s office clip (R7.1) in a white-bordered frame; a red CANCELLED
+         stamp (Inter Black 120 px, #E3262E, rough-edged mask) slams onto the frame three times, on "keep trying", "shut"
+         and "down", each 130% -> 100% over 2f with a 4 px camera shake for 4f, offset ~30 px, rotations -8 / -4 / +6 deg.
+         T1: So the people / above the team / keep trying / to shut it down.   Fully opaque (HF owns every frame).
+
+         Layer stack (top -> bottom):
+           z40  T1 captions, low line (y 860: faces + stamps in the centre), card ink #111111 on the gray card
+           z2   #b07-cam  "camera" (untimed): push-in 100% -> 104% (shared with b08-break) + the 4 px / 4f shakes
+                  #b07-prop  L5 prop (untimed): tilt -4 deg, float +/-6 px over 2 s (shared phase with b08-break)
+                    #b07-frame   8 px white border + soft shadow (0, 12, 30 px, black 25%)
+                    #b07-r71     R7.1 office clip, 4:3 picture 800 x 600, archival media treatment
+                    #b07-stamp1..3  CANCELLED x3 (inside the prop: stamped onto the frame, they float with it)
+           z1   #b07-ground  card gray #E9E9E9 (outside the camera: a flat card never shows a shaken edge)
+         b08-break continues this exact card (same layout, same motion functions, continuous R7.1 source time). -->
+    <div data-hf-id="hf-mq82" id="root" data-composition-id="b07-shutdown" data-start="0" data-duration="3.6000000" data-width="1920" data-height="1080">
+
+      <!-- L5 gray card (full frame, static) -->
+      <div data-hf-id="hf-9ke5" id="b07-ground" class="clip rc-l5__ground" data-start="0" data-duration="3.6000" data-track-index="1" style="z-index: 1"></div>
+
+      <!-- camera: push-in + shake. Untimed wrapper, no CSS transform (GSAP owns scale, x, y). -->
+      <div data-hf-id="hf-c15u" id="b07-cam" class="rc-scr" style="z-index: 2">
+        <!-- L5 prop: picture 800 x 600 (4:3 archival, never stretched; object-fit cover) centred on (960, 440).
+             Tilt -4 deg (data-rot), float +/-6 px. PENDING REAL FOOTAGE: re-fit --w/--h/--rc-pos to R7.1. -->
+        <div data-hf-id="hf-guhq" id="b07-prop" class="rc-l5__prop" data-rot="-4" style="--x: 560px; --y: 140px; --w: 800px; --h: 600px; --rc-pos: 50% 50%;">
+          <div data-hf-id="hf-y62k" id="b07-frame" class="clip rc-l5__frame" data-start="0" data-duration="3.6000" data-track-index="2"></div>
+          <!-- R7.1 early-1990s office workers. data-media-start = in-point (stand-in: 1.0 s; PENDING REAL FOOTAGE).
+               b08-break plays the same clip from data-media-start + 3.2 s (continuous source time). -->
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-c6gg" id="b07-r71" class="clip rc-l5__media" src="assets/footage/R7.1.mp4" data-start="0" data-duration="3.6000" data-media-start="1.0000" data-track-index="3" muted playsinline></video>
+          <!-- CANCELLED stamps (motifs kit). Timed for the whole window; each slam shows its stamp on its own frame. -->
+          <div data-hf-id="hf-hwrq" id="b07-stamp1" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="4" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+          <div data-hf-id="hf-njc0" id="b07-stamp2" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="5" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+          <div data-hf-id="hf-tukm" id="b07-stamp3" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="6" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+        </div>
+      </div>
+
+      <!-- T1 running captions (kit T.captionPlan/captionHTML from words.json; chunks exactly as the plan's On screen line).
+           Hard cut in on the first syllable (local 6 / 23 / 43 / 61 = beat 0 / 17 / 37 / 55), out on the next chunk;
+           the last chunk holds through the tail handle (closing state continued). -->
+      <div data-hf-id="hf-u7dp" id="b07-cap-1" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.2000" data-duration="0.5666" data-track-index="10" style="z-index: 40">So the people</div>
+      <div data-hf-id="hf-zsbs" id="b07-cap-2" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.7666" data-duration="0.6667" data-track-index="10" style="z-index: 40">above the team</div>
+      <div data-hf-id="hf-9ilo" id="b07-cap-3" class="clip rc-t1 rc-t1--low rc-on-card" data-start="1.4333" data-duration="0.6000" data-track-index="10" style="z-index: 40">keep trying</div>
+      <div data-hf-id="hf-m9v7" id="b07-cap-4" class="clip rc-t1 rc-t1--low rc-on-card" data-start="2.0333" data-duration="1.5667" data-track-index="10" style="z-index: 40">to shut it down.</div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type, M = RCK.motifs, S = RCK.screens;
+      const F = (n) => n / 30;
+
+      // Word onsets on this composition's clock (words.json comp_t, s). Frames = T.frame(t) (nearest frame).
+      const W = { So: 0.205, above: 0.775, keep: 1.44, trying: 1.682, to: 2.045, shut: 2.165, down: 2.528 };
+
+      // ---- shared card motion (b08-break uses the SAME functions of the edit frame, so the cut is seamless) ----
+      // local frame L of this composition = edit frame 894 + L (B7 beat f0 = edit 900).
+      // Push-in (style rule 7, held shot): linear 100% at B7 f0 (edit 900) -> 104% at B8 f35 (edit 1031, the shatter).
+      const PUSH = (e) => 1 + 0.04 * (e - 900) / 131;
+      const ORIGIN = "960px 440px";          // the picture centre
+      // L5 float: y = -6 cos(PHASE + pi * t / 2 s), t = seconds since edit frame 894; b08 uses PHASE + 1.6 pi.
+      const PHASE = 0;
+
+      // head handle (local 0-5) continues the push backward (99.8%), tail handle (102-107) forward
+      S.push(tl, "#b07-cam", 0, { until: F(108), from: PUSH(894), to: PUSH(1002), origin: ORIGIN });
+      S.propFloat(tl, "#b07-prop", 0, { until: F(108), phase: PHASE, amp: 6, legS: 2 });
+
+      // ---- CANCELLED x3: land ON "keep" (beat 37), "shut" (beat 59), "down" (beat 70); slam = 2f before landing ----
+      // On-screen rotations -8 / -4 / +6 deg (plan). The prop is tilted -4, so the stamps inside it take -4 / 0 / +10.
+      // Offsets (0,-30) (0,0) (0,+30) px around the picture centre (kit default). Each landing shakes #b07-cam 4 px for 4f.
+      const land = [T.frame(W.keep), T.frame(W.shut), T.frame(W.down)];      // local 43, 65, 76
+      M.stampTriple(tl, ["#b07-stamp1", "#b07-stamp2", "#b07-stamp3"], land.map((k) => F(k - 2)), {
+        center: [400, 300], camera: "#b07-cam", rotations: [-4, 0, 10],
+      });
+
+      window.__timelines["b07-shutdown"] = tl;
+    </script>
+  </body>
+</html>

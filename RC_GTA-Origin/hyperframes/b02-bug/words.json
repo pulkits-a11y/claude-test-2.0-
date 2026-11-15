@@ -1,0 +1,132 @@
+{
+ "beat": "B2",
+ "composition": "b02-bug",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 180,
+ "composition_frames": 192,
+ "edit_start_s": 4.7667,
+ "voiceover": "Because back in 1995, a game about chasing criminals broke. And that bug saved it.",
+ "words": [
+  {
+   "text": "Because",
+   "comp_t": 0.218,
+   "comp_end_t": 0.644,
+   "beat_t": 0.018,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "back",
+   "comp_t": 0.644,
+   "comp_end_t": 0.886,
+   "beat_t": 0.444,
+   "start_frame_local": 19,
+   "punct": ""
+  },
+  {
+   "text": "in",
+   "comp_t": 0.928,
+   "comp_end_t": 1.02,
+   "beat_t": 0.728,
+   "start_frame_local": 28,
+   "punct": ""
+  },
+  {
+   "text": "1995,",
+   "comp_t": 1.053,
+   "comp_end_t": 1.888,
+   "beat_t": 0.853,
+   "start_frame_local": 32,
+   "punct": ","
+  },
+  {
+   "text": "a",
+   "comp_t": 2.138,
+   "comp_end_t": 2.185,
+   "beat_t": 1.938,
+   "start_frame_local": 64,
+   "punct": ""
+  },
+  {
+   "text": "game",
+   "comp_t": 2.185,
+   "comp_end_t": 2.411,
+   "beat_t": 1.985,
+   "start_frame_local": 66,
+   "punct": ""
+  },
+  {
+   "text": "about",
+   "comp_t": 2.411,
+   "comp_end_t": 2.589,
+   "beat_t": 2.211,
+   "start_frame_local": 72,
+   "punct": ""
+  },
+  {
+   "text": "chasing",
+   "comp_t": 2.646,
+   "comp_end_t": 2.975,
+   "beat_t": 2.446,
+   "start_frame_local": 79,
+   "punct": ""
+  },
+  {
+   "text": "criminals",
+   "comp_t": 3.116,
+   "comp_end_t": 3.577,
+   "beat_t": 2.916,
+   "start_frame_local": 93,
+   "punct": ""
+  },
+  {
+   "text": "broke.",
+   "comp_t": 3.577,
+   "comp_end_t": 4.348,
+   "beat_t": 3.377,
+   "start_frame_local": 107,
+   "punct": "."
+  },
+  {
+   "text": "And",
+   "comp_t": 4.618,
+   "comp_end_t": 4.938,
+   "beat_t": 4.418,
+   "start_frame_local": 139,
+   "punct": ""
+  },
+  {
+   "text": "that",
+   "comp_t": 5.018,
+   "comp_end_t": 5.188,
+   "beat_t": 4.818,
+   "start_frame_local": 151,
+   "punct": ""
+  },
+  {
+   "text": "bug",
+   "comp_t": 5.188,
+   "comp_end_t": 5.318,
+   "beat_t": 4.988,
+   "start_frame_local": 156,
+   "punct": ""
+  },
+  {
+   "text": "saved",
+   "comp_t": 5.443,
+   "comp_end_t": 5.715,
+   "beat_t": 5.243,
+   "start_frame_local": 163,
+   "punct": ""
+  },
+  {
+   "text": "it.",
+   "comp_t": 5.715,
+   "comp_end_t": 5.973,
+   "beat_t": 5.515,
+   "start_frame_local": 171,
+   "punct": "."
+  }
+ ]
+}

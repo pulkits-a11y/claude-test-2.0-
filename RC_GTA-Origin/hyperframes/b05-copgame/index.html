@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css" />
+    <link rel="stylesheet" href="assets/kit/type.css" />
+    <link rel="stylesheet" href="assets/kit/motifs.css" />
+    <link rel="stylesheet" href="assets/kit/transitions.css" />
+    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* Lane C push-in wrapper (plan rule 7: every held shot pushes in 100% -> 104%). It sits INSIDE each
+         958 px half, so the L11 frame itself (halves x 0-958 / 962-1920, 4 px divider) never moves or scales:
+         B5, B6 and B11 keep identical split-screen framing (plan p.25 "same frame size and position", QA 7).
+         The video is not a direct child of .rc-l11__half here, so the kit's half > video fill rule is repeated. */
+      .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
+    </style>
+  </head>
+  <body>
+    <!-- B5 b05-copgame: beat 88f (2.933s) + 6f handle each end = 100f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.1333s (local frames 6 .. 94).
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B5 p.22).
+         Owner: HF for the whole beat (opaque). Into the beat: X1 (hard cut). T1 only. No SFX (the X9 wash is visual only).
+         Shared L11 frame: B6 (b06-dull) continues these two clips with continuous source time
+         (B6 data-media-start = this beat's data-media-start + 88/30 s); B11 (b11-flip) returns to this exact frame. -->
+    <div id="root" data-composition-id="b05-copgame" data-start="0" data-duration="3.3333333" data-width="1920" data-height="1080">
+
+      <!-- L11 split screen (plan p.15, B5 p.22): two 958 px halves, 4 px black divider (the ink-black ground between them).
+           Left: a police car in pursuit seen from the cop side (R5.4; plan alternative R5.2). Right: the car being chased (R5.1).
+           Source in-points are stand-in values: re-pick on the real clips (both cars clearly visible), see BEAT_NOTES.md. -->
+      <div id="b05-split" class="rc-l11" style="z-index: 1">
+        <div id="b05-ground" class="clip rc-l11__ground" data-start="0.0000" data-duration="3.3333" data-track-index="1"></div>
+        <div class="rc-l11__face rc-l11__face--front">
+          <div class="rc-l11__half rc-l11__half--left">
+            <div class="lc-push">
+              <video id="b05-l" class="clip" src="assets/footage/R5.4.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="2" muted playsinline></video>
+            </div>
+          </div>
+          <div class="rc-l11__half rc-l11__half--right">
+            <div class="lc-push">
+              <video id="b05-r" class="clip" src="assets/footage/R5.1.mp4" data-start="0.0000" data-duration="3.3333" data-media-start="1.0000" data-track-index="3" muted playsinline></video>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- X9 siren wash on "police officer" (plan p.16, p.22; M5): 4f overlay, siren red 35% Overlay 2f, then siren blue 2f.
+           Above the footage, below the M2 arrow and the T1 captions (graphics stay clean). Visual only: no SFX in B5. -->
+      <div id="b05-x9" class="rc-x9" style="z-index: 15"></div>
+
+      <!-- M2 the "you" arrow (plan p.17, p.22): #FFE14D 6 px stroke, drawn on over 8f on "you", pointing at the police car
+           (left half), with "you" in Inter SemiBold 36 px yellow. Screen space (does not move with the push-in).
+           Geometry is a stand-in aim (tip on the presumed cop car): refit to the real R5.4 frame. Same seed/geometry as B11. -->
+      <div id="b05-arrow" class="clip m2-arrow" data-start="0.6666" data-duration="2.6667" data-track-index="5" style="z-index: 20"></div>
+
+      <!-- T1 running captions (plan p.11, B5 p.22 "On screen: T1: In it, / you play / a police officer / chasing criminals.").
+           Timed with RCK.type.captionPlan from words.json (each chunk on its first word's frame, offsets <= 0.5f).
+           Handles: the first chunk also holds the head handle (opening state), the last chunk holds the tail handle. -->
+      <div id="b05-cap-1" class="clip rc-t1" data-start="0.0000" data-duration="0.6666" data-track-index="10" style="z-index: 30">In it,</div>
+      <div id="b05-cap-2" class="clip rc-t1" data-start="0.6666" data-duration="0.4000" data-track-index="10" style="z-index: 30">you play</div>
+      <div id="b05-cap-3" class="clip rc-t1" data-start="1.0666" data-duration="0.8000" data-track-index="10" style="z-index: 30">a police officer</div>
+      <div id="b05-cap-4" class="clip rc-t1" data-start="1.8666" data-duration="1.4667" data-track-index="10" style="z-index: 30">chasing criminals.</div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const S = RCK.screens, M = RCK.motifs, X = RCK.transitions;
+      const f = (n) => n / 30;                         // composition-local frame -> seconds (local = beat frame + 6)
+
+      // Word frames (local) from words.json: In 6, it, 9, you 20, play 25, a 32, police 34, officer 43, chasing 56, criminals. 67.
+
+      // Plan rule 7 push-in, one continuous move across the whole L11 shot B5 f0 .. B6 f61 (the X2 cut), defined on the
+      // edit clock: 100% at B5 local 0 (edit 640) -> 104% at B6 local 67 (edit 795) = 155 frames. B5 covers local 0..100.
+      const PUSH_SPAN_F = 155;
+      S.push(tl, '#b05-split .lc-push', 0, { until: f(100), from: 1, to: 1 + 0.04 * 100 / PUSH_SPAN_F });
+
+      // M2: "you" label hard-cuts in on "you" (local 20), shaft + head drawn by local 28 (8f, ease out).
+      M.arrowDraw(tl, '#b05-arrow', f(20), { from: [800, 290], to: [545, 520], bend: 0.16, seed: 7, label: 'you' });
+
+      // X9 on "police" (local 34): red 34-35, blue 36-37, gone on 38.
+      X.sirenWash(tl, '#b05-x9', f(34));
+
+      window.__timelines["b05-copgame"] = tl;
+    </script>
+  </body>
+</html>

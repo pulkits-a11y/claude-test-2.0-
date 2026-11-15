@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css" />
+    <link rel="stylesheet" href="assets/kit/type.css" />
+    <link rel="stylesheet" href="assets/kit/motifs.css" />
+    <link rel="stylesheet" href="assets/kit/transitions.css" />
+    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- B15 b15-proof: beat 178f (5.933s) + 6f handle each end = 190f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.1333s.
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/. -->
+    <div id="root" data-composition-id="b15-proof" data-start="0" data-duration="6.3333333" data-width="1920" data-height="1080">
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // Build the beat here (kit helpers: see assets/kit/KIT.md).
+      window.__timelines["b15-proof"] = tl;
+    </script>
+  </body>
+</html>

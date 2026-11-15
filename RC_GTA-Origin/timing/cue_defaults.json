@@ -1,0 +1,62 @@
+{
+ "_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames, f0 = the beat's first word). Fallback used by tools/build_tesseract_audio.py only for beats whose hyperframes/<composition>/cues.json does not exist yet. '~29'/'~48' are taken as 29/48; a range a..b is stored as name=a, name_end=b.",
+ "B1": {
+  "gta6_cell_full": 58,
+  "cops": 127
+ },
+ "B2": {
+  "tear": 101,
+  "bug_chip": 150
+ },
+ "B3": {
+  "year_digits": 29
+ },
+ "B4": {},
+ "B5": {},
+ "B6": {
+  "dull": 43
+ },
+ "B7": {
+  "stamp1": 37,
+  "stamp2": 59,
+  "stamp3": 70
+ },
+ "B8": {
+  "breaks": 35,
+  "first_black": 45
+ },
+ "B9": {},
+ "B10": {
+  "fun": 37
+ },
+ "B11": {
+  "flip_start": 18,
+  "flip_mid": 23
+ },
+ "B12": {
+  "thirty": 69
+ },
+ "B13": {
+  "year_digits": 48,
+  "type_on": 132
+ },
+ "B14": {
+  "sirens": 140,
+  "whip_mid": 163
+ },
+ "B15": {
+  "label": 148,
+  "zoom_mid": 164
+ },
+ "B16": {
+  "rewind": 0,
+  "rewind_end": 30,
+  "chip": 101
+ },
+ "B17": {
+  "now": 137,
+  "music_stop": 150,
+  "logo_in": 150,
+  "final_hit": 170
+ }
+}

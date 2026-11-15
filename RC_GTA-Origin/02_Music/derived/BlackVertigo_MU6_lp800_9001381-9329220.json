@@ -1,0 +1,11 @@
+{
+ "source": "02_Music/Alexandre Brovelli - Black Vertigo.mp3",
+ "source_sha256": "201ddebe0014e41251e7e2838768b790e371e7dba957eb3168173bbaee8039fd",
+ "ffmpeg_filter": "lowpass=f=800,atrim=start_sample=9001381:end_sample=9329220",
+ "codec": "pcm_f32le",
+ "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+ "note": "MU6: 'Low-pass at about 800 Hz' (plan p.34). Excerpt = samples 9001381-9329220 at 44.1 kHz of FFmpeg's decode (track 204.11295-211.54694 s = edit 64.433-71.867 s), filtered from the track start so the filter is settled; float WAV (the track peaks above 0 dBFS).",
+ "made_by": "tools/build_tesseract_audio.py",
+ "output": "02_Music/derived/BlackVertigo_MU6_lp800_9001381-9329220.wav",
+ "output_sha256": "e812bb35819d7a481265d2b4892059f108a5999c4d4b5d7811b2146f7dedbacd"
+}

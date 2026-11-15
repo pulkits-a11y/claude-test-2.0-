@@ -1,0 +1,116 @@
+{
+ "beat": "B16",
+ "composition": "b16-bug-origin",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 120,
+ "composition_frames": 132,
+ "edit_start_s": 71.8667,
+ "voiceover": "So that's why you're always running. The whole series started with a bug.",
+ "words": [
+  {
+   "text": "So",
+   "comp_t": 0.213,
+   "comp_end_t": 0.274,
+   "beat_t": 0.013,
+   "start_frame_local": 6,
+   "punct": ""
+  },
+  {
+   "text": "that's",
+   "comp_t": 0.274,
+   "comp_end_t": 0.526,
+   "beat_t": 0.074,
+   "start_frame_local": 8,
+   "punct": ""
+  },
+  {
+   "text": "why",
+   "comp_t": 0.604,
+   "comp_end_t": 0.682,
+   "beat_t": 0.404,
+   "start_frame_local": 18,
+   "punct": ""
+  },
+  {
+   "text": "you're",
+   "comp_t": 0.682,
+   "comp_end_t": 0.908,
+   "beat_t": 0.482,
+   "start_frame_local": 20,
+   "punct": ""
+  },
+  {
+   "text": "always",
+   "comp_t": 0.96,
+   "comp_end_t": 1.238,
+   "beat_t": 0.76,
+   "start_frame_local": 29,
+   "punct": ""
+  },
+  {
+   "text": "running.",
+   "comp_t": 1.238,
+   "comp_end_t": 1.733,
+   "beat_t": 1.038,
+   "start_frame_local": 37,
+   "punct": "."
+  },
+  {
+   "text": "The",
+   "comp_t": 1.983,
+   "comp_end_t": 2.146,
+   "beat_t": 1.783,
+   "start_frame_local": 59,
+   "punct": ""
+  },
+  {
+   "text": "whole",
+   "comp_t": 2.146,
+   "comp_end_t": 2.454,
+   "beat_t": 1.946,
+   "start_frame_local": 64,
+   "punct": ""
+  },
+  {
+   "text": "series",
+   "comp_t": 2.454,
+   "comp_end_t": 2.826,
+   "beat_t": 2.254,
+   "start_frame_local": 74,
+   "punct": ""
+  },
+  {
+   "text": "started",
+   "comp_t": 2.826,
+   "comp_end_t": 3.252,
+   "beat_t": 2.626,
+   "start_frame_local": 85,
+   "punct": ""
+  },
+  {
+   "text": "with",
+   "comp_t": 3.261,
+   "comp_end_t": 3.334,
+   "beat_t": 3.061,
+   "start_frame_local": 98,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 3.533,
+   "comp_end_t": 3.578,
+   "beat_t": 3.333,
+   "start_frame_local": 106,
+   "punct": ""
+  },
+  {
+   "text": "bug.",
+   "comp_t": 3.578,
+   "comp_end_t": 3.968,
+   "beat_t": 3.378,
+   "start_frame_local": 107,
+   "punct": "."
+  }
+ ]
+}
