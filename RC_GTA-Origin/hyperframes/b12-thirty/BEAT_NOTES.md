@@ -72,6 +72,13 @@ S11 Count-up (2) at -12 dBFS: its hit (1.14 s into the file = 34.2f) lines up wi
 * **R12.1** skipped while it is a stand-in (STORYBOARD); optional in the plan.
 * Check warnings kept: craft `line_unread` on the rolling counter digits (each shown ~2f by design, odometer) and on "the film's last line" (this is one beat); lint `nested_structure_needs_subcomposition` (kit T2 markup).
 
+## Footage used (footage pass)
+
+* None: B12 is a built graphic (the B4 L9/M3 calendar, same component, grid and push, extended 18 -> 30). Optional R12.1 clock
+  time-lapse (10% behind the card): skipped (not downloaded; optional in the plan). No substitutions.
+* Kit refreshed (identical to `_kit`); no changed kit part is used here, so `05_GFX/renders/b12-thirty.mov` (95 frames,
+  yuva444p12le) stays valid; `check --json`: 0 errors. Cue `thirty` = 69 (S11 hit) unchanged.
+
 ## Pending real footage
 
 * None required (built graphic). Optional R12.1 clock time-lapse: when the real clip exists, add `"R12.1"` to `footage.json`, run `python3 tools/sync_footage.py hyperframes/b12-thirty`, uncomment the `#b12-clock` line in `index.html` (10% opacity over the gray card, under the calendar), choose a segment with steady clock motion (>= 3.2 s), re-check, re-render. Lead's call whether to use it at all (plan: optional).

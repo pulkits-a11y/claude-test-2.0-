@@ -1,5 +1,21 @@
 {
  "beat": "B13",
- "rids": ["R13.1", "R13.2"],
- "note": "R13.1 = L6 framed clip + its blurred back copy (in this composition). R13.2 = the L2 unboxing, Tesseract-owned (tesseract_shots.json); synced here only for reference."
+ "rids": [
+  "R13.1",
+  "R13.2"
+ ],
+ "note": "R13.1 = L6 framed clip + its blurred back copy (in this composition). R13.2 = the L2 unboxing, Tesseract-owned (tesseract_shots.json); synced here only for reference.",
+ "moments": {
+  "R13.1": {
+   "in": 47.9,
+   "out": 51.9,
+   "crop": "632:474:51:1",
+   "note": "GTA 1 intro (PS1 boot): the DMA Design D-man logo animation - he slams into the ground (first impact frame 48.333 s = working-clip frame 13, put on the X3 cut at beat f85), smoke, then he lies run over with tyre tracks across him (51.0-51.85). 4:3 picture cropped out of its 720x480 pillarbox (cropdetect 642:476:46:0 -> exact 4:3 632:474:51:1). Used 48.333-51.80 (beat f85-190): data-media-start 0.4333 on both L6 videos"
+  },
+  "R13.2": {
+   "in": 101.4,
+   "out": 102.6,
+   "note": "reference copy only (Tesseract cuts its own from the original): the opened big box, GTA jewel case + San Andreas map, hands at the edges; facecam PIP top-left (x<500, y<352) cropped out in tesseract_shots.json"
+  }
+ }
 }

@@ -1,4 +1,4 @@
-{
- "beat": "B7",
- "rids": ["R7.1"]
-}
+{"beat": "B7", "rids": ["R7.1"],
+ "moments": {
+  "R7.1": {"in": 3.6, "out": 9.2, "crop": "440:330:110:0",
+           "note": "Early-1990s office: a woman with a headset typing at her desk, CRT monitors, colleagues in the cubicles behind; from ~6.5 s the camera pans right across the open-plan office. 4:3 crop of the top 330 px leaves the burned-in 'www.PublicDomainFootage.com' watermark (y 335-365) out. b08-break continues this window (+3.2 s)."}}}

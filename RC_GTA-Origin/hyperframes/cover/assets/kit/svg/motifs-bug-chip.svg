@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 56" width="72" height="56">
+  <!-- RC_GTA-Origin kit, M4 bug chip as one graphic (for tools outside HyperFrames): the T7 chip,
+       72 x 56 px, 12 px radius, card ink #111111, with the 8-bit beetle (white, 44 x 40) centred. -->
+  <rect x="0" y="0" width="72" height="56" rx="12" ry="12" fill="#111111"/>
+  <g transform="translate(14 8) scale(4)" shape-rendering="crispEdges">
+    <path fill="#FFFFFF" d="M2 0h1v1h-1zM8 0h1v1h-1zM3 1h1v1h-1zM7 1h1v1h-1zM4 2h3v1h-3zM0 3h1v1h-1zM3 3h5v1h-5zM10 3h1v1h-1zM1 4h4v1h-4zM6 4h4v1h-4zM2 5h3v1h-3zM6 5h3v1h-3zM0 6h5v1h-5zM6 6h5v1h-5zM2 7h3v1h-3zM6 7h3v1h-3zM1 8h4v1h-4zM6 8h4v1h-4zM0 9h1v1h-1zM3 9h5v1h-5zM10 9h1v1h-1z"/>
+  </g>
+</svg>

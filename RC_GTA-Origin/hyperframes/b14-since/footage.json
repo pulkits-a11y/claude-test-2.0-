@@ -1,5 +1,13 @@
 {
  "beat": "B14",
- "rids": ["R14.1", "R14.2", "R14.3", "R14.4", "R14.5", "R1.3", "RT3"],
- "note": "All B14 footage is Tesseract-owned (tesseract_shots.json). RT3 is ALSO embedded in this overlay for the 4 X9 wash frames (beat 140-143) so the Overlay blend has the picture under it (KIT_transitions X9 caveat); keep its media start = the RT3 shot source_in_s + 7/30. R14.6 (alternate escape) and RT7 (green-screen stars; M1 is built instead) are not used."
+ "rids": ["R1.6"],
+ "note": "All B14 footage is Tesseract-owned (tesseract_shots.json). The police-lights shot (R1.6, SUBSTITUTE for the missing RT3) is ALSO embedded in this overlay for the 4 X9 wash frames (beat 140-143) so the Overlay blend has the picture under it (KIT_transitions X9 caveat); keep its media start = (shot source_in_s - moment in) + 7/30 and the same crop. R14.6 (alternate escape: unusable, permanent logo + commentary) and RT7 (green-screen stars; M1 is built instead) are not used.",
+ "moments": {
+  "R1.6": {
+   "in": 129.3,
+   "out": 130.8,
+   "crop": "1264:711:300:289",
+   "note": "SUBSTITUTE (Rule 5) for RT3: two LSPD cruisers side by side in pursuit, red/blue light bars lit (San Andreas). Same window/crop as the Tesseract shot B14-police-lights (source_in 129.5 on beat f133); embed media start 0.4333 on beat f140."
+  }
+ }
 }

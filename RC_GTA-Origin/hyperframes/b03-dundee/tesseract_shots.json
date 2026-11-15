@@ -1,17 +1,59 @@
-{"beat": "B3", "composition": "b03-dundee", "render": "05_GFX/renders/b03-dundee.mov",
+{
+ "beat": "B3",
+ "composition": "b03-dundee",
+ "render": "05_GFX/renders/b03-dundee.mov",
  "shots": [
-  {"id": "B3-dundee-band", "rid": "R3.1", "screen": "L2", "start_f": 58, "end_f": 103,
-   "source_in_s": 0.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 104, "anchor": "center"},
-   "enter": "X2", "x2_drift_px": 60, "x2_dir": "left", "exit": "X1",
-   "letterbox": {"bars_px": 138, "slide_in_f": 8},
+  {
+   "id": "B3-dundee-band",
+   "rid": "R3.1",
+   "screen": "L2",
+   "start_f": 58,
+   "end_f": 103,
+   "source_in_s": 21.6,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
+   "enter": "X2",
+   "x2_drift_px": 60,
+   "x2_dir": "left",
+   "exit": "X1",
+   "letterbox": {
+    "bars_px": 138,
+    "slide_in_f": 8
+   },
    "grade": "archival",
-   "notes": "Plan p.21 step 2 / STORYBOARD B3 f58-103: hard cut on 'Dundee,' (beat f58 = the T3 year card's hard cut out), X2 = the clip slides 60 px right-to-left over 20f (power3.out, lands f78) while the 138 px bars slide in over 8f; push 100 -> 104% across the shot (style rule 7). Moment to find in R3.1 (Old Dundee in colour; R3.2 Dundee station 1990 is the alternate): a wide, calm view of old Dundee with empty space left AND right of the subject, because the HF overlay places T4 'Dundee,' at x 96 (left, appears f58) and 'Scotland.' right-aligned to x 1824 (appears f74), both on y 540, fading out together f99-103. If the source is 4:3, keep it 4:3 inside the band (fit the band height: 1072 x 804 centred, ink-black #0A0A0A pillars; the words then sit in the pillars) - never stretch. source_in_s 0.0 is the stand-in value: set it to the chosen moment. Archival grade = desaturate ~20%, slight warm lift, subtle grain, light vignette (HF cards in this beat use temperature +0.06, saturation -0.2, shadows +0.04, vignette 0.12, grain 0.1)."},
-  {"id": "B3-bbc-team-band", "rid": "R3.7", "screen": "L2", "start_f": 180, "end_f": 215,
-   "source_in_s": 4.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 104, "anchor": "center"},
-   "enter": "X1", "exit": "X1",
-   "letterbox": {"bars_px": 138, "slide_in_f": 8},
+   "notes": "Plan p.21 step 2 / STORYBOARD B3 f58-103: hard cut on 'Dundee,' (beat f58 = the T3 year card's hard cut out), X2 = the clip slides 60 px right-to-left over 20f (power3.out, lands f78) while the 138 px bars slide in over 8f; push 100 -> 104% across the shot. Moment: R3.1 'Old Dundee in colour', the 'La Hull from Hawkhill' slide (20.1-25.1 s): the Law hill with its monument centred against a dark storm sky, the town below; source_in 21.6 s (uses 21.6-23.1 s + handles). Crop 640:360:40:0 (16:9, top 360 px of the 854x478 upload, centred on the monument) removes the burned-in caption 'La Hull from Hawkhill' (source y 365-398) and the sides; the crop is upscaled 3x (soft, archival). The HF overlay puts T4 'Dundee,' (left, x 96) and 'Scotland.' (right, to x 1824) on y 280, in the dark sky either side of the Law (sky = frame y 138-~400 at the sides), fading out together f99-103. Archival grade.",
+   "source": "04_Broll/_originals/B03/R3.1__Old Dundee In Colour [n7QORDefzIE].mp4",
+   "crop": "640:360:40:0"
+  },
+  {
+   "id": "B3-bbc-team-band",
+   "rid": "R3.7",
+   "screen": "L2",
+   "start_f": 180,
+   "end_f": 215,
+   "source_in_s": 195.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": {
+    "bars_px": 138,
+    "slide_in_f": 8
+   },
    "grade": "archival",
-   "notes": "Plan p.21 step 4 / STORYBOARD B3 f180-215: hard cut on 'starts' (beat f180) from the HF L12 gray card to the BBC 1996 making-of footage of the DMA team at their computers (R3.7, the strongest clip in the edit), in the L2 band (bars slide in over 8f: entering a cinematic moment again after the gray card), push 100 -> 104%, archival grade; runs to the beat end f215 (B4 opens with an X1 hard cut) and on through the 6f tail handle if the cut is trimmed. HF overlay: T1 'starts a new game.' white at y 620 (inside the band) from f180. R3.7 also plays as L12 card 2 in this beat (HF, data-media-start 0 on the stand-in): pick a DIFFERENT moment for the band (team at their computers) - source_in_s 4.0 is the stand-in value. 4:3 archive: keep it 4:3 inside the band (1072 x 804 centred, ink-black pillars) or crop to the band only if the faces survive; never stretch."}
- ]}
+   "notes": "Plan p.21 step 4 / STORYBOARD B3 f180-215: hard cut on 'starts' (beat f180) from the HF L12 gray card to the BBC 1996 making-of footage of the DMA team at their computers (R3.7), in the L2 band (bars slide in over 8f), push 100 -> 104%, archival grade; runs to the beat end f215 and on through the 6f tail handle. Moment: R3.7 194.0-200.9 s, wide shot of the open-plan office: two developers at their CRT computers (game graphics on screen), the BBC presenter seated between them; source_in 195.0 s. Crop 1440:1080:240:0 removes the upload's pillarbox: the 4:3 picture stays 4:3 inside the band (contain: 1072 x 804 centred, ink pillars; plan B3 'keep 4:3 archive inside the band'). HF overlay: T1 'starts a new game.' white at y 620 from f180. Different R3.7 moments elsewhere: L12 card 2 (51.3 s, the GTA city map) and B2's CRT plate (60.4 s).",
+   "source": "04_Broll/_originals/B03/R3.7__GRAND THEFT AUTO 1996 Making Of - GTA - ｜ Retro Gaming ｜ BBC Archive [7vWSi44ZTSw].mp4",
+   "crop": "1440:1080:240:0"
+  }
+ ]
+}

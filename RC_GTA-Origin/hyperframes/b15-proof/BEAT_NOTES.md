@@ -3,46 +3,68 @@
 Beat: edit frames 1978-2156 (65.933-71.867 s), **178f**; composition **190f** (6f handle each end; local frame = beat frame + 6).
 Render: `05_GFX/renders/b15-proof.mov` (ProRes 4444, 1920x1080, 30 fps, 190 frames, `yuva444p12le`, no audio stream; opaque).
 Golden rule: Master Edit Plan p.26-27 (B15 build), p.19 (overview), p.16 (X5, X6, into each beat), p.14 (L7), p.13 (T9), p.11 (T1),
-p.31-32 (R15.x), p.34 (MU6), p.37 (S16), p.40 (accuracy: Race and Chase in GTA Online). STORYBOARD.md B15, CONFLICTS.md C13.
+p.29 (no stills as B-roll), p.31-32 (R15.x), p.34 (MU6), p.37 (S16), p.40 (accuracy). STORYBOARD.md B15, CONFLICTS.md C13.
 
 ## 1. What the viewer sees
 
-Blinds open on a dimmed GTA Online arcade with a spotlight on one cabinet while the captions ask "Don't believe me? / Open GTA Online / and buy an arcade. / One of the machines / is called"; a yellow RACE AND CHASE label pops beside the cabinet and the camera zooms through its screen into full-frame Race and Chase gameplay.
+Blinds open on a real GTA Online arcade floor (the player walking past rows of glowing cabinets) under "Don't believe me? / Open GTA
+Online / and buy an arcade. / One of the machines / is called"; on "called" a hard cut to the game's own Arcade Games catalogue, dimmed
+except a spotlight on the RACE AND CHASE: STREET LEGAL cabinet; a yellow RACE AND CHASE label pops beside it on "Race" and the camera
+zooms through the cabinet's screen into the Race and Chase gameplay shot (still a labelled stand-in: R15.1 is missing).
 
 ## 2. Assets
 
 | ID | What | Status |
 |---|---|---|
-| R15.3 | GTA Online arcade interior with the Race and Chase cabinet (plan: R15.3 or R15.4; better: capture it in GTA Online yourself, p.27 / p.41) | **stand-in** `assets/footage/R15.3.mp4` |
-| R15.1 | Race and Chase arcade gameplay (the proof shot): in the cabinet screen, then full frame | **stand-in** `assets/footage/R15.1.mp4` |
-| R15.4 / R15.2 | alternate / reference (music) | not used |
+| R15.3 | GTA Online arcade business guide: arcade floor walk-through + the in-game Arcade Games catalogue (see "Footage used") | **real**, one working clip `assets/footage/R15.3.mp4` (window 190.9-234.1 s) |
+| R15.1 | Race and Chase arcade gameplay (the proof shot): in the cabinet screen during the zoom, then full frame | **MISSING - labelled stand-in** `04_Broll/_placeholders/R15.1.mp4` |
+| R15.4 | all GTA Online arcade games (alternative arcade shot) | **MISSING** (not downloaded) |
+| R15.2 | Race and Chase arcade music (plan: reference) | real, not used: the whole video is one static key-art image (no gameplay, no cabinet on screen) |
 | S16 | Data_Whoosh (PRISFX > Extra), -12 dBFS, peak at 0.96 s | Tesseract (cue `zoom_mid`) |
 | MU6 | low-pass ~800 Hz and -6 dB from "Don't believe me?" until the label lands | Tesseract (cue `label`) |
 
-Fonts: Inter Medium 500 (T1), Inter Bold 700 (T9 label). Kit: X5 `RCK.transitions.blindsOpen`, L7 `RCK.screens.spotPush`, T9 `RCK.type.label`, X6 `RCK.transitions.zoomFit` + `zoom`, held-shot `RCK.screens.push`. No cut-outs.
+Fonts: Inter Medium 500 (T1), Inter Bold 700 (T9 label). Kit: X5 `blindsOpen`, L7 `spotPush`, T9 `label`, X6 `zoomFit` + `zoom`
+(`scale:'fill'`, `handoff`) + `zoomGeometry`/`zoomPlan`/`blurValue`, rule-7 `push`. No cut-outs.
 
 ## 3. Tool and layer stack
 
-HyperFrames only; opaque the whole beat (the composition carries its own footage, handoff rule 2; `tesseract_shots.json`: `"shots": []`).
+HyperFrames only; opaque the whole beat (the composition carries its own footage; `tesseract_shots.json`: `"shots": []`).
 
 Top to bottom:
 1. T1 captions `#b15-cap-1..5` (z 60, screen space, above the slats).
 2. X5 slats `#b15-x5` (z 50), f-6..8.
-3. `#b15-full-wrap` > `#b15-full` full-frame R15.1 (z 3), f169-184 (pushed 100 -> 104%).
-4. `#b15-world` (X6 zoom, z 2) > `#b15-l7` (L7 push) > `#b15-t9` T9 label > `#b15-dim` dim with hole > `#b15-screen` (R15.1 `#b15-pic` in the cabinet screen) > `#b15-plate` R15.3; f-6..168.
+3. `#b15-full-wrap` > `#b15-full` full-frame R15.1 stand-in (z 3), f168-184 (X6 handoff; pushed 100 -> 104%).
+4. `#b15-world` (X6 zoom, z 2) > `#b15-l7` (L7 push) > T9 label `#b15-t9` > dim `#b15-dim` > screen picture box `#b15-screen`
+   (R15.1, hidden until f160) > static reframe `#b15-catframe` (1.4x about 241, 1080) > `#b15-plate` (R15.3 catalogue), f133-167.
+5. `#b15-int-wrap` (rule-7 push) > `#b15-int` R15.3 arcade floor (z 1), f-6..132.
 
 ## 4. Step-by-step build (beat frames; seconds = (frame + 6) / 30)
 
-1. **f-6..0** head handle: X5 slats shut (12 x 160 px ink black #0A0A0A); the world is under them at push 100%.
-2. **f0-8 X5 in half**: `blindsOpen` at f0: slats rotate 0 -> -90 deg about their centre lines over 8f (constant 11.25 deg/frame, perspective 1000 px; coverage 100% f0, 71% f4, 19.5% f7), removed on f8. B14 plays the closing half over its last 8f.
+1. **f-6..0** head handle: X5 slats shut (12 x 160 px ink black #0A0A0A) over the arcade floor at push 100%.
+2. **f0-8 X5 in half**: `blindsOpen` at f0 (slats 0 -> -90 deg, 8f, constant speed), removed on f8. B14 closes them over its last 8f.
 3. **f0 T1** "Don't believe me?" hard cut in on the first syllable, above the slats.
-4. **f0-160 L7 on R15.3**: dim #0A0A0A at 65% (35% shows) with a rounded hole on the cabinet `data-hole="300,120,400,840"` (radius 16, feather 20) [stand-in guess]; `spotPush` 1.00 (f0) -> 1.18 (f160), linear, about the hole centre (500, 540). The cabinet screen carries R15.1: `zoomFit('#b15-screen', {rect: [364.41, 253.73, 271.19, 152.54]}, {res: 7.08})` = laid out 1920 x 1080 at 1/7.08, so on f160 (push 118%) the picture is exactly 320 x 180 at (340, 202.2) and 1:1 at 600%.
-5. **T1 chunks**, each hard cut in on its first word and out on the next chunk: f27 "Open GTA Online", f54 "and buy an arcade.", f100 "One of the machines", f129 "is called" (out f148, where T9 takes over). Offsets vs the voice: -0.06, +0.39, -0.24, +0.34, +0.45 frames.
-6. **f148 T9 label** "RACE AND CHASE" pops in over 4f (scale 96 -> 100% + fade 0 -> 1, `power3.out`, lands f152), inside the pushed L7 next to the cabinet (layout top-left 730, 298; on screen ~768-1258 x 258-333 at f148).
-7. **f160-168 X6 IN**: `zoom('#b15-world', f160, {screen: {rect: [340, 202.2, 320, 180]}, dir: 'in'})`: 100% -> 600% over 8f, log-space `power1.in` (100, 103, 112, 129, 157, 201, 274, 394, 600%), origin (408, 242.6) so the screen centre lands on the frame centre (measured: f166 box 880 x 492 centred 659, 379 = expected). Motion blur: per-frame media-treatment blur on the plate + screen picture, CSS blur on the dim and the label; `blurRef 540/1.18`, `blurMax 24/1.18` (see kit note). The label goes with the zoom.
-8. **f168** landing frame: the screen picture is the frame (1920 x 1080), motion-blurred (fastest frame).
-9. **f169-178** plain full-frame R15.1, same media time (`data-media-start 5.8333`; stand-in counter reads 00:00:05.833 on f169), push 100% -> 104% linear to the tail-handle end (f184; 102.4% on the beat's last frame). Tail handle = the shot continued.
-10. Grades (media-treatment): R15.3 plate and both R15.1 videos `adjust.contrast +0.15` (game footage: punchy contrast, HUD colours untouched: no hue/saturation change); plate + screen picture also `effects.blur 0.01` with inline `--hf-color-grading-blur: 0` (X6 blur control, sharp at rest).
+4. **f-6..132 the arcade floor** (R15.3 @ 3:49.4-3:54.0, one continuous take, no game cuts): the player walks down the stairs past
+   rows of upright cabinets ("Choose Your Side", "Street Crimes: Gang Wars Edition"...). Rule-7 push 100% (f0) -> 104% (f133) about
+   the centre. Game grade via media-treatment: `adjust.contrast +0.15` (HUD colours untouched).
+5. **T1 chunks** (unchanged), each hard cut in on its first word and out on the next chunk: f27 "Open GTA Online", f54 "and buy an
+   arcade.", f100 "One of the machines" (over the rows of machines), f129 "is called" (out f148, where T9 takes over).
+6. **f133 X1 hard cut on "called"** (word onset f132.2) to **L7 on the catalogue**: R15.3 @ 3:11.035-3:12.170, the game's own Arcade
+   Games page on the arcade's laptop, resting on the row RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS (the page is
+   static for exactly these 35 frames, so it plays in real time f133-167 and never holds a frame). Static reframe `#b15-catframe`
+   `scale(1.4)` about (241, 1080): the source's bottom edge stays on the frame bottom (the row sits at the bottom of the recording),
+   the row grows and the game's help-text box (top-left) leaves the frame. Dim #0A0A0A at 65% (35% shows) with a rounded 20 px
+   feathered hole `data-hole="366,681,548,430"` (r 16) on the STREET LEGAL card (heading + cabinets; source x 330-722, y 795-1080;
+   the bottom runs off-frame). `spotPush` 1.00 (f133) -> 1.18 (f160), linear, about the hole centre (640, 896).
+7. **f148 T9 label** "RACE AND CHASE" pops over 4f (96 -> 100% + fade, `power3.out`, lands f152) inside the pushed L7, right of the
+   card, centred on the cabinet screen: layout top-left (930, 871) -> on screen ~959-1390 x 868-940.
+8. **f160-168 X6 IN** through the yellow STREET LEGAL cabinet's main screen: the 16:9 picture rect inside it = source (595.5, 932.9,
+   84 x 47.25) -> frame (737, 874, 118 x 66.375) at push 100% -> (754.46, 870.04, 139.24 x 78.32) on f160. `X.zoom(..., scale:'fill')`
+   = **1379%** (13.79x) log-space `power1.in`, origin so the screen centre lands on the frame centre; the R15.1 box (`zoomFit`, laid out
+   1920 px wide, res 16.27) fades in over f160-163 on top of the real cabinet screen; motion blur: kit plan on the screen picture,
+   dim and label (blurRef 540/1.18, blurMax 24/1.18), and the same plan divided by the extra 1.4x on the plate (local code). The label
+   goes with the zoom.
+9. **f168** landing: `handoff` = plain full-frame R15.1 at the same media time (5.8 s), **f169-178** full frame, push 100 -> 104% to
+   the tail-handle end. Tail handle = the shot continued.
 
 ## 5. On-screen text
 
@@ -52,57 +74,68 @@ Top to bottom:
 | `Open GTA Online` | T1 | same | f27-54 |
 | `and buy an arcade.` | T1 | same | f54-100 |
 | `One of the machines` | T1 (4 words, the maximum) | same | f100-129 |
-| `is called` | T1 | same | f129-148 |
-| `RACE AND CHASE` | T9 label: Inter Bold 40 px caps, #111111 on #FFE14D, 12 x 20 px padding, 4 px radius | next to the cabinet (pushed 116.7-118%) | f148 pop (4f) -> carried off by the zoom f160-168 |
+| `is called` | T1 | same (above the spotlight from f133) | f129-148 |
+| `RACE AND CHASE` | T9 label: Inter Bold 40 px caps, #111111 on #FFE14D, 12 x 20 px padding, 4 px radius | right of the cabinet card | f148 pop (4f) -> carried off by the zoom f160-168 |
+
+The catalogue itself shows the game's own "RACE AND CHASE: STREET LEGAL" heading inside the spotlight (the checkable proof).
 
 ## 6. Audio
 
-* **S16** Data_Whoosh, -12 dBFS, peak at 0.96 s: start **f135** so the peak meets the zoom midpoint **f164** (`zoom_mid`; CONFLICTS C13: 0.96 s = 29f, the plan's "about 25f" read as the peak-alignment rule).
-* **MU6**: low-pass at ~800 Hz and -6 dB from "Don't believe me?" (f0) until the label lands (`label` = **f148**, the pop completes f152), then open it again.
-* No other SFX (X5 is silent). `cues.json`: `{"events": {"label": 148, "zoom_mid": 164}}`.
+* **S16** Data_Whoosh, -12 dBFS, peak at 0.96 s: start **f135** so the peak meets the zoom midpoint **f164** (`zoom_mid`; CONFLICTS C13).
+* **MU6**: low-pass ~800 Hz and -6 dB from "Don't believe me?" (f0) until the label lands (`label` = **f148**), then open it again.
+* No sound on the X1 cut at f133 or on X5. `cues.json`: `{"events": {"label": 148, "zoom_mid": 164}}` (unchanged, still true).
 
 ## 7. Mistakes to avoid
 
-* The cabinet is "the one shot viewers can check": use real GTA Online footage where the name Race and Chase is legible (capture it in-game if possible, and confirm the name on screen; p.27, p.40).
-* The screen picture must be exactly 320 x 180 px on f160 (271.19 x 152.54 at push 100%), or the 600% landing will not match the full-frame clip (or will not cover the frame).
-* Keep the label inside the zoom world ("the label goes with the zoom") and the captions outside it.
-* Do not let T1 cover the spotlit cabinet: on the real plate, if the cabinet sits in the centre, drop T1 to y 860 (T1 rule).
-* No glitch, no siren wash in B15; slats are ink black; no fade from black.
+* Never spotlight or label a cabinet that is not Race and Chase: the R15.3 arcade floor has none (all its machines are other games).
+* Do not hold the catalogue page longer than its 35 static frames (plan p.29: no static images as B-roll; stills < 1.5 s).
+* Keep the screen-picture rect 16:9 and centred on the real cabinet screen, or the X6 landing will not match the full-frame clip.
+* Keep the label inside the zoom world and the captions outside it. No glitch, no siren wash in B15; slats ink black.
 * Never CSS-filter the footage (grade and blur only via media-treatment).
+
+## Footage used
+
+| R-ID | File (04_Broll/_originals/...) | In-out (s, original) | Beat frames | What it shows | Link |
+|---|---|---|---|---|---|
+| R15.3 | `B15/R15.3__Complete Arcade Business Guide & Buyers Guide ｜ GTA Online Diamond Cas [E0TK4V7YjFo].mp4` | 229.40-234.00 | f-6..132 | GTA Online arcade floor, player walking past rows of cabinets (HUD: minimap, cash, one kill-feed line with a masked gamertag) | https://www.youtube.com/watch?v=E0TK4V7YjFo&t=229 |
+| R15.3 | same | 191.035-192.170 | f133-167 | the game's Arcade Games catalogue on the arcade laptop: RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS (prices, not owned) | https://www.youtube.com/watch?v=E0TK4V7YjFo&t=191 |
+| R15.1 | stand-in `04_Broll/_placeholders/R15.1.mp4` (labelled slate) | 0-6.33 (stand-in) | f160-184 | placeholder for Race and Chase gameplay | (plan: https://www.youtube.com/watch?v=xGN6cKeZdN8) |
+
+Working clip: `footage.json` moment R15.3 190.9-234.1 (both moments in one window), `python3 tools/sync_footage.py hyperframes/b15-proof`.
+
+## Substitutions
+
+* `SUBSTITUTE (Rule 5): R15.3 Complete Arcade Business Guide & Buyers Guide | GTA Online Diamond Casino [E0TK4V7YjFo] @ 03:11-03:12 for R15.4 (missing) and for the Race and Chase cabinet inside the arcade interior (the R15.3 arcade floor shows no Race and Chase cabinet: its owner bought only upright cabinets; the three Race and Chase cabinets appear only in the game's own Arcade Games catalogue, unbought).` Consequence [interp, flagged]: the arcade interior carries f0-132 without a spotlight (no target in it), and L7 (dim + spotlight + push 118% + label) runs on the catalogue f133-160, cut on "called".
+* R15.1 (Race and Chase gameplay) is **missing** and has **no substitute**: R15.2 is one static key-art image for its whole 94 s; R15.3 never plays the game. The labelled stand-in stays for f160-184 (inside the cabinet screen during the zoom, then full frame). **BLOCKING for the final proof shot.**
 
 ## Interpretations / conflicts
 
-* **T1 above the X5 slats** so "Don't believe me?" reads from its first syllable on f0 while the blinds open (the kit puts the closing slats above captions in the outgoing beat). [interp]
-* **L7 push**: B15 build says "slow push-in" (p.26), L7 library gives 100% -> 118% across the beat (p.14): both followed (f0 -> f160, then X6 takes over).
-* **R15.1 in the cabinet screen for the whole L7 shot**: X6 needs "the screen's picture becomes the frame" (p.16); the Race and Chase gameplay is composited into the screen so the zoom lands on it. If the real cabinet screen already shows Race and Chase, the insert still guarantees the seamless landing. [interp]
-* **Landing**: f168 = the world at 600% (picture = frame, motion-blurred), plain full-frame R15.1 from f169 at the same media time (kit recipe); STORYBOARD "168-178 full-frame R15.1" holds.
-* **Rule 7 push on the 10f full-frame shot** (100 -> 104% to the tail-handle end) keeps momentum after the zoom. [interp]
-* **Label "next to the cabinet"**: right of the cabinet, vertically centred on its screen. [interp]
-* **Game grade** applied in HyperFrames because the footage is HF-owned (Tesseract grades only its own footage); contrast +0.15 is the lane's value for the plan's "punchy contrast" (p.10). [value = SUGGESTION, re-check on real footage]
-* **"Don't"** keeps the locked script's straight apostrophe (the plan text and words.json both use it).
-* Check warnings kept: craft `line_unread` on "Don't believe me?", "Open GTA Online" (0.90 s) and "One of the machines" (0.96 s) (voice timing governs), and on the label as "the film's last line" (0.6 s before the zoom carries it off, storyboard timing); lint `timeline_track_too_dense` (5 captions on one Studio track).
+* **X6 scale 1379% ('fill') instead of 600%**: the real cabinet screen is 118 px wide at push 100% (139 px on f160); 600% would leave
+  it 835 px wide, so it would not "become the frame" (X6's purpose, p.16). The kit's `scale:'fill'` is used: the zoom ends exactly
+  when the screen's picture is the frame. A 3.2x reframe would have kept 600% but turned the spotlight into the whole frame.
+* **L7 push 100 -> 118% over 27f** (f133-160): the L7 library number (p.14) is kept although the shot is short; B15's "slow push-in"
+  (p.26) cannot be slow in 0.9 s. It leads into the zoom.
+* **R15.1 picture fades into the cabinet screen over the zoom's first 3 frames** (the real cabinet screen shows during L7).
+* T1 above the X5 slats; label right of the card; game grade contrast +0.15 [values = SUGGESTION]; "Don't" straight apostrophe.
+* Check warnings kept: craft `line_unread` (voice timing governs) and on the label as "the film's last line"; lint `timeline_track_too_dense`.
 
-## Pending real footage (re-fit when the real clips arrive)
+## Still pending
 
-* **R15.3 plate** (or R15.4 / an in-game capture): pick a locked-off, ideally frontal moment with the Race and Chase cabinet fully visible, >= 5.83 s usable (local 0-175); set `source_in/source_out` in `04_Broll/broll_manifest.json`, re-run `tools/sync_footage.py hyperframes/b15-proof`.
-* **Cabinet spotlight box**: `data-hole` on `#b15-dim` (now a guess: 300,120,400,840 = left third). If the camera moves, track it with `RCK.screens.spotMove` or choose a static moment.
-* **Screen rect** (now a guess): `SCREEN_100` in the script = the screen picture rect at push 100% (must stay 271.19 x 152.54 px; if the real screen is smaller/larger, reframe the plate with a static zoom wrapper, as B4's `#b04-docframe`, until it is). If the screen is not frontal, use `{corners: [[x,y] TL, TR, BR, BL]}` in both `zoomFit` and `zoom` (the plain full-frame cut on f169 already handles the non-axis-aligned landing). `SCREEN_160` is derived automatically.
-* **4:3 screen**: if the real cabinet screen is 4:3, letterbox the 16:9 R15.1 inside it (picture rect 16:9 within the screen) so the 600% landing equals the full-frame clip.
-* **Label spot**: `--rc-x / --rc-y` on `#b15-t9` (next to the real cabinet, inside title-safe after the 118% push).
-* **T1 height**: keep y 620 only if the captions stay clear of the spotlit cabinet; otherwise `rc-t1--low` (y 860).
-* **R15.1 in-point**: the screen shows R15.1 media 0-5.83 s and full frame 5.83-6.33 s (f169-184); trim the real clip (manifest) so the zoom lands on a readable Race and Chase moment.
-* **Grade**: re-check contrast +0.15 on the real plate and gameplay (HUD colours untouched).
-* Then re-check, re-snapshot (f0, f4, f8, f100, f148, f152, f160-169), re-render.
+* **R15.1** (the proof shot, missing): when it arrives, add a moment for R15.1 in `footage.json` (a readable Race and Chase moment, >= 6.4 s
+  from the in-point: the screen picture plays media 0-5.8 s, the full frame 5.8-6.33 s), re-sync, re-check, re-render. No geometry change.
+* **SUGGESTION** (plan p.27 Watch out): capture the cabinet in GTA Online yourself - an arcade with a Race and Chase cabinet bought, a
+  frontal moment of it on the floor, then its gameplay. That replaces both the catalogue substitute and the R15.1 stand-in and restores
+  the plan's single interior L7 shot (re-fit `data-hole`, `SCREEN_100`, the reframe and the label spot).
+* R15.4 (missing) could also show the cabinet on an arcade floor; same re-fit if used.
 
 ## Kit problems worked around
 
-* **X6 motion-blur strength with a pre-scaled world**: `RCK.transitions.zoom` sizes the per-frame blur by the zoom scale only; here everything in the world is also pushed 1.18x by L7, so the on-screen blur would be 18% too strong. Compensated locally by passing `blurRef: 540/1.18` and `blurMax: 24/1.18` (commented in `index.html`). Suggested kit option: `preScale` (an extra on-screen scale factor for the blur model).
-* `zoomFit` rounds the rest size to whole pixels (271 x 153 -> 1919 x 1083 at res 7.08); the box itself is mapped exactly onto the rect (non-uniform scale 0.1413 / 0.1409), so the landing covers the frame; the picture inside differs from the full-frame clip by ~3 px horizontally on the (motion-blurred) landing frame only. Accepted, no fix.
+* X6 blur model sizes the blur by the zoom scale only: the world is also pushed 1.18x (blurRef/blurMax / 1.18) and the plate has an
+  extra static 1.4x (its blur values are computed locally with `X.zoomPlan` / `X.blurValue` divided by 1.4).
 
-## Verified (snapshots in `review/`, contact sheet `contact-sheet-1.jpg`)
+## Verified (snapshots `review/`, contact sheets `contact-sheet-1.jpg`, `contact-sheet-2.jpg`)
 
-* Handles: f-6 (slats shut, black), f178 / f183 (full-frame R15.1, push continuing).
-* X5: f0 shut + T1, f2, f4 (71%), f7, f8 slats gone (L7 visible).
-* T1: f0, f27, f54, f100, f129 (each on its word; check confirms the frames); f148 no text (label at 0%), f150, f152 label landed.
-* X6: f160 (screen box measured 340-660 x 202-382 at push 118%), f162, f164 (mid), f166 (box 880 x 492 at 274%, centre 659, 379 = expected), f167, f168 (picture fills the frame, blurred), f169 plain clip, media time continuous (stand-in counter 00:00:05.833).
-* `check --json`: 0 errors (lint 0, runtime 0, layout 0, contrast 0 errors); warnings as listed.
+* f-6, f0 (slats shut + T1), f4, f8 (interior), f100, f132 (last interior frame), f133 (cut: spotlight on STREET LEGAL), f148 / f152
+  (label), f159, f160-167 (zoom: picture lands inside the yellow cabinet's screen), f168 / f169 (landing = stand-in, same media
+  time), f183.
+* `check --json`: 0 errors; warnings as listed. Render: 190 frames, `yuva444p12le` (ffprobe).

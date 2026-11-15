@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 10" width="44" height="40" shape-rendering="crispEdges">
+  <!-- RC_GTA-Origin kit, M4 bug: 8-bit beetle, 11 x 10 pixels, drawn at 4 px per pixel (44 x 40).
+       White on transparent; the dark chip is .m4-chip (or svg/motifs-bug-chip.svg). Keep integer
+       scales (x4, x8) so the pixels stay crisp. Same drawing as RCK.motifs.BUG_D. -->
+  <path fill="#FFFFFF" d="M2 0h1v1h-1zM8 0h1v1h-1zM3 1h1v1h-1zM7 1h1v1h-1zM4 2h3v1h-3zM0 3h1v1h-1zM3 3h5v1h-5zM10 3h1v1h-1zM1 4h4v1h-4zM6 4h4v1h-4zM2 5h3v1h-3zM6 5h3v1h-3zM0 6h5v1h-5zM6 6h5v1h-5zM2 7h3v1h-3zM6 7h3v1h-3zM1 8h4v1h-4zM6 8h4v1h-4zM0 9h1v1h-1zM3 9h5v1h-5zM10 9h1v1h-1z"/>
+</svg>

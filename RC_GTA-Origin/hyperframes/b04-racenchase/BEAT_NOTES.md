@@ -74,6 +74,18 @@ No SFX (plan p.21; "Silence by design: no SFX in B4-B5", p.38). Music: no MU poi
 * **18 empty slots from the cut** (kit choice: empty slot = 2 px inset outline) so "18 squares fill in left to right" reads as a calendar being filled; the 18th square lands on f80 (STORYBOARD [interp]).
 * Lint/check warnings kept on purpose: `nested_structure_needs_subcomposition` (kit T2 markup and the highlight's timed wrapper; Studio display only); craft `line_unread` on "planned to take" / "18 months." as "the film's last line" (this is one beat of the edit; the voice timing governs).
 
+## Footage used (footage pass)
+
+| R-ID | File | In-out | Beat f | What it shows | Link |
+|---|---|---|---|---|---|
+| R4.5 | `04_Broll/B04/R4.5__design-doc-1995_title-page.png` (real scan, still) | still, 44f on screen (1.47 s < 1.5 s), push 100 -> 118% | 0-44 | Race'n'Chase Game Design v1.05 title page, (c) 1995 DMA Design Ltd | plan p.29 R4.5 sources (Game Developer / iGrandTheftAuto / Engadget) |
+
+* R4.1 (optional prototype gameplay in a small frame): not used. It is not among the downloaded originals, and the storyboard's B4
+  (L7 0-44, calendar 44-108) has no slot for it without cutting the still or the calendar. SUGGESTION only, if the lead wants it.
+* No substitutions. Kit refreshed (`new_beat.py B4 --refresh`, identical to `_kit`); the kit changes since the render (T8 italic
+  names, X3 frame counting, X4 still capture, X6 handoff/push) touch nothing B4 uses, so `05_GFX/renders/b04-racenchase.mov`
+  (120 frames, yuva444p12le) stays valid; `check --json`: 0 errors.
+
 ## Pending real footage
 
 * R4.5 is already real; nothing pending for the picture itself.

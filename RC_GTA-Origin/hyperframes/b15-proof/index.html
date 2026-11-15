@@ -14,6 +14,15 @@
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       #b15-full-wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
       #b15-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      /* interior shot (R15.3 arcade floor): full frame; the wrapper takes the rule-7 push */
+      #b15-int-wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #b15-int { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      /* static reframe of the catalogue plate (as B4's #b04-docframe): 1.4x about (241, 1080), so the source's bottom edge
+         stays at the frame bottom, the Race and Chase row grows and the game's help-text box (top-left) leaves the frame */
+      #b15-catframe {
+        position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+        transform-origin: 241px 1080px; transform: scale(1.4);
+      }
     </style>
   </head>
   <body>
@@ -21,48 +30,59 @@
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.1333s (local frame = beat frame + 6).
          Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B15 p.26-27).
 
-         Beat f-6..0  head handle: X5 slats shut (in half of the B14 -> B15 blinds; B14 closes them over its last 8f).
-         Beat f0-8    X5 blinds OPEN onto L7 (12 ink-black slats rotate 0 -> -90 deg, 8f, constant speed).
-         Beat f0-160  L7: GTA Online arcade interior (R15.3), dimmed to 35% except a rounded spotlight box on the
-                      Race and Chase cabinet; push 100% -> 118% toward it (f0 -> f160). The cabinet screen carries the
-                      Race and Chase gameplay (R15.1) so the X6 zoom lands on it. T1 captions (y 620, white + soft shadow):
-                      "Don't believe me?" f0 / "Open GTA Online" f27 / "and buy an arcade." f54 / "One of the machines" f100 /
-                      "is called" f129. T9 label "RACE AND CHASE" pops next to the cabinet on "Race" (f148, 4f).
-         Beat f160-168 X6 IN: zoom through the cabinet screen 100% -> 600% over 8f with motion blur; the label goes with it.
-         Beat f168-178 full-frame Race and Chase arcade gameplay (R15.1): the plain full-frame R15.1 (same media time as the
-                      screen picture) is the X6 handoff, shown from the landing frame f168 (= the 600% frame), pushing
-                      100% -> 104% to the tail-handle end.
-         CABINET HOLE, SCREEN RECT AND LABEL SPOT ARE GUESSES ON THE STAND-IN: see BEAT_NOTES.md "Pending real footage".
+         Beat f-6..0   head handle: X5 slats shut (in half of the B14 -> B15 blinds; B14 closes them over its last 8f).
+         Beat f0-8     X5 blinds OPEN onto the GTA Online arcade interior (R15.3 @ 3:49.4-3:54.0, real, moving; push
+                       100 -> 104%). T1 (y 620, white + soft shadow): "Don't believe me?" f0 / "Open GTA Online" f27 /
+                       "and buy an arcade." f54 / "One of the machines" f100 / "is called" f129.
+         Beat f133     X1 hard cut on "called" to L7: the in-game Arcade Games catalogue (R15.3 @ 3:11.04-3:12.17, the only
+                       Race and Chase cabinets in R15.3; static page, real time) reframed 1.4x, dimmed to 35% except a
+                       rounded spotlight box on the RACE AND CHASE: STREET LEGAL cabinet; push 100% -> 118% toward it
+                       (f133 -> f160). T9 label "RACE AND CHASE" pops next to the cabinet on "Race" (f148, 4f).
+         Beat f160-168 X6 IN: zoom through the cabinet's screen (log-space, power1.in, motion blur); scale 'fill' (1379%):
+                       the real screen is 118 px wide at push 100%, so 600% would not make it the frame (BEAT_NOTES).
+                       The Race and Chase gameplay picture (R15.1) fades into the cabinet screen over f160-163.
+         Beat f168-178 full-frame Race and Chase gameplay (R15.1 = LABELLED STAND-IN, the clip is missing): the plain
+                       full-frame R15.1 at the same media time is the X6 handoff from the landing frame, push 100 -> 104%.
          Cues (Tesseract): label = f148 (MU6 low-pass/-6 dB from f0 until here), zoom_mid = f164 (S16 peak). -->
     <div data-hf-id="hf-nlk3" id="root" data-composition-id="b15-proof" data-start="0" data-duration="6.3333333" data-width="1920" data-height="1080">
+
+      <!-- ===== the arcade interior: R15.3 working clip 38.500 s = source 229.4 s on local 0 (beat f-6); hard cut out at f133 ===== -->
+      <div data-hf-id="hf-i7wr" id="b15-int-wrap" style="z-index: 1">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-i7vd" id="b15-int" class="clip" src="assets/footage/R15.3.mp4" data-start="0.0000" data-duration="4.6333" data-media-start="38.5000" data-track-index="0" muted playsinline></video>
+      </div>
 
       <!-- ===== X6 world (untimed; X.zoom scales it): the L7 shot incl. the cabinet screen, dim and label ===== -->
       <div data-hf-id="hf-o6pw" id="b15-world" class="rc-x6" style="z-index: 2">
         <!-- L7 (untimed; spotPush scales it 1 -> 1.18 about the hole centre) -->
         <div data-hf-id="hf-9ku1" id="b15-l7" class="rc-l7">
-          <!-- R15.3 arcade interior (stand-in). Game grade (contrast) + blur control for the X6 motion blur via media-treatment -->
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-ql5o" id="b15-plate" class="clip rc-l7__media" src="assets/footage/R15.3.mp4" data-start="0.0000" data-duration="5.8333" data-track-index="1" muted playsinline style="--hf-color-grading-blur: 0"></video>
-          <!-- the cabinet screen picture (R15.1), laid out at 7.08x and mapped onto the screen rect by X.zoomFit:
-               rect at push 100% = 271.19 x 152.54 at (364.41, 253.73) -> on f160 (push 118%) exactly 320 x 180 at (340, 202.2),
-               so the 600% zoom makes the picture exactly the frame -->
+          <!-- R15.3 catalogue plate (working clip 0.1333 s = source 191.035 s, the first static frame, on beat f133), inside
+               the static 1.4x reframe. Game grade (contrast) + blur control for the X6 motion blur via media-treatment -->
+          <div data-hf-id="hf-c4fr" id="b15-catframe" data-layout-allow-overflow="">
+            <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-ql5o" id="b15-plate" class="clip rc-l7__media" src="assets/footage/R15.3.mp4" data-start="4.6333" data-duration="1.1667" data-media-start="0.1333" data-track-index="1" muted playsinline style="--hf-color-grading-blur: 0"></video>
+          </div>
+          <!-- the cabinet screen picture (R15.1), laid out at 1920 px wide and mapped onto the screen rect by X.zoomFit:
+               the 16:9 rect inside the yellow cabinet's main screen = source (595.5, 932.9, 84 x 47.25) -> frame
+               (737, 874, 118 x 66.375) at push 100% -> on f160 (push 118%) (754.46, 870.04, 139.24 x 78.32); invisible
+               during L7 (the real cabinet screen shows), fades in over the zoom's first frames -->
           <div data-hf-id="hf-vrdd" id="b15-screen" class="rc-x6__screen">
             <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-w22k" id="b15-pic" class="clip" src="assets/footage/R15.1.mp4" data-start="0.0000" data-duration="5.8333" data-track-index="2" muted playsinline style="--hf-color-grading-blur: 0"></video>
           </div>
-          <!-- dim: #0A0A0A at 65% (35% shows), rounded hole (20 px feather) on the cabinet; screen px at push 100% -->
-          <div data-hf-id="hf-w7fl" id="b15-dim" class="clip rc-l7__dim" data-hole="300,120,400,840" data-radius="16" data-feather="20" data-start="0.0000" data-duration="5.8333" data-track-index="3"></div>
-          <!-- T9 label next to the cabinet (inside the pushed L7 + the zoom world: it pushes with the shot and goes with the zoom) -->
-          <div data-hf-id="hf-qlzm" id="b15-t9" class="clip rc-t9" data-start="5.1333" data-duration="0.7000" data-track-index="4" style="--rc-x: 730px; --rc-y: 298px">
+          <!-- dim: #0A0A0A at 65% (35% shows), rounded 20 px feathered hole on the RACE AND CHASE: STREET LEGAL card
+               (heading + cabinets; source x 330-722, y 795-1080 through the 1.4x reframe; the bottom runs off-frame) -->
+          <div data-hf-id="hf-w7fl" id="b15-dim" class="clip rc-l7__dim" data-hole="366,681,548,430" data-radius="16" data-feather="20" data-start="4.6333" data-duration="1.1667" data-track-index="3"></div>
+          <!-- T9 label right of the cabinet card, centred on its screen (inside the pushed L7 + the zoom world: it pushes
+               with the shot and goes with the zoom) -->
+          <div data-hf-id="hf-qlzm" id="b15-t9" class="clip rc-t9" data-start="5.1333" data-duration="0.7000" data-track-index="4" style="--rc-x: 930px; --rc-y: 871px">
             <span data-hf-id="hf-k1vi" class="rc-t9__label">RACE AND CHASE</span>
           </div>
         </div>
       </div>
 
-      <!-- ===== X6 handoff: the plain full-frame R15.1 = the 600% frame. Hidden (X.zoom opts.handoff) until the landing frame
-           f168, then the shot itself to the tail-handle end; same media time as the screen picture (media-start = local start) ===== -->
+      <!-- ===== X6 handoff: the plain full-frame R15.1 = the landing frame. Hidden (X.zoom opts.handoff) until f168, then
+           the shot itself to the tail-handle end; same media time as the screen picture (media-start = local start) ===== -->
       <div data-hf-id="hf-8yse" id="b15-full-wrap" style="z-index: 3">
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-bdpp" id="b15-full" class="clip" src="assets/footage/R15.1.mp4" data-start="5.8000" data-duration="0.5333" data-media-start="5.8000" data-track-index="5" muted playsinline></video>
       </div>
-
       <!-- ===== X5 blinds, IN half (shut through the head handle and on f0, open f0-8) ===== -->
       <div data-hf-id="hf-1mec" id="b15-x5" class="clip rc-x5" data-start="0.0000" data-duration="0.4666" data-track-index="10" style="z-index: 50"></div>
 
@@ -86,20 +106,26 @@
       const B = (n) => (n + 6) / 30;                 // beat frame -> composition seconds (6f head handle)
       const W = { Race: 5.120 };                     // words.json comp_t: "Race" = beat f148
 
-      // Stand-in geometry (re-fit on the real R15.3, see BEAT_NOTES "Pending real footage")
-      const PUSH = 1.18, HOLE_C = [500, 540];                                   // hole 300,120,400,840 -> centre
-      const SCREEN_100 = [364.4068, 253.7288, 271.1864, 152.5424];              // screen picture rect at push 100%
+      // Geometry measured on the real R15.3 catalogue frame (source px -> frame px through the 1.4x reframe about 241, 1080)
+      const PUSH = 1.18, CAT_K = 1.4, HOLE_C = [366 + 548 / 2, 681 + 430 / 2];  // hole 366,681,548,430 -> centre (640, 896)
+      const SCREEN_100 = [737, 874, 118, 66.375];                                // 16:9 screen picture rect at push 100%
       const SCREEN_160 = [HOLE_C[0] + PUSH * (SCREEN_100[0] - HOLE_C[0]),       // the same rect on the zoom's first
                           HOLE_C[1] + PUSH * (SCREEN_100[1] - HOLE_C[1]),       // frame (f160, push 118%):
-                          PUSH * SCREEN_100[2], PUSH * SCREEN_100[3]];          // [340, 202.2, 320, 180]
+                          PUSH * SCREEN_100[2], PUSH * SCREEN_100[3]];          // [754.46, 870.04, 139.24, 78.32]
+      const ZG = X.zoomGeometry({ rect: SCREEN_160 }, { scale: 'fill' });        // fill = 13.79 (1379%)
 
       // X5 in half: shut until f0 (head handle), slats rotate open over f0-8, removed on f8
       X.blindsOpen(tl, '#b15-x5', B(0));
+      // the interior: rule 7 push 100% (f0) -> 104% (f133, the cut), linear; the head handle holds 100% under the slats
+      S.push(tl, '#b15-int-wrap', B(0), { until: B(133), from: 1, to: 1.04, origin: '960px 540px' });
 
-      // L7: the screen picture box laid out at res 7.08 (= 6 x 1.18) so it is 1:1 at the end of push + zoom
-      X.zoomFit('#b15-screen', { rect: SCREEN_100 }, { res: 6 * PUSH });
-      // push 100% (f0) -> 118% (f160), linear, about the hole centre; the head handle holds 100% under the shut slats
-      S.spotPush(tl, '#b15-l7', B(0), { until: B(160), from: 1, to: PUSH });
+      // L7: the screen picture box laid out 1920 px wide (res = 1920 / 118) so it is 1:1 at the end of push + zoom;
+      // hidden while the real cabinet screen shows, faded in over the zoom's first 3 frames (f160 -> f163)
+      X.zoomFit('#b15-screen', { rect: SCREEN_100 }, { res: 1920 / SCREEN_100[2] });
+      gsap.set('#b15-screen', { opacity: 0 });
+      tl.fromTo('#b15-screen', { opacity: 0 }, { opacity: 1, duration: 3 / 30, ease: 'none', immediateRender: false }, B(160));
+      // push 100% (f133, the cut) -> 118% (f160), linear, about the hole centre (L7: "towards the target")
+      S.spotPush(tl, '#b15-l7', B(133), { until: B(160), from: 1, to: PUSH });
 
       // T9 label pops in over 4f (96% -> 100% + fade, ease out) on "Race" (f148)
       T.label(tl, '#b15-t9', W.Race);
@@ -109,10 +135,21 @@
       // blurRef / blurMax divided by the 1.18 push: the kit sizes the blur by the zoom scale only, and every element in
       // the world is also pushed 1.18x, so this keeps the on-screen blur at the kit's calibrated strength.
       X.zoom(tl, '#b15-world', B(160), {
-        screen: { rect: SCREEN_160 }, dir: 'in', blurRef: 540 / PUSH, blurMax: 24 / PUSH,
+        screen: { rect: SCREEN_160 }, dir: 'in', scale: 'fill', blurRef: 540 / PUSH, blurMax: 24 / PUSH,
+        blurMedia: '#b15-pic',       // the plate gets its own values below (it is also inside the 1.4x reframe)
         blurDom: ['#b15-dim > svg', '#b15-t9 .rc-t9__label'],
         handoff: '#b15-full-wrap',   // kit: the plain full-frame next shot shows from the landing frame (f168) on
       });
+      // the plate's blur control, same plan as the kit, divided by its extra 1.4x on-screen scale
+      {
+        const plan = X.zoomPlan({ frames: 8, scale: ZG.scale, dir: 'in', blurRef: 540 / PUSH, blurMax: 24 / PUSH });
+        let prev = 0;
+        plan.list.forEach((p) => {
+          const v = X.blurValue(p.sigma / (p.scale * CAT_K));
+          if (p.k > 0) tl.fromTo('#b15-plate', { '--hf-color-grading-blur': prev }, { '--hf-color-grading-blur': v, duration: 1 / 30, ease: 'none', immediateRender: false }, B(160 + p.k - 1));
+          prev = v;
+        });
+      }
 
       // full-frame R15.1 from the landing frame f168: rule 7 push 100% -> 104% to the tail-handle end (102.4% on f177)
       S.push(tl, '#b15-full-wrap', B(168), { until: 190 / 30, from: 1, to: 1.04, origin: '960px 540px' });

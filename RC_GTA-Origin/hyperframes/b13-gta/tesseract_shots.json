@@ -9,15 +9,24 @@
    "screen": "L2",
    "start_f": 190,
    "end_f": 214,
-   "source_in_s": 0.0,
+   "source_in_s": 101.6,
    "speed": 1.0,
    "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 104, "anchor": "center"},
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
    "enter": "X1",
    "exit": "X1",
-   "letterbox": {"bars_px": 138, "slide_in_f": 8},
+   "letterbox": {
+    "bars_px": 138,
+    "slide_in_f": 8
+   },
    "grade": "archival",
-   "notes": "Plan p.25 B13 step 4: hard cut (X1) on beat f190 to the GTA 1 PC big-box unboxing in the L2 band for the last 0.8 s (24f, f190-214); B14 opens on X1 at f214. The b13-gta overlay is fully transparent from f190 (and through the tail handle), so this shot is the whole picture. Pending real footage: source_in_s 0.0 is a stand-in value; pick the moment the big box is opened / its contents come out, with the box art readable inside the 1920x804 band (fill the band by cropping, never stretch 4:3). Bars 138 px slide in over 8f per the L2 library (p.13, 'when entering a cinematic moment'). Archival grade (plan p.10: B13 is archival). Push 100->104% linear across the shot (rule 7; optional on a 0.8 s shot). If the cut is trimmed, extend the shot into the 6f handles (start_f -6 is not needed: f190 is mid-beat). Music: this is part of 'the B13 title hold' (no voice from f165): let the music come up to about -16 LUFS (plan p.35)."
+   "notes": "Plan p.25 B13 step 4: hard cut (X1) on beat f190 to the GTA 1 PC big-box unboxing in the L2 band for the last 0.8 s (24f, f190-214); B14 opens on X1 at f214. The b13-gta overlay is fully transparent from f190 (and through the tail handle), so this shot is the whole picture. MOMENT (R13.2 @ 1:41.6-1:42.4, 60 fps source): the opened big box, the GTA jewel case with its 'Grand Theft Auto' cover art in the box insert and the San Andreas map beside it, hands at the box edges (slight handheld drift). CROP 1420:799:500:160 (16:9, then fit to 1920x1080 = 1.35x): keeps the uploader's facecam picture-in-picture (top-left, source x<500, y<352) out of the band; the band (crop rows 102-697 = source y 262-857) holds the case art and the map. Bars 138 px slide in over 8f per the L2 library (p.13). Archival grade (plan p.10: B13 is archival). Push 100->104% linear across the shot (rule 7). Music: part of 'the B13 title hold' (no voice from f165): let the music come up to about -16 LUFS (plan p.35).",
+   "source": "04_Broll/_originals/B13/R13.2__Original GRAND THEFT AUTO from 1997 - PC Big Box Unboxing [BcnDNeEggls].mp4",
+   "crop": "1420:799:500:160"
   }
  ]
 }

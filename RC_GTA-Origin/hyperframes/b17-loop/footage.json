@@ -1,4 +1,13 @@
 {
  "beat": "B17",
- "rids": ["R17.1", "R17.3", "R17.4"]
+ "rids": [
+  "R17.4"
+ ],
+ "moments": {
+  "R17.4": {
+   "in": 76.5,
+   "out": 77.6,
+   "note": "GTA VI launch trailer (official Rockstar) end card: the GTA VI logo, fully formed and static on the dark navy card (the trailer's own 58 px letterbox bars kept), before the city fades in behind it at 1:17.7. HF plays it at beat f150-176 (push 100 -> 115%); 1:16.7 is after the logo's intro glow has settled."
+  }
+ }
 }

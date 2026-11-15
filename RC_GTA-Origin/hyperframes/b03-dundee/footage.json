@@ -1,4 +1,12 @@
 {
  "beat": "B3",
- "rids": ["R3.1", "R3.8", "R3.7", "R3.3", "R3.5"]
+ "rids": ["R3.1", "R3.8", "R3.7", "R3.3", "R3.6"],
+ "note": "R3.1 = Tesseract-owned L2 band (f58-103; synced here only as a reference for the T4 placement). R3.7 here = L12 card 2; the L2 band on 'starts a new game' (f180-215) is a different R3.7 moment, Tesseract-owned (tesseract_shots.json). R3.6 = source of the walking Lemming cut-out (SUBSTITUTE for the missing R3.5).",
+ "moments": {
+  "R3.1": {"in": 21.0, "out": 24.0, "crop": "640:360:40:0", "note": "Old Dundee in colour: 'La Hull from Hawkhill' slide, the Law hill with its monument centred against a dark sky, town below. Crop = top 360 px (16:9), keeps the burned-in caption (source y 365-398) out; centred on the monument."},
+  "R3.8": {"in": 43.2, "out": 45.9, "note": "DMA Design office tour (Mike Dailly): a young staffer at his desk with two monitors turns to the camera (handheld)."},
+  "R3.7": {"in": 51.3, "out": 54.0, "crop": "1440:1080:240:0", "note": "BBC 1996 making-of: the printed GTA 1 city map spread across a desk in the DMA office, the presenter's hand on it (4:3 picture, pillarbox cropped)."},
+  "R3.3": {"in": 572.0, "out": 574.7, "note": "/noclip documentary: a Lemmings box (Psygnosis) standing on a table (shot 571.2-578.8 s)."},
+  "R3.6": {"in": 23.2, "out": 25.9, "note": "Lemmings Amiga intro: one lemming walks right-to-left along a flat ledge (23.3-25.6 s), a second one follows and stops as a blocker; source for the tracked Lemming cut-out (assets/lemming/)."}
+ }
 }

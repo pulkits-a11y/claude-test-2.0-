@@ -2,10 +2,10 @@
 # Re-capture B2's X4 "old frame" still (run after any change to what the CRT shows before the tear, e.g. real R9.1/R3.9):
 # the composition's own frame at local f107 (beat f101, "broke."), CRT look included, with the camera push and the tear
 # disabled (const STILL = true in a throwaway copy), cropped to the CRT screen rect -> assets/x4/b02-old.png (320 x 240).
-# Keep CROP in sync with SCREEN in index.html (x, y, w, h = 800, 210, 320, 240 on the stand-in).
+# CROP = the GTA 1 screen box in box space (537 x 406 at 0,0: the STILL copy un-pins #b02-g1box there).
 set -e
 PROJ=$(cd "$(dirname "$0")/.." && pwd)
-CROP="320:240:800:210"
+CROP="537:406:0:0"
 CAP=$(mktemp -d)
 cp -r "$PROJ/assets" "$PROJ/index.html" "$PROJ/hyperframes.json" "$PROJ/meta.json" "$PROJ/package.json" "$CAP/"
 python3 - "$CAP/index.html" <<'PY'

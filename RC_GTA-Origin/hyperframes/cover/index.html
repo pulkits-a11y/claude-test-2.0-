@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ink-black, #0A0A0A); }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* same push-in wrapper as b05/b06/b11 (the L11 frame never moves; the picture inside each half is pushed) */
+      .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
+      /* T2 style (kit .rc-t2: lead-in Inter SemiBold 42 px + keyword Instrument Serif Italic 140 px, baselines aligned,
+         14 px gap, centred as a group), scaled 1.6x as a whole so the line reads at thumbnail size (cover choice). */
+      #cover-t2 { transform: scale(1.6); transform-origin: 50% 50%; }
+    </style>
+  </head>
+  <body>
+    <!-- RC_GTA-Origin cover (plan p.39 "Cover and captions": "the B11 flipped split screen with the arrow on the getaway car,
+         plus 'GTA started as a cop game' in T2 style ('cop game' in the serif). It reads as a question at thumbnail size.").
+         Picture = b11-flip at local frame 170 (beat f164): the L11 back side, same halves/divider (kit .rc-l11), same working
+         clips (footage.json = b11-flip's R9.1 / R5.4 windows), same game grade, same push-in value (1 + 0.04 x 136/134),
+         the same M2 arrow (seed 7, same geometry) fully drawn on the getaway car. Exported with snapshot at t = 0 to
+         07_Exports/RC_GTA-Origin_v01_cover.png. -->
+    <div data-hf-id="hf-cv00" id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1920" data-height="1080">
+      <div data-hf-id="hf-cv01" id="cover-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-cv02" id="cover-ground" class="clip rc-l11__ground" data-start="0" data-duration="1" data-track-index="1"></div>
+        <div data-hf-id="hf-cv03" class="rc-l11__face rc-l11__face--front">
+          <!-- left: the player's getaway car (R9.1 GTA 1 @ 5:16.87, pinned at a corner by the chasing police cars) -->
+          <div data-hf-id="hf-cv04" class="rc-l11__half rc-l11__half--left">
+            <div data-hf-id="hf-cv05" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-cv06" id="cover-l" class="clip" src="assets/footage/R9.1.mp4" data-start="0" data-duration="1" data-media-start="4.8666667" data-track-index="2" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+          <!-- right: police chasing (R5.4 @ 11:47.37, the police SUV with its lights flashing) -->
+          <div data-hf-id="hf-cv07" class="rc-l11__half rc-l11__half--right">
+            <div data-hf-id="hf-cv08" class="lc-push" data-layout-allow-overflow="">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-cv09" id="cover-r" class="clip" src="assets/footage/R5.4.mp4" data-start="0" data-duration="1" data-media-start="4.8666667" data-track-index="3" muted playsinline style="--hf-color-grading-blur: 0"></video>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- M2 "you" arrow, fully drawn, exactly as b11-flip draws it on "Now" -->
+      <div data-hf-id="hf-cv10" id="cover-arrow" class="clip m2-arrow" data-start="0" data-duration="1" data-track-index="5" style="z-index: 20"></div>
+      <!-- T2 line (white + the kit's soft shadow: text on footage), top of frame, clear of the arrow and the cars -->
+      <div data-hf-id="hf-cv11" id="cover-t2" class="clip rc-t2" data-start="0" data-duration="1" data-track-index="6" data-layout-allow-overflow="" style="--rc-y: 228px; z-index: 30">
+        <div data-hf-id="hf-cv12" class="rc-t2__row"><span data-hf-id="hf-cv13" class="rc-t2__lead">GTA started as a</span><span data-hf-id="hf-cv14" class="rc-t2__key">cop game</span></div>
+      </div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = RCK.motifs;
+      // b11-flip back-side push-in at local 170: 100% on local 34 -> 104% on local 168, linear.
+      tl.set('#cover-split .lc-push', { scale: 1 + 0.04 * (170 - 34) / (168 - 34), transformOrigin: '50% 50%' }, 0);
+      // the B11 arrow (same seed and geometry as b11-flip), already drawn
+      M.arrowInit('#cover-arrow', { from: [175, 800], to: [335, 520], bend: 0.16, seed: 7, label: 'you', drawn: true });
+      tl.set({}, {}, 0.9);
+      window.__timelines["cover"] = tl;
+    </script>
+  </body>
+</html>

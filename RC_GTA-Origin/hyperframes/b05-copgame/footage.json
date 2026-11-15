@@ -1,1 +1,6 @@
-{"beat": "B5", "rids": ["R5.4", "R5.1"]}
+{"beat": "B5", "rids": ["R5.2", "R5.1"],
+ "moments": {
+  "R5.2": {"in": 230.5, "out": 235.8, "crop": "814:918:713:162",
+           "note": "L11 left half: LSPD police SUV (lights on) in pursuit of a blue/yellow taxi, third-person from behind the police car (the cop side); taxi ahead-right. Crop = 958:1080 window that removes the AXON bodycam timestamp (top right), the minimap and the speed HUD. B6 continues this window (+88f)."},
+  "R5.1": {"in": 41.2, "out": 46.4, "crop": "819:923:405:0",
+           "note": "L11 right half: the red target car (red marker above it) being chased by the police motorbike, Vigilante mission. Crop removes the radar, the TIME LEFT/LEVEL/KILLS HUD and the zone-name text. B6 continues this window (+88f)."}}}

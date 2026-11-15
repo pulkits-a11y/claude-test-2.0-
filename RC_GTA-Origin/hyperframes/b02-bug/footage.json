@@ -1,4 +1,27 @@
 {
  "beat": "B2",
- "rids": ["R17.1", "R3.9", "R9.1"]
+ "rids": [
+  "R1.2",
+  "R3.7",
+  "R9.1"
+ ],
+ "moments": {
+  "R1.2": {
+   "in": 8.2,
+   "out": 12.4,
+   "note": "Official PS5 features trailer: B1's GTA 6 police-truck shot continued (same in-point 8.2 as b01-hook's window; media-start 2.8334 here = source 11.033 s). SUBSTITUTE for R17.1/R17.3, see BEAT_NOTES."
+  },
+  "R3.7": {
+   "in": 60.4,
+   "out": 67.0,
+   "crop": "1440:1080:240:0",
+   "note": "SUBSTITUTE (Rule 5) CRT plate for R3.9: BBC 1996 making-of, static over-the-shoulder shot of a DMA developer at a beige 1990s CRT. 4:3 picture cut out of the 16:9 pillarbox; the BBC corner logo is framed out by the plate transform."
+  },
+  "R9.1": {
+   "in": 126.0,
+   "out": 131.6,
+   "crop": "736:414:59:40",
+   "note": "GTA 1 (PlayStation) top-down: white police car with lights right on the player's red car's tail along the road (126.0-129.5 s, on screen 126.0-128.5 before the tear freezes the picture; the rest of the window only pads the clip under the frozen X4 frame). Black borders cropped (picture 742x418 at 56,38; exact 16:9 crop 736x414)."
+  }
+ }
 }

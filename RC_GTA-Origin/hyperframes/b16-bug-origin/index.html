@@ -13,7 +13,9 @@
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       #b16-rewind { object-fit: cover; }
-      /* Tracking lines (RT1 stand-in, see BEAT_NOTES): white noise bands drawn over the rewind, palette white only. */
+      /* RT1 VHS overlay (real): Screen blend over the rewind picture (black = no change), direct child of the root */
+      .b16-rt1 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; mix-blend-mode: screen; }
+      /* Tracking lines (plan: "the VHS overlay (RT1) and tracking lines"): white noise bands drawn over the rewind. */
       #b16-track { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
       #b16-track svg { position: absolute; left: 0; top: 0; display: block; }
     </style>
@@ -26,13 +28,13 @@
          Plan p.27 (B16 build), STORYBOARD.md B16. Fully opaque (HF-owned). Local frame = beat frame + 6.
          beat    local    what
          -6..30  0..36    VHS rewind (~1 s): B14 clips -> B9's GTA 1 -> the 1995 design document, all reversed at 8x
-                          (assets/rewind/b16-rewind.mp4, built by tools/make_rewind.py), VHS look = media treatment on the
-                          <video>, tracking lines drawn here (RT1 is not available: labelled stand-in). Cue rewind = 0 (S17).
+                          (assets/rewind/b16-rewind.mp4, built by tools/make_rewind.py from the originals), VHS look = media
+                          treatment on the <video> + the real RT1 VHS overlay (Screen) + tracking lines drawn here. Cue rewind = 0 (S17).
          0       6        T1 "So that's why" on "So"
          14      20       T1 "you're always running." on "you're" (stays to "The", beat 53)
          23..29  29..35   the design document zooms back out 118% -> 100% (B4's push at 8x, reversed), lands on B4's framing;
                           shown as B4 showed it (kit L7 dim at 65% with the spotlight on the title), so the T1 stays legible
-         30..44  36..50   X7 light-leak dissolve (14f, Screen blend; RT6 stand-in = the kit's retinted leak) to black #0A0A0A
+         30..44  36..50   X7 light-leak dissolve (14f, Screen blend) through the real RT6 leak (orange burst) to black #0A0A0A
          53      59       T5 glow line "The whole series started with a [bug]." fades in 12f (blur 20->0, tracking +2%->0),
                           a light leak drifts behind (on screen beat 53..120 = 2.2 s >= 1.5 s)
          101     107      M4 bug chip pops in place of "bug" (T7 pop 0 -> 112% -> 100% over 8f) = cue chip
@@ -54,7 +56,13 @@
         </div>
       </div>
 
-      <!-- ===== tracking lines (RT1 stand-in): two noise bands rolling through the frame during the rewind only ===== -->
+      <!-- ===== RT1 VHS overlay (real: the pack's transition 4 noise bands / glitch / tape crease, working clip from source 13.0 s,
+           crop drops the pack's number badge), Screen blend, f-6..30 ===== -->
+      <!-- two pieces, skipping the pack's two full-white flash frames (working clip frames 16-17 = source 13.53-13.57),
+           which under Screen would read as an X3 white flash: local 0-15 = clip 0.000-0.500 s, local 16-35 = clip 0.600-1.233 s -->
+      <video data-hf-id="hf-rt1v" id="b16-rt1" class="clip b16-rt1" src="assets/footage/RT1.mp4" data-start="0.0000" data-duration="0.5333" data-media-start="0.0000" data-track-index="7" muted playsinline style="z-index: 4"></video>
+      <video data-hf-id="hf-rt1w" id="b16-rt1b" class="clip b16-rt1" src="assets/footage/RT1.mp4" data-start="0.5333" data-duration="0.6667" data-media-start="0.6000" data-track-index="7" muted playsinline style="z-index: 4"></video>
+      <!-- ===== tracking lines: two noise bands rolling through the frame during the rewind only ===== -->
       <div data-hf-id="hf-q1nl" id="b16-track" class="clip" data-start="0.0000" data-duration="1.2000" data-track-index="2" data-layout-ignore="" style="z-index: 5">
         <svg data-hf-id="hf-hfvd" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
           <defs data-hf-id="hf-mh0t">
@@ -84,7 +92,11 @@
       </div>
 
       <!-- ===== X7 light-leak dissolve (Screen blend, above the picture it dissolves) ===== -->
-      <div data-hf-id="hf-w2ib" id="b16-x7" class="rc-x7" style="z-index: 6"></div>
+      <div data-hf-id="hf-w2ib" id="b16-x7" class="rc-x7" style="z-index: 6">
+        <!-- RT6 (real): the orange leak burst, working clip 0.08 s = source 3.98 s on local 36 (beat 30); the kit drives the
+             container (opacity 0 -> 0.9 -> 0, Screen) and adds no drawn layers when this footage is present -->
+        <video data-hf-id="hf-rt6v" id="b16-rt6" class="clip rc-x7__footage" src="assets/footage/RT6.mp4" data-start="1.2000" data-duration="0.4667" data-media-start="0.0800" data-track-index="8" muted playsinline></video>
+      </div>
 
       <!-- ===== T5 glow line on black with the M4 bug chip in place of "bug" ===== -->
       <div data-hf-id="hf-airt" id="b16-t5" class="clip rc-t5" data-start="1.9666" data-duration="2.4334" data-track-index="5" style="z-index: 10">

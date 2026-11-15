@@ -1,0 +1,28 @@
+{
+ "beat": "B10",
+ "composition": "b10-fun",
+ "render": "05_GFX/renders/b10-fun.mov",
+ "shots": [
+  {
+   "id": "B10-killfrenzy-L1",
+   "rid": "R10.1",
+   "screen": "L1",
+   "start_f": 37,
+   "end_f": 57,
+   "source": "04_Broll/_originals/B10/R10.1__Grand Theft Auto 1 Kill Frenzy⧸Rampages： Vice City chapter 1 (Bent Cop [-3NOxHFcNaM].mp4",
+   "source_in_s": 49.6,
+   "crop": "640:360:0:0",
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X3",
+   "exit": "X1",
+   "grade": "b10-pop",
+   "notes": "Plan p.24 / STORYBOARD B10 f37-57: hard cut under the X3 white flash on 'fun' (beat f37 = the flash's 100% frame = S09 = the MU5 drop): L1 (105%, soft edges) full-colour GTA 1 kill-frenzy chaos at full speed, saturation +10% (grade b10-pop) for the rest of the beat (20f) and on through the 6f tail handle; B11 opens with X1. No push: a 20f shot is not a held shot. Moment: R10.1 49.6-50.47 s: a chain of cars exploding in big fireballs on the road while the player stands on the pavement, in-game score pop-ups 5000/1000 (game HUD). Crop 640:360:0:0 = 16:9 cut of the 4:3 picture (top 360 px: keeps the fireballs, drops the bottom). HF overlay: X3 flash fading out f38-41, T2 'And suddenly, it's fun.' (keyword blur-in on f37), T2 out 4f fade to f57."
+  }
+ ]
+}

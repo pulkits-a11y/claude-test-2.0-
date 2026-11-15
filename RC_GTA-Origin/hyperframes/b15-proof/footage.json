@@ -1,4 +1,11 @@
 {
  "beat": "B15",
- "rids": ["R15.3", "R15.1"]
+ "rids": ["R15.3", "R15.1"],
+ "moments": {
+  "R15.3": {
+   "in": 190.9,
+   "out": 234.1,
+   "note": "one window, two moments: 191.035-192.17 = the in-game Arcade Games catalogue on the arcade's laptop, resting on the row 'RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS' (static page, 35 frames; the only Race and Chase cabinets in R15.3) -> beat f133-167 L7 plate; 229.4-234.0 = the arcade floor walk-through (rows of upright cabinets, player walking, no cuts) -> beat f-6..132"
+  }
+ }
 }

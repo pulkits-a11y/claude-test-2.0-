@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- RC_GTA-Origin kit, M1 wanted star: white five-point star, thin dark outline (#0A0A0A, 4.5% of
+       the star size, outside the fill), styled after the GTA wanted level. Scale the whole file:
+       40 px (B1, B17 HUD row) or 120 px (B14). Same drawing as RCK.motifs.STAR_D. -->
+  <path d="M50.00 6.76 L63.49 36.00 L95.46 39.79 L71.82 61.65 L78.10 93.24 L50.00 77.51 L21.90 93.24 L28.18 61.65 L4.54 39.79 L36.51 36.00 Z"
+        fill="#FFFFFF" stroke="#0A0A0A" stroke-width="9" stroke-linejoin="round" paint-order="stroke fill"/>
+</svg>

@@ -9,7 +9,7 @@
    "screen": "L10",
    "start_f": 0,
    "end_f": 6,
-   "source_in_s": 1.0,
+   "source_in_s": 60.3,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -21,7 +21,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 1/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 3 police-chase moment (first moment), full frame, no stretching. Head handle: extend this first clip 6f earlier (the overlay shows '2001' from local 0)."
+   "notes": "MOMENT R14.1 @ 60.3 s (https://www.youtube.com/watch?v=6lSy09Uruz0&t=60): GTA 3 (2001): the player's Cheetah drifting past an LCPD cruiser in the rain, stars up. || L10 montage burst clip 1/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B01/R14.1__GTA 3 Epic 6 Stars Wanted Level Shootout+ Tank Rampage + Escape [6lSy09Uruz0].mp4"
   },
   {
    "id": "B14-burst-02-R14.1b",
@@ -29,7 +30,7 @@
    "screen": "L10",
    "start_f": 6,
    "end_f": 12,
-   "source_in_s": 5.0,
+   "source_in_s": 200.8,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -41,7 +42,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 2/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 3 police-chase moment (second, different moment), full frame, no stretching."
+   "notes": "MOMENT R14.1 @ 200.8 s (https://www.youtube.com/watch?v=6lSy09Uruz0&t=200): GTA 3 (2001): the battered Cheetah smashing through the pursuing cars at Belleville Park (5-6 stars). || L10 montage burst clip 2/10 (GTA 3, tag '2001' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B01/R14.1__GTA 3 Epic 6 Stars Wanted Level Shootout+ Tank Rampage + Escape [6lSy09Uruz0].mp4"
   },
   {
    "id": "B14-burst-03-R14.2a",
@@ -49,7 +51,7 @@
    "screen": "L10",
    "start_f": 12,
    "end_f": 18,
-   "source_in_s": 1.0,
+   "source_in_s": 168.0,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -61,7 +63,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 3/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast Vice City police-chase moment (first moment), full frame, no stretching."
+   "notes": "MOMENT R14.2 @ 168.0 s (https://www.youtube.com/watch?v=X4mB41ybSN4&t=168): Vice City (2002): the police helicopter swooping over Tommy, who aims up at it (the clip's 'helicopter police chase'). || L10 montage burst clip 3/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.2__GTA Vice City： Helicopter Police Chase Gone Crazy! [X4mB41ybSN4].mp4"
   },
   {
    "id": "B14-burst-04-R14.2b",
@@ -69,7 +72,7 @@
    "screen": "L10",
    "start_f": 18,
    "end_f": 24,
-   "source_in_s": 5.0,
+   "source_in_s": 274.0,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -81,7 +84,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 4/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast Vice City police-chase moment (second, different moment), full frame, no stretching."
+   "notes": "MOMENT R14.2 @ 274.0 s (https://www.youtube.com/watch?v=X4mB41ybSN4&t=274): Vice City (2002): a VCPD cruiser lunging in at street level, lights on (5 stars). || L10 montage burst clip 4/10 (Vice City, tag '2002' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.2__GTA Vice City： Helicopter Police Chase Gone Crazy! [X4mB41ybSN4].mp4"
   },
   {
    "id": "B14-burst-05-R14.3a",
@@ -89,7 +93,7 @@
    "screen": "L10",
    "start_f": 24,
    "end_f": 30,
-   "source_in_s": 1.0,
+   "source_in_s": 64.0,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -101,7 +105,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 5/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast San Andreas police-chase moment (first moment), full frame, no stretching."
+   "notes": "MOMENT R14.3 @ 64.0 s (https://www.youtube.com/watch?v=obxIhv9YhKY&t=64): San Andreas (2004): CJ tearing down a Los Santos street on a stolen police bike, wanted stars up. || L10 montage burst clip 5/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.3__GTA San Andreas ｜ 6 Star Wanted Level Survival! [Los Santos + San Fier [obxIhv9YhKY].mp4"
   },
   {
    "id": "B14-burst-06-R14.3b",
@@ -109,7 +114,7 @@
    "screen": "L10",
    "start_f": 30,
    "end_f": 36,
-   "source_in_s": 5.0,
+   "source_in_s": 345.0,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -121,7 +126,8 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 6/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast San Andreas police-chase moment (second, different moment), full frame, no stretching."
+   "notes": "MOMENT R14.3 @ 345.0 s (https://www.youtube.com/watch?v=obxIhv9YhKY&t=345): San Andreas (2004): CJ fleeing on a sports bike through a side street (wanted level 4+). || L10 montage burst clip 6/10 (San Andreas, tag '2004' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.3__GTA San Andreas ｜ 6 Star Wanted Level Survival! [Los Santos + San Fier [obxIhv9YhKY].mp4"
   },
   {
    "id": "B14-burst-07-R14.4a",
@@ -129,7 +135,7 @@
    "screen": "L10",
    "start_f": 36,
    "end_f": 42,
-   "source_in_s": 1.0,
+   "source_in_s": 124.6,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -141,7 +147,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 7/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 4 police-chase moment (first moment), full frame, no stretching."
+   "notes": "MOMENT R14.4 @ 124.6 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=124): GTA 4 (2008): LCPD cruiser, light bar on, right on the fleeing car while a gunman leans out of it. Crop = 16:9 out of the 2276x720 Social Club movie, above y 630 where the R* and 'ROCKSTAR GAMES / Social Club' marks sit. || L10 montage burst clip 7/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
+   "crop": "1116:628:400:0"
   },
   {
    "id": "B14-burst-08-R14.4b",
@@ -149,7 +157,7 @@
    "screen": "L10",
    "start_f": 42,
    "end_f": 48,
-   "source_in_s": 5.0,
+   "source_in_s": 155.2,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -161,7 +169,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 8/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 4 police-chase moment (second, different moment), full frame, no stretching."
+   "notes": "MOMENT R14.4 @ 155.2 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=155): GTA 4 (2008): POLICE cruiser door to door with the fleeing car. Crop = 16:9 above the R*/Social Club marks (y >= 630). || L10 montage burst clip 8/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
+   "crop": "1116:628:0:0"
   },
   {
    "id": "B14-burst-09-R14.5a",
@@ -169,7 +179,7 @@
    "screen": "L10",
    "start_f": 48,
    "end_f": 54,
-   "source_in_s": 1.0,
+   "source_in_s": 429.6,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -181,7 +191,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 9/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 1.0 is a stand-in; pick a fast GTA 5 police-chase moment (first moment), full frame, no stretching."
+   "notes": "MOMENT R14.5 @ 429.6 s (https://www.youtube.com/watch?v=vUndgwBLKeY&t=429): GTA 5 (2013): the getaway car tearing down a dirt road at night, headlights on (the clip is a 'Lose the cops' short film; no police are on screen in it). Crop removes the film's letterbox bars and the uploader's 'RaveNN' mark in the top bar. || L10 montage burst clip 9/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.5__GTA V - Lose The Cops #2 - Cinematic - Short Film [vUndgwBLKeY].mp4",
+   "crop": "1636:920:142:78"
   },
   {
    "id": "B14-burst-10-R14.5b",
@@ -189,7 +201,7 @@
    "screen": "L10",
    "start_f": 54,
    "end_f": 60,
-   "source_in_s": 5.0,
+   "source_in_s": 434.2,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -201,7 +213,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "L10 montage burst clip 10/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). Pending real footage: source_in_s 5.0 is a stand-in; pick a fast GTA 5 police-chase moment (second, different moment), full frame, no stretching."
+   "notes": "MOMENT R14.5 @ 434.2 s (https://www.youtube.com/watch?v=vUndgwBLKeY&t=434): GTA 5 (2013): the getaway car flying off a jump, debris in the air. Crop removes the letterbox bars and the 'RaveNN' mark. || L10 montage burst clip 10/10 (GTA 5, tag '2013' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "source": "04_Broll/_originals/B14/R14.5__GTA V - Lose The Cops #2 - Cinematic - Short Film [vUndgwBLKeY].mp4",
+   "crop": "1636:920:142:78"
   },
   {
    "id": "B14-gta5-chase-stars",
@@ -209,7 +223,7 @@
    "screen": "full",
    "start_f": 60,
    "end_f": 133,
-   "source_in_s": 2.0,
+   "source_in_s": 107.0,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -221,15 +235,16 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "Plan p.26 step 2: GTA 5 five-star chase (R1.3) under T1 'that chase.' (f62-96) and the M1 six stars (120 px, centred, pop 3f apart from f96, all in by f114 'stars.') + T4 'The wanted stars.' top-left (all HF overlay). Push-in 100->104% linear (held 2.4 s, rule 7). Pending real footage: source_in_s 2.0 is a stand-in; pick a moment with the car mid-chase and no busy detail in the centre (the six stars sit over x 540-1380, y 480-600); game HUD colours untouched. Prefer a different moment from the R1.3 cell in B1."
+   "notes": "MOMENT R1.3 @ 107.0 s (https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=107): GTA 5 five-star chase: the supercar flat out on the coast highway, passing an LSPD cruiser with its lights on at ~108.5-109.5; the frame centre (road and horizon) stays clear under the six M1 stars. B1 uses R1.3 @46.0-47.4 (different moment). || Plan p.26 step 2: GTA 5 five-star chase (R1.3) under T1 'that chase.' (f62-96) and the M1 six stars (120 px, centred, pop 3f apart from f96, all in by f114 'stars.') + T4 'The wanted stars.' top-left (all HF overlay). Push-in 100->104% linear (held 2.4 s, rule 7).",
+   "source": "04_Broll/_originals/B01/R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4"
   },
   {
    "id": "B14-police-lights",
-   "rid": "RT3",
+   "rid": "R1.6",
    "screen": "full",
    "start_f": 133,
    "end_f": 163,
-   "source_in_s": 1.0,
+   "source_in_s": 129.5,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -250,7 +265,10 @@
     "dir": "left",
     "part": "out (160-163)"
    },
-   "notes": "Plan p.26 step 3: police lights flashing (RT3) for 'The sirens.' (T4 centre-right from f133, HF overlay). The X9 siren wash on 'sirens' (f140-143) is drawn by the b14-since overlay OVER AN EMBEDDED COPY OF THIS SHOT (overlay opaque on f140-143 only, so the Overlay blend is correct in the alpha MOV): keep this shot exactly as specified - source_in_s 1.0 (embed media start = 1.0 + 7/30 = 1.2333 s), full frame cover at 100% (no push), grade none - or update the embed in b14-since/index.html (#b14-x9-plate) if any of these change. X8 whip pan f160-166 (6f horizontal move, 80 px directional blur, plan p.16), cut at the midpoint f163 (= cue whip_mid; S15 starts f161). Not a held shot (30f, constant flashing), so no push."
+   "notes": "MOMENT R1.6 @ 129.5 s (https://www.youtube.com/watch?v=flgIZbQHwN8&t=129): SUBSTITUTE (Rule 5) for RT3 (police lights flashing, missing): R1.6 San Andreas, two LSPD cruisers side by side in pursuit, red/blue light bars lit. Crop (16:9, 1.52x) keeps the game's radio subtitle (top-left), HUD (top-right), minimap (bottom-left) and zone name (bottom-right) out. Keep exactly as specified (embed in b14-since: R1.6 working clip in 129.3, media start 0.2 + 7/30 = 0.4333 s on beat f140); grade none so the embedded wash frames match. || Plan p.26 step 3: police lights flashing (RT3) for 'The sirens.' (T4 centre-right from f133, HF overlay). The X9 siren wash on 'sirens' (f140-143) is drawn by the b14-since overlay OVER AN EMBEDDED COPY OF THIS SHOT (overlay opaque on f140-143 only, so the Overlay blend is correct in the alpha MOV): keep this shot exactly as specified - source_in_s 1.0 (embed media start = 1.0 + 7/30 = 1.2333 s), full frame cover at 100% (no push), grade none - or update the embed in b14-since/index.html (#b14-x9-plate) if any of these change. X8 whip pan f160-166 (6f horizontal move, 80 px directional blur, plan p.16), cut at the midpoint f163 (= cue whip_mid; S15 starts f161). Not a held shot (30f, constant flashing), so no push.",
+   "substitute_for": "RT3",
+   "source": "04_Broll/_originals/B01/R1.6__The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S [flgIZbQHwN8].mp4",
+   "crop": "1264:711:300:289"
   },
   {
    "id": "B14-escape",
@@ -258,7 +276,7 @@
    "screen": "full",
    "start_f": 163,
    "end_f": 188,
-   "source_in_s": 8.0,
+   "source_in_s": 240.6,
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -279,7 +297,9 @@
     "dir": "left",
     "part": "in (163-166)"
    },
-   "notes": "Plan p.26 step 4: 'The running.': X8 whip pan into an escape shot (R14.5, or R14.6 as the alternate). T4 'The running.' bottom-left from f162 (HF overlay). The overlay's X5 blinds CLOSE over f180-188 (12 ink-black slats, opaque) and stay shut through the tail handle; B15 opens them. Extend this shot through the tail handle (f188-194) under the shut slats. Pending real footage: source_in_s 8.0 is a stand-in; pick the player's car breaking away from the cops (a different moment from the 2013 burst clips)."
+   "notes": "MOMENT R14.5 @ 240.6 s (https://www.youtube.com/watch?v=vUndgwBLKeY&t=240): GTA 5: 'The running.' - the getaway car drifting across the beach and away along the shore, sand flying (R14.5, the plan's first choice; R14.6 is unusable: permanent 'Grand Theft Auto' logo and burned-in commentary). Crop removes the letterbox bars and the 'RaveNN' mark. || Plan p.26 step 4: 'The running.': X8 whip pan into an escape shot (R14.5, or R14.6 as the alternate). T4 'The running.' bottom-left from f162 (HF overlay). The overlay's X5 blinds CLOSE over f180-188 (12 ink-black slats, opaque) and stay shut through the tail handle; B15 opens them. Extend this shot through the tail handle (f188-194) under the shut slats.",
+   "source": "04_Broll/_originals/B14/R14.5__GTA V - Lose The Cops #2 - Cinematic - Short Film [vUndgwBLKeY].mp4",
+   "crop": "1636:920:142:78"
   }
  ]
 }

@@ -10,7 +10,9 @@ reversed at 8x speed with the VHS overlay (RT1) and tracking lines". HyperFrames
 rate 0.1-10), so the reversal is baked here (a cut/retime, not a look). The VHS LOOK is NOT baked: it is a media
 treatment on the <video> in index.html, and the tracking lines are drawn there.
 
-Re-run after `python3 ../../tools/sync_footage.py .` brings in real footage, then re-render. The source in-points
+FOOTAGE PASS: every video frame is now taken straight from the ORIGINAL download (04_Broll/_originals) at the shot's
+source time, with the shot's crop (the same `source`, `source_in_s` and `crop` the Tesseract assembly uses), so the
+rewind shows exactly what B14 / B9 show (no working clips needed). Re-run after B14 or B9 change, then re-render. The source in-points
 MIRROR the Tesseract shots they rewind and are read live by load_inpoints(): B14 = hyperframes/b14-since/
 tesseract_shots.json, B9 = the R9.1 shot in hyperframes/b09-throughyou/tesseract_shots.json (lane E; the default
 0.0 / f0 until that file exists). B4 = the R4.5 framing and the 100 -> 118% push of hyperframes/b04-racenchase/
@@ -33,23 +35,26 @@ W, H, FPS = 1920, 1080, 30
 N_FRAMES = 52                     # local 0..51 (the clip is used to local 50, the end of the X7 dissolve)
 
 # ---- source in-points of the shots being rewound (seconds into the R-ID file) ----
-B14 = {   # defaults; load_inpoints() replaces them from hyperframes/b14-since/tesseract_shots.json
-    "escape": {"rid": "R14.5", "start_f": 163, "src_in": 8.0},
-    "lights": {"rid": "RT3", "start_f": 133, "src_in": 1.0},
-    "chase":  {"rid": "R1.3", "start_f": 60, "src_in": 2.0},
+B14 = {   # filled by load_inpoints() from hyperframes/b14-since/tesseract_shots.json (required)
+    "escape": None, "lights": None, "chase": None,
     # burst: clip k (0..9) = edit frames 6k..6k+6; two moments per game (a = first, b = second clip)
-    "burst": [("R14.1", 1.0), ("R14.1", 5.0), ("R14.2", 1.0), ("R14.2", 5.0), ("R14.3", 1.0), ("R14.3", 5.0),
-              ("R14.4", 1.0), ("R14.4", 5.0), ("R14.5", 1.0), ("R14.5", 5.0)],
+    "burst": [],
 }
-B9_R91_SRC_IN = 0.0      # B9 L1 shot R9.1 (B9 f0-127): source_in_s from lane E's tesseract_shots.json when it exists
+# B9 L1 shot R9.1 (B9 f0-127): source_in_s / crop from lane E's tesseract_shots.json when it exists. Until then a
+# PROVISIONAL GTA 1 police-chase moment: R9.1 @126.83-129.23 (the white police car on the red car's tail, the moment
+# B2 also uses) with B2's crop 736:414:59:40 (16:9 inside the 4:3 picture). Flagged in BEAT_NOTES.
+B9_R91_SRC_IN = 125.0
 B9_R91_START_F = 0
+B9_R91_CROP = "736:414:59:40"
+ROOT = os.path.dirname(os.path.dirname(PROJ))
+B9_R91_SOURCE = "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4"
 HF = os.path.dirname(PROJ)
 
 
 def load_inpoints():
     """Overrides the defaults above with the live Tesseract shot lists, so the rewind always mirrors what B14 and B9
     actually show: hyperframes/b14-since/tesseract_shots.json (this lane) and hyperframes/b09-throughyou/... (lane E)."""
-    global B9_R91_SRC_IN, B9_R91_START_F
+    global B9_R91_SRC_IN, B9_R91_START_F, B9_R91_CROP, B9_R91_SOURCE
     src = {"B14": "defaults", "B9": "defaults"}
     p14 = os.path.join(HF, "b14-since", "tesseract_shots.json")
     if os.path.exists(p14):
@@ -57,10 +62,11 @@ def load_inpoints():
         full = {s["id"]: s for s in shots}
         for key, sid in (("escape", "B14-escape"), ("lights", "B14-police-lights"), ("chase", "B14-gta5-chase-stars")):
             if sid in full:
-                B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "src_in": full[sid]["source_in_s"]}
+                B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "src_in": full[sid]["source_in_s"],
+                            "source": full[sid]["source"], "crop": full[sid].get("crop")}
         burst = sorted([s for s in shots if s.get("screen") == "L10"], key=lambda s: s["start_f"])
         if len(burst) == 10:
-            B14["burst"] = [(s["rid"], s["source_in_s"]) for s in burst]
+            B14["burst"] = [(s["rid"], s["source_in_s"], s["source"], s.get("crop")) for s in burst]
         src["B14"] = os.path.relpath(p14, HF)
     p9 = os.path.join(HF, "b09-throughyou", "tesseract_shots.json")
     if os.path.exists(p9):
@@ -68,6 +74,8 @@ def load_inpoints():
         if r91:
             s = sorted(r91, key=lambda s: s["start_f"])[0]
             B9_R91_SRC_IN, B9_R91_START_F = float(s["source_in_s"]), int(s["start_f"])
+            B9_R91_CROP = s.get("crop")
+            if s.get("source"): B9_R91_SOURCE = s["source"]
             src["B9"] = os.path.relpath(p9, HF)
     return src
 # B4 framing of the R4.5 title page (b04-racenchase): page drawn at 1.4 x page px, boxed-title centre (878, 307.5)
@@ -77,16 +85,13 @@ DOC = {"page_scale": 1.4, "title_page": (878.0, 307.5), "title_screen": (960.0, 
 
 
 def b14_source(e):
-    """B14 edit frame e (beat-relative) -> (rid, source seconds)."""
-    if e >= 163:
-        s = B14["escape"]; return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS
-    if e >= 133:
-        s = B14["lights"]; return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS
-    if e >= 60:
-        s = B14["chase"]; return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS
+    """B14 edit frame e (beat-relative) -> (rid, source seconds in the original, original path, crop)."""
+    for key, f0 in (("escape", 163), ("lights", 133), ("chase", 60)):
+        if e >= f0:
+            s = B14[key]; return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS, s["source"], s["crop"]
     k = e // 6
-    rid, src_in = B14["burst"][k]
-    return rid, src_in + (e - 6 * k) / FPS
+    rid, src_in, source, crop = B14["burst"][k]
+    return rid, src_in + (e - 6 * k) / FPS, source, crop
 
 
 def plan():
@@ -97,17 +102,18 @@ def plan():
     # output frame; the handle continues it backward in time (= later source frames under B14's shut slats)
     for b in range(-6, 3):
         e = 188 - 8 * b
-        rid, t = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4))
+        rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
     # beat 3..4: police lights (edit 156, 148); beat 5..7: GTA 5 chase (edit 132, 124, 116)
     for e in (156, 148, 132, 124, 116):
-        rid, t = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4))
+        rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
     # beat 8..12: the L10 burst, one frame per game, newest to oldest (2013 -> 2001)
     for e in (52, 44, 28, 20, 4):
-        rid, t = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4))
+        rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
     # beat 13..22: B9's GTA 1 chase (R9.1, the L1 shot B9 f0-127) rewinding from its last frame, 8x
     for i in range(10):
         e = 127 - 8 * i
-        add("B9", rid="R9.1", edit_f=e, src_s=round(B9_R91_SRC_IN + (e - B9_R91_START_F) / FPS, 4))
+        add("B9", rid="R9.1", edit_f=e, src_s=round(B9_R91_SRC_IN + (e - B9_R91_START_F) / FPS, 4),
+            source=B9_R91_SOURCE, crop=B9_R91_CROP)
     # beat 23..29: the 1995 design document, B4's push (1.00 -> 1.18 over 44f) run backwards at 8x, then B4's opening
     # framing (1.00); beat 30..45: held there (the tape has stopped) under the X7 light-leak dissolve
     rate = (DOC["push_to"] - DOC["push_from"]) / DOC["push_frames"] * 8
@@ -126,13 +132,14 @@ def cover_frame(src_png, dst_png):
     im.crop((x0, y0, x0 + W, y0 + H)).save(dst_png)
 
 
-def video_frame(rid, t, dst_png, tmp):
-    src = os.path.join(FOOT, rid + ".mp4")
+def video_frame(source, t, crop, dst_png, tmp):
+    """One frame of the ORIGINAL at source time t (accurate seek, the frame showing at t), cropped like the shot."""
+    src = os.path.join(ROOT, source)
     raw = os.path.join(tmp, "raw.png")
-    # accurate seek: the first frame with pts >= t - 0.03 f is frame round(t * 30)
-    n = round(t * FPS)
-    subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", "%.5f" % ((n - 0.03) / FPS), "-i", src,
-                    "-frames:v", "1", raw], check=True)
+    cmd = ["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", "%.5f" % max(0.0, t - 0.001), "-i", src, "-frames:v", "1"]
+    if crop:
+        cmd += ["-vf", "crop=" + crop]
+    subprocess.run(cmd + [raw], check=True)
     cover_frame(raw, dst_png)
 
 
@@ -151,6 +158,8 @@ def main():
     if len(sys.argv) > 1:          # optional output folder (for comparisons); default assets/rewind
         OUT_DIR = os.path.abspath(sys.argv[1])
     inpoints_from = load_inpoints()
+    if not (B14["escape"] and B14["lights"] and B14["chase"] and len(B14["burst"]) == 10):
+        sys.exit("make_rewind: hyperframes/b14-since/tesseract_shots.json is incomplete")
     frames = plan()
     os.makedirs(OUT_DIR, exist_ok=True)
     page = Image.open(os.path.join(FOOT, "R4.5.png")).convert("RGB")
@@ -161,7 +170,7 @@ def main():
             if fr["kind"] == "B4":
                 doc_frame(page, fr["zoom"], dst)
             else:
-                video_frame(fr["rid"], fr["src_s"], dst, tmp)
+                video_frame(fr["source"], fr["src_s"], fr.get("crop"), dst, tmp)
         out = os.path.join(OUT_DIR, "b16-rewind.mp4")
         subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-framerate", str(FPS), "-i",
                         os.path.join(tmp, "f%03d.png"), "-c:v", "libx264", "-preset", "medium", "-crf", "12",

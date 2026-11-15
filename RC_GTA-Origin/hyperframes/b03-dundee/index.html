@@ -20,13 +20,18 @@
       #b03-cards .rc-l12__card[data-card="3"] { --x: 1100px; --y: 200px; }
       /* T8 block centred on x 960, y 800 (content box 574..1026) */
       #b03-t8 { padding-top: 574px; }
-      /* the tiny Lemming: a 28 x 36 window cut from R3.5 (Lemmings PC gameplay) shown at 50% (the source frame is
-         laid out 960 x 540), standing on the T8 underline. It lives outside the timed T8 element (a timed <video> may
-         not sit inside a timed element), so its walk is an x tween over the underline's measured span (LEM below).
-         Crop point = --lem-x / --lem-y in displayed (50%) px. PENDING real R3.5: pick a walking lemming + crop. */
-      #b03-lem-walk { position: absolute; left: 0; top: 0; width: 28px; height: 36px; opacity: 0; }
-      #b03-lem-win { position: absolute; left: 0; top: 0; width: 28px; height: 36px; overflow: hidden; }
-      #b03-lem { position: absolute; left: calc(-1 * var(--lem-x, 466px)); top: calc(-1 * var(--lem-y, 252px)); width: 960px; height: 540px; }
+      /* the tiny Lemming (SUBSTITUTE: R3.6 Amiga intro for the missing R3.5): a cut-out clip
+         (assets/lemming/R3.6_lemming.webm, alpha) made from a 240 x 270 crop that tracks one lemming walking left along a
+         flat ledge (R3.6 23.33-25.87 s), background removed (hyperframes remove-background). Shown at 20% (48 x 54 box,
+         lemming ~30 x 44 px), feet (crop y 262) on the T8 underline. It lives outside the timed T8 element (a timed
+         <video> may not sit inside a timed element), so its walk is an x tween over the underline (LEM below). */
+      #b03-lem-walk { position: absolute; left: 0; top: 0; width: 48px; height: 54px; opacity: 0; }
+      #b03-lem-win { position: absolute; left: 0; top: 0; width: 48px; height: 54px; }
+      #b03-lem { position: absolute; left: 0; top: 0; width: 48px; height: 54px; }
+      /* T4 in the dark sky either side of the Law (R3.1 band): line centred at y 280 (picture area 138-942) */
+      #b03-t4 { --rc-y: 280px; }
+      /* card 3 (R3.3, 16:9 into a 4:3 card): keep the Lemmings box (right of centre in the source) in the card */
+      #b03-cv3 { --rc-pos: 100% 50%; }
     </style>
   </head>
   <body>
@@ -39,7 +44,7 @@
            beat f58-103  TS+HF  Tesseract: L2 band, old Dundee (R3.1), X2 drift, archival grade. Here: TRANSPARENT except
                                 T4 "Dundee," (left) @58 / "Scotland." (right) @74, both out with a 4f fade ending f103
            beat f103-180 HF     hard cut on "DMA": L12 stacked cards (R3.8, R3.7, R3.3) on #E9E9E9, T8 "DMA Design" @103,
-                                role @137, a tiny Lemming (crop of R3.5) walks the underline
+                                role @137, a tiny Lemming (cut-out from R3.6, SUBSTITUTE for R3.5) walks the underline
            beat f180-215 TS+HF  Tesseract: L2 band, BBC 1996 team at their computers (R3.7), archival grade. Here:
                                 TRANSPARENT except T1 "starts a new game." @180 (white, inside the band) -->
     <div data-hf-id="hf-axsv" id="root" data-composition-id="b03-dundee" data-start="0" data-duration="7.5666667" data-width="1920" data-height="1080">
@@ -74,9 +79,9 @@
           <div data-hf-id="hf-t3xk" id="b03-t8-rolewrap"><div data-hf-id="hf-vzpn" class="rc-t8__role">THE STUDIO BEHIND LEMMINGS</div></div>
         </div>
       </div>
-      <!-- the Lemming (R3.5 crop) walking along the underline of "DMA Design" -->
+      <!-- the Lemming (R3.6 cut-out, SUBSTITUTE for R3.5) walking along the underline of "DMA Design" -->
       <div data-hf-id="hf-n2se" id="b03-lem-walk" style="z-index: 6"><div data-hf-id="hf-hhm5" id="b03-lem-win" data-layout-allow-overflow="">
-        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-xuzt" id="b03-lem" class="clip" src="assets/footage/R3.5.mp4" data-start="3.6333" data-duration="2.5667" data-media-start="0" data-track-index="10" muted playsinline></video>
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-xuzt" id="b03-lem" class="clip" src="assets/lemming/R3.6_lemming.webm" data-start="3.6333" data-duration="2.5667" data-media-start="0.1333" data-track-index="10" muted playsinline></video>
       </div></div>
 
       <!-- ===== T4 spread words over Tesseract's L2 Dundee band (picture area y 138-942): left / right of the subject ===== -->
@@ -137,13 +142,16 @@
       tl.fromTo(t8Name, { opacity: 0 }, { opacity: 1, duration: L(6), ease: 'none', immediateRender: false }, L(109));
       tl.fromTo(t8Role, { opacity: 0 }, { opacity: 0.6, duration: L(6), ease: 'none', immediateRender: false }, T.snap(W.the));
 
-      // ---- the Lemming walks the underline left -> right, linear, from the name's entrance to the cut (local 109 -> 186).
+      // ---- the Lemming walks the underline right -> left (its direction in R3.6), linear, from the name's entrance to the
+      // cut (local 109 -> 186), at its own speed in the source (9.1546 px/frame at 1920 scale x 20% = 1.8309 px/frame),
+      // so its feet do not skate: 141 px over 77 frames, from the underline's right end.
       // LOCAL FIX (kit T8 markup puts the Lemming clip inside the timed T8 element, which lint rejects as
       // video_nested_in_timed_element): the walker is a root-level wrapper placed on the underline's measured span.
-      // LEM = the underline in frame px, measured once on the rendered page with the kit fonts loaded (Instrument Serif
-      // 72 px "DMA Design", T8 block centred at y 800): left 812.03, top 819.44, width 295.92, height 2.73. Hard-coded so
-      // the build never depends on font-load timing; re-measure if the name, its size or the T8 position changes.
-      const LEM = { x0: 812, x1: 812 + 296 - 28, top: 819.44 - 36 };
+      // LEM = the underline in frame px: Instrument Serif ITALIC 72 px "DMA Design" (kit: T8 names italic) is 303.12 px
+      // wide (font advance), centred on x 960 -> left 808.44, right 1111.56; top 819.44 (T8 block centred at y 800).
+      // Hard-coded so the build never depends on font-load timing; re-measure if the name, its size or position changes.
+      // Box x = lemming centre - 24 (crop centre 120 x 20%); box top = underline top - 52.4 (feet at crop y 262 x 20%).
+      const LEM = { x0: 1100 - 24, x1: 1100 - 24 - 1.8309 * 77, top: 819.44 - 52.4 };
       gsap.set('#b03-lem-walk', { x: LEM.x0, y: LEM.top });
       tl.fromTo('#b03-lem-walk', { opacity: 0 }, { opacity: 1, duration: L(6), ease: 'none', immediateRender: false }, L(109));
       tl.fromTo('#b03-lem-walk', { x: LEM.x0 }, { x: LEM.x1, duration: L(186 - 109), ease: 'none', immediateRender: false }, L(109));

@@ -1,5 +1,36 @@
 {
  "beat": "B10",
- "rids": ["R9.2", "R9.3", "R9.5", "R10.1", "R10.2"],
- "note": "R9.2, R9.3, R9.5 = B9's three L3 strips continuing under the T2 lead-in until 'fun' (this composition, f-6..37, continuous source time with b09-throughyou). R10.1 = the L1 kill-frenzy shot after the X3 flash (f37-57): Tesseract-owned (tesseract_shots.json), synced here only as a reference. R10.2 (GTA 1 Liberty City gameplay) = listed in the plan's B10 B-roll; not placed (spare GTA 1 coverage; B11 uses it)."
+ "rids": [
+  "R9.1",
+  "R9.3",
+  "R9.5",
+  "R10.1"
+ ],
+ "note": "R9.1 (GTA 1 ram; SUBSTITUTE for the missing R9.2), R9.3, R9.5 = B9's three L3 strips continuing under the T2 lead-in until 'fun' (this composition, local 0-43, continuous source time with b09-throughyou: data-media-start 82/30, 58/30, 31/30 s into the same windows). R10.1 = the L1 kill-frenzy shot after the X3 flash (f37-57): Tesseract-owned (tesseract_shots.json), synced here only as a reference. R10.2 (GTA 1 Liberty City gameplay, listed in the plan's B10 B-roll) is not placed: the B10 build step uses R10.1 only (B11 uses R10.2).",
+ "moments": {
+  "R9.1": {
+   "in": 318.1,
+   "out": 322.4,
+   "crop": "276:414:274:40",
+   "note": "Same window as b09-throughyou (B9 strip, continued here with continuous source time). GTA 1: a police car drives straight down into the player's purple Beast GTS and rams it (318.0-318.7 s), then the player breaks away and speeds off with the cops behind (319-322 s, the camera zooms out). Vertical strip crop centred on the player's car (excludes the uploader's 'Sakura240' watermark at the left)."
+  },
+  "R9.3": {
+   "in": 55.6,
+   "out": 59.2,
+   "crop": "288:480:247:0",
+   "note": "Same window as b09-throughyou (B9 strip, continued here with continuous source time). GTA 2 (5 stars): several white-and-blue police cars swarm the junction around the player. Vertical strip crop of the 4:3 picture over the cops and the player."
+  },
+  "R9.5": {
+   "in": 566.0,
+   "out": 569.0,
+   "crop": "288:480:96:0",
+   "note": "Same window as b09-throughyou (B9 strip, continued here with continuous source time). GTA London 1969 rampage: a blue van mounts the pavement and keeps driving after the player on foot. Vertical strip crop of the 4:3 picture over the van and the player."
+  },
+  "R10.1": {
+   "in": 49.6,
+   "out": 50.6,
+   "crop": "640:360:0:0",
+   "note": "GTA 1 kill frenzy (Vice City, Bent Cop Blues): several cars exploding in a chain of fireballs on the road while the player stands on the pavement, score pop-ups 5000/1000. 16:9 crop of the 4:3 picture (top 360 px). Reference only: the L1 shot is Tesseract-owned (tesseract_shots.json)."
+  }
+ }
 }

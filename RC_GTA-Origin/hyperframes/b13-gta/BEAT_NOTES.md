@@ -15,8 +15,8 @@ GTA 1 big-box unboxing in a letterboxed band.
 
 | Kind | ID / file | Where |
 |---|---|---|
-| B-roll | **R13.1** GTA 1 intro, 1997 (`assets/footage/R13.1.mp4`) | L6 framed clip + its blurred back copy (in this composition) |
-| B-roll | **R13.2** GTA 1 PC big-box unboxing | L2 band f190-214, **Tesseract** (`tesseract_shots.json`) |
+| B-roll | **R13.1** GTA 1 intro, 1997 - REAL: the DMA Design D-man logo animation (`assets/footage/R13.1.mp4`, see Footage used) | L6 framed clip + its blurred back copy (in this composition) |
+| B-roll | **R13.2** GTA 1 PC big-box unboxing - REAL: the opened box, jewel case + map (see Footage used) | L2 band f190-214, **Tesseract** (`tesseract_shots.json`: source, source_in_s 101.6, crop) |
 | B-roll (not used) | R13.3, R13.4, R13.5, R13.6 (alternates) | only if R13.1 / R13.2 are unusable |
 | SFX | **S12** = S04's file "Countdown, List, Numbers (2)" | f48, first digit move |
 | SFX | **S13** "v3) Type (A B C )" | f132, first letter |
@@ -47,8 +47,8 @@ Top to bottom (z-index):
 | 28 (0.93 s) | T1 hard cut out; *In* hard cut in on "in" | Instrument Serif Italic 64 px #111111 |
 | 32 (1.07 s) | "Nov" hard cut in on "November" | Inter Bold 220 px, tracking -2% |
 | 48 (1.60 s) | digits 1-9-9-7 roll up on "1997": each slides up 40 px from its mask over 8f, 2f stagger | `power3.out`; last digit lands f62 (2.07 s) |
-| 83-90 | X3 white flash centred on the cut at f85: 0% f83, 50% f84, 100% f85-86, 75/50/25% f87-89, 0 f90 | linear ramps (kit), silent |
-| 85 (2.83 s) | hard cut (under 100% white) to L6: R13.1 framed at 62% over its own blurred, darker copy | L6 push 1.00 -> 1.04 linear f85-190 |
+| 83-89 | X3 white flash centred on the cut at f85 (refreshed kit, frames on screen): 33% f83, 67% f84, 100% f85, 80/60/40/20% f86-89, 0 f90 | linear ramps (kit), silent |
+| 85 (2.83 s) | hard cut (under 100% white) to L6: R13.1 framed at 62% over its own blurred, darker copy; the DMA D-man's impact frame (source 48.333 s) lands exactly on f85, so the flash reveals him slammed into the ground | L6 push 1.00 -> 1.04 linear f85-190 |
 | 85 | T1 "it ships with" on "it" (+0.19f) | white, soft shadow, y 620 |
 | 105 (3.50 s) | T1 "a new name:" on "a" (+0.36f) | |
 | 132 (4.40 s) | T1 out; T6 GRAND / THEFT / AUTO types on BEHIND the frame, one letter every 2f, no fades | Inter Black 400 px, tracking -4%, 3 stacked lines |
@@ -112,7 +112,7 @@ If it feels busy, cut S12 first (plan p.38).
 5. **L6 label** (library p.14: "small label under it"): B13's build (priority 2) gives no label text, so none (never add facts).
 6. **T6 timing:** 14 letters at 2f from "Grand" (f132): the last letter is f158 (storyboard "done @160"); the hold to the cut
    (f190) is 32f >= 30f.
-7. **X3:** "centred on the cut" = 100% white on the cut frame f85 (and f86), linear ramp/fade (kit choice, plan names no ease);
+7. **X3:** "centred on the cut" = 100% white on the cut frame f85 (ramp 2f, hold 1f, fade 4f, counted in frames on screen: refreshed kit), linear (kit choice, plan names no ease);
    the T1 "it ships with" starts on f85 under the flash.
 8. **L2 bars on a hard cut:** the unboxing band uses the L2 library's 8f bar slide-in ("when entering a cinematic moment") -
    noted for Tesseract in `tesseract_shots.json`.
@@ -124,14 +124,24 @@ If it feels busy, cut S12 first (plan p.38).
     hard cut on the first word of the spoken date phrase (B3 "It's", B13 "in"), digits rolling on the spoken year, content
     push 100 -> 104% from the head handle to the hard cut out. Only the date text differs ("1995" vs "Nov 1997").
 
-## Pending real footage
+## Footage used
 
-- **R13.1 in-point:** `data-media-start="2.0"` on BOTH `#b13-l6-bg` and `#b13-l6-clip` (keep them equal) is a stand-in value;
-  pick the most recognisable 3.5 s of the 1997 intro for f85-190 (a moment without its own big title text competing with T6).
-- **R13.1 aspect / crop:** confirm 4:3 (keep `rc-l6--4x3`) or native 16:9 (remove it); set `--rc-pos` on both videos if the
-  subject is off-centre; re-check that T1 at y 620 does not sit on a face (else use `rc-t1--low`, y 860, as T1 allows).
-- **R13.1 grade:** re-check the archival treatment strength on the real clip (`npx hyperframes media-treatment --selector ...`).
-- **R13.2 (Tesseract):** `source_in_s`, the moment (box opened, art readable) and the crop into the 1920 x 804 band.
-- Re-sync and re-render: `python3 ../../tools/sync_footage.py .` then the render command below.
+| R-ID | File (04_Broll/_originals/...) | In-out (s, original) | Beat frames | What it shows | Link |
+|---|---|---|---|---|---|
+| R13.1 | `B13/R13.1__Grand Theft Auto Intro (1997) [m2CHL4ACCEs].mp4` | 48.333-51.80 | f85-190 (both L6 copies, `data-media-start 0.4333` in the 47.9-51.9 working clip) | GTA 1 intro (PS1 boot): the DMA Design D-man slams into the ground, smoke, then lies run over with tyre tracks across him (the hold f160-190 ends on him) | https://www.youtube.com/watch?v=m2CHL4ACCEs&t=48 |
+| R13.2 | `B13/R13.2__Original GRAND THEFT AUTO from 1997 - PC Big Box Unboxing [BcnDNeEggls].mp4` | 101.6-102.4 (60 fps) | f190-214, Tesseract L2 band | the opened big box: GTA jewel case with its cover art in the insert, the San Andreas map beside it, hands at the edges | https://www.youtube.com/watch?v=BcnDNeEggls&t=101 |
+
+* R13.1 crop `632:474:51:1`: the upload is square-pixel 720x480 with the 4:3 picture pillarboxed at x 46-688 (cropdetect
+  642:476:46:0); exact 4:3 so the working clip is 1440x1080 (the 4:3 L6 frame `rc-l6--4x3` stays). Archival treatment unchanged.
+* R13.2 crop `1420:799:500:160` (Tesseract): keeps the uploader's facecam picture-in-picture (top-left, x<500, y<352) out of the band.
+* Other R13.1 moments rejected: the loading screen 1:02-1:12 shows the GTA logo but prints "Copyright (C)1998 ..." (the PS1 port's
+  year, next to "Nov 1997": avoided); PlayStation / Take 2 / Visual Sciences / VISOS logos are not GTA; menus are UI.
+* No substitutions in B13.
+
+## Still pending
+
+* Nothing blocking. T6 over the brightest late hold frames (the run-over D-man on white, f175-190) measures 2.5-2.6:1 against the
+  blurred, 40%-darker copy (check `contrast_aa_failure` warning); the giant 300+ px letters read clearly in the snapshots. If the lead
+  wants more punch: SUGGESTION a stronger darkening of `#b13-l6-bg` only (the plan's "40% darker" is met as the kit measured it).
 
 Render: `npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o ../../05_GFX/renders/b13-gta.mov`

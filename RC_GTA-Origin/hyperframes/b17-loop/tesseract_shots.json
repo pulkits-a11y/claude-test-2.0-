@@ -1,25 +1,91 @@
-{"beat": "B17", "composition": "b17-loop", "render": "05_GFX/renders/b17-loop.mov",
+{
+ "beat": "B17",
+ "composition": "b17-loop",
+ "render": "05_GFX/renders/b17-loop.mov",
  "shots": [
-  {"id": "B17-trailer1-band", "rid": "R17.1", "screen": "L2", "start_f": 0, "end_f": 107,
-   "source_in_s": 0.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 104, "anchor": "center"},
-   "enter": "X1", "exit": "X1",
-   "letterbox": {"bars_px": 138, "slide_in_f": 8},
+  {
+   "id": "B17-trailer1-band",
+   "rid": "R17.1",
+   "screen": "L2",
+   "start_f": 0,
+   "end_f": 107,
+   "source_in_s": 0.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 104,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": {
+    "bars_px": 138,
+    "slide_in_f": 8
+   },
    "grade": "game",
-   "notes": "Plan p.27 step 1: L2 letterbox on the opening seconds of GTA 6 Trailer 1 (official Rockstar upload), Lucia in custody. Use the first shot(s) where she is in custody; source_in_s 0.0 is the stand-in value: set it to that moment (skip any ident). Hold it from f0 (X1 from B16's glow line) to the first chase cut at f107 (on 'who's') so the trailer is on screen for all of 'And GTA 6? It opens with Lucia already caught.' (Accuracy notes p.39: keep the Trailer 1 shot on screen so 'it' reads as the trailer). Bars 138 px slide in over f0-8. Held shot: push 100 -> 104%. The HF overlay above it carries the T1 captions on the low line (y 860, Lucia's face is in the centre: keep it there) and the M1 stars on the top bar at x 1584-1816, y 60-100. Do not name or imply any voice actor. Extend 6f into the head handle only if the B16/B17 cut is trimmed earlier."},
-  {"id": "B17-chase-1", "rid": "R17.3", "screen": "full", "start_f": 107, "end_f": 117,
-   "source_in_s": 0.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 100, "anchor": "center"},
-   "enter": "X1", "exit": "X1", "grade": "game",
-   "notes": "Plan p.27 step 2: three fast GTA 6 chase shots, 8-10f each, on 'So who's chasing who'. Hard cut on 'who's' (onset beat f106.3, cut f107). Official Trailer 2: a police-chase moment with clear pursuit motion (police cars, sirens, the getaway). Full frame, no bars (action). source_in_s pending real footage."},
-  {"id": "B17-chase-2", "rid": "R17.4", "screen": "full", "start_f": 117, "end_f": 127,
-   "source_in_s": 0.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 100, "anchor": "center"},
-   "enter": "X1", "exit": "X1", "grade": "game",
-   "notes": "Hard cut on 'chasing' (onset beat f116.5, cut f117, the same frame the T2 lead-in 'chasing who' appears). Official launch trailer (Rockstar): a fast chase moment (not the logo end card, which b17-loop uses at f150-176). 10f. source_in_s pending real footage."},
-  {"id": "B17-chase-3", "rid": "R17.3", "screen": "full", "start_f": 127, "end_f": 137,
-   "source_in_s": 0.0, "speed": 1.0, "reverse": false,
-   "framing": {"scale_from": 100, "scale_to": 100, "anchor": "center"},
-   "enter": "X1", "exit": "X1", "grade": "game",
-   "notes": "Third chase shot, 10f, a different Trailer 2 moment from B17-chase-1; it runs into the hard cut to black on 'now?' at f137, where b17-loop becomes opaque (black, T2, then the R17.4 logo push-in, the final X4 at f170 and the black tail to f196). source_in_s pending real footage."}
- ]}
+   "notes": "BLOCKING: R17.1 (GTA 6 Trailer 1, official Rockstar; Lucia in custody in the opening seconds) is not downloaded. Searched every shot of the official R17.4 (launch trailer, 30 cuts), R17.2 (Netflix 'An Extended Look', 13 cuts) and R17.6 ('Pre-Load Now'): none shows Lucia in custody (no cell, booking, jumpsuit or police holding her), so per FOOTAGE_PASS the labelled stand-in stays for this one shot. When R17.1 arrives: source = its original, source_in_s = the first custody shot after any ident, keep f0-107. Plan p.27 step 1: L2 letterbox on the opening seconds of Trailer 1 (Accuracy p.39: keep the Trailer 1 shot on screen so 'it' reads as the trailer). Bars 138 px slide in over f0-8; held shot push 100 -> 104%. The HF overlay carries the T1 captions on the low line (y 860) and the M1 stars (row centred on x 1700, y 80). Do not name or imply any voice actor.",
+   "source": "04_Broll/_placeholders/R17.1.mp4"
+  },
+  {
+   "id": "B17-chase-1",
+   "rid": "R17.2",
+   "screen": "full",
+   "start_f": 107,
+   "end_f": 117,
+   "source_in_s": 7.2,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "grade": "game",
+   "notes": "SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched). Hard cut on 'who's' (f107), 10f, full frame.",
+   "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI\uff1a An Extended Look \uff5c Now Playing \uff5c Netflix [uphThaa97ig].mp4"
+  },
+  {
+   "id": "B17-chase-2",
+   "rid": "R17.4",
+   "screen": "full",
+   "start_f": 117,
+   "end_f": 127,
+   "source_in_s": 47.2,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "grade": "game",
+   "notes": "Official launch trailer (Rockstar) @ 0:47.2-0:47.53 (shot 46.33-48.23): a police car drifts round a street corner in pursuit of the green sports car. Hard cut on 'chasing' (f117, the frame the T2 lead-in 'chasing who' appears), 10f. Not the logo end card (b17-loop uses that at f150-176).",
+   "source": "04_Broll/_originals/B17/R17.4__Grand Theft Auto VI Launch Trailer [rz1B4B2yBZY].mp4"
+  },
+  {
+   "id": "B17-chase-3",
+   "rid": "R17.2",
+   "screen": "full",
+   "start_f": 127,
+   "end_f": 137,
+   "source_in_s": 11.9,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "scale_from": 100,
+    "scale_to": 100,
+    "anchor": "center"
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "grade": "game",
+   "notes": "SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:11.9-0:12.23 (shot 11.63-12.80): shot at from the player's convertible, a pursuing police car slams into a pole (sparks, the car lifts). 10f, runs into the hard cut to black on 'now?' at f137, where b17-loop becomes opaque (black, T2, the R17.4 logo push-in, the final X4 at f170, black tail to f196).",
+   "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI\uff1a An Extended Look \uff5c Now Playing \uff5c Netflix [uphThaa97ig].mp4"
+  }
+ ]
+}

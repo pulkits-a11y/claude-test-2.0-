@@ -18,8 +18,8 @@ the three spoken phrases sit around the frame until the blinds shut.
 |---|---|---|
 | B-roll (Tesseract) | **R14.1** GTA 3 (2001), **R14.2** Vice City (2002), **R14.3** San Andreas (2004), **R14.4** GTA 4 (2008), **R14.5** GTA 5 (2013) | L10 burst f0-60, 2 clips each x 6f |
 | B-roll (Tesseract) | **R1.3** GTA 5 five-star chase | f60-133, push-in |
-| B-roll (Tesseract + 4f embed) | **RT3** police lights | f133-163; ALSO embedded in this overlay for f140-143 under the X9 wash |
-| B-roll (Tesseract) | **R14.5** (or alternate R14.6) escape shot | f163-188 (+ tail handle) |
+| B-roll (Tesseract + 4f embed) | police lights: **R1.6** (SUBSTITUTE for the missing RT3, see Substitutions) | f133-163; ALSO embedded in this overlay for f140-143 under the X9 wash (`assets/footage/R1.6.mp4`, same crop) |
+| B-roll (Tesseract) | **R14.5** escape shot (R14.6 unusable: permanent "Grand Theft Auto" logo + burned-in commentary) | f163-188 (+ tail handle) |
 | Not used | RT7 (green-screen stars: M1 is built), R14.6 (alternate), R14.7 | |
 | SFX | **S14** = S02's file and slice ("Siren", 0.5-1.3 s, 6f fade out, high-pass 300 Hz) | f140 |
 | SFX | **S15** "23 Whip Hit" (only 0.2 s audible) | starts f161 (2f before the whip midpoint f163) |
@@ -37,7 +37,7 @@ HyperFrames (this overlay), top to bottom:
 4. `.rc-l10-tag` year tags (z 6)
 5. `#b14-stars` M1 six stars, 120 px, centred (z 4)
 6. `#b14-x9` X9 siren wash, Overlay blend 35% (z 2), f140-143
-7. `#b14-x9-plate` RT3 embed (z 1), f140-143 only (makes the overlay opaque there so the Overlay blend has a picture)
+7. `#b14-x9-plate` R1.6 police-lights embed (z 1), f140-143 only (makes the overlay opaque there so the Overlay blend has a picture)
 8. transparent: Tesseract footage
 
 ## 4. Step-by-step build (beat frames; seconds from the beat start)
@@ -50,9 +50,9 @@ HyperFrames (this overlay), top to bottom:
 | 62 (2.07 s) | T1 "that chase." hard cut in on "that" (+0.14f) | |
 | 96 (3.2 s) | T1 out; T4 "The wanted stars." fades in 4f + 12 px drift up (opacity linear, drift power3.out); M1 star 1 pops | |
 | 96..111 | stars pop 3f apart, each scale 0 -> 100% over 3f, power3.out, no overshoot; 6th lands f114 = "stars." | |
-| 133 (4.43 s) | stars off with the cut; T4 "The sirens." fades in centre-right | hard cut to RT3 police lights (no push, grade none) |
-| 140 (4.67 s) | X9: RT3 embed on; siren red #E3262E 35% Overlay f140-141, siren blue #2D5BFF f142-143; off f144 | RT3 continues (same source time as the embed) |
-| 160-166 | (text stays, screen-space) | X8 whip: 6f horizontal move, 80 px directional blur; cut RT3 -> R14.5 at the midpoint f163 |
+| 133 (4.43 s) | stars off with the cut; T4 "The sirens." fades in centre-right | hard cut to the police lights (R1.6 for RT3; no push, grade none) |
+| 140 (4.67 s) | X9: R1.6 embed on; siren red #E3262E 35% Overlay f140-141, siren blue #2D5BFF f142-143; off f144 | the police lights continue (same source time as the embed) |
+| 160-166 | (text stays, screen-space) | X8 whip: 6f horizontal move, 80 px directional blur; cut R1.6 -> R14.5 at the midpoint f163 |
 | 162 (5.4 s) | T4 "The running." fades in bottom-left | R14.5 escape, push 100 -> 104% |
 | 180-188 | X5 blinds CLOSE: 12 ink-black slats rotate +90 -> 0 deg over 8f (constant 11.25 deg/f), above all text | |
 | 188 -> +6 | slats shut (B15 opens them) | escape continues under the slats through the handle |
@@ -85,7 +85,7 @@ If it feels busy, cut S15 before S05 (plan p.38 order: S12, then S15, then S05).
 - No captions during the burst: the year tags are the only text there, and they stay tiny (22 px).
 - The siren wash only on "sirens" (motif M5): no other red/blue flashes; no glitch (not a bug beat).
 - The T4 phrases never fade out: they stay until the slats close.
-- Keep the RT3 shot exactly as specified (source_in_s 1.0, full frame 100%, grade none) or update the embed, else the 4 wash
+- Keep the police-lights shot exactly as specified (R1.6, source_in_s 129.5, crop 1264:711:300:289, full frame 100%, grade none) or update the embed, else the 4 wash
   frames pop against the Tesseract shot.
 - Stars: no overshoot (T7's chip is the only bouncy animation); they leave with the cut to the police lights.
 
@@ -96,18 +96,18 @@ If it feels busy, cut S15 before S05 (plan p.38 order: S12, then S15, then S05).
    (f62). The burst is 10 x 6f ("5-6f each" in the beat build) rather than the L10 library's "hard cut on the music's eighth
    notes" (8.2f at 110 BPM); beat build (priority 2) over library (priority 4).
 2. **X9 over Tesseract footage:** an Overlay layer over transparency renders as a flat tint in an alpha MOV
-   (KIT_transitions X9 caveat). The overlay therefore carries an embedded copy of RT3 for exactly the four wash frames (f140-
-   143), frame-locked to the Tesseract shot (media start 1.0 + 7/30 = 1.2333 s; verified on snapshots by the stand-in's burned
-   timecode: 1.233 ... 1.333 then the Tesseract frame 1.367).
+   (KIT_transitions X9 caveat). The overlay therefore carries an embedded copy of the police-lights shot (R1.6 for RT3) for exactly the four wash frames (f140-
+   143), frame-locked to the Tesseract shot (R1.6 source 129.5 + 7/30 = 129.733 s = working clip 0.4333 s, same crop; footage pass
+   snapshots `review/footage-pass/f146..f149`: red/blue wash over the two LSPD cruisers, transparent again on f144).
 3. **X9 colour timing:** red on f140-141, blue on f142-143, both at 35% Overlay (kit choice for the blue: the plan gives 35% once
    for the whole 4f overlay).
 4. **X8 whip** is Tesseract's (toolchain p.3): this overlay keeps the text still (screen space) during the whip; direction
    "left" and the cut at the midpoint f163 are choices (plan gives 6f + 80 px blur only).
-5. **Stars leave at the cut to RT3 (f133):** the plan ties them to "The wanted stars." over R1.3; only the T4 phrases are told
+5. **Stars leave at the cut to the police lights (f133):** the plan ties them to "The wanted stars." over R1.3; only the T4 phrases are told
    to stay until the beat ends.
 6. **"The sirens." centre-right** = right-aligned to the title-safe edge (1824) at y 540; "top-left" y 160 and "bottom-left"
    y 920 are the kit's T4 presets (inside title-safe).
-7. **RT3 has no push** (30f of constantly flashing lights is not a held shot); R1.3 and the escape push 100 -> 104%.
+7. **The police-lights shot has no push** (30f of constantly flashing lights is not a held shot); R1.3 and the escape push 100 -> 104%.
 7b. **T4 exit:** the T4 library ends with "all leave together with a 4f fade" (p.12, priority 4), the B14 build says each
    phrase stays "until the beat ends" (p.26, priority 2): no fade-out; the X5 slats close over the three phrases (f180-188),
    as the storyboard says ("all three T4 phrases stay until the slats close").
@@ -115,15 +115,39 @@ If it feels busy, cut S15 before S05 (plan p.38 order: S12, then S15, then S05).
    (this is a segment, not the end of the film; the phrases stay to the slats as the plan says),
    `timeline_track_too_dense` (Studio lane cosmetics for the five tags).
 
-## Pending real footage
+## Footage used (all Tesseract-owned: `tesseract_shots.json` carries `source`, `source_in_s`, `crop`)
 
-- All 13 Tesseract shots: `source_in_s` values in `tesseract_shots.json` are stand-ins; pick two different fast chase moments
-  per game for the burst, a centre that stays readable under the six stars for R1.3, and the car breaking away for the
-  escape (R14.5 or R14.6).
-- **RT3:** if the real clip's `source_in_s` changes, update `#b14-x9-plate` `data-media-start` (= source_in_s + 0.2333) and keep
-  the shot unpushed and ungraded (or apply the same push/grade to the embed).
-- Year tags assume the burst cuts land on f12/24/36/48/60; if the editor moves a burst cut, move the matching tag boundary.
-- The B16 rewind (b16-bug-origin) re-uses these in-points: keep `tools/make_rewind.py` there in sync.
-- Re-sync and re-render: `python3 ../../tools/sync_footage.py .` then the render command below.
+| Shot | R-ID | In (s, original) | Beat f | What it shows | Link |
+|---|---|---|---|---|---|
+| burst 1 "2001" | R14.1 | 60.3 | 0-6 | GTA 3: the Cheetah drifting past an LCPD cruiser in the rain | https://www.youtube.com/watch?v=6lSy09Uruz0&t=60 |
+| burst 2 "2001" | R14.1 | 200.8 | 6-12 | GTA 3: the battered Cheetah smashing through the pursuers (5-6 stars) | https://www.youtube.com/watch?v=6lSy09Uruz0&t=200 |
+| burst 3 "2002" | R14.2 | 168.0 | 12-18 | Vice City: the police helicopter swooping over Tommy | https://www.youtube.com/watch?v=X4mB41ybSN4&t=168 |
+| burst 4 "2002" | R14.2 | 274.0 | 18-24 | Vice City: a VCPD cruiser lunging in, lights on | https://www.youtube.com/watch?v=X4mB41ybSN4&t=274 |
+| burst 5 "2004" | R14.3 | 64.0 | 24-30 | San Andreas: CJ tearing down a street on a stolen police bike | https://www.youtube.com/watch?v=obxIhv9YhKY&t=64 |
+| burst 6 "2004" | R14.3 | 345.0 | 30-36 | San Andreas: CJ fleeing on a sports bike, stars up | https://www.youtube.com/watch?v=obxIhv9YhKY&t=345 |
+| burst 7 "2008" | R14.4 | 124.6 (crop 1116:628:400:0) | 36-42 | GTA 4: LCPD cruiser, light bar on, on the fleeing car as a gunman leans out | https://www.youtube.com/watch?v=WNZMK7KPZWs&t=124 |
+| burst 8 "2008" | R14.4 | 155.2 (crop 1116:628:0:0) | 42-48 | GTA 4: POLICE cruiser door to door with the fleeing car | https://www.youtube.com/watch?v=WNZMK7KPZWs&t=155 |
+| burst 9 "2013" | R14.5 | 429.6 (crop 1636:920:142:78) | 48-54 | GTA 5: the getaway car tearing down a dirt road at night | https://www.youtube.com/watch?v=vUndgwBLKeY&t=429 |
+| burst 10 "2013" | R14.5 | 434.2 (crop 1636:920:142:78) | 54-60 | GTA 5: the getaway car flying off a jump | https://www.youtube.com/watch?v=vUndgwBLKeY&t=434 |
+| GTA 5 chase under M1 | R1.3 | 107.0 | 60-133 | GTA 5 five stars: the supercar flat out on the coast highway, passing an LSPD cruiser with lights on (~108.5-109.5); clear centre under the stars | https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=107 |
+| police lights | R1.6 (for RT3) | 129.5 (crop 1264:711:300:289) | 133-163 | San Andreas: two LSPD cruisers side by side in pursuit, red/blue light bars lit | https://www.youtube.com/watch?v=flgIZbQHwN8&t=129 |
+| escape | R14.5 | 240.6 (crop 1636:920:142:78) | 163-188 | GTA 5: the getaway car drifting along the beach and away, sand flying | https://www.youtube.com/watch?v=vUndgwBLKeY&t=240 |
+
+Crops: R14.4 is a 2276x720 Rockstar Editor movie with "R*" and "ROCKSTAR GAMES / Social Club" marks at y 630-680 (16:9 crops end
+above them); R14.5 is letterboxed with the uploader's "RaveNN" mark in the top bar (crop = the picture rows 78-998); R1.6's crop drops
+the game's radio subtitle, HUD, minimap and zone name. Game HUD inside the other shots stays as is. Moments B1 already uses (R14.1
+44.0-45.5, R14.4 64.0-65.5, R1.3 46.0-47.4) are not repeated.
+
+## Substitutions
+
+* `SUBSTITUTE (Rule 5): R1.6 The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S... [flgIZbQHwN8] @ 02:09.5-02:10.5 for RT3 (police lights flashing: missing).` R5.4 (FOOTAGE_PASS's first example) was rejected: its night light-bar shots carry LSPDFR mod UI (death-report feed, radio widget) and the clean side view prints a real sheriff's name on the door; R14.6 carries a permanent logo; R1.3's lights are hard to read in daylight. The R1.6 shot is daylight: the light bars read, but it is not a night "lights flashing" close-up like RT3.
+* R14.5 note (not a substitution): the plan's GTA 5 "Lose the cops" clip is a cinematic short film with no police on screen; its getaway driving is used for the two "2013" burst clips and the escape, as the plan asks.
+
+## Still pending
+
+* RT3 itself if the user uploads it (then: rid RT3 + its source/in-point in `tesseract_shots.json`, the embed `#b14-x9-plate` src and
+  `data-media-start`, `footage.json`, re-render this overlay and re-run B16's `tools/make_rewind.py`).
+* Year tags assume the burst cuts land on f12/24/36/48/60; if the editor moves a burst cut, move the matching tag boundary.
+* B16's VHS rewind mirrors these shots (its `tools/make_rewind.py` reads this file): re-run it after any change here.
 
 Render: `npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o ../../05_GFX/renders/b14-since.mov`

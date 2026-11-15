@@ -1,4 +1,51 @@
 {
  "beat": "B1",
- "rids": ["R1.2", "R1.5", "R14.1", "R1.7", "R1.6", "R14.4", "R1.3", "R17.1"]
+ "rids": [
+  "R1.2",
+  "R1.5",
+  "R14.1",
+  "R1.7",
+  "R1.6",
+  "R14.4",
+  "R1.3"
+ ],
+ "moments": {
+  "R1.2": {
+   "in": 8.2,
+   "out": 32.8,
+   "note": "Official PS5 features trailer. One window for two shots: 8.2-12.4 police truck (light bar, roof number 083, wanted stars) charging the shooter, shot up, flipping = the cell-6 switch / full-frame GTA 6 shot (SUBSTITUTE for R17.3/R17.1, media 0 in B1, continues into B2 at media 2.8333); 31.6-32.5 two marked POLICE cars with lights from a driver's POV = the L4 frosted police moment (media 23.4)."
+  },
+  "R1.5": {
+   "in": 95.6,
+   "out": 97.0,
+   "note": "GTA 1 part of the compilation: white police car with lights spinning in on the player's limo (top-down)."
+  },
+  "R14.1": {
+   "in": 44.0,
+   "out": 45.5,
+   "note": "GTA 3: LCPD police car right behind / ramming the player's Cheetah."
+  },
+  "R1.7": {
+   "in": 6.4,
+   "out": 7.9,
+   "crop": "782:660:560:0",
+   "note": "Vice City: VCPD cars with flashing lights exploding/burning while Tommy fires at them (4-star). Crop = top 660 px, keeps the uploader's burned-in 'MOMIT tHE VICIOUS' watermark band (y 675-830) out of frame."
+  },
+  "R1.6": {
+   "in": 46.0,
+   "out": 47.5,
+   "note": "San Andreas: LSPD cruiser with lights in pursuit of a biker."
+  },
+  "R14.4": {
+   "in": 64.0,
+   "out": 65.5,
+   "crop": "852:720:450:0",
+   "note": "GTA 4 'Deadly Pursuit' (2276x720 Social Club movie): LCPD car with lights chasing the silver sedan. Crop to the cell's aspect, excludes the R*/Social Club corner logos."
+  },
+  "R1.3": {
+   "in": 46.0,
+   "out": 47.4,
+   "note": "GTA 5: white supercar fleeing past POLICE cars (5 stars)."
+  }
+ }
 }
