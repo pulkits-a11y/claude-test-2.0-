@@ -1,0 +1,322 @@
+[
+ {
+  "label": "T1 chunk 1 first frame",
+  "frame": 7,
+  "t": 0.233333
+ },
+ {
+  "label": "T1 chunk 2 first frame",
+  "frame": 27,
+  "t": 0.9
+ },
+ {
+  "label": "T1 chunk 3 first frame",
+  "frame": 58,
+  "t": 1.933333
+ },
+ {
+  "label": "T1 chunk 4 first frame",
+  "frame": 98,
+  "t": 3.266667
+ },
+ {
+  "label": "T2 lead-in only",
+  "frame": 121,
+  "t": 4.033333
+ },
+ {
+  "label": "T2 key f+2",
+  "frame": 135,
+  "t": 4.5
+ },
+ {
+  "label": "T2 key settled",
+  "frame": 139,
+  "t": 4.633333
+ },
+ {
+  "label": "T2 out f+2",
+  "frame": 151,
+  "t": 5.033333
+ },
+ {
+  "label": "T1 low",
+  "frame": 190,
+  "t": 6.333333
+ },
+ {
+  "label": "T2 card key f0",
+  "frame": 270,
+  "t": 9
+ },
+ {
+  "label": "T2 card key f+3",
+  "frame": 273,
+  "t": 9.1
+ },
+ {
+  "label": "T2 card settled",
+  "frame": 280,
+  "t": 9.333333
+ },
+ {
+  "label": "cover settled",
+  "frame": 330,
+  "t": 11
+ },
+ {
+  "label": "T3 f0",
+  "frame": 348,
+  "t": 11.6
+ },
+ {
+  "label": "T3 f+2",
+  "frame": 350,
+  "t": 11.666667
+ },
+ {
+  "label": "T3 f+5",
+  "frame": 353,
+  "t": 11.766667
+ },
+ {
+  "label": "T3 settled",
+  "frame": 370,
+  "t": 12.333333
+ },
+ {
+  "label": "T3 Nov f+4",
+  "frame": 404,
+  "t": 13.466667
+ },
+ {
+  "label": "T3 Nov settled",
+  "frame": 420,
+  "t": 14
+ },
+ {
+  "label": "T4 piece1 f+2",
+  "frame": 454,
+  "t": 15.133333
+ },
+ {
+  "label": "T4 piece1 settled",
+  "frame": 460,
+  "t": 15.333333
+ },
+ {
+  "label": "T4 both",
+  "frame": 480,
+  "t": 16
+ },
+ {
+  "label": "T4 out f+2",
+  "frame": 503,
+  "t": 16.766667
+ },
+ {
+  "label": "T4 B14 all",
+  "frame": 590,
+  "t": 19.666667
+ },
+ {
+  "label": "T5 f0",
+  "frame": 602,
+  "t": 20.066667
+ },
+ {
+  "label": "T5 f+4",
+  "frame": 606,
+  "t": 20.2
+ },
+ {
+  "label": "T5 f+8",
+  "frame": 610,
+  "t": 20.333333
+ },
+ {
+  "label": "T5 landed",
+  "frame": 620,
+  "t": 20.666667
+ },
+ {
+  "label": "T5 chip f+5 (112%)",
+  "frame": 655,
+  "t": 21.833333
+ },
+ {
+  "label": "T5 chip settled",
+  "frame": 670,
+  "t": 22.333333
+ },
+ {
+  "label": "T6 5 letters",
+  "frame": 694,
+  "t": 23.133333
+ },
+ {
+  "label": "T6 9 letters",
+  "frame": 702,
+  "t": 23.4
+ },
+ {
+  "label": "T6 complete",
+  "frame": 712,
+  "t": 23.733333
+ },
+ {
+  "label": "T6 hold",
+  "frame": 745,
+  "t": 24.833333
+ },
+ {
+  "label": "T7 \"And that\"",
+  "frame": 789,
+  "t": 26.3
+ },
+ {
+  "label": "T7 chip f+2",
+  "frame": 792,
+  "t": 26.4
+ },
+ {
+  "label": "T7 chip f+5",
+  "frame": 795,
+  "t": 26.5
+ },
+ {
+  "label": "T7 settled",
+  "frame": 820,
+  "t": 27.333333
+ },
+ {
+  "label": "T8 name f+3",
+  "frame": 836,
+  "t": 27.866667
+ },
+ {
+  "label": "T8 name settled, walker start",
+  "frame": 840,
+  "t": 28
+ },
+ {
+  "label": "T8 walker mid",
+  "frame": 860,
+  "t": 28.666667
+ },
+ {
+  "label": "T8 quote 2 chars",
+  "frame": 893,
+  "t": 29.766667
+ },
+ {
+  "label": "T8 quote 8 chars",
+  "frame": 896,
+  "t": 29.866667
+ },
+ {
+  "label": "T8 quote done",
+  "frame": 902,
+  "t": 30.066667
+ },
+ {
+  "label": "T8 name f+3",
+  "frame": 908,
+  "t": 30.266667
+ },
+ {
+  "label": "T8 settled",
+  "frame": 940,
+  "t": 31.333333
+ },
+ {
+  "label": "T9 hl f+2",
+  "frame": 988,
+  "t": 32.933333
+ },
+ {
+  "label": "T9 hl f+4",
+  "frame": 990,
+  "t": 33
+ },
+ {
+  "label": "T9 hl settled",
+  "frame": 1000,
+  "t": 33.333333
+ },
+ {
+  "label": "T9 label f+1",
+  "frame": 1047,
+  "t": 34.9
+ },
+ {
+  "label": "T9 label f+2",
+  "frame": 1048,
+  "t": 34.933333
+ },
+ {
+  "label": "T9 label settled",
+  "frame": 1060,
+  "t": 35.333333
+ },
+ {
+  "label": "T10 f+0",
+  "frame": 1100,
+  "t": 36.666667
+ },
+ {
+  "label": "T10 f+1",
+  "frame": 1101,
+  "t": 36.7
+ },
+ {
+  "label": "T10 f+2",
+  "frame": 1102,
+  "t": 36.733333
+ },
+ {
+  "label": "T10 f+3",
+  "frame": 1103,
+  "t": 36.766667
+ },
+ {
+  "label": "T10 f+4",
+  "frame": 1104,
+  "t": 36.8
+ },
+ {
+  "label": "T10 f+5",
+  "frame": 1105,
+  "t": 36.833333
+ },
+ {
+  "label": "T10 f+6",
+  "frame": 1106,
+  "t": 36.866667
+ },
+ {
+  "label": "T10 hold",
+  "frame": 1112,
+  "t": 37.066667
+ },
+ {
+  "label": "B17 T2 settled",
+  "frame": 1150,
+  "t": 38.333333
+ },
+ {
+  "label": "B17 T10 f+0",
+  "frame": 1160,
+  "t": 38.666667
+ },
+ {
+  "label": "B17 T10 f+3",
+  "frame": 1163,
+  "t": 38.766667
+ },
+ {
+  "label": "B17 black",
+  "frame": 1170,
+  "t": 39
+ }
+]

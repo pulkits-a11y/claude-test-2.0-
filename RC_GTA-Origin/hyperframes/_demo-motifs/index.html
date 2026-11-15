@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      .full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      .fill-video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+      /* demo-only labels (not part of the kit) */
+      .demo-label { position: absolute; left: 96px; top: 984px; font-family: var(--sans); font-weight: 500; font-size: 22px;
+        line-height: 1.2; color: var(--white); text-shadow: var(--text-shadow); white-space: nowrap; }
+      .demo-label.on-card { color: var(--card-ink); text-shadow: none; }
+      /* demo-only stand-ins for other kit areas (L11 split, L5 frame, T2/T7/T5 lines): static, plan values */
+      .half { position: absolute; top: 0; width: 958px; height: 1080px; overflow: hidden; }
+      .half.left { left: 0; } .half.right { left: 962px; }
+      .divider { position: absolute; left: 958px; top: 0; width: 4px; height: 1080px; background: var(--ink-black); }
+      .t2-standin { position: absolute; left: 96px; width: 1728px; display: flex; justify-content: center; align-items: baseline;
+        column-gap: 14px; color: var(--card-ink); white-space: nowrap; }
+      .t2-standin .lead { font-family: var(--sans); font-weight: 600; font-size: 42px; line-height: 42px; }
+      .t2-standin .key { font-family: var(--serif); font-style: italic; font-size: 140px; line-height: 140px; }
+      .t7-standin { position: absolute; left: 96px; width: 1728px; top: 592px; height: 56px; text-align: center;
+        font-family: var(--sans); font-weight: 500; font-size: 46px; line-height: 56px; color: var(--white);
+        text-shadow: var(--text-shadow); white-space: nowrap; }
+            .t5-standin { position: absolute; left: 96px; width: 1728px; top: 488px; height: 104px; text-align: center;
+        font-family: var(--serif); font-style: italic; font-size: 84px; line-height: 104px; color: var(--warm-glow); white-space: nowrap; }
+            .l5-frame { position: absolute; left: 432px; top: 236px; width: 1056px; height: 608px; object-fit: cover;
+        border: 8px solid var(--white); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); box-sizing: border-box; }
+      #k-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- _demo-motifs: every item of the MOTIFS kit area, in sequence, used exactly as a beat would.
+         Footage = labelled stand-ins (04_Broll/_placeholders). Contact sheet: review/. Docs: assets/kit/KIT_motifs.md.
+         A 0.0-2.5  M1 HUD pop-in (B1)        B 2.5-5.0  M1 hero x6 (B14)        C 5.0-7.5  M1 blink (B17)
+         D 7.5-10.0 M2 arrow on the cop car (B5)          E 10.0-12.5 M2 redraw on the getaway car (B11)
+         F 12.5-15.5 M3/L9 calendar, 18 fill (B4)         G 15.5-18.5 M3/L9 grows 18 -> 30, counter (B12)
+         H 18.5-20.75 M4 bug chip in a T7 line (B2)       I 20.75-23.0 M4 chip at the end of the glow line (B16)
+         J 23.0-27.0 L8 CRT insert + error box hard pop (B2)   K 27.0-30.0 CANCELLED x3 + camera shake (B7) -->
+    <div data-hf-id="hf-dumi" id="root" data-composition-id="demo-motifs" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+
+      <!-- ===================== A: M1 HUD pop-in (B1) ===================== -->
+      <video data-hf-id="hf-vpxm" id="a-bg" class="clip" src="assets/footage/R17.3.mp4" data-start="0" data-duration="2.5" data-track-index="0" muted playsinline style="z-index:1"></video>
+      <div data-hf-id="hf-cbpl" id="a-stars" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="2.5" data-track-index="1" style="z-index:5"></div>
+      <div data-hf-id="hf-7ebk" id="a-label" data-layout-ignore="" class="clip demo-label" data-start="0" data-duration="2.5" data-track-index="2" style="z-index:9">M1 wanted stars, B1: 5 x 40 px, row centred on (1700, 80), each pops in over 3f, 3f apart (from 0.5 s)</div>
+
+      <!-- ===================== B: M1 hero (B14) ===================== -->
+      <video data-hf-id="hf-prn8" id="b-bg" class="clip" src="assets/footage/R1.3.mp4" data-start="2.5" data-duration="2.5" data-track-index="5" muted playsinline style="z-index:1"></video>
+      <div data-hf-id="hf-fz1z" id="b-stars" class="clip m1-stars" data-preset="hero" data-start="2.5" data-duration="2.5" data-track-index="6" style="z-index:5"></div>
+      <div data-hf-id="hf-wda8" id="b-label" data-layout-ignore="" class="clip demo-label" data-start="2.5" data-duration="2.5" data-track-index="7" style="z-index:9">M1, B14: 6 x 120 px, centred, 3f pop, 3f apart (from 3.0 s)</div>
+
+      <!-- ===================== C: M1 blink (B17) ===================== -->
+      <video data-hf-id="hf-89jy" id="c-bg" class="clip" src="assets/footage/R17.1.mp4" data-start="5" data-duration="2.5" data-track-index="10" muted playsinline style="z-index:1"></video>
+      <div data-hf-id="hf-zc7r" id="c-stars" class="clip m1-stars" data-preset="hud" data-start="5" data-duration="2.5" data-track-index="11" style="z-index:5"></div>
+      <div data-hf-id="hf-aued" id="c-label" data-layout-ignore="" class="clip demo-label" data-start="5" data-duration="2.5" data-track-index="12" style="z-index:9">M1, B17: 5 x 40 px top-right, blink 6f on / 6f off from 5.2 s, on again at 7.3 s</div>
+
+      <!-- ===================== D: M2 on the cop car (B5) ===================== -->
+      <div data-hf-id="hf-vwqm" class="half left"><video data-hf-id="hf-vsek" id="d-left" class="clip fill-video" src="assets/footage/R5.4.mp4" data-start="7.5" data-duration="2.5" data-track-index="15" muted playsinline></video></div>
+      <div data-hf-id="hf-4oj9" class="half right"><video data-hf-id="hf-6wnu" id="d-right" class="clip fill-video" src="assets/footage/R5.1.mp4" data-start="7.5" data-duration="2.5" data-track-index="15" muted playsinline></video></div>
+      <div data-hf-id="hf-52ak" id="d-divider" class="clip divider" data-start="7.5" data-duration="2.5" data-track-index="16" style="z-index:2"></div>
+      <div data-hf-id="hf-fkap" id="d-arrow" class="clip m2-arrow" data-start="7.5" data-duration="2.5" data-track-index="16" style="z-index:5"></div>
+      <div data-hf-id="hf-a3ma" id="d-label" data-layout-ignore="" class="clip demo-label" data-start="7.5" data-duration="2.5" data-track-index="17" style="z-index:9">M2, B5: #FFE14D 6 px arrow drawn on over 8f (8.0 s), "you" Inter SemiBold 36 px; left half of a stand-in L11 split</div>
+
+      <!-- ===================== E: M2 redraw on the getaway car (B11) ===================== -->
+      <div data-hf-id="hf-5082" class="half left"><video data-hf-id="hf-xa9c" id="e-left" class="clip fill-video" src="assets/footage/R10.2.mp4" data-start="10" data-duration="2.5" data-track-index="20" muted playsinline></video></div>
+      <div data-hf-id="hf-8z1l" class="half right"><video data-hf-id="hf-dofb" id="e-right" class="clip fill-video" src="assets/footage/R5.4.mp4" data-start="10" data-duration="2.5" data-track-index="20" muted playsinline></video></div>
+      <div data-hf-id="hf-5pf2" id="e-divider" class="clip divider" data-start="10" data-duration="2.5" data-track-index="21" style="z-index:2"></div>
+      <div data-hf-id="hf-xzgr" id="e-arrow" class="clip m2-arrow" data-start="10" data-duration="2.5" data-track-index="21" style="z-index:5"></div>
+      <div data-hf-id="hf-ceqb" id="e-label" data-layout-ignore="" class="clip demo-label" data-start="10" data-duration="2.5" data-track-index="22" style="z-index:9">M2, B11: same arrow (same seed), new from/to, redraws over 8f at 10.5 s on the getaway car</div>
+
+      <!-- ===================== F: M3 / L9 calendar, B4 ===================== -->
+      <div data-hf-id="hf-0pbi" id="f-card" class="clip full rc-card" data-start="12.5" data-duration="3" data-track-index="25" style="z-index:1"></div>
+      <div data-hf-id="hf-r64k" id="f-t2" class="clip t2-standin" data-start="12.5" data-duration="3" data-track-index="26" style="z-index:4; top: 322px"><span data-hf-id="hf-y2yf" class="lead">planned to take</span><span data-hf-id="hf-shuo" class="key">18 months.</span></div>
+      <div data-hf-id="hf-kmx6" id="f-cal" class="clip m3-cal" data-start="12.5" data-duration="3" data-track-index="27" style="z-index:5"></div>
+      <div data-hf-id="hf-713q" id="f-label" data-layout-ignore="" class="clip demo-label on-card" data-start="12.5" data-duration="3" data-track-index="28" style="z-index:9">M3 = L9, B4: 64 px squares, 8 px gaps, 6 columns; 18 fill left to right, 2f apart (13.0 s); T2 line = static stand-in</div>
+
+      <!-- ===================== G: M3 / L9 calendar, B12 ===================== -->
+      <div data-hf-id="hf-kc88" id="g-card" class="clip full rc-card" data-start="15.5" data-duration="3" data-track-index="30" style="z-index:1"></div>
+      <div data-hf-id="hf-h2o0" id="g-t2" class="clip t2-standin" data-start="15.5" data-duration="3" data-track-index="31" style="z-index:4; top: 322px"><span data-hf-id="hf-97q2" class="lead">turn into</span><span data-hf-id="hf-omm0" class="key">thirty.</span></div>
+      <div data-hf-id="hf-fh04" id="g-cal" class="clip m3-cal" data-start="15.5" data-duration="3" data-track-index="32" style="z-index:5"></div>
+      <div data-hf-id="hf-3534" id="g-label" data-layout-ignore="" class="clip demo-label on-card" data-start="15.5" data-duration="3" data-track-index="33" style="z-index:9">M3 = L9, B12: same component, 18 filled + counter (Inter Bold 120 px); 12 red squares 2f apart from 16.2 s, counter 18 -&gt; 30</div>
+
+      <!-- ===================== H: M4 chip in a T7 line (B2) ===================== -->
+      <video data-hf-id="hf-ehow" id="h-bg" class="clip" src="assets/footage/R9.1.mp4" data-start="18.5" data-duration="2.25" data-track-index="35" muted playsinline style="z-index:1"></video>
+      <div data-hf-id="hf-06c2" id="h-line" class="clip t7-standin" data-start="18.5" data-duration="2.25" data-track-index="36" style="z-index:5">And that <span data-hf-id="hf-ux35" id="h-chip" class="rc-t7__chip m4-chip"></span> saved it.</div>
+      <div data-hf-id="hf-m8ad" id="h-label" data-layout-ignore="" class="clip demo-label" data-start="18.5" data-duration="2.25" data-track-index="37" style="z-index:9">M4, B2: 8-bit beetle, white on a #111111 72 x 56 chip (12 px radius); pops 0 -&gt; 112% -&gt; 100% over 8f at 19.0 s</div>
+
+      <!-- ===================== I: M4 chip at the end of the glow line (B16) ===================== -->
+      <div data-hf-id="hf-q20v" id="i-black" class="clip full rc-ink" data-start="20.75" data-duration="2.25" data-track-index="40" style="z-index:1"></div>
+      <div data-hf-id="hf-66rs" id="i-line" class="clip t5-standin" data-start="20.75" data-duration="2.25" data-track-index="41" style="z-index:5">The whole series started with a <span data-hf-id="hf-957u" id="i-chip" class="rc-t7__chip m4-chip"></span></div>
+      <div data-hf-id="hf-lpfo" id="i-label" data-layout-ignore="" class="clip demo-label" data-start="20.75" data-duration="2.25" data-track-index="42" style="z-index:9">M4, B16: the same chip on black, in place of "bug" (pops at 21.3 s); glow line = static stand-in</div>
+
+      <!-- ===================== J: L8 CRT insert + error box (B2) ===================== -->
+      <video data-hf-id="hf-tq4o" id="j-plate" class="clip" src="assets/footage/R3.9.mp4" data-start="23" data-duration="4" data-track-index="45" muted playsinline style="z-index:1"></video>
+      <div data-hf-id="hf-bpwm" id="j-crt" class="l8-screen" data-corners="1060,230 1760,250 1750,770 1070,790" style="z-index:2">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0.15,&quot;scanlineCount&quot;:0.2889,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0.0521,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0.16,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-w9b0" id="j-crt-pic" class="clip l8-picture" src="assets/footage/R9.1.mp4" data-start="23" data-duration="4" data-track-index="46" muted playsinline></video>
+      </div>
+      <div data-hf-id="hf-zelc" id="j-err" class="clip m-errbox" data-start="25" data-duration="2" data-track-index="47" style="z-index:6; left: 1110px; top: 340px; --m-eb-w: 600px;"></div>
+      <div data-hf-id="hf-wy8r" id="j-label" data-layout-ignore="" class="clip demo-label" data-start="23" data-duration="4" data-track-index="48" style="z-index:9">L8, B2: assumed screen quad on the R3.9 stand-in (re-fit to the real plate); bulge 8%, 3 px scanlines 15%, 1 px fringe, flicker 97-100%; error box hard pop at 25.0 s</div>
+
+      <!-- ===================== K: CANCELLED x3 + camera shake (B7) ===================== -->
+      <div data-hf-id="hf-eb02" id="k-card" class="clip full rc-card" data-start="27" data-duration="3" data-track-index="50" style="z-index:1"></div>
+      <div data-hf-id="hf-fdya" id="k-cam" style="z-index:3">
+        <video data-hf-id="hf-uqns" id="k-clip" class="clip l5-frame" src="assets/footage/R7.1.mp4" data-start="27" data-duration="3" data-track-index="51" muted playsinline></video>
+        <div data-hf-id="hf-ne8k" id="k-stamp1" class="clip m-stamp" data-start="27" data-duration="3" data-track-index="52" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+        <div data-hf-id="hf-72we" id="k-stamp2" class="clip m-stamp" data-start="27" data-duration="3" data-track-index="53" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+        <div data-hf-id="hf-l32o" id="k-stamp3" class="clip m-stamp" data-start="27" data-duration="3" data-track-index="54" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+      </div>
+      <div data-hf-id="hf-wo85" id="k-label" data-layout-ignore="" class="clip demo-label on-card" data-start="27" data-duration="3" data-track-index="53" style="z-index:9">CANCELLED, B7: Inter Black 120 px #E3262E, rough mask; slams 130% -&gt; 100% over 2f at 27.5 / 28.1 / 28.7 s, -8 / -4 / +6 deg, offsets 0 / ±30 px, 4 px shake for 4f</div>
+    </div>
+
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const M = RCK.motifs;
+
+      // A: B1 HUD stars pop in, 3f apart
+      M.starsPopIn(tl, "#a-stars", 0.5);
+      // B: B14 six 120 px stars, centred
+      M.starsPopIn(tl, "#b-stars", 3.0);
+      // C: B17 stars already on screen, blink
+      M.starsBlink(tl, "#c-stars", 5.2, { until: 7.3 });
+      // D: B5 arrow points at the cop car (left half)
+      M.arrowDraw(tl, "#d-arrow", 8.0, { from: [760, 330], to: [500, 610] });
+      // E: B11 same arrow redraws on the getaway car (same seed, new geometry)
+      M.arrowDraw(tl, "#e-arrow", 10.5, { from: [250, 300], to: [470, 590], bend: -0.16 });
+      // F: B4 calendar, 18 squares fill
+      M.calendarFill(tl, "#f-cal", 13.0, { slots: 18, filled: 0 });
+      // G: B12 same calendar returns with 18 filled + counter, grows to 30
+      M.calendarExtend(tl, "#g-cal", 0, { slots: 18, filled: 18, counter: 18, to: 30, landAt: 17.0 }); // starts 16.2 s (f486), lands f510
+      // H / I: M4 chip pops in the sentence
+      M.bugChipPop(tl, "#h-chip", 19.0);
+      M.bugChipPop(tl, "#i-chip", 21.3);
+      // J: L8 insert fitted to the (assumed) screen quad; flicker on the picture; error box (hard pop = its clip start)
+      M.crtFit("#j-crt");
+      M.crtFlicker(tl, "#j-crt-pic", 23.0, { until: 27.0 });
+      M.errorBoxInit("#j-err");
+      // K: three CANCELLED slams on the framed clip, camera shake on #k-cam
+      M.stampTriple(tl, ["#k-stamp1", "#k-stamp2", "#k-stamp3"], [27.5, 28.1, 28.7], { center: [960, 540], camera: "#k-cam" });
+
+      window.__timelines["demo-motifs"] = tl;
+    </script>
+  </body>
+</html>

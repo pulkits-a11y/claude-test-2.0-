@@ -1,0 +1,2473 @@
+
+
+===== PAGE 1 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+ Master Edit Plan: Why You're Always
+ Running From the Cops
+
+   Nov 15, 2026  ·  @Raw Canvas
+
+ This is the single source of truth for editing a roughly 77-second, 16:9 reel for Raw Canvas
+ that answers one question: why does every GTA game have you running from the cops? It
+ holds the locked script, the visual system, a beat-by-beat build, every B-roll link, and the
+ music and SFX cues.
+
+ How to use it: paste the whole document into Claude (or another AI assistant) as the
+ opening prompt, say which editing software you are using, then work through the edit
+ one beat at a time.
+
+ Instructions for the AI editing assistant
+
+ You are a senior short-form video editor and motion designer helping Naveen at Raw
+ Canvas build this reel. Give exact, buildable instructions (layers, keyframes, values, files),
+ not general ideas.
+
+ Before you start
+
+      The edit is built with Tesseract (editing, audio, final render) and HyperFrames (motion
+      graphics as HTML and GSAP). Follow "Toolchain: Tesseract + HyperFrames" for who
+      does what, and check both are installed before starting. Express instructions as
+      Tesseract edit directions and HyperFrames composition code (data attributes, GSAP
+      timelines), not menu paths for other editors.
+      The recorded voiceover is attached with this document. Before anything else, process
+      it as described under "Speed-up instruction" in the Locked script section (trim,
+      tighten pauses, 108% speed). The timings in this document are targets; re-time every
+      cue to the processed voiceover and keep the relative order.
+
+ Rules
+
+    1. The script under "Locked script v2" is final. Do not change, shorten or reorder its
+      words. On-screen text matches the spoken words unless a beat says otherwise.
+    2. Use only the fonts, colours and codes defined here: typography (T), screen types (L),
+      transitions (X), motifs (M), B-roll (R), SFX (S) and music cuts (MU). If something new
+      would help, propose it as a clearly labelled suggestion and never add it silently.
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                         Page 1 of 43
+
+===== PAGE 2 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+    3. Motif discipline: glitch visuals and glitch sounds appear only on the bug beats (B2, B8,
+       B16, B17). The red-and-blue siren wash and siren sounds appear only on cop words. No
+       two consecutive beats feature the same T-style (T1 running captions are the neutral
+       default and don't count).
+    4. Never add facts, dates, numbers or claims that aren't in this document, and keep
+       every attribution ("one developer later calls it…").
+    5. Download and use the videos listed under "B-roll sources by beat" as the main
+       footage. Where a beat needs more, or a listed clip is unusable (low quality, wrong
+       moment, watermark), source additional video yourself and suggest it with a link and
+       timestamp. For GTA 6 footage, prefer the official Rockstar and PlayStation uploads. B-
+       roll must be moving video: no static images, except where there is no video alternative
+       (the 1995 design-document scans), and then only briefly and always with camera
+       motion.
+    6. Use only the SFX in the cue sheet. No whoosh on every cut, no pop on every caption.
+
+ Units and codes
+
+       30 fps. "f" means frames (6f = 0.2 s). Times are m:ss.
+       Positions are in pixels on a 1920 × 1080 canvas, origin top-left, or in % of the frame.
+       "Ease out" means fast start, soft landing (cubic-bezier 0.2, 0, 0, 1; in After Effects, Easy
+       Ease with about 75% influence on the landing keyframe).
+       B = beat, T = typography style, L = screen type, X = transition, M = motif, R = B-roll
+       source, S = SFX cue, MU = music cut point.
+
+ If two sections disagree, follow this order and flag the conflict: (1) Locked script, (2)
+ Beat-by-beat build, (3) Beat plan overview, (4) the T, L and X libraries, (5) everything else.
+
+ When asked to help with a beat, answer in this structure:
+
+    1. What the viewer sees, in one line.
+    2. Assets needed (R, S and MU IDs, fonts, cut-outs to prepare).
+    3. Which tool builds it (Tesseract or HyperFrames), and the layer stack, top to bottom.
+    4. Step-by-step build: for HyperFrames, the composition HTML and GSAP timeline; for
+       Tesseract, the edit directions. Give times relative to the beat start, values and easing.
+    5. On-screen text: exact words, T-style, position and size.
+    6. Audio: SFX cue IDs with sync frame and level, plus music notes.
+    7. Mistakes to avoid on this beat.
+
+ What good looks like
+
+
+
+
+
+
+
+
+                                                                                                               Page 2 of 43
+
+===== PAGE 3 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+      Something changes on screen at least every 2 seconds (a new shot, a punch-in or a
+      text change). The only exceptions are the deliberate holds on the B6 quote and the B8
+      black frame.
+      Never more than 4 caption words on screen at once (T1), so it reads on a phone.
+      The story still makes sense with the sound off, because the on-screen text carries the
+      key words.
+
+ Toolchain: Tesseract + HyperFrames
+
+ Tesseract runs the edit (voiceover, cuts, music, SFX, mix, final render); HyperFrames
+ builds the motion graphics as HTML and GSAP compositions and renders them; Tesseract
+ then assembles everything and exports.
+
+ Install (once)
+
+      Tesseract:     npx skills add mirage-hq/Tesseract               . It has two skills, Edit Video and
+      Motion Graphics. It runs locally on macOS or 64-bit Windows only (no Linux, WSL or
+      cloud rendering). Install either the plugin or the skills, not both. Its public docs don't
+      list CLI commands, so let its skills guide setup.
+      HyperFrames:       npx skills add heygen-com/hyperframes                  . It needs Node.js 22 or
+      later and FFmpeg. In Claude Code use             /hyperframes       (compositions),      /hyperframes-
+      cli   (init, lint, preview, render) and      /hyperframes-media          (transcribe, background
+      removal).
+
+ Who does what
+
+
+   Job                                                      Tool
+
+   Voiceover processing: trim, tighten pauses,              Tesseract (Edit Video)
+   speed to 108%
+
+   Word-level timestamps of the processed                   HyperFrames      transcribe     (Whisper). Time
+   voiceover                                                every caption and cue to these timestamps
+
+   Rough cut: B-roll to voiceover, L1/L2 framing,           Tesseract (Edit Video)
+   X1/X2 cuts, X8 whip
+
+   Music cuts MU1–MU8, SFX S01–S19, ducking                 Tesseract (Edit Video)
+   and mix
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                            Page 3 of 43
+
+===== PAGE 4 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+   Job                                                      Tool
+
+   Typography T1–T10 and captions                           HyperFrames (Tesseract Motion Graphics is
+                                                            fine for plain T1 captions)
+
+   Graphic screens: L3–L9, L11 flip, L12, T3 year           HyperFrames compositions
+   cards, M1–M4, the error box, the B9 path
+   diagram
+
+   Transitions X3, X4, X5, X6, X7, X9                       HyperFrames (registry shader transitions
+                                                            such as    flash-through-white       , or GSAP)
+
+   Final assembly, preview, render and the                  Tesseract
+   editable .tsrct project
+
+   Removing backgrounds for cut-outs (B6                    HyperFrames media tools (        remove-
+   Gary Penn clip)                                          background     )
+
+
+ Handoff rules
+
+    1. One HyperFrames composition per beat that needs graphics, named by beat (b01-
+       hook, b02-bug, …), 1920 × 1080 at 30 fps, lasting the beat's length in the processed
+       voiceover plus 6f of handle at each end.
+    2. If a composition includes its own footage, render it as a full-frame MP4 segment. For
+       overlay-only graphics, render with transparency if your HyperFrames version
+       supports alpha output; otherwise build the footage into the composition.
+    3. Use identical fonts and colours in both tools. In HyperFrames, define the style-kit
+       colours as CSS variables and load Inter and Instrument Serif.
+    4. Lint and preview every composition (           npx hyperframes lint          , npx hyperframes
+       preview    ) before   npx hyperframes render           .
+    5. Tesseract owns all audio: mute any audio inside rendered compositions.
+    6. Import each rendered segment into the Tesseract project on its beat, then preview
+       the whole edit before the final render.
+    7. Keep the .tsrct project and the HyperFrames project folders inside RC_GTA-Origin.
+
+ Translating this document's units for HyperFrames: frames become seconds in                            data-
+ start     and  data-duration        (30f = 1 s, 6f = 0.2 s). "Ease out" = GSAP         power3.out     ; the T7
+ overshoot =      back.out(1.7)       ; hard cuts =    data-start      boundaries with no tween.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                             Page 4 of 43
+
+===== PAGE 5 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+  Project brief
+
+  The reel tells how a dull 1995 police game broke, became Grand Theft Auto, and why GTA 6
+  still has you running. It posts before GTA 6 launches on November 19, 2026.
+
+
+   Field                           Detail
+
+   Working title                   Why you're always running from the cops
+
+   Channel                         Raw Canvas company Instagram (cut-downs for
+                                   YouTube Shorts and LinkedIn are optional)
+
+   Audience                        Founders and people in tech, gaming and media;
+                                   anyone who has seen GTA 6 headlines
+
+   Goal                            High watch-through and comments during launch
+                                   week
+
+   Master format                   16:9, 1920 × 1080, 30 fps, matching Ref B. Optional
+                                   9:16 version: 1080 × 1920 with the 16:9 frame in a
+                                   centred band (Ref A)
+
+   Length                          About 77 s: roughly 75 s of voiceover plus a 1.5 s
+                                   logo tail
+
+   Post date                       November 16, 2026 (the open slot in the playbook's
+                                   launch-week plan). It must go out before
+                                   November 19
+
+   Tone                            Documentary thriller: fast, clean, premium, with
+                                   dry wit. No memes, no cartoon sounds
+
+   Story formula                   Question → instant answer → chain of dated events
+                                   → proof the viewer can check → a new question
+                                   (from the GTA 6 Script Playbook)
+
+   Post caption (optional)         "Sometimes the bug is the product." A founder
+                                   angle belongs only in the caption, never in the
+                                   voiceover
+
+
+  References
+
+       Ref A (MIT reel), 9:16: footage in a letterboxed cinematic band on black, tiny serif text,
+       small photo chips inside sentences, words placed in the empty space around a
+       subject. Borrow: the band, inline chips, spread words.
+
+
+
+
+
+
+
+                                                                                                                Page 5 of 43
+
+===== PAGE 6 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+       Ref B (GTA reel), 16:9: grids that fill cell by cell, gray year cards, cut-out photos with
+       floating props, framed clips with giant type behind them, a ring counter over a face,
+       highlighted documents, glowing serif lines on black. Borrow: almost everything. This
+       is the main reference.
+
+ Workflow status
+
+ Planning is complete; production starts with recording the voiceover.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       Voiceover recorded (ElevenLabs, Clara): trim, tighten pauses, speed up to 108%, then
+       lock timings to it
+       Download and organise assets (see "Asset prep and project setup")
+       Put it all together (rough cut, then motion graphics)
+       Add SFX and music, then mix
+       Final QA and export
+       Post on November 16
+
+ Locked script v2
+
+ The voiceover is 221 words and runs about 75 seconds at 175–180 words a minute. Version
+ 2 adds connectors (so, but, then, until, here's how) so each line follows from the last; the
+ structure is unchanged, and one fact is corrected: the first release was in November 1997,
+ not October.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                              Page 6 of 43
+
+===== PAGE 7 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+
+    Beat     Starts at (approx.)        Voiceover
+
+    B1       0:00                       Why does every GTA, even GTA 6, have you running
+                                        from the cops?
+
+    B2       0:03.8                     Because back in 1995, a game about chasing
+                                        criminals broke. And that bug saved it.
+
+    B3       0:09.2                     Here's how. It's 1995 in Dundee, Scotland. DMA
+                                        Design, the studio behind Lemmings, starts a new
+                                        game.
+
+    B4       0:14.9                     It's called Race'n'Chase, and it's planned to take
+                                        eighteen months.
+
+    B5       0:18.5                     In it, you play a police officer chasing criminals.
+
+    B6       0:21.5                     But there's a problem: it's dull. One developer later
+                                        calls it "awful… too sim-y."
+
+    B7       0:26.9                     So the people above the team keep trying to shut it
+                                        down.
+
+    B8       0:30.8                     Then, something breaks.
+
+    B9       0:32.4                     The police cars stop following you and start trying
+                                        to drive straight through you. They ram. They
+                                        chase. They don't let go.
+
+    B10      0:39.4                     And suddenly, it's fun.
+
+    B11      0:41.0                     So the team flips the whole game. You're not the
+                                        cop anymore. Now you're the one being chased.
+
+    B12      0:46.8                     Of course, the eighteen months turn into thirty.
+
+    B13      0:49.6                     Until finally, in November 1997, it ships with a new
+                                        name: Grand Theft Auto.
+
+    B14      0:54.8                     And every GTA since is built around that chase. The
+                                        wanted stars. The sirens. The running.
+
+    B15      1:00.2                     Don't believe me? Open GTA Online and buy an
+                                        arcade. One of the machines is called Race and
+                                        Chase.
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                    Page 7 of 43
+
+===== PAGE 8 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+   Beat      Starts at (approx.)      Voiceover
+
+   B16       1:06.6                   So that's why you're always running. The whole
+                                      series started with a bug.
+
+   B17       1:11.0                   And GTA 6? It opens with Lucia already caught. So
+                                      who's chasing who now?
+
+   End       1:15.8                   GTA 6 logo tail, no voiceover, until about 1:17
+
+
+ What changed from v1 (connectors only)
+
+       B2: "in 1995" → "back in 1995"; "And the bug" → "And that bug".
+       B3: added "Here's how." and turned the stamps "1995. Dundee, Scotland." into "It's 1995
+       in Dundee, Scotland."
+       B4: "Race'n'Chase. Planned for eighteen months." → "It's called Race'n'Chase, and it's
+       planned to take eighteen months."
+       B5: two sentences joined: "In it, you play a police officer chasing criminals."
+       B6: added "there's a problem".
+       B7: added "So" and "the".
+       B9: "They try to" → "and start trying to", joining the first two sentences.
+       B11: added "Now".
+       B12: "The eighteen months become thirty." → "Of course, the eighteen months turn
+       into thirty."
+       B13: "October 1997." → "Until finally, in November 1997,". This also corrects the month
+       (see "Accuracy and rights notes").
+       B14: added "And" and "The" before each of the three nouns.
+       B15: "Now open GTA Online. Buy an arcade." → "Don't believe me? Open GTA Online
+       and buy an arcade."
+       B16: added "So".
+
+ Recorded voiceover
+
+       File: "ElevenLabs_2026-11-15T08_04_46_Clara_-
+       _Corporate__Training_Trusted_Professional_pvc_s20_sim50_v4.mp3", attached with
+       this document (ElevenLabs voice "Clara").
+       Raw file: 1:33.4 long. Speech starts at 1.97 s and runs at about 145 words a minute, with
+       46 pauses, most of them 0.5–0.6 s. Integrated loudness is −21.1 LUFS.
+       Say "Race'n'Chase" as "race and chase" (check the recording does).
+
+
+
+
+
+
+                                                                                                              Page 8 of 43
+
+===== PAGE 9 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+  Speed-up instruction (do this before cutting anything)
+
+  The raw read is too slow for this format. Make it slightly faster, but not so fast that anyone
+  notices it was sped up.
+
+    1. Trim the 1.97 s of silence at the start.
+    2. Tighten the pauses: cap every pause between sentences at about 0.3 s, cutting only
+       inside silence, never inside a word or breath tail. Keep three deliberate pauses: 0.3 s
+       after "broke" (B2), and 0.5 s before and after "Then, something breaks." (B8). This
+       saves about 8 s.
+    3. Speed the whole voiceover up to 108% with pitch preserved (Premiere Pro:
+       Speed/Duration 108% with Maintain Audio Pitch; DaVinci Resolve: retime to 108%
+       with pitch correction; CapCut: speed 1.08× with pitch kept). Don't go above 110%, or
+       the voice starts to sound rushed and thin.
+    4. The result should be about 77 s, matching the beat timings in this document. Listen
+       through once; if the speed-up is noticeable, drop to 105%.
+    5. Lock every cue (text, cuts, SFX, music anchor) to this processed file, not the raw one.
+    6. Raise it to about −16 LUFS short-term (roughly +5 dB), then apply the voice chain
+       under "Audio mix and export settings".
+
+  Where each beat starts in the raw file (estimated from the pauses, ±1 s; use it to find
+  lines quickly): B1 0:02.0 · B2 0:07.7 · B3 0:13.9 · B4 0:21.4 · B5 0:25.5 · B6 0:28.9 · B7 0:34.3 · B8
+  0:40.1 · B9 0:41.7 · B10 0:49.9 · B11 0:52.3 · B12 0:58.7 · B13 1:01.8 · B14 1:08.4 · B15 1:14.3 · B16
+  1:22.7 · B17 1:27.4.
+
+  Style kit
+
+  Two fonts, a fixed palette, one grade and seven rules keep every screen in the same family.
+
+  Fonts (both free on Google Fonts)
+
+       Inter: Medium (500) for captions, SemiBold (600) for lead-in words, Bold (700) for
+       year numerals, Black (900) for giant type.
+       Instrument Serif Italic: the single emotional word on a screen, the small In on year
+       cards, glow lines, quotes and names.
+       Fallbacks: Helvetica Neue or Neue Haas Grotesk for Inter; Playfair Display Italic for
+       Instrument Serif.
+
+  Colours
+
+
+
+
+
+
+
+
+
+
+                                                                                                                Page 9 of 43
+
+===== PAGE 10 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+
+   Name                      Hex             Used for
+
+   Ink black                 #0A0A0A         Black screens (B8, B16), letterbox bars
+
+   Card gray                 #E9E9E9         Year cards, quote card, cut-out cards
+
+   Card ink                  #111111         Text on gray cards
+
+   White                     #FFFFFF         All text on footage and on black
+
+   Warm glow                 #FFF6E0         T5 glow lines
+
+   Highlighter yellow        #FFE14D         T9 highlights (85% opacity, Multiply), the "you"
+                                             arrow
+
+   Siren red                 #E3262E         X9 wash, CANCELLED stamp, the 12 overrun
+                                             squares in B12
+
+   Siren blue                #2D5BFF         X9 wash only
+
+
+ Grade and texture
+
+       1990s and archival footage (B3–B7, B13): desaturate about 20%, slight warm lift, subtle
+       grain, light vignette. Keep 4:3 material inside a band or frame (L2, L6); never stretch it.
+       Game footage: punchy contrast; leave game HUD colours alone.
+       Whole edit: a very light grain layer (3–5%) to glue the different sources together. No
+       heavy LUTs.
+       B6 "dull": fully desaturate and slow to 50%. B10 "fun": snap back to full colour with
+       +10% saturation for 1 s.
+       Text on footage gets a soft shadow (0 px x, 2 px y, 12 px blur, black at 45%). No
+       outlines and no caption boxes (the T9 label is the only box).
+
+ Safe areas
+
+       16:9 master: keep text inside the title-safe area, 96 px from the left and right edges
+       and 54 px from the top and bottom.
+       9:16 version: keep text inside the central 1080 × 1350 area, clear of Instagram's
+       interface at the top and bottom.
+
+ Rules
+
+    1. Sans carries information. The serif italic is for the one emotional word on a screen, and
+       there's never more than one serif word per screen.
+
+
+
+
+
+
+
+
+                                                                                                              Page 10 of 43
+
+===== PAGE 11 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+    2. Each background has a job: gray cards for history and facts, black for tension and
+       turning points, full-frame footage for action.
+    3. Glitch effects only on bug beats (B2, B8, B16, B17); siren wash and siren sounds only
+       on cop words.
+    4. No two consecutive beats feature the same T-style (T1 running captions are the
+       neutral default and don't count).
+    5. At most 4 caption words on screen at once, synced to the voiceover within ±2 frames.
+    6. Hard cuts land on the stressed syllable of a key word or on a music downbeat.
+    7. Nothing sits still for more than 2 s: give every held shot a slow push-in from 100% to
+       104%.
+
+  Typography styles (T1–T10)
+
+  Ten text styles, each with its own animation; sizes are for a 1920 × 1080 canvas. The
+  rotation below means no two neighbouring beats share a featured style; T1, the neutral
+  running caption, can appear anywhere.
+
+
+   Code       Style              Look                               Animation                          Beats
+
+   T1         Running            Inter Medium 46 px,                Hard cut in on the first           B1, B5, B7,
+              caption            white, soft shadow.                syllable, hard cut out on          B9, B11, B15
+                                 Centred at x 960, y 620;           the next chunk. 1–3
+                                 drop to y 860 if a face is         words per chunk, never
+                                 in the centre                      more than 4
+
+   T2         Punch pair         Lead-in in Inter SemiBold          Lead-in hard cut.                  B1, B4, B6,
+                                 42 px, then one keyword            Keyword: 6f blur-in (30 →          B10, B12,
+                                 in Instrument Serif Italic         0) while scaling 108% →            B17
+                                 140 px, baselines aligned,         100%, ease out. Out: 4f
+                                 14 px gap, centred as a            fade
+                                 group. On gray cards use
+                                 #111111
+
+   T3         Year card          Full-frame #E9E9E9.                Digits roll up like an             B3, B13
+                                 Small In in Instrument             odometer: each digit
+                                 Serif Italic 64 px #111111         slides up 40 px from a
+                                 above the left edge of a           mask, 8f, staggered 2f,
+                                 year in Inter Bold 220 px          ease out. Hold at least 1
+                                 #111111, tracking −2%              s. Hard cut out
+
+
+
+
+
+
+
+
+                                                                                                                Page 11 of 43
+
+===== PAGE 12 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code      Style               Look                                Animation                          Beats
+
+    T4        Spread              Inter Medium 44 px,                 Each piece fades in over           B3, B9, B14
+              words               white, each word or                 4f while drifting 12 px up,
+                                  phrase placed in empty              on its spoken word. All
+                                  space around the subject            leave together with a 4f
+                                  (left, centre, right)               fade
+
+    T5        Glow line           Instrument Serif Italic 84          Fades in over 12f from             B16
+                                  px, warm glow #FFF6E0,              blur 20 → 0, tracking
+                                  on black. Glow = two                +2% → 0. A light leak
+                                  blurred copies (24 px at            drifts behind
+                                  60%, 60 px at 30%)
+
+    T6        Giant type          Inter Black 300–480 px              Types on one letter                B13
+                                  (stack long titles one              every 2f, no fades. Hold 1
+                                  word per line), white,              s
+                                  tracking −4%, sitting
+                                  behind a framed clip (L6)
+                                  so the frame overlaps the
+                                  middle letters
+
+    T7        Inline chip         Inter Medium 46 px                  Words hard cut. Chip               B2, B16
+                                  sentence with a 72 × 56             scales 0 → 112% → 100%
+                                  px rounded chip (12 px              over 8f. This is the only
+                                  radius) holding an image            bouncy animation
+                                  or icon in place of a word
+
+    T8        Name /              Name in Instrument Serif            Name and role fade in              B3, B6
+              quote card          72 px, role in Inter                over 6f. Quotes type on
+                                  Medium 22 px caps                   at 2 characters per frame
+                                  (tracking +15%, 60%
+                                  opacity). Quote in
+                                  Instrument Serif Italic 110
+                                  px. #111111 on gray cards,
+                                  white on footage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                  Page 12 of 43
+
+===== PAGE 13 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code      Style               Look                               Animation                           Beats
+
+    T9        Highlight /         Highlight: #FFE14D box             Highlight swipes left to            B4, B15
+              label               at 85% opacity, Multiply           right over 8f, ease out,
+                                  blend, behind the text.            while the camera pushes
+                                  Label: Inter Bold 40 px            in. Label pops in over 4f
+                                  caps #111111 on a #FFE14D
+                                  box, 12 × 20 px padding, 4
+                                  px radius
+
+    T10       Glitch word         Inter Black 160 px, white,         6f of glitch (RGB split,            B8, B17
+                                  on black                           red +6 px and blue −6 px;
+                                                                     three horizontal slices
+                                                                     jumping ±20 px each
+                                                                     frame), then settles
+                                                                     clean. Twice in the whole
+                                                                     edit
+
+
+  Rotation by beat: B1 T1 → T2 · B2 T7 · B3 T3 → T4 → T8 · B4 T9 → T2 · B5 T1 · B6 T2 → T8 · B7 T1
+  · B8 T10 · B9 T1 → T4 · B10 T2 · B11 T1 · B12 T2 · B13 T3 → T6 · B14 T4 · B15 T1 → T9 · B16 T5 → T7 ·
+  B17 T2 → T10.
+
+  Screen types (L1–L12)
+
+  Twelve layouts that present B-roll in a different way each time, so footage rarely just fills
+  the frame. Build notes assume a 1920 × 1080 canvas.
+
+
+    Code      Screen                    How to build it                               Beats          Seen in
+
+    L1        Full frame, soft          Footage at 105%, edges blurred                B9, B10        Ref B @ 0:48
+              edges                     12 px through a feathered mask
+                                        (centre 70% stays sharp), light
+                                        vignette, push-in 100% → 104%
+                                        across the shot
+
+    L2        Letterboxed               Black bars 138 px top and bottom              B3, B13,       Ref A
+              band                      (2.39:1). Bars slide in over 8f when          B17            throughout
+                                        entering a cinematic moment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                  Page 13 of 43
+
+===== PAGE 14 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code      Screen                    How to build it                                Beats          Seen in
+
+    L3        Grid build                3 × 2 cells or 3 vertical strips, 8 px         B1, B9         Ref B @ 0:15
+                                        black gutters. Cells pop in one at
+                                        a time (4f, scale 96% → 100% with
+                                        a fade). A cell may stay black and
+                                        hold text. A cell can scale up to
+                                        full frame
+
+    L4        Frosted tile grid         4 × 3 tiles over footage. Each tile:           B1             Ref B @ 0:00
+                                        40 px blur, 10% white overlay, 1 px
+                                        white border at 20%. Tiles clear
+                                        one at a time in random order (3f
+                                        each), synced to words
+
+    L5        Gray card collage         #E9E9E9 background. A cut-out                  B6, B7         Ref B @ 0:43
+                                        photo or clip in a frame with an 8
+                                        px white border and a soft drop
+                                        shadow (0, 12, 30 px blur, black
+                                        25%). Props rotated ±4° float ±6
+                                        px over 2 s
+
+    L6        Framed clip               Clip at 62% scale with a 2 px                  B13            Ref B @ 0:32
+                                        white border and a 30 px warm
+                                        outer glow (#FFF6E0 at 40%),
+                                        over a 50 px blurred, 40% darker
+                                        copy of the same clip. Small label
+                                        under it in Instrument Serif Italic
+                                        32 px
+
+    L7        Spotlight                 A document or screen recording,                B4, B15        Ref B @ 1:00
+                                        dimmed to 35% except a rounded
+                                        spotlight box (20 px feather) on
+                                        the target. Push in 100% → 118%
+                                        towards the target across the
+                                        beat
+
+    L8        CRT monitor               Footage inside a 1990s CRT                     B2             New
+                                        monitor graphic: 8% bulge, 3 px
+                                        scanlines at 15%, 1 px colour
+                                        fringing, brightness flicker
+                                        between 97% and 100%
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                   Page 14 of 43
+
+===== PAGE 15 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code      Screen                    How to build it                               Beats          Seen in
+
+    L9        Calendar                  Grid of 64 px squares with 8 px               B4, B12        New
+              counter                   gaps (6 columns), on a gray card.
+                                        Squares fill in left to right, 2f
+                                        apart; overrun squares fill siren
+                                        red
+
+    L10       Montage burst             8–10 clips of 5–6 frames each,                B14            Ref B @ 1:28
+                                        hard cut on the music's eighth
+                                        notes, with a tiny year tag (Inter
+                                        Medium 22 px) in the top-left
+                                        corner
+
+    L11       Split screen              Two 958 px halves with a 4 px                 B5, B11        New
+                                        black divider. In B11 the whole
+                                        split screen flips 180° on the Y
+                                        axis over 10f with motion blur
+
+    L12       Stacked cards             3–4 short video clips (not photos)            B3             Ref A @ 0:06
+                                        as cards with 12 px white borders,
+                                        rotated −6°, +3° and −2°,
+                                        dropping in one at a time (8f each,
+                                        ease out) with a slow parallax
+                                        drift
+
+
+  Plain text screens (no B-roll): the T3 year cards (B3, B13), the T8 quote card (B6), the T10
+  black frame (B8) and the T5 glow line (B16).
+
+  Transitions (X1–X9)
+
+  Hard cuts carry about half the edit; each of the other eight transitions has one job, so the
+  variety reads as intentional.
+
+
+    Code      Transition             How to build it                       Use it for               Beats
+
+    X1        Hard cut               Cut on the stressed                   Default, about           Everywhere not
+                                     syllable of a key word or on          50% of cuts              listed
+                                     a music downbeat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                  Page 15 of 43
+
+===== PAGE 16 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code      Transition             How to build it                       Use it for               Beats
+
+    X2        Cut, then drift        After the cut, the                    Calmer history           B3, B6
+                                     incoming clip slides 40–80            moments
+                                     px sideways over 20f, ease
+                                     out
+
+    X3        White flash            Ramp to 100% white over               Reveals                  B10, B13
+                                     2f, hold 1f, fade out over 4f,
+                                     centred on the cut
+
+    X4        Pixel-block            6–10f: the frame splits into          Bug beats only           B2, B8, B17
+              tear                   16 × 9 blocks that jump ±30
+                                     px, some freezing on the
+                                     old frame, with a 6 px RGB
+                                     split, then cut
+
+    X5        Blinds wipe            12 vertical slats rotate shut         Chapter turns            B3, B15
+                                     on the old shot and open
+                                     on the new one, 8f each
+                                     way
+
+    X6        Zoom through           Scale into (or back out of)           Entering or              B2 (out), B15
+              a screen               a screen 100% → 600%                  leaving a screen         (in)
+                                     over 8f with motion blur, so
+                                     the screen's picture
+                                     becomes the frame
+
+    X7        Light-leak             A 12–16f dissolve through a           Into the glow            B16
+              dissolve               light-leak overlay (Screen            line
+                                     blend)
+
+    X8        Whip pan               6f horizontal move with an            Chase energy             B14
+                                     80 px directional blur
+
+    X9        Siren wash             4f overlay: siren red                 Cop words only           B1, B5, B14
+                                     #E3262E at 35% (Overlay
+                                     blend) for 2f, then siren
+                                     blue #2D5BFF for 2f
+
+
+  Into each beat: B1 opens cold · B2 X6 (footage shrinks into the CRT) · B3 X5 · B4 X1 · B5 X1 ·
+  B6 X1, then X2 into the quote card · B7 X1 · B8 X4 · B9 X1 · B10 X3 · B11 X1 · B12 X1 · B13 X1,
+  then X3 into the framed clip · B14 X1, X9 and X8 inside the beat · B15 X5, then X6 into the
+  cabinet · B16 X1, then X7 · B17 X1, ending on X4.
+
+
+
+
+
+
+                                                                                                                  Page 16 of 43
+
+===== PAGE 17 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+  Motifs and callbacks (M1–M6)
+
+  Six devices that set up early and pay off later; they are what make the edit feel designed
+  rather than templated. Build each one once and reuse the same asset every time it
+  appears.
+
+
+    Code      Motif             Sets up                      Pays off                     Build notes
+
+    M1        Wanted            B1: five stars fill in       B14: six stars fill in,      White five-point stars
+              stars             top-right as the             centred, on "The             with a thin dark
+                                hook lands                   wanted stars." B17:          outline, styled after
+                                                             the stars blink over         the GTA wanted level.
+                                                             Lucia                        40 px each at the top-
+                                                                                          right (x 1700, y 80) in
+                                                                                          B1 and B17; 120 px
+                                                                                          centred in B14. Each
+                                                                                          star pops in over 3f, 3f
+                                                                                          apart
+
+    M2        The "you"         B5: a hand-drawn             B11: the same arrow          #FFE14D, 6 px stroke,
+              arrow             yellow arrow with            redraws and points           drawn on over 8f. "you"
+                                the word "you"               at the getaway car           in Inter SemiBold 36 px,
+                                points at the cop                                         yellow
+                                car
+
+    M3        Calendar          B4: 18 squares fill in       B12: the grid grows          Built as L9. Reuse the
+              grid              for the planned 18           to 30 squares and            same composition and
+                                months                       the 12 extra fill red        extend it
+
+    M4        The bug           B2: a pixel-art bug          B8: T10 "breaks" and         Bug chip: an 8-bit
+                                chip and the first           X4. B16: the bug             beetle icon, white on a
+                                X4 tear                      chip returns at the          dark chip. B8 and B17
+                                                             end of the glow line.        use the identical glitch
+                                                             B17: the final X4 and        sound so the ending
+                                                             T10                          echoes the break
+
+    M5        Siren wash        B1 on "cops"                 B5 on "police                X9. Never on any other
+                                                             officer", B14 on "The        word
+                                                             sirens."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                 Page 17 of 43
+
+===== PAGE 18 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Code       Motif             Sets up                        Pays off                       Build notes
+
+    M6         Year cards        B3: "In 1995"                  B13: "In Nov 1997"             T3 with the same tick
+                                                                                               sound both times, so
+                                                                                               the second card feels
+                                                                                               like a chapter closing
+
+
+  Beat plan overview
+
+  Seventeen beats over about 77 seconds; the nine marked ★ are hero motion-graphics
+  moments. Times are estimates until the voiceover is recorded.
+
+
+   Beat     Time        Voiceover (start)           Screen                      Text       Into the beat      SFX      Music
+
+   B1 ★     0:00–       "Why does every             L4 frosted grid → L3        T1 → T2    Cold open;         S01,     MU1
+            0:03.8      GTA…"                       3×2 grid → GTA 6 full                  X9 on "cops"       S02
+                                                    frame, M1 stars
+
+   B2 ★     0:03.8–     "Because back in            L8 CRT, M4 bug chip         T7         X6 out into        S03      MU2
+            0:09.2      1995…"                                                             the CRT; X4
+                                                                                           on "broke"
+
+   B3       0:09.2–     "Here's how. It's           T3 year card → L2           T3 →       X5; X2 into        S04      —
+            0:14.9      1995…"                      Dundee → L12 cards          T4 →       the band
+                                                                                T8
+
+   B4       0:14.9–     "It's called                L7 design document          T9 →       X1                 —        —
+            0:18.5      Race'n'Chase…"              → L9 calendar, 18           T2
+                                                    squares (M3)
+
+   B5       0:18.5–     "In it, you play a police   L11 split screen, M2        T1         X1; X9 on          —        —
+            0:21.5      officer…"                   arrow                                  "police
+                                                                                           officer"
+
+   B6       0:21.5–     "But there's a              L11 drains to B&W at        T2 →       X1; X2 into        S05      MU3
+            0:26.9      problem: it's dull…"        50% speed → L5              T8         the card
+                                                    quote card
+
+   B7       0:26.9–     "So the people above        L5 office clip, three       T1         X1                 S06,     —
+            0:30.8      the team…"                  CANCELLED stamps                                          S07
+
+   B8 ★     0:30.8–     "Then, something            X4 shatter → black          T10        X4                 S08      MU4
+            0:32.4      breaks."
+
+   B9 ★     0:32.4–     "The police cars stop       L1 GTA 1 chase with         T1 → T4    X1                 —        —
+            0:39.4      following you…"             path diagram → L3
+                                                    three strips
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                       Page 18 of 43
+
+===== PAGE 19 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+   Beat     Time        Voiceover (start)           Screen                      Text       Into the beat     SFX       Music
+
+   B10      0:39.4–     "And suddenly, it's         L1 snap to full colour,     T2         X3 on "fun"       S09       MU5
+            0:41.0      fun."                       GTA 1 kill frenzy
+
+   B11 ★    0:41.0–     "So the team flips the      L11 flips 180°, M2          T1         X1                S10       —
+            0:46.8      whole game…"                arrow redraws
+
+   B12      0:46.8–     "Of course, the             L9 grid grows 18 → 30       T2         X1                S11       —
+   ★        0:49.6      eighteen months…"           (M3)
+
+   B13      0:49.6–     "Until finally, in          T3 year card → L6           T3 →       X1; X3 into       S12,      —
+   ★        0:54.8      November 1997…"             framed GTA 1 intro          T6         the frame         S13
+                                                    with T6 → L2 big-box
+                                                    unboxing
+
+   B14      0:54.8–     "And every GTA              L10 burst → M1 six          T4         X1; X9; X8        S14,      —
+            1:00.2      since…"                     stars → siren → whip                                     S15
+                                                    into an escape
+
+   B15      1:00.2–     "Don't believe me?…"        L7 spotlight on the         T1 → T9    X5; X6 into       S16       MU6
+   ★        1:06.6                                  arcade → zoom into                     the screen
+                                                    the Race and Chase
+                                                    cabinet
+
+   B16      1:06.6–     "So that's why you're       VHS rewind run →            T5 →       X1; X7            S17       MU7
+            1:11.0      always running…"            black glow line, M4         T7
+                                                    bug chip
+
+   B17      1:11.0–     "And GTA 6?…"               L2 Trailer 1 opening,       T2 →       X1; X4 at the     S18,      MU8
+   ★        1:17.3                                  M1 stars blink → GTA 6      T10        end               S19
+                                                    logo push-in
+
+
+  Beat-by-beat build: B1–B6
+
+  Each beat lists the exact voiceover, the on-screen text in caption chunks (a slash
+  separates chunks), the build steps, the B-roll IDs, the audio and what to watch out for.
+  Frame numbers count from the start of the beat (f0).
+
+  B1 ★ Hook (0:00–0:03.8)
+
+       Voiceover: "Why does every GTA, even GTA 6, have you running from the cops?"
+       On screen: T1: Why does / every GTA, / even GTA 6, / have you running → T2: from the
+       cops?
+       Build:
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                       Page 19 of 43
+
+===== PAGE 20 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+         1. f0: the first frame is already moving and already shows "Why does". L4 frosted 4 ×
+            3 grid over a police moment from an official GTA 6 trailer (R1.2 or R17.1); tiles clear
+            one per word, 3f each, in random order.
+         2. On "every GTA": cut to an L3 3 × 2 grid. Cells pop in left to right, top to bottom, 3f
+            apart, each playing a police chase: GTA 1 (R1.5), GTA 3 (R14.1), Vice City (R1.7), San
+            Andreas (R1.6), GTA 4 (R14.4), GTA 5 (R1.3).
+         3. On "even GTA 6": the sixth cell switches to official GTA 6 footage (R17.1 or R17.3)
+            and scales to full frame over 6f, ease out.
+         4. M1: five wanted stars pop in at the top-right, 3f apart, across "have you running
+            from the".
+         5. On "cops": X9 siren wash.
+       B-roll: R1.2, R1.3, R1.5, R1.6, R1.7, R14.1, R14.4, R17.1, R17.3; stars from RT7 if you don't
+       build them.
+       Audio: S01 lands on the frame the GTA 6 cell fills the screen; S02 on "cops". MU1: music
+       starts at f0.
+       Watch out: no fade from black and no logo before the hook. The question must be
+       readable with the sound off.
+
+  B2 ★ The bug (0:03.8–0:09.2)
+
+       Voiceover: "Because back in 1995, a game about chasing criminals broke. And that
+       bug saved it."
+       On screen: T1: Because back / in 1995, / a game about / chasing criminals / broke. → T7:
+       And that [bug chip] saved it.
+       Build:
+         1. X6 out: the GTA 6 frame shrinks into the screen of a 1990s CRT monitor (L8, plate
+            from R3.9), and the picture inside cuts to GTA 1 top-down police footage (R9.1).
+         2. On "broke": X4 tear on the CRT picture only, then a Windows 95-style error box
+            pops on top: title "Race'n'Chase", text "This program has performed an illegal
+            operation and will be shut down." Grey box, system font, hard pop.
+         3. On "bug": the pixel-bug chip (M4) pops inside the sentence.
+       B-roll: R3.9 (CRT plate), R9.1; optional R2.3 glitch overlay.
+       Audio: S03 on "broke". MU2: the track's first breakdown should arrive around here.
+       Watch out: the error box is a stylised recreation, not a real screenshot, so keep it
+       generic and don't add a fake date.
+
+
+
+
+
+
+
+
+
+                                                                                                                Page 20 of 43
+
+===== PAGE 21 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B3 1995, Dundee (0:09.2–0:14.9)
+
+       Voiceover: "Here's how. It's 1995 in Dundee, Scotland. DMA Design, the studio behind
+       Lemmings, starts a new game."
+       On screen: T1: Here's how. → T3: In 1995 → T4: Dundee, (left) / Scotland. (right) → T8:
+       DMA Design + role line "THE STUDIO BEHIND LEMMINGS" → T1: starts a new game.
+       Build:
+         1. X5 blinds wipe on "Here's how" into the T3 year card. Hold it at least 1 s.
+         2. X2 into an L2 letterboxed shot of old Dundee (R3.1, or R3.2), with "Dundee," and
+            "Scotland." placed in empty space on either side of the subject.
+         3. Hard cut to L12: Three short video clips drop in as tilted cards (from R3.8, R3.7 and
+            R3.3). The T8 name card sits on top, and a tiny Lemming (cropped from R3.5 or
+            R3.6) walks along the underline of "DMA Design".
+         4. On "starts a new game": cut to the 1996 BBC footage of the team at their
+            computers (R3.7) in the L2 band.
+       B-roll: R3.1, R3.2, R3.3, R3.5, R3.6, R3.7, R3.8.
+       Audio: S04 on the year digits rolling.
+       Watch out: stretch nothing; keep 4:3 archive inside the band or the cards.
+
+ B4 Race'n'Chase (0:14.9–0:18.5)
+
+       Voiceover: "It's called Race'n'Chase, and it's planned to take eighteen months."
+       On screen: T9 highlight on the title "Race'n'Chase" inside the design document → T2:
+       planned to take 18    months.
+       Build:
+         1. L7: the 1995 design-document title page (R4.5), dimmed except the title; push in
+            100% → 118%. The T9 highlight swipes across "Race'n'Chase" on the spoken word.
+         2. Cut to the L9 calendar on a gray card: 18 squares fill left to right, 2f apart, with the
+            T2 text above it. This sets up B12.
+       B-roll: R4.5 (design-document scans); optional R4.1 prototype gameplay inside a small
+       frame.
+       Audio: no SFX; voiceover and music only.
+       Watch out: don't put start and end dates on the calendar. The sources only support
+       "about 18 months".
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                             Page 21 of 43
+
+===== PAGE 22 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+  B5 The cop game (0:18.5–0:21.5)
+
+       Voiceover: "In it, you play a police officer chasing criminals."
+       On screen: T1: In it, / you play / a police officer / chasing criminals.
+       Build:
+         1. L11 split screen. Left half: a police car in pursuit, seen from the cop side (R5.4 or
+            R5.2). Right half: the car being chased (R5.1).
+         2. M2: the yellow arrow draws on over 8f and points at the police car with the word
+            "you".
+         3. X9 siren wash on "police officer".
+       B-roll: R5.1, R5.2, R5.3, R5.4.
+       Audio: no SFX (the wash is visual only here, to keep sirens rare).
+       Watch out: pick shots where both cars are clearly visible; B11 flips this exact split
+       screen.
+
+  B6 It's dull (0:21.5–0:26.9)
+
+       Voiceover: "But there's a problem: it's dull. One developer later calls it 'awful… too
+       sim-y.'"
+       On screen: T1: But there's / a problem: → T2: it's dull. → T8 quote card: "awful… too sim-
+       y." with the name "Gary Penn" and the role line "DMA DESIGN · GAMASUTRA, 2011".
+       Build:
+         1. On "dull": the B5 split screen drains to black and white over 6f and slows to 50%.
+         2. X2 into an L5 gray card: a moving clip of Gary Penn from his BAFTA talk (R6.1),
+            masked out from the background on the left, the quote typing on at the right.
+       B-roll: R6.1 (face), R6.2 (context); optional R6.5 1990s PC games.
+       Audio: S05 on "dull". MU3: the quietest part of the track should sit under "dull" and the
+       quote.
+       Watch out: keep the quote and attribution exactly as written; it is his recollection in a
+       2011 interview.
+
+  Beat-by-beat build: B7–B12
+
+  The middle of the edit: the game is nearly cancelled, breaks, becomes fun, and flips; the
+  music bottoms out at B6–B7 and drops on "fun".
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                               Page 22 of 43
+
+===== PAGE 23 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B7 Shut it down (0:26.9–0:30.8)
+
+       Voiceover: "So the people above the team keep trying to shut it down."
+       On screen: T1: So the people / above the team / keep trying / to shut it down.
+       Build:
+         1. L5 gray card with the early-1990s office clip (R7.1) in a white-bordered frame.
+         2. A red CANCELLED stamp (Inter Black 120 px, #E3262E, rough-edged mask,
+            rotated −8°) slams onto the frame three times: on "keep trying", "shut" and
+            "down". Each slam scales 130% → 100% over 2f with a 4 px camera shake for 4f.
+            Offset each stamp by about 30 px and vary the rotation (−8°, −4°, +6°).
+       B-roll: R7.1, R7.3; R7.2 if you'd rather use a ready-made stamp.
+       Audio: S06 (one hit per stamp, getting heavier); S07 riser from the second stamp into
+       B8.
+       Watch out: the third stamp should land just before "Then", so the riser ends exactly on
+       the B8 cut.
+
+ B8 ★ The break (0:30.8–0:32.4)
+
+       Voiceover: "Then, something breaks."
+       On screen: T1: Then, something → T10: breaks.
+       Build:
+         1. On "breaks", the stamp card shatters with X4 and cuts to black (#0A0A0A).
+         2. T10 "breaks." glitches for 6f, settles clean and holds 12f, then hard cut.
+       Audio: S08 on "breaks". MU4: hard-mute the music for 15f from the first black frame,
+       then un-mute in place (don't slide the track).
+       Watch out: this is the only fully silent moment besides the very end. Don't fill it.
+
+ B9 ★ Straight through you (0:32.4–0:39.4)
+
+       Voiceover: "The police cars stop following you and start trying to drive straight
+       through you. They ram. They chase. They don't let go."
+       On screen: T1: The police cars / stop following you / and start trying / to drive straight /
+       through you. → T4 (one phrase per strip): They ram. / They chase. / They don't let go.
+       Build:
+         1. L1: GTA 1 top-down police chase (R9.1) at about 60% saturation, still not full colour.
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                             Page 23 of 43
+
+===== PAGE 24 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+         2. Path diagram on top (shape layers): a white dot marks the player's car; a dotted
+            yellow line (#FFE14D, 4 px dots) draws the "normal" chase path curving behind it.
+            On "straight through you", a solid red arrow (#E3262E, 10 px) shoots straight at
+            the dot and passes through it over 8f; the dot shakes.
+         3. On "They ram.": cut to L3 with three vertical strips: GTA 1 ram (R9.2), GTA 2 chase
+            (R9.3), London 1969 (R9.5). One strip pops in per phrase with a 4f punch-in to 115%
+            and its T4 phrase.
+       B-roll: R9.1, R9.2, R9.3, R9.4, R9.5.
+       Audio: no SFX; the music is building and the voiceover is dense.
+       Watch out: the diagram explains the bug, so give it at least 1.5 s on screen.
+
+  B10 It's fun (0:39.4–0:41.0)
+
+       Voiceover: "And suddenly, it's fun."
+       On screen: T2: And suddenly, it's fun.
+       Build: X3 white flash centred on "fun", into L1 full-colour GTA 1 kill-frenzy chaos (R10.1)
+       at full speed, saturation +10% for 1 s.
+       B-roll: R10.1, R10.2.
+       Audio: S09 on "fun". MU5: the track's drop lands on "fun".
+       Watch out: the flash, the sub drop and the music drop must land on the same frame.
+
+  B11 ★ The flip (0:41.0–0:46.8)
+
+       Voiceover: "So the team flips the whole game. You're not the cop anymore. Now
+       you're the one being chased."
+       On screen: T1: So the team / flips the whole game. / You're not the cop / anymore. /
+       Now you're the one / being chased.
+       Build:
+         1. The B5 split screen returns in full colour.
+         2. On "flips", the whole split screen rotates 180° on the Y axis over 10f with motion
+            blur. The back shows the reverse: left, the player's getaway car fleeing (R10.2 or
+            R9.1); right, police cars chasing (R5.4).
+         3. On "Now you're the one", the M2 arrow redraws over 8f and points at the getaway
+            car.
+       B-roll: R5.4, R9.1, R10.2.
+       Audio: S10 on the flip.
+
+
+
+
+
+
+
+                                                                                                               Page 24 of 43
+
+===== PAGE 25 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+       Watch out: the flip only works if B5 and B11 use the same frame size and position.
+
+  B12 ★ Eighteen becomes thirty (0:46.8–0:49.6)
+
+       Voiceover: "Of course, the eighteen months turn into thirty."
+       On screen: T1: Of course, → T2: turn into thirty. The calendar counter shows 18 → 30.
+       Build: the B4 L9 calendar returns with 18 squares filled and the counter "18" (Inter
+       Bold 120 px) at its top-left. On "turn into", 12 more squares fill in siren red, 2f apart,
+       while the counter rolls 18 → 30, landing on "thirty".
+       B-roll: none (built graphic); optional R12.1 clock time-lapse faint behind the card at
+       10%.
+       Audio: S11, with its hit landing on "thirty".
+       Watch out: reuse the exact B4 composition so it reads as the same calendar
+       overflowing.
+
+  Beat-by-beat build: B13–B17
+
+  The payoff: the game ships, every sequel inherits the chase, the viewer gets proof, and
+  the edit loops to GTA 6.
+
+  B13 ★ Grand Theft Auto (0:49.6–0:54.8)
+
+       Voiceover: "Until finally, in November 1997, it ships with a new name: Grand Theft
+       Auto."
+       On screen: T1: Until finally, → T3: In Nov 1997 → T1: it ships with / a new name: → T6:
+       GRAND / THEFT / AUTO (three stacked lines).
+       Build:
+         1. T3 year card, same design as B3; hold 1 s.
+         2. X3 white flash into L6: the GTA 1 intro (R13.1) framed over its own blurred copy.
+         3. On "Grand Theft Auto", T6 types on behind the frame, one letter every 2f, stacked
+            on three lines so it fits the width; hold 1 s.
+         4. Hard cut to the GTA 1 big-box unboxing (R13.2) in the L2 band for the last 0.8 s.
+       B-roll: R13.1, R13.2; alternates R13.3, R13.4, R13.5, R13.6.
+       Audio: S12 on the year digits (same sound as B3), S13 on the type-on. The flash itself is
+       silent.
+       Watch out: this is the chapter close; let the title breathe for a full second.
+
+
+
+
+
+
+
+
+                                                                                                               Page 25 of 43
+
+===== PAGE 26 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B14 Every GTA since (0:54.8–1:00.2)
+
+       Voiceover: "And every GTA since is built around that chase. The wanted stars. The
+       sirens. The running."
+       On screen: T1: And every GTA since / is built around / that chase. → T4, each phrase in
+       its own spot and staying until the beat ends: The wanted stars. (top-left) / The sirens.
+       (centre-right) / The running. (bottom-left).
+       Build:
+         1. L10 burst on the first sentence: 8–10 chase clips of 5–6f each, in release order, with
+            year tags: GTA 3 "2001" (R14.1), Vice City "2002" (R14.2), San Andreas "2004"
+            (R14.3), GTA 4 "2008" (R14.4), GTA 5 "2013" (R14.5).
+         2. "The wanted stars.": M1, six stars fill in, centred, 120 px, over a GTA 5 chase (R1.3)
+            or the green-screen stars (RT7).
+         3. "The sirens.": X9 siren wash over police lights (RT3).
+         4. "The running.": X8 whip pan into an escape shot (R14.5 or R14.6).
+       B-roll: R14.1–R14.6, R1.3, RT3, RT7.
+       Audio: S14 on "sirens", S15 on the whip. No sound on the burst cuts; the music carries
+       them.
+       Watch out: the year tags are the only text during the burst; keep them tiny.
+
+ B15 ★ The proof (1:00.2–1:06.6)
+
+       Voiceover: "Don't believe me? Open GTA Online and buy an arcade. One of the
+       machines is called Race and Chase."
+       On screen: T1: Don't believe me? / Open GTA Online / and buy an arcade. / One of the
+       machines / is called → T9 label: RACE AND CHASE.
+       Build:
+         1. X5 blinds into L7: an arcade interior in GTA Online (R15.3 or R15.4), dimmed to 35%
+            except a spotlight box on the Race and Chase cabinet; slow push-in.
+         2. On "Race and Chase", the T9 label pops next to the cabinet.
+         3. X6 zoom through the cabinet's screen into full-frame Race and Chase gameplay
+            (R15.1).
+       B-roll: R15.1, R15.3, R15.4; R15.2 for reference.
+       Audio: S16 on the zoom-through. MU6: low-pass the music to about 800 Hz and drop it
+       6 dB from "Don't believe me?" until the label lands, then open it again.
+
+
+
+
+
+
+
+
+
+
+                                                                                                              Page 26 of 43
+
+===== PAGE 27 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+       Watch out: capture the cabinet yourself in GTA Online if you can; it's the one shot
+       viewers can check.
+
+  B16 Started with a bug (1:06.6–1:11.0)
+
+       Voiceover: "So that's why you're always running. The whole series started with a bug."
+       On screen: T1: So that's why / you're always running. → T5 glow line on black: The
+       whole series started with a [bug chip].
+       Build:
+         1. VHS rewind for about 1 s: the B14 clips, then B9 GTA 1, then the 1995 design
+            document, all reversed at 8× speed with the VHS overlay (RT1) and tracking lines.
+         2. X7 light-leak dissolve (RT6) to black for the T5 glow line. The M4 bug chip pops in
+            place of the word "bug" as it is spoken.
+       B-roll: reused B14, B9 and B4 footage; RT1, RT6.
+       Audio: S17 on the rewind. MU7: the music cuts out under the rewind, then continues 6
+       dB lower under the glow line.
+       Watch out: this is the one quiet, reflective beat. Keep the glow line on screen for at
+       least 1.5 s.
+
+  B17 ★ The loop (1:11.0–1:17.3)
+
+       Voiceover: "And GTA 6? It opens with Lucia already caught. So who's chasing who
+       now?"
+       On screen: T1: And GTA 6? / It opens with / Lucia already caught. / So who's → T2:
+       chasing who now? At the final hit, "now?" breaks apart with T10.
+       Build:
+         1. L2 letterbox on the opening seconds of Trailer 1, with Lucia in custody (R17.1). M1:
+            five stars blink at the top-right.
+         2. On "So who's chasing who": three fast GTA 6 chase shots (R17.3, R17.4), 8–10f each.
+         3. On "now?": hard cut to black with the T2 text, then the GTA 6 logo (end card of
+            R17.4) pushes in 100% → 115% over 20f with motion blur.
+         4. Final X4 tear on the logo, T10 on "now?", then black.
+       B-roll: R17.1, R17.3, R17.4; R17.2 and R17.6 as alternates.
+       Audio: MU8: the music stops dead at the end of "now?". S18 rises into the logo, S19 hits
+       on the logo, and the tail rides its decay.
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                               Page 27 of 43
+
+===== PAGE 28 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+      Watch out: use official Rockstar or PlayStation uploads for every GTA 6 shot. Don't
+      name or imply any voice actor.
+
+ B-roll sources by beat
+
+ Every clip has an ID (R + beat number + item); the beat builds above refer to these IDs.
+ Download these videos and use them as the main footage. If a beat needs more coverage
+ or a clip doesn't work, find more video and note its link and timestamp. **No static images
+ as B-roll:** use moving video everywhere. A still is allowed only when no video exists (the
+ 1995 design-document scans), for under 1.5 s, always with a push-in or pan. Where the
+ plan mentions "stills" or "cards" (L12, the B6 cut-out), fill them with short video clips
+ instead of photos. Links were pulled from YouTube on November 15, 2026. Long videos
+ (over 10 minutes) are there for specific moments, so scrub to the part you need.
+
+ B1 Hook
+
+      R1.1 GTA 6 police chase (unofficial, likely cut from trailers; avoid for the full-frame
+      slam): https://www.youtube.com/watch?v=X5NSyXi21sQ
+      R1.2 GTA 6 features trailer (official, PlayStation): https://www.youtube.com/watch?
+      v=8L0CzL2V72c
+      R1.3 GTA 5 five-star police chase: https://www.youtube.com/watch?v=NcTdBgA3Bkg
+      R1.4 Evolution of police chases in GTA: https://www.youtube.com/watch?v=4-
+      iEGt3pFT0
+      R1.5 Wanted levels, GTA 1 to GTA 6: https://www.youtube.com/watch?v=nTL0QWjllf8
+      R1.6 San Andreas police chase: https://www.youtube.com/watch?v=flgIZbQHwN8
+      R1.7 Vice City police chase: https://www.youtube.com/watch?v=s2KJsYEngS8
+
+ B2 The bug
+
+      R2.1 "Race 'N' Chase: the glitch that started GTA": https://www.youtube.com/watch?
+      v=eoCl4i35dQ8
+      R2.2 "How a glitch created GTA": https://www.youtube.com/watch?v=STS61t1Pz3I
+      R2.3 Glitch overlay, green screen: https://www.youtube.com/watch?v=7Xk4AP3eEws
+      R2.4 Windows 95 error (reference for the error box):
+      https://www.youtube.com/watch?v=NRY-9Eel2n0
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                         Page 28 of 43
+
+===== PAGE 29 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B3 1995, Dundee
+
+      R3.1 Old Dundee in colour: https://www.youtube.com/watch?v=n7QORDefzIE
+      R3.2 Dundee station, 1990: https://www.youtube.com/watch?v=dK3etIXpUQE
+      R3.3 /noclip documentary on DMA Design: https://www.youtube.com/watch?
+      v=Ev7FqNa5rD0
+      R3.4 Nostalgia Nerd, "From DMA to GTA": https://www.youtube.com/watch?
+      v=7IF_dh0Mcio
+      R3.5 Lemmings PC gameplay: https://www.youtube.com/watch?v=JJ9CS0KUZvY
+      R3.6 Lemmings Amiga intro: https://www.youtube.com/watch?v=xSKod9Xmrgo
+      R3.7 BBC Archive, GTA making-of from 1996 (real footage of the team; the strongest
+      clip in the edit): https://www.youtube.com/watch?v=7vWSi44ZTSw
+      R3.8 DMA Design office tour, uploaded by Mike Dailly:
+      https://www.youtube.com/watch?v=f14k2j9V33Q
+      R3.9 1990s PC with a CRT monitor (the CRT plate for B2):
+      https://www.youtube.com/watch?v=u3TFcEyRyYc
+
+ B4 Race'n'Chase
+
+      R4.1 Race'n'Chase prototype gameplay (from 2:30): https://www.youtube.com/watch?
+      v=w15vYQIuvSE
+      R4.2 History of GTA from Race'n'Chase: https://www.youtube.com/watch?
+      v=o_aIF5RyoO4
+      R4.3 "GTA Prototype 1 – How it works", uploaded by Mike Dailly:
+      https://www.youtube.com/watch?v=XsF4GnPQrvo
+      R4.4 Calendar flipping: https://www.youtube.com/watch?v=80yeR0W7G6E
+      R4.5 The 1995 design-document scans (screenshot the pages): Game Developer ·
+      iGrandTheftAuto · Engadget
+
+ B5 The cop game
+
+      R5.1 San Andreas vigilante missions: https://www.youtube.com/watch?
+      v=wy95d3TrAIQ
+      R5.2 GTA 5 playing as a police officer, 4K: https://www.youtube.com/watch?
+      v=5TAB4i9P1eI
+      R5.3 LCPDFR police mod, GTA 4: https://www.youtube.com/watch?v=b-yTeXuc77M
+      R5.4 LSPDFR police patrol, GTA 5: https://www.youtube.com/watch?v=PV1NfLjkbWg
+
+
+
+
+
+
+
+                                                                                                   Page 29 of 43
+
+===== PAGE 30 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B6 It's dull
+
+      R6.1 Gary Penn, BAFTA Games Mini Masterclass (his face for the cut-out):
+      https://www.youtube.com/watch?v=QAi3KZxBPI8
+      R6.2 Gary Penn on The Retro Hour: https://www.youtube.com/watch?v=o8wl1q9UUd4
+      R6.3 "GTA: the game that was almost cancelled": https://www.youtube.com/watch?
+      v=V2Y8JCATGWE
+      R6.4 Person gaming at a PC (stock): https://www.youtube.com/watch?
+      v=Fh4TPvNjUjM
+      R6.5 65 Windows 95 games in 3 minutes: https://www.youtube.com/watch?
+      v=uzzaL0WcpHw
+
+ B7 Shut it down
+
+      R7.1 Early-1990s office workers (archival): https://www.youtube.com/watch?v=HtJSL-
+      bGo_Y
+      R7.2 CANCELLED stamp, green screen: https://www.youtube.com/watch?
+      v=4hFa7Rz9rPE
+      R7.3 DMA Design office tour, 1990: https://www.youtube.com/watch?v=iSoYy4Go_sg
+
+ B9 Straight through you
+
+      R9.1 GTA 1 police chase: https://www.youtube.com/watch?v=HX8infRFBTc
+      R9.2 GTA 1 full game (scrub to the chases): https://www.youtube.com/watch?
+      v=ezl7oXtmIPs
+      R9.3 GTA 2 five-star gameplay: https://www.youtube.com/watch?v=LNqEGdO9HDI
+      R9.4 GTA 1 in 4K: https://www.youtube.com/watch?v=AvVqj-YCHi8
+      R9.5 GTA London 1969 rampage: https://www.youtube.com/watch?v=3f0Zmrg9NUk
+
+ B10–B11 Fun, then the flip
+
+      R10.1 GTA 1 kill frenzy: https://www.youtube.com/watch?v=-3NOxHFcNaM
+      R10.2 GTA 1 Liberty City gameplay: https://www.youtube.com/watch?
+      v=NlU1nY7iQWM
+      R11.1 GTA 1 menu and character select, 4K: https://www.youtube.com/watch?
+      v=pvSspZWkEXU
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                   Page 30 of 43
+
+===== PAGE 31 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ B12 Eighteen becomes thirty
+
+      R12.1 Clock time-lapse: https://www.youtube.com/watch?v=6vsvcHxkRZk
+      R12.2 Calendar spinning: https://www.youtube.com/watch?v=1pERRhV5AAA
+
+ B13 Grand Theft Auto
+
+      R13.1 GTA 1 intro, 1997: https://www.youtube.com/watch?v=m2CHL4ACCEs
+      R13.2 GTA 1 PC big-box unboxing: https://www.youtube.com/watch?v=BcnDNeEggls
+      R13.3 GTA 1 trailer: https://www.youtube.com/watch?v=MdlhjRlNyA8
+      R13.4 GTA 1 commercial: https://www.youtube.com/watch?v=E5ygyxyuDHs
+      R13.5 CBS "Eye to Eye: Grand Theft Auto": https://www.youtube.com/watch?
+      v=EhxJPrDlrtI
+      R13.6 BBC's first GTA feature, 1996: https://www.youtube.com/watch?
+      v=wH5FwaRz6hE
+
+ B14 Every GTA since
+
+      R14.1 GTA 3 six-star chase: https://www.youtube.com/watch?v=6lSy09Uruz0
+      R14.2 Vice City helicopter chase: https://www.youtube.com/watch?v=X4mB41ybSN4
+      R14.3 San Andreas six-star escape: https://www.youtube.com/watch?v=obxIhv9YhKY
+      R14.4 GTA 4 "Deadly Pursuit": https://www.youtube.com/watch?v=WNZMK7KPZWs
+      R14.5 GTA 5 "Lose the cops" cinematic: https://www.youtube.com/watch?
+      v=vUndgwBLKeY
+      R14.6 Evolution of six-star chases: https://www.youtube.com/watch?v=zCMMcsVan-E
+      R14.7 Busted screens from every GTA: https://www.youtube.com/watch?
+      v=sjjG44YMF6w
+
+ B15 The proof
+
+      R15.1 Race and Chase arcade gameplay (the proof shot):
+      https://www.youtube.com/watch?v=xGN6cKeZdN8
+      R15.2 Race and Chase arcade music: https://www.youtube.com/watch?
+      v=5MJ8YgO7wUw
+      R15.3 GTA Online arcade business guide: https://www.youtube.com/watch?
+      v=E0TK4V7YjFo
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                  Page 31 of 43
+
+===== PAGE 32 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+      R15.4 All GTA Online arcade games: https://www.youtube.com/watch?
+      v=rNsFHOtsZzw
+
+ B17 The loop
+
+      R17.1 GTA 6 Trailer 1 (official; Lucia in custody in the opening seconds):
+      https://www.youtube.com/watch?v=QdBZY2fkU-0
+      R17.2 GTA 6 "An Extended Look" (official, Netflix): https://www.youtube.com/watch?
+      v=uphThaa97ig
+      R17.3 GTA 6 Trailer 2 (official): https://www.youtube.com/watch?v=VQRLujxTm3c
+      R17.4 GTA 6 launch trailer (official Rockstar; logo end card):
+      https://www.youtube.com/watch?v=rz1B4B2yBZY
+      R17.5 Jason and Lucia escaping the cops (unofficial compilation; avoid):
+      https://www.youtube.com/watch?v=wrivgSOEk3I
+      R17.6 "Pre-Load Now" (official Rockstar): https://www.youtube.com/watch?
+      v=_yl5ELcmugI
+
+ Textures and overlays
+
+      RT1 VHS glitch transitions, 4K: https://www.youtube.com/watch?v=QV4F0CygC3U
+      RT2 CRT TV static: https://www.youtube.com/watch?v=gD9fXTRkfFE
+      RT3 Police lights flashing: https://www.youtube.com/watch?v=wwSOHveejI0
+      RT4 Windows 95 boot screen: https://www.youtube.com/watch?v=XV3LdxpMzIc
+      RT5 Floppy disk going in: https://www.youtube.com/watch?v=veBF1w8KcJI
+      RT6 Light leaks, 4K (for X7): https://www.youtube.com/watch?v=b-jt77qrRoA
+      RT7 GTA 5 wanted stars, green screen (for M1): https://www.youtube.com/watch?
+      v=dcLJnWyUAHg
+      RT8 35 mm film grain overlay: https://www.youtube.com/watch?v=RePuC-WB6Xg
+
+ Removed from the earlier list because the new script no longer uses them: the budget
+ clips (money counter, cash, stock ticker) and the 1994 TV police chase.
+
+ Music plan
+
+ The pick is Black Vertigo by Alexandre Brovelli (Drive). Its breakdown and drop line up
+ with the story almost to the second: the energy dips around "broke", goes nearly silent on
+ "dull", builds through the chase and drops on "fun". The backup is ES Conundrums by
+
+
+
+
+
+
+
+
+                                                                                                      Page 32 of 43
+
+===== PAGE 33 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+ Pandaraps (Drive), which is licensed through Epidemic Sound but needs the stops built
+ by hand.
+
+ All 19 files in the music folder were analysed for length, tempo and how loud each section
+ is. That shows structure, not mood, so listen to the top two before locking.
+
+
+   Track                       Length      Tempo                  Energy shape               Verdict
+
+   Black Vertigo               4:08        Unclear from           Quiet intro to             Pick. The structure
+   (Alexandre                              the analysis;          0:08.5, full beat          matches the script.
+   Brovelli)                               cut on the kick        until 2:28, first          Confirm Raw
+                                           by ear                 breakdown at               Canvas has the
+                                                                  2:28.5, near-              rights before
+                                                                  silence from               posting
+                                                                  2:46.0, build from
+                                                                  2:50, drop at 3:03.0
+
+   ES Conundrums               2:36        About 85 BPM           Builds over the            Backup. Safest
+   (Pandaraps)                                                    first 10 s, then           licence (Epidemic
+                                                                  steady to the end          Sound) if the
+                                                                  with no                    subscription
+                                                                  breakdowns                 covers commercial
+                                                                                             use
+
+   Flashing Lights             4:00        About 88 BPM           Intro to about 0:20,       Iconic, but a major-
+   instrumental                                                   then steady                label track on a
+   (Kanye West)                                                                              business account
+                                                                                             risks being muted
+                                                                                             or claimed
+
+   Alchemist                   3:25        About 73 BPM           Steady, a 2 s gap at       Interesting gap,
+   (instrumental)                                                 1:42.5, then a big         but the source and
+                                                                  re-entry at 1:44.5         licence are
+                                                                                             unknown
+
+
+ Not used: the Like That, ATM, LA MuDANZA, Babydoll and Flashing Lights (vocal) files are
+ major-label tracks; Euphoric, Evergreen and Every Living Breathing Moment are too
+ bright or too gentle; Cornfield Chase is a film score; the two Una Noche en Lagos files are
+ watermarked previews; Flame, L E S, Gentleman and "do i clench my fists" don't fit a
+ crime-thriller tone.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                              Page 33 of 43
+
+===== PAGE 34 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+  Cut points for Black Vertigo (MU1–MU8). Track time = edit time + 2:22.4, so the drop at
+  3:03.0 sits on "fun". Times will move with the real voiceover; re-anchor on MU5 first.
+
+
+   Code       Edit moment                 Track time               What to do
+
+   MU1        0:00, B1                    2:22.4                   Start the track here at full energy. No
+                                                                   fade-in
+
+   MU2        About 0:06, B2              2:28.5                   The first breakdown begins. It should
+              "broke"                                              land within half a second of "broke"
+
+   MU3        About 0:23.6, B6            2:46.0                   The near-silent section starts. It should
+              "dull"                                               land on or just after "dull"
+
+   MU4        0:30.8, B8 "breaks"         About 2:53.2             Hard-mute for 15f from the first black
+                                                                   frame, then un-mute in place
+
+   MU5        About 0:40.6, B10           3:03.0                   The drop. Anchor point: place this
+              "fun"                                                exactly on "fun" and work backwards. Lift
+                                                                   the music 3 dB for 2 s after it
+
+   MU6        1:00.2–1:04.5, B15          About 3:22.6–            Low-pass at about 800 Hz and −6 dB from
+                                          3:26.9                   "Don't believe me?" until the Race and
+                                                                   Chase label lands, then open it
+
+   MU7        1:06.6–1:11.0, B16          About 3:29.0–            Cut the music under the 1 s rewind, then
+                                          3:33.4                   resume 6 dB lower under the glow line
+
+   MU8        About 1:15.6, B17           About 3:38.0             Hard stop at the end of "now?". No music
+              "now?"                                               after this; S18 and S19 carry the logo
+
+
+  If the voiceover timing is different: anchor MU5 on "fun" first. Then check that MU3 lands
+  within 1 s of "dull". If it doesn't, remove or repeat a whole bar inside the breakdown
+  (2:28.5–2:46.0). Never cut inside the build (2:50–3:03), because it has to rise continuously
+  into the drop.
+
+  Backup plan with ES Conundrums: start at its 0:10.5 (the first full beat) at edit 0:00. From
+  B3 to B9, run the music through a low-pass filter at about 900 Hz to fake a breakdown. At
+  B6 "dull", drop the music 8 dB under S05. Mute 15f at B8. On "fun" (B10), remove the filter
+  instantly with S09. MU6–MU8 stay the same. At 85 BPM a beat is 0.706 s and a bar is 2.82 s
+  (about 85 frames), so make any music cuts on bar lines.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                Page 34 of 43
+
+===== PAGE 35 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+  Levels: under the voiceover, keep the music at about −22 LUFS short-term (roughly 14–18
+  dB below the voice). Where there is no voiceover (the B8 hold, the B13 title hold, the B14
+  burst, the logo tail), let it come up to about −16 LUFS. Duck with 6–8 dB of reduction, 50
+  ms attack and 300 ms release.
+
+  SFX plan
+
+  Nineteen cues from 20 files in your SFX pack, each tied to one story event: the hook, the
+  bug, the stamps, the break, the drop, the flip, the overrun, the title, the proof and the
+  ending. Everything else is voiceover and music.
+
+  Files are in the SFX pack under Botanica v4 or PRISFX_by456 › PRISFX Pack. Timing
+  offsets come from analysing each file: "peak at 0.33 s" means the loudest moment is 0.33 s
+  into the file, so slide the clip earlier by that much.
+
+
+    Cue     Beat and              File                             Placement                      Peak level
+            sync point
+
+    S01     B1, GTA 6 cell        Cinematic Hit 1 (PRISFX          Peak at 0.33 s: start          −8 dBFS
+            fills the frame       › Hits)                          10f before the slam.
+                                                                   Trim to 1.5 s with a 12f
+                                                                   fade
+
+    S02     B1, "cops"            Siren (PRISFX › Bonus            The file is 6.8 s and          −14 dBFS
+                                  SFX › Misc)                      the sound starts at
+                                                                   0.46 s. Use the slice
+                                                                   from 0.5 s to 1.3 s,
+                                                                   starting on "cops", 6f
+                                                                   fade out, high-pass
+                                                                   at 300 Hz
+
+    S03     B2, "broke"           Windows Error.mp4                The error sound                −8 dBFS
+                                  (PRISFX Pack, top level;         starts 0.11 s into the         combined
+                                  use its audio) + Glitch,         file: start it 3f before
+                                  Flicker, Text (14)               the tear. Layer the
+                                  (Botanica › Glitch &             glitch on the tear
+                                  Flicker)                         frame with +12 dB of
+                                                                   gain (it's a very quiet
+                                                                   file)
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                  Page 35 of 43
+
+===== PAGE 36 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Cue      Beat and             File                               Placement                      Peak level
+             sync point
+
+    S04      B3, year             Countdown, List,                   0.47 s long. Start on          −16 dBFS
+             digits roll          Numbers (2) (Botanica              the first digit's move
+                                  › Countdown & List)
+
+    S05      B6, "dull"           Music Slow Down                    1.5 s, audible until 1.1       −14 dBFS
+                                  (Botanica › Power Down             s. Start on "dull",
+                                  & Up)                              under the slow-
+                                                                     motion drain
+
+    S06      B7, three            Hit 1, Hit 2, Hit 3                Peaks at 0.09 s, 0.26 s        −12, −10, −8
+             stamps               (PRISFX › Hits)                    and 0.12 s: start each         dBFS (heavier
+                                                                     3f, 8f and 4f before           each time)
+                                                                     its stamp lands. Trim
+                                                                     each to 0.8 s with an
+                                                                     8f fade
+
+    S07      B7 into B8           Riser Layered (PRISFX ›            2.1 s, ends abruptly at        Rising to −10
+                                  Risers)                            its peak. Place it so          dBFS
+                                                                     the end lands on B8's
+                                                                     first black frame
+                                                                     (start about 63f
+                                                                     earlier)
+
+    S08      B8, "breaks"         Glitch, Impact                     Both start instantly.          −6 dBFS
+                                  (Botanica › Impact &               Put both on the
+                                  Hit) + PowerDown 0.5               "breaks" frame
+                                  sec (Botanica › Power
+                                  Down & Up)
+
+    S09      B10, "fun"           Sub Drop (PRISFX ›                 Start on "fun", the            −8 dBFS
+                                  Hits)                              same frame as the
+                                                                     music drop and the
+                                                                     flash. Trim at 2.5 s
+                                                                     with a 20f fade
+
+    S10      B11, the flip        Flip (Botanica ›                   Peak at 0.38 s: start          −12 dBFS
+                                  Transform)                         6f before the flip so
+                                                                     the peak meets its
+                                                                     midpoint
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                    Page 36 of 43
+
+===== PAGE 37 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+    Cue      Beat and              File                              Placement                      Peak level
+             sync point
+
+    S11      B12, "thirty"         Count-up (2) (Botanica            1.4 s, ending in a hit         −12 dBFS
+                                   › Countdown & List)               at 1.14 s. Line that hit
+                                                                     up with "thirty" and
+                                                                     the counter landing
+                                                                     on 30
+
+    S12      B13, year             Same file as S04                  Same placement as              −16 dBFS
+             digits roll                                             S04, so the second
+                                                                     year card echoes the
+                                                                     first
+
+    S13      B13, title            v3) Type (A B C )                 1.3 s. Start with the          −18 dBFS
+             types on              (Botanica › Typing)               first letter. If it
+                                                                     doesn't sit with the
+                                                                     letters, slice out
+                                                                     single keystrokes
+                                                                     and place one every
+                                                                     few letters
+
+    S14      B14, "The             Same file and slice as            Start on "sirens"              −14 dBFS
+             sirens."              S02
+
+    S15      B14, whip into        23 Whip Hit (PRISFX ›             Only 0.2 s is audible.         −12 dBFS
+             "The                  Whoosh)                           Start 2f before the
+             running."                                               whip's midpoint
+
+    S16      B15, zoom             Data_Whoosh (PRISFX ›             Peak at 0.96 s: start          −12 dBFS
+             into the              Extra)                            about 25f before the
+             cabinet                                                 zoom's midpoint
+
+    S17      B16, the              Spinback (2) (Botanica            1 s. Start with the            −12 dBFS
+             rewind                › Transition › DJ                 rewind
+                                   Spinner)
+
+    S18      B17, into the         Riser Faster (Botanica ›          1.1 s, ending at its           Rising to −10
+             logo                  Transition › Risers)              peak. Place it so the          dBFS
+                                                                     end lands on the logo
+                                                                     hit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                    Page 37 of 43
+
+===== PAGE 38 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+   Cue      Beat and            File                            Placement                    Peak level
+            sync point
+
+   S19      B17, logo hit       Same files as S08               On the logo hit. The         −4 dBFS, the
+                                                                ending echoes the            loudest moment
+                                                                break
+
+
+ Silence by design: no SFX in B4–B5 (0:14.9–0:21.5), B9 (0:32.4–0:39.4), the B16 glow line, or
+ B17 before "now?". The contrast is what makes the cues land.
+
+ Never use: meme or comedy sounds, notification pings, success chimes, a camera shutter
+ on every photo, a whoosh on every cut or a pop on every caption.
+
+ If it feels busy, cut S12 first, then S15, then S05.
+
+ Audio mix and export settings
+
+ Mix to about −14 LUFS integrated with peaks no higher than −1 dBTP. The voice always
+ wins, except the final logo hit.
+
+ Track layout
+
+       A1: voiceover. A2: music. A3: SFX hits and impacts. A4: risers, whooshes and textures.
+       Name every SFX clip with its cue ID (S01–S19) so notes and feedback can point at it.
+
+ Voiceover
+
+       High-pass at 80 Hz, light de-essing, compression at about 3:1 with 4–6 dB of gain
+       reduction.
+       Sit it around −16 LUFS short-term with peaks no higher than −3 dBFS.
+
+ Music and SFX: levels as in the music plan and the SFX cue sheet. No SFX peaks above the
+ voice except S19 at the very end.
+
+ Master: limiter ceiling −1.0 dBTP; integrated loudness −14 LUFS ±1. Check on phone
+ speakers and on earbuds before export.
+
+ Export
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                            Page 38 of 43
+
+===== PAGE 39 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+
+   Version                        Settings
+
+   16:9 master                    H.264, 1920 × 1080, 30 fps constant, High profile, 2-
+                                  pass VBR at 16 Mbps (20 Mbps max), AAC 320
+                                  kbps, 48 kHz stereo
+
+   9:16 version (optional)        1080 × 1920, the 16:9 frame scaled to 1080 × 608 and
+                                  centred, captions moved into the central 1080 ×
+                                  1350 safe area; same codec settings
+
+   File names                     RC_GTA-Origin_v01_16x9.mp4 and RC_GTA-
+                                  Origin_v01_9x16.mp4 (bump the version number on
+                                  each export)
+
+
+  Cover and captions
+
+       Cover frame: the B11 flipped split screen with the arrow on the getaway car, plus "GTA
+       started as a cop game" in T2 style ("cop game" in the serif). It reads as a question at
+       thumbnail size.
+       Captions are burned in. Also upload an .srt of the voiceover for accessibility.
+
+  Accuracy and rights notes
+
+  Every spoken claim is sourced, but one line in B17 is ambiguous, and four claims need their
+  framing kept exactly as written.
+
+
+   Claim                                  What the sources say                     How to handle it
+
+   "It opens with Lucia already           GTA 6's first trailer opens              The only wording risk in the
+   caught" (B17)                          with Lucia in custody; the               script. Lowest-risk fix: "Its
+                                          game's own opening scene                 first trailer opens with Lucia
+                                          isn't public                             already caught." Otherwise
+                                                                                   keep the Trailer 1 shot on
+                                                                                   screen so "it" reads as the
+                                                                                   trailer
+
+   "In it, you play a police              Race'n'Chase began with the              Fine as written. Don't show
+   officer chasing criminals"             player as a police officer               the design-document pages
+   (B5)                                   pursuing criminals; the 1995             that describe robber modes
+                                          design document also lists
+                                          robber modes
+
+
+
+
+
+
+
+                                                                                                                Page 39 of 43
+
+===== PAGE 40 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+
+   Claim                                  What the sources say                     How to handle it
+
+   "Awful… too sim-y" (B6)                Gary Penn's own words in a               Keep the quote marks, his
+                                          2011 Gamasutra interview,                name and "later calls it"
+                                          recalling the early build
+
+   The bug (B8–B9)                        Penn's recollection: "I think it         Fine as written. Don't add
+                                          was a bug", the police tried to          the popular "testers
+                                          drive through the player                 abandoned the missions"
+                                                                                   version, which comes from a
+                                                                                   comedy article
+
+   "Keep trying to shut it                People overseeing the                    Fine as written
+   down" (B7)                             project repeatedly tried to
+                                          halt development
+
+   "Eighteen months turn into             Planned for 18 months,                   Fine. No exact start or end
+   thirty" (B4, B12)                      delivered in about 30                    dates on the calendar
+                                                                                   graphic
+
+   "November 1997, it ships"              First PC release on 28                   Fine as written
+   (B13)                                  November 1997 in the UK and
+                                          Europe; North America
+                                          followed in March 1998.
+                                          Version 1 of the script said
+                                          October, which was wrong
+
+   Race and Chase in GTA                  An arcade cabinet called                 Capture the cabinet in-
+   Online (B15)                           Race and Chase arrived with              game and confirm the name
+                                          the Diamond Casino Heist                 on screen before recording
+                                          update
+
+   Error box (B2)                         A stylised recreation, not a             Keep it generic; no fake
+                                          real screenshot                          dates or file paths
+
+
+  Rights (practical notes, not legal advice)
+
+       Footage: use short clips for commentary, prefer official Rockstar and PlayStation
+       uploads for GTA 6, and credit sources in the caption (for example "Footage: Rockstar
+       Games, BBC Archive").
+       Gary Penn's face comes from a public BAFTA talk and is used with an attributed
+       quote.
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                Page 40 of 43
+
+===== PAGE 41 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+      Music: Black Vertigo is a commercial release; confirm the licence before posting on a
+      company account. Epidemic Sound files (ES_) are cleared only while the subscription
+      covers commercial use.
+      Don't name or imply any GTA 6 voice actor; Rockstar hasn't announced the cast.
+
+ Asset prep and project setup
+
+ Set up once, build the reusable pieces first, then cut in this order: voiceover, music anchor,
+ rough cut, hero moments, text, transitions, SFX, mix, grade.
+
+ Folder structure
+
+      RC_GTA-Origin / 01_VO
+      RC_GTA-Origin / 02_Music (Black Vertigo and ES Conundrums)
+      RC_GTA-Origin / 03_SFX (only the cue files, each renamed with its cue ID, for example
+      "S01_Cinematic Hit 1.wav")
+      RC_GTA-Origin / 04_Broll / B01 … B17 (clips named with their R-ID)
+      RC_GTA-Origin / 05_GFX (stars, arrow, bug chip, CRT plate, error box, stamp,
+      calendar)
+      RC_GTA-Origin / 06_Fonts (Inter, Instrument Serif)
+      RC_GTA-Origin / 07_Exports
+
+ Downloads
+
+      Download B-roll at the highest resolution available (1080p or above, 60 fps where
+      offered), then trim to the seconds you need. Note the source timestamp in the clip
+      name.
+      Capture the Race and Chase cabinet (B15) in GTA Online yourself if possible.
+      Screenshot the 1995 design-document pages (R4.5) at full size.
+
+ Build these reusable pieces before cutting
+
+      M1 wanted stars, M2 "you" arrow, M3 calendar grid (18 and 30 squares), M4 bug chip.
+      L8 CRT treatment, the Windows 95-style error box, the CANCELLED stamp.
+      Text presets for T1–T10 and a T3 year-card template.
+      An X9 siren-wash adjustment layer and an X4 glitch preset.
+
+ Sequence: 1920 × 1080, 30 fps, 48 kHz audio.
+
+ Order of work
+
+
+
+
+
+
+
+
+                                                                                                          Page 41 of 43
+
+===== PAGE 42 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+
+    1. Record and clean the voiceover, then cut it to final timing.
+    2. Drop in the music, anchored with the drop (3:03.0) on "fun".
+    3. Rough cut: B-roll for every beat, timed to the voiceover.
+    4. Build the nine ★ hero beats.
+    5. Add typography (T-styles) and check the rotation.
+    6. Add transitions (X-codes).
+    7. Add SFX (S-cues).
+    8. Mix to the targets.
+    9. Grade and add the film-grain layer.
+  10. Run the QA checklist, then export.
+
+ Final QA checklist
+
+ Run every check before exporting; any "no" goes back to the beat it names.
+
+       B1: the first frame is already moving and shows "Why does"; the question reads with
+       the sound off.
+       Every caption matches the voiceover word for word, shows at most 4 words at once
+       and is within ±2 frames of the speech.
+       No two neighbouring beats feature the same T-style (check against the rotation line).
+       Glitch visuals and sounds appear only in B2, B8, B16 and B17; siren wash and sounds
+       only on "cops", "police officer" and "sirens".
+       Nothing holds still for more than 2 s, except the B6 quote and the B8 black frame.
+       On "fun" (B10), the music drop, S09 and the X3 flash hit the same frame.
+       The B5 and B11 split screens have identical framing, and the flip reads clearly.
+       The B12 calendar is the same composition as B4, extended.
+       Every GTA 6 shot comes from an official Rockstar or PlayStation upload.
+       The B17 wording decision is made, and the B6 quote carries its attribution.
+       Loudness is −14 LUFS ±1 with peaks no higher than −1 dBTP, and the voice is clear on a
+       phone speaker.
+       Watched three times: muted, on earbuds, and on a phone at arm's length.
+       Export settings and file name are correct, the cover frame is set, and the post caption
+       credits the footage sources.
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                             Page 42 of 43
+
+===== PAGE 43 =====
+Master Edit Plan: Why You're Always Running From the Cops
+
+ Open questions
+
+ Six decisions are still open; the AI assistant should ask about any of them that are still
+ unanswered when the session starts.
+
+    1. Does your HyperFrames version render with transparency? If not, graphic beats
+      render as full-frame segments with their footage inside.
+    2. Does the 108% voiceover still sound natural? If the speed-up is noticeable, use 105%.
+    3. 16:9 only, or a 9:16 version as well?
+    4. Does Raw Canvas have a licence for Black Vertigo, and an active Epidemic Sound
+      subscription for the backup?
+    5. B17: keep "It opens with Lucia already caught" or switch to "Its first trailer opens with
+      Lucia already caught"?
+    6. Who signs off before it posts on November 16?
+
+ Sources
+
+ Fact sources for the script, opened and checked on November 15, 2026; the music and
+ SFX timings come from analysing the files in your Drive folders on the same day.
+
+      Grand Theft Auto (video game), Wikipedia: Race'n'Chase with the player as a police
+      officer, the 4 April 1995 start in Dundee, attempts to halt development, and the 28
+      November 1997 PC release.
+      Time Extension, "As GTA turns 25": the 28 November 1997 PC release.
+      Game Informer, "Former developer: Grand Theft Auto was almost canceled": Gary
+      Penn's "It was awful" and "It was too sim-y", and the aggressive police bug.
+      TechSpot, "Before emerging as the iconic Grand Theft Auto…": planned for 18 months,
+      delivered in about 30, and the Race and Chase arcade game in GTA Online.
+      Now I Know, "The glitch that made stealing cars fun": Penn's account of the police
+      trying to drive through the player.
+      Game Developer, original GTA design documents: the 1995 Race'n'Chase design
+      document posted by Mike Dailly.
+      GTA 6 Script Playbook (Raw Canvas, November 13, 2026): Trailer 1 opening on Lucia in
+      custody, the story formula and the launch date.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                           Page 43 of 43

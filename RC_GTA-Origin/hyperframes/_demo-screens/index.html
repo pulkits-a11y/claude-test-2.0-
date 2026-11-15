@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
+    <link rel="stylesheet" href="assets/demo-lint-fix.css">
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--ink-black); }
+      /* demo-only labels (not part of the kit) */
+      .demo-label { position: absolute; left: 96px; top: 990px; font-family: var(--sans); font-weight: 500; font-size: 20px;
+        line-height: 26px; color: var(--white); text-shadow: var(--text-shadow); white-space: nowrap; z-index: 90; }
+      .demo-label.on-card { color: var(--card-ink); text-shadow: none; }
+      /* demo-only stand-in for Tesseract's L2 bars (section M): the kit never draws them */
+      .demo-l2bar { position: absolute; left: 0; width: 1920px; height: 138px; background: var(--ink-black); }
+    </style>
+  </head>
+  <body>
+    <!-- _demo-screens: every item of the SCREENS kit area in sequence, used exactly as a beat would (assets/kit/ copy of
+         hyperframes/_kit, footage = labelled stand-ins via tools/sync_footage.py). Docs: assets/kit/KIT_screens.md.
+         A  0.0- 2.5 L4 frosted 4x3 over R1.2 (B1 f0)        B  2.5- 5.5 L3 3x2 build, cell 6 -> GTA 6 full frame (B1)
+         C  5.5- 8.0 L3 strips + 4f punch-in 115% (B9)        D  8.0- 9.5 L3 black text cell
+         E  9.5-12.5 L5 gray card: framed clip + cut-out (B7/B6)
+         F 12.5-15.5 L6 framed clip over its blurred darker copy, T6 behind the frame (B13)
+         G 15.5-16.9 L7 spotlight on a still, push 100->118% (B4)   H 16.9-19.5 L7 on a video (B15)
+         I 19.5-21.5 L11 split (B5)   J 21.5-23.5 L11 drains to B&W over 6f + slows to 50% (B6)   K 23.5-26.0 L11 flip (B11)
+         L 26.0-29.0 L12 stacked cards + T8 on top (B3)       M 29.0-31.0 L10 year tags (B14) + L2 band overlay box
+         Z 31.0-32.0 blur calibration (L4 k 1.76 -> 40 px, L6 k 2.2 -> 50 px), measured from review stills -->
+    <div data-hf-id="hf-hbrn" id="root" data-composition-id="demo-screens" data-start="0" data-duration="32" data-width="1920" data-height="1080">
+
+      <!-- ===================== A: L4 frosted tile grid (B1 f0) ===================== -->
+      <div data-hf-id="hf-f8r0" id="a-frost" class="rc-l4" data-seed="1" style="z-index: 1">
+        <div data-hf-id="hf-sxao" class="rc-l4__plate">
+          <video data-hf-id="hf-dnuf" id="a-sharp" class="clip" src="assets/footage/R1.2.mp4" data-start="0" data-duration="2.5" data-track-index="0" muted playsinline></video>
+        </div>
+        <div data-hf-id="hf-fdde" class="rc-l4__frost">
+          <div data-hf-id="hf-g9rc" class="rc-l4__plate">
+            <div data-hf-id="hf-l0ir" class="rc-l4__blurscale">
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-2znv" id="a-blur" class="clip" src="assets/footage/R1.2.mp4" data-start="0" data-duration="2.5" data-track-index="1" muted playsinline></video>
+            </div>
+          </div>
+        </div>
+        <div data-hf-id="hf-gwh1" id="a-tiles" class="clip rc-l4__tiles" data-start="0" data-duration="2.5" data-track-index="2"></div>
+      </div>
+      <div data-hf-id="hf-2djk" id="a-cap" class="clip rc-t1" data-start="0" data-duration="2.5" data-track-index="3" style="z-index: 5">Why does</div>
+      <div data-hf-id="hf-g099" id="a-label" class="clip demo-label" data-layout-ignore="" data-start="0" data-duration="2.5" data-track-index="4">L4: 4x3 tiles, 40 px blur (media treatment, k 1.76), 10% white, 1 px border 20%. Seeded clears, 3f each: f3 12 21 30 39 48. Push 100-&gt;104%.</div>
+
+      <!-- ===================== B: L3 3x2 grid build + cell 6 grows to full frame (B1) ===================== -->
+      <div data-hf-id="hf-0fi2" id="b-grid" class="rc-l3 rc-l3--3x2" style="z-index: 1">
+        <div data-hf-id="hf-j7zt" id="b-ground" class="clip rc-l3__ground" data-start="2.5" data-duration="3" data-track-index="5"></div>
+        <div data-hf-id="hf-9n3m" class="rc-l3__cell" id="b-c1"><div data-hf-id="hf-cu75" class="rc-l3__media"><video data-hf-id="hf-ddwv" id="b-v1" class="clip" src="assets/footage/R1.5.mp4" data-start="2.5" data-duration="3" data-track-index="6" muted playsinline></video></div></div>
+        <div data-hf-id="hf-5ozl" class="rc-l3__cell" id="b-c2"><div data-hf-id="hf-s92t" class="rc-l3__media"><video data-hf-id="hf-ezo3" id="b-v2" class="clip" src="assets/footage/R14.1.mp4" data-start="2.5" data-duration="3" data-track-index="7" muted playsinline></video></div></div>
+        <div data-hf-id="hf-4xbs" class="rc-l3__cell" id="b-c3"><div data-hf-id="hf-tfzw" class="rc-l3__media"><video data-hf-id="hf-ie2t" id="b-v3" class="clip" src="assets/footage/R1.7.mp4" data-start="2.5" data-duration="3" data-track-index="8" muted playsinline></video></div></div>
+        <div data-hf-id="hf-0z7r" class="rc-l3__cell" id="b-c4"><div data-hf-id="hf-t1ov" class="rc-l3__media"><video data-hf-id="hf-2kia" id="b-v4" class="clip" src="assets/footage/R1.6.mp4" data-start="2.5" data-duration="3" data-track-index="9" muted playsinline></video></div></div>
+        <div data-hf-id="hf-uthy" class="rc-l3__cell" id="b-c5"><div data-hf-id="hf-u8ly" class="rc-l3__media"><video data-hf-id="hf-hx9j" id="b-v5" class="clip" src="assets/footage/R14.4.mp4" data-start="2.5" data-duration="3" data-track-index="10" muted playsinline></video></div></div>
+        <div data-hf-id="hf-qvdx" class="rc-l3__cell" id="b-c6"><div data-hf-id="hf-tuax" class="rc-l3__media"><video data-hf-id="hf-bpor" id="b-v6" class="clip" src="assets/footage/R1.3.mp4" data-start="2.5" data-duration="1.7" data-track-index="11" muted playsinline></video></div></div>
+        <div data-hf-id="hf-mk5v" id="b-grow" class="rc-l3__grow" data-from-cell="6">
+          <div data-hf-id="hf-wh1l" class="rc-l3__grow-media"><video data-hf-id="hf-jmde" id="b-gta6" class="clip" src="assets/footage/R17.1.mp4" data-start="4.2" data-duration="1.3" data-track-index="12" muted playsinline></video></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-v64l" id="b-label" class="clip demo-label" data-layout-ignore="" data-start="2.5" data-duration="3" data-track-index="13">L3 3x2, 8 px gutters: pops 4f (96-&gt;100% + fade), 3f apart from f78. f126 cell 6 switches to R17.1 and fills the frame over 6f, ease out (f132).</div>
+
+      <!-- ===================== C: L3 three strips, one per phrase, 4f punch-in to 115% (B9) ===================== -->
+      <div data-hf-id="hf-ur6f" id="c-grid" class="rc-l3 rc-l3--strips" style="z-index: 1">
+        <div data-hf-id="hf-okg9" id="c-ground" class="clip rc-l3__ground" data-start="5.5" data-duration="2.5" data-track-index="14"></div>
+        <div data-hf-id="hf-34rx" class="rc-l3__cell" id="c-s1"><div data-hf-id="hf-v180" class="rc-l3__media"><video data-hf-id="hf-h6tu" id="c-v1" class="clip" src="assets/footage/R9.2.mp4" data-start="5.5" data-duration="2.5" data-track-index="15" muted playsinline></video></div></div>
+        <div data-hf-id="hf-72vy" class="rc-l3__cell" id="c-s2"><div data-hf-id="hf-umwz" class="rc-l3__media"><video data-hf-id="hf-ty8f" id="c-v2" class="clip" src="assets/footage/R9.3.mp4" data-start="5.5" data-duration="2.5" data-track-index="16" muted playsinline></video></div></div>
+        <div data-hf-id="hf-b0zz" class="rc-l3__cell" id="c-s3"><div data-hf-id="hf-pgxm" class="rc-l3__media"><video data-hf-id="hf-kqi1" id="c-v3" class="clip" src="assets/footage/R9.5.mp4" data-start="5.5" data-duration="2.5" data-track-index="17" muted playsinline></video></div></div>
+      </div>
+      <div data-hf-id="hf-z1xw" id="c-t4" class="clip rc-t4" data-start="5.5" data-duration="2.5" data-track-index="18" style="z-index: 5">
+        <span data-hf-id="hf-0z5s" class="rc-t4__piece rc-t4--strip1">They ram.</span>
+        <span data-hf-id="hf-1i8b" class="rc-t4__piece rc-t4--strip2">They chase.</span>
+        <span data-hf-id="hf-tk2n" class="rc-t4__piece rc-t4--strip3">They don't let go.</span>
+      </div>
+      <div data-hf-id="hf-avix" id="c-label" class="clip demo-label" data-layout-ignore="" data-start="5.5" data-duration="2.5" data-track-index="19">L3 strips (634.67 px): one per phrase f168 / f186 / f204, pop 4f + footage punch-in 100-&gt;115% over 4f, ease out; T4 phrase on the same frame.</div>
+
+      <!-- ===================== D: L3 cell that stays black and holds text ===================== -->
+      <div data-hf-id="hf-wkig" id="d-grid" class="rc-l3 rc-l3--3x2" style="z-index: 1">
+        <div data-hf-id="hf-i6d6" id="d-ground" class="clip rc-l3__ground" data-start="8" data-duration="1.5" data-track-index="20"></div>
+        <div data-hf-id="hf-h8qg" class="rc-l3__cell" id="d-c1"><div data-hf-id="hf-p2ml" class="rc-l3__media"><video data-hf-id="hf-tz9y" id="d-v1" class="clip" src="assets/footage/R1.5.mp4" data-start="8" data-duration="1.5" data-track-index="21" muted playsinline></video></div></div>
+        <div data-hf-id="hf-s483" class="rc-l3__cell" id="d-c2"><div data-hf-id="hf-6yov" class="rc-l3__media"><video data-hf-id="hf-9fgu" id="d-v2" class="clip" src="assets/footage/R14.1.mp4" data-start="8" data-duration="1.5" data-track-index="22" muted playsinline></video></div></div>
+        <div data-hf-id="hf-lyia" class="rc-l3__cell" id="d-c3"><div data-hf-id="hf-7czw" class="rc-l3__media"><video data-hf-id="hf-vf88" id="d-v3" class="clip" src="assets/footage/R1.7.mp4" data-start="8" data-duration="1.5" data-track-index="23" muted playsinline></video></div></div>
+        <div data-hf-id="hf-5eed" class="rc-l3__cell" id="d-c4"><div data-hf-id="hf-662t" class="rc-l3__media"><video data-hf-id="hf-f5k9" id="d-v4" class="clip" src="assets/footage/R1.6.mp4" data-start="8" data-duration="1.5" data-track-index="24" muted playsinline></video></div></div>
+        <div data-hf-id="hf-4mqk" class="rc-l3__cell" id="d-c5"><div data-hf-id="hf-8y06" id="d-text" class="clip rc-l3__celltext" data-start="8" data-duration="1.5" data-track-index="25" style="font-family: var(--sans); font-weight: 500; font-size: 46px;">TEXT CELL</div></div>
+        <div data-hf-id="hf-damf" class="rc-l3__cell" id="d-c6"><div data-hf-id="hf-6kdu" class="rc-l3__media"><video data-hf-id="hf-unp0" id="d-v6" class="clip" src="assets/footage/R1.3.mp4" data-start="8" data-duration="1.5" data-track-index="26" muted playsinline></video></div></div>
+      </div>
+      <div data-hf-id="hf-gfc4" id="d-label" class="clip demo-label" data-layout-ignore="" data-start="8" data-duration="1.5" data-track-index="27">L3: a cell may stay black (the ink-black ground) and hold text (.rc-l3__celltext); it pops like the others.</div>
+
+      <!-- ===================== E: L5 gray card collage (B7 framed clip, B6 cut-out) ===================== -->
+      <div data-hf-id="hf-en6e" id="e-ground" class="clip rc-l5__ground" data-start="9.5" data-duration="3" data-track-index="28" style="z-index: 1"></div>
+      <div data-hf-id="hf-bcw3" id="e-card" class="rc-scr" style="z-index: 2">
+        <div data-hf-id="hf-513y" id="e-p1" class="rc-l5__prop" style="--x: 240px; --y: 250px; --w: 768px; --h: 432px;">
+          <div data-hf-id="hf-rts7" id="e-p1-frame" class="clip rc-l5__frame" data-start="9.5" data-duration="3" data-track-index="29"></div>
+          <video data-hf-id="hf-b6ja" id="e-p1-v" class="clip rc-l5__media" src="assets/footage/R7.1.mp4" data-start="9.5" data-duration="3" data-track-index="30" muted playsinline></video>
+        </div>
+        <div data-hf-id="hf-f3wd" id="e-p2" class="rc-l5__prop" style="--x: 1010px; --y: 300px; --w: 860px; --h: 484px;">
+          <div data-hf-id="hf-zmm5" class="rc-l5__cutout">
+            <video data-hf-id="hf-zrrc" id="e-p2-v" class="clip" src="assets/test/R6.1_cutout_standin.webm" data-start="9.5" data-duration="3" data-track-index="31" muted playsinline></video>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-3btd" id="e-label" class="clip demo-label on-card" data-layout-ignore="" data-start="9.5" data-duration="3" data-track-index="32">L5 #E9E9E9: framed clip (8 px white border, shadow 0 12 30 black 25%, -4 deg) + cut-out stand-in (8 px outline + same shadow, +4 deg); float +/-6 px, 2 s a leg.</div>
+
+      <!-- ===================== F: L6 framed clip over its blurred darker copy, T6 behind the frame (B13) ===================== -->
+      <div data-hf-id="hf-hmu9" id="f-l6" class="rc-l6" style="z-index: 1">
+        <div data-hf-id="hf-5e6b" class="rc-l6__bg">
+          <div data-hf-id="hf-hhr1" class="rc-l6__blurscale">
+            <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.737,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-sy1v" id="f-bg" class="clip" src="assets/footage/R13.1.mp4" data-start="12.5" data-duration="3" data-track-index="33" muted playsinline></video>
+          </div>
+        </div>
+        <div data-hf-id="hf-g5nl" id="f-t6" class="clip rc-t6" data-start="12.5" data-duration="3" data-track-index="34">
+          <div data-hf-id="hf-16cq" class="rc-t6__line">GRAND</div><div data-hf-id="hf-d7ol" class="rc-t6__line">THEFT</div><div data-hf-id="hf-1psj" class="rc-t6__line">AUTO</div>
+        </div>
+        <div data-hf-id="hf-rjf3" class="rc-l6__frame" data-layout-allow-occlusion="">
+          <div data-hf-id="hf-w9wg" id="f-border" class="clip rc-l6__border" data-start="12.5" data-duration="3" data-track-index="35"></div>
+          <video data-hf-id="hf-10rz" id="f-clip" class="clip rc-l6__media" src="assets/footage/R13.1.mp4" data-start="12.5" data-duration="3" data-track-index="36" muted playsinline></video>
+          <div data-hf-id="hf-9qz5" id="f-cap" class="clip rc-l6__label" data-start="12.5" data-duration="1" data-track-index="37">GTA 1 intro, 1997</div>
+        </div>
+      </div>
+      <div data-hf-id="hf-6klk" id="f-label" class="clip demo-label" data-layout-ignore="" data-start="12.5" data-duration="3" data-track-index="38">L6: clip at 62% (1190.4 x 669.6), 2 px white border, 30 px warm glow #FFF6E0 40%; back copy 50 px blur + 40% darker (treatment); T6 between. Push 100-&gt;104%.</div>
+
+      <!-- ===================== G: L7 spotlight on the design-document still (B4) ===================== -->
+      <div data-hf-id="hf-p4rw" id="g-l7" class="rc-l7" style="z-index: 1">
+        <img data-hf-id="hf-ejoe" id="g-doc" class="clip rc-l7__media" src="assets/test/R4.5_still.png" data-start="15.5" data-duration="1.4" data-track-index="39" alt="">
+        <div data-hf-id="hf-bkrc" id="g-dim" class="clip rc-l7__dim" data-hole="640,270,640,200" data-radius="16" data-feather="20" data-start="15.5" data-duration="1.4" data-track-index="40"></div>
+      </div>
+      <div data-hf-id="hf-7c3p" id="g-label" class="clip demo-label" data-layout-ignore="" data-start="15.5" data-duration="1.4" data-track-index="41">L7 (still, under 1.5 s): #0A0A0A at 65% (picture at 35%) with a rounded hole, 20 px feather; push 100-&gt;118% about the hole centre.</div>
+
+      <!-- ===================== H: L7 spotlight on a screen recording (B15) ===================== -->
+      <div data-hf-id="hf-9fmn" id="h-l7" class="rc-l7" style="z-index: 1">
+        <video data-hf-id="hf-ugxg" id="h-rec" class="clip rc-l7__media" src="assets/footage/R15.3.mp4" data-start="16.9" data-duration="2.6" data-track-index="42" muted playsinline></video>
+        <div data-hf-id="hf-ofqu" id="h-dim" class="clip rc-l7__dim" data-hole="1180,240,560,600" data-radius="16" data-feather="20" data-start="16.9" data-duration="2.6" data-track-index="43"></div>
+      </div>
+      <div data-hf-id="hf-oyzy" id="h-label" class="clip demo-label" data-layout-ignore="" data-start="16.9" data-duration="2.6" data-track-index="44">L7 on footage (B15 arcade): dim 35% except the box on the target; slow push 100-&gt;118% across the shot.</div>
+
+      <!-- ===================== I: L11 split screen (B5) ===================== -->
+      <div data-hf-id="hf-jdk8" id="i-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-sifq" id="i-ground" class="clip rc-l11__ground" data-start="19.5" data-duration="2" data-track-index="45"></div>
+        <div data-hf-id="hf-mc1t" class="rc-l11__face rc-l11__face--front">
+          <div data-hf-id="hf-tmjz" class="rc-l11__half rc-l11__half--left"><video data-hf-id="hf-6fh1" id="i-l" class="clip" src="assets/footage/R5.4.mp4" data-start="19.5" data-duration="2" data-track-index="46" muted playsinline></video></div>
+          <div data-hf-id="hf-cpwi" class="rc-l11__half rc-l11__half--right"><video data-hf-id="hf-m1st" id="i-r" class="clip" src="assets/footage/R5.1.mp4" data-start="19.5" data-duration="2" data-track-index="47" muted playsinline></video></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-nzop" id="i-label" class="clip demo-label" data-layout-ignore="" data-start="19.5" data-duration="2" data-track-index="48">L11 (B5): two 958 px halves, 4 px black divider (x 958-962). Left cop side R5.4, right chased car R5.1.</div>
+
+      <!-- ===================== J: L11 drains to black and white over 6f and slows to 50% (B6) ===================== -->
+      <div data-hf-id="hf-1cq9" id="j-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-tfb2" id="j-ground" class="clip rc-l11__ground" data-start="21.5" data-duration="2" data-track-index="49"></div>
+        <div data-hf-id="hf-nd79" class="rc-l11__face rc-l11__face--front">
+          <div data-hf-id="hf-io3z" class="rc-l11__half rc-l11__half--left"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-1},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-z4l4" id="j-l" class="clip" src="assets/test/TEST_color.mp4" data-start="21.5" data-duration="2" data-track-index="50" muted playsinline style="--hf-color-grading-intensity: 0" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;rate&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:1},{&quot;t&quot;:0.5,&quot;v&quot;:1},{&quot;t&quot;:0.7,&quot;v&quot;:0.5},{&quot;t&quot;:2,&quot;v&quot;:0.5}]}]}"></video></div>
+          <div data-hf-id="hf-1pfq" class="rc-l11__half rc-l11__half--right"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-1},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-4d6b" id="j-r" class="clip" src="assets/test/TEST_color.mp4" data-start="21.5" data-duration="2" data-media-start="3" data-track-index="51" muted playsinline style="--hf-color-grading-intensity: 0" data-automation="{&quot;version&quot;:1,&quot;lanes&quot;:[{&quot;target&quot;:&quot;rate&quot;,&quot;points&quot;:[{&quot;t&quot;:0,&quot;v&quot;:1},{&quot;t&quot;:0.5,&quot;v&quot;:1},{&quot;t&quot;:0.7,&quot;v&quot;:0.5},{&quot;t&quot;:2,&quot;v&quot;:0.5}]}]}"></video></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-yjy1" id="j-label" class="clip demo-label" data-layout-ignore="" data-start="21.5" data-duration="2" data-track-index="52">L11 B6 "dull" (colour TEST PATTERN): saturation -1 treatment, intensity 0-&gt;1 over 6f from f660; rate lane 1 -&gt; 0.5 over the same 6f.</div>
+
+      <!-- ===================== K: L11 flip 180 deg on Y over 10f with motion blur (B11) ===================== -->
+      <div data-hf-id="hf-ripa" id="k-split" class="rc-l11" style="z-index: 1">
+        <div data-hf-id="hf-jzx5" id="k-ground" class="clip rc-l11__ground" data-start="23.5" data-duration="2.5" data-track-index="53"></div>
+        <div data-hf-id="hf-ok4c" class="rc-l11__face rc-l11__face--front">
+          <div data-hf-id="hf-i9sy" class="rc-l11__half rc-l11__half--left"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-w1ws" id="k-fl" class="clip" src="assets/footage/R5.4.mp4" data-start="23.5" data-duration="2.5" data-media-start="2" data-track-index="54" muted playsinline style="--hf-color-grading-blur: 0"></video></div>
+          <div data-hf-id="hf-23qr" class="rc-l11__half rc-l11__half--right"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-j112" id="k-fr" class="clip" src="assets/footage/R5.1.mp4" data-start="23.5" data-duration="2.5" data-media-start="2" data-track-index="55" muted playsinline style="--hf-color-grading-blur: 0"></video></div>
+        </div>
+        <div data-hf-id="hf-zozp" class="rc-l11__face rc-l11__face--back">
+          <div data-hf-id="hf-hvhx" class="rc-l11__half rc-l11__half--left"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-z651" id="k-bl" class="clip" src="assets/footage/R10.2.mp4" data-start="23.5" data-duration="2.5" data-track-index="56" muted playsinline style="--hf-color-grading-blur: 0"></video></div>
+          <div data-hf-id="hf-2i1s" class="rc-l11__half rc-l11__half--right"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-pb0n" id="k-br" class="clip" src="assets/footage/R5.4.mp4" data-start="23.5" data-duration="2.5" data-media-start="6" data-track-index="57" muted playsinline style="--hf-color-grading-blur: 0"></video></div>
+        </div>
+      </div>
+      <div data-hf-id="hf-vb4q" id="k-label" class="clip demo-label" data-layout-ignore="" data-start="23.5" data-duration="2.5" data-track-index="58">L11 B11 flip: rotateY 0-&gt;180 over 10f (f720-f730, power2.inOut), treatment blur peaks at f725; back face = R10.2 | R5.4.</div>
+
+      <!-- ===================== L: L12 stacked cards + T8 name card on top (B3) ===================== -->
+      <div data-hf-id="hf-xg27" id="l-ground" class="clip rc-l12__ground" data-start="26" data-duration="3" data-track-index="59" style="z-index: 1"></div>
+      <div data-hf-id="hf-16a4" id="l-cards" class="rc-l12" style="z-index: 2">
+        <div data-hf-id="hf-q46e" class="rc-l12__card" data-card="1"><div data-hf-id="hf-cio6" class="rc-l12__drop">
+          <div data-hf-id="hf-1dcc" id="l-b1" class="clip rc-l12__border" data-start="26" data-duration="3" data-track-index="60"></div>
+          <video data-hf-id="hf-nqa7" id="l-v1" class="clip rc-l12__media" src="assets/footage/R3.8.mp4" data-start="26" data-duration="3" data-track-index="61" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-m62d" class="rc-l12__card" data-card="2"><div data-hf-id="hf-jafe" class="rc-l12__drop">
+          <div data-hf-id="hf-qv2h" id="l-b2" class="clip rc-l12__border" data-start="26" data-duration="3" data-track-index="62"></div>
+          <video data-hf-id="hf-p9ch" id="l-v2" class="clip rc-l12__media" src="assets/footage/R3.7.mp4" data-start="26" data-duration="3" data-track-index="63" muted playsinline></video>
+        </div></div>
+        <div data-hf-id="hf-leek" class="rc-l12__card" data-card="3"><div data-hf-id="hf-joqf" class="rc-l12__drop">
+          <div data-hf-id="hf-2736" id="l-b3" class="clip rc-l12__border" data-start="26" data-duration="3" data-track-index="64"></div>
+          <video data-hf-id="hf-pqf2" id="l-v3" class="clip rc-l12__media" src="assets/footage/R3.3.mp4" data-start="26" data-duration="3" data-track-index="65" muted playsinline></video>
+        </div></div>
+      </div>
+      <div data-hf-id="hf-syok" id="l-t8" class="clip rc-t8" data-start="26" data-duration="3" data-track-index="66" style="z-index: 5">
+        <div data-hf-id="hf-x6mb" class="rc-t8__block">
+          <div data-hf-id="hf-kutx" class="rc-t8__name">DMA Design<span data-hf-id="hf-tvwt" class="rc-t8__underline"><span data-hf-id="hf-jgd9" class="rc-t8__walker"></span></span></div>
+          <div data-hf-id="hf-v6uj" class="rc-t8__role">The studio behind Lemmings</div>
+        </div>
+      </div>
+      <div data-hf-id="hf-dftn" id="l-label" class="clip demo-label on-card" data-layout-ignore="" data-start="26" data-duration="3" data-track-index="67">L12: 12 px white borders, -6 / +3 / -2 deg, drop in from above 8f each, ease out (f783, f791, f799 -&gt; lands f807); parallax drift 8/16/24 px.</div>
+
+      <!-- ===================== M: L10 year tags over a burst (B14) + L2 band overlay box ===================== -->
+      <video data-hf-id="hf-2nzq" id="m-c1" class="clip" src="assets/footage/R14.1.mp4" data-start="29" data-duration="0.2" data-track-index="68" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <video data-hf-id="hf-rpr9" id="m-c2" class="clip" src="assets/footage/R14.2.mp4" data-start="29.2" data-duration="0.2" data-track-index="69" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <video data-hf-id="hf-y9sf" id="m-c3" class="clip" src="assets/footage/R14.3.mp4" data-start="29.4" data-duration="0.2" data-track-index="70" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <video data-hf-id="hf-6fu2" id="m-c4" class="clip" src="assets/footage/R14.4.mp4" data-start="29.6" data-duration="0.2" data-track-index="71" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <video data-hf-id="hf-zakx" id="m-c5" class="clip" src="assets/footage/R14.5.mp4" data-start="29.8" data-duration="0.2" data-track-index="72" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <div data-hf-id="hf-rl8d" id="m-t1" class="clip rc-l10-tag" data-start="29" data-duration="0.2" data-track-index="73" style="z-index: 5">2001</div>
+      <div data-hf-id="hf-5zx0" id="m-t2" class="clip rc-l10-tag" data-start="29.2" data-duration="0.2" data-track-index="74" style="z-index: 5">2002</div>
+      <div data-hf-id="hf-0sr4" id="m-t3" class="clip rc-l10-tag" data-start="29.4" data-duration="0.2" data-track-index="75" style="z-index: 5">2004</div>
+      <div data-hf-id="hf-vd7m" id="m-t4" class="clip rc-l10-tag" data-start="29.6" data-duration="0.2" data-track-index="76" style="z-index: 5">2008</div>
+      <div data-hf-id="hf-3d1g" id="m-t5" class="clip rc-l10-tag" data-start="29.8" data-duration="0.2" data-track-index="77" style="z-index: 5">2013</div>
+      <video data-hf-id="hf-8ggb" id="m-band-v" class="clip" src="assets/footage/R17.1.mp4" data-start="30" data-duration="1" data-track-index="78" muted playsinline style="position:absolute; left:0; top:0; width:1920px; height:1080px; object-fit:cover; z-index:1"></video>
+      <div data-hf-id="hf-pdd5" id="m-bar-top" class="clip demo-l2bar" data-layout-ignore="" data-start="30" data-duration="1" data-track-index="79" style="top: 0; z-index: 3"></div>
+      <div data-hf-id="hf-vxmg" id="m-bar-bot" class="clip demo-l2bar" data-layout-ignore="" data-start="30" data-duration="1" data-track-index="80" style="top: 942px; z-index: 3"></div>
+      <div data-hf-id="hf-gp1s" class="rc-l2-band" style="z-index: 5">
+        <div data-hf-id="hf-9jrs" id="m-band-cap" class="clip rc-t1" data-start="30" data-duration="1" data-track-index="81" style="--rc-y: 760px">inside the L2 band</div>
+      </div>
+      <div data-hf-id="hf-9rdq" id="m-label" class="clip demo-label" data-layout-ignore="" data-start="29" data-duration="2" data-track-index="82">L10 tag: Inter Medium 22 px, white, soft shadow at (96, 54), 6f per clip. Then L2 band box y 138-942 (bars here are a demo stand-in for Tesseract's).</div>
+
+      <!-- ===================== Z: blur calibration through the kit structures (edge + 4 px line pattern) ===================== -->
+      <div data-hf-id="hf-e4lx" id="z1" class="rc-l4" style="z-index: 1">
+        <div data-hf-id="hf-zdiu" class="rc-l4__frost">
+          <div data-hf-id="hf-f2u9" class="rc-l4__plate">
+            <div data-hf-id="hf-bpb7" class="rc-l4__blurscale">
+              <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-7xc5" id="z1-img" class="clip" src="assets/test/calib_edge.png" data-start="31" data-duration="0.5" data-track-index="83" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-wzty" id="z2" class="rc-l6" style="z-index: 1">
+        <div data-hf-id="hf-yc8z" class="rc-l6__bg">
+          <div data-hf-id="hf-c5dd" class="rc-l6__blurscale">
+            <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.737,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-19lc" id="z2-img" class="clip" src="assets/test/calib_edge.png" data-start="31.5" data-duration="0.5" data-track-index="84" alt="">
+          </div>
+        </div>
+      </div>
+      <div data-hf-id="hf-gejv" id="z-label" class="clip demo-label" data-layout-ignore="" data-start="31" data-duration="1" data-track-index="85">Calibration: edge (top) + 4 px line (bottom) through the L4 blur copy (k 1.76, 31.0-31.5) and the L6 back copy (k 2.2, 31.5-32.0).</div>
+    </div>
+
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const S = RCK.screens, T = RCK.type, f = (n) => n / 30;
+
+      // A: L4 (B1 f0): one tile per word, 3f each, seeded order; push 100 -> 104% on both plates (sharp + frosted copy)
+      S.frostClear(tl, '#a-frost', [f(3), f(12), f(21), f(30), f(39), f(48)], { seed: 1 });
+      S.push(tl, '#a-frost .rc-l4__plate', 0, { until: 2.5 });
+
+      // B: L3 3x2 (B1): cells pop L->R, T->B, 3f apart; cell 6 switches to GTA 6 (R17.1) and fills the frame over 6f
+      S.gridBuild(tl, '#b-grid', f(78), { stepF: 3 });
+      S.gridGrow(tl, '#b-grow', f(126), { durF: 6 });
+
+      // C: L3 strips (B9): one strip per phrase, pop + 4f punch-in to 115%, T4 phrase on the same frame
+      [f(168), f(186), f(204)].forEach((t, i) => {
+        S.gridPop(tl, '#c-s' + (i + 1), t, { punch: 1.15 });
+        T.spreadIn(tl, document.querySelectorAll('#c-t4 .rc-t4__piece')[i], t);
+      });
+
+      // D: L3 with a black text cell
+      S.gridBuild(tl, '#d-grid', f(243), { stepF: 3 });
+
+      // E: L5 gray card collage: tilt -4 / +4, float +/-6 px (2 s a leg), seeded phases; slow push on the whole card
+      S.collage(tl, '#e-card', 9.5, { until: 12.5, seed: 7 });
+
+      // F: L6 (B13): label alone 12.5-13.5 s; T6 types on behind the frame from f408; push the whole stack 100 -> 104%
+      T.giantType(tl, '#f-t6', f(408));
+      S.push(tl, '#f-l6', 12.5, { until: 15.5 });
+
+      // G/H: L7: push 100 -> 118% towards the target across the shot
+      S.spotPush(tl, '#g-l7', 15.5, { until: 16.9 });
+      S.spotPush(tl, '#h-l7', 16.9, { until: 19.5 });
+
+      // J: L11 B6: drain to B&W over 6f on "dull" (f660); the rate lanes slow both halves to 50% over the same 6f
+      S.splitDrain(tl, '#j-split', f(660), { durF: 6 });
+
+      // K: L11 B11: the whole split screen flips 180 deg on Y over 10f with the treatment-blur motion blur
+      S.splitFlip(tl, '#k-split', f(720), { durF: 10 });
+
+      // L: L12 (B3): three cards drop in one at a time, 8f each, ease out; slow parallax drift; T8 name card on top
+      S.cardsDrop(tl, '#l-cards', f(783), { durF: 8 });
+      S.cardsDrift(tl, '#l-cards', 26, { until: 29 });
+      T.nameIn(tl, '#l-t8', f(783));
+
+      tl.set({}, {}, 32);
+      window.__timelines["demo-screens"] = tl;
+    </script>
+  </body>
+</html>

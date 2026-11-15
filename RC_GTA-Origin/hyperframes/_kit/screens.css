@@ -1,0 +1,288 @@
+/* RC_GTA-Origin style kit: SCREENS (L3, L4, L5, L6, L7, L11 incl. the B11 flip, L12, the L10 year tag, the L2 band).
+   Source of truth: Master Edit Plan p.13-15 "Screen types (L1-L12)" + the beat builds (p.19-27). Docs: KIT_screens.md.
+   Uses only base.css variables (palette, fonts, shadow, safe area). No url() in this file.
+
+   Rules kept here:
+   - Wrappers that GSAP moves (cells, plates, props, cards, faces, frames) carry NO CSS transform; the JS sets start
+     transforms with gsap.set / fromTo.
+   - Footage (<video>/<img>) gets no CSS filter: blur / darkening / desaturation on footage are media treatments
+     (npx hyperframes media-treatment), see KIT_screens.md. Filters below sit only on solid overlays or on the L5
+     cut-out's matte (outline + shadow, footage pixels untouched).
+   - Timed elements (.clip) are leaves: videos, images, grounds, borders, overlays. Wrappers of videos stay untimed
+     (HyperFrames lint video_nested_in_timed_element). */
+
+/* ---------- shared ---------- */
+.rc-scr { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }   /* untimed full-frame wrapper */
+.rc-scr__fill {                                                                      /* footage filling its box */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+
+/* ===================================================================================================================
+   L3 Grid build: 3 x 2 cells or 3 vertical strips, 8 px black gutters (between cells; cells touch the frame edges).
+   Cells pop in one at a time (4f, scale 96% -> 100% with a fade). A cell may stay black and hold text.
+   A cell can scale up to full frame (.rc-l3__grow).
+   3 x 2 cell = 634.67 x 536 px; strip = 634.67 x 1080 px (x 0 / 642.67 / 1285.33).
+   =================================================================================================================== */
+.rc-l3 {
+  --rc-l3-gutter: 8px;
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  display: grid; gap: var(--rc-l3-gutter);
+}
+.rc-l3--3x2 { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.rc-l3--strips { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
+.rc-l3__ground {                       /* timed: the black ground = the gutters and any black cell */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background: var(--ink-black);
+}
+.rc-l3__cell { position: relative; overflow: hidden; min-width: 0; min-height: 0; }   /* GSAP: opacity + scale (pop) */
+.rc-l3__media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }    /* GSAP: scale (B9 punch-in) */
+.rc-l3__media > video, .rc-l3__media > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l3__celltext {                     /* a black cell holding text: centre a T-style element inside the cell */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  color: var(--white); text-shadow: var(--text-shadow);
+}
+.rc-l3__grow {                         /* a cell scaling up to full frame: GSAP animates its clip-path */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+}
+.rc-l3__grow-media {                   /* GSAP: x / y / scale (cover-fit kept during the grow) */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+}
+.rc-l3__grow-media > video, .rc-l3__grow-media > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+
+/* ===================================================================================================================
+   L4 Frosted tile grid: 4 x 3 tiles (480 x 360) over footage. Each tile: 40 px blur, 10% white overlay,
+   1 px white border at 20%. Tiles clear one at a time in random (seeded) order, 3f each, synced to words.
+   The 40 px blur is a media treatment on a second copy of the same <video> (effects.blur = 1), laid out at 1/k size
+   and scaled up k (k = --rc-l4-k, set by RCK.screens.frostInit): the treatment's full blur measures sigma 22.8 px per
+   layout px (edge fit), so k = 40 / 22.8 = 1.76 gives 40 px on screen (measured in _demo-screens: 40 px).
+   The copy is shown per tile through a 12-layer mask whose alphas are --rc-l4-a0 .. --rc-l4-a11 (1 = frosted).
+   =================================================================================================================== */
+.rc-l4 { --rc-l4-k: 1.76; position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.rc-l4__plate { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }   /* GSAP: push-in scale */
+.rc-l4__plate > video, .rc-l4__plate > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l4__blurscale {                    /* layout 1/k of the frame; RCK.screens.frostInit scales it by k from 0 0 */
+  position: absolute; left: 0; top: 0;
+  width: calc(1920px / var(--rc-l4-k)); height: calc(1080px / var(--rc-l4-k));
+}
+.rc-l4__blurscale > video, .rc-l4__blurscale > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l4__frost {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  --rc-l4-a0: 1; --rc-l4-a1: 1; --rc-l4-a2: 1; --rc-l4-a3: 1; --rc-l4-a4: 1; --rc-l4-a5: 1;
+  --rc-l4-a6: 1; --rc-l4-a7: 1; --rc-l4-a8: 1; --rc-l4-a9: 1; --rc-l4-a10: 1; --rc-l4-a11: 1;
+  -webkit-mask-image:
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a0)), rgba(0,0,0,var(--rc-l4-a0))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a1)), rgba(0,0,0,var(--rc-l4-a1))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a2)), rgba(0,0,0,var(--rc-l4-a2))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a3)), rgba(0,0,0,var(--rc-l4-a3))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a4)), rgba(0,0,0,var(--rc-l4-a4))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a5)), rgba(0,0,0,var(--rc-l4-a5))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a6)), rgba(0,0,0,var(--rc-l4-a6))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a7)), rgba(0,0,0,var(--rc-l4-a7))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a8)), rgba(0,0,0,var(--rc-l4-a8))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a9)), rgba(0,0,0,var(--rc-l4-a9))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a10)), rgba(0,0,0,var(--rc-l4-a10))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a11)), rgba(0,0,0,var(--rc-l4-a11)));
+  mask-image:
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a0)), rgba(0,0,0,var(--rc-l4-a0))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a1)), rgba(0,0,0,var(--rc-l4-a1))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a2)), rgba(0,0,0,var(--rc-l4-a2))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a3)), rgba(0,0,0,var(--rc-l4-a3))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a4)), rgba(0,0,0,var(--rc-l4-a4))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a5)), rgba(0,0,0,var(--rc-l4-a5))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a6)), rgba(0,0,0,var(--rc-l4-a6))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a7)), rgba(0,0,0,var(--rc-l4-a7))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a8)), rgba(0,0,0,var(--rc-l4-a8))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a9)), rgba(0,0,0,var(--rc-l4-a9))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a10)), rgba(0,0,0,var(--rc-l4-a10))),
+    linear-gradient(rgba(0,0,0,var(--rc-l4-a11)), rgba(0,0,0,var(--rc-l4-a11)));
+  -webkit-mask-size: 480px 360px; mask-size: 480px 360px;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 0 0, 480px 0, 960px 0, 1440px 0, 0 360px, 480px 360px, 960px 360px, 1440px 360px,
+                         0 720px, 480px 720px, 960px 720px, 1440px 720px;
+  mask-position: 0 0, 480px 0, 960px 0, 1440px 0, 0 360px, 480px 360px, 960px 360px, 1440px 360px,
+                 0 720px, 480px 720px, 960px 720px, 1440px 720px;
+}
+.rc-l4__tiles {                        /* timed: the 12 tile overlays (generated by RCK.screens.frostInit if empty) */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  display: grid; grid-template-columns: repeat(4, 480px); grid-template-rows: repeat(3, 360px);
+}
+.rc-l4__tile {                         /* 10% white overlay + 1 px white border at 20%; GSAP: opacity (clear) */
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+}
+
+/* ===================================================================================================================
+   L5 Gray card collage: #E9E9E9 background. A cut-out photo or clip in a frame with 8 px white border and a soft
+   drop shadow (0, 12, 30 px blur, black 25%). Props rotated +/-4 deg float +/-6 px over 2 s.
+   Prop geometry from CSS vars on the prop: --x, --y (top-left of the picture), --w, --h (picture size).
+   =================================================================================================================== */
+.rc-l5__ground {                       /* timed: the gray card (full frame) */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background: var(--card-gray);
+}
+.rc-l5__prop {                         /* untimed; GSAP: rotation (set) + y float */
+  position: absolute;
+  left: var(--x, 432px); top: var(--y, 243px); width: var(--w, 1056px); height: var(--h, 594px);
+}
+.rc-l5__frame {                        /* timed: 8 px white border + soft drop shadow, behind the picture */
+  position: absolute; left: -8px; top: -8px; width: calc(100% + 16px); height: calc(100% + 16px);
+  background: var(--white);
+  box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.25);
+}
+.rc-l5__media {                        /* timed: the clip inside the frame */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l5__cutout {                       /* untimed matte wrapper for a background-removed (alpha) clip:
+                                          8 px white outline around the silhouette + the same soft shadow.
+                                          The SVG filter (#rcs-l5-cutout) is injected by RCK.screens.cutoutInit. */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  filter: url(#rcs-l5-cutout);
+}
+.rc-l5__cutout--no-outline { filter: url(#rcs-l5-cutout-shadow); }
+.rc-l5__cutout > video, .rc-l5__cutout > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: contain; object-position: var(--rc-pos, 50% 100%);
+}
+
+/* ===================================================================================================================
+   L6 Framed clip: clip at 62% scale with a 2 px white border and a 30 px warm outer glow (#FFF6E0 at 40%), over a
+   50 px blurred, 40% darker copy of the same clip. Small label under it in Instrument Serif Italic 32 px.
+   16:9 frame = 1190.4 x 669.6 px centred (x 364.8, y 205.2); 4:3 frame (.rc-l6--4x3) = 892.8 x 669.6 (x 513.6).
+   Back copy: media treatment {effects.blur 1, adjust.exposure -0.737} at layout 1/k, scaled k (--rc-l6-k 2.2):
+   sigma 22.8 x 2.2 = 50 px; 2^-0.737 = 0.60 = 40% darker (measured: 255 -> 153). Layer order (DOM order inside .rc-l6):
+   .rc-l6__bg (back) < the T6 giant type < .rc-l6__frame.
+   =================================================================================================================== */
+.rc-l6 { --rc-l6-k: 2.2; --rc-l6-w: 1190.4px; --rc-l6-h: 669.6px;
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.rc-l6--4x3 { --rc-l6-w: 892.8px; }
+.rc-l6__bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.rc-l6__blurscale {                    /* layout 1/k; RCK.screens.framedInit scales it by k from 0 0 */
+  position: absolute; left: 0; top: 0;
+  width: calc(1920px / var(--rc-l6-k)); height: calc(1080px / var(--rc-l6-k));
+}
+.rc-l6__blurscale > video, .rc-l6__blurscale > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l6__frame {                        /* untimed; centred 62% box (GSAP may push it) */
+  position: absolute;
+  left: calc((1920px - var(--rc-l6-w)) / 2); top: calc((1080px - var(--rc-l6-h)) / 2);
+  width: var(--rc-l6-w); height: var(--rc-l6-h);
+}
+.rc-l6__border {                       /* timed: 2 px white border outside the picture + 30 px warm outer glow at 40% */
+  position: absolute; left: -2px; top: -2px; width: calc(100% + 4px); height: calc(100% + 4px);
+  box-sizing: border-box; border: 2px solid var(--white);
+  box-shadow: 0 0 30px 0 rgba(255, 246, 224, 0.40);
+}
+.rc-l6__media {                        /* timed: the framed clip (62% scale) */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l6__label {                        /* timed: small label under the frame (text on footage: white + soft shadow) */
+  position: absolute; left: -200px; width: calc(100% + 400px); top: calc(100% + 2px + 22px);
+  font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 32px; line-height: 40px;
+  color: var(--white); text-shadow: var(--text-shadow); text-align: center; white-space: nowrap;
+}
+
+/* ===================================================================================================================
+   L7 Spotlight: a document or screen recording, dimmed to 35% except a rounded spotlight box (20 px feather) on the
+   target. Push in 100% -> 118% towards the target across the beat.
+   Dim = a solid #0A0A0A overlay at 65% (35% of the picture shows through) with a feathered rounded hole; no filter on
+   the footage. The hole is an SVG mask built by RCK.screens.spotInit from data-hole / data-radius / data-feather.
+   =================================================================================================================== */
+.rc-l7 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }   /* untimed; GSAP: push (scale) */
+.rc-l7__media {                        /* timed: the document still (<img>) or screen recording (<video>) */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+.rc-l7__dim { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }   /* timed */
+.rc-l7__dim > svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+
+/* ===================================================================================================================
+   L11 Split screen: two 958 px halves with a 4 px black divider (x 958-962). B11: the whole split screen flips 180 deg
+   on the Y axis over 10f with motion blur (front face 0 -> 180, back face -180 -> 0, backface hidden).
+   Perspective 2666.67 px = After Effects' default 50 mm camera for a 1920 px wide comp.
+   =================================================================================================================== */
+.rc-l11 {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  perspective: 2666.67px; perspective-origin: 960px 540px;
+}
+.rc-l11__ground {                      /* timed: ink black behind the halves = the 4 px divider (and the flip's gaps) */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background: var(--ink-black);
+}
+.rc-l11__face {                        /* untimed; GSAP: rotationY */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.rc-l11__half { position: absolute; top: 0; width: 958px; height: 1080px; overflow: hidden; }
+.rc-l11__half--left { left: 0; }
+.rc-l11__half--right { left: 962px; }
+.rc-l11__half > video, .rc-l11__half > img {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+
+/* ===================================================================================================================
+   L12 Stacked cards: 3-4 short video clips as cards with 12 px white borders, rotated -6, +3 and -2 deg, dropping in
+   one at a time (8f each, ease out) with a slow parallax drift. Card geometry from CSS vars on the card:
+   --x, --y (top-left of the picture), --w, --h (picture size, 4:3 by default). Defaults = a centred stack.
+   =================================================================================================================== */
+.rc-l12 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.rc-l12__ground {                      /* timed (optional): the gray card behind the stack (B3: history = gray) */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background: var(--card-gray);
+}
+.rc-l12__card {                        /* untimed; GSAP: parallax drift (x / y). data-card="1..4" picks a default spot */
+  position: absolute;
+  left: var(--x, 640px); top: var(--y, 300px); width: var(--w, 640px); height: var(--h, 480px);
+}
+/* default pile (kit choice, not in the plan): 640 x 480 (4:3) pictures, the last card on top in the middle so a
+   centred T8 name card sits on footage. Override --x / --y / --w / --h inline per beat. */
+.rc-l12__card[data-card="1"] { --x: 400px;  --y: 210px; }
+.rc-l12__card[data-card="2"] { --x: 880px;  --y: 250px; }
+.rc-l12__card[data-card="3"] { --x: 640px;  --y: 360px; }
+.rc-l12__card[data-card="4"] { --x: 1000px; --y: 420px; }
+.rc-l12__drop { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }   /* GSAP: rotation + drop y */
+.rc-l12__border {                      /* timed: 12 px white border, behind the picture */
+  position: absolute; left: -12px; top: -12px; width: calc(100% + 24px); height: calc(100% + 24px);
+  background: var(--white);
+}
+.rc-l12__media {                       /* timed: the clip */
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--rc-pos, 50% 50%);
+}
+
+/* ===================================================================================================================
+   L10 year tag (HF overlay over the Tesseract L10 montage burst, B14): Inter Medium 22 px, white, soft shadow,
+   top-left inside the title-safe area (x 96, y 54). One timed element per tag, hard cut with its clip.
+   =================================================================================================================== */
+.rc-l10-tag {
+  position: absolute; left: var(--safe-x); top: var(--safe-y);
+  margin: 0; font-family: var(--sans); font-weight: var(--w-caption); font-size: 22px; line-height: 28px;
+  color: var(--white); text-shadow: var(--text-shadow); white-space: nowrap;
+}
+
+/* ===================================================================================================================
+   L2 band (bars drawn in Tesseract): black bars 138 px top and bottom -> picture band y 138..942 (1920 x 804, 2.39:1),
+   bars slide in over 8f. .rc-l2-band is an untimed positioning box for HF overlays that must sit inside the band;
+   .rc-l2-safe adds the 96 px side margins (text inside the band and inside title-safe).
+   =================================================================================================================== */
+.rc-l2-band { position: absolute; left: 0; top: 138px; width: 1920px; height: 804px; }
+.rc-l2-safe { position: absolute; left: var(--safe-x); top: 138px; width: calc(1920px - 2 * var(--safe-x)); height: 804px; }

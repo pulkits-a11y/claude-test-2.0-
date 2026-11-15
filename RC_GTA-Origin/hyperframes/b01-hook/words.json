@@ -1,0 +1,116 @@
+{
+ "beat": "B1",
+ "composition": "b01-hook",
+ "fps": 30,
+ "handle_frames": 6,
+ "beat_frames": 143,
+ "composition_frames": 155,
+ "edit_start_s": 0.0,
+ "voiceover": "Why does every GTA, even GTA 6, have you running from the cops?",
+ "words": [
+  {
+   "text": "Why",
+   "comp_t": 0.235,
+   "comp_end_t": 0.506,
+   "beat_t": 0.035,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "does",
+   "comp_t": 0.506,
+   "comp_end_t": 0.907,
+   "beat_t": 0.306,
+   "start_frame_local": 15,
+   "punct": ""
+  },
+  {
+   "text": "every",
+   "comp_t": 0.907,
+   "comp_end_t": 1.399,
+   "beat_t": 0.707,
+   "start_frame_local": 27,
+   "punct": ""
+  },
+  {
+   "text": "GTA,",
+   "comp_t": 1.399,
+   "comp_end_t": 1.73,
+   "beat_t": 1.199,
+   "start_frame_local": 42,
+   "punct": ","
+  },
+  {
+   "text": "even",
+   "comp_t": 1.935,
+   "comp_end_t": 2.428,
+   "beat_t": 1.735,
+   "start_frame_local": 58,
+   "punct": ""
+  },
+  {
+   "text": "GTA",
+   "comp_t": 2.428,
+   "comp_end_t": 2.825,
+   "beat_t": 2.228,
+   "start_frame_local": 73,
+   "punct": ""
+  },
+  {
+   "text": "6,",
+   "comp_t": 2.825,
+   "comp_end_t": 3.25,
+   "beat_t": 2.625,
+   "start_frame_local": 85,
+   "punct": ","
+  },
+  {
+   "text": "have",
+   "comp_t": 3.279,
+   "comp_end_t": 3.463,
+   "beat_t": 3.079,
+   "start_frame_local": 98,
+   "punct": ""
+  },
+  {
+   "text": "you",
+   "comp_t": 3.473,
+   "comp_end_t": 3.627,
+   "beat_t": 3.273,
+   "start_frame_local": 104,
+   "punct": ""
+  },
+  {
+   "text": "running",
+   "comp_t": 3.724,
+   "comp_end_t": 4.033,
+   "beat_t": 3.524,
+   "start_frame_local": 112,
+   "punct": ""
+  },
+  {
+   "text": "from",
+   "comp_t": 4.033,
+   "comp_end_t": 4.256,
+   "beat_t": 3.833,
+   "start_frame_local": 121,
+   "punct": ""
+  },
+  {
+   "text": "the",
+   "comp_t": 4.256,
+   "comp_end_t": 4.42,
+   "beat_t": 4.056,
+   "start_frame_local": 128,
+   "punct": ""
+  },
+  {
+   "text": "cops?",
+   "comp_t": 4.42,
+   "comp_end_t": 4.72,
+   "beat_t": 4.22,
+   "start_frame_local": 133,
+   "punct": "?"
+  }
+ ]
+}

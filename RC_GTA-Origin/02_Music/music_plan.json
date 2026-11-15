@@ -1,0 +1,116 @@
+{
+ "track": "02_Music/Alexandre Brovelli - Black Vertigo.mp3",
+ "analysis": {
+  "bpm": 109.96,
+  "beat_s": 0.5457,
+  "bar_s": 2.1828,
+  "sections_track_s": {
+   "full_beat_until": 148.46,
+   "breakdown": [
+    148.46,
+    165.92
+   ],
+   "near_silence": [
+    165.92,
+    170.28
+   ],
+   "build": [
+    170.28,
+    183.38
+   ],
+   "drop_downbeat": 183.38
+  },
+  "plan_values": {
+   "breakdown": "2:28.5",
+   "near_silence": "2:46.0",
+   "build": "2:50",
+   "drop": "3:03.0"
+  },
+  "note": "Measured transients: the drop's first downbeat is at 3:03.38 (the plan's 3:03.0 came from 0.5 s loudness bins); breakdown = 8 bars, near-silence = 2 bars, build = 6 bars, all on the 109.96 BPM grid.",
+  "loudness_lufs_short_term_median": {
+   "full_beat": -7.8,
+   "breakdown": -15.7,
+   "near_silence": -22.9,
+   "build": -18.6,
+   "post_drop": -9.3
+  }
+ },
+ "anchor": {
+  "cue": "MU5",
+  "track_s": 183.38,
+  "edit_s": 43.7,
+  "word": "fun. (B10) onset 43.700 s = frame 1311"
+ },
+ "offset_s": 139.68,
+ "track_time_at_edit_0": "2:19.68 (plan estimate 2:22.4; the processed voiceover is longer before 'fun')",
+ "checks": {
+  "MU3_vs_dull": {
+   "mu3_edit_s": 26.24,
+   "dull_onset_s": 25.885,
+   "delta_s": 0.355,
+   "rule": "within 1 s, on or just after 'dull'",
+   "pass": true
+  },
+  "MU2_vs_broke": {
+   "mu2_edit_s": 8.78,
+   "broke_word_s": [
+    8.144,
+    8.915
+   ],
+   "delta_from_onset_s": 0.636,
+   "rule": "within half a second of 'broke'",
+   "pass": false,
+   "note": "Lands inside the spoken word 'broke' but 0.64 s after its onset. The only allowed fix is a whole-bar edit inside the breakdown; a bar is 2.18 s, which would move MU2 to 6.60 s (1.54 s early). Left unedited and flagged (CONFLICTS.md C11)."
+  },
+  "bar_edits": "none (MU3 passes, so the plan's procedure needs no breakdown edit; the build 2:50-3:03 is untouched)"
+ },
+ "cues": {
+  "MU1": {
+   "edit_s": 0.0,
+   "track_s": 139.68,
+   "what": "Start at full energy, no fade-in."
+  },
+  "MU2": {
+   "edit_s": 8.78,
+   "track_s": 148.46,
+   "what": "First breakdown begins (inside 'broke')."
+  },
+  "MU3": {
+   "edit_s": 26.24,
+   "track_s": 165.92,
+   "what": "Near-silent section starts just after 'dull'."
+  },
+  "MU4": {
+   "edit_s": "B8 first black frame (from hyperframes/b08-break/cues.json)",
+   "what": "Hard-mute 15f from the first black frame, then un-mute in place (track keeps running)."
+  },
+  "MU5": {
+   "edit_s": 43.7,
+   "track_s": 183.38,
+   "what": "The drop on 'fun'. Lift the music +3 dB for 2 s after it."
+  },
+  "MU6": {
+   "edit_s": "65.933 ('Don't believe me?') until the B15 label lands (b15 cues.json)",
+   "what": "Low-pass ~800 Hz and -6 dB, then open it again."
+  },
+  "MU7": {
+   "edit_s": "B16 rewind window (b16 cues.json)",
+   "what": "Cut the music under the ~1 s rewind, then resume 6 dB lower under the glow line (in place)."
+  },
+  "MU8": {
+   "edit_s": 80.868,
+   "track_s": 220.548,
+   "what": "Hard stop at the end of 'now?'. No music after; S18/S19 carry the logo."
+  }
+ },
+ "levels": {
+  "base_gain_db": -8.0,
+  "duck_db": -7.0,
+  "attack_ms": 50,
+  "release_ms": 300,
+  "targets": "Under the voice about -22 LUFS short-term (14-18 dB below the voice); where there is no voice (B8 hold, B13 title hold, B14 burst gaps, logo tail) up to about -16 LUFS.",
+  "how": "Tesseract Audio layer gain = base_gain; a volume envelope (layerTimeJsCode) ducks 7 dB under every voice phrase with 50 ms attack / 300 ms release, and carries MU4/MU5/MU6/MU7/MU8. MU6's low-pass is a second, pre-filtered (lowpass 800 Hz) copy of the same excerpt cross-faded in by envelope."
+ },
+ "backup": "ES Conundrums plan (plan p.34) only if Black Vertigo is not licensed.",
+ "title_hold": "B13 title hold (57.5-59.67 s) has no voice: let the music come up to about -16 LUFS there (plan: levels)."
+}

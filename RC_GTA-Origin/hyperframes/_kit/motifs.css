@@ -1,0 +1,293 @@
+/* RC_GTA-Origin style kit: MOTIFS
+   M1 wanted stars, M2 "you" arrow, M3 calendar grid (= L9 calendar counter), M4 bug chip,
+   L8 CRT screen insert, the Windows 95-style error box (B2), the CANCELLED stamp (B7), camera shake.
+   Source of truth: Master Edit Plan p.14 (L8), p.15 (L9), p.17-18 (M1-M4), p.20 (B2), p.21 (B4),
+   p.22 (B5), p.23 (B7), p.24-25 (B11, B12), p.26-27 (B14, B16, B17). Docs + markup: KIT_motifs.md.
+   Needs base.css (palette + font variables). Every url() is relative to this kit folder.
+   No CSS transform is set here on anything motifs.js animates with GSAP. */
+
+/* ------------------------------------------------------------------ M1 wanted stars */
+/* White five-point star, thin dark outline (4.5% of the star size, outside the fill),
+   styled after the GTA wanted level. Size and position are set by RCK.motifs.starsInit. */
+.m1-stars {
+  --m1-size: 40px;
+  --m1-gap: 8px;
+  position: absolute;
+  display: flex;
+  gap: var(--m1-gap);
+  pointer-events: none;
+}
+.m1-star {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--m1-size);
+  height: var(--m1-size);
+  overflow: visible;
+}
+.m1-star path {
+  fill: var(--white);
+  stroke: var(--ink-black);
+  stroke-width: 9; /* viewBox units (100 = star size); paint-order puts half of it outside the fill */
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+
+/* ------------------------------------------------------------------ M2 "you" arrow */
+/* #FFE14D, 6 px stroke, hand-drawn shaft + head paths (RCK.motifs.arrowInit writes them). */
+.m2-arrow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+.m2-arrow svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: visible;
+}
+.m2-arrow .m2-path {
+  fill: none;
+  stroke: var(--highlighter);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.m2-arrow .m2-label {
+  position: absolute;
+  font-family: var(--sans);
+  font-weight: 600; /* Inter SemiBold */
+  font-size: 36px;
+  line-height: 1;
+  color: var(--highlighter);
+  text-shadow: var(--text-shadow); /* text on footage */
+  white-space: nowrap;
+  transform: translate(-50%, -50%); /* label is centred on its point; GSAP only sets its opacity */
+}
+
+/* ------------------------------------------------------------------ M3 calendar grid = L9 calendar counter */
+/* 64 px squares, 8 px gaps, 6 columns, on a gray card (put the calendar on a full-frame .rc-card).
+   Empty slot = 2 px inset outline in card ink at 35% (a #111111 / #E9E9E9 mix, no new colour).
+   Filled = card ink #111111. Overrun (month 19+) = siren red #E3262E. */
+.m3-cal {
+  --m3-sq: 64px;
+  --m3-gap: 8px;
+  --m3-cols: 6;
+  --m3-empty: rgba(17, 17, 17, 0.35);
+  position: absolute;
+  pointer-events: none;
+}
+.m3-grid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--m3-cols), var(--m3-sq));
+  grid-auto-rows: var(--m3-sq);
+  gap: var(--m3-gap);
+}
+.m3-sq {
+  position: relative;
+  width: var(--m3-sq);
+  height: var(--m3-sq);
+  box-shadow: inset 0 0 0 2px var(--m3-empty);
+}
+.m3-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--card-ink);
+}
+.m3-sq.m3-over .m3-fill {
+  background: var(--siren-red);
+}
+.m3-counter {
+  position: absolute;
+  display: flex;
+  font-family: var(--sans);
+  font-weight: 700; /* Inter Bold */
+  font-size: 120px;
+  line-height: 1;
+  color: var(--card-ink);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  white-space: nowrap;
+}
+.m3-col {
+  display: block;
+  height: 1em;
+  overflow: hidden;
+}
+.m3-strip {
+  display: flex;
+  flex-direction: column;
+}
+.m3-strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------------ M4 bug chip */
+/* The T7 chip (72 x 56 px, 12 px radius) holding the 8-bit beetle, white on a dark chip. */
+.m4-chip {
+  position: relative;
+  display: inline-block;
+  width: 72px;
+  height: 56px;
+  border-radius: 12px;
+  background: var(--card-ink);
+  flex: 0 0 auto;
+}
+/* zero-specificity default, so the type kit's T7 chip alignment (.rc-t7__chip) wins when combined */
+:where(.m4-chip) {
+  vertical-align: middle;
+}
+.m4-chip .m4-bug {
+  position: absolute;
+  left: 14px;   /* (72 - 44) / 2: whole pixels keep the sprite crisp */
+  top: 8px;     /* (56 - 40) / 2 */
+  display: block;
+  width: 44px;  /* 11 x 10 pixel sprite at 4 px per pixel */
+  height: 40px;
+  shape-rendering: crispEdges;
+}
+.m4-chip .m4-bug path {
+  fill: var(--white);
+}
+
+/* ------------------------------------------------------------------ L8 CRT screen insert */
+/* The picture inside the R3.9 monitor plate. RCK.motifs.crtFit sizes and corner-pins it.
+   Bulge, scanlines and colour fringing are a media treatment on the <video> (data-color-grading),
+   the brightness flicker animates --hf-color-grading-exposure (RCK.motifs.crtFlicker). */
+.l8-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  /* No background: the wrapper stays untimed (HyperFrames: time the <video>, never its wrapper),
+     so it must be invisible whenever its video is not showing. The bulge's own black edge comes
+     from the treatment on the video. */
+}
+.l8-screen .l8-picture {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--l8-object-position, 50% 50%);
+}
+
+/* ------------------------------------------------------------------ Windows 95-style error box (B2) */
+/* Stylised recreation, not a screenshot: palette grey face (#E9E9E9), white / card-ink bevel lines
+   (the mid-shadow line is card ink at 45% over the face), card-ink title bar with white bold text,
+   a plain pixel "x" close box. No icon, no buttons, no file path, no date.
+   Font: the B2 build says "system font" -> the generic `sans-serif` keyword = the render machine's
+   own UI sans (Liberation Sans, Arial-metric, in this container). Named faces (Tahoma, Arial,
+   Helvetica, Verdana) are remapped to Inter by the HyperFrames compiler and "MS Sans Serif" fails
+   lint, so they are deliberately not listed. Conflict note in KIT_motifs.md.
+   --m-eb-u = one Windows 95 pixel (2 px: crisp bevels); --m-eb-fs = text size (28 px = the phone
+   type floor; Win95 proportions at 2x would be 22 px). Hard pop: the clip's data-start, no tween. */
+.m-errbox {
+  --m-eb-u: 2px;
+  --m-eb-fs: 28px;
+  --m-eb-w: 640px;
+  --m-eb-font: sans-serif;
+  position: absolute;
+  width: var(--m-eb-w);
+  pointer-events: none;
+}
+.m-errbox__win {
+  position: relative;
+  background: var(--card-gray);
+  padding: calc(var(--m-eb-u) * 3);
+  box-shadow:
+    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--card-ink),
+    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--card-gray),
+    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 rgba(17, 17, 17, 0.45),
+    inset calc(var(--m-eb-u) * 2) calc(var(--m-eb-u) * 2) 0 0 var(--white);
+  font-family: var(--m-eb-font);
+  color: var(--card-ink);
+}
+.m-errbox__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--m-eb-u) * 22);
+  padding: 0 calc(var(--m-eb-u) * 3) 0 calc(var(--m-eb-u) * 4);
+  background: var(--card-ink);
+  color: var(--white);
+  font-weight: 700;
+  font-size: var(--m-eb-fs);
+  line-height: 1;
+  white-space: nowrap;
+}
+.m-errbox__close {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--m-eb-u) * 18);
+  height: calc(var(--m-eb-u) * 16);
+  background: var(--card-gray);
+  box-shadow:
+    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--card-ink),
+    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--white),
+    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 rgba(17, 17, 17, 0.45);
+}
+.m-errbox__close svg {
+  position: absolute;
+  left: calc(var(--m-eb-u) * 5);
+  top: calc(var(--m-eb-u) * 4.5);
+  width: calc(var(--m-eb-u) * 8);
+  height: calc(var(--m-eb-u) * 7);
+  shape-rendering: crispEdges;
+}
+.m-errbox__close svg path {
+  fill: var(--card-ink);
+}
+.m-errbox__body {
+  padding: calc(var(--m-eb-u) * 12) calc(var(--m-eb-u) * 12) calc(var(--m-eb-u) * 14);
+  font-size: var(--m-eb-fs);
+  line-height: 1.35;
+  font-weight: 400;
+}
+.m-errbox__msg {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ CANCELLED stamp (B7) */
+/* Inter Black 120 px, #E3262E, rough-edged mask (SVG filter #rcm-stamp-rough, fixed seeds),
+   rubber-stamp border frame (drop it with .m-stamp--plain). The anchor (.m-stamp) sits on the
+   stamp centre; GSAP rotates and scales .m-stamp__slam. */
+.m-stamp {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.m-stamp__slam {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.m-stamp__ink {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 900; /* Inter Black */
+  font-size: 120px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--siren-red);
+  white-space: nowrap;
+  border: 10px solid var(--siren-red);
+  border-radius: 16px;
+  padding: 4px 28px;
+  filter: url(#rcm-stamp-rough);
+}
+.m-stamp--plain .m-stamp__ink {
+  border: 0;
+  padding: 0;
+}

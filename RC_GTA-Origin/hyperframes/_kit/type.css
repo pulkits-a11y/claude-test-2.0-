@@ -1,0 +1,415 @@
+/* RC_GTA-Origin style kit: TYPE (T1-T10).
+   Source of truth: Master Edit Plan p.9-13 ("Style kit" + "Typography styles (T1-T10)") and the beat builds.
+   Uses only base.css variables (fonts, palette, --text-shadow, safe area). Docs: KIT_type.md.
+
+   Conventions
+   - Every T element below is the timed element (class="clip rc-tN", data-start, data-duration) written by the beat.
+     GSAP only ever animates its CHILDREN (the .clip itself is never transformed).
+   - No CSS transform on anything GSAP transforms (start states are set by the type.js helpers).
+   - --rc-y = vertical centre of the text line (px on the 1920 x 1080 canvas). Title-safe: 96 px left/right, 54 px top/bottom.
+   - Colour: white + soft shadow by default (text on footage / on black). Add class "rc-on-card" (base.css) on the
+     element for gray cards: card ink #111111, no shadow. */
+
+/* ---------- shared ---------- */
+.rc-t1, .rc-t2, .rc-t4, .rc-t6, .rc-t7, .rc-t8, .rc-t10 {
+  color: var(--white);
+  text-shadow: var(--text-shadow);
+}
+.rc-t1.rc-on-card, .rc-t2.rc-on-card, .rc-t4.rc-on-card, .rc-t7.rc-on-card, .rc-t8.rc-on-card,
+.rc-on-card .rc-t1, .rc-on-card .rc-t2, .rc-on-card .rc-t4, .rc-on-card .rc-t7, .rc-on-card .rc-t8 {
+  color: var(--card-ink);
+  text-shadow: none;
+}
+
+/* ---------- T1 Running caption: Inter Medium 46 px, white, soft shadow, centred at x 960, y 620 ---------- */
+.rc-t1 {
+  position: absolute;
+  left: var(--safe-x);
+  width: calc(1920px - 2 * var(--safe-x));
+  top: calc(var(--rc-y, 620px) - 28px);   /* 56 px line box centred on --rc-y; Inter caps centre lands on --rc-y */
+  height: 56px;
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: var(--w-caption);
+  font-size: 46px;
+  line-height: 56px;
+  text-align: center;
+  white-space: nowrap;
+}
+.rc-t1--low { --rc-y: 860px; }            /* "drop to y 860 if a face is in the centre" */
+
+/* ---------- T2 Punch pair: lead-in Inter SemiBold 42 + keyword Instrument Serif Italic 140, baselines aligned, 14 px gap ---------- */
+.rc-t2 {
+  position: absolute;
+  left: var(--safe-x);
+  width: calc(1920px - 2 * var(--safe-x));
+  top: calc(var(--rc-y, 540px) - 70px);   /* 140 px keyword line box centred on --rc-y; shared baseline = --rc-y + 47.6 px */
+  height: 140px;
+}
+.rc-t2__row {
+  display: flex;
+  justify-content: center;                /* centred as a group */
+  align-items: baseline;                  /* baselines aligned */
+  column-gap: 14px;                       /* 14 px gap */
+  height: 140px;
+  white-space: nowrap;
+}
+.rc-t2__lead {
+  font-family: var(--sans);
+  font-weight: var(--w-leadin);
+  font-size: 42px;
+  line-height: 42px;
+}
+.rc-t2__key {
+  display: inline-block;                  /* scaled by GSAP (108% -> 100%) */
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 140px;
+}
+
+/* ---------- T3 Year card: full-frame #E9E9E9; small "In" (Instrument Serif Italic 64, #111111) above the left edge
+   of the year (Inter Bold 220, #111111, tracking -2%). Digits sit in masks and slide up 40 px. ---------- */
+.rc-t3 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  box-sizing: border-box;
+  /* year caps centred on --rc-y: year line top = --rc-y - 110 px; "In" line (64 px) sits directly above it */
+  padding-top: calc(var(--rc-y, 540px) - 110px - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--card-gray);
+  color: var(--card-ink);
+  text-shadow: none;
+}
+.rc-t3__block { display: block; }         /* shrink-wraps the year, so "In" sits on the year's left edge */
+.rc-t3__in {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 64px;
+  height: 64px;
+  white-space: nowrap;
+}
+.rc-t3__year {
+  font-family: var(--sans);
+  font-weight: var(--w-year);
+  font-size: 220px;
+  line-height: 220px;
+  height: 220px;
+  letter-spacing: -0.02em;                /* tracking -2% */
+  margin-right: 0.02em;                   /* cancels the trailing tracking so the year's ink is centred */
+  white-space: nowrap;
+}
+.rc-t3__mask {                            /* built by RCK.type.yearCard: one mask per digit */
+  display: inline-block;
+  vertical-align: top;
+  height: 200px;                          /* clips 10 px below the baseline (baseline at 190 px in the 220 px line) */
+  overflow: hidden;
+  padding: 0 24px;                        /* side slack so tracking never clips ink; cancelled by the margins */
+  margin: 0 -24px;
+}
+.rc-t3__digit { display: inline-block; }  /* GSAP y: 40 -> 0 */
+
+/* ---------- T4 Spread words: Inter Medium 44 px, white, pieces placed in empty space around the subject ---------- */
+.rc-t4 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+.rc-t4__piece {
+  position: absolute;
+  top: calc(var(--rc-y, 540px) - 28px);   /* 56 px line box centred on --rc-y */
+  font-family: var(--sans);
+  font-weight: var(--w-caption);
+  font-size: 44px;
+  line-height: 56px;
+  white-space: nowrap;
+}
+/* placement presets inside title-safe (override with inline left/right/--rc-y per shot) */
+.rc-t4--left   { left: var(--safe-x); }
+.rc-t4--right  { right: var(--safe-x); text-align: right; }
+.rc-t4--centre { left: var(--safe-x); right: var(--safe-x); text-align: center; }
+.rc-t4--top    { --rc-y: 160px; }
+.rc-t4--bottom { --rc-y: 920px; }
+/* B9: one phrase per L3 strip (3 vertical strips, 8 px gutters: 634.67 px each) */
+.rc-t4--strip1 { left: 0;        width: 634.67px; text-align: center; }
+.rc-t4--strip2 { left: 642.67px; width: 634.67px; text-align: center; }
+.rc-t4--strip3 { left: 1285.33px; width: 634.67px; text-align: center; }
+
+/* ---------- T5 Glow line: Instrument Serif Italic 84 px, warm glow #FFF6E0, on black;
+   glow = two blurred copies (24 px at 60%, 60 px at 30%); a light leak drifts behind ---------- */
+.rc-t5 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--ink-black);           /* "on black" */
+  color: var(--warm-glow);
+  text-shadow: none;
+}
+.rc-t5--clear { background: transparent; }
+.rc-t5__line {
+  position: absolute;
+  left: var(--safe-x);
+  width: calc(1920px - 2 * var(--safe-x));
+  top: calc(var(--rc-y, 540px) - 50px);   /* 100 px line box centred on --rc-y */
+  display: grid;
+  justify-items: center;
+  --rc-t5-track: 0em;                     /* tracking, tweened +2% -> 0 by RCK.type.glowLine */
+  --rc-cap: 0.72;                         /* Instrument Serif cap height (for the inline chip) */
+}
+.rc-t5__line > * { grid-area: 1 / 1; }
+.rc-t5__text, .rc-t5__glow {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 84px;
+  line-height: 100px;
+  letter-spacing: var(--rc-t5-track);
+  white-space: nowrap;
+  color: var(--warm-glow);
+}
+.rc-t5__glow { pointer-events: none; }
+.rc-t5__glow--near { filter: blur(24px); opacity: 0.6; }
+.rc-t5__glow--wide { filter: blur(60px); opacity: 0.3; }
+/* Light leak: adapted from registry block "organic-light-leak-overlay" (3 drifting gradient layers, screen blend),
+   retinted from its amber/red/gold to the palette's warm glow #FFF6E0 (no other colours allowed). */
+.rc-t5__leak {
+  position: absolute;
+  inset: -16%;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.rc-t5__leak > i { position: absolute; inset: -20%; display: block; }
+.rc-t5__leak-a {
+  background:
+    radial-gradient(ellipse 52% 110% at 10% 58%, color-mix(in srgb, var(--warm-glow) 92%, transparent), transparent 45%),
+    radial-gradient(ellipse 72% 120% at 24% 54%, color-mix(in srgb, var(--warm-glow) 78%, transparent), transparent 66%);
+  filter: blur(30px);
+}
+.rc-t5__leak-b {
+  background: radial-gradient(ellipse 58% 105% at 78% 34%,
+    color-mix(in srgb, var(--warm-glow) 72%, transparent),
+    color-mix(in srgb, var(--warm-glow) 28%, transparent) 48%, transparent 76%);
+  filter: blur(43px);
+}
+.rc-t5__leak-c {
+  background: linear-gradient(104deg, transparent 24%,
+    color-mix(in srgb, var(--warm-glow) 30%, transparent) 40%,
+    color-mix(in srgb, var(--warm-glow) 72%, transparent) 51%,
+    color-mix(in srgb, var(--warm-glow) 22%, transparent) 62%, transparent 78%);
+  filter: blur(22px);
+}
+
+/* ---------- T6 Giant type: Inter Black 300-480 px, one word per line, white, tracking -4% ---------- */
+.rc-t6 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  box-sizing: border-box;
+  padding: var(--safe-y) var(--safe-x);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  --rc-t6-size: 400px;                    /* plan range 300-480 px; 400 fits GRAND/THEFT/AUTO inside title-safe */
+  --rc-t6-pitch: 0.8;                     /* line pitch in em for stacked caps */
+}
+.rc-t6__line {
+  font-family: var(--sans);
+  font-weight: var(--w-giant);
+  font-size: var(--rc-t6-size);
+  line-height: var(--rc-t6-pitch);
+  letter-spacing: -0.04em;                /* tracking -4% */
+  margin-right: 0.04em;                   /* cancels the trailing tracking so each word's ink is centred */
+  white-space: nowrap;
+}
+.rc-t6__ch { opacity: 0; }                /* letters typed on by RCK.type.giantType (no fades) */
+
+/* ---------- T7 Inline chip: Inter Medium 46 px sentence + 72 x 56 px chip, 12 px radius ---------- */
+.rc-t7 {
+  position: absolute;
+  left: var(--safe-x);
+  width: calc(1920px - 2 * var(--safe-x));
+  top: calc(var(--rc-y, 620px) - 28px);   /* same line as T1 by default */
+  height: 56px;
+  font-family: var(--sans);
+  font-weight: var(--w-caption);
+  font-size: 46px;
+  line-height: 56px;
+  text-align: center;
+  white-space: nowrap;
+  --rc-cap: 0.7275;                       /* Inter cap height */
+}
+.rc-t7--low { --rc-y: 860px; }
+.rc-t7__chip, .rc-t7__gap {
+  display: inline-block;
+  width: 72px;
+  height: 56px;
+  vertical-align: calc(var(--rc-cap, 0.7275) * 0.5em - 28px);   /* chip centre on the cap-height centre */
+}
+.rc-t7__chip {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--rc-t7-chip-bg, var(--card-ink));           /* M4 "white on a dark chip" = .m4-chip's card ink */
+  text-shadow: none;
+}
+/* a photo / clip fills the chip; the M4 beetle (img.m4-bug, svg/motifs-bug.svg) is centred at 44 x 40 by motifs.css */
+.rc-t7__chip > img:not(.m4-bug), .rc-t7__chip > video, .rc-t7__chip > svg:not(.m4-bug) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- T8 Name / quote card ---------- */
+.rc-t8 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  box-sizing: border-box;
+  padding: var(--safe-y) var(--safe-x);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rc-t8--right { justify-content: flex-start; padding-left: 1008px; }   /* B6: quote typing on at the right */
+.rc-t8--left  { justify-content: flex-start; }
+.rc-t8__block { display: flex; flex-direction: column; align-items: center; }
+.rc-t8--right .rc-t8__block, .rc-t8--left .rc-t8__block { align-items: flex-start; }
+.rc-t8__quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 110px;
+  line-height: 1.1;
+  max-width: 100%;
+}
+.rc-t8__quote + .rc-t8__name { margin-top: 24px; }
+.rc-t8__name {
+  position: relative;
+  font-family: var(--serif);
+  font-style: normal;                     /* T library: "Name in Instrument Serif 72 px" (see KIT_type.md, conflict note) */
+  font-weight: 400;
+  font-size: 72px;
+  line-height: 1.3;                       /* = content area, so the baseline sits at 0.99 em */
+  white-space: nowrap;
+}
+.rc-t8--name-italic .rc-t8__name { font-style: italic; }
+.rc-t8__underline {                       /* the line the B3 Lemming walks on; position/thickness from the font's post table */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.17em;                            /* baseline (0.99 em) + underlinePosition 0.18 em */
+  height: 0.038em;                        /* underlineThickness 0.038 em */
+  background: currentColor;
+  box-shadow: var(--text-shadow);
+  container-type: inline-size;
+  --rc-walk: 0;
+}
+.rc-on-card .rc-t8__underline, .rc-t8.rc-on-card .rc-t8__underline { box-shadow: none; }
+.rc-t8__walker {                          /* slot for the Lemming: stands on the underline, walks with --rc-walk 0 -> 1 */
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  line-height: 0;
+  transform: translateX(calc(var(--rc-walk, 0) * (100cqw - 100%)));
+}
+/* centred card: pad the left by the trailing tracking so the role's ink is centred under the name */
+.rc-t8:not(.rc-t8--right):not(.rc-t8--left) .rc-t8__role { padding-left: 0.15em; }
+.rc-t8__role {
+  margin-top: 8px;
+  font-family: var(--sans);
+  font-weight: var(--w-caption);
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: 0.15em;                 /* tracking +15% */
+  text-transform: uppercase;
+  opacity: 0.6;                           /* 60% opacity */
+  white-space: nowrap;
+}
+
+/* ---------- T9 Highlight / label ---------- */
+.rc-t9-hl {                               /* highlighter box placed over the title inside the document layer */
+  position: absolute;
+  background: var(--highlighter);
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.rc-t9 {                                  /* label host: --rc-x / --rc-y = top-left corner of the label */
+  position: absolute;
+  left: var(--rc-x, 960px);
+  top: var(--rc-y, 540px);
+}
+.rc-t9__label {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 4px;
+  background: var(--highlighter);
+  color: var(--card-ink);
+  text-shadow: none;
+  font-family: var(--sans);
+  font-weight: var(--w-year);             /* Bold 700 */
+  font-size: 40px;
+  line-height: 40px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---------- T10 Glitch word: Inter Black 160 px, white, on black ---------- */
+.rc-t10 {
+  position: absolute;
+  left: var(--safe-x);
+  width: calc(1920px - 2 * var(--safe-x));
+  top: calc(var(--rc-y, 540px) - 80px);   /* 160 px line box centred on --rc-y */
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  text-shadow: none;                      /* on black */
+}
+.rc-t10__word {
+  position: relative;
+  display: inline-block;
+  font-family: var(--sans);
+  font-weight: var(--w-giant);
+  font-size: 160px;
+  line-height: 160px;
+  white-space: nowrap;
+}
+.rc-t10--key { top: calc(var(--rc-y, 540px) - 70px); height: 140px; }   /* B17 option: "now?" keeps the T2 keyword face */
+.rc-t10--key .rc-t10__word { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 140px; line-height: 140px; }
+.rc-t10__clean { display: block; }
+.rc-t10__glitch { position: absolute; inset: 0; isolation: isolate; opacity: 0; }
+.rc-t10__slice { position: absolute; inset: 0; }   /* GSAP x: +/-20 px per frame */
+/* three slices cut at whole pixels (crisp cuts; keep --rc-y an integer): cap region thirds at 61 / 99 px of the line */
+.rc-t10__slice--1 { clip-path: inset(-80px -80px 99px -80px); }
+.rc-t10__slice--2 { clip-path: inset(61px -80px 61px -80px); }
+.rc-t10__slice--3 { clip-path: inset(99px -80px -80px -80px); }
+.rc-t10--key .rc-t10__slice--1 { clip-path: inset(-80px -80px 90px -80px); }   /* 140 px serif line: cuts at 50 / 84 px */
+.rc-t10--key .rc-t10__slice--2 { clip-path: inset(50px -80px 56px -80px); }
+.rc-t10--key .rc-t10__slice--3 { clip-path: inset(84px -80px -80px -80px); }
+/* RGB split = the white word separated into its R, G, B channels (additive: aligned they sum back to #FFFFFF) */
+.rc-t10__ch { position: absolute; left: 0; top: 0; mix-blend-mode: screen; }
+.rc-t10__ch--r { color: #FF0000; transform: translateX(6px); }    /* red +6 px */
+.rc-t10__ch--g { color: #00FF00; }
+.rc-t10__ch--b { color: #0000FF; transform: translateX(-6px); }   /* blue -6 px */

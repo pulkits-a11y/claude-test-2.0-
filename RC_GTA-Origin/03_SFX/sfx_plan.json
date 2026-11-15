@@ -1,0 +1,284 @@
+{
+ "source": "Master Edit Plan p.35-38 (SFX plan), offsets verified against loudness-envelope peaks (03_SFX/sfx_analysis.json)",
+ "rules": {
+  "silence_by_design": "No SFX in B4-B5, B9, the B16 glow line, or B17 before 'now?'.",
+  "never": "meme/comedy sounds, notification pings, success chimes, shutter on every photo, a whoosh on every cut or a pop on every caption.",
+  "if_busy_cut_order": [
+   "S12",
+   "S15",
+   "S05"
+  ],
+  "groups": {
+   "A3": "SFX hits and impacts",
+   "A4": "risers, whooshes and textures"
+  },
+  "naming": "Every SFX layer is named with its cue ID (e.g. 'S01 Cinematic Hit 1').",
+  "no_sfx_above_voice_except": "S19"
+ },
+ "events_from": "hyperframes/<composition>/cues.json (beat-relative frames) + timing/beat_map.json",
+ "cues": [
+  {
+   "cue": "S01",
+   "group": "A3",
+   "files": [
+    "S01_Cinematic Hit 1.wav"
+   ],
+   "event": "B1.gta6_cell_full",
+   "peak_at_s": 0.33,
+   "align": "peak",
+   "trim_to_s": 1.5,
+   "fade_out_f": 12,
+   "peak_dbfs": -8,
+   "plan": "Peak at 0.33 s: start 10f before the slam. Trim to 1.5 s with a 12f fade."
+  },
+  {
+   "cue": "S02",
+   "group": "A4",
+   "files": [
+    "S02_Siren.mp3"
+   ],
+   "event": "B1.cops",
+   "slice_s": [
+    0.5,
+    1.3
+   ],
+   "align": "start",
+   "fade_out_f": 6,
+   "highpass_hz": 300,
+   "peak_dbfs": -14,
+   "plan": "Slice 0.5-1.3 s, starting on 'cops', 6f fade out, high-pass at 300 Hz."
+  },
+  {
+   "cue": "S03",
+   "group": "A3",
+   "files": [
+    "S03a_Windows Error.wav",
+    "S03b_Glitch, Flicker, Text (14).wav"
+   ],
+   "event": "B2.tear",
+   "layers": [
+    {
+     "file": "S03a_Windows Error.wav",
+     "sound_starts_s": 0.11,
+     "align": "sound_start",
+     "offset_f": -3
+    },
+    {
+     "file": "S03b_Glitch, Flicker, Text (14).wav",
+     "align": "start",
+     "offset_f": 0,
+     "extra_gain_db": 12
+    }
+   ],
+   "peak_dbfs_combined": -8,
+   "plan": "Error sound starts 0.11 s into the file: start it 3f before the tear. Layer the glitch on the tear frame with +12 dB."
+  },
+  {
+   "cue": "S04",
+   "group": "A3",
+   "files": [
+    "S04_Countdown, List, Numbers (2).wav"
+   ],
+   "event": "B3.year_digits",
+   "align": "start",
+   "peak_dbfs": -16,
+   "plan": "0.47 s long. Start on the first digit's move."
+  },
+  {
+   "cue": "S05",
+   "group": "A4",
+   "files": [
+    "S05_Music Slow Down.wav"
+   ],
+   "event": "B6.dull",
+   "align": "start",
+   "peak_dbfs": -14,
+   "plan": "1.5 s, audible until 1.1 s. Start on 'dull', under the slow-motion drain. (Third to cut if busy.)"
+  },
+  {
+   "cue": "S06",
+   "group": "A3",
+   "layers": [
+    {
+     "file": "S06a_Hit 1.mp3",
+     "event": "B7.stamp1",
+     "offset_f": -3,
+     "peak_dbfs": -12
+    },
+    {
+     "file": "S06b_Hit 2.mp3",
+     "event": "B7.stamp2",
+     "offset_f": -8,
+     "peak_dbfs": -10
+    },
+    {
+     "file": "S06c_Hit 3.mp3",
+     "event": "B7.stamp3",
+     "offset_f": -4,
+     "peak_dbfs": -8
+    }
+   ],
+   "trim_to_s": 0.8,
+   "fade_out_f": 8,
+   "plan": "Peaks at 0.09/0.26/0.12 s: start each 3f, 8f and 4f before its stamp lands. Trim each to 0.8 s with an 8f fade. -12, -10, -8 dBFS (heavier each time)."
+  },
+  {
+   "cue": "S07",
+   "group": "A4",
+   "files": [
+    "S07_Riser Layered.wav"
+   ],
+   "event": "B8.first_black",
+   "align": "end",
+   "from_event": "B7.stamp2",
+   "peak_dbfs": -10,
+   "plan": "2.1 s, ends abruptly at its peak. End lands on B8's first black frame (start about 63f earlier); from the second stamp into B8."
+  },
+  {
+   "cue": "S08",
+   "group": "A3",
+   "files": [
+    "S08a_Glitch, Impact.wav",
+    "S08b_PowerDown 0.5 sec.wav"
+   ],
+   "event": "B8.breaks",
+   "align": "start",
+   "peak_dbfs_combined": -6,
+   "plan": "Both start instantly. Put both on the 'breaks' frame."
+  },
+  {
+   "cue": "S09",
+   "group": "A3",
+   "files": [
+    "S09_Sub Drop.mp3"
+   ],
+   "event": "B10.fun",
+   "align": "start",
+   "trim_to_s": 2.5,
+   "fade_out_f": 20,
+   "peak_dbfs": -8,
+   "plan": "Start on 'fun', the same frame as the music drop and the flash. Trim at 2.5 s with a 20f fade."
+  },
+  {
+   "cue": "S10",
+   "group": "A4",
+   "files": [
+    "S10_Flip.wav"
+   ],
+   "event": "B11.flip_start",
+   "align": "start",
+   "offset_f": -6,
+   "peak_dbfs": -12,
+   "plan": "Peak at 0.38 s: start 6f before the flip so the peak meets its midpoint."
+  },
+  {
+   "cue": "S11",
+   "group": "A3",
+   "files": [
+    "S11_Count-up (2).wav"
+   ],
+   "event": "B12.thirty",
+   "peak_at_s": 1.14,
+   "align": "peak",
+   "peak_dbfs": -12,
+   "plan": "1.4 s, ending in a hit at 1.14 s. Line that hit up with 'thirty' and the counter landing on 30."
+  },
+  {
+   "cue": "S12",
+   "group": "A3",
+   "files": [
+    "S12_Countdown, List, Numbers (2).wav"
+   ],
+   "event": "B13.year_digits",
+   "align": "start",
+   "peak_dbfs": -16,
+   "plan": "Same file and placement as S04 (first to cut if busy)."
+  },
+  {
+   "cue": "S13",
+   "group": "A3",
+   "files": [
+    "S13_v3) Type (A B C ).wav"
+   ],
+   "event": "B13.type_on",
+   "align": "start",
+   "peak_dbfs": -18,
+   "plan": "1.3 s. Start with the first letter. If it doesn't sit with the letters, slice single keystrokes and place one every few letters."
+  },
+  {
+   "cue": "S14",
+   "group": "A4",
+   "files": [
+    "S14_Siren.mp3"
+   ],
+   "event": "B14.sirens",
+   "slice_s": [
+    0.5,
+    1.3
+   ],
+   "align": "start",
+   "fade_out_f": 6,
+   "highpass_hz": 300,
+   "peak_dbfs": -14,
+   "plan": "Same file and slice as S02. Start on 'sirens'."
+  },
+  {
+   "cue": "S15",
+   "group": "A4",
+   "files": [
+    "S15_23 Whip Hit.wav"
+   ],
+   "event": "B14.whip_mid",
+   "align": "start",
+   "offset_f": -2,
+   "peak_dbfs": -12,
+   "plan": "Only 0.2 s audible. Start 2f before the whip's midpoint. (Second to cut if busy.)"
+  },
+  {
+   "cue": "S16",
+   "group": "A4",
+   "files": [
+    "S16_Data_Whoosh.wav"
+   ],
+   "event": "B15.zoom_mid",
+   "peak_at_s": 0.96,
+   "align": "peak",
+   "peak_dbfs": -12,
+   "plan": "Peak at 0.96 s: start about 25f before the zoom's midpoint (0.96 s = 29f; peak alignment used, CONFLICTS C13)."
+  },
+  {
+   "cue": "S17",
+   "group": "A4",
+   "files": [
+    "S17_Spinback (2).wav"
+   ],
+   "event": "B16.rewind",
+   "align": "start",
+   "peak_dbfs": -12,
+   "plan": "1 s. Start with the rewind."
+  },
+  {
+   "cue": "S18",
+   "group": "A4",
+   "files": [
+    "S18_Riser Faster.wav"
+   ],
+   "event": "B17.final_hit",
+   "align": "end",
+   "peak_dbfs": -10,
+   "plan": "1.1 s, ending at its peak. Place it so the end lands on the logo hit."
+  },
+  {
+   "cue": "S19",
+   "group": "A3",
+   "files": [
+    "S19a_Glitch, Impact.wav",
+    "S19b_PowerDown 0.5 sec.wav"
+   ],
+   "event": "B17.final_hit",
+   "align": "start",
+   "peak_dbfs_combined": -4,
+   "plan": "Same files as S08. On the logo hit; the ending echoes the break. -4 dBFS, the loudest moment."
+  }
+ ]
+}

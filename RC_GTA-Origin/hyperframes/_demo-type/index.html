@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css" />
+    <link rel="stylesheet" href="assets/kit/type.css" />
+    <link rel="stylesheet" href="assets/kit/motifs.css" />
+    <link rel="stylesheet" href="assets/kit/transitions.css" />
+    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      /* demo-only scaffolding (stand-ins for screens owned by other kit areas; not part of the type kit) */
+      /* stand-in clips are shown 2.74x, cropped to a label-free patch of their moving pattern, so text stays readable */
+      .demo-bg { position: absolute; left: -165px; top: -1755px; width: 5266px; height: 2962px; object-fit: cover; }
+      .demo-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      .demo-bar { position: absolute; left: 0; width: 1920px; height: 138px; background: var(--ink-black); }
+      .demo-dim { background: color-mix(in srgb, var(--ink-black) 40%, transparent); }
+      .demo-l6 { position: absolute; left: 365px; top: 205px; width: 1190px; height: 670px; object-fit: cover; box-sizing: border-box; border: 2px solid var(--white); }
+      .demo-tag { position: absolute; left: 96px; top: 54px; height: 28px; font-family: var(--sans); font-weight: 400; font-size: 20px; line-height: 28px; letter-spacing: 0.04em; color: var(--white); opacity: 0.75; white-space: nowrap; text-shadow: var(--text-shadow); }
+      .demo-tag.rc-on-card { color: var(--card-ink); text-shadow: none; }
+      .demo-walker { display: inline-block; width: 18px; height: 26px; box-sizing: border-box; border: 2px solid currentColor; font: 700 14px/22px var(--sans); text-align: center; }
+      .demo-docwrap { background: var(--card-gray); overflow: hidden; }
+      .demo-doc { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+      .demo-doc-note { position: absolute; left: 0; width: 1920px; top: 640px; text-align: center; font: 500 24px/30px var(--sans); color: var(--card-ink); opacity: 0.6; }
+      .demo-doc-title { position: absolute; left: 0; right: 0; margin: 0 auto; width: max-content; top: 470px; font: 700 96px/110px var(--sans); color: var(--card-ink); }
+    </style>
+  </head>
+  <body>
+    <!-- RC kit TYPE demo: every T-style (T1-T10) in sequence, built exactly as a beat would (assets/kit + RCK.type).
+         Footage = labelled stand-ins from 04_Broll/_placeholders. Rebuild: node tools/gen_demo.cjs; measure: node tools/measure_type.cjs. -->
+    <div id="root" data-composition-id="type-demo" data-start="0" data-duration="39.6667" data-width="1920" data-height="1080">
+      <video id="a-bg" class="clip demo-bg" src="assets/footage/R1.2.mp4" muted playsinline data-start="0.0000" data-duration="5.1666" data-track-index="1" style="z-index: 1;"></video>
+      <div id="a-tag" class="clip demo-tag" data-start="0.0000" data-duration="5.1666" data-track-index="9" style="z-index: 50">DEMO · T1 running captions → T2 punch pair (B1 timing)</div>
+      <div id="a-cap-1" class="clip rc-t1" data-start="0.2333" data-duration="0.6667" data-track-index="3" style="z-index: 10">Why does</div>
+<div id="a-cap-2" class="clip rc-t1" data-start="0.9000" data-duration="1.0333" data-track-index="3" style="z-index: 10">every GTA,</div>
+<div id="a-cap-3" class="clip rc-t1" data-start="1.9333" data-duration="1.3333" data-track-index="3" style="z-index: 10">even GTA 6,</div>
+<div id="a-cap-4" class="clip rc-t1" data-start="3.2666" data-duration="0.7667" data-track-index="3" style="z-index: 10">have you running</div>
+      <div id="a-t2" class="clip rc-t2" data-start="4.0333" data-duration="1.0667" data-track-index="2" style="z-index: 10;"><div class="rc-t2__row"><span class="rc-t2__lead">from the</span><span class="rc-t2__key">cops?</span></div></div>
+      <video id="b-bg" class="clip demo-bg" src="assets/footage/R5.1.mp4" muted playsinline data-start="5.1666" data-duration="3.3334" data-track-index="1" style="z-index: 1;"></video>
+      <div id="b-tag" class="clip demo-tag" data-start="5.1666" data-duration="3.3334" data-track-index="9" style="z-index: 50">DEMO · T1 low (face in the centre: y 860), B5 timing</div>
+      <div id="b-cap-1" class="clip rc-t1 rc-t1--low" data-start="5.3666" data-duration="0.4667" data-track-index="3" style="z-index: 10">In it,</div>
+<div id="b-cap-2" class="clip rc-t1 rc-t1--low" data-start="5.8333" data-duration="0.4000" data-track-index="3" style="z-index: 10">you play</div>
+<div id="b-cap-3" class="clip rc-t1 rc-t1--low" data-start="6.2333" data-duration="0.8000" data-track-index="3" style="z-index: 10">a police officer</div>
+<div id="b-cap-4" class="clip rc-t1 rc-t1--low" data-start="7.0333" data-duration="1.2667" data-track-index="3" style="z-index: 10">chasing criminals.</div>
+      <div id="c-card" class="clip rc-card demo-full" data-start="8.5000" data-duration="1.5000" data-track-index="2" style="z-index: 1;"></div>
+      <div id="c-tag" class="clip demo-tag rc-on-card" data-start="8.5000" data-duration="1.5000" data-track-index="9" style="z-index: 50">DEMO · T2 on a gray card, above the L9 calendar (B4)</div>
+      <div id="c-t2" class="clip rc-t2 rc-on-card" data-start="8.6000" data-duration="1.2666" data-track-index="2" style="z-index: 10; --rc-y: 300px;"><div class="rc-t2__row"><span class="rc-t2__lead">planned to take</span><span class="rc-t2__key">18 months.</span></div></div>
+      <video id="c2-bg" class="clip demo-bg" src="assets/footage/R10.2.mp4" muted playsinline data-start="10.0000" data-duration="1.5000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="c2-tag" class="clip demo-tag" data-start="10.0000" data-duration="1.5000" data-track-index="9" style="z-index: 50">DEMO · cover frame: "GTA started as a cop game" in T2 style</div>
+      <div id="c2-t2" class="clip rc-t2" data-start="10.0000" data-duration="1.5000" data-track-index="2" style="z-index: 10;"><div class="rc-t2__row"><span class="rc-t2__lead">GTA started as a</span><span class="rc-t2__key">cop game</span></div></div>
+      <div id="d-t3a" class="clip rc-t3" data-start="11.5000" data-duration="1.7333" data-track-index="2" style="z-index: 5;"><div class="rc-t3__block"><div class="rc-t3__in">In</div><div class="rc-t3__year"><span class="rc-t3__num">1995</span></div></div></div>
+      <div id="d-tag" class="clip demo-tag rc-on-card" data-start="11.5000" data-duration="1.7333" data-track-index="9" style="z-index: 50">DEMO · T3 year card (B3)</div>
+      <div id="d-t3b" class="clip rc-t3" data-start="13.2333" data-duration="1.7333" data-track-index="2" style="z-index: 5;"><div class="rc-t3__block"><div class="rc-t3__in">In</div><div class="rc-t3__year"><span class="rc-t3__month">Nov</span> <span class="rc-t3__num">1997</span></div></div></div>
+      <div id="d2-tag" class="clip demo-tag rc-on-card" data-start="13.2333" data-duration="1.7333" data-track-index="9" style="z-index: 50">DEMO · T3 year card, month + year (B13)</div>
+      <video id="e-bg" class="clip demo-bg" src="assets/footage/R3.1.mp4" muted playsinline data-start="14.9666" data-duration="2.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="e-bars" class="clip demo-full" data-start="14.9666" data-duration="2.0000" data-track-index="1" style="z-index: 2"><div class="demo-bar" style="top: 0"></div><div class="demo-bar" style="top: 942px"></div></div>
+      <div id="e-tag" class="clip demo-tag" data-start="14.9666" data-duration="2.0000" data-track-index="9" style="z-index: 50">DEMO · T4 spread words over an L2 band stand-in (B3)</div>
+      <div id="e-t4" class="clip rc-t4" data-start="14.9666" data-duration="1.8667" data-track-index="2" style="z-index: 10;"><span class="rc-t4__piece rc-t4--left">Dundee,</span><span class="rc-t4__piece rc-t4--right">Scotland.</span></div>
+      <video id="e2-bg" class="clip demo-bg" src="assets/footage/R1.3.mp4" muted playsinline data-start="16.9666" data-duration="3.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="e2-tag" class="clip demo-tag" data-start="16.9666" data-duration="3.0000" data-track-index="9" style="z-index: 50">DEMO · T4, each phrase in its own spot until the beat ends (B14)</div>
+      <div id="e2-t4" class="clip rc-t4" data-start="16.9666" data-duration="3.0000" data-track-index="2" style="z-index: 10;"><span class="rc-t4__piece rc-t4--left rc-t4--top">The wanted stars.</span><span class="rc-t4__piece rc-t4--right">The sirens.</span><span class="rc-t4__piece rc-t4--left rc-t4--bottom">The running.</span></div>
+      <div id="f-t5" class="clip rc-t5" data-start="19.9666" data-duration="2.7000" data-track-index="2" style="z-index: 5;"><div class="rc-t5__text">The whole series started with a <span class="rc-t7__chip m4-chip"><img class="m4-bug" src="assets/kit/svg/motifs-bug.svg" alt="bug"></span>.</div></div>
+      <div id="f-tag" class="clip demo-tag" data-start="19.9666" data-duration="2.7000" data-track-index="9" style="z-index: 50">DEMO · T5 glow line + T7 bug chip (B16)</div>
+      <video id="g-bg" class="clip demo-bg" src="assets/footage/R13.1.mp4" muted playsinline data-start="22.6666" data-duration="3.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="g-dim" class="clip demo-full demo-dim" data-start="22.6666" data-duration="3.0000" data-track-index="2" style="z-index: 2;"></div>
+      <div id="g-tag" class="clip demo-tag" data-start="22.6666" data-duration="3.0000" data-track-index="9" style="z-index: 50">DEMO · T6 giant type behind an L6 framed-clip stand-in (B13)</div>
+      <div id="g-t6" class="clip rc-t6" data-start="22.6666" data-duration="3.0000" data-track-index="2" style="z-index: 5;"><div class="rc-t6__line">GRAND</div><div class="rc-t6__line">THEFT</div><div class="rc-t6__line">AUTO</div></div>
+      <video id="g-frame" class="clip demo-l6" src="assets/footage/R13.1.mp4" muted playsinline data-start="22.6666" data-duration="3.0000" data-track-index="4" data-layout-allow-occlusion style="z-index: 8"></video>
+      <video id="h-bg" class="clip demo-bg" src="assets/footage/R9.1.mp4" muted playsinline data-start="25.6666" data-duration="2.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="h-tag" class="clip demo-tag" data-start="25.6666" data-duration="2.0000" data-track-index="9" style="z-index: 50">DEMO · T7 inline chip, words hard cut on the voice (B2 timing)</div>
+      <div id="h-t7" class="clip rc-t7" data-start="25.7666" data-duration="1.9000" data-track-index="2" style="z-index: 10;"><span class="rc-t7__w">And</span> <span class="rc-t7__w">that</span> <span class="rc-t7__chip m4-chip"><img class="m4-bug" src="assets/kit/svg/motifs-bug.svg" alt="bug"></span> <span class="rc-t7__w">saved</span> <span class="rc-t7__w">it.</span></div>
+      <video id="i-bg" class="clip demo-bg" src="assets/footage/R3.8.mp4" muted playsinline data-start="27.6666" data-duration="2.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="i-tag" class="clip demo-tag" data-start="27.6666" data-duration="2.0000" data-track-index="9" style="z-index: 50">DEMO · T8 name card on footage, underline + Lemming slot (B3)</div>
+      <div id="i-t8" class="clip rc-t8" data-start="27.6666" data-duration="2.0000" data-track-index="2" style="z-index: 10;"><div class="rc-t8__block"><div class="rc-t8__name">DMA Design<span class="rc-t8__underline"><span class="rc-t8__walker"><span class="demo-walker" data-layout-ignore>L</span></span></span></div><div class="rc-t8__role">The studio behind Lemmings</div></div></div>
+      <div id="j-card" class="clip rc-card demo-full" data-start="29.6666" data-duration="3.0000" data-track-index="2" style="z-index: 1;"></div>
+      <div id="j-tag" class="clip demo-tag rc-on-card" data-start="29.6666" data-duration="3.0000" data-track-index="9" style="z-index: 50">DEMO · T8 quote card on the L5 gray card (B6)</div>
+      <div id="j-t8" class="clip rc-t8 rc-t8--right rc-on-card" data-start="29.6666" data-duration="3.0000" data-track-index="2" style="z-index: 10;"><div class="rc-t8__block"><div class="rc-t8__quote">“awful… too sim-y.”</div><div class="rc-t8__name">Gary Penn</div><div class="rc-t8__role">DMA DESIGN · GAMASUTRA, 2011</div></div></div>
+      <div id="k-doc" class="clip demo-full demo-docwrap" data-start="32.6666" data-duration="2.0000" data-track-index="2" style="z-index: 1;"><div class="demo-doc" data-layout-ignore><div class="demo-doc-note">STAND-IN for the R4.5 design-document scan (demo only)</div><span class="demo-doc-title">Race'n'Chase<span id="k-hl" class="rc-t9-hl" style="left: -12px; right: -12px; top: 10px; bottom: 6px"></span></span></div></div>
+      <div id="k-tag" class="clip demo-tag rc-on-card" data-start="32.6666" data-duration="2.0000" data-track-index="9" style="z-index: 50">DEMO · T9 highlight (85%, multiply) swipes left → right while the camera pushes in (B4)</div>
+      <video id="l-bg" class="clip demo-bg" src="assets/footage/R15.3.mp4" muted playsinline data-start="34.6666" data-duration="2.0000" data-track-index="1" style="z-index: 1;"></video>
+      <div id="l-tag" class="clip demo-tag" data-start="34.6666" data-duration="2.0000" data-track-index="9" style="z-index: 50">DEMO · T9 label (B15)</div>
+      <div id="l-t9" class="clip rc-t9" data-start="34.7666" data-duration="1.9000" data-track-index="2" style="z-index: 10; --rc-x: 1180px; --rc-y: 700px;"><span class="rc-t9__label">Race and Chase</span></div>
+      <div id="m-black" class="clip rc-ink demo-full" data-start="36.6666" data-duration="3.0000" data-track-index="2" style="z-index: 1;"></div>
+      <div id="m-tag" class="clip demo-tag" data-start="36.6666" data-duration="0.6000" data-track-index="9" style="z-index: 50">DEMO · T10 glitch word (B8)</div>
+      <div id="m-t10" class="clip rc-t10" data-start="36.6666" data-duration="0.6000" data-track-index="2" style="z-index: 10;"><span class="rc-t10__word">breaks.</span></div>
+      <div id="m2-tag" class="clip demo-tag" data-start="37.2666" data-duration="2.4000" data-track-index="9" style="z-index: 50">DEMO · B17: T2 "chasing who / now?" → T10 on "now?" at the final hit, then black</div>
+      <div id="m2-t2" class="clip rc-t2" data-start="37.2666" data-duration="1.4000" data-track-index="2" style="z-index: 10;"><div class="rc-t2__row"><span class="rc-t2__lead">chasing who</span><span class="rc-t2__key">now?</span></div></div>
+      <div id="m2-t10" class="clip rc-t10" data-start="38.6666" data-duration="0.2000" data-track-index="2" style="z-index: 10;"><span class="rc-t10__word">now?</span></div>
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type;
+      T.punchPair(tl, '#a-t2', 4.433333, { outAt: 4.966667 });
+      T.punchPair(tl, '#c-t2', 9, { outAt: 9.733333 });
+      T.punchPair(tl, '#c2-t2', 10.2);
+      T.yearCard(tl, '#d-t3a', 11.6);
+      T.yearCard(tl, '#d-t3b', 13.333333);
+      T.spreadWords(tl, '#e-t4', 15.066667, { times: [15.066667, 15.6], outAt: 16.7 });
+      T.spreadWords(tl, '#e2-t4', 17.066667, { times: [17.066667, 18.3, 19.266667] });
+      T.glowLine(tl, '#f-t5', 20.066667, { chipAt: 21.666667 });
+      T.giantType(tl, '#g-t6', 22.866667);
+      T.chipSentence(tl, '#h-t7', 25.766667, { wordTimes: [25.766667, 26.166667, 26.6, 26.866667], chipAt: 26.333333 });
+      T.nameIn(tl, '#i-t8', 27.766667);
+      T.walk(tl, '#i-t8', 27.966667, { duration: 1.4 });
+      T.quoteType(tl, '#j-t8', 29.766667);
+      T.nameIn(tl, '#j-t8', 30.166667);
+      T.highlight(tl, '#k-hl', 32.866667);
+      tl.fromTo('#k-doc .demo-doc', { scale: 1 }, { scale: 1.18, duration: 2, ease: 'none', immediateRender: true }, 32.666667);  // L7 push-in stand-in
+      T.label(tl, '#l-t9', 34.866667);
+      T.glitch(tl, '#m-t10', 36.666667);
+      T.punchPair(tl, '#m2-t2', 37.466667);
+      T.glitch(tl, '#m2-t10', 38.666667, { settle: false });
+      window.__timelines["type-demo"] = tl;
+    </script>
+  </body>
+</html>

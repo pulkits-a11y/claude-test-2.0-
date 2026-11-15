@@ -1,0 +1,4 @@
+/* _demo-screens only (not kit): base.css --sans names "Neue Haas Grotesk" (a plan fallback) with no @font-face, which
+   fails HyperFrames lint font_family_without_font_face (error) in every project linking base.css. Inter is always
+   loaded via @font-face, so dropping that fallback changes nothing on screen. Reported to the kit owner. */
+:root { --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; }

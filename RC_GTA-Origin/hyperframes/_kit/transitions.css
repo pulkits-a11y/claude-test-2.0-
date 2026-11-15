@@ -1,0 +1,76 @@
+/* RC_GTA-Origin style kit: TRANSITIONS (transitions.css). Docs, markup and timing: KIT_transitions.md.
+   Source: Master Edit Plan p.15-16 "Transitions (X1-X9)". Colours come from base.css only.
+   No CSS transform on anything GSAP transforms; no CSS filter on footage (X6 blurs media through media-treatment). */
+
+/* ---------- X2 cut, then drift: the wrapper GSAP slides (x). Full frame by default; the beat may size it. ---------- */
+.rc-x2 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+/* ---------- X3 white flash: 100% white over the whole frame, opacity animated by RCK.transitions.flash ---------- */
+.rc-x3 {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background: var(--white);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- X4 pixel-block tear: container over the region to tear; the canvas is added by RCK.transitions.tear ---------- */
+.rc-x4 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; pointer-events: none; }   /* blocks never leave the region */
+.rc-x4__still { display: none; }                               /* (a) still of the old frame: decoded, drawn into the canvas */
+.rc-x4__canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.rc-x4__view { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }   /* (b) live copies, clip-path windows */
+.rc-x4__view > video, .rc-x4__view > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- X5 blinds wipe: 12 vertical slats, ink black #0A0A0A, built by RCK.transitions.blindsInit ---------- */
+.rc-x5 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.rc-x5__slat {
+  position: absolute; top: 0; height: 100%;
+  background: var(--ink-black);
+  backface-visibility: visible;
+}
+
+/* ---------- X6 zoom through a screen: the world (plate + screen picture) GSAP scales; the screen box laid out by zoomFit ---------- */
+.rc-x6 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.rc-x6__screen { position: absolute; left: 0; top: 0; overflow: hidden; }
+.rc-x6__screen > video, .rc-x6__screen > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- X7 light-leak dissolve: Screen-blended leak. Layers adapted from registry "organic-light-leak-overlay"
+   (same gradient geometry relative to the frame, 3 drifting layers), retinted to the palette's warm glow #FFF6E0
+   exactly like the T5 leak in type.css. Stand-in for RT6 light-leak footage (.rc-x7__footage when it exists). ---------- */
+.rc-x7 {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.rc-x7__layer { position: absolute; inset: -42.4%; display: block; }   /* = registry: box inset -16%, layers inset -20% of it */
+.rc-x7__layer--a {
+  background:
+    radial-gradient(ellipse 52% 110% at 10% 58%, color-mix(in srgb, var(--warm-glow) 92%, transparent), transparent 45%),
+    radial-gradient(ellipse 72% 120% at 24% 54%, color-mix(in srgb, var(--warm-glow) 78%, transparent), transparent 66%);
+  filter: blur(30px);
+}
+.rc-x7__layer--b {
+  background: radial-gradient(ellipse 58% 105% at 78% 34%,
+    color-mix(in srgb, var(--warm-glow) 72%, transparent),
+    color-mix(in srgb, var(--warm-glow) 28%, transparent) 48%, transparent 76%);
+  filter: blur(43px);
+}
+.rc-x7__layer--c {
+  background: linear-gradient(104deg, transparent 24%,
+    color-mix(in srgb, var(--warm-glow) 30%, transparent) 40%,
+    color-mix(in srgb, var(--warm-glow) 72%, transparent) 51%,
+    color-mix(in srgb, var(--warm-glow) 22%, transparent) 62%, transparent 78%);
+  filter: blur(22px);
+}
+.rc-x7__footage { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }   /* RT6 when available */
+
+/* ---------- X9 siren wash: Overlay blend at 35%; the element itself is the blended layer (keep it a direct child of the
+   composition root, above the picture it washes). Fill colour switched red -> blue by RCK.transitions.sirenWash ---------- */
+.rc-x9 {
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  pointer-events: none;
+}
+.rc-x9__fill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; background: var(--siren-red); }

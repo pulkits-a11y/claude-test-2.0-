@@ -1,0 +1,53 @@
+/* RC_GTA-Origin style kit: base (fonts, palette, shared tokens).
+   Source of truth: Master Edit Plan, "Style kit" + "Typography styles (T1-T10)".
+   In a beat project this folder is copied to assets/kit/ (tools/new_beat.py, tools/sync_kit.py),
+   so every url() here is relative to assets/kit/. */
+
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Black.ttf") format("truetype"); font-weight: 900; font-style: normal; font-display: block; }
+@font-face { font-family: "Inter"; src: url("fonts/Inter-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Instrument Serif"; src: url("fonts/InstrumentSerif-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: block; }
+@font-face { font-family: "Instrument Serif"; src: url("fonts/InstrumentSerif-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: block; }
+
+:root {
+  /* Colours (plan: Style kit > Colours). Use nothing else. */
+  --ink-black: #0A0A0A;          /* black screens (B8, B16), letterbox bars */
+  --card-gray: #E9E9E9;          /* year cards, quote card, cut-out cards */
+  --card-ink: #111111;           /* text on gray cards */
+  --white: #FFFFFF;              /* all text on footage and on black */
+  --warm-glow: #FFF6E0;          /* T5 glow lines, L6 outer glow */
+  --highlighter: #FFE14D;        /* T9 highlights (85%, multiply), the M2 "you" arrow */
+  --siren-red: #E3262E;          /* X9 wash, CANCELLED stamp, the 12 overrun squares (B12), B9 red arrow */
+  --siren-blue: #2D5BFF;         /* X9 wash only */
+
+  /* Fonts (plan: Style kit > Fonts). Fallbacks per the plan. */
+  --sans: "Inter", "Helvetica Neue", "Neue Haas Grotesk", Helvetica, Arial, sans-serif;
+  --serif: "Instrument Serif", "Playfair Display", Georgia, serif;
+  --w-caption: 500;   /* Medium: captions */
+  --w-leadin: 600;    /* SemiBold: lead-in words */
+  --w-year: 700;      /* Bold: year numerals */
+  --w-giant: 900;     /* Black: giant type */
+
+  /* Text on footage: soft shadow 0 px x, 2 px y, 12 px blur, black at 45%. No outlines, no caption boxes. */
+  --text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+
+  /* Title-safe area for the 16:9 master: 96 px left/right, 54 px top/bottom. */
+  --safe-x: 96px;
+  --safe-y: 54px;
+
+  /* Units: 30 fps; "ease out" = cubic-bezier(0.2, 0, 0, 1) = GSAP power3.out. */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Every beat composition is a 1920 x 1080 canvas. */
+.rc-canvas { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+.rc-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.rc-transparent { background: transparent; }
+.rc-ink { background: var(--ink-black); }
+.rc-card { background: var(--card-gray); }
+
+/* Text on footage / on black: white with the soft shadow. On gray cards: card ink, no shadow. */
+.rc-on-footage { color: var(--white); text-shadow: var(--text-shadow); }
+.rc-on-card { color: var(--card-ink); text-shadow: none; }

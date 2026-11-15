@@ -1,0 +1,24 @@
+# Heavy or regenerable media (re-create with tools/fetch_assets.sh, tools/process_vo.py, tools/make_placeholders.py)
+01_VO/.work/
+01_VO/*.wav
+02_Music/*.mp3
+02_Music/*.wav
+03_SFX/*.wav
+03_SFX/*.mp3
+04_Broll/_placeholders/
+04_Broll/B*/*
+!04_Broll/B*/.gitkeep
+04_Broll/Textures/*
+05_GFX/renders/
+07_Exports/*.mp4
+07_Exports/*.mov
+*.tsrct
+.tesseract-work/
+# beat projects get the kit and footage copied in by tools/sync_kit.py and tools/sync_footage.py
+hyperframes/b*/assets/kit/
+hyperframes/b*/assets/footage/
+hyperframes/_demo-*/assets/kit/
+hyperframes/**/.hyperframes/
+hyperframes/**/node_modules/
+hyperframes/**/renders/
+hyperframes/**/snapshots/

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Re-download the music and SFX cue files from the plan's Google Drive links and rename them with their cue IDs.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+g() { curl -fsSL -o "$2" "https://drive.usercontent.google.com/download?id=$1&export=download&confirm=t"; }
+mkdir -p 02_Music 03_SFX
+g 1MF2N0Ydmsusft-fa0vD8fBdc-UxgTVAE "02_Music/Alexandre Brovelli - Black Vertigo.mp3"
+g 1aZC8VAd3XhNQ37tdDmOjJS41qT81Tcd2 "02_Music/ES_Conundrums (Instrumental Version) - Pandaraps.mp3"
+g 10Syhsd1qkinhApKtVELySYTQ1E6obUgi "03_SFX/S01_Cinematic Hit 1.wav"
+g 1GWP8ljOBQ1GrywndYUcBPHxr2U79r5bA "03_SFX/S02_Siren.mp3"
+g 1xR7cFQQMyonVF9s2bwOQSkaA6AlGRT7S "/tmp/S03a_Windows Error.mp4" && ffmpeg -nostdin -loglevel error -y -i "/tmp/S03a_Windows Error.mp4" -vn -c:a pcm_s24le "03_SFX/S03a_Windows Error.wav"
+g 1t0NhaLjKnmmvgS4XA4Oe5xWbe8L6nmMB "03_SFX/S03b_Glitch, Flicker, Text (14).wav"
+g 1dkt-pIlxeH5JL89igrdUg4vHv7PJoBEt "03_SFX/S04_Countdown, List, Numbers (2).wav"
+g 1VoiLtG4Bpxck138GQ4rU4zXAlq9qFcbD "03_SFX/S05_Music Slow Down.wav"
+g 1yxRwsANxT_r64WyuOAWoaB1GJA2Krj8h "03_SFX/S06a_Hit 1.mp3"
+g 1XCuw9_ekM-u77hH9bkYrdgyFvujpR51f "03_SFX/S06b_Hit 2.mp3"
+g 1Olti3kAZbNweWlkUNyrYK8Qeb9xxxyeg "03_SFX/S06c_Hit 3.mp3"
+g 1L78ggBWmZrGIVRreHSisXN1uHRuEICOe "03_SFX/S07_Riser Layered.wav"
+g 1G-elXQrJ8AN7p6j7crnjftVNUBjkbkDS "03_SFX/S08a_Glitch, Impact.wav"
+g 1MX52uNUFIjT1jazXSVEB7fJDROA_WvHt "03_SFX/S08b_PowerDown 0.5 sec.wav"
+g 18WPG8CuPuGhruQVbphnJbytyaPkwP1yu "03_SFX/S09_Sub Drop.mp3"
+g 1RVNqPDo6JX16bGKv4vCRilib3-D27JJE "03_SFX/S10_Flip.wav"
+g 1SeAxBzhHR64yVzyvrkWcsWLfQFb4fy46 "03_SFX/S11_Count-up (2).wav"
+cp "03_SFX/S04_Countdown, List, Numbers (2).wav" "03_SFX/S12_Countdown, List, Numbers (2).wav"
+g 1K4k7Ot0VE4F9ra_JMPqHFp-jWk43Bumx "03_SFX/S13_v3) Type (A B C ).wav"
+cp "03_SFX/S02_Siren.mp3" "03_SFX/S14_Siren.mp3"
+g 1f-2kErinXZDh4KO8UdfVDM8omLFsyb4E "03_SFX/S15_23 Whip Hit.wav"
+g 1THaiwTVmYlR61GtN0aOLNXkAHHJyNPTF "03_SFX/S16_Data_Whoosh.wav"
+g 1sdSLuctC5GSv2L8mSngqLNwlbWLfFCpm "03_SFX/S17_Spinback (2).wav"
+g 1gUxYOqDlCq2gAz_c3u0LTZw0LMV3_P1I "03_SFX/S18_Riser Faster.wav"
+cp "03_SFX/S08a_Glitch, Impact.wav" "03_SFX/S19a_Glitch, Impact.wav"
+cp "03_SFX/S08b_PowerDown 0.5 sec.wav" "03_SFX/S19b_PowerDown 0.5 sec.wav"
+echo "music + 20 SFX files fetched"

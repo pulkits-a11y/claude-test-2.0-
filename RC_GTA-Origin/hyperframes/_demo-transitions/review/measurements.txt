@@ -1,0 +1,76 @@
+X2 f30: offset  60.00 px | expected  60.00 (60 px, 20f, power3.out)
+X2 f31: offset  48.93 px | expected  48.87 (60 px, 20f, power3.out)
+X2 f35: offset  19.00 px | expected  18.98 (60 px, 20f, power3.out)
+X2 f40: offset   3.87 px | expected   3.75 (60 px, 20f, power3.out)
+X2 f50: offset   0.00 px | expected   0.00 (60 px, 20f, power3.out)
+X3 f107: white 0.000 | expected 0.00
+X3 f108: white 0.000 | expected 0.00
+X3 f109: white 0.500 | expected 0.50
+X3 f110: white 1.000 | expected 1.00
+X3 f111: white 1.000 | expected 1.00
+X3 f112: white 0.748 | expected 0.75
+X3 f113: white 0.496 | expected 0.50
+X3 f114: white 0.248 | expected 0.25
+X3 f115: white 0.000 | expected 0.00
+X3 f116: white 0.000 | expected 0.00
+X5 f366: coverage 0.000 | expected 0.000 | runs 0
+X5 f367: coverage 0.000 | expected 0.000 | runs 0
+X5 f368: coverage 0.194 | expected 0.195 | runs 12
+X5 f369: coverage 0.381 | expected 0.383 | runs 12
+X5 f370: coverage 0.556 | expected 0.556 | runs 12
+X5 f371: coverage 0.712 | expected 0.707 | runs 12
+X5 f372: coverage 0.831 | expected 0.831 | runs 12
+X5 f373: coverage 0.924 | expected 0.924 | runs 12
+X5 f374: coverage 0.981 | expected 0.981 | runs 12
+X5 f375: coverage 1.000 | expected 1.000 | runs 1
+X5 f376: coverage 0.981 | expected 0.981 | runs 12
+X5 f377: coverage 0.924 | expected 0.924 | runs 12
+X5 f378: coverage 0.831 | expected 0.831 | runs 12
+X5 f379: coverage 0.706 | expected 0.707 | runs 12
+X5 f380: coverage 0.556 | expected 0.556 | runs 12
+X5 f381: coverage 0.381 | expected 0.383 | runs 12
+X5 f382: coverage 0.193 | expected 0.195 | runs 12
+X5 f383: coverage 0.000 | expected 0.000 | runs 0
+X6 out f435: expected  600.0% (reference row off-frame: the screen covers the frame)
+X6 out f436: scale  393.8% | expected  394.3% | left 429 vs 428.0
+X6 out f437: scale  273.4% | expected  274.0% | left 679 vs 678.1
+X6 out f438: scale  200.9% | expected  201.4% | left 830 vs 829.2
+X6 out f439: scale  156.2% | expected  156.5% | left 923 vs 922.5
+X6 out f440: scale  128.4% | expected  128.7% | left 981 vs 980.4
+X6 out f441: scale  111.6% | expected  111.8% | left 1016 vs 1015.4
+X6 out f442: scale  102.8% | expected  102.8% | left 1034 vs 1034.1
+X6 out f443: scale  100.0% | expected  100.0% | left 1040 vs 1040.0
+X6 in f530: scale  100.0% | expected  100.0% | left 1184 vs 1184.0
+X6 in f531: scale  102.8% | expected  102.8% | left 1177 vs 1176.7
+X6 in f532: scale  111.6% | expected  111.8% | left 1154 vs 1153.7
+X6 in f533: scale  128.4% | expected  128.7% | left 1111 vs 1110.6
+X6 in f534: scale  156.5% | expected  156.5% | left 1039 vs 1039.3
+X6 in f535: scale  201.1% | expected  201.4% | left 925 vs 924.5
+X6 in f536: scale  273.9% | expected  274.0% | left 739 vs 738.6
+X6 in f537: scale  394.0% | expected  394.3% | left 431 vs 430.7
+X6 in f538: expected  600.0% (reference row off-frame: the screen covers the frame)
+X7 f599: mean RGB [35.4 35.4 35.4]
+X7 f600: mean RGB [35.4 35.4 35.4]
+X7 f602: mean RGB [57.7 56.8 54.6]
+X7 f604: mean RGB [85.7 83.8 78.8]
+X7 f607: mean RGB [126.8 123.3 114.3]
+X7 f609: mean RGB [130.2 126.4 116.8]
+X7 f611: mean RGB [101.4  98.5  91.1]
+X7 f613: mean RGB [45.  43.9 41.2]
+X7 f614: mean RGB [10.5 10.5 10.5]
+X7 f614: share of #0A0A0A pixels 1.000 (dissolve ends on black)
+X9 B1 f670: RGB [44.3 28.3 28.8] | expected [44.2 27.7 28.4] (red 35% Overlay)
+X9 B1 f671: RGB [44.3 28.3 28.8] | expected [44.2 27.7 28.4] (red 35% Overlay)
+X9 B1 f672: RGB [28.8 32.9 46.8] | expected [28.3 32.3 46.7] (blue 35% Overlay)
+X9 B1 f673: RGB [28.8 32.9 46.8] | expected [28.3 32.3 46.7] (blue 35% Overlay)
+X9 B1 f674: RGB [35.6 35.6 35.6] | unwashed [35.5 35.5 35.5]
+X9 B5 f700: RGB [47.7 31.6 32.1] | expected [47.7 31.  31.7] (red 35% Overlay)
+X9 B5 f701: RGB [47.7 31.6 32.1] | expected [47.7 31.  31.7] (red 35% Overlay)
+X9 B5 f702: RGB [32.1 36.2 50.2] | expected [31.6 35.7 50.1] (blue 35% Overlay)
+X9 B5 f703: RGB [32.1 36.2 50.3] | expected [31.6 35.7 50.1] (blue 35% Overlay)
+X9 B5 f704: RGB [38.9 38.9 38.9] | unwashed [38.9 38.9 38.9]
+X4 B8 f178: red shifted +6 px, blue -6 px vs green (expected +6 / -6)
+X4 B17 f317: red shifted +6 px, blue -6 px vs green (expected +6 / -6)
+X4 plan B8: 10f x 144 blocks (16x9), max |offset| 30 px, frozen blocks per frame 4,8,12,17,24,33,35,36,38,38
+X4 plan B2 live: 8f x 144 blocks (16x9), max |offset| 30 px, frozen blocks per frame 2,6,10,13,18,26,32,38
+X4 plan B17: 6f x 144 blocks (16x9), max |offset| 30 px, frozen blocks per frame 6,13,20,28,35,40
