@@ -1306,6 +1306,22 @@
     "b07-shutdown",
     "b08-break"
    ]
+  },
+  {
+   "rid": "R15.L1",
+   "beats": "B15",
+   "role": "proof shot (v03, your note 7: missing clip replaced from your Drive library)",
+   "desc": "GTA 6 'An Extended Look' (official Rockstar video, Netflix upload): dirt-bike race up a dusty hill, race HUD; replaces the missing R15.1 Race and Chase gameplay",
+   "url": "https://drive.google.com/drive/folders/1Li0fFSxSyK9EHdm2Y2T8mp5Pjg2TYvHK",
+   "note": "file 04_Broll/_originals/Drive2/Grand Theft Auto VI An Extended Look   Now Playing   Netflix.mp4 @ 14.10-15.10 s",
+   "official_required": false,
+   "folder": "04_Broll/_originals/Drive2",
+   "file": "04_Broll/_originals/Drive2/Grand Theft Auto VI An Extended Look   Now Playing   Netflix.mp4",
+   "status": "used",
+   "used_in": [
+    "b15-proof"
+   ],
+   "channel": "Netflix (official GTA 6 video)"
   }
  ]
 }
