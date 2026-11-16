@@ -11,6 +11,12 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
    X6 zoom        RCK.transitions.zoom (+ zoomFit, zoomGeometry)   100% <-> 600% over 8f with motion blur
    X7 light leak  RCK.transitions.leakDissolve 12-16f dissolve through a light-leak overlay (Screen blend)
    X9 siren wash  RCK.transitions.sirenWash    4f overlay: #E3262E at 35% (Overlay) 2f, then #2D5BFF 2f
+   v02 zoom-through RCK.transitions.zoomThroughOut / zoomThroughIn / zoomThrough (also RCK.cam.*): B2 -> B3, rule D
+
+   v02 (REVISION_v02 rule C, nothing linear): X3 ramps power1.in / fade power1.out, X5 slats power3.in (close) /
+   power3.out (open), X7 picture fades power2.in / power2.out, X6 blur and the X4 frame counter are per-frame STEPS
+   (values sampled from their eased curves, nothing interpolates between frames); hard changes are 0.5f step tweens.
+   opts.ease everywhere takes an easings.net name ('easeOutExpo') or a GSAP name; 'none'/'linear' are refused.
 
    Conventions (kit-wide):
    - Every timeline helper is pure: helper(tl, target, atSeconds, opts) -> endSeconds. It only adds tweens/sets to the
@@ -48,12 +54,23 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   function num(v, d) { return v === undefined || v === null || v === '' || isNaN(+v) ? d : +v; }
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   function warn(msg) { if (window.console) console.warn('RCK.transitions: ' + msg); }
+  // easings.net name ('easeInExpo') or GSAP name -> GSAP ease; 'none' / 'linear' are refused (rule C) -> dflt
+  function easeOf(e, dflt) {
+    if (e == null || e === '') e = dflt;
+    if (typeof e === 'function') return e;
+    if (/^(none|linear|power0(\.\w+)?)$/i.test(String(e).trim())) { warn('ease "' + e + '" is linear (REVISION_v02 rule C), using ' + dflt); e = dflt; }
+    if (window.RCK && RCK.ease && RCK.ease.gsap) return RCK.ease.gsap(e);
+    var m = /^ease(InOut|In|Out)(Sine|Quad|Cubic|Quart|Quint|Expo|Circ|Back|Elastic|Bounce)$/.exec(String(e));
+    if (!m) return e;
+    var fam = { Sine: 'sine', Quad: 'power1', Cubic: 'power2', Quart: 'power3', Quint: 'power4', Expo: 'expo', Circ: 'circ', Back: 'back', Elastic: 'elastic', Bounce: 'bounce' }[m[2]];
+    return fam + '.' + (m[1] === 'InOut' ? 'inOut' : m[1].toLowerCase());
+  }
   function seedOf(str) { var h = 2166136261; str = String(str || 'rck'); for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-  // Hard change landing ON frame n: a 0.5-frame tween between frames n-1 and n (frame n-1 = from, frame n = to).
+  // Hard change landing ON frame n: a 0.5-frame step tween between frames n-1 and n (frame n-1 = from, frame n = to).
   function hard(tl, target, from, to, n) {
     var pos = (n - 0.75) / FPS;
     if (pos < 0) { G().set(target, to); return; }
-    tl.fromTo(target, from, Object.assign({ duration: 0.5 / FPS, ease: 'none', immediateRender: false }, to), pos);
+    tl.fromTo(target, from, Object.assign({ duration: 0.5 / FPS, ease: 'steps(1)', immediateRender: false }, to), pos);
   }
   // Non-tweenable property (clip-path strings) changing ON frame n: a set strictly between frames n-1 and n.
   function setOn(tl, target, vars, n) {
@@ -89,15 +106,17 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     if (px < 40 || px > 80) warn('drift: px ' + px + ' is outside the plan range 40-80');
     var x0 = (opts.dir || 'left') === 'right' ? -px : px;
     G().set(el, { x: x0 });
-    tl.fromTo(el, { x: x0 }, { x: 0, duration: N * F, ease: opts.ease || 'power3.out', immediateRender: false }, tF(n0));
+    tl.fromTo(el, { x: x0 }, { x: 0, duration: N * F, ease: easeOf(opts.ease, 'power3.out'), immediateRender: false }, tF(n0));
     return tF(n0 + N);
   }
 
   /* ================================================================ X3 white flash */
   // 100% white (#FFFFFF), counted in FRAMES ON SCREEN: ramp 2 frames, hold 1 frame at 100%, fade 4 frames, centred on
   // the cut. at = the cut frame C = the first frame of the new picture = the flash's single 100% frame (S09 + the music
-  // drop land here in B10). Linear ramps, so the frames read
-  //   C-3 0 | C-2 33% | C-1 67% | C 100% | C+1 80% | C+2 60% | C+3 40% | C+4 20% | C+5 0
+  // drop land here in B10). v02 eased (REVISION_v02 table "white flash ramp / fade"): ramp easeInQuad (power1.in), fade
+  // easeOutQuad (power1.out; opts.rampEase / fadeEase), so the frames read
+  //   C-3 0 | C-2 11% | C-1 44% | C 100% | C+1 64% | C+2 36% | C+3 16% | C+4 4% | C+5 0
+  // (v01 linear: C-2 33%, C-1 67%, C+1 80% ... C+4 20%)
   // (7 white frames C-2..C+4 = STORYBOARD B10 "ramp 35-37, hold 37, fade 38-41", B13 f83-89; PRODUCTION_SPEC "ramp 2f
   // before the cut, hold 1f, fade 4f after"). opts.ramp / hold / fade = those frame counts (2 / 1 / 4).
   // opts.half: 'out' = only the ramp, then holds 100% from C on (outgoing composition of a boundary flash); 'in' = 100%
@@ -107,18 +126,21 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var el = $(target), c = frame(at), r = num(opts.ramp, 2), h = Math.max(1, num(opts.hold, 1)), f = num(opts.fade, 4), half = opts.half;
     G().set(el, { opacity: half === 'in' ? 1 : 0 });
-    if (half !== 'in') linearOpacity(tl, el, c - r - 1, 0, c, 1);          // 0 on C-r-1 .. 100% on C (r frames between)
+    if (half !== 'in') easedOpacity(tl, el, c - r - 1, 0, c, 1, easeOf(opts.rampEase, 'power1.in'));   // 0 on C-r-1 .. 100% on C
     if (half === 'out') return tF(c);
     var last = c + h - 1;                                                  // last 100% frame
-    linearOpacity(tl, el, last, 1, last + f + 1, 0);                       // 100% on `last` .. 0 on last+f+1 (f frames between)
+    easedOpacity(tl, el, last, 1, last + f + 1, 0, easeOf(opts.fadeEase, 'power1.out'));                 // 100% on `last` .. 0 on last+f+1
     return tF(last + f + 1);
   }
-  // Linear opacity v0 on frame n0 -> v1 on frame n1 (the frames between interpolate); clipped at the timeline start.
-  function linearOpacity(tl, el, n0, v0, n1, v1) {
+  // Eased opacity v0 on frame n0 -> v1 on frame n1; if the timeline start cuts it, the remaining part starts from the
+  // eased value at frame 0 (the curve is kept, not restarted).
+  function easedOpacity(tl, el, n0, v0, n1, v1, ease) {
     if (n1 <= n0) return;
     if (n1 <= 0) { G().set(el, { opacity: v1 }); return; }
-    var a = Math.max(0, n0), va = v0 + (v1 - v0) * (a - n0) / (n1 - n0);
-    tl.fromTo(el, { opacity: va }, { opacity: v1, duration: (n1 - a) * F, ease: 'none', immediateRender: false }, tF(a));
+    if (n0 >= 0) { tl.fromTo(el, { opacity: v0 }, { opacity: v1, duration: (n1 - n0) * F, ease: ease, immediateRender: false }, tF(n0)); return; }
+    var E = G().parseEase(ease), p0 = -n0 / (n1 - n0), e0 = E(p0);
+    var sub = function (p) { return (E(p0 + p * (1 - p0)) - e0) / (1 - e0); };
+    tl.fromTo(el, { opacity: v0 + (v1 - v0) * e0 }, { opacity: v1, duration: n1 * F, ease: sub, immediateRender: false }, 0);
   }
 
   /* ================================================================ X4 pixel-block tear */
@@ -284,7 +306,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       ctx.globalCompositeOperation = 'source-over';
       ctx.clearRect(0, 0, st.w, st.h);
       if (!st.planes) return;
-      var k = clamp(Math.floor(proxy.f + 1e-6), 0, N - 1), fr = plan.frameList[k];
+      var k = clamp(Math.round(proxy.f), 0, N - 1), fr = plan.frameList[k];
       var r;
       if (K) {
         var ss = splitStill();
@@ -324,7 +346,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     }
     g.set(st.canvas, { opacity: 0 });
     hard(tl, st.canvas, { opacity: 0 }, { opacity: 1 }, n0);
-    tl.fromTo(proxy, { f: 0 }, { f: N, duration: N * F, ease: 'none', immediateRender: false, onUpdate: draw }, tF(n0));
+    // frame counter (not a motion): steps(N) holds the integer tear frame index k for the whole of frame n0 + k
+    tl.fromTo(proxy, { f: 0 }, { f: N, duration: N * F, ease: 'steps(' + N + ')', immediateRender: false, onUpdate: draw }, tF(n0));
     if (nEnd != null) hard(tl, st.canvas, { opacity: 1 }, { opacity: 0 }, nEnd);
 
     // live views: per frame, view j shows its blocks (clip-path) shifted by its group's offset
@@ -367,15 +390,17 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     if (opts.color) slats.forEach(function (s) { s.style.background = opts.color; });
     return slats;
   }
-  // Ease: none by default = constant angular speed (11.25 deg a frame), one continuous rotation +90 -> 0 -> -90 through
-  // the shut point, so the two halves (two compositions) join seamlessly and all 8 frames of each half visibly move.
+  // Ease (v02, rule C): the close accelerates into the shut point (power3.in = easeInQuart, "accelerating into a cut") and
+  // the open decelerates out of it (power3.out = easeOutQuart), mirrored, so the two halves (two compositions) meet at
+  // the same angular speed. Coverage (= sin of the closed angle) per frame, close: B-8 0 | B-5 3% | B-4 10% | B-3 24% |
+  // B-2 47% | B-1 79% | B 100% (shut); open: the mirror. opts.ease / easeClose / easeOpen override. (v01: constant speed.)
   // OUTGOING half: slats rotate shut over the 8f before the boundary (frames B-8..B-1 animate, shut from B on and held
   // through the tail handle). at = the boundary B (local time of the incoming beat's first frame). Returns at.
   function blindsClose(tl, target, at, opts) {
     opts = opts || {};
     var slats = blindsInit(target, opts), b = frame(at), N = num(opts.frames, 8), p = num(opts.perspective, 1000);
     G().set(slats, { rotationY: 90, transformPerspective: p, transformOrigin: '50% 50%' });
-    tl.fromTo(slats, { rotationY: 90 }, { rotationY: 0, duration: N * F, ease: opts.ease || 'none', immediateRender: false }, tF(b - N));
+    tl.fromTo(slats, { rotationY: 90 }, { rotationY: 0, duration: N * F, ease: easeOf(opts.ease, 'power3.in'), immediateRender: false }, tF(b - N));
     return tF(b);
   }
   // INCOMING half: shut from the clip start (head handle) to the boundary B, then rotate open over 8f (B..B+8; slats gone
@@ -384,7 +409,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var slats = blindsInit(target, opts), b = frame(at), N = num(opts.frames, 8), p = num(opts.perspective, 1000);
     G().set(slats, { rotationY: 0, transformPerspective: p, transformOrigin: '50% 50%', opacity: 1 });
-    tl.fromTo(slats, { rotationY: 0 }, { rotationY: -90, duration: N * F, ease: opts.ease || 'none', immediateRender: false }, tF(b));
+    tl.fromTo(slats, { rotationY: 0 }, { rotationY: -90, duration: N * F, ease: easeOf(opts.ease, 'power3.out'), immediateRender: false }, tF(b));
     hard(tl, slats, { opacity: 1 }, { opacity: 0 }, b + N);
     return tF(b + N);
   }
@@ -393,8 +418,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var slats = blindsInit(target, opts), b = frame(at), N = num(opts.frames, 8), p = num(opts.perspective, 1000);
     G().set(slats, { rotationY: 90, transformPerspective: p, transformOrigin: '50% 50%', opacity: 1 });
-    tl.fromTo(slats, { rotationY: 90 }, { rotationY: 0, duration: N * F, ease: (opts.easeClose || 'none'), immediateRender: false }, tF(b - N));
-    tl.fromTo(slats, { rotationY: 0 }, { rotationY: -90, duration: N * F, ease: (opts.easeOpen || 'none'), immediateRender: false }, tF(b));
+    tl.fromTo(slats, { rotationY: 90 }, { rotationY: 0, duration: N * F, ease: easeOf(opts.easeClose, 'power3.in'), immediateRender: false }, tF(b - N));
+    tl.fromTo(slats, { rotationY: 0 }, { rotationY: -90, duration: N * F, ease: easeOf(opts.easeOpen, 'power3.out'), immediateRender: false }, tF(b));
     hard(tl, slats, { opacity: 1 }, { opacity: 0 }, b + N);
     return tF(b + N);
   }
@@ -511,7 +536,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // (GSAP power1.in for 'in': accelerates into the screen; power1.out for 'out': decelerates as it lands in the screen),
   // so every one of the 8 frames moves and the ratio per frame changes by the same step. s(p) for p in [0, 1].
   function zoomCurve(dir, S, ease) {
-    var E = G().parseEase(ease || (dir === 'out' ? 'power1.out' : 'power1.in')), L = Math.log(S);
+    var E = G().parseEase(easeOf(ease, dir === 'out' ? 'power1.out' : 'power1.in')), L = Math.log(S);
     return function (p) { p = clamp(p, 0, 1); return Math.exp(L * (dir === 'out' ? 1 - E(p) : E(p))); };
   }
   // Per-frame plan (no DOM): scale and screen-space blur sigma for frames 0..N+1 of the zoom.
@@ -572,7 +597,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       var b = base(m), prev = 0;
       plan.list.forEach(function (p) {
         var v = blurValue(p.sigma / (p.scale * b));
-        if (p.k > 0) tl.fromTo(m, { '--hf-color-grading-blur': prev }, { '--hf-color-grading-blur': v, duration: F, ease: 'none', immediateRender: false }, tF(n0 + p.k - 1));
+        if (p.k > 0) hard(tl, m, { '--hf-color-grading-blur': prev }, { '--hf-color-grading-blur': v }, n0 + p.k);   // per-frame step
         prev = v;
       });
     });
@@ -581,7 +606,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       g.set(d, { filter: 'blur(0px)' });
       plan.list.forEach(function (p) {
         var px = Number((p.sigma / (p.scale * b)).toFixed(3));
-        if (p.k > 0) tl.fromTo(d, { filter: 'blur(' + prev + 'px)' }, { filter: 'blur(' + px + 'px)', duration: F, ease: 'none', immediateRender: false }, tF(n0 + p.k - 1));
+        if (p.k > 0) hard(tl, d, { filter: 'blur(' + prev + 'px)' }, { filter: 'blur(' + px + 'px)' }, n0 + p.k);   // per-frame step
         prev = px;
       });
     });
@@ -604,7 +629,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     root.setAttribute('data-layout-ignore', '');
     return root;
   }
-  // X7: a `frames` (12-16, default 14) dissolve from opts.from (opacity 1 -> 0, linear) to opts.to (0 -> 1, if given)
+  // X7: a `frames` (12-16, default 14) dissolve from opts.from (opacity 1 -> 0, power2.in = easeInCubic "fade out") to
+  // opts.to (0 -> 1, power2.out = easeOutCubic "fade in", if given; v01 both linear)
   // through the light leak (Screen blend): leak opacity 0 -> peak (0.9) at the midpoint (sine.out) -> 0 at the end
   // (sine.in) while its layers drift. at = the first dissolve frame. Returns at + frames.
   function leakDissolve(tl, target, at, opts) {
@@ -624,8 +650,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       tl.fromTo(b, { xPercent: 20, yPercent: -8, scale: 1.08 }, { xPercent: 2, yPercent: 0, scale: 1.01, duration: d, ease: 'sine.inOut', immediateRender: false }, t0);
       tl.fromTo(c, { xPercent: -28, rotation: -6 }, { xPercent: -2, rotation: -1, duration: d, ease: 'sine.inOut', immediateRender: false }, t0);
     }
-    if (opts.from) $$(opts.from).forEach(function (e) { tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: d, ease: 'none', immediateRender: false }, t0); });
-    if (opts.to) $$(opts.to).forEach(function (e) { g.set(e, { opacity: 0 }); tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: d, ease: 'none', immediateRender: false }, t0); });
+    if (opts.from) $$(opts.from).forEach(function (e) { tl.fromTo(e, { opacity: 1 }, { opacity: 0, duration: d, ease: easeOf(opts.fromEase, 'power2.in'), immediateRender: false }, t0); });
+    if (opts.to) $$(opts.to).forEach(function (e) { g.set(e, { opacity: 0 }); tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: d, ease: easeOf(opts.toEase, 'power2.out'), immediateRender: false }, t0); });
     return tF(n0 + N);
   }
 
