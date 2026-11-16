@@ -26,18 +26,18 @@ trailer: Trailer 1 stays on screen through "It opens with Lucia already caught."
 | Timing | 196f; "who's" 106, "chasing" 116, "now?" 137, end of "now?" 150 | 186f; "And" 1, "GTA" 7, "It" 36, "Lucia" 54, "caught." 74, "So" 97, "who's" 100, "chasing" 109, "who" 123, "now?" 129, end of "now?" 141 | note 10 |
 | T1 | 4 chunk clips (low line y 860) | word by word, max 2 words, low line: "And" 1 / "GTA 6?" 7 / "It opens" 36 / "with Lucia" 48 / "already caught." 62 / "So who's" 97 -> out on "chasing" 109. Grouping note: the kit's split inside the plan chunk "It opens with" leaves "with" alone; it goes with the word after it ("with Lucia", rule A) | note 11, rule A |
 | T2 | "chasing who" + "now?" on screen together; the pair dropped 45 px on the cut (an `ease: 'none'` tween) | word by word, max 2: "chasing who" (lead, `--rc-y` 880, over the chase shots) 109 -> "now?" alone (keyword blur punch 30 -> 0 px, 108 -> 100%, 6f easeOutExpo, on black at `--rc-y` 925 = the v01 dropped line, clear of the logo's bottom tip at 115%) 129; no drop tween any more | note 11, rules A, C |
-| T10 on "now?" | f170 | f161 (6f, seed 8 = B8's slice pattern, hard per-frame cuts, breaks apart, no settle), then black f167 | re-time |
+| X4 + T10 final break | f170: X4 6f + T10 6f, then black f176 | f161: **X4 8f, seed 8, still mode = B8's v02 break** (coordinator: B8 and B11 moved to the kit's 8f; B17's final break echoes B8's) on the logo, T10 on "now?" 6f (seed 8 = B8's slice pattern, hard per-frame cuts, breaks apart, no settle; its last broken frame holds while the tear finishes), then black from f169 (the logo and the keyword run to f169) | re-time, plan "B17 echoes B8" |
 | M1 stars | pop on "GTA", blink to f107 | pop on "GTA" (7), blink (hard) to the first chase cut f100; row centred on (1700, 80) on the top bar (C34) | re-time |
 | Chase shots (Tesseract) | f107-117-127-137, static 100% | chase-1 R17.2 @ 7.2 f100-109 (9f, punch-in 112 -> 100% easeOutExpo, on "who's") / chase-2 R17.4 @ 47.2 f109-119 (push 100 -> 106% easeInOutSine, on "chasing") / chase-3 R17.2 @ 11.9 f119-129 (push 102 -> 110% easeInQuart, accelerating into the hard cut to black on "now?") | rules D, E |
-| Logo end card (R17.4, HF) | f150-176, push 100 -> 115% over 20f | f141-167 (local 147-173): the same push, log-space easeInCubic with per-frame motion blur, landing on the final hit f161 | re-time |
-| X4 still | `assets/x4/b17-old.png` at local 176 | re-made by `x4_still.sh` at local 167 (FRAME updated): identical pixels (same logo frame at 115%) | re-time |
+| Logo end card (R17.4, HF) | f150-176, push 100 -> 115% over 20f | f141-169 (local 147-175): the same push, log-space easeInCubic with per-frame motion blur, landing on the final hit f161, torn f161-168 | re-time |
+| X4 still | `assets/x4/b17-old.png` at local 176 | re-made from B17's own frame by `x4_still.sh` at local 167 (FRAME updated): identical pixels (same logo frame at 115%, no text) | re-time |
 
 `cues.json` = `{"now": 129, "music_stop": 141, "logo_in": 141, "final_hit": 161}`. `footage.json`: only R17.4's end card is
 synced here; the client clip is Tesseract-owned.
 
 Checks: `check --json` 0 errors (warnings: frame 0 transparent by design, `line_unread` on "And" 6f and on "now?" as "the film's
 last line", nested T2 markup, track density). Snapshots `review/v02/a/` + `sheet_a.jpg` (magenta = transparent): every caption
-word, star pops, the cut to black, the keyword blur, the logo push, the tear + T10 frames, the black tail; plus a mock-up of the
+word, star pops, the cut to black, the keyword blur, the logo push, the tear + T10 frames (`review/v02/x4/`, 8f), the black tail; plus a mock-up of the
 overlay on the cropped client clip (band, captions legible over the dark yard and Lucia's shirt). Render
 `05_GFX/renders/b17-loop.mov`: ProRes 4444, 1920x1080, 30 fps, **198 frames**, `yuva444p12le` (ffprobe, counted); transparent
 over the Tesseract shots (beat f0-129), opaque from the cut to black on "now?" (f129) to the end.
