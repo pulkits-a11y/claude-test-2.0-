@@ -137,8 +137,10 @@ def video_frame(source, t, crop, dst_png, tmp):
     src = os.path.join(ROOT, source)
     raw = os.path.join(tmp, "raw.png")
     cmd = ["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", "%.5f" % max(0.0, t - 0.001), "-i", src, "-frames:v", "1"]
-    if crop:
-        cmd += ["-vf", "crop=" + crop]
+    vf = ["crop=" + crop] if crop else []
+    # square the pixels (crop is in stored pixels; R14.4 is anamorphic, SAR 320:569) - a no-op for square sources
+    vf += ["scale=w='trunc(iw*sar/2)*2':h=ih:flags=lanczos", "setsar=1"]
+    cmd += ["-vf", ",".join(vf)]
     subprocess.run(cmd + [raw], check=True)
     cover_frame(raw, dst_png)
 

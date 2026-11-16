@@ -147,9 +147,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "MOMENT R14.4 @ 124.6 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=124): GTA 4 (2008): LCPD cruiser, light bar on, right on the fleeing car while a gunman leans out of it. Crop = 16:9 out of the 2276x720 Social Club movie, above y 630 where the R* and 'ROCKSTAR GAMES / Social Club' marks sit. || L10 montage burst clip 7/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "notes": "MOMENT R14.4 @ 124.6 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=124): GTA 4 (2008): LCPD cruiser, light bar on, right on the fleeing car while a gunman leans out of it. Crop = 16:9 out of the 2276x720 Social Club movie, above y 630 where the R* and 'ROCKSTAR GAMES / Social Club' marks sit. || L10 montage burst clip 7/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). | Crop corrected by main: R14.4 is anamorphic (stored 2276x720, SAR 320:569 = 1280x720 on screen); crops are in stored pixels, so 1116:628:400:0 showed a ~1:1 picture. 1978:626:298:0 = 1113x626 on screen (16:9), rows above the R*/Social Club marks.",
    "source": "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
-   "crop": "1116:628:400:0"
+   "crop": "1978:626:298:0"
   },
   {
    "id": "B14-burst-08-R14.4b",
@@ -169,9 +169,9 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "MOMENT R14.4 @ 155.2 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=155): GTA 4 (2008): POLICE cruiser door to door with the fleeing car. Crop = 16:9 above the R*/Social Club marks (y >= 630). || L10 montage burst clip 8/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them).",
+   "notes": "MOMENT R14.4 @ 155.2 s (https://www.youtube.com/watch?v=WNZMK7KPZWs&t=155): GTA 4 (2008): POLICE cruiser door to door with the fleeing car. Crop = 16:9 above the R*/Social Club marks (y >= 630). || L10 montage burst clip 8/10 (GTA 4, tag '2008' drawn by the b14-since overlay, top-left). Plan p.26 step 1: 8-10 chase clips of 5-6f in release order; STORYBOARD/C15: 10 x 6f, two moments per game, hard cuts (X1), no SFX on the burst cuts (the music carries them). | Crop corrected by main: R14.4 is anamorphic (stored 2276x720, SAR 320:569 = 1280x720 on screen); crops are in stored pixels, so 1116:628:0:0 showed a ~1:1 picture. 1978:626:0:0 = 1113x626 on screen (16:9), rows above the R*/Social Club marks.",
    "source": "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
-   "crop": "1116:628:0:0"
+   "crop": "1978:626:0:0"
   },
   {
    "id": "B14-burst-09-R14.5a",

@@ -101,7 +101,12 @@ from -0.0f, cops? +0.4f: all within +/-2f.
     (wanted stars and icons) sits in the top-right corner of the R1.2 shot, and at x 1700 the fifth M1 star collided
     with it. The row centre is moved 60 px left to (1640, 80); same y, size, timing. DEVIATION, flagged.
 13. **Cell framing**: cell 4 (San Andreas) uses object-position 70% to push the game's mission text out of the cell;
-    R1.7 and R14.4 are cropped in footage.json (watermark band / corner logos and the ultrawide 2276x720 frame).
+    R1.7 and R14.4 are cropped in footage.json (watermark band; corner logos).
+14. **R14.4 pixel aspect (fixed)**: R14.4 is anamorphic (stored 2276x720, SAR 320:569). The first footage pass cut
+    it as square pixels, so cell 5 was stretched 1.78x; `tools/sync_footage.py` now crops in stored pixels, then
+    squares the pixels, then fits. New crop 1306:620:604:0 (stored) and a window inside one shot (the old
+    64.0-65.5 crossed two cuts: a different shot at 64.0 and a door close-up from ~65.25). Re-synced, grid
+    re-checked (`review/grid/`), re-rendered.
 
 ## Footage used
 | R-ID | file (`04_Broll/_originals/B01/`) | in-out (s, original) | what it shows | link |
@@ -112,7 +117,7 @@ from -0.0f, cops? +0.4f: all within +/-2f.
 | R14.1 | `R14.1__GTA 3 Epic 6 Stars Wanted Level Shootout+ Tank Rampage + Escape [6lSy09Uruz0].mp4` | 44.0-45.23 | cell 2, GTA 3: an LCPD car right behind / ramming the player's car | https://www.youtube.com/watch?v=6lSy09Uruz0&t=44 |
 | R1.7 | `R1.7__GTA Vice City Epic 6-Stars Police Chase Escape [s2KJsYEngS8].mp4` | 6.4-7.63 | cell 3, Vice City: VCPD cars with flashing lights burning while Tommy fires at them (crop 782:660:560:0 keeps the uploader's watermark band out) | https://www.youtube.com/watch?v=s2KJsYEngS8&t=6 |
 | R1.6 | `R1.6__The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S [flgIZbQHwN8].mp4` | 46.0-47.23 | cell 4, San Andreas: an LSPD cruiser with lights in pursuit of a biker | https://www.youtube.com/watch?v=flgIZbQHwN8&t=46 |
-| R14.4 | `R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4` | 64.0-65.23 | cell 5, GTA 4: an LCPD car with lights chasing a silver sedan (crop 852:720:450:0 of the 2276x720 frame; no corner logos) | https://www.youtube.com/watch?v=WNZMK7KPZWs&t=64 |
+| R14.4 | `R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4` | 63.75-64.98 (on screen from the pop: 64.15-64.98; one shot 63.5-65.1) | cell 5, GTA 4: an LCPD car with lights flashing following the silver sedan up the street. Anamorphic source (2276x720 stored, SAR 320:569 = 1280x720 on screen): crop in STORED px 1306:620:604:0 = 734x620 on screen (cell aspect ~1.18), excludes both corner logos | https://www.youtube.com/watch?v=WNZMK7KPZWs&t=63 |
 | R1.3 | `R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4` | 46.0-47.03 | cell 6, GTA 5: a white supercar fleeing past POLICE cars (5 stars) | https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=46 |
 
 ## Substitutions

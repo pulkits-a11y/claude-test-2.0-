@@ -107,6 +107,15 @@ Handles: head = slats shut over the card; tail (local 221-227) = transparent + T
    re-measured for the italic face (303.12 px, x 808.44-1111.56).
 6. SUGGESTION (not built): none.
 
+## L2 band geometry (assembly change, Tesseract side)
+- A narrow (4:3) L2 source is now placed at FULL height, pillarboxed 1440x1080 (never stretched), and the 138 px L2
+  bars slide in over its top and bottom, leaving a 1440x804 picture inside the band (before: fitted to the band
+  height, 1072x804, so the bars slid over black). Checked for the R3.7 BBC band (4:3): the two developers at their
+  computers and the presenter sit in rows ~20-80% of the picture, inside the visible middle 804 rows (12.8-87.2%);
+  only ceiling lights (top) and chair legs/feet (bottom) go under the bars. The R3.1 Dundee crop is 16:9, so it
+  fills the band width (cover) and the bars cover its top/bottom 138 px: the Law's monument and the sky either side
+  (where the T4 words sit at y 280) stay inside the band (checked). No HyperFrames change needed.
+
 ## Pending / blocking
 - Nothing blocking. If R3.5 (Lemmings PC) is uploaded later, the R3.6 cut-out can stay (plan allows either).
 - Tesseract: the L2 band shots use `source`/`source_in_s`/`crop` in `tesseract_shots.json`.

@@ -37,10 +37,10 @@
    "note": "San Andreas: LSPD cruiser with lights in pursuit of a biker."
   },
   "R14.4": {
-   "in": 64.0,
-   "out": 65.5,
-   "crop": "852:720:450:0",
-   "note": "GTA 4 'Deadly Pursuit' (2276x720 Social Club movie): LCPD car with lights chasing the silver sedan. Crop to the cell's aspect, excludes the R*/Social Club corner logos."
+   "in": 63.75,
+   "out": 65.0,
+   "crop": "1306:620:604:0",
+   "note": "GTA 4 'Deadly Pursuit' (anamorphic 2276x720 stored, SAR 320:569 = 1280x720 on screen): an LCPD car with lights following the silver sedan up the street (one shot, 63.5-65.1 s; the cell shows 64.15-64.98). Crop in STORED px 1306:620:604:0 = 734x620 on screen (cell aspect ~1.18), excludes both corner logos (R* bottom-left, Rockstar Games/Social Club bottom-right, below row ~627)."
   },
   "R1.3": {
    "in": 46.0,
