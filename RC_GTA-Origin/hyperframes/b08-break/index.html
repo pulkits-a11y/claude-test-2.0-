@@ -17,6 +17,9 @@
       #b08-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5 */
       .b08-art, .b08-dim, .b08-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
       .b08-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
+      /* v03: the dark-page highlighter, exactly as b07-shutdown (opaque strokes in one group; the group: screen, 50%) */
+      .b08-hlgroup { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; mix-blend-mode: screen; opacity: 0.5; }
+      .b08-hlgroup > .rc-t9-hl { mix-blend-mode: normal; opacity: 1; }
     </style>
   </head>
   <body>
@@ -47,10 +50,12 @@
         <div id="b08-camE" class="rc-cam">
           <div id="b08-pageE" class="b08-page" data-layout-allow-overflow="">
             <img id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.5666" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
-            <!-- the two T9 highlighter strokes, landed (b07 swipes them on "shut" and "down.") -->
+            <!-- the two T9 highlighter strokes, landed (b07 swipes them on "shut" and "down."); v03: dark-page group -->
             <div id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.5666" data-track-index="2" data-layout-ignore="">
-              <div id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 358px; height: 48px"></div>
-              <div id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+              <div class="b08-hlgroup">
+                <div id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
+                <div id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+              </div>
             </div>
             <div id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.5666" data-track-index="3" data-layout-ignore="">
               <svg width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs>

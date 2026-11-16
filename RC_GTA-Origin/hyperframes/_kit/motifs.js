@@ -165,6 +165,96 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return tF(kEnd);
   }
 
+  /* ---------------------------------------------------------------- M1 v03: glitch-in (REVISION_v03 note 5) */
+  // "make the wanted stars glitch in instead of the current opening animation". Each star appears through a short
+  // glitch instead of the scale pop: RGB split (a siren-red copy +dx and a siren-blue copy -dx under the white star),
+  // three horizontal slices jumping left / right (a new seeded pattern every frame), and 1-2 flicker frames (the star
+  // gone for one frame), then the clean star. Every change is a hard cut between two frames (no tween, nothing
+  // interpolated); the split narrows frame by frame. Stars start stepF apart (3f, like the v01 pop), left to right.
+  var STAR_SLICES = [[-40, 38], [38, 63], [63, 140]];   // y bands in star units (the star spans 6.8 .. 93.2 of 100)
+  function ensureStarClips() {
+    if (document.getElementById("rcm-star-sl1")) return;
+    ensureDefs();
+    var defs = document.getElementById(DEFS_ID).querySelector("defs");
+    STAR_SLICES.forEach(function (b, i) {
+      var cp = svgEl("clipPath", { id: "rcm-star-sl" + (i + 1), clipPathUnits: "userSpaceOnUse" });
+      cp.appendChild(svgEl("rect", { x: "-300", y: String(b[0]), width: "700", height: String(b[1] - b[0]) }));
+      defs.appendChild(cp);
+    });
+  }
+  function starsGlitchPrep(st) {
+    if (st.glitch) return st.glitch;
+    ensureStarClips();
+    st.glitch = st.stars.map(function (star) {
+      var clean = star.querySelector("path");
+      var gl = svgEl("g", { "class": "m1-gl" });
+      var slices = STAR_SLICES.map(function (b, i) {
+        var g = svgEl("g", { "clip-path": "url(#rcm-star-sl" + (i + 1) + ")", transform: "translate(0 0)" });
+        var r = svgEl("path", { d: STAR_D, "class": "m1-gl__r", transform: "translate(0 0)" });
+        var bl = svgEl("path", { d: STAR_D, "class": "m1-gl__b", transform: "translate(0 0)" });
+        g.appendChild(r); g.appendChild(bl); g.appendChild(svgEl("path", { d: STAR_D, "class": "m1-gl__w" }));
+        gl.appendChild(g);
+        return { g: g, r: r, b: bl };
+      });
+      star.appendChild(gl);
+      return { star: star, clean: clean, gl: gl, slices: slices };
+    });
+    return st.glitch;
+  }
+  // opts: stepF (3) frames between star starts, frames (6; 5-8) of glitch per star, amp (14 star units = 14% of the
+  // star size: slice jump), split (8 units: RGB offset on the first glitch frame, narrowing to ~2), flickers (2: frames
+  // with the star gone; 0-2), flickerOpacity (0), seed (7), order 'ltr' | 'rtl', times = [sec per star] (overrides the
+  // stepF rhythm). Also takes starsInit's opts (preset, size, x, y...). Returns the time the last star is clean.
+  function starsGlitchIn(tl, target, at, opts) {
+    opts = opts || {};
+    var st = starsInit(target, opts), gls = starsGlitchPrep(st).slice();
+    var stepF = num(opts.stepF, 3), nF = Math.max(3, num(opts.frames, 6)), amp = num(opts.amp, 14), split = num(opts.split, 8);
+    var nFlick = Math.max(0, Math.min(2, num(opts.flickers, 2))), flickOp = num(opts.flickerOpacity, 0);
+    var rnd = RCK.rng(num(opts.seed, 7)), k0 = frameOf(at), last = k0;
+    var J = [-1, -0.5, 0.5, 1, 0];
+    if (opts.order === "rtl") gls.reverse();
+    gls.forEach(function (s, i) {
+      var k = opts.times ? frameOf(opts.times[i]) : k0 + i * stepF;
+      last = Math.max(last, k);
+      gsap.set(s.star, { opacity: 0 });
+      gsap.set(s.clean, { opacity: 0 });
+      gsap.set(s.gl, { opacity: 1 });
+      // flicker frames: inside the glitch, never its first or last frame, never two in a row
+      var flick = {}, cand = [];
+      for (var j0 = 1; j0 < nF - 1; j0++) cand.push(j0);
+      for (var n = 0; n < nFlick && cand.length; n++) {
+        var pickJ = cand[Math.floor(rnd() * cand.length)];
+        flick[pickJ] = true;
+        cand = cand.filter(function (c) { return Math.abs(c - pickJ) > 1; });
+      }
+      var prev = "";
+      for (var j = 0; j < nF; j++) {
+        var at2 = setAt(k + j), v, tries = 0;
+        do {
+          v = s.slices.map(function () { return J[Math.floor(rnd() * 4)] * amp; });   // +/- amp or +/- amp/2
+          if (v[0] === v[1] && v[1] === v[2]) v[1] = -v[1];
+        } while (v.join() === prev && ++tries < 16);
+        prev = v.join();
+        var dx = round2(split * (1 - 0.75 * j / (nF - 1)));
+        s.slices.forEach(function (sl, q) {
+          tl.set(sl.g, { attr: { transform: "translate(" + round2(v[q]) + " 0)" } }, at2);
+          tl.set(sl.r, { attr: { transform: "translate(" + dx + " 0)" } }, at2);
+          tl.set(sl.b, { attr: { transform: "translate(" + (-dx) + " 0)" } }, at2);
+        });
+        tl.set(s.star, { opacity: flick[j] ? flickOp : 1 }, at2);
+      }
+      var atEnd = setAt(k + nF);
+      tl.set(s.star, { opacity: 1 }, atEnd);
+      tl.set(s.gl, { opacity: 0 }, atEnd);
+      tl.set(s.clean, { opacity: 1 }, atEnd);
+      s.slices.forEach(function (sl) {
+        tl.set(sl.g, { attr: { transform: "translate(0 0)" } }, atEnd);
+        tl.set([sl.r, sl.b], { attr: { transform: "translate(0 0)" } }, atEnd);
+      });
+    });
+    return tF(last + nF);
+  }
+
   /* ================================================================ M2 "you" arrow */
   // Hand-drawn arrow from `from` (tail) to `to` (tip): a wobbled cubic shaft (seeded) + a head drawn as
   // one "V" stroke (barb -> tip -> barb), like a pen. Two <path>s, because SVG restarts the dash
@@ -762,7 +852,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   /* ================================================================ export */
   RCK.motifs = {
     // M1
-    starsInit: starsInit, starsPopIn: starsPopIn, starsBlink: starsBlink, STAR_PRESETS: STAR_PRESETS, STAR_D: STAR_D,
+    starsInit: starsInit, starsPopIn: starsPopIn, starsBlink: starsBlink, starsGlitchIn: starsGlitchIn, STAR_PRESETS: STAR_PRESETS, STAR_D: STAR_D,
     // M2
     arrowInit: arrowInit, arrowDraw: arrowDraw, arrowErase: arrowErase, arrowGeometry: arrowGeometry,
     // M3 / L9

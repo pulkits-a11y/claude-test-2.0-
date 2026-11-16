@@ -129,15 +129,20 @@
   background: rgba(255, 255, 255, 0.10);
   border: 1px solid rgba(255, 255, 255, 0.20);
 }
+/* v03 (note 8, B1): "make the boxes which have gaussian blur dark (not pure black, the dark of the plain cards)": the
+   tiles are opaque card ink (#0A0A0A) with a faint 1 px line; clearing a tile (same frostClear call) reveals the sharp
+   footage under it. The frosted copy is not needed (leave .rc-l4__frost out, or it is hidden). */
+.rc-l4--ink .rc-l4__frost { display: none; }
+.rc-l4--ink .rc-l4__tile { background: var(--card-bg); border-color: rgba(255, 255, 255, 0.07); }
 
 /* ===================================================================================================================
    L5 Gray card collage: #E9E9E9 background. A cut-out photo or clip in a frame with 8 px white border and a soft
    drop shadow (0, 12, 30 px blur, black 25%). Props rotated +/-4 deg float +/-6 px over 2 s.
    Prop geometry from CSS vars on the prop: --x, --y (top-left of the picture), --w, --h (picture size).
    =================================================================================================================== */
-.rc-l5__ground {                       /* timed: the gray card (full frame) */
+.rc-l5__ground {                       /* timed: the card (full frame); v03: dark (was #E9E9E9) */
   position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
-  background: var(--card-gray);
+  background: var(--card-bg); background-image: var(--card-surface);
 }
 .rc-l5__prop {                         /* untimed; GSAP: rotation (set) + y float */
   position: absolute;
@@ -251,7 +256,7 @@
 .rc-l12 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 .rc-l12__ground {                      /* timed (optional): the gray card behind the stack (B3: history = gray) */
   position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
-  background: var(--card-gray);
+  background: var(--card-bg); background-image: var(--card-surface);   /* v03: dark */
 }
 .rc-l12__card {                        /* untimed; GSAP: parallax drift (x / y). data-card="1..4" picks a default spot */
   position: absolute;

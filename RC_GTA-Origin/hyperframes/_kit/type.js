@@ -975,6 +975,278 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   function spreadWordsV2(tl, target, words, opts) { return wordsV2(tl, target, words, opts); }
   function glowLineV2(tl, target, words, opts) { return wordsV2(tl, target, words, opts); }
 
+  /* ================= v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1 + 3) ================= */
+  // Coolvetica advance widths (1/1000 em; the Regular and Italic files share advances and kerning) for CV_CHARS, and the
+  // GPOS pair kerning (|v| >= 10 units), read from fonts/Coolvetica-*.otf with fontTools. Used in Node to choose sizes and
+  // line breaks (the browser lays the text out itself; the table reproduces Chrome's widths within ~1%).
+  var CV_CHARS = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~’‘“”…–—éèáàüöä€£';
+  var CV_ADV = '241,245,289,501,484,669,505,145,326,326,539,523,187,280,187,300,490,296,465,479,476,490,487,478,495,487,171,175,523,523,523,491,708,643,574,613,607,532,505,658,587,187,454,604,501,695,591,670,534,671,578,563,554,586,593,856,605,602,532,319,294,316,459,478,352,486,524,481,523,503,295,530,503,192,195,483,185,754,503,539,523,513,321,472,453,500,501,714,496,502,445,334,338,330,555,193,193,386,386,936,436,617,503,503,486,486,500,539,486,616,482'.split(',').map(Number);
+  var CV_KERN = {"\",":-40,"\".":-40,"\"/":-60,"\"4":-38,"\"8":-16,"\"A":-90,"\"J":-113,"\"a":-23,"\"c":-40,"\"d":-40,"\"e":-40,"\"g":-34,"\"o":-40,"\"q":-40,"\"s":-19,"\"à":-23,"\"á":-23,"\"ä":-23,"\"è":-40,"\"é":-40,"\"ö":-40,"\"…":-40,"&A":-32,"&T":-151,"&V":-96,"&W":-69,"&X":-52,"&Y":-129,"&j":46,"&v":-30,"&w":-30,"&x":-49,"',":-40,"'.":-40,"'/":-60,"'4":-38,"'8":-16,"'A":-90,"'J":-113,"'a":-23,"'c":-40,"'d":-40,"'e":-40,"'g":-34,"'o":-40,"'q":-40,"'s":-19,"'à":-23,"'á":-23,"'ä":-23,"'è":-40,"'é":-40,"'ö":-40,"'…":-40,"(j":224,",\"":-40,",'":-40,",-":-34,",0":-31,",1":-123,",3":-21,",4":-21,",5":-27,",6":-27,",7":-44,",8":-22,",9":-15,",C":-33,",G":-33,",O":-33,",Q":-33,",S":-10,",T":-147,",U":-18,",V":-111,",W":-91,",Y":-133,",f":-50,",g":-28,",j":73,",t":-23,",u":-17,",v":-60,",w":-60,",y":-23,",ü":-17,",–":-34,",—":-34,",‘":-40,",’":-40,",“":-40,",”":-40,"-,":-30,"-.":-30,"-/":-34,"-1":-94,"-2":-57,"-3":-64,"-7":-108,"-8":-15,"-9":-13,"-A":-73,"-S":-31,"-T":-137,"-V":-83,"-W":-62,"-X":-105,"-Y":-112,"-Z":-58,"-f":-60,"-s":-14,"-v":-35,"-w":-35,"-x":-67,"-z":-47,"-…":-30,".\"":-40,".'":-40,".-":-34,".0":-31,".1":-123,".3":-21,".4":-21,".5":-27,".6":-27,".7":-44,".8":-22,".9":-15,".C":-33,".G":-33,".O":-33,".Q":-33,".S":-10,".T":-147,".U":-18,".V":-111,".W":-91,".Y":-133,".f":-50,".g":-28,".j":73,".t":-23,".u":-17,".v":-60,".w":-60,".y":-23,".ü":-17,".–":-34,".—":-34,".‘":-40,".’":-40,".“":-40,".”":-40,"/&":-38,"/,":-132,"/-":-40,"/.":-132,"/A":-149,"/C":-46,"/G":-46,"/J":-91,"/O":-46,"/Q":-46,"/S":-27,"/a":-68,"/c":-78,"/d":-78,"/e":-78,"/f":-23,"/g":-72,"/m":-40,"/n":-40,"/o":-78,"/p":-40,"/q":-78,"/r":-40,"/s":-65,"/u":-39,"/v":-19,"/w":-19,"/x":-35,"/y":-35,"/z":-50,"/à":-68,"/á":-68,"/ä":-68,"/è":-78,"/é":-78,"/ö":-78,"/ü":-39,"/–":-40,"/—":-40,"/…":-132,"0,":-31,"0.":-31,"07":-26,"0…":-31,"2-":-37,"22":11,"2–":-37,"2—":-37,"3\"":-13,"3'":-13,"3,":-21,"3.":-21,"31":-10,"37":-23,"3‘":-13,"3’":-13,"3“":-13,"3”":-13,"3…":-21,"4\"":-33,"4'":-33,"41":-51,"47":-36,"4‘":-33,"4’":-33,"4“":-33,"4”":-33,"5,":-21,"5.":-21,"5…":-21,"6\"":-14,"6'":-14,"6,":-26,"6.":-26,"69":-19,"6‘":-14,"6’":-14,"6“":-14,"6”":-14,"6…":-26,"7,":-137,"7-":-113,"7.":-137,"70":-39,"72":-22,"73":-21,"74":-114,"76":-35,"77":10,"78":-44,"79":-22,"7A":-169,"7–":-113,"7—":-113,"7…":-137,"8\"":-17,"8'":-17,"8,":-20,"8-":-18,"8.":-20,"80":-11,"87":-46,"89":-22,"8–":-18,"8—":-18,"8‘":-17,"8’":-17,"8“":-17,"8”":-17,"8…":-20,"9,":-39,"9.":-39,"97":-33,"9…":-39,"@j":164,"A\"":-90,"A&":-26,"A'":-90,"A-":-71,"A?":-148,"AC":-70,"AG":-70,"AJ":-26,"AO":-70,"AQ":-70,"AS":-31,"AT":-169,"AU":-62,"AV":-185,"AW":-155,"AY":-153,"Aa":-18,"Ac":-40,"Ad":-40,"Ae":-40,"Af":-59,"Ag":-38,"Aj":20,"Ao":-40,"Aq":-40,"As":-25,"At":-39,"Au":-34,"Av":-116,"Aw":-116,"Ay":-37,"Aà":-18,"Aá":-18,"Aä":-18,"Aè":-40,"Aé":-40,"Aö":-40,"Aü":-34,"A–":-71,"A—":-71,"A‘":-90,"A’":-90,"A“":-90,"A”":-90,"BA":-30,"BJ":12,"BT":-23,"BV":-45,"BW":-28,"BX":-62,"BY":-60,"Bj":-12,"C,":-22,"C-":-28,"C.":-22,"C/":-25,"CA":-45,"CT":-24,"CV":-39,"CW":-28,"CX":-58,"CY":-62,"CZ":-22,"Cj":23,"C–":-28,"C—":-28,"C…":-22,"D,":-40,"D.":-40,"D/":-36,"DA":-72,"DT":-61,"DV":-69,"DW":-63,"DX":-104,"DY":-96,"DZ":-32,"Da":-13,"Dj":10,"Dx":-15,"Dz":-14,"Dà":-13,"Dá":-13,"Dä":-13,"D…":-40,"F,":-122,"F.":-122,"F/":-73,"FA":-113,"FC":-31,"FG":-31,"FJ":-181,"FO":-31,"FQ":-31,"FT":12,"Fa":-44,"Fc":-37,"Fd":-37,"Fe":-37,"Fg":-32,"Fj":-13,"Fm":-20,"Fn":-20,"Fo":-37,"Fp":-20,"Fq":-37,"Fr":-20,"Fs":-27,"Fu":-20,"Fy":-25,"Fz":-34,"Fà":-44,"Fá":-44,"Fä":-44,"Fè":-37,"Fé":-37,"Fö":-37,"Fü":-20,"F…":-122,"G\"":-13,"G'":-13,"GK":59,"GT":-36,"GV":-53,"GW":-45,"GX":-11,"GY":-70,"Gj":62,"G‘":-13,"G’":-13,"G“":-13,"G”":-13,"J,":-20,"J.":-20,"J/":-19,"JA":-39,"JB":12,"J…":-20,"K\"":-15,"K&":-58,"K'":-15,"K-":-133,"K?":-63,"KC":-84,"KG":-84,"KJ":-34,"KO":-84,"KQ":-84,"KS":-39,"KU":-11,"Ka":-22,"Kc":-63,"Kd":-63,"Ke":-63,"Kf":-49,"Kg":-31,"Ko":-63,"Kq":-63,"Kt":-42,"Ku":-29,"Kv":-99,"Kw":-99,"Ky":-49,"Kà":-22,"Ká":-22,"Kä":-22,"Kè":-63,"Ké":-63,"Kö":-63,"Kü":-29,"K–":-133,"K—":-133,"K‘":-15,"K’":-15,"K“":-15,"K”":-15,"L\"":-88,"L'":-88,"L-":-101,"L?":-131,"LC":-39,"LG":-39,"LO":-39,"LQ":-39,"LT":-182,"LU":-27,"LV":-162,"LW":-135,"LY":-182,"Lc":-26,"Ld":-26,"Le":-26,"Lg":-20,"Lo":-26,"Lq":-26,"Lt":-18,"Lu":-17,"Lv":-103,"Lw":-103,"Ly":-20,"Lè":-26,"Lé":-26,"Lö":-26,"Lü":-17,"L–":-101,"L—":-101,"L‘":-88,"L’":-88,"L“":-88,"L”":-88,"O,":-40,"O.":-40,"O/":-36,"OA":-72,"OT":-61,"OV":-69,"OW":-63,"OX":-104,"OY":-96,"OZ":-32,"Oa":-13,"Oj":10,"Ox":-15,"Oz":-14,"Oà":-13,"Oá":-13,"Oä":-13,"O…":-40,"P,":-120,"P-":-17,"P.":-120,"P/":-81,"PA":-114,"PJ":-99,"PV":-31,"PW":-28,"PX":-65,"PY":-55,"PZ":-22,"Pa":-18,"Pg":-19,"Ps":-10,"Pà":-18,"Pá":-18,"Pä":-18,"P–":-17,"P—":-17,"P…":-120,"Q,":-40,"Q.":-40,"Q/":-36,"QA":-72,"QT":-61,"QV":-69,"QW":-63,"QX":-104,"QY":-96,"QZ":-32,"Qa":-13,"Qj":10,"Qx":-15,"Qz":-14,"Qà":-13,"Qá":-13,"Qä":-13,"Q…":-40,"R-":-31,"RV":-31,"RW":-26,"RX":-13,"RY":-54,"Rj":70,"R–":-31,"R—":-31,"SA":-31,"ST":-31,"SV":-58,"SW":-47,"SX":-45,"SY":-73,"Sj":23,"Sv":-21,"Sw":-21,"Sx":-22,"T,":-84,"T-":-137,"T.":-84,"T/":-121,"TA":-173,"TC":-31,"TG":-31,"TJ":-171,"TO":-31,"TQ":-31,"TS":-21,"Ta":-77,"Tc":-104,"Td":-104,"Te":-104,"Tg":-78,"Tm":-52,"Tn":-52,"To":-104,"Tp":-52,"Tq":-104,"Tr":-52,"Ts":-89,"Tu":-53,"Tv":-55,"Tw":-55,"Tx":-39,"Ty":-50,"Tz":-31,"Tà":-77,"Tá":-77,"Tä":-77,"Tè":-104,"Té":-104,"Tö":-104,"Tü":-53,"T–":-137,"T—":-137,"T…":-84,"U,":-27,"U.":-27,"UA":-58,"UX":-14,"Ug":-10,"Uj":12,"U…":-27,"V&":-46,"V,":-118,"V-":-77,"V.":-118,"V/":-122,"V?":-30,"VA":-176,"VC":-62,"VG":-62,"VJ":-114,"VO":-62,"VQ":-62,"VS":-39,"Va":-88,"Vc":-79,"Vd":-79,"Ve":-79,"Vf":-37,"Vg":-100,"Vm":-57,"Vn":-57,"Vo":-79,"Vp":-57,"Vq":-79,"Vr":-57,"Vs":-85,"Vu":-57,"Vv":-32,"Vw":-32,"Vx":-49,"Vy":-54,"Vz":-57,"Và":-88,"Vá":-88,"Vä":-88,"Vè":-79,"Vé":-79,"Vö":-79,"Vü":-57,"V–":-77,"V—":-77,"V…":-118,"W&":-34,"W,":-87,"W-":-62,"W.":-87,"W/":-102,"W?":-28,"WA":-155,"WC":-67,"WG":-67,"WJ":-92,"WO":-67,"WQ":-67,"WS":-34,"Wa":-75,"Wc":-80,"Wd":-80,"We":-80,"Wf":-30,"Wg":-78,"Wm":-50,"Wn":-50,"Wo":-80,"Wp":-50,"Wq":-80,"Wr":-50,"Ws":-72,"Wu":-50,"Wv":-40,"Ww":-40,"Wx":-30,"Wy":-40,"Wz":-40,"Wà":-75,"Wá":-75,"Wä":-75,"Wè":-80,"Wé":-80,"Wö":-80,"Wü":-50,"W–":-62,"W—":-62,"W…":-87,"X&":-48,"X-":-105,"X?":-63,"XC":-81,"XG":-81,"XJ":-32,"XO":-81,"XQ":-81,"XS":-43,"XT":-10,"XU":-15,"Xa":-23,"Xc":-64,"Xd":-64,"Xe":-64,"Xo":-64,"Xq":-64,"Xs":-32,"Xt":-29,"Xu":-35,"Xv":-85,"Xw":-85,"Xy":-40,"Xà":-23,"Xá":-23,"Xä":-23,"Xè":-64,"Xé":-64,"Xö":-64,"Xü":-35,"X–":-105,"X—":-105,"Y&":-51,"Y,":-134,"Y-":-112,"Y.":-134,"Y/":-135,"Y?":-40,"YA":-151,"YC":-97,"YG":-97,"YJ":-179,"YO":-97,"YQ":-97,"YS":-44,"Ya":-123,"Yc":-140,"Yd":-140,"Ye":-140,"Yg":-122,"Ym":-86,"Yn":-86,"Yo":-140,"Yp":-86,"Yq":-140,"Yr":-86,"Ys":-109,"Yu":-66,"Yv":-64,"Yw":-64,"Yx":-64,"Yy":-59,"Yz":-57,"Yà":-123,"Yá":-123,"Yä":-123,"Yè":-140,"Yé":-140,"Yö":-140,"Yü":-66,"Y–":-112,"Y—":-112,"Y…":-134,"Z-":-80,"ZC":-32,"ZG":-32,"ZO":-32,"ZQ":-32,"ZZ":18,"Zc":-21,"Zd":-21,"Ze":-21,"Zo":-21,"Zq":-21,"Zè":-21,"Zé":-21,"Zö":-21,"Z–":-80,"Z—":-80,"[j":228,"a\"":-25,"a'":-25,"a?":-53,"af":-27,"aj":25,"av":-39,"aw":-39,"a‘":-25,"a’":-25,"a“":-25,"a”":-25,"b\"":-30,"b'":-30,"b,":-24,"b.":-24,"b/":-24,"b?":-56,"bf":-39,"bv":-34,"bw":-34,"bx":-74,"bz":-29,"b‘":-30,"b’":-30,"b“":-30,"b”":-30,"b…":-24,"c\"":-23,"c'":-23,"c,":-10,"c.":-10,"c?":-34,"cv":-31,"cw":-31,"cx":-42,"cz":-15,"c‘":-23,"c’":-23,"c“":-23,"c”":-23,"c…":-10,"e\"":-30,"e'":-30,"e,":-24,"e.":-24,"e/":-24,"e?":-56,"ef":-39,"ev":-34,"ew":-34,"ex":-74,"ez":-29,"e‘":-30,"e’":-30,"e“":-30,"e”":-30,"e…":-24,"f\"":15,"f'":15,"f,":-55,"f-":-61,"f.":-55,"f]":12,"fa":-24,"fc":-32,"fd":-32,"fe":-32,"fg":-28,"fj":12,"fo":-32,"fq":-32,"fs":-21,"f}":12,"fà":-24,"fá":-24,"fä":-24,"fè":-32,"fé":-32,"fö":-32,"f–":-61,"f—":-61,"f‘":15,"f’":15,"f“":15,"f”":15,"f…":-55,"g?":-20,"gj":221,"h\"":-25,"h'":-25,"h?":-53,"hf":-27,"hj":25,"hv":-39,"hw":-39,"h‘":-25,"h’":-25,"h“":-25,"h”":-25,"jj":209,"k&":-14,"k-":-89,"ka":-40,"kc":-52,"kd":-52,"ke":-52,"kg":-49,"kj":22,"ko":-52,"kq":-52,"ks":-39,"kà":-40,"ká":-40,"kä":-40,"kè":-52,"ké":-52,"kö":-52,"k–":-89,"k—":-89,"lj":58,"m\"":-25,"m'":-25,"m?":-53,"mf":-27,"mj":25,"mv":-39,"mw":-39,"m‘":-25,"m’":-25,"m“":-25,"m”":-25,"n\"":-25,"n'":-25,"n?":-53,"nf":-27,"nj":25,"nv":-39,"nw":-39,"n‘":-25,"n’":-25,"n“":-25,"n”":-25,"o\"":-30,"o'":-30,"o,":-24,"o.":-24,"o/":-24,"o?":-56,"of":-39,"ov":-34,"ow":-34,"ox":-74,"oz":-29,"o‘":-30,"o’":-30,"o“":-30,"o”":-30,"o…":-24,"p\"":-30,"p'":-30,"p,":-24,"p.":-24,"p/":-24,"p?":-56,"pf":-39,"pv":-34,"pw":-34,"px":-74,"pz":-29,"p‘":-30,"p’":-30,"p“":-30,"p”":-30,"p…":-24,"q,":55,"q.":55,"qf":22,"qg":83,"qj":330,"ql":77,"qm":75,"qn":75,"qp":75,"qr":75,"qy":77,"q…":55,"r,":-85,"r-":-32,"r.":-85,"r/":-68,"ra":-24,"rc":-30,"rd":-30,"re":-30,"rg":-27,"ro":-30,"rq":-30,"rs":-19,"rà":-24,"rá":-24,"rä":-24,"rè":-30,"ré":-30,"rö":-30,"r–":-32,"r—":-32,"r…":-85,"s\"":-31,"s'":-31,"s-":-11,"s?":-52,"sf":-19,"sv":-33,"sw":-33,"sx":-26,"s–":-11,"s—":-11,"s‘":-31,"s’":-31,"s“":-31,"s”":-31,"t,":-16,"t.":-16,"t/":-26,"t…":-16,"v,":-60,"v-":-35,"v.":-60,"v/":-83,"va":-40,"vc":-34,"vd":-34,"ve":-34,"vg":-39,"vo":-34,"vq":-34,"vs":-31,"và":-40,"vá":-40,"vä":-40,"vè":-34,"vé":-34,"vö":-34,"v–":-35,"v—":-35,"v…":-60,"w,":-60,"w-":-35,"w.":-60,"w/":-83,"wa":-40,"wc":-34,"wd":-34,"we":-34,"wg":-39,"wo":-34,"wq":-34,"ws":-31,"wà":-40,"wá":-40,"wä":-40,"wè":-34,"wé":-34,"wö":-34,"w–":-35,"w—":-35,"w…":-60,"x-":-84,"xa":-22,"xc":-72,"xd":-72,"xe":-72,"xg":-25,"xj":11,"xo":-72,"xq":-72,"xs":-45,"xt":-12,"xà":-22,"xá":-22,"xä":-22,"xè":-72,"xé":-72,"xö":-72,"x–":-84,"x—":-84,"yj":214,"zc":-20,"zd":-20,"ze":-20,"zo":-20,"zq":-20,"zè":-20,"zé":-20,"zö":-20,"{j":230,"à\"":-25,"à'":-25,"à?":-53,"àf":-27,"àj":25,"àv":-39,"àw":-39,"à‘":-25,"à’":-25,"à“":-25,"à”":-25,"á\"":-25,"á'":-25,"á?":-53,"áf":-27,"áj":25,"áv":-39,"áw":-39,"á‘":-25,"á’":-25,"á“":-25,"á”":-25,"ä\"":-25,"ä'":-25,"ä?":-53,"äf":-27,"äj":25,"äv":-39,"äw":-39,"ä‘":-25,"ä’":-25,"ä“":-25,"ä”":-25,"è\"":-30,"è'":-30,"è,":-24,"è.":-24,"è/":-24,"è?":-56,"èf":-39,"èv":-34,"èw":-34,"èx":-74,"èz":-29,"è‘":-30,"è’":-30,"è“":-30,"è”":-30,"è…":-24,"é\"":-30,"é'":-30,"é,":-24,"é.":-24,"é/":-24,"é?":-56,"éf":-39,"év":-34,"éw":-34,"éx":-74,"éz":-29,"é‘":-30,"é’":-30,"é“":-30,"é”":-30,"é…":-24,"ö\"":-30,"ö'":-30,"ö,":-24,"ö.":-24,"ö/":-24,"ö?":-56,"öf":-39,"öv":-34,"öw":-34,"öx":-74,"öz":-29,"ö‘":-30,"ö’":-30,"ö“":-30,"ö”":-30,"ö…":-24,"–,":-30,"–.":-30,"–/":-34,"–1":-94,"–2":-57,"–3":-64,"–7":-108,"–8":-15,"–9":-13,"–A":-73,"–S":-31,"–T":-137,"–V":-83,"–W":-62,"–X":-105,"–Y":-112,"–Z":-58,"–f":-60,"–s":-14,"–v":-35,"–w":-35,"–x":-67,"–z":-47,"–…":-30,"—,":-30,"—.":-30,"—/":-34,"—1":-94,"—2":-57,"—3":-64,"—7":-108,"—8":-15,"—9":-13,"—A":-73,"—S":-31,"—T":-137,"—V":-83,"—W":-62,"—X":-105,"—Y":-112,"—Z":-58,"—f":-60,"—s":-14,"—v":-35,"—w":-35,"—x":-67,"—z":-47,"—…":-30,"‘,":-40,"‘.":-40,"‘/":-60,"‘4":-38,"‘8":-16,"‘A":-90,"‘J":-113,"‘a":-23,"‘c":-40,"‘d":-40,"‘e":-40,"‘g":-34,"‘o":-40,"‘q":-40,"‘s":-19,"‘à":-23,"‘á":-23,"‘ä":-23,"‘è":-40,"‘é":-40,"‘ö":-40,"‘…":-40,"’,":-40,"’.":-40,"’/":-60,"’4":-38,"’8":-16,"’A":-90,"’J":-113,"’a":-23,"’c":-40,"’d":-40,"’e":-40,"’g":-34,"’o":-40,"’q":-40,"’s":-19,"’à":-23,"’á":-23,"’ä":-23,"’è":-40,"’é":-40,"’ö":-40,"’…":-40,"“,":-40,"“.":-40,"“/":-60,"“4":-38,"“8":-16,"“A":-90,"“J":-113,"“a":-23,"“c":-40,"“d":-40,"“e":-40,"“g":-34,"“o":-40,"“q":-40,"“s":-19,"“à":-23,"“á":-23,"“ä":-23,"“è":-40,"“é":-40,"“ö":-40,"“…":-40,"”,":-40,"”.":-40,"”/":-60,"”4":-38,"”8":-16,"”A":-90,"”J":-113,"”a":-23,"”c":-40,"”d":-40,"”e":-40,"”g":-34,"”o":-40,"”q":-40,"”s":-19,"”à":-23,"”á":-23,"”ä":-23,"”è":-40,"”é":-40,"”ö":-40,"”…":-40,"…\"":-40,"…'":-40,"…-":-34,"…0":-31,"…1":-123,"…3":-21,"…4":-21,"…5":-27,"…6":-27,"…7":-44,"…8":-22,"…9":-15,"…C":-33,"…G":-33,"…O":-33,"…Q":-33,"…S":-10,"…T":-147,"…U":-18,"…V":-111,"…W":-91,"…Y":-133,"…f":-50,"…g":-28,"…j":73,"…t":-23,"…u":-17,"…v":-60,"…w":-60,"…y":-23,"…ü":-17,"…–":-34,"…—":-34,"…‘":-40,"…’":-40,"…“":-40,"…”":-40};
+  var cvIdx = null;
+  // width in px of `s` set in Coolvetica (Regular or Italic) at `size` px, kerning included
+  function cvWidth(s, size) {
+    if (!cvIdx) { cvIdx = {}; for (var i = 0; i < CV_CHARS.length; i++) cvIdx[CV_CHARS[i]] = CV_ADV[i]; }
+    var a = Array.from(String(s)), u = 0;
+    for (var j = 0; j < a.length; j++) {
+      u += cvIdx[a[j]] != null ? cvIdx[a[j]] : 560;
+      if (j + 1 < a.length) u += CV_KERN[a[j] + a[j + 1]] || 0;
+    }
+    return u * (size || 1) / 1000;
+  }
+  // Lockup layout constants (px on the 1920 x 1080 canvas; kit choices tuned against ref 1, see KIT_type.md v03):
+  // small = Coolvetica Regular words (ref 1 "to their" / "at Stanford," measure 60 px), key = the Coolvetica Italic keyword,
+  // solo = a lockup without a keyword (one centred line, ref 3), gap = baseline -> next cap top between small and key
+  // rows (ref 1: 5 px of 323 = 16.7 px), pitch = baseline-to-baseline of two small lines (em), wrap = a small row longer
+  // than wrap x the keyword's width (or than the title-safe width) is set on 2+ balanced lines.
+  var LK = { small: 60, key: 190, solo: 64, gap: 17, pitch: 1.12, wrap: 1.15, safeW: 1728, safeTop: 54, safeBottom: 1026, y: 540, maxWords: 7,
+    asc: 0.672, base: 0.867, italicOver: 0.12 };
+  // Starred words (spec "word*", "[key]*"): visible on their own frame at full opacity, blurred + slightly small, then
+  // settle (6f expo.out). Every other lockup word: a hard cut on its frame, no animation (note 11).
+  var POP3 = { frames: 6, blur: 20, scale: 0.92, ease: 'expo.out', lead: 0 };
+
+  // "to their [PhDs]* at Stanford," -> tokens with roles. [ ] = the keyword (one per lockup, 1+ words); "*" after a word =
+  // that word pops + blurs in; "]*" = every keyword word pops; "|" = a forced line break among the small words;
+  // punctuation-only tokens ("—") join the word before them.
+  function parseLockup(spec) {
+    var s = String(spec).trim(), toks = [], role = 'lead', seenKey = false, inKey = false, keyStart = 0, br = false, m;
+    var re = /\[|\]\*?|\||[^\s\[\]|]+/g;
+    while ((m = re.exec(s))) {
+      var t = m[0];
+      if (t === '[') {
+        if (seenKey) throw new Error('RCK.type.lockups: one [keyword] per lockup: "' + s + '"');
+        inKey = seenKey = true; role = 'key'; keyStart = toks.length; br = false; continue;
+      }
+      if (t.charAt(0) === ']') {
+        if (!inKey) throw new Error('RCK.type.lockups: "]" without "[" in "' + s + '"');
+        inKey = false; role = 'tail'; br = false;
+        if (t === ']*') for (var k = keyStart; k < toks.length; k++) toks[k].pop = true;
+        continue;
+      }
+      if (t === '|') { br = true; continue; }
+      var pop = t.length > 1 && t.charAt(t.length - 1) === '*';
+      if (pop) t = t.slice(0, -1);
+      if (!norm(t).length) { if (toks.length) { toks[toks.length - 1].text += ' ' + t; continue; } }
+      toks.push({ text: t, role: role, pop: pop, br: br });
+      br = false;
+    }
+    if (inKey) throw new Error('RCK.type.lockups: unclosed [ in "' + s + '"');
+    if (!toks.length) throw new Error('RCK.type.lockups: empty lockup "' + s + '"');
+    if (!seenKey) toks.forEach(function (tk) { tk.role = 'solo'; });
+    return { spec: s, toks: toks, hasKey: seenKey };
+  }
+  function specList(specs) {
+    if (Array.isArray(specs)) return specs.slice();
+    return String(specs).split(/\s+\/\s+|\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+  // split tokens into lines no wider than maxW (forced "|" breaks first, then balanced: fewest lines, smallest widest line)
+  function lockupLines(toks, size, maxW) {
+    if (!toks.length) return [];
+    var segs = [[]];
+    toks.forEach(function (tk, i) { if (tk.br && i > 0) segs.push([]); segs[segs.length - 1].push(tk); });
+    var out = [];
+    segs.forEach(function (seg) {
+      var wOf = function (a, b) { return cvWidth(seg.slice(a, b).map(function (t) { return t.text; }).join(' '), size); };
+      if (wOf(0, seg.length) <= maxW || seg.length === 1) { out.push(seg); return; }
+      for (var n = 2; n <= seg.length; n++) {
+        var best = null;
+        (function rec(start, left, cuts) {
+          if (left === 1) {
+            var parts = cuts.concat([[start, seg.length]]), worst = 0;
+            parts.forEach(function (p) { worst = Math.max(worst, wOf(p[0], p[1])); });
+            if (!best || worst < best.worst) best = { worst: worst, parts: parts };
+            return;
+          }
+          for (var e = start + 1; e <= seg.length - left + 1; e++) rec(e, left - 1, cuts.concat([[start, e]]));
+        })(0, n, []);
+        if (best.worst <= maxW || n === seg.length) { best.parts.forEach(function (p) { out.push(seg.slice(p[0], p[1])); }); return; }
+      }
+    });
+    return out;
+  }
+  // Rows + vertical geometry of one lockup. Every row has line-height = its font size, so its baseline sits 0.867 em and
+  // its cap / ascender top 0.195 em below the row top (Coolvetica hhea metrics, KIT_type.md v02 > Fonts). Gaps are set
+  // from baseline to the next row's cap top. The ink block (first cap top .. last baseline) is centred on --rc-y.
+  function layoutLockup(lk, opts, warnings) {
+    var S = opts.smallSize || LK.small, K = opts.keySize || LK.key, SOLO = opts.soloSize || LK.solo;
+    var safeW = opts.maxWidth || LK.safeW, gap = opts.gap != null ? opts.gap : LK.gap, pitch = opts.pitch || LK.pitch;
+    var by = function (r) { return lk.toks.filter(function (t) { return t.role === r; }); };
+    var txt = function (ts) { return ts.map(function (t) { return t.text; }).join(' '); };
+    var rows = [];
+    if (!lk.hasKey) {
+      lockupLines(by('solo'), SOLO, Math.min(safeW, opts.soloMax || 1400)).forEach(function (ts) { rows.push({ kind: 'solo', toks: ts, size: SOLO }); });
+    } else {
+      var key = by('key'), keyW = cvWidth(txt(key), K) + LK.italicOver * K;
+      if (keyW > safeW) {
+        var K2 = Math.floor(K * safeW / keyW);
+        warnings.push('lockup "' + lk.spec + '": keyword "' + txt(key) + '" shrunk ' + K + ' -> ' + K2 + ' px to stay inside title-safe');
+        K = K2; keyW = cvWidth(txt(key), K) + LK.italicOver * K;
+      }
+      var maxSmall = Math.min(safeW, Math.max(keyW * (opts.wrap || LK.wrap), 420));
+      lockupLines(by('lead'), S, maxSmall).forEach(function (ts) { rows.push({ kind: 'lead', toks: ts, size: S }); });
+      rows.push({ kind: 'key', toks: key, size: K });
+      lockupLines(by('tail'), S, maxSmall).forEach(function (ts) { rows.push({ kind: 'tail', toks: ts, size: S }); });
+    }
+    var y = 0, prevBase = null, prevKind = null, width = 0;
+    rows.forEach(function (r) {
+      var capTop = prevBase == null ? LK.asc * 0 : (r.kind === prevKind || (r.kind !== 'key' && prevKind !== 'key') ? prevBase + pitch * r.size - LK.asc * r.size : prevBase + gap);
+      r.top = prevBase == null ? 0 : capTop - (LK.base - LK.asc) * r.size;
+      r.base = r.top + LK.base * r.size;
+      r.width = cvWidth(txt(r.toks), r.size) + (r.kind === 'key' ? LK.italicOver * r.size : 0);
+      width = Math.max(width, r.width);
+      prevBase = r.base; prevKind = r.kind;
+    });
+    var inkTop = rows[0].top + (LK.base - LK.asc) * rows[0].size, inkBottom = rows[rows.length - 1].base;
+    var box = { width: width, inkTop: inkTop, inkBottom: inkBottom, centre: (inkTop + inkBottom) / 2, height: rows[rows.length - 1].top + rows[rows.length - 1].size };
+    var yC = opts.y != null ? opts.y : LK.y;
+    if (yC - (box.centre - inkTop) < LK.safeTop || yC + (inkBottom - box.centre) > LK.safeBottom)
+      warnings.push('lockup "' + lk.spec + '": ink y ' + Math.round(yC - box.centre + inkTop) + '-' + Math.round(yC - box.centre + inkBottom) + ' leaves title-safe 54-1026');
+    if (width > safeW) warnings.push('lockup "' + lk.spec + '": ' + Math.round(width) + ' px wide (title-safe ' + safeW + ')');
+    return { rows: rows, box: box, sizes: { small: S, key: K, solo: SOLO } };
+  }
+  // v03 caption plan: words = words.json `words` (or seconds), specs = an array of lockup specs (or one string with " / "
+  // between lockups). opts: from (index of the first word), end (s; where the last lockup hard-cuts out; default the next
+  // word's comp_t, else the last word's comp_end_t), start (s; an earlier start for the first lockup's clip), loose
+  // (accept spelling differences, e.g. "18" for "eighteen"), y (ink centre, default 540), smallSize (60), keySize (190),
+  // soloSize (64), gap (17), wrap (1.15), maxWidth (1728). Returns {lockups, next, endFrame, warnings}; each lockup
+  // {index, spec, text, toks: [{text, role lead|key|tail|solo, pop, frame, i, voiceT}], startFrame, endFrame, frames,
+  // startAttr, durAttr, layout: {rows, box, sizes}}.
+  function lockupPlan(words, specs, opts) {
+    opts = opts || {};
+    var list = specList(specs), wi = opts.from || 0, warnings = [];
+    var lks = list.map(function (spec) {
+      var p = parseLockup(spec);
+      p.toks.forEach(function (tk, k) {
+        var w = words[wi];
+        if (w == null) throw new Error('RCK.type.lockups: ran out of words at "' + tk.text + '" in "' + p.spec + '"');
+        if (!opts.loose && w.text != null && norm(w.text) !== norm(tk.text))
+          throw new Error('RCK.type.lockups: "' + p.spec + '" word ' + (k + 1) + ' "' + tk.text + '" != words[' + wi + '] "' + w.text + '" (pass opts.loose to accept)');
+        var t = wordTime(w);
+        tk.i = wi; tk.voiceT = t; tk.frame = frame(t); wi++;
+      });
+      return p;
+    });
+    var nextW = words[wi], lastW = words[wi - 1];
+    var endT = opts.end != null ? opts.end : (nextW != null ? wordTime(nextW) : (lastW.comp_end_t != null ? lastW.comp_end_t : wordTime(lastW) + 0.5));
+    var endFrame = frame(endT);
+    lks.forEach(function (lk, i) {
+      lk.index = i;
+      lk.text = lk.toks.map(function (t) { return t.text; }).join(' ');
+      lk.startFrame = lk.toks[0].frame;
+      if (i === 0 && opts.start != null) lk.startFrame = Math.min(lk.startFrame, frame(opts.start));
+      lk.endFrame = i + 1 < lks.length ? lks[i + 1].toks[0].frame : endFrame;
+      lk.frames = lk.endFrame - lk.startFrame;
+      if (lk.frames < 1) throw new Error('RCK.type.lockups: lockup "' + lk.spec + '" has no frames (the next lockup starts on its first frame)');
+      var lastF = lk.toks[lk.toks.length - 1].frame;
+      if (lastF >= lk.endFrame) throw new Error('RCK.type.lockups: "' + lk.toks[lk.toks.length - 1].text + '" (f' + lastF + ') starts after its lockup ends (f' + lk.endFrame + ')');
+      if (lk.toks.length > LK.maxWords) warnings.push('lockup "' + lk.spec + '" has ' + lk.toks.length + ' words (guideline 1-' + LK.maxWords + ')');
+      if (lk.frames < 6) warnings.push('lockup "' + lk.spec + '" is on screen only ' + lk.frames + 'f');
+      lk.start = lk.startFrame / FPS; lk.end = lk.endFrame / FPS;
+      lk.startAttr = attrF(lk.startFrame); lk.durAttr = durF(lk.startFrame, lk.endFrame);
+      lk.layout = layoutLockup(lk, opts, warnings);
+    });
+    return { lockups: lks, next: wi, endFrame: endFrame, warnings: warnings };
+  }
+  // "1 f31-100 (69f) [lead] Open@31 | [key] GTA@39* Online@45* | [tail] and@57 buy@63 / an@69 arcade.@75 | key 190 px, 1012 x 309"
+  function lockupReport(plan) {
+    return plan.lockups.map(function (lk) {
+      var L = lk.layout;
+      return (lk.index + 1) + ' f' + lk.startFrame + '-' + lk.endFrame + ' (' + lk.frames + 'f)  ' + L.rows.map(function (r) {
+        return '[' + r.kind + '] ' + r.toks.map(function (t) { return t.text + '@' + t.frame + (t.pop ? '*' : ''); }).join(' ');
+      }).join(' | ') + '  | ' + (L.rows.some(function (r) { return r.kind === 'key'; }) ? 'key ' + L.sizes.key + ' px, ' : '') +
+        Math.round(L.box.width) + ' x ' + Math.round(L.box.inkBottom - L.box.inkTop) + ' px ink';
+    }).join('\n') + (plan.warnings.length ? '\nwarnings: ' + plan.warnings.join('; ') : '');
+  }
+  function r2(v) { return Math.round(v * 100) / 100; }
+  // v03 HTML to paste: one timed element per lockup (class "clip rc-lk"), rows inside a centred box. opts: everything
+  // lockupPlan takes (words, specs, opts are passed through), plus idPrefix ('lk'), z, track, y (px: the ink centre,
+  // default 540), cls (extra classes, e.g. 'rc-lk--card'), inline (extra inline CSS). Pass a plan instead of words to
+  // reuse one: lockups(plan, null, opts).
+  function lockups(words, specs, opts) {
+    opts = opts || {};
+    var plan = words && words.lockups ? words : lockupPlan(words, specs, opts);
+    var prefix = opts.idPrefix || 'lk', track = opts.track != null ? ' data-track-index="' + opts.track + '"' : '';
+    return plan.lockups.map(function (lk) {
+      var L = lk.layout, css = [opts.y != null ? '--rc-y: ' + opts.y + 'px' : '', '--rc-lk-c: ' + r2(L.box.centre) + 'px', opts.z != null ? 'z-index: ' + opts.z : '', opts.inline || ''].filter(Boolean).join('; ');
+      var prevEnd = 0;
+      var rows = L.rows.map(function (r) {
+        var mt = r2(r.top - prevEnd); prevEnd = r.top + r.size;
+        return '<div class="rc-lk__row rc-lk__row--' + r.kind + '" style="font-size: ' + r.size + 'px; line-height: ' + r.size + 'px; height: ' + r.size + 'px' + (mt ? '; margin-top: ' + mt + 'px' : '') + '">' +
+          r.toks.map(function (t) { return '<span class="rc-lw' + (t.pop ? ' rc-lw--pop' : '') + '" data-rc-f="' + t.frame + '">' + esc(t.text) + '</span>'; }).join(' ') + '</div>';
+      }).join('');
+      return '<div id="' + prefix + '-' + (lk.index + 1) + '" class="clip rc-lk' + (opts.cls ? ' ' + opts.cls : '') + '" data-start="' + lk.startAttr + '" data-duration="' + lk.durAttr + '"' + track +
+        ' style="' + css + '"><div class="rc-lk__box">' + rows + '</div></div>';
+    }).join('\n');
+  }
+  // pop + blur-in of one word on frame k (POP3): full opacity on its own frame, blur 20 px -> 0 and scale 0.92 -> 1 over 6f
+  // (expo.out). opts.lead > 0 starts the settle earlier (the word still appears on frame k).
+  function popBlur(tl, w, k, p) {
+    var g = G(), k0 = Math.max(0, k - (p.lead || 0));
+    g.set(w, { opacity: 0, scale: p.scale, filter: 'blur(' + p.blur + 'px)', transformOrigin: '50% 60%' });
+    hard(tl, w, { opacity: 0 }, { opacity: 1 }, k / FPS);
+    tl.fromTo(w, { scale: p.scale, filter: 'blur(' + p.blur + 'px)' }, { scale: 1, filter: 'blur(0px)', duration: p.frames * F, ease: easeOf(p.ease, 'expo.out'), immediateRender: false }, k0 / FPS);
+    return (k0 + p.frames) / FPS;
+  }
+  // Wires every lockup (default: all .rc-lk; scope = selector / element(s)): plain words hard-cut on their data-rc-f frame,
+  // .rc-lw--pop words pop + blur in (opts.pop overrides POP3 fields). The lockup itself appears / disappears with its clip
+  // window (hard cuts). Call once after the lockup markup; later calls skip processed lockups. Returns the time the last
+  // word has landed.
+  function lockupsWire(tl, scope, opts) {
+    opts = opts || {};
+    var roots = scope == null ? list('.rc-lk') : list(scope), end = 0, p = Object.assign({}, POP3, opts.pop);
+    roots.forEach(function (root) {
+      if (root.__rckLk) return;
+      root.__rckLk = true;
+      var ws = $$('.rc-lw[data-rc-f]', root);
+      if (!ws.length && window.console) console.warn('RCK.type.lockupsWire: no .rc-lw[data-rc-f] words in ' + (root.id || root.className));
+      ws.forEach(function (w) {
+        var k = parseInt(w.getAttribute('data-rc-f'), 10);
+        if (w.classList.contains('rc-lw--pop')) end = Math.max(end, popBlur(tl, w, k, p));
+        else { G().set(w, { opacity: 0 }); hard(tl, w, { opacity: 0 }, { opacity: 1 }, k / FPS); end = Math.max(end, k / FPS); }
+      });
+    });
+    return end;
+  }
+  // Word-by-word pop + blur-in on any text (v03 B6 quote: "the quote words pop + blur in on their spoken frames").
+  // target: the element holding the words (e.g. '#b06-t8 .rc-t8__quote'). words: one time per word (seconds or words.json
+  // entries, spell-checked unless opts.loose; opts.from = index of the first) -> the text is split into .rc-lw spans
+  // (child elements such as <br> are kept); or null when the words are already spans with data-rc-f (v02 markup).
+  // opts.hard: true = plain hard cuts instead of the pop; opts.pop overrides POP3. Returns the time the last word lands.
+  function wordPops(tl, target, words, opts) {
+    opts = opts || {};
+    var root = $(target), spansIn = $$('[data-rc-f]', root), p = Object.assign({}, POP3, opts.pop), end = 0;
+    if (words != null) {
+      if (!root.__rckSplit) {
+        var texts = [];
+        (function walk(n) { Array.prototype.slice.call(n.childNodes).forEach(function (c) { if (c.nodeType === 3) texts.push(c); else if (c.nodeType === 1) walk(c); }); })(root);
+        texts.forEach(function (tn) {
+          var frag = document.createDocumentFragment();
+          tn.nodeValue.split(/(\s+)/).forEach(function (pt) { if (!pt) return; frag.appendChild(/^\s+$/.test(pt) ? document.createTextNode(pt) : mk('span', 'rc-lw', pt)); });
+          tn.parentNode.replaceChild(frag, tn);
+        });
+        root.__rckSplit = true;
+      }
+      var wi = opts.from || 0, prevF = null;
+      spansIn = $$('.rc-lw', root);
+      spansIn.forEach(function (sp) {
+        if (!norm(sp.textContent).length && prevF != null) { sp.setAttribute('data-rc-f', prevF); return; }
+        var w = words[wi];
+        if (w == null) throw new Error('RCK.type.wordPops: ran out of word times at "' + sp.textContent + '"');
+        if (!opts.loose && w.text != null && norm(w.text) !== norm(sp.textContent))
+          throw new Error('RCK.type.wordPops: "' + sp.textContent + '" != words[' + wi + '] "' + w.text + '" (pass opts.loose to accept)');
+        prevF = frame(wordTime(w)); sp.setAttribute('data-rc-f', prevF); wi++;
+      });
+    }
+    spansIn.forEach(function (sp) {
+      if (sp.__rckPop) return;
+      sp.__rckPop = true;
+      if (getComputedStyle(sp).display === 'inline') sp.style.display = 'inline-block';
+      var k = parseInt(sp.getAttribute('data-rc-f'), 10);
+      if (opts.hard) { G().set(sp, { opacity: 0 }); hard(tl, sp, { opacity: 0 }, { opacity: 1 }, k / FPS); end = Math.max(end, k / FPS); }
+      else end = Math.max(end, popBlur(tl, sp, k, p));
+    });
+    return end;
+  }
+
   RCK.type = {
     FPS: FPS,
     // Coolvetica metrics (em; hhea line metrics as Chrome uses them, glyph heights measured): for placement maths
@@ -996,6 +1268,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     chipPop: chipPop, chipSentence: chipSentence,
     nameIn: nameIn, quoteType: quoteType, walk: walk,
     highlight: highlight, label: label,
-    glitch: glitch
+    glitch: glitch,
+    // v03 caption lockups (notes 11, 16, 17) + word pops (B6 quote)
+    lockupPlan: lockupPlan, lockups: lockups, lockupsWire: lockupsWire, lockupReport: lockupReport, parseLockup: parseLockup,
+    wordPops: wordPops, cvWidth: cvWidth, LK: LK, POP3: POP3
   };
 })();

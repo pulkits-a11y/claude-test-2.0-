@@ -19,16 +19,11 @@
     "keys": [
      {
       "f": 0,
-      "scale": 125
-     },
-     {
-      "f": 10,
-      "scale": 101,
-      "ease": "easeOutExpo"
+      "scale": 100
      },
      {
       "f": 19,
-      "scale": 102,
+      "scale": 100,
       "ease": "easeInOutSine"
      }
     ]
@@ -36,7 +31,7 @@
    "enter": "X3",
    "exit": "X1",
    "grade": "b10-pop",
-   "notes": "v02 (VO 115%, rules C/D): beat f35-54 (was f37-57). Hard cut under the X3 white flash on 'fun' (beat f35 = edit frame 1231 = 41.040 s = the flash's 100% frame = S09 = the MU5 drop, cues.json 'fun'): L1 (105%, soft edges) full-colour GTA 1 kill-frenzy chaos at full speed, saturation +10% (grade b10-pop) for the rest of the beat (19f) and on through the 6f tail handle; B11 opens with X1. Framing v2 (rule D 'transitions: incoming 125-140% -> 100% over 8-10f expo.out'): the shot bursts out of the flash 125% -> 101% over f0-10 (easeOutExpo; f0 is under 100% white, f1-4 under the eased fade 64/36/16/4%), then drifts 101 -> 102% to the cut (easeInOutSine). Moment: R10.1 49.6-50.23 s (+6f tail to 50.43): a chain of cars exploding in big fireballs on the road while the player stands on the pavement, in-game score pop-ups 5000/1000 (game HUD). Crop 640:360:0:0 = 16:9 cut of the 4:3 picture (top 360 px: keeps the fireballs, drops the bottom). HF overlay: X3 flash fading out f36-40, T2 'it's fun.' (keyword blur punch on f35), 3f eased exit ending on f54."
+   "notes": "v03 (REVISION_v03 note 13 'remove the random zooms', Decisions 'Zoom'): framing back to v01's = static 100% (v01 plan reading: 'No push on the 20f L1 shot (not a held shot)'); the v02 burst out of the flash 125 -> 101% (easeOutExpo) and the drift to 102% are removed. Everything else as v02: beat f35-54 (was f37-57). Hard cut under the X3 white flash on 'fun' (beat f35 = edit frame 1231 = 41.040 s = the flash's 100% frame = S09 = the MU5 drop, cues.json 'fun'): L1 (105%, soft edges) full-colour GTA 1 kill-frenzy chaos at full speed, saturation +10% (grade b10-pop) for the rest of the beat (19f) and on through the 6f tail handle; B11 opens with X1. Moment: R10.1 49.6-50.23 s (+6f tail to 50.43): a chain of cars exploding in big fireballs on the road while the player stands on the pavement, in-game score pop-ups 5000/1000 (game HUD). Crop 640:360:0:0 = 16:9 cut of the 4:3 picture (top 360 px: keeps the fireballs, drops the bottom). HF overlay: X3 flash fading out f36-40, the v03 caption lockup 'it's fun.' (starred keyword 'fun.' pops + blurs in on f35)."
   }
  ]
 }

@@ -25,8 +25,8 @@
          beat     local    what
          -6..0    0..6     head handle: transparent (Tesseract L1 R9.1 under it), no caption yet
          0        6        X1 hard cut from B8's black. Tesseract L1 R9.1 314.1 s+ (crop 536:302:260:108, ~60% sat, 105%,
-                           soft edges; framing keys = punch-in 114 -> 101% f0-10 expo.out, push to 108% sine.inOut, a 6%
-                           keyword punch on "straight"; tesseract_shots.json). HF overlay = T1 captions only.
+                           soft edges; v03 framing = v01's held-shot push 100 -> 104%, sine.inOut, no punches (REVISION_v03
+                           note 13); tesseract_shots.json). HF overlay = T1 captions only.
          1..95    7..101   T1 word by word, max 2 words (kit captionPlanV2): The / police cars / stop / following you /
                            and start / trying / to drive / straight / through you.
          120      126      X1 hard cut on "They ram.": HF L3, three vertical strips (8 px ink gutters). Strip 1 GTA 1 ram
@@ -35,8 +35,9 @@
          143      149      strip 2 GTA 2 chase (R9.3) pops + punch + T4 "They chase." (strip 2)
          168 185  174 191  strip 3 London 1969 (R9.5) pops + punch + T4 "They don't" -> "let go." (strip 3)
                            T4 groups replace each other (max 2 words); "let go." exits 3f (power2.in) ending on the beat end
-         after each punch lands: push 115% -> 115% x 1.06, easeInOutSine, one curve ending on the "fun" cut in B10
-         (B10 f35); this composition plays its first part, b10-fun the rest.
+         after each punch lands: push 115% -> 115% x 1.04 (v03: v01's held-shot push, eased; v02's x 1.06 removed,
+         note 13), easeInOutSine, one curve ending on the "fun" cut in B10 (B10 f35); this composition plays its first
+         part, b10-fun the rest.
          202..208 208..214 tail handle: strips continue (closing state forward), no caption. -->
     <div data-hf-id="hf-r7hg" id="root" data-composition-id="b09-throughyou" data-start="0" data-duration="7.1333333" data-width="1920" data-height="1080">
 
@@ -105,13 +106,15 @@
       // 96 -> 100% power3.out) + the media punching 100 -> 115% over 4f (power3.out).
       POP.forEach((t, i) => S.gridPop(tl, '#b09-s' + (i + 1), f(t), { punch: 1.15 }));
 
-      // Rule D (held shot): after its punch lands, each strip's footage keeps pushing in, 115% -> 115% x 1.06, ONE
+      // Held shot (v01 rule 7, REVISION_v03 note 13: back to v01's 104%, still eased): after its punch lands (the plan's
+      // own 4f punch-in to 115%), each strip's footage keeps pushing in, 115% -> 115% x 1.04, ONE
       // easeInOutSine curve from the landing to the "fun" cut in b10-fun (B10 f35 = this local 243). This composition
       // plays the head of that curve up to its end (ease = exactly that part of easeInOutSine), b10-fun plays the rest,
       // so the move is continuous across the B9/B10 boundary.
       const IO = RCK.ease.fn('easeInOutSine');
       const part = (u0, u1) => (p) => (IO(u0 + (u1 - u0) * p) - IO(u0)) / (IO(u1) - IO(u0));
-      const pushAt = (land, x) => 1.15 * (1 + 0.06 * IO((x - land) / (FUN - land)));
+      const PUSH = 0.04;                  // v03 = v01's held-shot push (x 1.04); keep equal to b10-fun's PUSH
+      const pushAt = (land, x) => 1.15 * (1 + PUSH * IO((x - land) / (FUN - land)));
       POP.forEach((t, i) => {
         const land = t + 4, u1 = (END - land) / (FUN - land);
         tl.fromTo('#b09-s' + (i + 1) + ' .rc-l3__media', { scale: 1.15 },

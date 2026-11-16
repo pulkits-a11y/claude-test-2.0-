@@ -13,10 +13,10 @@ Inputs (read at run time, whatever exists then):
 
 Every run deletes and recreates .tesseract-work/picture.tsrct: one composition `main`, 1920x1080, duration
 = beat_map edit_end_s, background #0A0A0A, layer ids 1..8999, asset ids "pic-*". Top to bottom:
-  1. "Finish ..."                the v02 whole-edit finish (REVISION_v02.md rule F, client note 13), over
-                                 everything: grain plate (monochrome, linear light, seed per frame), vignette,
-                                 the client's dust overlay twice (Screen, drifting, cross-fading), and an
-                                 animated chromatic aberration; every key eased (easeInOutSine)
+  1. "Finish ..."                the whole-edit finish (REVISION_v02.md rule F; v03 notes 14-15), over everything:
+                                 static CRT scanlines (multiply), a static monochrome grain plate (linear light),
+                                 a dark hard vignette and an animated chromatic aberration (easeInOutSine keys).
+                                 v03 removed the dust overlay and stopped the grain from changing per frame
   2. "HyperFrames beat renders"  Group, one Video per existing MOV: MOV local frame 6 on the beat's start
                                  frame, visible over [beat start, beat end) only
   3. "Bxx footage"               one Group per beat with Tesseract shots; per shot a Group holding the L2 bars,
@@ -74,8 +74,8 @@ L1_SCALE = 105.0                   # plan: footage at 105%
 L1_BLUR_PX = 12                    # plan: edges blurred 12 px
 L1_SHARP_FRAC = 0.70               # plan: centre 70% stays sharp
 L1_FEATHER = (192, 108)            # mask feather (x, y) px: the sharp->blurred ramp outside the 70% box
-PUSH_DEFAULT = (100.0, 108.0)      # v02 rule D: held footage pushes 100 -> 106-110% (sine.inOut) instead of 104%,
-PUSH_ALTERNATE = True              # ... alternating with slow zoom-outs (108 -> 100%) so it is not mechanical
+PUSH_DEFAULT = (100.0, 104.0)      # v03 note 13 (zooms reverted): a held shot without framing pushes 100 -> 104%
+PUSH_ALTERNATE = False             # ... eased (sine.inOut); no auto-alternated zoom-outs (v02 rule D's are removed)
 HELD_MIN_F = 12                    # shots shorter than this get no default push-in (burst clips)
 
 # ---- easings.net curves as CSS cubic-bezier (client note 14, REVISION_v02.md rule C: nothing linear) ----------
@@ -132,19 +132,20 @@ NEUTRALIZE = {"strength": 0.85, "target_rgb": (1.03, 1.0, 0.97), "bins": 10, "sa
               "hue_vs_saturation": [(0.0, 0.5), (0.6, 0.5), (0.7, 0.25), (0.79, 0.12), (0.88, 0.25), (0.96, 0.5),
                                     (1.0, 0.5)]}
 
-# ---- v02 whole-edit finish (REVISION_v02.md rule F, client note 13), top layers over everything -------------
-# Calibrated on flat fields and test patterns in Tesseract 0.7.0 (PICTURE_NOTES.md "Whole-edit finish").
+# ---- whole-edit finish (REVISION_v02.md rule F; v03 notes 14-15), top layers over everything ------------------
+# Calibrated on flat fields, test patterns and real frames in Tesseract 0.7.0 (PICTURE_NOTES.md "Whole-edit finish").
 FINISH_GRAIN = {"amount": 3.0, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0,   # on a 50% grey Rect plate,
-                "plate": 0.5, "blend": "linearLight", "opacity": 55.0}            # desaturated: monochrome film grain;
-                # linear light adds 2 x opacity x (plate - 0.5): p1-p99 about 12% of full scale on flat grey
-FINISH_VIGNETTE = {"amount": 0.57, "radius": 1.0, "feather": 0.8}   # flat field: corners about -37.5%, edges -17%
-FINISH_DUST = {"file": "04_Broll/Textures/dust_overlay.jpg", "blend": "screen", "exposure": 1.0,  # the file is dim
-               "opacity": (20.0, 55.0), "xfade_s": 3.0,                     # (max 81/255): +1 stop so it reads at ~0.5
-               "copies": [{"name": "A", "pos": (960.0, 540.0), "rotation": 0.0, "drift_px": (24.0, 14.0),
-                           "drift_half_s": (5.0, 3.7), "scale": (104.0, 109.0), "scale_half_s": 6.5, "phase": 0},
-                          {"name": "B (rotated 180, offset)", "pos": (1020.0, 576.0), "rotation": 180.0,
-                           "drift_px": (20.0, 16.0), "drift_half_s": (4.3, 5.5), "scale": (108.0, 103.0),
-                           "scale_half_s": 7.5, "phase": 1}]}
+                "plate": 0.5, "blend": "linearLight", "opacity": 55.0,            # desaturated: monochrome film grain;
+                "seed": 1.0}                                                      # linear light adds 2 x opacity x
+                # (plate - 0.5): p1-p99 about 12% of full scale on flat grey. v03 note 15: STATIC (one seed, no
+                # per-frame script): the same grain pattern on every frame
+FINISH_VIGNETTE = {"amount": 0.70, "radius": 0.74, "feather": 0.50}   # v03 note 14 (darker/harder): flat field
+                # corners -68%, edge centres -35% (v02: amount 0.57, radius 1.0, feather 0.8 = -38% / -17%)
+FINISH_SCANLINES = {"period_px": 9, "depth": 0.30, "shape": 1.5, "blend": "multiply"}   # v03 note 15: static CRT
+                # scanlines (they replace the dust overlay): a raised-cosine dark band every 9 px at 1080p, the line
+                # centre 30% darker; 9 px = the line pitch of the client's references (2.77-2.79 px in the 576-586 px
+                # wide screenshots) and coarse enough not to alias when the video is shown smaller (4 px lines turn
+                # into moire beats or vanish at the references' scale, measured)
 FINISH_CHROMA = {"direction": 90.0, "px": (0.6, 2.0), "half_period_s": 1.2,   # R and B each shifted 0.6 <-> 2.0 px
                  "px_per_amount": 19.1}                                       # (horizontal; 2.4 s period, sine)
                  # measured: amount 1.0 = R -19.06 px, B +19.06 px along `direction` (0 = vertical), uniform
@@ -643,6 +644,25 @@ def framing_desc(keys) -> str:
 NEUTRALIZE_CACHE = {}
 
 
+def render_proxy(mov: Path, height: int) -> Path:
+    """Preview proxy of a beat render: ProRes 4444 (alpha kept, 10-bit) scaled to `height`, same frames and rate, so
+    the render's placement is unchanged (fit: cover on the 1920x1080 canvas). Cached by the source's size/mtime."""
+    out = WORK / "proxies" / ("%s_%dp.mov" % (mov.stem, height))
+    st = mov.stat()
+    tag = "%d %d %d" % (st.st_size, st.st_mtime_ns, height)
+    meta = out.with_suffix(".src")
+    if out.exists() and meta.exists() and meta.read_text() == tag:
+        return out
+    out.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out.with_name(out.stem + ".tmp.mov")
+    run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", mov, "-an", "-vf", "scale=-2:%d:flags=bicubic" % height,
+         "-c:v", "prores_ks", "-profile:v", "4444", "-pix_fmt", "yuva444p10le", "-qscale:v", "9", "-vendor", "apl0",
+         tmp])
+    tmp.replace(out)
+    meta.write_text(tag)
+    return out
+
+
 def neutralize_curves(src: Path, t0: float, t1: float):
     """colorCurves points for grade `neutralize` (see NEUTRALIZE), measured on the SOURCE clip over [t0, t1] s: the
     span every `neutralize` shot of that clip uses, so shots cut from the same clip share one grade (no jump at
@@ -826,8 +846,8 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
         look.append(fx(ids.E(), dict({"type": "vignette"}, **VIGNETTE_LIGHT)))
     if grade == "archival":
         gid = ids.E()
-        look.append(fx(gid, dict({"type": "grain", "seed": 7.0}, **GRAIN_ARCHIVAL)))
-        dyn.script(gid, "seed", "return Math.round(input.time.seconds * 30) * 7 + %d;" % (vid_id % 97 + 11))
+        look.append(fx(gid, dict({"type": "grain", "seed": float(vid_id % 97 + 11)}, **GRAIN_ARCHIVAL)))
+        # v03 note 15: static grain (one seed per shot, no per-frame script)
     whips = []
     for part, a, b, x8 in x8_parts(shot, beat["start_frame"]):
         wa, wb = ms_floor(a), ms_floor(b)
@@ -885,65 +905,68 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
 # --------------------------------------------------------------------------------------------
 # v02 whole-edit finish (REVISION_v02.md rule F, client note 13)
 # --------------------------------------------------------------------------------------------
-def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, dust_asset: str):
+def scanline_image(path: Path):
+    """The static CRT scanline plate (FINISH_SCANLINES) as a 1920x1080 PNG for a multiply layer: white between the
+    lines, a raised-cosine dark band (to the power `shape`, so the lines are thinner than the gaps) every `period_px`
+    rows, its centre `depth` darker. Written once per setting (deterministic)."""
+    import numpy as np
+    from PIL import Image
+    sc = FINISH_SCANLINES
+    if path.exists():
+        return path
+    y = np.arange(H, dtype=float)
+    w = (0.5 - 0.5 * np.cos(2 * np.pi * (y + 0.5) / sc["period_px"])) ** sc["shape"]
+    v = 1.0 - sc["depth"] * w / w.max()
+    img = np.repeat(np.repeat(np.round(v * 255).astype(np.uint8)[:, None], W, 1)[:, :, None], 3, 2)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp.png")
+    Image.fromarray(img).save(tmp)
+    tmp.replace(path)
+    return path
+
+
+def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str):
     """Top-of-stack finishing layers over the whole edit (footage + HyperFrames renders), all editable in the
-    .tsrct, every keyframe easeInOutSine. Top to bottom: grain plate, vignette, dust B, dust A, chromatic
-    aberration (lens first, then film plane: the CA works on the picture only, the vignette also calms the dust in
-    the corners, the grain sits on top of everything)."""
+    .tsrct. Top to bottom: CRT scanlines (static, multiply), grain plate (static), vignette, chromatic aberration
+    (eased keys; the CA works on the picture only, the scanlines and grain sit on top of everything)."""
     layers, info = [], {}
     pg = lambda **k: primary_grade(k)
-    # grain: a 50% grey plate with the engine's grain, desaturated (monochrome), linear light over the picture
+    # CRT scanlines (v03 note 15): a static multiply plate
+    sid = ids.L()
+    sc = FINISH_SCANLINES
+    layers.append({"type": "Image", "id": sid, "name": "Finish: CRT scanlines (whole edit)", "blendMode": sc["blend"],
+                   "activeRange": {"start": 0, "duration": int(edit_ms)},
+                   "transform": {"anchorPoint": [W / 2.0, H / 2.0], "position": [W / 2.0, H / 2.0], "scale": [100, 100],
+                                 "rotation": 0, "opacity": 100},
+                   "source": {"assetId": scan_asset, "fit": "contain",
+                              "sourceRect": {"x": 0, "y": 0, "width": W, "height": H}},
+                   "description": "v03 note 15: static CRT scanlines across the whole edit (multiply): a dark band every "
+                                  "%d px at 1080p, its centre %.0f%% darker; static (no animation)." % (
+                                      sc["period_px"], sc["depth"] * 100)})
+    info["scanlines"] = {"layer": sid, **sc}
+    # grain: a 50% grey plate with the engine's grain, desaturated (monochrome), linear light, ONE seed (static)
     gid, geff, gsat = ids.L(), ids.E(), ids.E()
-    g = {k: v for k, v in FINISH_GRAIN.items() if k in ("amount", "size", "softness", "aspectRatio")}
+    g = {k: v for k, v in FINISH_GRAIN.items() if k in ("amount", "size", "softness", "aspectRatio", "seed")}
     plate = FINISH_GRAIN["plate"]
-    layers.append({"type": "Rect", "id": gid, "name": "Finish: grain (whole edit)", "blendMode": FINISH_GRAIN["blend"],
+    layers.append({"type": "Rect", "id": gid, "name": "Finish: grain (whole edit, static)", "blendMode": FINISH_GRAIN["blend"],
                    "activeRange": {"start": 0, "duration": int(edit_ms)},
                    "transform": tr(0, 0, 100.0, o=FINISH_GRAIN["opacity"]),
                    "rect": {"size": [W, H], "fillColor": [plate, plate, plate, 1.0]},
-                   "effects": [fx(geff, dict({"type": "grain", "seed": 1.0}, **g)), fx(gsat, pg(saturation=-1.0))],
-                   "description": "v02 note 13 'a pretty visible / obvious grain': monochrome film grain (grain on a 50%% "
-                                  "grey plate, saturation -1) added in linear light at %.0f%% opacity; seed changes "
-                                  "every frame. Flat grey: p1-p99 about 12%% of full scale (PICTURE_NOTES.md)." %
+                   "effects": [fx(geff, dict({"type": "grain"}, **g)), fx(gsat, pg(saturation=-1.0))],
+                   "description": "v02 note 13 'a pretty visible / obvious grain', v03 note 15 'keep the noise filter but "
+                                  "it moves, remove it': monochrome film grain (grain on a 50%% grey plate, saturation -1) "
+                                  "added in linear light at %.0f%% opacity, one fixed seed, so the same grain on every "
+                                  "frame. Flat grey: p1-p99 about 12%% of full scale (PICTURE_NOTES.md)." %
                                   FINISH_GRAIN["opacity"]})
-    dyn.script(geff, "seed", "return Math.round(input.time.seconds * 30) + 1;")
     info["grain"] = {"layer": gid, **FINISH_GRAIN}
     # vignette
     vid = ids.L()
     layers.append(adjustment_json(vid, "Finish: vignette (whole edit)", 0, edit_ms,
                                   [fx(ids.E(), dict({"type": "vignette"}, **FINISH_VIGNETTE))],
-                                  desc="v02 note 13 'a fairly visible vignette throughout': on a flat field the corners "
-                                       "are about 37% darker than the centre, the edge centres about 17%."))
+                                  desc="v03 note 14 'even darker / harder': on a flat field the corners are about 68% "
+                                       "darker than the centre, the edge centres about 35%, and the darkening starts "
+                                       "well inside the frame (about 12% at three quarters of the way to the edge)."))
     info["vignette"] = {"layer": vid, **FINISH_VIGNETTE}
-    # dust overlay: two copies (B rotated 180 deg and offset), Screen, slow eased drift/scale, cross-fading
-    lo, hi = FINISH_DUST["opacity"]
-    half_x = FINISH_DUST["xfade_s"] * 1000.0
-    dust_ids = []
-    for cp in reversed(FINISH_DUST["copies"]):        # B above A
-        lid, eid = ids.L(), ids.E()
-        x0, y0 = cp["pos"]
-        ph = cp["phase"]
-        layers.append({"type": "Image", "id": lid, "name": "Finish: dust overlay %s" % cp["name"],
-                       "blendMode": FINISH_DUST["blend"], "activeRange": {"start": 0, "duration": int(edit_ms)},
-                       "transform": {"anchorPoint": [W / 2.0, H / 2.0], "position": [x0, y0],
-                                     "scale": [cp["scale"][0], cp["scale"][0]], "rotation": cp["rotation"],
-                                     "opacity": hi if ph == 0 else lo},
-                       "source": {"assetId": dust_asset, "fit": "cover",
-                                  "sourceRect": {"x": 0, "y": 0, "width": W, "height": H}},
-                       "effects": [fx(eid, pg(exposure=FINISH_DUST["exposure"]))],
-                       "description": "v02 note 13: the client's dust/particle overlay (%s), Screen, opacity %.0f%% <-> "
-                                      "%.0f%% cross-fading with the other copy every %.1f s, drifting %s px and "
-                                      "breathing %s%% (easeInOutSine); exposure +%.1f stop because the file is dim "
-                                      "(max 81/255)." % (FINISH_DUST["file"], hi, lo, FINISH_DUST["xfade_s"],
-                                                         cp["drift_px"], cp["scale"], FINISH_DUST["exposure"])})
-        dyn.layer(lid, "opacity", osc_points(0, edit_ms, half_x, hi, lo, phase=ph))
-        dyn.layer(lid, "positionX", osc_points(0, edit_ms, cp["drift_half_s"][0] * 1000, x0 - cp["drift_px"][0],
-                                               x0 + cp["drift_px"][0], phase=ph))
-        dyn.layer(lid, "positionY", osc_points(0, edit_ms, cp["drift_half_s"][1] * 1000, y0 - cp["drift_px"][1],
-                                               y0 + cp["drift_px"][1], phase=1 - ph))
-        for prop in ("scaleX", "scaleY"):
-            dyn.layer(lid, prop, osc_points(0, edit_ms, cp["scale_half_s"] * 1000, cp["scale"][0], cp["scale"][1]))
-        dust_ids.append(lid)
-    info["dust"] = {"layers": dust_ids, **{k: v for k, v in FINISH_DUST.items()}}
     # chromatic aberration: R and B shifted opposite ways along `direction`, oscillating (eased) between px[0], px[1]
     cid, ceff = ids.L(), ids.E()
     a0, a1 = (v / FINISH_CHROMA["px_per_amount"] for v in FINISH_CHROMA["px"])
@@ -967,6 +990,9 @@ def main():
     ap.add_argument("--shots-dir", help="test only: read <dir>/<composition>/tesseract_shots.json first")
     ap.add_argument("--output", help="test only: write the project here instead of .tesseract-work/picture.tsrct")
     ap.add_argument("--no-renders", action="store_true", help="test only: leave the HyperFrames renders out")
+    ap.add_argument("--render-proxy", type=int, default=0, metavar="HEIGHT",
+                    help="preview only: import the beat renders as ProRes 4444 proxies of this height (e.g. 720), "
+                         "cached in .tesseract-work/proxies (alpha, frame count and timing unchanged)")
     args = ap.parse_args()
     global PROJECT, JSON_OUT, REPORT
     if args.output:
@@ -1005,11 +1031,11 @@ def main():
     if PROJECT.exists():
         PROJECT.unlink()
     tsrct("project", "create", "--project", PROJECT)
-    dust_src = ROOT / FINISH_DUST["file"]
-    if not dust_src.is_file():
-        raise SystemExit("dust overlay missing: %s" % rel(dust_src))
-    dust_asset = "pic-tex-dust-overlay"
-    tsrct("project", "import-asset", "--project", PROJECT, "--file", dust_src, "--asset-id", dust_asset, "--kind", "image")
+    sc = FINISH_SCANLINES
+    scan_png = scanline_image(WORK / "derived" / ("scanlines_p%d_d%02d_s%.1f.png" % (
+        sc["period_px"], round(sc["depth"] * 100), sc["shape"])))
+    scan_asset = "pic-tex-scanlines"
+    tsrct("project", "import-asset", "--project", PROJECT, "--file", scan_png, "--asset-id", scan_asset, "--kind", "image")
     wc_used = set()
     shot_assets, imported = {}, {}
     for b in beats:
@@ -1046,7 +1072,8 @@ def main():
         aid = "pic-hf-%s" % b["composition"]["id"]   # a beat being re-rendered can be an incomplete file: skip it
         try:
             nf = int(probe(mov)["nb_frames"] or 0)
-            r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", mov, "--asset-id", aid).stdout)
+            src_mov = render_proxy(mov, args.render_proxy) if args.render_proxy else mov
+            r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", src_mov, "--asset-id", aid).stdout)
         except (SystemExit, OSError, ValueError, KeyError, IndexError) as e:
             warnings.append("%s: unreadable or incomplete (being re-rendered?); beat render skipped: %s" % (
                 rel(mov), str(e).strip().splitlines()[0][:200] if str(e).strip() else type(e).__name__))
@@ -1083,7 +1110,7 @@ def main():
     ids, dyn = Ids(), Dyn()
     root = []
 
-    finish, finish_info = finish_layers(ids, dyn, edit_ms, dust_asset)
+    finish, finish_info = finish_layers(ids, dyn, edit_ms, scan_asset)
     root += finish
 
     hf_group_id = ids.L()
@@ -1139,7 +1166,7 @@ def main():
                             "linear_or_hold": sum(1 for e in dyn.entries for k in e["animator"].get("keyframes", [])
                                                   if k["easing"].get("type") != "cubicBezier"),
                             "scripts": sum(1 for e in dyn.entries if e["animator"]["type"] == "jsScript")},
-              "constants": {"FINISH_GRAIN": FINISH_GRAIN, "FINISH_VIGNETTE": FINISH_VIGNETTE, "FINISH_DUST": FINISH_DUST,
+              "constants": {"FINISH_GRAIN": FINISH_GRAIN, "FINISH_VIGNETTE": FINISH_VIGNETTE, "FINISH_SCANLINES": FINISH_SCANLINES,
                             "FINISH_CHROMA": FINISH_CHROMA, "NEUTRALIZE": NEUTRALIZE, "PUSH_DEFAULT": PUSH_DEFAULT,
                             "EASES": {"push": EASE_PUSH, "x2": EASE_X2, "bars": EASE_BARS, "whip": [EASE_WHIP_OUT, EASE_WHIP_IN],
                                       "b10_pop_return": EASE_POP_RETURN},

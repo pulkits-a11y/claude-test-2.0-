@@ -28,9 +28,41 @@
 }
 .rc-t1.rc-on-card, .rc-t2.rc-on-card, .rc-t4.rc-on-card, .rc-t7.rc-on-card, .rc-t8.rc-on-card,
 .rc-on-card .rc-t1, .rc-on-card .rc-t2, .rc-on-card .rc-t4, .rc-on-card .rc-t7, .rc-on-card .rc-t8 {
-  color: var(--card-ink);
-  text-shadow: none;
+  color: var(--card-text);                /* v03: white + glow on the dark cards (was #111111, no shadow) */
+  text-shadow: var(--text-glow);
 }
+
+/* ---------- v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1): RCK.type.lockups + lockupsWire ----------
+   One timed element per lockup (full frame). The box shrink-wraps its rows and is centred on x 960; its ink (first cap
+   top .. last baseline) is centred on --rc-y (540) through --rc-lk-c (written by lockups()). Rows: lead = small words
+   above-left (left edge = the box's left edge = the keyword's), key = the big Coolvetica Italic keyword (centred),
+   tail = small words below-right (right edge = the keyword's), solo = one centred small line (no keyword). Sizes and the
+   row offsets are inline (computed from Coolvetica's metrics). White + the ref 3 glow on footage and on dark cards. */
+.rc-lk {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: var(--white);
+  text-shadow: var(--text-glow);
+  pointer-events: none;
+}
+.rc-lk__box {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(var(--rc-y, 540px) - var(--rc-lk-c, 0px));
+}
+.rc-lk__row { display: block; white-space: nowrap; font-family: var(--sans); font-weight: 400; }
+.rc-lk__row--lead { align-self: flex-start; }
+.rc-lk__row--tail { align-self: flex-end; }
+.rc-lk__row--key { align-self: center; font-family: var(--serif); font-style: italic; }
+.rc-lk__row--solo { align-self: center; }
+.rc-lw { display: inline-block; }         /* one lockup word; GSAP: opacity (hard cut) or the pop (scale + filter) */
 
 /* ---------- T1 Running caption: Coolvetica 46 px (plan: Inter Medium), white, soft shadow, centred at x 960, y 620 ---------- */
 .rc-t1 {
@@ -108,11 +140,12 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background: var(--card-gray);
-  color: var(--card-ink);
-  text-shadow: none;
+  background: var(--card-bg);             /* v03: dark card + white year with the ref 3 glow (was #E9E9E9 / #111111) */
+  background-image: var(--card-surface);
+  color: var(--card-text);
+  text-shadow: none;                      /* the glow is a filter on the block: text-shadow would be cut by the digit masks */
 }
-.rc-t3__block { display: block; }         /* shrink-wraps the year, so "In" sits on the year's left edge */
+.rc-t3__block { display: block; filter: var(--glow-filter); }         /* shrink-wraps the year, so "In" sits on the year's left edge */
 .rc-t3__in {
   font-family: var(--serif);
   font-style: italic;
@@ -299,7 +332,7 @@
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: var(--rc-t7-chip-bg, var(--card-ink));           /* M4 "white on a dark chip" = .m4-chip's card ink */
+  background: var(--rc-t7-chip-bg, var(--dark-ink));           /* M4 "white on a dark chip" = .m4-chip's #111111 */
   text-shadow: none;
 }
 /* a photo / clip fills the chip; the M4 beetle (img.m4-bug, svg/motifs-bug.svg) is centred at 44 x 40 by motifs.css */
@@ -359,7 +392,7 @@
   container-type: inline-size;
   --rc-walk: 0;
 }
-.rc-on-card .rc-t8__underline, .rc-t8.rc-on-card .rc-t8__underline { box-shadow: none; }
+.rc-on-card .rc-t8__underline, .rc-t8.rc-on-card .rc-t8__underline { box-shadow: 0 0 2px rgba(255, 255, 255, 0.45), 0 0 9px rgba(255, 255, 255, 0.28); }  /* v03 glow */
 .rc-t8__walker {                          /* slot for the Lemming: stands on the underline, walks with --rc-walk 0 -> 1 */
   position: absolute;
   left: 0;
@@ -385,10 +418,11 @@
 .rc-t9-hl {                               /* highlighter box placed over the title inside the document layer */
   position: absolute;
   background: var(--highlighter);
-  opacity: 0.85;
-  mix-blend-mode: multiply;
-  pointer-events: none;
+  opacity: 0.5;                           /* v03 (note 12): the documents are dark (inverted page / browser dark mode). */
+  mix-blend-mode: screen;                 /* screen lifts the dark paper to a yellow band and keeps the light text light */
+  pointer-events: none;                   /* (v01/v02: 85% multiply = behind the ink on a white page: invisible on dark) */
 }
+.rc-t9-hl--light { opacity: 0.85; mix-blend-mode: multiply; }   /* a light page (v02 look) */
 .rc-t9 {                                  /* label host: --rc-x / --rc-y = top-left corner of the label */
   position: absolute;
   left: var(--rc-x, 960px);
@@ -399,7 +433,7 @@
   padding: 11px 20px 13px;                /* 12 / 20 px, 1 px up: Coolvetica's caps sit 1.2 px low in the 40 px line */
   border-radius: 4px;
   background: var(--highlighter);
-  color: var(--card-ink);
+  color: var(--dark-ink);                 /* v03: the plan's #111111 (--card-ink is now the white text on dark cards) */
   text-shadow: none;
   font-family: var(--sans);
   font-weight: var(--w-year);             /* plan: Inter Bold; v02 Coolvetica has one weight */

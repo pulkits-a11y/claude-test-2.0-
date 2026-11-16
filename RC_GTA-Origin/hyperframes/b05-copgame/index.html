@@ -14,8 +14,9 @@
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       /* Camera wrappers INSIDE each 958 px half (identical in b06-dull): the L11 frame itself (halves x 0-958 / 962-1920,
          4 px divider) never moves or scales, so B5, B6 and B11 keep identical split-screen framing (plan p.25, QA 7).
-         .lc-push = the held-shot camera (v02 rule D: eased push / zoom-out), .lc-key = the keyword punch (nested: both
-         drive scale). The video is not a direct child of .rc-l11__half, so the kit's half > video fill rule is repeated. */
+         .lc-push = the held-shot camera (v03: the slow eased 100 -> 104% push), .lc-key = v02's keyword-punch wrapper (v03:
+         unused, scale 1, kept so the markup matches b11-flip). The video is not a direct child of .rc-l11__half, so the
+         kit's half > video fill rule is repeated. */
       .lc-push, .lc-key { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
       .lc-key > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
     </style>
@@ -90,20 +91,17 @@
 
       // Word frames (local) from words.json: In 7, it, 9, you 20, play 25, a 31, police 33, officer 42, chasing 53, criminals. 64.
 
-      // ---- split-screen camera (rule D), shared with b06-dull on the EDIT clock (B5 local L = edit 600 + L, B6 local
-      //      L = edit 683 + L): move 1 = push 100 -> 108% (easeInOutSine) from B5 local 0 to the B5/B6 cut (B5 local 89 =
-      //      B6 local 6); move 2 = zoom-out 108 -> 100% (easeInOutSine) from the cut to B6's X2 cut ("One", B6 local 64).
-      //      Both moves rest at the cut (velocity 0), and each composition plays the other's frames in its handles with
-      //      the same curve (segment of the same ease, not restarted), so the cut and any trim of it are seamless.
+      // ---- split-screen camera, v03 (note 13: the v02 zooms are gone, back to v01's camera): ONE slow push 100 -> 104%
+      //      inside each half (.lc-push, origin = the half's centre), easeInOutSine, across the whole L11 shot on the EDIT
+      //      clock shared with b06-dull (B5 local L = edit 600 + L, B6 local L = edit 683 + L): from B5 local 0 (edit 600)
+      //      to b06's cut to the quote card on "One" (B6 local 64 = edit 747) = 147 frames, 104% there.
+      //      scale(B5 local L) = 1 + 0.04 * sine.inOut(L / 147). This composition plays curve frames 0..95 (segment of the
+      //      same ease, not restarted); b06-dull plays 83..147, so the B5/B6 cut (B5 local 89 = B6 local 6) is seamless.
+      //      No keyword punch (the nested .lc-key wrapper stays at 100%; it is kept so the markup matches b11-flip).
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
-      const CUT = 89, ZOOM_F = 64 - 6;                 // the B5/B6 cut (local), length of move 2 (58f)
-      C.push(tl, '#b05-split .lc-push', f(0), { until: f(CUT), from: 1, to: 1.08 });
-      C.zoomOut(tl, '#b05-split .lc-push', f(CUT), { until: f(95), from: 1.08, to: 1.08 - 0.08 * SIN(6 / ZOOM_F), ease: seg(0, 6 / ZOOM_F) });
-
-      // Keyword punch on "police" (local 33; rule D: 100 -> 106% in 3f easeOutExpo, back in 9f easeInOutSine) on the nested
-      // wrapper, together with the X9 wash.
-      C.keyPunch(tl, '#b05-split .lc-key', f(33));
+      const SPAN = 147, PUSH = 0.04;                   // curve length (B5 local 0 -> B6 local 64), push amount
+      C.push(tl, '#b05-split .lc-push', 0, { until: f(95), from: 1, to: 1 + PUSH * SIN(95 / SPAN), ease: seg(0, 95 / SPAN) });
 
       // M2: "you" label hard-cuts in on "you" (local 20), shaft + head drawn by local 28 (8f, easeOutQuart).
       M.arrowDraw(tl, '#b05-arrow', f(20), { from: [772, 900], to: [552, 728], bend: 0.16, seed: 7, label: 'you' });

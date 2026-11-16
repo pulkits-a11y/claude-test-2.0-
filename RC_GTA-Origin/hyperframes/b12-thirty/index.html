@@ -30,9 +30,10 @@
          beat f50    "turn": 12 more squares appear and fill siren red #E3262E, 2f apart (local 56 ... 78) while the counter
                      rolls 18 -> 30 (12 odometer rolls, 2f each, easeInOutQuad), landing on 30 on "thirty" (local 71);
                      T2 word by word: "turn" (56) / "into thirty." (into 67, keyword thirty. 71), above the grid (y 260).
-         beat f65    "thirty": counter lands + T2 keyword blur punch + a 6% keyword punch on the calendar; S11's hit lands
-                     here (Tesseract, cues.json). T2 out: 3f eased exit ending on the beat end (local 84).
-         Camera (rule D): the calendar pushes 100 -> 106% across the composition (sine.inOut); captions stay outside it.
+         beat f65    "thirty": counter lands + T2 keyword blur punch; S11's hit lands here (Tesseract, cues.json).
+                     T2 out: 3f eased exit ending on the beat end (local 84).
+         Camera (v03, REVISION_v03 note 13: v01's camera, eased): the calendar pushes 100 -> 104% across the composition
+         (sine.inOut), no keyword punch; captions stay outside it.
          No dates on the calendar (plan p.21/p.40). Optional R12.1 clock time-lapse: skipped while it is a stand-in
          (STORYBOARD B12); see BEAT_NOTES.md. Tesseract owns all audio. -->
     <div id="root" data-composition-id="b12-thirty" data-start="0" data-duration="3.0000000" data-width="1920" data-height="1080">
@@ -46,12 +47,10 @@
       <video id="b12-clock" class="clip rc-full" src="assets/footage/R12.1.mp4" data-start="0.0000" data-duration="3.0000" data-track-index="2" muted playsinline style="z-index: 2; opacity: 0.1; object-fit: cover"></video>
       -->
 
-      <!-- untimed camera wrappers (kit .rc-cam, rule D): #b12-cam = the slow push, #b12-key = the keyword punch on
-           "thirty" (nested: the two moves overlap). Only the calendar is inside; the captions are not. -->
+      <!-- untimed camera wrapper (kit .rc-cam): #b12-cam = v01's slow held-shot push (100 -> 104%, eased; v03 note 13
+           removed v02's keyword punch on "thirty" and its nested wrapper). Only the calendar is inside; the captions are not. -->
       <div id="b12-cam" class="rc-cam" style="z-index: 3">
-        <div id="b12-key" class="rc-cam">
-          <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3"></div>
-        </div>
+        <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3"></div>
       </div>
 
       <!-- T2 punch pair word by word (rule A; plan "T2: turn into thirty.", keyword "thirty." in the italic), card ink, row
@@ -111,10 +110,9 @@
       // ---- captions: every word pops on its onset (T1 "Of course,", T2 "turn" / "into thirty."), max 2 words ----
       T.captionPops(tl);
 
-      // ---- camera (rule D): slow push 100 -> 106% across the composition (easeInOutSine) about the frame centre; on
-      //      "thirty" the calendar punches 106% in 3f (expo.out) and settles back over 9f (sine.inOut) ----
-      C.push(tl, '#b12-cam', 0, { until: L(END), from: 1, to: 1.06 });
-      C.keyPunch(tl, '#b12-key', L(THIRTY));
+      // ---- camera (v03, note 13 "remove the random zooms": back to v01's camera = the held-card push 100 -> 104% across
+      //      the composition, as B4's calendar, now easeInOutSine about the frame centre; no keyword punch) ----
+      C.push(tl, '#b12-cam', 0, { until: L(END), from: 1, to: 1.04 });
 
       window.__timelines["b12-thirty"] = tl;
     </script>

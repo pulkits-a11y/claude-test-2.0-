@@ -20,15 +20,17 @@
       #b07-pageD { transform: translate(-26.5412px, 0px) scale(1.1294118); }       /* page x 23.5-1723.5, y 0-956: the headline centred, 1700 page px wide */
       #b07-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5: the article column only */
       .b07-art, .b07-paper, .b07-dim, .b07-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
-      .b07-paper { background: var(--white); }
+      .b07-paper { background: #000000; }          /* v03: the dark-mode page's own black (R7.GD background = #000) */
       /* the site's unrelated right sidebar ("Latest News", x >= 1504 from y 405 down) is cropped out of the headline shot;
-         the page's own white shows there. The article itself is untouched. */
+         the page's own black shows there. The article itself is untouched. */
       #b07-d { clip-path: polygon(0 0, 2232px 0, 2232px 395px, 1495px 395px, 1495px 2352px, 0 2352px); }
       .b07-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
-      /* red hit: the picture turns siren red (multiply: the white page becomes #E3262E, the ink stays dark). Above the
-         picture, below the captions. Opacity only (eased in 2f before the hit, out over 6f: kit X3 flash curve). */
-      .b07-red { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: var(--siren-red);
-                 mix-blend-mode: multiply; opacity: 0; pointer-events: none; }
+      /* v03: T9 highlighter on the DARK page. The kit's light-page stroke (#FFE14D 85%, multiply) vanishes on black, so the
+         same yellow is laid over the page with screen blend at 50%: the black under the line becomes a muted yellow band, the
+         light-gray text brightens to near white on it (a dark-mode reader's highlight). The two strokes are opaque inside
+         one group and the GROUP blends once (no seam where they meet). */
+      .b07-hlgroup { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; mix-blend-mode: screen; opacity: 0.5; }
+      .b07-hlgroup > .rc-t9-hl { mix-blend-mode: normal; opacity: 1; }
     </style>
   </head>
   <body>
@@ -96,10 +98,12 @@
         <div data-hf-id="hf-e7vd" id="b07-camE" class="rc-cam">
           <div data-hf-id="hf-cges" id="b07-pageE" class="b07-page" data-layout-allow-overflow="">
             <img data-hf-id="hf-a0xs" id="b07-e" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.9333" data-duration="1.4667" data-track-index="6" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
-            <!-- T9 highlighter (kit .rc-t9-hl: #FFE14D 85%, multiply = behind the ink) in page px, two swipes -->
+            <!-- T9 highlighter in page px, two swipes (hl1 overlaps hl2 by 2 px). v03 dark page: .b07-hlgroup (screen, 50%) -->
             <div data-hf-id="hf-zm9l" id="b07-hlclip" class="clip b07-hls" data-start="1.9333" data-duration="1.4667" data-track-index="8" data-layout-ignore="">
-              <div data-hf-id="hf-xzcl" id="b07-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 358px; height: 48px"></div>
-              <div data-hf-id="hf-d1id" id="b07-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+              <div class="b07-hlgroup">
+                <div data-hf-id="hf-xzcl" id="b07-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
+                <div data-hf-id="hf-d1id" id="b07-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+              </div>
             </div>
             <div data-hf-id="hf-kj5u" id="b07-dimE" class="clip b07-dim" data-start="1.9333" data-duration="1.4667" data-track-index="7" data-layout-ignore="">
               <svg data-hf-id="hf-l1ft" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-vl9d">
@@ -110,11 +114,6 @@
           </div>
         </div>
       </div>
-
-      <!-- red hits on "keep" (local 41), "shut" (62), "down." (72) = S06 hit peaks (cues.json stamp1-3) -->
-      <div data-hf-id="hf-nfa6" id="b07-red1" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
-      <div data-hf-id="hf-lbv5" id="b07-red2" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
-      <div data-hf-id="hf-fup8" id="b07-red3" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
 
       <!-- T1 running captions, v02 rule A (plan B7 p.23 "T1: So the people / above the team / keep trying / to shut it
            down."): kit captionPlanV2 + captionHTMLV2 from words.json, low line (y 860), white + soft shadow (on footage and
@@ -140,22 +139,25 @@
       // Word frames (local) from words.json: So 6, the 9, people 13, above 22, the 31, team 35, keep 41, trying 48, to 58,
       // shut 62, it 68, down. 72 (voice ends 84).
 
-      // ---- office B-roll, fast cuts with eased zooms (rule D: alternate pushes and zoom-outs) ----
-      C.push(tl, '#b07-camA', f(0), { until: f(22), from: 1, to: 1.08 });
-      C.zoomOut(tl, '#b07-camB', f(22), { until: f(31), from: 1.12, to: 1 });
-      C.push(tl, '#b07-camC', f(31), { until: f(41), from: 1, to: 1.08 });
+      const SIN = gsap.parseEase('sine.inOut');
+      const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
 
-      // ---- D: the cut to the headline on "keep" (red hit 1): punch-in that settles, 112 -> 100% over 10f, easeOutExpo,
-      //      about the headline centre ----
-      C.punchIn(tl, '#b07-camD', f(41), { from: 1.12, to: 1, frames: 10, origin: '960px 190.3px' });
+      // ---- A-D, v03 (note 13: the v02 pushes / zoom-out / punch-in are gone, back to v01's camera): ONE slow push
+      //      100 -> 104%, easeInOutSine, from local 0 to the cut to the sentence (local 58), shared by the four shots: each
+      //      wrapper plays its own segment of the same curve, scale(L) = 1 + 0.04 * sine.inOut(L / 58). A (0-22) and B
+      //      (22-31) and C (31-41) about the frame centre, D (the headline, 41-58) about the headline centre. ----
+      const ABCD = 58, P0 = 0.04, sc = (n) => 1 + P0 * SIN(n / ABCD);
+      const segPush = (el, a, b, origin) => C.push(tl, el, f(a), { until: f(b), from: sc(a), to: sc(b), ease: seg(a / ABCD, b / ABCD), origin });
+      segPush('#b07-camA', 0, 22);
+      segPush('#b07-camB', 22, 31);
+      segPush('#b07-camC', 31, 41);
+      segPush('#b07-camD', 41, 58, '960px 190.3px');
 
       // ---- E: the article push, ONE eased move on the EDIT clock shared with b08-break: from the cut on "to" (B7 local 58 =
       //      edit 897) to "breaks" (B8 local 39 = edit 968), 71f, easeInOutSine: scale 100 -> 118% about the sentence centre
       //      (frame px 1053.3, 613.0 in the base framing) + drift (-93.3, -53.0) px, so the sentence ends centred at (960, 560).
       //      This composition plays its first 44 frames (to local 102) on the same curve (segment of the ease, not restarted);
       //      b08-break plays the rest. The page never leaves the article column (checked: page x 50-1450, y 1564-2351.5). ----
-      const SIN = gsap.parseEase('sine.inOut');
-      const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
       const E_LEN = 71, E_S = 1.18, E_DX = -93.257, E_DY = -53.029, pEnd = SIN(44 / E_LEN);
       C.push(tl, '#b07-camE', f(58), { until: f(102), from: 1, to: 1 + (E_S - 1) * pEnd, ease: seg(0, 44 / E_LEN), origin: '1053.257px 613.029px' });
       gsap.set('#b07-driftE', { x: 0, y: 0, force3D: false });
@@ -165,13 +167,6 @@
       //      it is 94% across on the hit frame: swipe 1 on "to" (58) lands on "shut" (62); swipe 2 on "it" (68) on "down." (72) ----
       T.highlight(tl, '#b07-hl1', f(58));
       T.highlight(tl, '#b07-hl2', f(68));
-
-      // ---- red hits on "keep" (41), "shut" (62), "down." (72): the kit X3 flash curve on a siren-red multiply layer:
-      //      C-3 0 | C-2 11% | C-1 44% | C 100% (easeInQuad) | C+1 73% | C+2 51% | C+3 33% | C+4 18% | C+5 8% | C+6 2% | C+7 0
-      //      (easeOutQuad over 7 frames = out over ~6f). Peaks = the S06 hit peaks (cues.json stamp1-3 = beat 35, 56, 66). ----
-      X.flash(tl, '#b07-red1', f(41), { ramp: 2, hold: 1, fade: 6 });
-      X.flash(tl, '#b07-red2', f(62), { ramp: 2, hold: 1, fade: 6 });
-      X.flash(tl, '#b07-red3', f(72), { ramp: 2, hold: 1, fade: 6 });
 
       // ---- T1 word pops (every .rc-cap above): each word on its onset frame, max 2 words on screen ----
       T.captionPops(tl);

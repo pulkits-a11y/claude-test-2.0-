@@ -12,9 +12,9 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
-      /* camera = the held CRT shot (plate + screen + tear + error box): pushed 100 -> 108% after the X6 lands (sine.inOut),
-         then zooms through into B3 (x1.4 + blur, expo.in, the last 5 frames). #b02-key (nested) = the keyword punches. */
-      #b02-cam, #b02-key { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      /* camera = the held CRT shot (plate + screen + tear + error box): v03 (note 13) v01's slow push 100 -> 104% after the
+         X6 lands (sine.inOut, never linear), then zooms through into B3 (x1.4 + blur, expo.in, the last 5 frames). */
+      #b02-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
       .b02-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
       /* L8 plate = R3.7 (SUBSTITUTE for R3.9, see BEAT_NOTES): the 1440 x 1080 4:3 picture, rotated +6.5 deg (levels the
          monitor; the BBC corner logo leaves the frame) and scaled 149.97%, so the CRT glass lands on the quad
@@ -46,27 +46,28 @@
     </style>
   </head>
   <body>
-    <!-- B2 b02-bug v02: beat 169f (5.633s) + 6f handle each end = 181f (REVISION_v02: VO 115%, rules A C D E, notes 1 + 8).
+    <!-- B2 b02-bug v03 (REVISION_v03 notes 11, 13, 16, 17: v03 caption lockups, no random zooms; otherwise as v02).
+         v02: beat 169f (5.633s) + 6f handle each end = 181f (REVISION_v02: VO 115%, rules A C D E, notes 1 + 8).
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.8333s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B2 p.20).
          Shot list (local frames), all HF-owned (opaque); bug beat (glitch allowed):
-           0-6      head handle: B1's straight full-frame GTA 6 picture (hand-off copy), B1's eased push finishing (108% on 6)
+           0-6      head handle: B1's straight full-frame GTA 6 picture (hand-off copy), B1's eased push finishing (104% on 6)
            6-14     X6 OUT: the GTA 6 shot (R1.2, continuous source time) shrinks from full frame ('fill' ~370%) into the
                     CRT screen (L8, plate R3.7 = SUBSTITUTE for R3.9) over 8f with motion blur
-           14-30    GTA 6 plays inside the CRT (bulge, scanlines, 1 px fringe, 97-100% flicker); push on the plate from 14
+           14-30    GTA 6 plays inside the CRT (bulge, scanlines, 1 px fringe, 97-100% flicker); slow push 100 -> 104% on the
+                    plate from 14 to 169 (sine.inOut)
            30-101   hard cut of the CRT picture to GTA 1 top-down police footage (R9.1) on "1995,"
-           101-109  X4 tear on the CRT picture only (8f), the picture freezes on the torn frame; key punch on "broke."
+           101-109  X4 tear on the CRT picture only (8f), the picture freezes on the torn frame (v03: no key punch)
            109-     Windows 95-style error box hard-pops on top (generic: no date, no path)
-           147      key punch on "bug" (the word, note 8: no chip)
            169-175  ZOOM-THROUGH OUT (note 1, replaces the v01 X5 slats): the picture scales x1.4 + 16 px blur, expo.in,
                     peak on 174; held zoomed/blurred through the tail handle; B3's year card arrives from 130% on its f0
          GTA 6 continuity: B1 plays its R1.2 window (8.2 s in) from its local 55 with media-start 0; B1 local 134 = this local
          0, so here media-start = 79/30 = 2.6334 on the same window (both comps show the same source frame on the cut). -->
     <div data-hf-id="hf-gofy" id="root" data-composition-id="b02-bug" data-start="0" data-duration="6.0333333" data-width="1920" data-height="1080">
 
-      <!-- ===== the held CRT shot ("camera" wrapper, untimed: push 100 -> 108% from local 14, zoom-through out 169-174);
-           #b02-key (untimed, nested) = the key punches on "broke." and "bug" ===== -->
-      <div data-hf-id="hf-jnfb" id="b02-cam" style="z-index: 1"><div id="b02-key">
+      <!-- ===== the held CRT shot ("camera" wrapper, untimed: push 100 -> 104% from local 14, zoom-through out 169-174);
+           v03 (note 13): the v02 key punches on "broke." and "bug" are gone (no nested #b02-key wrapper) ===== -->
+      <div data-hf-id="hf-jnfb" id="b02-cam" style="z-index: 1">
         <!-- X6 world (untimed): plate + screen picture; RCK.transitions.zoom scales it 'fill' -> 100% over local 6-14 -->
         <div data-hf-id="hf-ch69" id="b02-world" class="rc-x6">
           <div data-hf-id="hf-b2pf" id="b02-plate-fit"><video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-vfgj" id="b02-plate" class="clip" src="assets/footage/R3.7.mp4" data-start="0.0000" data-duration="6.0333" data-media-start="0" data-track-index="1" muted playsinline style="--hf-color-grading-blur: 0"></video></div>
@@ -90,7 +91,7 @@
         </div>
         <!-- Windows 95-style error box: hard pop at local 109 (the tear's end) = its data-start -->
         <div data-hf-id="hf-tzak" id="b02-err" class="clip m-errbox" data-start="3.6333" data-duration="2.4000" data-track-index="6" style="z-index: 5"></div>
-      </div></div>
+      </div>
 
       <!-- ===== hand-off (local 0-6): B1's straight full-frame GTA 6 picture (R1.2, media-start 2.6334, B1's push continued)
            on top of the X6 world until the zoom's first frame; RCK.transitions.zoom hides it from local 7 ===== -->
@@ -145,17 +146,19 @@
         blurMedia: '#b02-plate, #b02-g6-crt, #b02-g6-clean' });
       // clean copy fades 1 -> 0 over the zoom's last frames (local 9 -> 14, easeInCubic = a fade out), revealing the CRT look
       tl.fromTo('#b02-g6-clean', { opacity: 1 }, { opacity: 0, duration: L(5), ease: 'power2.in', immediateRender: false }, L(9));
-      // B1's held-shot push finishes inside the picture: B1 = 1 + 0.08 sineInOut((m - 61) / 79) from its local 61 to 140, m =
-      // this local + 134. Here local 0 -> 6 is the last 6 frames of that same easeInOutSine curve (a function ease = its
-      // tail), so the head handle matches B1's last frames and the boundary frame is B1's 108%; held at 108% after.
-      const SIO = (p) => (1 - Math.cos(Math.PI * p)) / 2, P0 = 73 / 79, S0 = 1 + 0.08 * SIO(P0);
+      // B1's held-shot push finishes inside the picture (v03, note 13: v01's 4%, eased): B1 = 1 + 0.04 sineInOut((m - 61) / 79)
+      // from its local 61 to 140, m = this local + 134. Here local 0 -> 6 is the last 6 frames of that same easeInOutSine
+      // curve (a function ease = its tail), so the head handle matches B1's last frames and the boundary frame is B1's 104%;
+      // held at 104% after.
+      const SIO = (p) => (1 - Math.cos(Math.PI * p)) / 2, P0 = 73 / 79, S0 = 1 + 0.04 * SIO(P0);
       const b1Tail = (q) => (SIO(P0 + q * (1 - P0)) - SIO(P0)) / (1 - SIO(P0));
       gsap.set('#b02-band-push, #b02-hand', { scale: S0, transformOrigin: '50% 50%' });
-      tl.fromTo('#b02-band-push, #b02-hand', { scale: S0 }, { scale: 1.08, duration: L(6), ease: b1Tail, immediateRender: false }, 0);
+      tl.fromTo('#b02-band-push, #b02-hand', { scale: S0 }, { scale: 1.04, duration: L(6), ease: b1Tail, immediateRender: false }, 0);
 
-      // ---- held CRT shot (rule D): push 100 -> 108% from the landing (local 14) to local 169, easeInOutSine, towards the
-      // screen centre (560, 410); then the zoom-through out (below) continues from 108% on the same wrapper and origin.
-      if (!STILL) C.push(tl, '#b02-cam', L(14), { until: L(169), from: 1, to: 1.08, origin: '560px 410px' });
+      // ---- held CRT shot, v03 (note 13: back to v01's slow push, eased): 100 -> 104% from the landing (local 14) to local
+      // 169, easeInOutSine, towards the screen centre (560, 410); then the zoom-through out (below) continues from 104% on the
+      // same wrapper and origin.
+      if (!STILL) C.push(tl, '#b02-cam', L(14), { until: L(169), from: 1, to: 1.04, origin: '560px 410px' });
 
       // ---- L8 brightness flicker 97-100% (one seeded value per frame) on the live CRT picture until the tear
       M.crtFlicker(tl, '#b02-g6-crt', L(6), { until: L(30), seed: 97 });
@@ -175,15 +178,10 @@
       // ---- error box: built once; its clip start (local 109) is the hard pop
       M.errorBoxInit('#b02-err');
 
-      // ---- keyword punches (rule D) on the nested wrapper, about the screen centre: "broke." (101, with the tear) and
-      // "bug" (147): 100 -> 106% in 3f (expo.out, from 1f before the onset), back over 9f (sine.inOut); 46f apart.
-      if (!STILL) {
-        C.keyPunch(tl, '#b02-key', W.broke, { origin: '560px 410px' });
-        C.keyPunch(tl, '#b02-key', W.bug, { origin: '560px 410px' });
-      }
+      // ---- v03 (note 13): the v02 keyword punches on "broke." and "bug" are removed (no random zooms).
 
-      // ---- ZOOM-THROUGH OUT (note 1: replaces the X5 slat close), split at the B2/B3 boundary (local 175 = B3's f0): the
-      // camera scales x1.4 (108% -> 151.2%) + 16 px blur over local 169-174, easeInExpo, peak on 174 (the last frame of
+      // ---- ZOOM-THROUGH OUT (kept in v03: the 0:10 transition), split at the B2/B3 boundary (local 175 = B3's f0): the
+      // camera scales x1.4 (104% -> 145.6%) + 16 px blur over local 169-174, easeInExpo, peak on 174 (the last frame of
       // the beat), held through the tail handle. Blur: the R3.7 plate through its media-treatment blur control (footage is
       // never CSS-filtered); the X4 canvas region and the error box (DOM) through a CSS blur. B3 arrives from 130% + blur.
       if (!STILL) C.zoomThroughOut(tl, '#b02-cam', L(175), { blurMedia: '#b02-plate', blurDom: '#b02-pin, #b02-err' });

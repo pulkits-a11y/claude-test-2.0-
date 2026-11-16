@@ -114,22 +114,34 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     });
     return f1 * F;
   }
-  // Held shot push (v02 rule D: "push 100 -> 106-110% across the shot (sine.inOut) instead of v01's linear 104%"):
-  // scales `target` (an untimed wrapper, or several: a selector matching all of them) from opts.from (1, or the scale a
-  // previous move on the wrapper left) to opts.to (1.08) between `at` and opts.until (or at + durF), easeInOutSine
-  // (opts.ease). opts.origin (centre), opts.x / opts.y: optional drift (px) on the same curve. Returns the end time.
+  // Held shot push. v03 (REVISION_v03 note 13, back to v01's camera): 100 -> 104% across the shot, still eased
+  // (easeInOutSine; v01 was linear, v02 pushed to 108%). Scales `target` (an untimed wrapper, or several: a selector
+  // matching all of them) from opts.from (1, or the scale a previous move on the wrapper left) to opts.to (from x 1.04)
+  // between `at` and opts.until (or at + durF), opts.ease. opts.origin (centre), opts.x / opts.y: optional drift (px) on
+  // the same curve. The plan's own moves pass their values (B4 1.18, logo 1.15). Returns the end time.
+  var PUSH_TO = 1.04;
   function push(tl, target, at, opts) {
     opts = opts || {};
     var els = $$(target), f0 = frame(at), f1 = frame(endOf(at, opts, 60));
     var prev = els[0] && els[0].__rcCam ? camPrev(els[0], f0) : null;
-    var a = opts.from != null ? opts.from : (prev != null ? prev : 1), b = opts.to != null ? opts.to : a * 1.08;
+    var a = opts.from != null ? opts.from : (prev != null ? prev : 1), b = opts.to != null ? opts.to : a * PUSH_TO;
     return camMove(tl, els, 'push', f0, f1, a, b, easeOf(opts.ease, 'sine.inOut'), opts);
   }
   function camPrev(el, f0) { var p = null; (el.__rcCam || []).forEach(function (r) { if (r.f1 <= f0 && (!p || r.f1 > p.f1)) p = r; }); return p ? p.s1 : null; }
   // The alternate held-shot move (rule D "alternate with slow zoom-outs (110 -> 100%)"): opts.from 1.10 -> opts.to 1.0,
   // sine.inOut, between `at` and opts.until. Returns the end time.
+  // v03 (note 13): "remove the random zooms": zoomOut, punchIn and keyPunch are v02 additions and are NOT used in v03
+  // (only the plan's own camera moves + the 100 -> 104% held-shot push). They still work (one console warning each;
+  // opts.v02 = true silences it).
+  var v03Warned = {};
+  function v03NoZoom(name) {
+    if (v03Warned[name]) return;
+    v03Warned[name] = true;
+    warn(name + ' is a v02 camera move: REVISION_v03 note 13 removes it (use only the plan moves and the 100 -> 104% push)');
+  }
   function zoomOut(tl, target, at, opts) {
     opts = opts || {};
+    if (!opts.v02) v03NoZoom('RCK.cam.zoomOut');
     return camMove(tl, $$(target), 'zoomOut', frame(at), frame(endOf(at, opts, 60)), opts.from != null ? opts.from : 1.10,
       opts.to != null ? opts.to : 1.0, easeOf(opts.ease, 'sine.inOut'), opts);
   }
@@ -138,6 +150,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // easeOutExpo: k 115% | k+1 107.5% | k+2 103.8% | k+3 101.9% | ... | k+10 100%. Returns the landing time.
   function punchIn(tl, target, at, opts) {
     opts = opts || {};
+    if (!opts.v02) v03NoZoom('RCK.cam.punchIn');
     var f0 = frame(at), N = opts.frames != null ? opts.frames : 10;
     return camMove(tl, $$(target), 'punchIn', f0, f0 + N, opts.from != null ? opts.from : 1.15, opts.to != null ? opts.to : 1.0, easeOf(opts.ease, 'expo.out'), opts);
   }
@@ -148,6 +161,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // own wrapper when the shot also pushes (both drive scale). opts.base: the wrapper's resting scale (1). Returns the end.
   function keyPunch(tl, target, at, opts) {
     opts = opts || {};
+    if (!opts.v02) v03NoZoom('RCK.cam.keyPunch');
     var els = $$(target), k = frame(at), lead = opts.lead != null ? opts.lead : 1, inF = opts.inF || 3, outF = opts.outF || 9;
     var base = opts.base != null ? opts.base : 1, peak = base * (opts.peak != null ? opts.peak : 1.06), f0 = Math.max(0, k - lead);
     els.forEach(function (el) {

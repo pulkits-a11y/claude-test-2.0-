@@ -19,31 +19,11 @@
     "keys": [
      {
       "f": 0,
-      "scale": 114
-     },
-     {
-      "f": 10,
-      "scale": 101,
-      "ease": "easeOutExpo"
-     },
-     {
-      "f": 79,
-      "scale": 105.86,
-      "ease": "easeInOutSine"
-     },
-     {
-      "f": 82,
-      "scale": 112.5,
-      "ease": "easeOutExpo"
-     },
-     {
-      "f": 91,
-      "scale": 106.87,
-      "ease": "easeInOutSine"
+      "scale": 100
      },
      {
       "f": 120,
-      "scale": 108,
+      "scale": 104,
       "ease": "easeInOutSine"
      }
     ]
@@ -51,7 +31,7 @@
    "enter": "X1",
    "exit": "X1",
    "grade": "b9-sat60",
-   "notes": "v02 (REVISION_v02 note 4 + rules D/E, VO 115%): beat f0-120 (was f0-127). X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation (grade b9-sat60). The HF overlay is now captions only: the v01 path diagram (white dot, dotted path, red arrow, per-frame TRACK) is removed (note 4: 'Remove the 0:38 overlayed arrow and other animations, the broll is perfect'), so nothing in the overlay depends on this shot's in-point, crop or scale any more. Framing v2 (rule D): punch-in on the cut 114 -> 101% over f0-10 (easeOutExpo), slow push 101 -> 108% to the cut (easeInOutSine), with one keyword punch on 'straight' (onset beat f80): 105.86% at f79 -> 112.5% at f82 (easeOutExpo, = push x 1.06) -> back on the push curve 106.87% at f91 (easeInOutSine). Moment: R9.1 314.1-318.1 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it; source_in moved 313.9 -> 314.1 s so the shot ends exactly where the HF strip 1 starts (318.1 s, continuous source time across the 'They ram.' cut at f120). Crop 536:302:260:108 (x 260-796, y 108-410 of the 854x480 upload; 16:9 within 0.2%) excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame): plan Rule 5, re-cropped out, never blurred/inpainted. Game HUD left as it is (only the Coords line falls inside this crop). b16-bug-origin/tools/make_rewind.py reads source_in_s/start_f/crop from here."
+   "notes": "v03 (REVISION_v03 note 13 'remove the random zooms', Decisions 'Zoom'): framing back to v01's = the held-shot push 100 -> 104% across the shot, now eased (easeInOutSine, nothing linear); the v02 punch-in on the cut (114 -> 101%), the push to 108% and the keyword punch on 'straight' are removed. Everything else as v02: beat f0-120 (was f0-127). X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation (grade b9-sat60). The HF overlay is now captions only: the v01 path diagram (white dot, dotted path, red arrow, per-frame TRACK) is removed (note 4: 'Remove the 0:38 overlayed arrow and other animations, the broll is perfect'), so nothing in the overlay depends on this shot's in-point, crop or scale any more. Moment: R9.1 314.1-318.1 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it; source_in moved 313.9 -> 314.1 s so the shot ends exactly where the HF strip 1 starts (318.1 s, continuous source time across the 'They ram.' cut at f120). Crop 536:302:260:108 (x 260-796, y 108-410 of the 854x480 upload; 16:9 within 0.2%) excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame): plan Rule 5, re-cropped out, never blurred/inpainted. Game HUD left as it is (only the Coords line falls inside this crop). b16-bug-origin/tools/make_rewind.py reads source_in_s/start_f/crop from here."
   }
  ]
 }

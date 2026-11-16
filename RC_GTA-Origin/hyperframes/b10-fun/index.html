@@ -32,7 +32,7 @@
          35       41       "fun" (edit frame 1231, 41.040 s) = the flash's 100% frame = S09 + the MU5 music drop
                            (cues.json fun = 35). Hard cut under the white: the strips end; from here this composition is
                            transparent except the T2 pair and the fading flash: Tesseract L1 R10.1 (GTA 1 kill frenzy, full
-                           colour +10% sat, framing keys = punch-in 125 -> 101% expo.out, then a slow push) shows under it.
+                           colour +10% sat, v03 framing = v01's static 100%: no punch out of the flash, note 13) shows under it.
          51-54    57-60    "it's fun." exits 3f (power2.in), gone on the beat end (local 60)
          54..60   60..66   tail handle: transparent (Tesseract footage only) -->
     <div data-hf-id="hf-sral" id="root" data-composition-id="b10-fun" data-start="0" data-duration="2.2000000" data-width="1920" data-height="1080">
@@ -82,14 +82,16 @@
       const END = 66;                     // composition end
 
       // ---------------- B9's strips, continued ----------------
-      // b09-throughyou pushes each strip's footage 115% -> 115% x 1.06 along ONE easeInOutSine curve from its punch
+      // b09-throughyou pushes each strip's footage 115% -> 115% x 1.04 (v03 = v01's held-shot push, eased; REVISION_v03
+      // note 13 removed v02's x 1.06) along ONE easeInOutSine curve from its punch
       // landing (b09 local 130 / 153 / 178) to the "fun" cut (b09 local 243 = this local 41). This composition plays the
       // rest of that curve from its local 0 (= b09 local 202): same function of the edit frame, so B9's last frame and
       // B10's first frame match.
       const B9 = 202, FUN_B9 = 243, LAND_B9 = [130, 153, 178];
       const IO = RCK.ease.fn('easeInOutSine');
       const part = (u0, u1) => (p) => (IO(u0 + (u1 - u0) * p) - IO(u0)) / (IO(u1) - IO(u0));
-      const pushAt = (land, x) => 1.15 * (1 + 0.06 * IO((x - land) / (FUN_B9 - land)));
+      const PUSH = 0.04;                  // = b09-throughyou's PUSH (v01 held-shot push x 1.04)
+      const pushAt = (land, x) => 1.15 * (1 + PUSH * IO((x - land) / (FUN_B9 - land)));
       LAND_B9.forEach((land, i) => {
         const m = '#b10-s' + (i + 1) + ' .rc-l3__media', u0 = (B9 - land) / (FUN_B9 - land);
         gsap.set(m, { scale: pushAt(land, B9), transformOrigin: '50% 50%' });

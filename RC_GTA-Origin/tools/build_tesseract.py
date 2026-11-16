@@ -30,7 +30,14 @@ v02 (REVISION_v02.md): the 115% voiceover (01_VO/VO_processed_115.wav + VO_words
 project is about 2.3 GB, so the picture intermediate (.tesseract-work/picture.tsrct, the same size) is deleted after a
 successful merge (--keep-picture keeps it), and the build stops before a step that would not fit.
 
-Usage:  python3 tools/build_tesseract.py [--version v02] [--force-audio] [--skip-export] [--master-crf 14]
+v03: `--preview` is a fast path for showing the client a result: the audio half as usual, the picture half with the
+beat renders imported as ProRes 4444 proxies at the preview height (cached in .tesseract-work/proxies), no merge, no
+filmstrips, no 2-pass: the picture project and the audio project are exported separately (720p by default, one x264
+CRF pass) and muxed with the same mix -> 07_Exports/RC_GTA-Origin_<version>_preview.mp4 (+ checks/preview_report.json).
+RC_GTA-Origin.tsrct is left as it is (the last full build).
+
+Usage:  python3 tools/build_tesseract.py [--version v03] [--force-audio] [--skip-export] [--master-crf 14]
+        python3 tools/build_tesseract.py --version v03 --preview [--preview-resolution 720p|1080p]
 """
 from __future__ import annotations
 
@@ -255,17 +262,20 @@ def filmstrips(final: Path, edit_end_s: float):
 # --------------------------------------------------------------------------------------------
 # 5. export + delivery
 # --------------------------------------------------------------------------------------------
-def write_wrapper(crf: int):
+PREVIEW_CRF, PREVIEW_PRESET = 20, "veryfast"
+
+
+def write_wrapper(crf: int, preset: str = "medium"):
     WRAPPER.write_text('''#!/usr/bin/env python3
 """Tesseract external-FFmpeg backend wrapper (written by tools/build_tesseract.py).
 Passes every argument through to %s, except the video bitrate cap `-b:v N`, which becomes
-`-crf %d -preset medium` so the master is near-lossless before the 2-pass delivery encode."""
+`-crf %d -preset %s` (the master: near-lossless before the 2-pass delivery encode; the preview: one quick pass)."""
 import os, sys
 a = sys.argv[1:]
 out, i = [], 0
 while i < len(a):
     if a[i] == "-b:v" and i + 1 < len(a):
-        out += ["-crf", "%d", "-preset", "medium"]
+        out += ["-crf", "%d", "-preset", "%s"]
         i += 2
         continue
     out.append(a[i])
@@ -273,21 +283,21 @@ while i < len(a):
 with open(%r, "a") as f:
     f.write(" ".join(a) + "\\n  -> " + " ".join(out) + "\\n")
 os.execv(%r, [%r] + out)
-''' % (FFMPEG, crf, crf, str(WORK / "ffmpeg_master.log"), FFMPEG, FFMPEG))
+''' % (FFMPEG, crf, preset, crf, preset, str(WORK / "ffmpeg_master.log"), FFMPEG, FFMPEG))
     WRAPPER.chmod(0o755)
 
 
-def export_master(final: Path, out: Path, crf: int):
+def export_master(final: Path, out: Path, crf: int, resolution: str = "1080p", preset: str = "medium"):
     elog = WORK / "export.log"
     flog = WORK / "ffmpeg_master.log"
     if flog.exists():
         flog.unlink()
     ff = FFMPEG
     if crf > 0:
-        write_wrapper(crf)
+        write_wrapper(crf, preset)
         ff = str(WRAPPER)
     tmp = out.with_name(out.stem + ".tmp.mp4")
-    cmd = [TSRCT, "export", "--project", final, "--output", tmp, "--resolution", "1080p", "--fps", str(FPS),
+    cmd = [TSRCT, "export", "--project", final, "--output", tmp, "--resolution", resolution, "--fps", str(FPS),
            "--format", "mp4", "--encoder-backend", "external-ffmpeg-command", "--ffmpeg-path", ff, "--json"]
     t0 = time.time()
     with open(elog, "w") as ef:
@@ -373,9 +383,60 @@ def loudnorm_fix(delivery: Path, wav: Path, measured_delivery: dict):
 
 
 # --------------------------------------------------------------------------------------------
+# v03 preview
+# --------------------------------------------------------------------------------------------
+def preview(args, report: dict, edit_end_s: float):
+    h = 720 if args.preview_resolution == "720p" else 1080
+    renders = sum(p.stat().st_size for p in (ROOT / "05_GFX/renders").glob("*.mov")) / 1e9
+    est = renders * (0.35 if h < 1080 else 1.0)          # ProRes 4444 q9 at 720p is about a third of the renders
+    old_pic = PICTURE.stat().st_size / 1e9 if PICTURE.exists() else 0.0
+    if free_gb() + old_pic < 3 * est + 0.8:              # proxies + the package (twice while importing) + export cache
+        raise SystemExit("not enough disk for the preview: %.1f GB free, about %.1f GB needed" % (free_gb(), 3 * est + 0.8))
+    log("[2/3] picture: %s%s" % (rel(PICTURE_SCRIPT), " (beat renders as %dp ProRes 4444 proxies)" % h if h < 1080 else ""))
+    r = subprocess.run([sys.executable, str(PICTURE_SCRIPT)] + (["--render-proxy", str(h)] if h < 1080 else []),
+                       cwd=str(ROOT))
+    if r.returncode != 0:
+        raise SystemExit("picture script failed")
+    out = EXPORTS / ("RC_GTA-Origin_%s_preview.mp4" % args.version)
+    log("[3/3] preview %s: picture %s (single x264 pass, CRF %d %s) + the audio half's mix" % (
+        rel(out), args.preview_resolution, PREVIEW_CRF, PREVIEW_PRESET))
+    need_space(est + 0.5, "the preview export (Tesseract unpacks the packaged media while exporting)")
+    vid = WORK / "preview_video.mp4"
+    report["preview_export"] = export_master(PICTURE, vid, PREVIEW_CRF, args.preview_resolution, PREVIEW_PRESET)
+    wav = CHECKS / "preview_mix.wav"
+    tsrct("export-audio", "--project", AUDIO, "--output", wav)
+    EXPORTS.mkdir(exist_ok=True)
+    tmp = out.with_name(out.stem + ".tmp.mp4")
+    run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", vid, "-i", wav, "-map", "0:v:0", "-map", "1:a:0",
+         "-t", "%.3f" % edit_end_s, "-c:v", "copy", "-c:a", "aac", "-b:a", A_BITRATE, "-ar", A_RATE, "-ac", "2",
+         "-movflags", "+faststart", tmp])
+    tmp.replace(out)
+    vid.unlink()
+    if not args.keep_picture and PICTURE.exists():
+        PICTURE.unlink()                              # a proxy build: never mistaken for the full picture half
+    ld = loudness(out)
+    pr = ffprobe(out)
+    v = next(s_ for s_ in pr["streams"] if s_["codec_type"] == "video")
+    report["preview"] = {"path": rel(out), "resolution": args.preview_resolution, "render_proxies": h < 1080,
+                         "ffprobe": pr, "loudness": ld, "loudness_ok": ok_loud(ld), "size_bytes": out.stat().st_size,
+                         "mix_wav": rel(wav)}
+    log("\nPREVIEW %s: %s %dx%d %s fps, %s frames, %.1f MB; mix %.1f LUFS, %.1f dBTP (%s); %.0f s for the export" % (
+        rel(out), v["codec_name"], v["width"], v["height"], v["r_frame_rate"], v.get("nb_frames"),
+        out.stat().st_size / 1e6, ld["integrated_lufs"], ld["true_peak_dbtp"],
+        "OK" if ok_loud(ld) else "outside -14 +-1 LUFS / -1 dBTP: the full build's delivery step corrects it",
+        report["preview_export"]["seconds"]))
+    (CHECKS / "preview_report.json").write_text(json.dumps(report, indent=1) + "\n")
+    log("report: %s" % rel(CHECKS / "preview_report.json"))
+
+
+# --------------------------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--version", default="v02", help="version tag in the export names (default v02)")
+    ap.add_argument("--version", default="v03", help="version tag in the export names (default v03)")
+    ap.add_argument("--preview", action="store_true",
+                    help="fast client preview: renders as proxies, no merge, no filmstrips, no 2-pass, same mix -> "
+                         "07_Exports/RC_GTA-Origin_<version>_preview.mp4")
+    ap.add_argument("--preview-resolution", choices=("720p", "1080p"), default="720p")
     ap.add_argument("--keep-picture", action="store_true",
                     help="keep .tesseract-work/picture.tsrct (about 2.3 GB) after the merge")
     ap.add_argument("--force-audio", action="store_true", help="rebuild the audio half even if it is up to date")
@@ -401,14 +462,21 @@ def main():
     else:
         log("[1/5] audio: %s is up to date" % rel(AUDIO))
     report["audio"] = {"rebuilt": bool(why), "why": why}
+    if args.preview:
+        return preview(args, report, edit_end_s)
 
     # 2. picture (the old intermediate is deleted first by the picture script; it needs about the renders' size)
     log("[2/5] picture: running %s" % rel(PICTURE_SCRIPT))
     renders = sum(p.stat().st_size for p in (ROOT / "05_GFX/renders").glob("*.mov")) / 1e9
     old_pic = PICTURE.stat().st_size / 1e9 if PICTURE.exists() else 0.0
-    if free_gb() + old_pic < renders + 0.5:
-        raise SystemExit("not enough disk for the picture half: %.1f GB free (+%.1f GB old picture.tsrct), renders "
-                         "%.1f GB" % (free_gb(), old_pic, renders))
+    need = 2 * renders + 0.5                        # every import rewrites the package: twice its size at the end
+    if free_gb() + old_pic < need and FINAL.exists():
+        gb = FINAL.stat().st_size / 1e9             # this build replaces it anyway; make room for the picture half
+        FINAL.unlink()
+        log("  deleted the previous %s early (%.1f GB; this build writes a new one) to make room" % (rel(FINAL), gb))
+    if free_gb() + old_pic < need:
+        raise SystemExit("not enough disk for the picture half: %.1f GB free (+%.1f GB old picture.tsrct), about "
+                         "%.1f GB needed" % (free_gb(), old_pic, need))
     r = subprocess.run([sys.executable, str(PICTURE_SCRIPT)], cwd=str(ROOT))
     if r.returncode != 0:
         raise SystemExit("picture script failed")
@@ -439,7 +507,8 @@ def main():
         delivery = EXPORTS / ("RC_GTA-Origin_%s_16x9.mp4" % args.version)
         log("[5/5] export master %s (tsrct export, external FFmpeg backend, master CRF %s)" % (
             rel(master), args.master_crf or "off (10 Mbps)"))
-        need_space(1.0, "the master + delivery encodes")
+        need_space(FINAL.stat().st_size / 1e9 + 0.8, "the export (Tesseract unpacks the packaged media into /tmp "
+                                                      "while exporting) + the CRF 14 master (about 0.7 GB)")
         report["master"] = export_master(FINAL, master, args.master_crf)
         log("  master done in %.0f s" % report["master"]["seconds"])
         wav = CHECKS / "delivery_mix.wav"

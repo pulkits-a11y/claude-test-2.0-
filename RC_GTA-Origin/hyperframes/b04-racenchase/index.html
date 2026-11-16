@@ -23,6 +23,11 @@
         transform-origin: 1123.58px 127.27px; transform: scale(1.2395833);
       }
       #b04-hl-clip { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      /* v03 (note 12): the design document is now a DARK (inverted) scan, white letters on near-black paper. The plan's
+         Multiply highlight would vanish there (yellow x dark = dark), so the T9 box is re-coloured for a dark surface: the
+         same highlighter yellow in Screen blend at 50%: the paper under it turns a translucent highlighter yellow and the
+         white letters stay white on it (measured contrast in REVIEW below). Same box, same 8f swipe on "Race". */
+      #b04-hl { mix-blend-mode: screen; opacity: 0.5; }
     </style>
   </head>
   <body>
@@ -60,13 +65,14 @@
 
       <!-- ============ L9 / M3 calendar on the gray card (hard cut at local 46 = beat f40) ============ -->
       <div data-hf-id="hf-7ix9" id="b04-card" class="clip rc-card rc-full" data-start="1.5333" data-duration="2.2000" data-track-index="4" style="z-index: 2"></div>
-      <!-- untimed camera (rule D): the calendar punches in on the cut, then pushes 100% -> 106%; #b04-key (nested) = the key
-           punch on "eighteen". The uniform gray ground stays still; the T2 caption is outside the camera (steady). -->
-      <div data-hf-id="hf-onvd" id="b04-cam" class="rc-full" style="z-index: 3"><div id="b04-key" class="rc-full">
+      <!-- untimed camera: v03 (note 13) v01's slow push 100% -> 104% on the calendar (sine.inOut, never linear); the v02
+           punch-in on the cut and the key punch on "eighteen" are gone. The uniform card ground stays still; the caption is
+           outside the camera (steady). -->
+      <div data-hf-id="hf-onvd" id="b04-cam" class="rc-full" style="z-index: 3">
         <!-- the M3 component; B12 reuses it with identical geometry (grid top-left 748, 520; 64 px squares, 8 px gaps,
              6 columns). No dates, month names or years on it (plan p.21 Watch out). -->
         <div data-hf-id="hf-211p" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="5"></div>
-      </div></div>
+      </div>
 
       <!-- ============ T2 above the grid, word by word (rule A; card ink on the gray card, --rc-y 390 as v01): groups from
            RCK.type.captionPlanV2 ('planned to take 18 months.', loose: "18" is the spoken "eighteen"; key: 2 = "18 months."
@@ -102,12 +108,9 @@
       // L9 / M3: 18 empty slots appear with the card (cut, local 46), squares fill 2f apart from local 47 -> the 18th on 81,
       // the frame "eighteen" is spoken (hard fills: one state per frame, a cut pattern)
       M.calendarFill(tl, '#b04-cal', L(47), { slots: 18, filled: 0 });
-      // camera (rule D): punch-in on the cut 112 -> 100% (10f easeOutExpo), then push 100 -> 106% to the beat end
-      // (easeInOutSine), held through the tail handle; key punch on "eighteen" about the grid centre (960, 624) on the
-      // nested wrapper: 100 -> 106% in 3f (expo.out, from 80), back over 9f (sine.inOut).
-      C.punchIn(tl, '#b04-cam', L(46), { from: 1.12, frames: 10 });
-      C.push(tl, '#b04-cam', L(56), { until: L(106), from: 1, to: 1.06 });
-      C.keyPunch(tl, '#b04-key', W.eighteen, { origin: '960px 624px' });
+      // camera, v03 (note 13: back to v01's camera, eased): one slow push on the calendar 100% (the cut, local 46) -> 104% on
+      // the beat end (106), easeInOutSine, held through the tail handle. No punch-in on the cut, no key punch.
+      C.push(tl, '#b04-cam', L(46), { until: L(106), from: 1, to: 1.04 });
 
       tl.set({}, {}, L(112));                         // timeline spans the whole composition
       window.__timelines["b04-racenchase"] = tl;

@@ -32,6 +32,12 @@
   paint-order: stroke fill;
 }
 
+/* v03 (note 5) glitch-in layer, built by RCK.motifs.starsGlitchIn inside each star's SVG: three horizontal slices,
+   each a siren-red copy (+dx), a siren-blue copy (-dx) and the white star on top (RGB split), jittered per frame. */
+.m1-gl { opacity: 0; }
+.m1-gl path.m1-gl__r { fill: var(--siren-red); stroke: none; }
+.m1-gl path.m1-gl__b { fill: var(--siren-blue); stroke: none; }
+
 /* ------------------------------------------------------------------ M2 "you" arrow */
 /* #FFE14D, 6 px stroke, hand-drawn shaft + head paths (RCK.motifs.arrowInit writes them). */
 .m2-arrow {
@@ -70,14 +76,16 @@
 }
 
 /* ------------------------------------------------------------------ M3 calendar grid = L9 calendar counter */
-/* 64 px squares, 8 px gaps, 6 columns, on a gray card (put the calendar on a full-frame .rc-card).
-   Empty slot = 2 px inset outline in card ink at 35% (a #111111 / #E9E9E9 mix, no new colour).
-   Filled = card ink #111111. Overrun (month 19+) = siren red #E3262E. */
+/* 64 px squares, 8 px gaps, 6 columns, on a card (put the calendar on a full-frame .rc-card).
+   v03 (note 12): the card is DARK. Empty slot = 2 px inset outline in light gray (#E9E9E9) at 30%; filled = light gray
+   #E9E9E9; overrun (month 19+) = siren red #E3262E (unchanged); counter = white with the ref 3 glow.
+   (v02: outline #111111 at 35%, filled #111111, counter #111111 on the #E9E9E9 card.) */
 .m3-cal {
   --m3-sq: 64px;
   --m3-gap: 8px;
   --m3-cols: 6;
-  --m3-empty: rgba(17, 17, 17, 0.35);
+  --m3-empty: color-mix(in srgb, var(--light-gray) 30%, transparent);
+  --m3-fill: var(--light-gray);
   position: absolute;
   pointer-events: none;
 }
@@ -99,7 +107,7 @@
 .m3-fill {
   position: absolute;
   inset: 0;
-  background: var(--card-ink);
+  background: var(--m3-fill);
 }
 .m3-sq.m3-over .m3-fill {
   background: var(--siren-red);
@@ -111,7 +119,8 @@
   font-weight: 700; /* plan: Inter Bold; v02 Coolvetica (one weight) */
   font-size: 120px;
   line-height: 1;
-  color: var(--card-ink);
+  color: var(--card-text);
+  filter: var(--glow-filter);   /* v03 glow (a filter: the digit strips are clipped by .m3-col) */
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
   white-space: nowrap;
@@ -147,7 +156,7 @@
   width: 72px;
   height: 56px;
   border-radius: 12px;
-  background: var(--card-ink);
+  background: var(--dark-ink);   /* #111111 (v03: --card-ink is the white text on dark cards) */
   flex: 0 0 auto;
 }
 /* zero-specificity default, so the type kit's T7 chip alignment (.rc-t7__chip) wins when combined */
@@ -191,6 +200,9 @@
 }
 
 /* ------------------------------------------------------------------ Windows 95-style error box (B2) */
+/* v03 (note 12, "everywhere there's a white background with text -> dark"): the box is a DARK Windows 95 dialog by
+   default: charcoal face, near-black title bar, white text, the bevels kept as light / dark lines. Add class
+   "m-errbox--light" for the v02 look (palette grey face #E9E9E9, #111111 ink). */
 /* Stylised recreation, not a screenshot: palette grey face (#E9E9E9), white / card-ink bevel lines
    (the mid-shadow line is card ink at 45% over the face), card-ink title bar with white bold text,
    a plain pixel "x" close box. No icon, no buttons, no file path, no date.
@@ -201,6 +213,14 @@
    --m-eb-u = one Windows 95 pixel (2 px: crisp bevels); --m-eb-fs = text size (28 px = the phone
    type floor; Win95 proportions at 2x would be 22 px). Hard pop: the clip's data-start, no tween. */
 .m-errbox {
+  --m-eb-face: color-mix(in srgb, var(--white) 16%, var(--ink-black));   /* #2F2F2F charcoal face */
+  --m-eb-text: var(--white);
+  --m-eb-hi: color-mix(in srgb, var(--white) 42%, var(--ink-black));     /* outer highlight bevel line */
+  --m-eb-hi2: color-mix(in srgb, var(--white) 26%, var(--ink-black));    /* inner highlight bevel line */
+  --m-eb-lo: var(--ink-black);                                            /* outer shadow bevel line */
+  --m-eb-lo2: rgba(0, 0, 0, 0.55);                                        /* inner shadow bevel line */
+  --m-eb-title-bg: var(--ink-black);
+  --m-eb-title-text: var(--white);
   --m-eb-u: 2px;
   --m-eb-fs: 28px;
   --m-eb-w: 640px;
@@ -211,15 +231,15 @@
 }
 .m-errbox__win {
   position: relative;
-  background: var(--card-gray);
+  background: var(--m-eb-face);
   padding: calc(var(--m-eb-u) * 3);
   box-shadow:
-    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--card-ink),
-    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--card-gray),
-    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 rgba(17, 17, 17, 0.45),
-    inset calc(var(--m-eb-u) * 2) calc(var(--m-eb-u) * 2) 0 0 var(--white);
+    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--m-eb-lo),
+    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--m-eb-hi2),
+    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 var(--m-eb-lo2),
+    inset calc(var(--m-eb-u) * 2) calc(var(--m-eb-u) * 2) 0 0 var(--m-eb-hi);
   font-family: var(--m-eb-font);
-  color: var(--card-ink);
+  color: var(--m-eb-text);
 }
 .m-errbox__title {
   display: flex;
@@ -227,8 +247,8 @@
   justify-content: space-between;
   height: calc(var(--m-eb-u) * 22);
   padding: 0 calc(var(--m-eb-u) * 3) 0 calc(var(--m-eb-u) * 4);
-  background: var(--card-ink);
-  color: var(--white);
+  background: var(--m-eb-title-bg);
+  color: var(--m-eb-title-text);
   font-weight: 700;
   font-size: var(--m-eb-fs);
   line-height: 1;
@@ -239,11 +259,11 @@
   flex: 0 0 auto;
   width: calc(var(--m-eb-u) * 18);
   height: calc(var(--m-eb-u) * 16);
-  background: var(--card-gray);
+  background: var(--m-eb-face);
   box-shadow:
-    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--card-ink),
-    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--white),
-    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 rgba(17, 17, 17, 0.45);
+    inset calc(var(--m-eb-u) * -1) calc(var(--m-eb-u) * -1) 0 0 var(--m-eb-lo),
+    inset var(--m-eb-u) var(--m-eb-u) 0 0 var(--m-eb-hi),
+    inset calc(var(--m-eb-u) * -2) calc(var(--m-eb-u) * -2) 0 0 var(--m-eb-lo2);
 }
 .m-errbox__close svg {
   position: absolute;
@@ -254,7 +274,11 @@
   shape-rendering: crispEdges;
 }
 .m-errbox__close svg path {
-  fill: var(--card-ink);
+  fill: var(--m-eb-text);
+}
+.m-errbox--light {                        /* the v02 light dialog */
+  --m-eb-face: var(--light-gray); --m-eb-text: var(--dark-ink); --m-eb-hi: var(--white); --m-eb-hi2: var(--light-gray);
+  --m-eb-lo: var(--dark-ink); --m-eb-lo2: rgba(17, 17, 17, 0.45); --m-eb-title-bg: var(--dark-ink); --m-eb-title-text: var(--white);
 }
 .m-errbox__body {
   padding: calc(var(--m-eb-u) * 12) calc(var(--m-eb-u) * 12) calc(var(--m-eb-u) * 14);
