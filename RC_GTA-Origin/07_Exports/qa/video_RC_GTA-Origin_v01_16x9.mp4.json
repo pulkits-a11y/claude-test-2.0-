@@ -1,0 +1,63 @@
+{
+ "probe": {
+  "programs": [],
+  "streams": [
+   {
+    "codec_name": "h264",
+    "profile": "High",
+    "width": 1920,
+    "height": 1080,
+    "pix_fmt": "yuv420p",
+    "color_space": "bt709",
+    "color_transfer": "bt709",
+    "color_primaries": "bt709",
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "bit_rate": "15964053",
+    "nb_frames": "2472"
+   },
+   {
+    "codec_name": "aac",
+    "profile": "LC",
+    "sample_rate": "48000",
+    "channels": 2,
+    "r_frame_rate": "0/0",
+    "avg_frame_rate": "0/0",
+    "bit_rate": "320346",
+    "nb_frames": "3864"
+   }
+  ],
+  "format": {
+   "duration": "82.400000",
+   "bit_rate": "16293357"
+  }
+ },
+ "loudness": {
+  "I_LUFS": -14.0,
+  "LRA_LU": 2.2,
+  "true_peak_dBFS": -1.5
+ },
+ "frames": 2472,
+ "frame0_vs_1_mean_abs_diff": 2.289,
+ "still_runs_ge_1.5s": [
+  {
+   "from_f": 1493,
+   "to_f": 1545,
+   "seconds": 1.77,
+   "beat": "B12"
+  }
+ ],
+ "fun": {
+  "word_start_s": 43.7,
+  "edit_frame": 1311,
+  "luma_mean_frames_-3..+3": [
+   79.2,
+   137.5,
+   195.8,
+   254.9,
+   230.0,
+   205.5,
+   180.8
+  ]
+ }
+}
