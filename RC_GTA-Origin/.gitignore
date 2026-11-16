@@ -18,6 +18,9 @@
 hyperframes/b*/assets/kit/
 hyperframes/b*/assets/footage/
 hyperframes/_demo-*/assets/kit/
+hyperframes/_gfx-export/assets/kit/
+hyperframes/cover/assets/kit/
+hyperframes/cover/assets/footage/
 hyperframes/**/.hyperframes/
 hyperframes/**/node_modules/
 hyperframes/**/renders/

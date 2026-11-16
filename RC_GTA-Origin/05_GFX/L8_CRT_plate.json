@@ -1,0 +1,12 @@
+{
+  "plan": "L8 CRT monitor screen insert (Master Edit Plan p.14, p.20); kit: hyperframes/_kit/KIT_motifs.md section 5",
+  "plate_footage": "R3.9 (stand-in in _demo-motifs/assets/footage/R3.9.mp4); L8_CRT_plate.png is an OPAQUE 1920x1080 frame of _demo-motifs at 24.5 s (plate + R9.1 picture in the CRT screen, error box not yet shown)",
+  "canvas": [1920, 1080],
+  "screen_corners_TL_TR_BR_BL": [[1060, 230], [1760, 250], [1750, 770], [1070, 790]],
+  "screen_corners_note": "ASSUMED quad on the R3.9 stand-in (data-corners in _demo-motifs); re-fit to the real plate",
+  "insert_size_px": {"w": 690, "h": 540, "via": "RCK.motifs.crtSize(corners)"},
+  "picture_clip": "R9.1 (GTA 1 picture), source aspect 16/9, object-fit cover into the 4:3 insert",
+  "crt_grading": {"intensity": 1, "effects": {"crtCurvature": 0.16, "scanlines": 0.15, "scanlineCount": 0.2889, "scanlineSoftness": 0, "chromaticAberration": 0.0521, "chromaticAngle": 0}},
+  "plan_values": {"bulge": "8% (crtCurvature 0.16 = 2 x 8%)", "scanlines": "3 px at 15%", "colour_fringing": "1 px (chromaticAberration = 50 / mediaW)", "flicker": "brightness 97% to 100%, via RCK.motifs.crtFlicker (seed 97, every frame, exposure = log2(b))"},
+  "how": "RCK.motifs.crtFit('#sel') corner-pins the .l8-screen; RCK.motifs.crtGrading(size, {srcAspect: 16/9}) returns the grading above; written to the <video> as data-color-grading (hyperframes media-treatment --apply)"
+}

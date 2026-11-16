@@ -4,58 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css" />
+    <link rel="stylesheet" href="assets/kit/type.css" />
+    <link rel="stylesheet" href="assets/kit/motifs.css" />
     <style>
-      /* Placeholders: replace all three with the film's own palette and display face. */
-      :root {
-        --ground: #000;
-        --ink: #ffffff;
-        --font-display: sans-serif;
-      }
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
-        overflow: hidden;
-        background: var(--ground);
-      }
-      #root {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-display);
-      }
-      #title {
-        color: var(--ink);
-        font-size: 72px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
-      }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
+      .abs { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
     </style>
   </head>
   <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
-    >
-      <h1 id="title" class="clip" data-start="0" data-duration="10" data-track-index="0">Title</h1>
+    <!-- _gfx-export: each reusable motif alone on a transparent frame, one after another (resting state at the end of its window).
+         hud 0-1.5 | hero 1.5-3 | arrow 3-4.5 | cal18 4.5-6.5 | cal30 6.5-8.5 | chip 8.5-10 | error box 10-11.5 | stamp 11.5-13 -->
+    <div id="root" data-composition-id="gfx-export" data-start="0" data-duration="13" data-width="1920" data-height="1080">
+      <div id="s-hud" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="1.5" data-track-index="1" style="z-index:5"></div>
+      <div id="s-hero" class="clip m1-stars" data-preset="hero" data-start="1.5" data-duration="1.5" data-track-index="1" style="z-index:5"></div>
+      <div id="s-arrow" class="clip m2-arrow" data-start="3" data-duration="1.5" data-track-index="1" style="z-index:5"></div>
+      <div id="s-cal18" class="clip m3-cal" data-start="4.5" data-duration="2" data-track-index="1" style="z-index:5"></div>
+      <div id="s-cal30" class="clip m3-cal" data-start="6.5" data-duration="2" data-track-index="1" style="z-index:5"></div>
+      <div class="clip abs" data-start="8.5" data-duration="1.5" data-track-index="1" style="z-index:5">
+        <span id="s-chip" class="m4-chip" style="position:absolute; left:924px; top:512px;"></span>
+      </div>
+      <div id="s-err" class="clip m-errbox" data-start="10" data-duration="1.5" data-track-index="1" style="z-index:6; left: 640px; top: 400px;"></div>
+      <div id="s-stamp" class="clip m-stamp" data-start="11.5" data-duration="1.5" data-track-index="1" style="z-index:6"></div>
     </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
     <script>
+      window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.fromTo("#title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, 0);
-      window.__timelines["main"] = tl;
-      tl.seek(0);
+      const M = RCK.motifs;
+      M.starsPopIn(tl, "#s-hud", 0.0);
+      M.starsPopIn(tl, "#s-hero", 1.5);
+      M.arrowDraw(tl, "#s-arrow", 3.0, { from: [760, 330], to: [500, 610] });
+      M.calendarFill(tl, "#s-cal18", 4.5, { slots: 18, filled: 0 });
+      M.calendarExtend(tl, "#s-cal30", 6.5, { slots: 18, filled: 18, counter: null, to: 30 });
+      M.bugChipPop(tl, "#s-chip", 8.5);
+      M.errorBoxInit("#s-err");
+      M.stampSlam(tl, "#s-stamp", 11.5, { x: 960, y: 540, rotation: -8 });
+      window.__timelines["gfx-export"] = tl;
     </script>
   </body>
 </html>
