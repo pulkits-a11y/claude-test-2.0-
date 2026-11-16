@@ -34,7 +34,10 @@ section wins.
   the head-handle "let go." and the beat-segment "it's" / "fun." (voice timing).
 * Snapshots `review/v02/` (read, `sheet_a.jpg`): head handle 0/3/5 (exit), 6, every word (7, 11, 34, 41), the flash
   38-46, 50, the exit 57/59, 60, 65. Max 2 words on screen; "fun." lands on the flash's 100% frame; Coolvetica Italic.
-* Render: see the bottom of this section.
+* Render (v02): `cd hyperframes/b10-fun && npx --yes hyperframes@0.9.52 render . --format mov --workers 2 -o
+  ../../05_GFX/renders/b10-fun.mov`: ffprobe prores 4444, 1920x1080, 30 fps, **66 frames** (= 54 + 12), `yuva444p12le`.
+  Checked on the render: frame 41 ("fun") pure white and opaque, frame 42 white at alpha 64.5%, frame 50 transparent
+  except the T2 "it's fun.".
 
 ---
 

@@ -55,7 +55,10 @@ cue is its tear's first frame; the assembly maps it to the glitch impact sound).
   getaway car at 111, 137 (punch peak) and 163; the "chased." punch 135 / 137 / 146; 157; 163. The first pass showed
   the back side mirrored (kit L11 auto-init, see above), fixed and re-shot. Max 2 words on screen, words on their
   onsets, Coolvetica, no flip left.
-* Render: see below.
+* Render (v02): `cd hyperframes/b11-flip && npx --yes hyperframes@0.9.52 render . --format mov --workers 2 -o
+  ../../05_GFX/renders/b11-flip.mov` (after `make_x4_stills.py --check`): ffprobe prores 4444, 1920x1080, 30 fps,
+  **164 frames** (= 152 + 12), `yuva444p12le` (opaque). Frames 22-31 of the render read: clean front, 8 torn frames
+  under "flips", the back side on 31 (not mirrored).
 
 ---
 

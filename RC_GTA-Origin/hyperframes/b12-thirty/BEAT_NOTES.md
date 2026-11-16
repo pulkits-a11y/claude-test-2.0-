@@ -42,7 +42,9 @@ this section wins.
   (5, 6, 7, 8, 11, 17), every caption word (6, 10, 56, 67, 71), rolls (56, 57, 59, 62, 65, 69, 70), the landing on 71,
   the punch (73), the last square (78), the exit (81, 83), 84, 89. Max 2 words on screen; T2 and T1 clear of the
   calendar in every frame; Coolvetica.
-* Render: see the bottom of this section.
+* Render (v02): `cd hyperframes/b12-thirty && npx --yes hyperframes@0.9.52 render . --format mov --workers 2 -o
+  ../../05_GFX/renders/b12-thirty.mov`: ffprobe prores 4444, 1920x1080, 30 fps, **90 frames** (= 78 + 12), `yuva444p12le`
+  (opaque). Render frames 5, 6, 8, 17, 56, 71, 73, 84 read as the snapshots.
 
 ---
 

@@ -21,7 +21,7 @@ beat + 6). Everything after this section is the v01 record (v01 frames, Inter fo
 
 Checks: `check --json` 0 errors (warnings: nested T5/tracking markup, `line_unread` on "why you're" 10f, "The" 4f and on "a bug."
 as "the film's last line"). Snapshots `review/v02/a/` + `sheet_a.jpg`: every rewind section, each caption word, the doc zoom,
-X7, black, every T5 word. Render `05_GFX/renders/b16-bug-origin.mov`: see "v02 render" below.
+X7, black, every T5 word. Render `05_GFX/renders/b16-bug-origin.mov`: ProRes 4444, 1920x1080, 30 fps, **125 frames**, `yuva444p12le` (ffprobe, counted).
 
 Sync: the rewind mirrors B14 v02 (this lane), B9 v02 (R9.1 shot f0-120, in 314.1 s, crop 536:302:260:108, read live) and B4 v02
 (push f0-40 eased, `DOC` in `tools/make_rewind.py`, checked against b04-racenchase's v02 index.html). Re-run
