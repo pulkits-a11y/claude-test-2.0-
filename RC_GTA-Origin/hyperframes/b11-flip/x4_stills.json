@@ -4,7 +4,7 @@
    "png": "assets/x4/b11-old.png",
    "frame": 23,
    "hide": [
-    ".rc-cap",
+    ".rc-lk",
     "#b11-arrow"
    ]
   }

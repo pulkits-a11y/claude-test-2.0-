@@ -15,35 +15,37 @@
     </style>
   </head>
   <body>
-    <!-- B12 b12-thirty v02: beat 78f (2.600s) + 6f handle each end = 90f.
+    <!-- B12 b12-thirty v03 (REVISION_v03: dark card, caption lockups, no v02 zooms; calendar entrance + position as v02): beat 78f (2.600s) + 6f handle each end = 90f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.8000s (local frames 6 .. 84).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B12 p.25).
 
          The B4 L9 / M3 calendar returns: SAME kit component and geometry as b04-racenchase (64 px squares, 8 px gaps,
-         6 columns, grid centred on x 960; gray card #E9E9E9), extended 18 -> 30. v02 (note 6: "add a opening animation where
+         6 columns, grid centred on x 960; v03: the dark card + light squares, kit), extended 18 -> 30. v02 (note 6: "add a opening animation where
          it comes into the screen ... and move it a bit more above to the center"): the calendar sits higher (grid top y 400,
          was 520) and comes into the screen with the kit's calendarIn (rises 90 px + scales 90 -> 100% + fades in, 12f
          expo.out) from local 5, so the beat's first frame already shows it arriving.
-         beat f0     18 squares filled (card ink) + the counter "18" (Coolvetica 120 px) at the grid's top-left (kit
-                     counterPos "left": right edge 32 px left of the grid, digit top on the grid top);
-                     T1 "Of course," word by word (Of 6, course, 10; card ink, y 860 below the grid) until "turn".
+         beat f0     18 squares filled (light, v03 dark card) + the counter "18" (Coolvetica 120 px) at the grid's
+                     top-left (kit counterPos "left": right edge 32 px left of the grid, digit top on the grid top);
+                     v03 lockup "Of course," (Of 6, course, 10; above the calendar, ink centred on y 240) until "turn".
          beat f50    "turn": 12 more squares appear and fill siren red #E3262E, 2f apart (local 56 ... 78) while the counter
                      rolls 18 -> 30 (12 odometer rolls, 2f each, easeInOutQuad), landing on 30 on "thirty" (local 71);
-                     T2 word by word: "turn" (56) / "into thirty." (into 67, keyword thirty. 71), above the grid (y 260).
-         beat f65    "thirty": counter lands + T2 keyword blur punch; S11's hit lands here (Tesseract, cues.json).
-                     T2 out: 3f eased exit ending on the beat end (local 84).
+                     v03 lockup "turn into [thirty.]*": turn 56, into 67 hard-cut in, above the grid (ink centre y 240).
+         beat f65    "thirty": counter lands + the starred keyword "thirty." pops + blurs in; S11's hit lands here
+                     (Tesseract, cues.json). The lockup hard-cuts out on the beat end (local 84; no exit animation).
          Camera (v03, REVISION_v03 note 13: v01's camera, eased): the calendar pushes 100 -> 104% across the composition
          (sine.inOut), no keyword punch; captions stay outside it.
          No dates on the calendar (plan p.21/p.40). Optional R12.1 clock time-lapse: skipped while it is a stand-in
          (STORYBOARD B12); see BEAT_NOTES.md. Tesseract owns all audio. -->
     <div id="root" data-composition-id="b12-thirty" data-start="0" data-duration="3.0000000" data-width="1920" data-height="1080">
 
-      <!-- gray card (history and facts), whole composition -->
+      <!-- the card (history and facts), whole composition: v03 dark card (REVISION_v03 note 12, ref 3; kit .rc-card =
+           --card-surface, ink #0A0A0A with a charcoal lift in the middle); the calendar on it is the kit's dark variant
+           (light squares and counter with the glow, the 12 overrun squares stay siren red) -->
       <div id="b12-card" class="clip rc-card rc-full" data-start="0.0000" data-duration="3.0000" data-track-index="1" style="z-index: 1"></div>
 
       <!-- OPTIONAL R12.1 clock time-lapse "faint behind the card at 10%" (plan p.25): skipped while R12.1 is a stand-in
            (STORYBOARD B12). To use the real clip: add "R12.1" to footage.json, run tools/sync_footage.py, uncomment the
-           line below (clip at 10% opacity over the gray card, under the calendar), re-check, re-render.
+           line below (clip at 10% opacity over the card, under the calendar), re-check, re-render.
       <video id="b12-clock" class="clip rc-full" src="assets/footage/R12.1.mp4" data-start="0.0000" data-duration="3.0000" data-track-index="2" muted playsinline style="z-index: 2; opacity: 0.1; object-fit: cover"></video>
       -->
 
@@ -53,15 +55,16 @@
         <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3"></div>
       </div>
 
-      <!-- T2 punch pair word by word (rule A; plan "T2: turn into thirty.", keyword "thirty." in the italic), card ink, row
-           on y 260 above the grid (grid top 400): "turn" pops on "turn", "into thirty." on "into" with the keyword blur
-           punch on "thirty"; the last group exits 3f eased ending on the beat end. -->
-      <div id="b12-t2-1" class="clip rc-t2 rc-cap rc-on-card" data-start="1.8666" data-duration="0.3667" data-track-index="4" style="--rc-y: 260px; z-index: 20"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="56">turn</span></span></div></div>
-      <div id="b12-t2-2" class="clip rc-t2 rc-cap rc-on-card" data-start="2.2333" data-duration="0.5667" data-track-index="4" data-rc-exit-f="3" style="--rc-y: 260px; z-index: 20"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="67">into</span></span><span class="rc-t2__key"><span class="rc-w rc-w--key" data-rc-f="71">thirty.</span></span></div></div>
-
-      <!-- T1 "Of course," word by word (rule A), card ink on the gray card, y 860 (rc-t1--low) below the grid, held until
-           "turn" (v01: "the eighteen months" is not captioned in the plan's On-screen line; the 18 squares + counter carry it). -->
-      <div id="b12-cap-1" class="clip rc-t1 rc-cap rc-t1--low rc-on-card" data-start="0.2000" data-duration="1.6666" data-track-index="9" style="z-index: 20"><span class="rc-g"><span class="rc-w" data-rc-f="6">Of</span> <span class="rc-w" data-rc-f="10">course,</span></span></div>
+      <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), white + glow on the dark
+           card, centred on x 960. The calendar holds the frame centre (its v02 place, kept), so both lockups sit above it
+           with their ink centred on y 240 (lowest ink, the "y" of "thirty.", ~372 px, clears the grid top: 400 -> ~394.5
+           at the 104% push). "Of course," = one centred line at the dark-card size (76 px, kit card: true), Of 6, course,
+           10, held until "turn" (local 56) as v02; then "turn into" small above-left + "thirty." the big Coolvetica Italic
+           keyword, starred: turn 56 / into 67 hard-cut in, "thirty." pops + blurs in on local 71 (= the counter landing on
+           30 + S11's hit), held to the beat end (local 84). Generated with T.lockups(w, ['Of course,'], { from: 0, end:
+           56/30, y: 240, card: true }) and T.lockups(w, ['turn into [thirty.]*'], { from: 5, end: 84/30, y: 240 }). -->
+      <div id="b12-lk-of-1" class="clip rc-lk" data-start="0.2000" data-duration="1.6666" data-track-index="9" style="--rc-y: 240px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="6">Of</span> <span class="rc-lw" data-rc-f="10">course,</span></div></div></div>
+      <div id="b12-lk-1" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="4" style="--rc-y: 240px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -107,8 +110,8 @@
       });
       cal.value = v;   // 30
 
-      // ---- captions: every word pops on its onset (T1 "Of course,", T2 "turn" / "into thirty."), max 2 words ----
-      T.captionPops(tl);
+      // ---- v03 caption lockups: plain words hard-cut in on their frames, "thirty." pops + blurs in (kit lockupsWire) ----
+      T.lockupsWire(tl);
 
       // ---- camera (v03, note 13 "remove the random zooms": back to v01's camera = the held-card push 100 -> 104% across
       //      the composition, as B4's calendar, now easeInOutSine about the frame centre; no keyword punch) ----

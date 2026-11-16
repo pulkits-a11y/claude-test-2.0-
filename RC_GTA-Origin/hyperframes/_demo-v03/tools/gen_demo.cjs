@@ -1,0 +1,188 @@
+// Builds _demo-v03/index.html: the REVISION_v03 kit items (caption lockups, dark cards, star glitch-in, 104% push), used
+// exactly as a beat builder would. Word times = the v02 beat map (timing/beat_map.json), shifted to this demo's timeline.
+// Run from _demo-v03:  rm -rf assets/kit && cp -r ../_kit assets/kit && node tools/gen_demo.cjs
+globalThis.window = globalThis;
+require('../assets/kit/type.js');
+const fs = require('fs');
+const T = RCK.type;
+const BM = require('../../../timing/beat_map.json');
+const words = (id, shiftF) => BM.beats.find(b => b.id === id).words.map(w => ({ text: w.text, comp_t: w.comp_t + shiftF / 30, comp_end_t: w.comp_end_t + shiftF / 30 }));
+const A = f => T.attrF(f), D = (f0, f1) => T.durF(f0, f1), S = f => (f / 30).toFixed(6);
+const html = [], js = [], report = [];
+const tag = (id, f0, f1, text) => html.push(`<div id="${id}" class="clip demo-tag" data-start="${A(f0)}" data-duration="${D(f0, f1)}" data-track-index="30" style="z-index: 90">${text}</div>`);
+const vid = (id, src, f0, f1, extra) => `<video id="${id}" class="clip demo-fill" src="assets/footage/${src}" muted playsinline data-start="${A(f0)}" data-duration="${D(f0, f1)}"${extra || ''}></video>`;
+const plan = (label, w, specs, o) => { const p = T.lockupPlan(w, specs, o); report.push('== ' + label + '\n' + T.lockupReport(p)); return p; };
+
+/* ---------------- A: B15 lockups over footage (ref 1): solo line, 3-line lockup with a starred keyword, 3-line, key only ---------------- */
+{
+  const W = words('B15', 0);
+  html.push(`<div id="a-cam" class="rc-cam" style="z-index: 1">${vid('a-v', 'R3.1.mp4', 0, 170)}</div>`);
+  html.push(`<div id="a-dim" class="clip demo-fill demo-dim" data-start="${A(0)}" data-duration="${D(0, 170)}" style="z-index: 2"></div>`);
+  const p = plan('A (B15)', W, ["Don't believe me?", 'Open [GTA Online]* and buy an arcade.', 'One of the [machines] is called', '[Race and Chase.]*'], { from: 0, end: 170 / 30 });
+  html.push(T.lockups(p, null, { idPrefix: 'a-lk', z: 40, track: 20 }));
+  js.push(`// A (B15): the held shot pushes 100 -> 104% (v03 default, sine.inOut)
+      C.push(tl, '#a-cam', 0, { until: ${S(170)} });`);
+  tag('a-tag', 0, 170, 'v03 · B15 · caption lockups (ref 1): words hard-cut on their onset · [GTA Online]* and [Race and Chase.]* pop + blur in · push 100→104%');
+}
+
+/* ---------------- B: B3 year card, dark (T3 "It's 1995") ---------------- */
+{
+  const W = words('B3', 148);   // It's@175, 1995@182
+  const f0 = 170, f1 = 232;
+  html.push(`<div id="b-t3" class="clip rc-t3" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 1"><div class="rc-t3__block"><div class="rc-t3__in">It's</div><div class="rc-t3__year"><span class="rc-t3__num">1995</span></div></div></div>`);
+  js.push(`// B (B3): dark year card; the digits roll in from "1995" (f${Math.round(W[3].comp_t * 30)}), then the 104% push
+      T.yearCard(tl, '#b-t3', ${W[3].comp_t.toFixed(4)}, { pushUntil: ${S(f1)} });`);
+  tag('b-tag', f0, f1, 'v03 · B3 · T3 year card, dark (ref 3): near-black + charcoal lift, white digits with the soft glow');
+}
+
+/* ---------------- C: B4 dark calendar card + lockup "planned to take [18 months.]" ---------------- */
+{
+  const W = words('B4', 186);   // planned@245
+  const f0 = 232, f1 = 330;
+  html.push(`<div id="c-card" class="clip rc-card rc-full" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 1"></div>`);
+  html.push(`<div id="c-cal" class="clip m3-cal" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 10"></div>`);
+  const p = plan('C (B4)', W, ['planned to take [18 months.]'], { from: 7, loose: true, end: f1 / 30, y: 330 });
+  html.push(T.lockups(p, null, { idPrefix: 'c-lk', z: 40, track: 20, y: 330 }));
+  js.push(`// C (B4): 18 light squares fill 2f apart from "planned" (hard fills) on the dark card
+      M.calendarFill(tl, '#c-cal', ${S(p.lockups[0].startFrame)}, { slots: 18, filled: 0, y: 560 });`);
+  tag('c-tag', f0, f1, 'v03 · B4 · dark calendar card (light-grey squares) + lockup "planned to take / 18 months." (no pop: hard cuts)');
+}
+
+/* ---------------- D: B12 calendar 18 -> 30 on the dark card, red overrun squares, counter, lockup with a starred keyword ---------------- */
+{
+  const W = words('B12', 324);  // turn@380, thirty.@395
+  const f0 = 330, f1 = 425;
+  html.push(`<div id="d-card" class="clip rc-card rc-full" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 1"></div>`);
+  html.push(`<div id="d-cal" class="clip m3-cal" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 10"></div>`);
+  const p = plan('D (B12)', W, ['turn into [thirty.]*'], { from: 5, end: f1 / 30, y: 250 });
+  html.push(T.lockups(p, null, { idPrefix: 'd-lk', z: 40, track: 20, y: 250 }));
+  js.push(`// D (B12): calendar opening animation, 12 red squares 2f apart, counter 18 -> 30 landing on "thirty."
+      M.calendarInit('#d-cal', { slots: 18, filled: 18, counter: 18, y: 430 });
+      M.calendarIn(tl, '#d-cal', ${S(333)});
+      M.calendarExtend(tl, '#d-cal', 0, { to: 30, landAt: ${W[7].comp_t.toFixed(4)} });`);
+  tag('d-tag', f0, f1, 'v03 · B12 · dark calendar: light squares, siren-red overrun, glowing counter · lockup "turn into / thirty.*"');
+}
+
+/* ---------------- E: B6 dark quote card (L5 ground + T8), the quote words pop + blur in on their frames ---------------- */
+{
+  const W = words('B6', 328);   // “awful…@440 too@457 sim-y.”@463
+  const f0 = 425, f1 = 520;
+  html.push(`<div id="e-card" class="clip rc-l5__ground" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 1"></div>`);
+  html.push(`<div id="e-t8" class="clip rc-t8 rc-on-card" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 10"><div class="rc-t8__block"><div class="rc-t8__quote">“awful…<br>too sim-y.”</div><div class="rc-t8__name">Gary Penn</div><div class="rc-t8__role">DMA DESIGN · GAMASUTRA, 2011</div></div></div>`);
+  js.push(`// E (B6): the quote's words pop + blur in on their spoken frames (wordPops), name + role fade in after
+      T.wordPops(tl, '#e-t8 .rc-t8__quote', [${W.slice(11, 14).map(w => w.comp_t.toFixed(4)).join(', ')}]);
+      T.nameIn(tl, '#e-t8', ${S(475)});`);
+  tag('e-tag', f0, f1, 'v03 · B6 · T8 quote on the dark card, words pop + blur in (wordPops) · white + glow');
+}
+
+/* ---------------- F: B14 hero stars glitch in (RGB split + slice jitter + flicker), lockup below them (y option) ---------------- */
+{
+  const W = words('B14', 431);  // The@528 wanted@533 stars.@545
+  const f0 = 520, f1 = 600;
+  html.push(vid('f-v', 'R1.2.mp4', f0, f1, ' data-media-start="0.6000"'));
+  html.push(`<div id="f-dim" class="clip demo-fill demo-dim" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 2"></div>`);
+  html.push(`<div id="f-stars" class="clip m1-stars" data-preset="hero" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 10"></div>`);
+  const p = plan('F (B14)', W, ['The [wanted stars.]*'], { from: 9, end: f1 / 30, y: 800 });
+  html.push(T.lockups(p, null, { idPrefix: 'f-lk', z: 40, track: 20, y: 800 }));
+  js.push(`// F (B14): six hero stars glitch in 3f apart (6f each), from "The"
+      M.starsGlitchIn(tl, '#f-stars', ${W[9].comp_t.toFixed(4)});`);
+  tag('f-tag', f0, f1, 'v03 · B14 · M1 stars glitch in (starsGlitchIn): RGB split + slice jitter + flicker, 6f each, 3f apart');
+}
+
+/* ---------------- G: B13 "Until finally," solo lockup on a dark card (ref 3), then the title, each word pops ---------------- */
+{
+  const W1 = words('B13', 598);  // Until@605 finally,@614
+  const W2 = words('B13', 515);  // Grand@645 Theft@651 Auto.@661
+  const f0 = 600, fm = 640, f1 = 700;
+  html.push(`<div id="g-card" class="clip rc-card rc-full" data-start="${A(f0)}" data-duration="${D(f0, fm)}" style="z-index: 1"></div>`);
+  const p1 = plan('G1 (B13 card)', W1, ['Until finally,'], { from: 0, start: f0 / 30, end: fm / 30, card: true });
+  html.push(T.lockups(p1, null, { idPrefix: 'g-lk', z: 40, track: 20 }));
+  html.push(vid('g-v', 'R13.1.mp4', fm, f1));
+  html.push(`<div id="g-dim" class="clip demo-fill demo-dim" data-start="${A(fm)}" data-duration="${D(fm, f1)}" style="z-index: 2"></div>`);
+  const p2 = plan('G2 (B13 title)', W2, ['[Grand* Theft* Auto.*]'], { from: 11, start: 643 / 30, end: f1 / 30 });
+  html.push(T.lockups(p2, null, { idPrefix: 'g-title', z: 40, track: 21 }));
+  tag('g-tag', f0, f1, 'v03 · B13 · "Until finally," = solo lockup on the dark card (ref 3) · title [Grand* Theft* Auto.*]: each word pops on its frame');
+}
+
+/* ---------------- H: T9 highlight on a dark (inverted) document page + the dark error box ---------------- */
+{
+  const f0 = 700, f1 = 760;
+  html.push(`<div id="h-bg" class="clip rc-card rc-full" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 1"></div>`);
+  html.push(`<div id="h-doc" class="clip demo-doc" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 5">
+  <div class="demo-doc__h">RACE'N'CHASE</div>
+  <div class="demo-doc__p">Design document, March 1995. The player drives a police car</div>
+  <div class="demo-doc__p">through three cities, chasing criminals before they escape.</div>
+  <div class="demo-doc__p">Planned development time: <span id="h-key">eighteen months</span>.</div>
+  <div id="h-hl" class="rc-t9-hl" style="left: 486px; top: 278px; width: 270px; height: 44px"></div>
+</div>`);
+  html.push(`<div id="h-err" class="clip m-errbox" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="left: 1190px; top: 640px; z-index: 20"></div>`);
+  js.push(`// H: highlighter on the dark page (screen, 50%) + the dark error box
+      T.highlight(tl, '#h-hl', ${S(708)});
+      M.errorBoxPop(tl, '#h-err', ${S(720)});`);
+  tag('h-tag', f0, f1, 'v03 · T9 highlight on a dark (inverted) page: yellow, screen 50% · Windows 95 error box, dark');
+}
+
+/* ---------------- I: B1 L4 grid with ink tiles (note 8): dark tiles, the two centre tiles clear to the footage ---------------- */
+{
+  const f0 = 760, f1 = 800;
+  html.push(`<div id="i-frost" class="rc-l4 rc-l4--ink" style="z-index: 1">
+  <div class="rc-l4__plate">${vid('i-v', 'R1.2.mp4', f0, f1, ' data-media-start="2.0000"').replace('class="clip demo-fill"', 'class="clip"')}</div>
+  <div id="i-tiles" class="clip rc-l4__tiles" data-start="${A(f0)}" data-duration="${D(f0, f1)}"></div>
+</div>`);
+  js.push(`// I (B1): ink tiles; "Why" / "does" clear the two centre tiles (3f easeOutCubic each)
+      S.frostClear(tl, '#i-frost', [${S(764)}, ${S(772)}], { order: [5, 6] });
+      C.push(tl, '#i-frost .rc-l4__plate', ${S(f0)}, { until: ${S(f1)} });`);
+  tag('i-tag', f0, f1, 'v03 · B1 · L4 grid with rc-l4--ink: the blurred tiles are card ink; the two centre tiles clear to the footage');
+}
+
+const END = 800;
+const out = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/kit/base.css" />
+    <link rel="stylesheet" href="assets/kit/type.css" />
+    <link rel="stylesheet" href="assets/kit/motifs.css" />
+    <link rel="stylesheet" href="assets/kit/transitions.css" />
+    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0A0A0A; }
+      /* demo-only scaffolding (not kit) */
+      .demo-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      .demo-dim { background: color-mix(in srgb, var(--ink-black) 35%, transparent); }
+      .demo-tag { position: absolute; left: 96px; top: 20px; height: 26px; font-family: var(--sans); font-size: 19px; line-height: 26px; letter-spacing: 0.02em; color: var(--white); opacity: 0.75; white-space: nowrap; text-shadow: var(--text-shadow); }
+      .demo-doc { position: absolute; left: 300px; top: 140px; width: 1320px; height: 520px; box-sizing: border-box; padding: 60px 80px; background: color-mix(in srgb, var(--white) 6%, var(--ink-black)); color: var(--light-gray); font-family: var(--sans); }
+      .demo-doc__h { font-size: 56px; line-height: 80px; margin-bottom: 20px; }
+      .demo-doc__p { font-size: 36px; line-height: 56px; opacity: 0.9; }
+    </style>
+  </head>
+  <body>
+    <!-- RC kit v03 demo (REVISION_v03 notes 5, 11, 12, 13, 16, 17), generated by tools/gen_demo.cjs from the kit itself.
+         Word times: timing/beat_map.json, shifted per section. Footage: copies of the beats' working clips. -->
+    <div id="root" data-composition-id="kit-v03-demo" data-start="0" data-duration="${(END / 30).toFixed(7)}" data-width="1920" data-height="1080">
+${html.join('\n')}
+    </div>
+    <script src="assets/kit/type.js"></script>
+    <script src="assets/kit/motifs.js"></script>
+    <script src="assets/kit/transitions.js"></script>
+    <script src="assets/kit/screens.js"></script>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const T = RCK.type, M = RCK.motifs, X = RCK.transitions, C = RCK.cam, S = RCK.screens;
+      // every lockup (class rc-lk): words hard-cut on their onset frame, starred words pop + blur in
+      T.lockupsWire(tl);
+      ${js.join('\n      ')}
+      tl.set({}, {}, ${(END / 30).toFixed(6)});
+      window.__timelines["kit-v03-demo"] = tl;
+    </script>
+  </body>
+</html>
+`;
+fs.writeFileSync(__dirname + '/../index.html', out);
+fs.writeFileSync(__dirname + '/../review/lockups.txt', report.join('\n') + '\n');
+console.log('wrote index.html (' + END + ' frames)');
+console.log(report.join('\n'));

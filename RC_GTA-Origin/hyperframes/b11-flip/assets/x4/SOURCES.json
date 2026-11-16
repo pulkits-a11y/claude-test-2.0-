@@ -1,36 +1,36 @@
 {
  "tool": "tools/make_x4_stills.py",
  "cli": "hyperframes@0.9.52",
- "captured_utc": "2026-11-16T15:06:53Z",
+ "captured_utc": "2026-11-16T17:43:03Z",
  "stills": {
   "assets/x4/b11-old.png": {
    "frame": 23,
    "at_s": 0.76672,
    "crop": null,
    "hide": [
-    ".rc-cap",
+    ".rc-lk",
     "#b11-arrow"
    ],
    "flatten": [],
-   "sha256": "60a50724fd6a1de00dd78141780a880ee97850a03b92345f581aa0f67bdddfd1"
+   "sha256": "d603b8cd4301427c960ea1be4b4a204cb91612f6a9a09001ea590df3d538291f"
   }
  },
  "inputs": {
-  "index.html": "ca01d07f1be648102711db590ebefce84c206099e7b21b91a3bc4126d9ac469a",
-  "x4_stills.json": "9e9b34c892997f9325f3dd2a779dd2153e4d241e67bc6218837b68c27a82489f",
+  "index.html": "f209d4cbd562b8d8826c0195e12427bbe25dd32a4ad7563f11e46a74381139f5",
+  "x4_stills.json": "8ebc1b905e9f0d1b7358273776e61a6c8c7ff009f2755d79ed92f450bd1c8b16",
   "assets/footage/R5.1.mp4": "20e140153bc71adbc4380fbc00334fdb616d1e654f730da93b9ed05996ccdee9",
   "assets/footage/R5.2.mp4": "daa7dc47c24fe9b2412fb7c8a40d6abfaaa4d12c163a6c6a98b3b6112710af7f",
   "assets/footage/R5.4.mp4": "52f0131dc96a3fd80b91781cdc9dd2a556e705c2f05d6bac6606a76aa86c28ee",
   "assets/footage/R9.1.mp4": "ccbf76ca22a4a3f105f49a23c0cd4aaa8a855f328e42471dbfef95ddc7575b12",
-  "assets/kit/base.css": "9120479c5070017d5bca9cd7beca4b75eaa69ca597e06018ad5dbf451eac9e15",
-  "assets/kit/motifs.css": "df5492f3251194b9802dd7d4e9fb6b136f87e4fbc502fb179a17107e09e33429",
-  "assets/kit/motifs.js": "15603103b40b9f3b6fcd572662569500e9bd5d7a332f50f64b19862b38d29016",
-  "assets/kit/screens.css": "9174534057c17fdd542350e521685e9d41d2d04e5be291aefc89fc64a7a59db9",
-  "assets/kit/screens.js": "c0bf56f96b8070fd973cd97291af0434d843f335c9b38ca562f6cfeda7c5c0f7",
+  "assets/kit/base.css": "330864234cffa25886d822b51f578880251dfbfb1a6d8ae6dbfbaeb171e89994",
+  "assets/kit/motifs.css": "78c1eaa0906e445669389a9e6a7cfc1caa07135915fb0f0cf9292c90d188e6a1",
+  "assets/kit/motifs.js": "1a828426b1a54ccaa456a613ba01b0cb78b22d1a3b3096ff1c6063369d11a307",
+  "assets/kit/screens.css": "cda18ed0e7d5df6a63dd84f12194162107ed4bf44cbd47aa89fb7244cac3897c",
+  "assets/kit/screens.js": "de399bfb032e8a7f50322f389a272d022c835e25e900d9c6ec8710ac2e337975",
   "assets/kit/transitions.css": "1ed6a0ad32e5bf644fe9b4af74b33d9409151ce1dc717e79817bf053f61d1b0d",
   "assets/kit/transitions.js": "25d4369307be9a594a677a730c7d646f25a611b3ff6ac046f970a2e2dc292642",
-  "assets/kit/type.css": "5fcecc1a7daada8fbdcfc17fb7a08eea6e7daba50c7ca29334c81dac5e3813d5",
-  "assets/kit/type.js": "a851f845a25d3b71567187f8e7246448a6f01be397273947854b5c00c0abae3b",
+  "assets/kit/type.css": "4e5ffe7c1b9f7a13009f117a5b9294c30e5b8a0126de5a4f8e64b61b8aaf0f64",
+  "assets/kit/type.js": "9bb15e3bbaca802620d65b051d5b002553454d18a1d82a5ee044d5bda6a65e62",
   "assets/kit/fonts/Coolvetica-Italic.otf": "c0c69a732b4728ffd8a4b993b2155eb345066f0849d4316e322e23bb1ffd7cff",
   "assets/kit/fonts/Coolvetica-Regular.otf": "a7a9b31bc65d442ca97aa33dd588de36a4bb1f6105492a55bfb055ed86398546",
   "assets/kit/fonts/InstrumentSerif-Italic.ttf": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385",

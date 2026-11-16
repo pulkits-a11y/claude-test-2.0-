@@ -1,6 +1,10 @@
 window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK.rng = RCK.rng || function (seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
-/* RC_GTA-Origin style kit: TYPE (T1-T10). Docs: KIT_type.md ("v02" section first). Source: Master Edit Plan p.9-13 + beat
-   builds, overridden where REVISION_v02.md says so (rule A captions, rule C easing, Coolvetica).
+/* RC_GTA-Origin style kit: TYPE (T1-T10). Docs: KIT_type.md (the "v03" section first, then "v02"). Source: Master Edit Plan
+   p.9-13 + beat builds, overridden where REVISION_v02.md (rule A captions, rule C easing, Coolvetica) and REVISION_v03.md
+   (caption lockups, dark cards) say so.
+   v03 (REVISION_v03.md notes 11, 16, 17): captions are centred LOCKUPS (ref 1): small Coolvetica words + one big Coolvetica
+   Italic keyword; words hard-cut in on their onset frame, only starred words pop + blur in. Node: lockupPlan + lockups
+   (HTML) + lockupReport; browser: lockupsWire. wordPops = the same pop on any text (B6 quote). cvWidth = Coolvetica widths.
 
    Every animation helper is pure:  RCK.type.<helper>(tl, target, atSeconds, opts) -> endSeconds
    - adds tweens to the caller's paused GSAP timeline `tl`, nothing else (no timers, no Date, no Math.random);
@@ -997,8 +1001,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // small = Coolvetica Regular words (ref 1 "to their" / "at Stanford," measure 60 px), key = the Coolvetica Italic keyword,
   // solo = a lockup without a keyword (one centred line, ref 3), gap = baseline -> next cap top between small and key
   // rows (ref 1: 5 px of 323 = 16.7 px), pitch = baseline-to-baseline of two small lines (em), wrap = a small row longer
-  // than wrap x the keyword's width (or than the title-safe width) is set on 2+ balanced lines.
-  var LK = { small: 60, key: 190, solo: 64, gap: 17, pitch: 1.12, wrap: 1.15, safeW: 1728, safeTop: 54, safeBottom: 1026, y: 540, maxWords: 7,
+  // than wrap x the keyword's width (or than the title-safe width) is set on 2+ balanced lines. soloCard = a solo line on a
+  // dark text card (opts.card: ref 3 "so they approached" measures 76 px in Coolvetica terms).
+  var LK = { small: 60, key: 190, solo: 64, soloCard: 76, gap: 17, pitch: 1.12, wrap: 1.15, safeW: 1728, safeTop: 54, safeBottom: 1026, y: 540, maxWords: 7,
     asc: 0.672, base: 0.867, italicOver: 0.12 };
   // Starred words (spec "word*", "[key]*"): visible on their own frame at full opacity, blurred + slightly small, then
   // settle (6f expo.out). Every other lockup word: a hard cut on its frame, no animation (note 11).
@@ -1067,7 +1072,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // its cap / ascender top 0.195 em below the row top (Coolvetica hhea metrics, KIT_type.md v02 > Fonts). Gaps are set
   // from baseline to the next row's cap top. The ink block (first cap top .. last baseline) is centred on --rc-y.
   function layoutLockup(lk, opts, warnings) {
-    var S = opts.smallSize || LK.small, K = opts.keySize || LK.key, SOLO = opts.soloSize || LK.solo;
+    var S = opts.smallSize || LK.small, K = opts.keySize || LK.key, SOLO = opts.soloSize || (opts.card ? LK.soloCard : LK.solo);
     var safeW = opts.maxWidth || LK.safeW, gap = opts.gap != null ? opts.gap : LK.gap, pitch = opts.pitch || LK.pitch;
     var by = function (r) { return lk.toks.filter(function (t) { return t.role === r; }); };
     var txt = function (ts) { return ts.map(function (t) { return t.text; }).join(' '); };
@@ -1107,7 +1112,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // between lockups). opts: from (index of the first word), end (s; where the last lockup hard-cuts out; default the next
   // word's comp_t, else the last word's comp_end_t), start (s; an earlier start for the first lockup's clip), loose
   // (accept spelling differences, e.g. "18" for "eighteen"), y (ink centre, default 540), smallSize (60), keySize (190),
-  // soloSize (64), gap (17), wrap (1.15), maxWidth (1728). Returns {lockups, next, endFrame, warnings}; each lockup
+  // soloSize (64; card: true = 76, the ref 3 text card size), gap (17), wrap (1.15), maxWidth (1728). Returns {lockups, next, endFrame, warnings}; each lockup
   // {index, spec, text, toks: [{text, role lead|key|tail|solo, pop, frame, i, voiceT}], startFrame, endFrame, frames,
   // startAttr, durAttr, layout: {rows, box, sizes}}.
   function lockupPlan(words, specs, opts) {

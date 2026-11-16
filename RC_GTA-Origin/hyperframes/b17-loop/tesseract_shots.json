@@ -20,12 +20,12 @@
     "keys": [
      {
       "f": 0,
-      "scale": 112
+      "scale": 100
      },
      {
       "f": 10,
-      "scale": 101,
-      "ease": "easeOutExpo"
+      "scale": 100.1,
+      "ease": "easeInOutSine"
      }
     ]
    },
@@ -41,7 +41,7 @@
    "client_supplied": true,
    "credit": "madebyajit (Instagram)",
    "replaces": "R17.1 stand-in (GTA 6 Trailer 1, Lucia in custody)",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). CLIENT NOTE 9: the Trailer 1 opening is the client's clip 'Video by madebyajit [0-29s].mp4' (1500x1078, 25 fps, square pixels; a fan edit of GTA 6 Trailer 1's opening; credit: madebyajit, Instagram), replacing the R17.1 stand-in. Shot 1 of 2: the prison yard behind the chain-link fence, a guard in a white 'Let Freedom Reign!' shirt in the right foreground, Lucia walking toward camera in the background (clip frames n46-54 = 1.86-2.16 s; the clip's own cut to Lucia's medium shot is at 2.20 s). In-point chosen so the T1 captions on the low line ('And', 'GTA 6?') sit on the dark yard left of the guard's shirt (at 1.0-1.8 s the white shirt fills the caption spot). CROP 1500:844:0:0 = 16:9 out of the 1.39:1 clip at full width, top rows (no stretching), so the L2 bars visibly slide in over the picture (8f, entering the cinematic moment); the band shows source rows 108-736. GRADE neutralize: the assembly tones down the fan edit's heavy pink/magenta grade. Framing v2 (rule D), anchored on the band's top edge (960, 138) so Lucia's head stays in the band: the cut from B16's black punches in 112 -> 101% over the shot's 10f (easeOutExpo). HF overlay: M1 five stars (row centred on x 1700, y 80, on the top bar, C34) pop in on 'GTA'; T1 'And' / 'GTA 6?' on the low line (y 860). Never use the clip's 'madebyajit' end card. Do not name or imply any voice actor."
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); v01's band push 100 -> 104% across the whole Trailer 1 opening (beat f0-100), eased (easeInOutSine), split at the client clip's own cut (f10): this shot carries its first 10 frames, 100 -> 100.10% (v02 punch-in 112 -> 101% removed); anchor kept at the band's top edge (Lucia's head stays in). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). CLIENT NOTE 9: the Trailer 1 opening is the client's clip 'Video by madebyajit [0-29s].mp4' (1500x1078, 25 fps, square pixels; a fan edit of GTA 6 Trailer 1's opening; credit: madebyajit, Instagram), replacing the R17.1 stand-in. Shot 1 of 2: the prison yard behind the chain-link fence, a guard in a white 'Let Freedom Reign!' shirt in the right foreground, Lucia walking toward camera in the background (clip frames n46-54 = 1.86-2.16 s; the clip's own cut to Lucia's medium shot is at 2.20 s). In-point chosen so the T1 captions on the low line ('And', 'GTA 6?') sit on the dark yard left of the guard's shirt (at 1.0-1.8 s the white shirt fills the caption spot). CROP 1500:844:0:0 = 16:9 out of the 1.39:1 clip at full width, top rows (no stretching), so the L2 bars visibly slide in over the picture (8f, entering the cinematic moment); the band shows source rows 108-736. GRADE neutralize: the assembly tones down the fan edit's heavy pink/magenta grade. Framing v2 (rule D), anchored on the band's top edge (960, 138) so Lucia's head stays in the band: the cut from B16's black punches in 112 -> 101% over the shot's 10f (easeOutExpo). HF overlay: M1 five stars (row centred on x 1700, y 80, on the top bar, C34) pop in on 'GTA'; T1 'And' / 'GTA 6?' on the low line (y 860). Never use the clip's 'madebyajit' end card. Do not name or imply any voice actor."
   },
   {
    "id": "B17-trailer1-band-2",
@@ -60,11 +60,11 @@
     "keys": [
      {
       "f": 0,
-      "scale": 101
+      "scale": 100.1
      },
      {
       "f": 90,
-      "scale": 107,
+      "scale": 104,
       "ease": "easeInOutSine"
      }
     ]
@@ -81,7 +81,7 @@
    "client_supplied": true,
    "credit": "madebyajit (Instagram)",
    "replaces": "R17.1 stand-in (GTA 6 Trailer 1, Lucia in custody)",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). CLIENT NOTE 9, shot 2 of 2 (same client clip, credit madebyajit): Lucia walking toward camera in the prison yard, the chain-link fence and the yard buildings behind her (clip frames n56-130 = 2.22-5.22 s, all inside the clip's medium shot n55-131; the clip cuts to another scene at 5.28 s, never used, nor its 'madebyajit' end card). Continues the L2 band from shot 1 (the bars are already in: the assembly does not slide them again when an L2 shot ends where this one starts). CROP 1500:628:0:0 = 2.39:1 at full width from the top row: in this fan edit Lucia's head touches the top of the frame, so a 16:9 crop would leave her eyes on the top bar's edge (band rows 108-736); a 2.39:1 crop is wider than 16:9, so the assembly fits it exactly into the band (1920x804 at y 138) and keeps her whole head (face at band y ~290-540). No stretching. GRADE neutralize (the assembly tones down the pink grade). Framing v2: a slow push 101 -> 107% (easeInOutSine) across the shot, anchored on the band's top edge (960, 138) so her head stays in. Keep Trailer 1 on screen through 'It opens with Lucia already caught.' (Accuracy p.39: 'it' reads as the trailer). HF overlay: T1 'GTA 6?' / 'It opens' / 'with Lucia' / 'already caught.' / 'So who's' on the low line (y 860, over her dark shirt), M1 stars blink on the top bar until the first chase cut (f100). Do not name or imply any voice actor."
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); the rest of v01's band push: 100.10 -> 104% over f10-100 (easeInOutSine; v02 101 -> 107% removed); anchor kept. || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). CLIENT NOTE 9, shot 2 of 2 (same client clip, credit madebyajit): Lucia walking toward camera in the prison yard, the chain-link fence and the yard buildings behind her (clip frames n56-130 = 2.22-5.22 s, all inside the clip's medium shot n55-131; the clip cuts to another scene at 5.28 s, never used, nor its 'madebyajit' end card). Continues the L2 band from shot 1 (the bars are already in: the assembly does not slide them again when an L2 shot ends where this one starts). CROP 1500:628:0:0 = 2.39:1 at full width from the top row: in this fan edit Lucia's head touches the top of the frame, so a 16:9 crop would leave her eyes on the top bar's edge (band rows 108-736); a 2.39:1 crop is wider than 16:9, so the assembly fits it exactly into the band (1920x804 at y 138) and keeps her whole head (face at band y ~290-540). No stretching. GRADE neutralize (the assembly tones down the pink grade). Framing v2: a slow push 101 -> 107% (easeInOutSine) across the shot, anchored on the band's top edge (960, 138) so her head stays in. Keep Trailer 1 on screen through 'It opens with Lucia already caught.' (Accuracy p.39: 'it' reads as the trailer). HF overlay: T1 'GTA 6?' / 'It opens' / 'with Lucia' / 'already caught.' / 'So who's' on the low line (y 860, over her dark shirt), M1 stars blink on the top bar until the first chase cut (f100). Do not name or imply any voice actor."
   },
   {
    "id": "B17-chase-1",
@@ -97,19 +97,14 @@
     "keys": [
      {
       "f": 0,
-      "scale": 112
-     },
-     {
-      "f": 9,
-      "scale": 100,
-      "ease": "easeOutExpo"
+      "scale": 100
      }
     ]
    },
    "enter": "X1",
    "exit": "X1",
    "grade": "game",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on \"who's\" (f100), 9f, full frame; framing v2: punch-in 112 -> 100% over the shot (easeOutExpo). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched).",
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on \"who's\" (f100), 9f, full frame; framing v2: punch-in 112 -> 100% over the shot (easeOutExpo). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched).",
    "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI： An Extended Look ｜ Now Playing ｜ Netflix [uphThaa97ig].mp4"
   },
   {
@@ -127,18 +122,13 @@
      {
       "f": 0,
       "scale": 100
-     },
-     {
-      "f": 10,
-      "scale": 106,
-      "ease": "easeInOutSine"
      }
     ]
    },
    "enter": "X1",
    "exit": "X1",
    "grade": "game",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on 'chasing' (f109, the frame the T2 lead-in 'chasing who' appears), 10f, full frame; framing v2: push 100 -> 106% (easeInOutSine). Official launch trailer (Rockstar) @ 0:47.2-0:47.53 (shot 46.33-48.23): a police car drifts round a street corner in pursuit of the green sports car. Not the logo end card (b17-loop uses that at f141-167).",
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on 'chasing' (f109, the frame the T2 lead-in 'chasing who' appears), 10f, full frame; framing v2: push 100 -> 106% (easeInOutSine). Official launch trailer (Rockstar) @ 0:47.2-0:47.53 (shot 46.33-48.23): a police car drifts round a street corner in pursuit of the green sports car. Not the logo end card (b17-loop uses that at f141-167).",
    "source": "04_Broll/_originals/B17/R17.4__Grand Theft Auto VI Launch Trailer [rz1B4B2yBZY].mp4"
   },
   {
@@ -155,19 +145,14 @@
     "keys": [
      {
       "f": 0,
-      "scale": 102
-     },
-     {
-      "f": 10,
-      "scale": 110,
-      "ease": "easeInQuart"
+      "scale": 100
      }
     ]
    },
    "enter": "X1",
    "exit": "X1",
    "grade": "game",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:11.9-0:12.23 (shot 11.63-12.80): shot at from the player's convertible, a pursuing police car slams into a pole (sparks, the car lifts). 10f; framing v2: a push 102 -> 110% accelerating into the cut (easeInQuart), then the hard cut to black on 'now?' at f129, where b17-loop becomes opaque (black, T2 'now?', the R17.4 logo push-in f141-161, the final X4 at f161, black tail to f186).",
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:11.9-0:12.23 (shot 11.63-12.80): shot at from the player's convertible, a pursuing police car slams into a pole (sparks, the car lifts). 10f; framing v2: a push 102 -> 110% accelerating into the cut (easeInQuart), then the hard cut to black on 'now?' at f129, where b17-loop becomes opaque (black, T2 'now?', the R17.4 logo push-in f141-161, the final X4 at f161, black tail to f186).",
    "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI： An Extended Look ｜ Now Playing ｜ Netflix [uphThaa97ig].mp4"
   }
  ]

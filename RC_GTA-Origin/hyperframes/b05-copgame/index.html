@@ -22,11 +22,12 @@
     </style>
   </head>
   <body>
-    <!-- B5 b05-copgame (v02): beat 83f (2.767s) + 6f handle each end = 95f.
+    <!-- B5 b05-copgame (v03; timing v02): beat 83f (2.767s) + 6f handle each end = 95f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.9667s (local frames 6 .. 89).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B5 p.22).
-         v02 notes: REVISION_v02.md rules A (captions word by word, max 2), C (nothing linear), D (eased zooms), E.
-         Owner: HF for the whole beat (opaque). Into the beat: X1 (hard cut). T1 only. No SFX (the X9 wash is visual only).
+         v03 notes (REVISION_v03.md): 11/16/17 caption lockups (centred, words appear on their frames, only the keyword pops +
+         blurs in, bigger), 13 no random zooms (back to v01's camera: one slow eased 100 -> 104% push). Everything else v02.
+         Owner: HF for the whole beat (opaque). Into the beat: X1 (hard cut). Captions only. No SFX (the X9 wash is visual).
          Shared L11 frame: B6 (b06-dull) continues these two clips with continuous source time
          (B6 data-media-start = this beat's data-media-start + 83/30 s); B11 (b11-flip) returns to this exact frame. -->
     <div data-hf-id="hf-wl97" id="root" data-composition-id="b05-copgame" data-start="0" data-duration="3.1666667" data-width="1920" data-height="1080">
@@ -69,15 +70,14 @@
            flank, below the T1 line (y 592-648). Same seed as B11 (same hand); B11 re-aims it at the getaway car. -->
       <div data-hf-id="hf-nqqh" id="b05-arrow" class="clip m2-arrow" data-start="0.6666" data-duration="2.5000" data-track-index="5" style="z-index: 20"></div>
 
-      <!-- T1 running captions, v02 rule A (plan p.11, B5 p.22 "On screen: T1: In it, / you play / a police officer /
-           chasing criminals."): kit captionPlanV2 + captionHTMLV2 from words.json = groups of max 2 words, "a / police officer"
-           (the client's own example), each word pops on its own onset frame (T.captionPops). Groups hard-cut on the next
-           group's first word; the last group holds through the tail handle (closing state continued). -->
-      <div data-hf-id="hf-iqh2" id="b05-cap-1" class="clip rc-t1 rc-cap" data-start="0.2333" data-duration="0.4333" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="7">In</span> <span class="rc-w" data-rc-f="9">it,</span></span></div>
-      <div data-hf-id="hf-pnby" id="b05-cap-2" class="clip rc-t1 rc-cap" data-start="0.6666" data-duration="0.3667" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="20">you</span> <span class="rc-w" data-rc-f="25">play</span></span></div>
-      <div data-hf-id="hf-scwa" id="b05-cap-3" class="clip rc-t1 rc-cap" data-start="1.0333" data-duration="0.0667" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="31">a</span></span></div>
-      <div data-hf-id="hf-b5c4" id="b05-cap-4" class="clip rc-t1 rc-cap" data-start="1.1000" data-duration="0.6666" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="33">police</span> <span class="rc-w" data-rc-f="42">officer</span></span></div>
-      <div data-hf-id="hf-ja37" id="b05-cap-5" class="clip rc-t1 rc-cap" data-start="1.7666" data-duration="1.4000" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="53">chasing</span> <span class="rc-w" data-rc-f="64">criminals.</span></span></div>
+      <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1), kit RCK.type.lockups from words.json: centred on the
+           frame (ink centre y 540), small Coolvetica words + one big Coolvetica Italic keyword. Every word appears on its
+           spoken frame (hard cut, no animation); only the starred keyword "police officer" pops + blurs in (it lands with the
+           X9 wash). Lockups replace each other with a hard cut; the last one holds through the tail handle.
+           "In it, you play" (7) / "a [police officer]*" (31) / "chasing [criminals.]" (53). -->
+      <div id="b05-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="0.8000" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="7">In</span> <span class="rc-lw" data-rc-f="9">it,</span> <span class="rc-lw" data-rc-f="20">you</span> <span class="rc-lw" data-rc-f="25">play</span></div></div></div>
+      <div id="b05-lk-2" class="clip rc-lk" data-start="1.0333" data-duration="0.7333" data-track-index="10" style="--rc-lk-c: 104.2px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="31">a</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="33">police</span> <span class="rc-lw rc-lw--pop" data-rc-f="42">officer</span></div></div></div>
+      <div id="b05-lk-3" class="clip rc-lk" data-start="1.7666" data-duration="1.4000" data-track-index="10" style="--rc-lk-c: 104.2px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="53">chasing</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="64">criminals.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -109,8 +109,9 @@
       // X9 on "police" (local 33): red 33-34, blue 35-36, gone on 37 (hard frames).
       X.sirenWash(tl, '#b05-x9', f(33));
 
-      // T1 word pops (every .rc-cap above): each word on its onset frame, 5f easeOutExpo, max 2 words on screen.
-      T.captionPops(tl);
+      // v03 caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame (no animation); the starred
+      // keyword "police officer" pops + blurs in (kit POP3: 6f easeOutExpo, blur 20 -> 0 px, 92 -> 100%).
+      T.lockupsWire(tl);
 
       window.__timelines["b05-copgame"] = tl;
     </script>

@@ -17,16 +17,11 @@
     "keys": [
      {
       "f": 0,
-      "scale": 112
-     },
-     {
-      "f": 10,
-      "scale": 101,
-      "ease": "easeOutExpo"
+      "scale": 100
      },
      {
       "f": 24,
-      "scale": 105,
+      "scale": 104,
       "ease": "easeInOutSine"
      }
     ]
@@ -38,7 +33,7 @@
     "slide_in_f": 8
    },
    "grade": "archival",
-   "notes": "v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (205f): hard cut (X1) on beat f181 to the GTA 1 PC big-box unboxing in the L2 band for the last 0.8 s (24f, f181-205); B14 opens on X1 at f205. Rule D framing v2: the cut punches in 112 -> 101% over 10f (easeOutExpo), then pushes 101 -> 105% to the end (easeInOutSine); bars slide in over 8f (L2 entering, eased by the assembly). The b13-gta overlay is fully transparent from f181 (and through the tail handle), so this shot is the whole picture. MOMENT (R13.2 @ 1:41.6-1:42.4, 60 fps source): the opened big box, the GTA jewel case with its 'Grand Theft Auto' cover art in the box insert and the San Andreas map beside it, hands at the box edges (slight handheld drift). CROP 1420:799:500:160 (16:9, then fit to 1920x1080 = 1.35x): keeps the uploader's facecam picture-in-picture (top-left, source x<500, y<352) out of the band; the band (crop rows 102-697 = source y 262-857) holds the case art and the map. Bars 138 px slide in over 8f per the L2 library (p.13). Archival grade (plan p.10: B13 is archival). Music: part of 'the B13 title hold' (no voice from beat f155, 43f of room tone after 'Auto.'): let the music come up to about -16 LUFS (plan p.35).",
+   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's held-shot push 100 -> 104% over the shot (f0-24), eased (easeInOutSine); v02 punch-in 112 -> 101% + push to 105% removed. Bars still slide in over 8f (L2, plan). The b13-gta overlay is transparent from f181 as before (v03: its title lockup hard-cuts out on f181). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (205f): hard cut (X1) on beat f181 to the GTA 1 PC big-box unboxing in the L2 band for the last 0.8 s (24f, f181-205); B14 opens on X1 at f205. Rule D framing v2: the cut punches in 112 -> 101% over 10f (easeOutExpo), then pushes 101 -> 105% to the end (easeInOutSine); bars slide in over 8f (L2 entering, eased by the assembly). The b13-gta overlay is fully transparent from f181 (and through the tail handle), so this shot is the whole picture. MOMENT (R13.2 @ 1:41.6-1:42.4, 60 fps source): the opened big box, the GTA jewel case with its 'Grand Theft Auto' cover art in the box insert and the San Andreas map beside it, hands at the box edges (slight handheld drift). CROP 1420:799:500:160 (16:9, then fit to 1920x1080 = 1.35x): keeps the uploader's facecam picture-in-picture (top-left, source x<500, y<352) out of the band; the band (crop rows 102-697 = source y 262-857) holds the case art and the map. Bars 138 px slide in over 8f per the L2 library (p.13). Archival grade (plan p.10: B13 is archival). Music: part of 'the B13 title hold' (no voice from beat f155, 43f of room tone after 'Auto.'): let the music come up to about -16 LUFS (plan p.35).",
    "source": "04_Broll/_originals/B13/R13.2__Original GRAND THEFT AUTO from 1997 - PC Big Box Unboxing [BcnDNeEggls].mp4",
    "crop": "1420:799:500:160"
   }

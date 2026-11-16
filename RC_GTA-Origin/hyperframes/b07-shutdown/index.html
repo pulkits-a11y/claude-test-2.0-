@@ -34,7 +34,7 @@
     </style>
   </head>
   <body>
-    <!-- B7 b07-shutdown (v02 REDESIGN, client note 3): beat 90f (3.000s) + 6f handle each end = 102f.
+    <!-- B7 b07-shutdown (v03; v02 redesign, client note 3): beat 90f (3.000s) + 6f handle each end = 102f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.2000s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B7 p.23).
          Note 3: "the motion graphic is really bad ... I don't really like the cancelled stamp ... just make it turn red or
@@ -43,20 +43,21 @@
          people / above the team", then the real article (Game Developer, Jan 31 2011, "Penn: First Grand Theft Auto Was
          'Almost Canned'") on "keep trying / to shut it down": the headline, then the sentence "It was almost canned. The
          publisher, BMG Interactive, wanted to can it" highlighted (T9 yellow highlighter, two eased swipes) under a push-in.
-         On the old stamp words ("keep", "shut", "down" = the S06 hits, cues stamp1-3) the picture turns siren red.
+         v03 (REVISION_v03.md): note 3 no red hits at all (the S06 hit sounds stay: cues stamp1-3 = the headline cut and the
+         two highlighter landings); note 12 the article is the browser's DARK-mode capture (R7.GD, same layout and rects),
+         the highlighter re-coloured for the dark page (screen, 50%); note 13 the v02 pushes / zoom-out / punch-in are gone
+         (one slow eased 100 -> 104% push across A-D; E keeps the article push-in); notes 11/16/17 caption lockups.
 
-         local  0-22  A  R7.1 early-1990s office, woman with a headset typing   push 100 -> 108% (easeInOutSine)
-         local 22-31  B  R7.1 the open-plan office, wide (on "above")          zoom-out 112 -> 100% (easeInOutSine)
-         local 31-41  C  R7.3 DMA Design office 1990, developer at his desk     push 100 -> 108% (easeInOutSine)
-                          (on "the team"); red hit 1 ramps in from local 38
-         local 41-58  D  the article headline (cut on "keep" = red hit 1 peak)  punch-in 112 -> 100% / 10f (easeOutExpo)
+         local  0-22  A  R7.1 early-1990s office, woman with a headset typing   }  ONE slow push 100 -> 104%
+         local 22-31  B  R7.1 the open-plan office, wide (on "above")          }  (easeInOutSine) from local 0 to 58,
+         local 31-41  C  R7.3 DMA Design office 1990, developer at his desk     }  each wrapper plays its segment of the
+         local 41-58  D  the article headline (cut on "keep")                   }  same curve (D about the headline)
          local 58-102 E  the article sentence (cut on "to")                    push 100 -> 118% + drift (easeInOutSine) from
                           local 58 to b08-break's "breaks" (edit clock, shared with b08); highlighter swipe 1 "It was almost
-                          canned." lands on "shut" (red hit 2), swipe 2 "The publisher, BMG Interactive, wanted to can it"
-                          lands on "down." (red hit 3)
-         Layer stack (top -> bottom): z40 T1 captions (white, low line y 860) | z30 red hit layers (multiply) | z5 E | z4 D |
-         z3 C | z2 B | z1 A. On the article, the page is dimmed to 35% except the headline / the sentence (the kit's L7
-         spotlight values: #0A0A0A 65%, rounded feathered hole), as on B4's design document, so the white captions read.
+                          canned." lands on "shut", swipe 2 "The publisher, BMG Interactive, wanted to can it" on "down."
+         Layer stack (top -> bottom): z40 caption lockups | z5 E | z4 D | z3 C | z2 B | z1 A. On the article, the page is
+         dimmed to 35% except the headline / the sentence (the kit's L7 spotlight values: #0A0A0A 65%, rounded feathered
+         hole), as on B4's design document.
          Fully opaque (HF owns every frame). No grain / vignette / chroma (REVISION_v02 rule F: the assembly adds them).
          b08-break continues shot E exactly (same page framing, same camera function of the edit frame). -->
     <div data-hf-id="hf-m014" id="root" data-composition-id="b07-shutdown" data-start="0" data-duration="3.4000000" data-width="1920" data-height="1080">
@@ -115,16 +116,14 @@
         </div>
       </div>
 
-      <!-- T1 running captions, v02 rule A (plan B7 p.23 "T1: So the people / above the team / keep trying / to shut it
-           down."): kit captionPlanV2 + captionHTMLV2 from words.json, low line (y 860), white + soft shadow (on footage and
-           on the dimmed page). Groups: So / the people / above / the team / keep trying / to shut / it down. -->
-      <div data-hf-id="hf-rs51" id="b07-cap-1" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.2000" data-duration="0.1000" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-ida4" class="rc-g"><span data-hf-id="hf-2w6q" class="rc-w" data-rc-f="6">So</span></span></div>
-      <div data-hf-id="hf-ht59" id="b07-cap-2" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.3000" data-duration="0.4333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-7p6c" class="rc-g"><span data-hf-id="hf-384i" class="rc-w" data-rc-f="9">the</span> <span data-hf-id="hf-kqat" class="rc-w" data-rc-f="13">people</span></span></div>
-      <div data-hf-id="hf-w2o7" id="b07-cap-3" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.7333" data-duration="0.3000" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-6i99" class="rc-g"><span data-hf-id="hf-tnnz" class="rc-w" data-rc-f="22">above</span></span></div>
-      <div data-hf-id="hf-jejx" id="b07-cap-4" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.0333" data-duration="0.3333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-6wka" class="rc-g"><span data-hf-id="hf-ybut" class="rc-w" data-rc-f="31">the</span> <span data-hf-id="hf-xkpn" class="rc-w" data-rc-f="35">team</span></span></div>
-      <div data-hf-id="hf-yu8m" id="b07-cap-5" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.3666" data-duration="0.5667" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-8w3f" class="rc-g"><span data-hf-id="hf-zdvy" class="rc-w" data-rc-f="41">keep</span> <span data-hf-id="hf-hwe1" class="rc-w" data-rc-f="48">trying</span></span></div>
-      <div data-hf-id="hf-nu1e" id="b07-cap-6" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.9333" data-duration="0.3333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-9aeg" class="rc-g"><span data-hf-id="hf-r228" class="rc-w" data-rc-f="58">to</span> <span data-hf-id="hf-qafc" class="rc-w" data-rc-f="62">shut</span></span></div>
-      <div data-hf-id="hf-3vw8" id="b07-cap-7" class="clip rc-t1 rc-cap rc-t1--low" data-start="2.2666" data-duration="1.1334" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-83hd" class="rc-g"><span data-hf-id="hf-f0v1" class="rc-w" data-rc-f="68">it</span> <span data-hf-id="hf-7165" class="rc-w" data-rc-f="72">down.</span></span></div>
+      <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1), kit RCK.type.lockups from words.json: every word
+           appears on its spoken frame (hard cut), the starred keywords pop + blur in. Centred (y 540) over the office B-roll
+           and the headline: "So the people [above]* the team" (6; "above" pops on 22) / "keep trying" (41). On the article
+           sentence (shot E) the frame centre is the spotlit sentence, so the last lockup sits below it (ink centre y 840):
+           "to [shut]* it down." (58; "shut" pops on 62 with the first highlighter landing), held through the tail handle. -->
+      <div id="b07-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.1666" data-track-index="10" style="--rc-lk-c: 132.86px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="6">So</span> <span class="rc-lw" data-rc-f="9">the</span> <span class="rc-lw" data-rc-f="13">people</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="22">above</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="31">the</span> <span class="rc-lw" data-rc-f="35">team</span></div></div></div>
+      <div id="b07-lk-2" class="clip rc-lk" data-start="1.3666" data-duration="0.5667" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="41">keep</span> <span class="rc-lw" data-rc-f="48">trying</span></div></div></div>
+      <div id="b07-lk-3" class="clip rc-lk" data-start="1.9333" data-duration="1.4667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 132.86px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="58">to</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="62">shut</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="68">it</span> <span class="rc-lw" data-rc-f="72">down.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -168,8 +167,9 @@
       T.highlight(tl, '#b07-hl1', f(58));
       T.highlight(tl, '#b07-hl2', f(68));
 
-      // ---- T1 word pops (every .rc-cap above): each word on its onset frame, max 2 words on screen ----
-      T.captionPops(tl);
+      // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame; the starred keywords
+      //      "above" (22) and "shut" (62) pop + blur in (kit POP3) ----
+      T.lockupsWire(tl);
 
       window.__timelines["b07-shutdown"] = tl;
     </script>

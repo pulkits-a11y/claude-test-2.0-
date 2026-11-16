@@ -21,7 +21,7 @@
     </style>
   </head>
   <body>
-    <!-- B11 b11-flip v02: beat 152f (5.067s) + 6f handle each end = 164f.
+    <!-- B11 b11-flip v03 (REVISION_v03: caption lockups, no v02 zooms, front = B5 v03's camera; glitch as v02): beat 152f (5.067s) + 6f handle each end = 164f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.2667s (local frames 6 .. 158).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B11 p.24-25).
          Owner: HF for the whole beat (opaque). Into the beat: X1. T1 only (rotation p.13).
@@ -36,7 +36,9 @@
          local 31    : the cut (hard): back side = the chased roles: left the player's getaway car fleeing (R9.1), right the
                        police SUV chasing (R5.4); v03 (note 13): v01's held-shot push 100 -> 104% (now sine.inOut) from the
                        cut to the end; v02's punch-in on the cut and keyword punch on "chased." are removed.
-         local 103   : on "Now" the M2 arrow redraws over 8f and points at the getaway car (same arrow as B5 and v01). -->
+         local 103   : on "Now" the M2 arrow redraws over 8f and points at the getaway car (same arrow as B5 and v01).
+         v03 captions: three centred lockups (kit RCK.type.lockups): "So the team [flips] the whole game." / "You're not
+         the [cop] anymore." / "Now you're the one being [chased.]*" (words hard-cut in; "chased." pops + blurs in). -->
     <div data-hf-id="hf-sf56" id="root" data-composition-id="b11-flip" data-start="0" data-duration="5.4666667" data-width="1920" data-height="1080">
 
       <!-- L11 split screen (plan p.15). Look: the B5 game grade {"adjust":{"contrast":0.15}} (plan p.10 "Game footage: punchy
@@ -92,21 +94,17 @@
            the police car (x 425-830, y 775-930) and of the T1 line; "you" at the tail. -->
       <div data-hf-id="hf-wrpo" id="b11-arrow" class="clip m2-arrow" data-start="3.4333" data-duration="2.0333" data-track-index="6" style="z-index: 20"></div>
 
-      <!-- T1 running captions word by word (rule A; kit captionPlanV2 from words.json; plan B11 p.24 "T1: So the team / flips
-           the whole game. / You're not the cop / anymore. / Now you're the one / being chased."): groups of max 2 words, each
-           word pops on its onset; the last group holds through the tail handle (closing state; B12 hard cuts in). No X9 on
-           "cop": the siren wash is only for "cops" (B1), "police officer" (B5) and "The sirens." (B14). -->
-      <div id="b11-cap-1" class="clip rc-t1 rc-cap" data-start="0.2000" data-duration="0.1000" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="6">So</span></span></div>
-      <div id="b11-cap-2" class="clip rc-t1 rc-cap" data-start="0.3000" data-duration="0.4666" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="9">the</span> <span class="rc-w" data-rc-f="15">team</span></span></div>
-      <div id="b11-cap-3" class="clip rc-t1 rc-cap" data-start="0.7666" data-duration="0.3334" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="23">flips</span></span></div>
-      <div id="b11-cap-4" class="clip rc-t1 rc-cap" data-start="1.1000" data-duration="0.3000" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="33">the</span></span></div>
-      <div id="b11-cap-5" class="clip rc-t1 rc-cap" data-start="1.4000" data-duration="0.7666" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="42">whole</span> <span class="rc-w" data-rc-f="52">game.</span></span></div>
-      <div id="b11-cap-6" class="clip rc-t1 rc-cap" data-start="2.1666" data-duration="0.3667" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="65">You're</span> <span class="rc-w" data-rc-f="72">not</span></span></div>
-      <div id="b11-cap-7" class="clip rc-t1 rc-cap" data-start="2.5333" data-duration="0.2333" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="76">the</span> <span class="rc-w" data-rc-f="79">cop</span></span></div>
-      <div id="b11-cap-8" class="clip rc-t1 rc-cap" data-start="2.7666" data-duration="0.6667" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="83">anymore.</span></span></div>
-      <div id="b11-cap-9" class="clip rc-t1 rc-cap" data-start="3.4333" data-duration="0.4667" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="103">Now</span> <span class="rc-w" data-rc-f="107">you're</span></span></div>
-      <div id="b11-cap-10" class="clip rc-t1 rc-cap" data-start="3.9000" data-duration="0.3666" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="117">the</span> <span class="rc-w" data-rc-f="122">one</span></span></div>
-      <div id="b11-cap-11" class="clip rc-t1 rc-cap" data-start="4.2666" data-duration="1.2000" data-track-index="10" style="z-index: 30"><span class="rc-g"><span class="rc-w" data-rc-f="128">being</span> <span class="rc-w" data-rc-f="135">chased.</span></span></div>
+      <!-- v03 T1 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), centred on the frame:
+           "So the team / [flips] / the whole game." (the keyword lands with the X4 glitch on local 23, no pop: the glitch is
+           the effect), "You're not the / [cop] / anymore.", "Now you're the one being / [chased.]*" (starred: pops + blurs
+           in on local 135, the beat's reveal; replaces v02's camera punch). Every other word hard-cuts in on its spoken
+           frame (no animation); lockups replace each other with a hard cut; the last holds through the tail handle (B12
+           hard cuts in). Above the tear and the arrow (z 30), steady. No X9 on "cop" (motif discipline, as v01/v02).
+           Generated with T.lockups(w, ['So the team [flips] the whole game.', "You're not the [cop] anymore.", "Now you're the
+           one being [chased.]*"], { from: 0, end: 164/30 }). -->
+      <div id="b11-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.9666" data-track-index="10" style="--rc-lk-c: 132.86px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="6">So</span> <span class="rc-lw" data-rc-f="9">the</span> <span class="rc-lw" data-rc-f="15">team</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="23">flips</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="33">the</span> <span class="rc-lw" data-rc-f="42">whole</span> <span class="rc-lw" data-rc-f="52">game.</span></div></div></div>
+      <div id="b11-lk-2" class="clip rc-lk" data-start="2.1666" data-duration="1.2667" data-track-index="10" style="--rc-lk-c: 132.86px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="65">You're</span> <span class="rc-lw" data-rc-f="72">not</span> <span class="rc-lw" data-rc-f="76">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="79">cop</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="83">anymore.</span></div></div></div>
+      <div id="b11-lk-3" class="clip rc-lk" data-start="3.4333" data-duration="2.0333" data-track-index="10" style="--rc-lk-c: 104.2px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="103">Now</span> <span class="rc-lw" data-rc-f="107">you're</span> <span class="rc-lw" data-rc-f="117">the</span> <span class="rc-lw" data-rc-f="122">one</span> <span class="rc-lw" data-rc-f="128">being</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="135">chased.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -146,8 +144,8 @@
       //      geometry as b05-copgame (the same arrow), now on the getaway car ----
       M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [175, 800], to: [335, 520], bend: 0.16, seed: 7, label: 'you' });
 
-      // ---- T1 word pops (every .rc-cap above): each word on its onset frame, 5f easeOutExpo, max 2 words on screen ----
-      T.captionPops(tl);
+      // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their frames, "chased." pops + blurs in ----
+      T.lockupsWire(tl);
 
       window.__timelines["b11-flip"] = tl;
     </script>

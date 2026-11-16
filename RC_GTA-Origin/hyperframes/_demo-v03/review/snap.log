@@ -1,0 +1,146 @@
+◆  Capturing 69 frames at [0.2s, 0.6s, 1.033s, 1.3s, 1.333s, 1.367s, 1.5s, 1.7s, 1.9s, 2.1s, 2.3s, 2.5s, 3.3s, 3.333s, 3.767s, 4.333s, 4.833s, 4.9s, 5.1s, 5.5s, 5.833s, 6.067s, 6.667s, 7.6s, 8.167s, 8.733s, 8.9s, 9.133s, 10.333s, 11.1s, 11.5s, 12.667s, 13.167s, 13.233s, 13.367s, 14s, 14.333s, 14.667s, 14.733s, 15.233s, 15.433s, 15.667s, 16.5s, 17.6s, 17.633s, 17.667s, 17.7s, 17.767s, 17.867s, 18s, 18.167s, 18.4s, 18.667s, 20.167s, 20.467s, 21s, 21.5s, 21.567s, 21.7s, 22.033s, 22.5s, 23.5s, 23.7s, 24s, 25s, 25.4s, 25.533s, 25.833s, 26.5s] from _demo-v03
+[hyperframes] browserGpuMode probe → software (WebGL unavailable)
+
+   Fonts: 4 loaded
+[hyperframes] snapshot: frame 1/69 at 0.20002s
+[hyperframes] snapshot: frame 2/69 at 0.60002s
+[hyperframes] snapshot: frame 3/69 at 1.03335s
+[hyperframes] snapshot: frame 4/69 at 1.30002s
+[hyperframes] snapshot: frame 5/69 at 1.33335s
+[hyperframes] snapshot: frame 6/69 at 1.36669s
+[hyperframes] snapshot: frame 7/69 at 1.50002s
+[hyperframes] snapshot: frame 8/69 at 1.70002s
+[hyperframes] snapshot: frame 9/69 at 1.90002s
+[hyperframes] snapshot: frame 10/69 at 2.10002s
+[hyperframes] snapshot: frame 11/69 at 2.30002s
+[hyperframes] snapshot: frame 12/69 at 2.50002s
+[hyperframes] snapshot: frame 13/69 at 3.30002s
+[hyperframes] snapshot: frame 14/69 at 3.33335s
+[hyperframes] snapshot: frame 15/69 at 3.76669s
+[hyperframes] snapshot: frame 16/69 at 4.33335s
+[hyperframes] snapshot: frame 17/69 at 4.83335s
+[hyperframes] snapshot: frame 18/69 at 4.90002s
+[hyperframes] snapshot: frame 19/69 at 5.10002s
+[hyperframes] snapshot: frame 20/69 at 5.50002s
+[hyperframes] snapshot: frame 21/69 at 5.83335s
+[hyperframes] snapshot: frame 22/69 at 6.06669s
+[hyperframes] snapshot: frame 23/69 at 6.66669s
+[hyperframes] snapshot: frame 24/69 at 7.60002s
+[hyperframes] snapshot: frame 25/69 at 8.16669s
+[hyperframes] snapshot: frame 26/69 at 8.73335s
+[hyperframes] snapshot: frame 27/69 at 8.90002s
+[hyperframes] snapshot: frame 28/69 at 9.13335s
+[hyperframes] snapshot: frame 29/69 at 10.33335s
+[hyperframes] snapshot: frame 30/69 at 11.10002s
+[hyperframes] snapshot: frame 31/69 at 11.50002s
+[hyperframes] snapshot: frame 32/69 at 12.66669s
+[hyperframes] snapshot: frame 33/69 at 13.16669s
+[hyperframes] snapshot: frame 34/69 at 13.23335s
+[hyperframes] snapshot: frame 35/69 at 13.36669s
+[hyperframes] snapshot: frame 36/69 at 14.00002s
+[hyperframes] snapshot: frame 37/69 at 14.33335s
+[hyperframes] snapshot: frame 38/69 at 14.66669s
+[hyperframes] snapshot: frame 39/69 at 14.73335s
+[hyperframes] snapshot: frame 40/69 at 15.23335s
+[hyperframes] snapshot: frame 41/69 at 15.43335s
+[hyperframes] snapshot: frame 42/69 at 15.66669s
+[hyperframes] snapshot: frame 43/69 at 16.50002s
+[hyperframes] snapshot: frame 44/69 at 17.60002s
+[hyperframes] snapshot: frame 45/69 at 17.63335s
+[hyperframes] snapshot: frame 46/69 at 17.66669s
+[hyperframes] snapshot: frame 47/69 at 17.70002s
+[hyperframes] snapshot: frame 48/69 at 17.76669s
+[hyperframes] snapshot: frame 49/69 at 17.86669s
+[hyperframes] snapshot: frame 50/69 at 18.00002s
+[hyperframes] snapshot: frame 51/69 at 18.16669s
+[hyperframes] snapshot: frame 52/69 at 18.40002s
+[hyperframes] snapshot: frame 53/69 at 18.66669s
+[hyperframes] snapshot: frame 54/69 at 20.16669s
+[hyperframes] snapshot: frame 55/69 at 20.46669s
+[hyperframes] snapshot: frame 56/69 at 21.00002s
+[hyperframes] snapshot: frame 57/69 at 21.50002s
+[hyperframes] snapshot: frame 58/69 at 21.56669s
+[hyperframes] snapshot: frame 59/69 at 21.70002s
+[hyperframes] snapshot: frame 60/69 at 22.03335s
+[hyperframes] snapshot: frame 61/69 at 22.50002s
+[hyperframes] snapshot: frame 62/69 at 23.50002s
+[hyperframes] snapshot: frame 63/69 at 23.70002s
+[hyperframes] snapshot: frame 64/69 at 24.00002s
+[hyperframes] snapshot: frame 65/69 at 25.00002s
+[hyperframes] snapshot: frame 66/69 at 25.40002s
+[hyperframes] snapshot: frame 67/69 at 25.53335s
+[hyperframes] snapshot: frame 68/69 at 25.83335s
+[hyperframes] snapshot: frame 69/69 at 26.50002s
+   Revision: none (inputs-changed)
+   State: /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/.hyperframes/video-state.json
+
+◇  69 snapshots saved to /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-0.2s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-0.6s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.033s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.3s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.367s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.9s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-2.1s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-2.3s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-2.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-3.3s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-3.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-3.767s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-4.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-4.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-4.9s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-5.1s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-5.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-5.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-6.067s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-6.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-7.6s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-8.167s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-8.733s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-8.9s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-9.133s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-10.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-11.1s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-11.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-12.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-13.167s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-13.233s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-13.367s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-14s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-14.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-14.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-14.733s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-15.233s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-15.433s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-15.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-16.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.6s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.633s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.767s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-17.867s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-18s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-18.167s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-18.4s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-18.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-20.167s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-20.467s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-21s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-21.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-21.567s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-21.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-22.033s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-22.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-23.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-23.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-24s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-25s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-25.4s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-25.533s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-25.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-26.5s.png

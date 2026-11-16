@@ -5,6 +5,54 @@ Golden rule: the Master Edit Plan (`00_Brief/GTA_VI_Edit_Plan.pdf`). Page refs: 
 B1/B2 p.20, B4 p.21, B5 p.22, B7 p.23, B11 p.24, B12 p.25, B14 p.26, B16/B17 p.27.
 Proof: `hyperframes/_demo-motifs/` (every item in sequence, used exactly as a beat uses the kit; stills in `review/`).
 
+## v03 (REVISION_v03.md notes 5 and 12): stars glitch in, dark calendar, dark error box. Read this first
+
+v03 overrides v02 where they conflict; the v02 / v01 sections below still apply otherwise. Proof: `hyperframes/_demo-v03/`
+(`review/sheet_C.jpg`, `sheet_D.jpg` calendar; `sheet_F.jpg` stars; `review/snap/f0720_H_hl-done_errbox.png` error box).
+
+### What changed in motifs.js / motifs.css
+
+| Item | v02 | v03 |
+|---|---|---|
+| M1 stars entrance (B14, note 5 "glitch in instead of the current opening animation") | `starsPopIn`: scale 0 -> 100% over 3f, 3f apart | **`starsGlitchIn`**: each star appears through a 6f glitch (RGB split, slice jitter, 1-2 flicker frames), 3f apart; `starsPopIn` still exists (not used in v03) |
+| M3 calendar (note 12, dark cards) | on the #E9E9E9 card: empty = #111111 outline at 35%, filled = #111111, counter #111111 | on the dark card: empty = `--light-gray` #E9E9E9 outline at 30%, filled = #E9E9E9 (`--m3-fill`), overrun = siren red #E3262E (unchanged), counter = white + `--glow-filter` |
+| B2 error box | palette grey face #E9E9E9, #111111 bevels / title bar / text | dark Windows 95 dialog: charcoal face (white 16% into the ink, #2F2F2F), near-black title bar, white text, light / dark bevel lines; `m-errbox--light` = the v02 look |
+| M4 chip / T7 chip | `--card-ink` | `--dark-ink` #111111 (same look; `--card-ink` is now the white text on dark cards) |
+| `calendarIn`, `calendarFill`, `calendarExtend`, blink, arrow, stamp, CRT | | unchanged (the calendar's opening animation is the plan's B12 move, not a zoom) |
+
+### `RCK.motifs.starsGlitchIn(tl, target, at, opts)`: M1 glitch-in (B14; also usable for the HUD rows)
+
+Same markup and placement as before (`starsInit` presets `hero` / `hud`); replace the `starsPopIn` call:
+```html
+<div id="b14-stars" class="clip m1-stars" data-preset="hero" data-start="3.2333" data-duration="1.1667" data-track-index="2" style="z-index: 4"></div>
+```
+```js
+const M = RCK.motifs;
+M.starsGlitchIn(tl, '#b14-stars', W.The1.comp_t);                 // was M.starsPopIn(tl, '#b14-stars', f(W.The1))
+M.starsGlitchIn(tl, '#b14-stars', t, { stepF: 4, frames: 7 });     // slower rhythm, longer glitch
+M.starsGlitchIn(tl, '#b14-stars', t, { times: [t1, t2, t3, t4, t5, t6] });   // one start per star (e.g. on beats)
+```
+Per star, from its start frame k (k0 + i x stepF): frames k .. k+frames-1 show the glitch layer instead of the clean
+star: a siren-red copy shifted +dx and a siren-blue copy shifted -dx under the white star (RGB split; dx = 8 star units
+= 8% of the star size on the first glitch frame, narrowing to 2), cut into 3 horizontal slices (star y 0-38 / 38-63 /
+63-100%) that each jump +/-14 or +/-7 units (a new seeded pattern every frame, never all three the same), and
+`flickers` frames (2, never the first or last, never adjacent) where the whole star is gone. Frame k+frames: the clean
+star, for good. Every change is a hard cut between two frames (`tl.set` at the frame), nothing is interpolated, so
+rule C's "eased" has nothing to apply to. Before k the star is hidden. Returns the time the last star is clean
+(hero row from f528: stars start f528, 531, 534, 537, 540, 543; all clean from f549).
+`opts`: `stepF` (3), `frames` (6; 5-8 reads as a glitch), `amp` (14: slice jump, star units), `split` (8: RGB offset,
+star units), `flickers` (2; 0-2), `flickerOpacity` (0), `seed` (7), `order` ('ltr' | 'rtl'), `times`, plus
+`starsInit`'s (`preset`, `size`, `x`, `y`, `count`, `gap`, `anchor`). The glitch copies are built inside each star's SVG
+(`.m1-gl`, clip paths `#rcm-star-sl1..3` in the shared defs); colours from the palette (siren red / blue).
+
+### Dark calendar in a beat
+
+Nothing changes in the markup: `.m3-cal` on a full-frame `.rc-card` (now dark). Measured in `_demo-v03` f310 / f420:
+filled squares #E9E9E9, empty outlines #E9E9E9 at 30% on the card, overrun squares #E3262E, counter white with the
+glow. `--m3-fill` / `--m3-empty` on the `.m3-cal` element change the two greys if a beat needs it.
+
+---
+
 ## v02 (REVISION_v02.md): the calendar's opening animation, nothing linear, Coolvetica. Read this first
 
 The v01 reference below still describes every motif; this section lists what v02 changes. Proof: `hyperframes/_demo-v02/`

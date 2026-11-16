@@ -7,6 +7,138 @@ value) or **conflict** (see "Conflicts and decisions" at the end).
 
 Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`index.html`, proof frames in `review/`).
 
+## v03 (REVISION_v03.md notes 11, 12, 16, 17): caption lockups, dark cards. Read this first
+
+v03 overrides v02 where they conflict; everything else in the v02 / v01 sections below still applies. Proof:
+`hyperframes/_demo-v03/` (built by `tools/gen_demo.cjs` from this kit, the way a beat uses it): `review/snap/` (69 frames,
+`f<frame>_<what>.png`) + `review/sheet_A..H.jpg`, `review/lockups.txt` (the plans), `review/check.json` (`check`: 0
+errors). Section A (f0-170) = lockups over footage, B = dark year card, C/D = dark calendar cards, E = dark quote card,
+F = stars glitch-in, G = B13 card + title, H = T9 on a dark page + the dark error box, I = the L4 grid with ink tiles.
+Rebuild: `cd hyperframes/_demo-v03 && rm -r assets/kit && cp -r ../_kit assets/kit && node tools/gen_demo.cjs && bash tools/snap.sh`.
+
+### What changed in type.js / type.css / base.css
+
+| Item | v02 | v03 |
+|---|---|---|
+| Captions (all T1 / T2 / T4 / T5 voice captions) | groups of max 2 words, every word pops (`captionPlanV2` + `captionHTMLV2` + `captionPops`) | **lockups** like ref 1, centred (960, 540): small Coolvetica words + at most ONE big Coolvetica Italic keyword; 1-7 words per lockup (guideline); every word appears on its own onset frame with NO animation (hard cut); only starred words pop + blur in; a lockup hard-cuts to the next (`lockups` + `lockupsWire`) |
+| Sizes | T1 46 px, T2 42 / 140 px | small 60 px, keyword 190 px, solo line 64 px (76 px on a dark text card, `card: true`) |
+| Text glow | `--text-shadow` (dark, 12 px) | `--text-glow` (base.css): white bloom 2 / 9 / 22 px + the dark shadow; on footage and on cards |
+| Cards (note 12) | `#E9E9E9` card, `#111111` ink, no shadow | `.rc-card`, `.rc-t3`, `.rc-l5__ground`, `.rc-l12__ground` = `--card-surface` (ink #0A0A0A + a charcoal radial lift to #202020 in the middle, ref 3); `.rc-on-card` / `rc-t3` text = white + glow |
+| Palette variables | `--card-gray` #E9E9E9, `--card-ink` #111111 | `--card-gray` = the card background (dark), `--card-ink` = text on a card (white); the plan colours stay as `--light-gray` #E9E9E9 and `--dark-ink` #111111; new `--card-bg`, `--card-lift`, `--card-surface`, `--card-text`, `--text-glow`, `--glow-filter` |
+| T3 year card | gray card, #111111 digits | dark card, white digits; glow = `filter: var(--glow-filter)` on `.rc-t3__block` (a text-shadow would be cut by the digit masks). Write the B3 text in the `In` slot: `<div class="rc-t3__in">It's</div>` |
+| T8 quote card | #111111 on gray, type-on | white + glow on the dark L5 ground; B6 v03: `T.wordPops` (each quote word pops + blurs in on its spoken frame); the underline glows |
+| T9 highlight | `#FFE14D` 85% multiply (behind the ink on a white page) | 50% **screen**: on a dark page it is a yellow band and the light text stays light (`rc-t9-hl--light` = the v02 multiply for a light page) |
+| T9 label / T7 chip | text / chip `--card-ink` | `--dark-ink` #111111 (unchanged look) |
+
+### Caption lockups v3: `RCK.type.lockups` + `RCK.type.lockupsWire`
+
+**Spec syntax** (one string per lockup; or one string with ` / ` between lockups):
+
+| Write | Means |
+|---|---|
+| `to their [PhDs] at Stanford,` | `[...]` = the keyword (big Coolvetica Italic; one per lockup, may hold several words). Words before it = lead (small, above, left-aligned to the keyword), after it = tail (small, below, right-aligned to the keyword) |
+| `to their [PhDs]* at Stanford,` | `]*` = every keyword word pops + blurs in |
+| `[Grand* Theft* Auto.*]` | `word*` = that word pops + blurs in (any word, small or big) |
+| `so they approached` | no brackets = one centred small line (ref 3) |
+| `it ships with \| a new name:` | `\|` = a forced line break among the small words |
+| `—` and other punctuation-only tokens | join the word before them (they are not words in words.json) |
+
+**Path A (generate in Node, paste the HTML; one timed element per lockup):**
+```bash
+cd hyperframes/b15-proof && node -e "
+globalThis.window = globalThis; require('./assets/kit/type.js'); const T = RCK.type;
+const w = require('./words.json').words;
+const plan = T.lockupPlan(w, [\"Don't believe me?\", 'Open [GTA Online]* and buy an arcade.', 'One of the [machines] is called'], { from: 0 });
+console.log(T.lockups(plan, null, { idPrefix: 'b15-lk', z: 40, track: 20 }));
+console.error(T.lockupReport(plan));"
+```
+prints (one element per lockup; sizes and row offsets are computed from Coolvetica's metrics):
+```html
+<div id="b15-lk-2" class="clip rc-lk" data-start="1.0333" data-duration="2.3000" data-track-index="20" style="--rc-lk-c: 132.86px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="31">Open</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="39">GTA</span> <span class="rc-lw rc-lw--pop" data-rc-f="45">Online</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="57">and</span> ... <span class="rc-lw" data-rc-f="75">arcade.</span></div></div></div>
+```
+and the report (check every lockup against the voice):
+```
+2 f31-100 (69f)  [lead] Open@31 | [key] GTA@39* Online@45* | [tail] and@57 buy@63 an@69 arcade.@75  | key 190 px, 867 x 242 px ink
+```
+In the beat's script, ONE call after all the lockup markup (it wires every `.rc-lk`):
+```js
+const T = RCK.type;
+T.lockupsWire(tl);            // plain words: hard cut on data-rc-f; .rc-lw--pop words: pop + blur in
+```
+More copy-paste calls (`L(n)` = local frame n in seconds):
+```js
+// B4 on the dark calendar card: "planned to take" (small, stays) above "18 months." (big); loose: "18" = "eighteen"
+T.lockups(w, ['planned to take [18 months.]'], { from: 7, loose: true, y: 330, idPrefix: 'b04-lk', z: 40 })
+// B13: the "Until finally," card (ref 3 size) and the title, each word popping on its own frame
+T.lockups(w, ['Until finally,'], { from: 0, card: true, idPrefix: 'b13-lk', z: 40 })
+T.lockups(w, ['it ships with | a new name:', '[Grand* Theft* Auto.*]'], { from: 5, idPrefix: 'b13-title', z: 40 })
+// B14: lockup under the six hero stars (y = the ink centre)
+T.lockups(w, ['The [wanted stars.]*', 'The [sirens.]', 'The [running.]'], { from: 9, y: 800, idPrefix: 'b14-lk', z: 40 })
+```
+**Options** (`lockupPlan` and `lockups` take the same; `lockups(words, specs, opts)` builds the plan itself, or pass a
+plan: `lockups(plan, null, opts)`): `from` (index of the first word in words.json), `end` (s: where the last lockup
+hard-cuts out; default the next word's comp_t, else the last word's comp_end_t), `start` (s: an earlier start for the
+first lockup's clip, e.g. a card's first frame; its words still appear on their own frames), `loose`, `y` (ink centre,
+default 540), `smallSize` (60), `keySize` (190), `soloSize` (64), `card` (solo 76), `gap` (17 px), `wrap` (1.15),
+`maxWidth` (1728), and for the HTML `idPrefix` ('lk'), `z`, `track`, `cls` (extra classes), `inline` (extra CSS).
+`lockupsWire(tl, scope, opts)`: scope = selector / element(s) (default every `.rc-lk`), `opts.pop` overrides the pop
+preset (`{ frames: 6, blur: 20, scale: 0.92, ease: 'expo.out', lead: 0 }`). Plan: `{lockups: [{index, spec, text,
+toks: [{text, role: lead | key | tail | solo, pop, frame, i, voiceT}], startFrame, endFrame, frames, startAttr,
+durAttr, layout: {rows, box, sizes}}], next, endFrame, warnings}`.
+
+**Layout rules** (kit choices, tuned against ref 1 at 1920 x 1080; ref 1 measured: small words 60 px Coolvetica
+equivalent ("to their" 183 px wide in the ref, 192 px here), lead baseline -> keyword cap top 16.7 px, keyword baseline
+-> tail cap top 16.7 px, lockup ink centred on the frame):
+* Rows: lead (small, `align-self: flex-start` = left edge of the keyword row), key (Coolvetica Italic 190 px, centred),
+  tail (small, `flex-end` = right edge of the keyword row), solo (centred). The box shrink-wraps the widest row and is
+  centred on x 960; its ink (first cap top .. last baseline) is centred on `--rc-y` (540) through `--rc-lk-c`.
+* Vertical: every row has line-height = its size (baseline 0.867 em, cap top 0.195 em below the row top); small -> key
+  and key -> small: 17 px from baseline to the next cap top; small -> small: baseline pitch 1.12 em.
+* Fit (measured with the kit's Coolvetica width table, kerning included, `T.cvWidth(text, px)`; within ~1% of Chrome):
+  the keyword shrinks to stay inside the 1728 px title-safe width (warning); a lead / tail row wider than 1.15 x the
+  keyword (min 420 px) breaks onto 2+ balanced lines (fewest lines, smallest widest line); a solo line wider than 1400 px
+  breaks the same way; `|` forces a break. Warnings for > 7 words, < 6 frames on screen, ink outside 54-1026.
+* Measured in `_demo-v03` (snapshots, white ink bbox): "Open / GTA Online / and buy an arcade." x 539-1386 (centre
+  962.5), y 418-674 (cap-baseline centre 540); "One of the / machines / is called" x 591-1336, y 418-660 (centre 539);
+  "planned to take / 18 months." at y 330: x 540-1380, y 238-425; "Race and Chase." (key only) x 321-1602, y 473-606.
+* Timing: a lockup's clip = its first word's frame .. the next lockup's first word's frame (hard cut both ends). Inside
+  it, each word is hidden until its own frame (round(comp_t x 30)), then shown (0.5f step tween = a cut). Starred words:
+  full opacity on their own frame at blur 20 px / scale 92%, settling in 6f expo.out (f k: blur 20, f k+1: 6.3 px / 97.5%,
+  f k+2: 2 px / 99.2%, f k+6: sharp); `_demo-v03` f39-41 ("GTA"), f145-147 ("Race"), f645-647 ("Grand").
+* Which words to star (note 11 "only for certain captions where you deem fit"): a beat's one or two key reveals (a
+  name, a number, a title), never every lockup.
+
+**Word pops on other text** (B6: "the quote words pop + blur in on their spoken frames"):
+```js
+T.wordPops(tl, '#b06-t8 .rc-t8__quote', null);                 // the v02 markup already has <span class="rc-w" data-rc-f>
+T.wordPops(tl, '#b06-t8 .rc-t8__quote', [W.awful, W.too, W.simy], { loose: true });   // or split plain text, one time per word
+T.nameIn(tl, '#b06-t8', L(150));                                 // name + role fade (unchanged)
+```
+(do not also call `T.quoteType` on that quote; `opts.hard: true` = plain hard cuts instead of the pop.)
+
+**Migration from v02** (one Node call per beat):
+* `captionPlanV2` + `captionHTMLV2` (any style t1 / t2 / t4 / t5) -> `T.lockups(words, specs, { from, end, loose, idPrefix, z })`:
+  same words.json, same `from`; rewrite the plan's chunk string as lockups (merge the v02 2-word groups back into
+  phrases of 1-7 words, put the stressed content word in `[ ]`, star only the chosen reveals). Delete the old
+  `.rc-cap` clips and paste the lockup HTML in their place (any z / track).
+* `T.captionPops(tl)` -> `T.lockupsWire(tl)` (keep `captionPops` only while v02 clips remain; the two never touch each
+  other's elements). Remove `onCard`, `low`, `y: 860` placements: lockups are centred (pass `y` only to clear a motif).
+* `wordsV2` / `punchPairV2` / `spreadWordsV2` / `glowLineV2` on v01 markup: delete those clips and generate lockups.
+  The T5 line (B16 "The whole series started with a bug.") becomes a lockup over a black `rc-ink` clip (lockups have
+  no T5 glow copies or leak).
+* T10 glitch word (`T.glitch`): unchanged. T6 giant type: not used in v03 (B13 is the lockup title).
+* No `rc-on-card` on lockups: they are white + glow everywhere (cards are dark).
+
+### Dark cards in a beat (nothing to change in the markup)
+
+`sync_kit.py` brings the new CSS; every `.rc-card`, `.rc-t3`, `.rc-l5__ground`, `.rc-l12__ground` and `.m3-cal`
+turns dark, `rc-on-card` text turns white + glow. Check what a beat drew itself: inline `#E9E9E9` / `#111111` (none
+found in the beats' markup today, only comments), SVG fills, and `rc-t9-hl` on a page that is still light
+(add `rc-t9-hl--light`). Measured in `_demo-v03` (f430, empty card): centre #202020, edge middles #111111, corners
+#0C0C0C (ref 3, which carries the finish's vignette and scanlines: centre about #292425, corners #050303).
+
+---
+
 ## v02 (REVISION_v02.md): captions word by word, nothing linear, Coolvetica. Read this first
 
 Everything after this section is the v01 reference (markup, geometry, plan values) and still applies, except where this

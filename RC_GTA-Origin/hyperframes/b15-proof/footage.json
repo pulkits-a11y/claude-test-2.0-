@@ -1,14 +1,23 @@
 {
  "beat": "B15",
  "rids": [
-  "R15.3",
-  "R15.1"
+  "R15.3"
  ],
  "moments": {
   "R15.3": {
    "in": 190.9,
    "out": 234.1,
    "note": "one window, two moments: 191.035-192.17 = the in-game Arcade Games catalogue on the arcade's laptop, resting on the row 'RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS' (static page, 35 frames; the only Race and Chase cabinets in R15.3) -> beat f124-158 L7 plate (v02; v01 f133-167); 229.4-234.0 = the arcade floor walk-through (rows of upright cabinets, player walking, no cuts) -> beat f-6..123 (v02; v01 f-6..132)"
+  },
+  "R15.L1": {
+   "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI An Extended Look   Now Playing   Netflix.mp4",
+   "drive_id": "1hQEweZ2KaM0rARQbyRiPiDbLsSfq6tjN",
+   "in": 14.1,
+   "out": 15.1,
+   "used": "14.10-14.87 (working clip 0-0.767 s)",
+   "manifest_free": true,
+   "note": "v03 (client note 7): the proof shot, replacing the R15.1 stand-in. From the client's Drive library (https://drive.google.com/drive/folders/1Li0fFSxSyK9EHdm2Y2T8mp5Pjg2TYvHK): Rockstar's GTA VI 'An Extended Look' (Netflix), 3840x2160 30 fps, the gameplay race shot 14.0-15.2 s: a dirt-bike race up a dusty hill, the player's green bike in a pack of riders, the game's race HUD (LAP 1/2, position 11/12, race timer, minimap); no captions, no watermark. Used 14.10-14.87 s: in the cabinet screen during the X6 zoom (beat f150-158) and full frame f158-167 + tail handle. MANIFEST-FREE R-ID: not in 04_Broll/broll_manifest.json, so it is not listed in 'rids' (tools/sync_footage.py would stop on it); the working clip assets/footage/R15.L1.mp4 was cut by hand with sync_footage's recipe: ffmpeg -ss 14.1 -i <source> -t 1.0 -an -vf scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2:flags=lanczos,setsar=1,fps=30 -c:v libx264 -crf 14 -preset medium -pix_fmt yuv420p -movflags +faststart. A re-run of sync_footage.py rewrites SOURCES.json without this entry (the clip file stays)."
   }
- }
+ },
+ "note": "v03: R15.1 (Race and Chase gameplay, missing; labelled stand-in in v01/v02) is replaced by R15.L1, the client's Drive clip (see moments.R15.L1). R15.3 = the arcade floor + the Arcade Games catalogue (sync_footage.py)."
 }

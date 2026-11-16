@@ -10,6 +10,56 @@ Proof: `hyperframes/_demo-screens/` plays every item in sequence, built exactly 
 `assets/kit/`, footage via `tools/sync_footage.py`); named stills + zoom crops in `_demo-screens/review/`.
 L1, L2, L10 footage framings are Tesseract-owned; L8 (CRT) and L9 (calendar) are in `KIT_motifs.md`.
 
+## v03 (REVISION_v03.md notes 8, 12, 13): camera back to v01, dark grounds, ink tiles. Read this first
+
+v03 overrides v02 where they conflict; the v02 / v01 sections below still apply otherwise. Proof: `hyperframes/_demo-v03/`
+(section A pushes 100 -> 104%; sections C, D, E, G, H are dark cards).
+
+### Camera (note 13: "remove the random zooms ... revert that aspect back to how it was")
+
+| Move | v02 | v03 |
+|---|---|---|
+| Held-shot push `C.push` | 100 -> 108% (sine.inOut) | **100 -> 104%** (default `to` = from x 1.04), still eased (easeInOutSine), never linear |
+| `C.punchIn` (punch-in on every cut) | 115 -> 100% in 10f | **not used.** Cuts are plain hard cuts |
+| `C.keyPunch` (keyword punches) | 100 -> 106 -> 100% | **not used** |
+| `C.zoomOut` (alternate held-shot move) | 110 -> 100% | **not used.** Every held shot gets the 104% push (or holds still) |
+| Extra Tesseract framing keys (REVISION_v02 "framing v2") | per shot | **removed** (the shots' plan framing only) |
+| The plan's own moves | | kept with the plan's values: B4 push 100 -> 118% (`C.push(tl, el, at, { until, to: 1.18 })`), L7 spotlight push (`S.spotPush`), the logo push 100 -> 115% (`to: 1.15`), T3 year-card push 100 -> 104% (`T.yearCard` `pushUntil`) |
+| The B2 -> B3 zoom-through (`X.zoomThroughOut` / `zoomThroughIn`) | | kept (it replaced the curtain the client disliked; KIT_transitions.md) |
+
+`zoomOut` / `punchIn` / `keyPunch` still exist so v02 beats keep running while they are rebuilt; each prints one console
+warning (`RCK.screens: RCK.cam.punchIn is a v02 camera move: REVISION_v03 note 13 removes it ...`; `opts.v02: true`
+silences it). Delete those calls and their nested `-key` wrappers (an empty `rc-cam` wrapper is harmless).
+Copy-paste:
+```js
+const C = RCK.cam, L = n => n / 30;
+C.push(tl, '#b05-cam', L(6), { until: L(95) });                 // the held shot: 100 -> 104%, sine.inOut
+C.push(tl, '#b04-cam', L(0), { until: L(46), to: 1.18 });       // a plan move: B4 push 100 -> 118%
+```
+In `_demo-v03` section A: `C.push(tl, '#a-cam', 0, { until: 170/30 })` = f0 100% -> f85 102% (the easeInOutSine
+midpoint) -> f170 104% (the curve is the v02-verified `camMove`; only the default end changed). A tile of
+`rc-l4--ink` clears with the same 3f easeOutCubic fade as before (dark tile -> footage).
+
+### Dark grounds (note 12)
+
+| Item | v02 | v03 |
+|---|---|---|
+| `.rc-card` (base.css), `.rc-l5__ground`, `.rc-l12__ground` | `--card-gray` #E9E9E9 | `--card-surface`: ink #0A0A0A with a charcoal radial lift to #202020 in the middle (ref 3) |
+| L5 frame (8 px white border round a photo / clip) | white | unchanged (a picture frame, not a text card); B6's cut-out: `.rc-l5__cutout--no-outline` (already in the kit) removes the white outline (note 9) |
+| L4 frosted tiles (B1 f0, note 8 "make the boxes which have gaussian blur dark") | blurred copy + 10% white | **`rc-l4--ink`** on the `.rc-l4` root: every tile is opaque card ink #0A0A0A with a 1 px white-7% line, the frosted copy is hidden (leave `.rc-l4__frost` and its media treatment out); `S.frostClear` clears the tiles that show the footage (the two centre tiles in B1) exactly as before |
+
+```html
+<div id="b01-frost" class="rc-l4 rc-l4--ink" data-seed="1" style="z-index: 1">
+  <div class="rc-l4__plate"><video id="b01-frost-sharp" class="clip" src="assets/footage/R1.2.mp4" data-start="S" data-duration="D" muted playsinline></video></div>
+  <div id="b01-frost-tiles" class="clip rc-l4__tiles" data-start="S" data-duration="D"></div>
+</div>
+```
+```js
+S.frostClear(tl, '#b01-frost', [tWhy, tDoes], { order: [5, 6] });     // seconds; the two centre tiles (row-major 5 and 6)
+```
+
+---
+
 ## v02 (REVISION_v02.md rules C and D): camera moves, nothing linear. Read this first
 
 The v01 reference below still describes every screen; this section lists what v02 changes and the new camera API.

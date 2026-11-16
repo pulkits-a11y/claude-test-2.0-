@@ -35,7 +35,7 @@
                            on these 4 frames only, so the Overlay blend has the picture under it; the shot is at 100% there) = cue sirens (S14)
          151-157  157-163  X8 whip (Tesseract), midpoint 154 = cue whip_mid (S15 starts 2f before)
          153      159      T4 "The running." bottom-left; stays until the slats close
-         169-177  175-183  X5 blinds CLOSE (out half of B15's X5, easeInQuart), shut from beat 177 and through the tail handle -->
+         177      183      v03 (note 6): hard cut into B15 (no X5 blinds); the tail handle is transparent (the escape continues) -->
     <div id="root" data-composition-id="b14-since" data-start="0" data-duration="6.3000000" data-width="1920" data-height="1080">
 
       <!-- ===== X9: embedded police-lights plate, only under the 4 wash frames (beat 132-135). Must match the Tesseract shot
@@ -66,8 +66,6 @@
       <div id="b14-t4-3" class="clip rc-t4 rc-cap" data-start="4.4000" data-duration="0.9000" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--right"><span class="rc-w" data-rc-f="132">The</span> <span class="rc-w" data-rc-f="138">sirens.</span></span></div>
       <div id="b14-t4-4" class="clip rc-t4 rc-cap" data-start="5.3000" data-duration="1.0000" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--left rc-t4--bottom"><span class="rc-w" data-rc-f="159">The</span> <span class="rc-w" data-rc-f="163">running.</span></span></div>
 
-      <!-- ===== X5 blinds CLOSE over the last 8f (out half; B15 opens), above everything incl. the T4 phrase ===== -->
-      <div id="b14-x5" class="clip rc-x5" data-start="5.8333" data-duration="0.4667" data-track-index="6" style="z-index: 50"></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -94,8 +92,8 @@
       // ---- X9 siren wash on "sirens" (cop word): red 35% Overlay 2f, blue 2f (hard per-frame changes), over the embedded R1.6 plate
       X.sirenWash(tl, '#b14-x9', f(W.sirens));
 
-      // ---- X5 blinds close: slats rotate shut over the 8f before the B15 boundary (easeInQuart), shut through the tail handle
-      X.blindsClose(tl, '#b14-x5', f(BOUNDARY_B15));
+      // ---- v03 (note 6): no X5 blinds; hard cut into B15 at the boundary (local 183 = beat 177). The tail handle is the
+      //      escape shot continued (Tesseract), transparent here.
 
       tl.set({}, {}, f(189));
       window.__timelines["b14-since"] = tl;

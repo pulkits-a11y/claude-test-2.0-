@@ -15,25 +15,25 @@
     </style>
   </head>
   <body>
-    <!-- B10 b10-fun v02: beat 54f (1.800s) + 6f handle each end = 66f.
+    <!-- B10 b10-fun v03 (REVISION_v03: caption lockup, no v02 zooms; else as v02): beat 54f (1.800s) + 6f handle each end = 66f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.0000s (local frames 6 .. 60).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/.
 
          Plan p.24 (B10 build), STORYBOARD.md B10. Local frame = beat frame + 6.
          beat     local    what
          -6..0    0..6     head handle: B9's three L3 strips (R9.1 ram = SUBSTITUTE for R9.2 / R9.3 / R9.5) continue
-                           (continuous source time and the same eased push as b09-throughyou); B9's last T4 group "let go."
-                           finishes its 3f eased exit (local 3-6 = b09 local 205-208)
-         1        7        T2 word by word (rule A, kit captionPlanV2, max 2 words): "And suddenly," (And 7, suddenly, 11)
-         28       34       "it's fun." (it's 34; keyword "fun." 41: full opacity on its frame, blur 30 -> 0 px + 108 -> 100%,
-                           6f expo.out)
+                           (continuous source time and the same eased push as b09-throughyou); B9's last caption lockup
+                           "They don't [let go.]" held as b09 shows it, hard cut out on local 6
+         1        7        v03 caption lockup "And suddenly, | it's [fun.]*" (kit RCK.type.lockups, ref 1, centred): And 7,
+         28       34       suddenly, 11, it's 34 hard-cut in; "fun." 41 pops + blurs in (full opacity on its frame, blur
+                           20 -> 0 px + 92 -> 100%, 6f expo.out)
          32-40    38-46    X3 white flash centred on "fun" (kit X.flash, eased): 0 local 38, ramp easeInQuad, 100% local 41,
                            fade easeOutQuad 64/36/16/4%, 0 on 46 (silent)
          35       41       "fun" (edit frame 1231, 41.040 s) = the flash's 100% frame = S09 + the MU5 music drop
                            (cues.json fun = 35). Hard cut under the white: the strips end; from here this composition is
-                           transparent except the T2 pair and the fading flash: Tesseract L1 R10.1 (GTA 1 kill frenzy, full
+                           transparent except the caption lockup and the fading flash: Tesseract L1 R10.1 (GTA 1 kill frenzy, full
                            colour +10% sat, v03 framing = v01's static 100%: no punch out of the flash, note 13) shows under it.
-         51-54    57-60    "it's fun." exits 3f (power2.in), gone on the beat end (local 60)
+         54       60       the lockup hard-cuts out on the beat end (local 60; v03: no exit animation)
          54..60   60..66   tail handle: transparent (Tesseract footage only) -->
     <div data-hf-id="hf-sral" id="root" data-composition-id="b10-fun" data-start="0" data-duration="2.2000000" data-width="1920" data-height="1080">
 
@@ -53,16 +53,19 @@
         </div></div>
       </div>
 
-      <!-- ===== B9's last T4 group "let go." (strip 3, y 860), head handle only: on screen, then the same 3f eased exit as
-           b09-throughyou (opacity 1 -> 0, 100 -> 96%, blur 0 -> 4 px, power2.in, local 3-6), gone on beat f0 ===== -->
-      <div id="b10-t4" class="clip rc-t4" data-start="0.0000" data-duration="0.2000" data-track-index="9" style="z-index: 30"><span id="b10-t4-g" class="rc-t4__piece rc-g rc-t4--strip3" style="--rc-y: 860px"><span class="rc-w">let</span> <span class="rc-w">go.</span></span></div>
+      <!-- ===== head handle (local 0-6 = b09 local 202-208): B9's last caption lockup "They don't [let go.]" held as
+           b09-throughyou shows it (v03: same kit lockup, same layout, centred; all words already on), hard cut out on beat
+           f0 (local 6). Generated with T.lockups(['They','don't','let','go.' at t 0], ["They don't [let go.]"],
+           { end: 6/30, maxWidth: 580 }) = b09-t4-3's rows. ===== -->
+      <div id="b10-b09lk-1" class="clip rc-lk" data-start="0.0000" data-duration="0.2000" data-track-index="9" style="--rc-lk-c: 104.2px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="0">They</span> <span class="rc-lw" data-rc-f="0">don't</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="0">let</span> <span class="rc-lw" data-rc-f="0">go.</span></div></div></div>
 
-      <!-- ===== T2 punch pair word by word (rule A; plan On screen "T2: And suddenly, it's fun." with "fun." the keyword in
-           the italic): groups "And suddenly," / "it's fun."; lead words pop on their onsets, the keyword lands on "fun" with
-           the blur punch; the last group exits 3f eased ending on the beat end. White + soft shadow (text on footage).
-           Under the X3 flash, so the flash covers it on "fun". ===== -->
-      <div id="b10-t2-1" class="clip rc-t2 rc-cap" data-start="0.2333" data-duration="0.9000" data-track-index="10" style="z-index: 35"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="7">And</span> <span class="rc-w" data-rc-f="11">suddenly,</span></span></div></div>
-      <div id="b10-t2-2" class="clip rc-t2 rc-cap" data-start="1.1333" data-duration="0.8667" data-track-index="10" data-rc-exit-f="3" style="z-index: 35"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="34">it's</span></span><span class="rc-t2__key"><span class="rc-w rc-w--key" data-rc-f="41">fun.</span></span></div></div>
+      <!-- ===== v03 T2 sentence as ONE caption lockup (REVISION_v03 notes 11, 16, 17; ref 1), centred on the frame:
+           "And suddenly," / "it's" small above-left, "fun." the big Coolvetica Italic keyword, starred: And 7, suddenly,
+           11, it's 34 hard-cut in on their frames (no animation); "fun." pops + blurs in on its frame (local 41 = the X3
+           flash's 100% frame = S09 + the MU5 drop; kit POP3 6f expo.out, settling under the fading flash). Under the
+           flash, as v02. Holds to the beat end (local 60), hard cut (B11 opens with X1). Generated with
+           T.lockups(w, ["And suddenly, | it's [fun.]*"], { from: 0, end: 60/30 }). ===== -->
+      <div id="b10-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.7667" data-track-index="10" style="--rc-lk-c: 137.8px; z-index: 35"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="11">suddenly,</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span class="rc-lw" data-rc-f="34">it's</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="41">fun.</span></div></div></div>
 
       <!-- ===== X3 white flash centred on "fun" (kit RCK.transitions.flash, C = local 41) ===== -->
       <div data-hf-id="hf-a3g5" id="b10-x3" class="clip rc-x3" data-start="1.2666" data-duration="0.3000" data-track-index="11" style="z-index: 50"></div>
@@ -99,13 +102,9 @@
           { scale: pushAt(land, FUN_B9), duration: f(FUN), ease: part(u0, 1), immediateRender: false }, 0);
       });
 
-      // ---------------- B9's last T4 group: the end of its eased exit (b09 local 205-208 = here 3-6) ----------------
-      gsap.set('#b10-t4-g', { transformOrigin: '50% 60%' });
-      tl.fromTo('#b10-t4-g', { opacity: 1, scale: 1, filter: 'blur(0px)' },
-        { opacity: 0, scale: 0.96, filter: 'blur(4px)', duration: f(3), ease: 'power2.in', immediateRender: false }, f(3));
-
-      // ---------------- T2 groups: words pop on their onsets, keyword blur punch on "fun", eased exit to the beat end ----
-      T.captionPops(tl);
+      // ---------------- v03 caption lockups: B9's held lockup in the head handle, then the T2 lockup: plain words hard-cut
+      //                  in on their frames, the starred "fun." pops + blurs in on local 41 (kit RCK.type.lockupsWire) ----
+      T.lockupsWire(tl);
 
       // ---------------- X3 white flash centred on "fun": 100% on local 41 (beat f35) ----------------
       X.flash(tl, '#b10-x3', f(FUN));
