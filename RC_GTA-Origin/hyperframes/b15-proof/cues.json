@@ -1,6 +1,7 @@
 {
  "events": {
-  "label": 148,
-  "zoom_mid": 164
- }
+  "label": 139,
+  "zoom_mid": 154
+ },
+ "note": "v02 beat frames: label = the frame \"Race\" is spoken (MU6 end), zoom_mid = mid-frame of the X6 zoom (S16). Written by main from the B15 v02 notes; the v02 build had scaled the v01 file to the same values."
 }

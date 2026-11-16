@@ -123,6 +123,17 @@ MASTER_RELEASE_S = 0.300
 # sustained sub drop, and the isolation of each cue's rendered peak (stem minus the model of the others) is not
 # reliable for a sharp transient over a sustained cue (measured: the resampler residual of the glitch, -19 dBFS,
 # moved S09's isolated peak by +1.9 dB and its calibration by -2 dB).
+# MU2 whole-bar edit (plan p.34: 'remove or repeat a whole bar inside the breakdown (2:28.5-2:46.0)'), applied in v02
+# on the coordinator's instruction: with the drop anchored on the faster VO's 'fun', the breakdown arrived 1.53 s
+# before 'broke'. The track now starts one bar earlier (so the breakdown arrives inside 'broke') and one whole bar
+# inside the breakdown is removed on a bar line, so everything after the seam (MU3, the MU5 drop on 'fun', MU6-MU8)
+# stays exactly where the anchor puts it. Kept only if MU2 gets closer to 'broke', MU3 stays within 1 s of 'dull'
+# and the seam lies between MU2 and MU3 (MU5 is after it by construction; the stem check measures it).
+MU2_BAR_EDIT = True
+BAR_EDIT_BAR = None            # 1-based breakdown bar to remove; None = the best-matching seam among bars 2..n-1
+BAR_EDIT_XFADE_S = 0.030       # equal-power crossfade (3 steps of the engine's 10 ms gain clock) ...
+BAR_EDIT_LEAD_S = 0.025        # ... ending this long before the bar line, so the next bar's downbeat comes through
+                               # whole and the removed bar's downbeat (up to ~20 ms early on this track) is not heard
 CUE_OVERRIDES = {
     "S10": {"group": "A4", "files": ["S08a_Glitch, Impact.wav"], "event": "B11.glitch",
             "fallback_event": "B11.flip_start", "align": "start", "offset_f": 0, "peak_dbfs": None,
@@ -137,6 +148,7 @@ GNAME = {"A1": "A1 Voiceover", "A2": "A2 Music", "A3": "A3 SFX hits & impacts",
          "A4": "A4 Risers, whooshes & textures"}
 VO_LAYER_ID = 9101
 MUSIC_LAYER_ID = 9201
+MUSIC_B_LAYER_ID = 9203        # the main bed after the MU2 bar edit's seam
 MUSIC_LP_LAYER_ID = 9202
 
 
@@ -624,6 +636,53 @@ def music_anchor(words: list, music_plan: dict) -> dict:
                     "delta_from_onset_s": round(mu3 - float(dull["start"]), 3),
                     "within_1s": abs(mu3 - float(dull["start"])) <= 1.0, "on_or_after": mu3 >= float(dull["start"]) - 1e-6},
             "bar_s": float(music_plan["analysis"]["bar_s"])}
+
+
+def bar_edit_plan(music_file: Path, music_plan: dict, anchor: dict) -> dict:
+    """The MU2 whole-bar edit (see MU2_BAR_EDIT). Candidate bars 2..n-1 of the breakdown (not the arrival, not the
+    bar into MU3); each is scored by how alike the two seam sides are: 10 octave-band levels (40 Hz-20 kHz) of the
+    0.5 s before the removed bar vs the 0.5 s before the bar after it (what the crossfade mixes) plus the 0.5 s
+    after both bar lines (what follows the seam vs what would have followed); the lowest sum wins."""
+    sec = music_plan["analysis"]["sections_track_s"]
+    bar = float(music_plan["analysis"]["bar_s"])
+    bd0, bd1 = (float(v) for v in sec["breakdown"])
+    n = int(round((bd1 - bd0) / bar))
+    off = anchor["offset_s"]
+    pre = off - bar
+    x = decode(music_file).mean(axis=1)
+
+    def bands(seg):
+        S = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))) ** 2
+        f = np.fft.rfftfreq(len(seg), 1 / SR)
+        e = [40, 80, 160, 320, 640, 1280, 2560, 5120, 10240, 20000]
+        return 10 * np.log10(np.array([S[(f >= a) & (f < b)].sum() + 1e-12 for a, b in zip(e, e[1:])]))
+
+    seg = lambda a, b: x[int(round(a * SR)): int(round(b * SR))]
+    cands = []
+    for k in range(2, n):
+        T = bd0 + (k - 1) * bar                        # track time of the removed bar's first bar line
+        d_before = float(np.mean(np.abs(bands(seg(T - 0.5, T)) - bands(seg(T + bar - 0.5, T + bar)))))
+        d_after = float(np.mean(np.abs(bands(seg(T, T + 0.5)) - bands(seg(T + bar, T + bar + 0.5)))))
+        cands.append({"bar": k, "track_s": [round(T, 4), round(T + bar, 4)], "seam_edit_s": round(T - pre, 4),
+                      "d_before_db": round(d_before, 2), "d_after_db": round(d_after, 2),
+                      "score": round(d_before + d_after, 2)})
+    pick = next((c for c in cands if c["bar"] == BAR_EDIT_BAR), None) if BAR_EDIT_BAR else min(cands, key=lambda c: c["score"])
+    mu2_old, mu2_new = anchor["MU2"]["edit_s"], bd0 - pre
+    b0, b1 = anchor["MU2"]["broke_s"]
+    closer = abs(mu2_new - b0) < abs(mu2_old - b0) or b0 <= mu2_new <= b1
+    seam = pick["seam_edit_s"]
+    keep = bool(MU2_BAR_EDIT and closer and anchor["MU3"]["within_1s"] and mu2_new < seam < anchor["MU3"]["edit_s"])
+    return {"applied": keep, "bar_s": bar, "offset_before_seam_s": round(pre, 4), "offset_after_seam_s": off,
+            "removed_bar": pick["bar"], "removed_track_s": pick["track_s"], "seam_bar_line_edit_s": seam,
+            "xfade_s": [round(seam - BAR_EDIT_LEAD_S - BAR_EDIT_XFADE_S, 4), round(seam - BAR_EDIT_LEAD_S, 4)],
+            "xfade": "equal power (cos/sin), %d ms, ending %d ms before the bar line" % (
+                BAR_EDIT_XFADE_S * 1000, BAR_EDIT_LEAD_S * 1000),
+            "MU2_edit_s": round(mu2_new, 4), "MU2_without_edit_s": round(mu2_old, 4), "broke_s": [b0, b1],
+            "MU2_inside_broke": bool(b0 <= mu2_new <= b1), "MU2_after_onset_s": round(mu2_new - b0, 3),
+            "candidates": cands,
+            "conditions": {"MU2_closer_to_broke": bool(closer), "MU3_within_1s": anchor["MU3"]["within_1s"],
+                           "seam_between_MU2_and_MU3": bool(mu2_new < seam < anchor["MU3"]["edit_s"]),
+                           "MU5_after_seam": bool(seam < anchor["fun_onset_s"])}}
 
 
 def music_envelopes(ev: Events, beat_map: dict, spans):
@@ -1190,11 +1249,26 @@ def main():
     # ---- MP3 decoder offsets (FFmpeg-made WAVs need none) ---------------------------------------
     music_file = ROOT / music_plan["track"]
     anchor = music_anchor(words, music_plan)           # v02: drop downbeat on the new 'fun' (plan p.34: MU5 first)
-    offset_s = anchor["offset_s"]                      # track (FFmpeg decode clock) = edit + offset_s
+    offset_s = anchor["offset_s"]                      # track (FFmpeg decode clock) = edit + offset_s (after the seam)
+    bar_edit = bar_edit_plan(music_file, music_plan, anchor)
+    anchor["bar_edit"] = bar_edit
+    if bar_edit["applied"]:
+        anchor["MU2_without_bar_edit"] = dict(anchor["MU2"])
+        m2 = bar_edit["MU2_edit_s"]
+        b0, b1 = anchor["MU2"]["broke_s"]
+        anchor["MU2"].update({"edit_s": round(m2, 3), "delta_from_onset_s": round(m2 - b0, 3),
+                              "within_half_second": abs(m2 - b0) <= 0.5, "inside_word": b0 <= m2 <= b1,
+                              "track_s_at_edit_0": bar_edit["offset_before_seam_s"]})
+    log("MU2 bar edit: %s; remove breakdown bar %d (track %.3f-%.3f s), seam on the bar line at edit %.3f s, MU2 "
+        "%.3f -> %.3f s ('broke' %.3f-%.3f s); candidates %s" % (
+            "APPLIED" if bar_edit["applied"] else "not applied", bar_edit["removed_bar"], *bar_edit["removed_track_s"],
+            bar_edit["seam_bar_line_edit_s"], bar_edit["MU2_without_edit_s"], bar_edit["MU2_edit_s"],
+            *bar_edit["broke_s"], [(c["bar"], c["score"]) for c in bar_edit["candidates"]]))
     mp3s = sorted({c.asset_file for c in clips if c.asset_file.suffix.lower() == ".mp3"} | {music_file}, key=str)
     lags = calibrate_decoder_offsets(mp3s)
     lag_mu = lags[str(music_file)]
-    mu_s0 = ms(offset_s + lag_mu)                      # Tesseract source ms of the main bed at edit 0
+    mu_s0 = ms(offset_s + lag_mu)                      # Tesseract source ms of the main bed at edit 0 (no edit)
+    mu_s0_pre = ms(bar_edit["offset_before_seam_s"] + lag_mu)   # ... of the part before the bar edit's seam
     delta = mu_s0 / 1000 - lag_mu                      # FFmpeg-clock track time at edit 0 (offset_s +- 0.5 ms)
 
     # ---- MU6 low-passed excerpt, sample-aligned with the main bed --------------------------------
@@ -1255,18 +1329,50 @@ def main():
                                       VO_REPORT.relative_to(ROOT))))
     mu_D = ms(vo_end)
     mu_intr = int(probe(music_file)["duration"] * 1000)
-    specs.append(Spec(group="A2", id=MUSIC_LAYER_ID, name="MU1-MU8 Black Vertigo (main bed)", asset=a_mu, E=0,
-                      D=mu_D, S0=mu_s0, intr=mu_intr, modality="music", source_name=music_file.name, key="mu-main",
-                      tt=tt, pre=main_env,
-                      description="Black Vertigo (Alexandre Brovelli) from track %.2f s at edit 0 (MU1, full energy, "
-                                  "no fade-in), drop (track %.2f s) on the 'fun' onset %.3f s (MU5 marks from frame %.3f s), "
-                                  "hard stop at the end of 'now?' %.3f s (MU8). Source start %d ms = %.2f s + %.1f ms MP3 "
-                                  "decoder offset "
-                                  "(Tesseract does not skip the LAME encoder delay). Keyframes: base %.1f dB, %.0f dB "
-                                  "duck (50/300 ms) under every VO phrase, MU4 15f mute, MU5 +3 dB for 2 s, MU6 "
-                                  "crossfade to the low-pass copy, MU7 rewind cut then -6 dB, MU8 stop, x master." % (
-                                      offset_s, anchor["drop_track_s"], anchor["fun_onset_s"], marks["MU5"],
-                                      marks["MU8"], mu_s0, offset_s, lag_mu * 1000, MUSIC_BASE_DB, DUCK_DB)))
+    main_tt, main_pre, main_E, main_D, main_S0 = tt, main_env, 0, mu_D, mu_s0
+    if bar_edit["applied"]:
+        x0, x1 = bar_edit["xfade_s"]
+        u = np.clip((tt - x0) / (x1 - x0), 0.0, 1.0)
+        g_a, g_b = np.cos(0.5 * np.pi * u), np.sin(0.5 * np.pi * u)          # equal power
+        sel_a = tt <= x1 + 1e-9
+        sel_b = tt >= x0 - 1e-9
+        main_tt, main_pre, main_D, main_S0 = tt[sel_a], (main_env * g_a)[sel_a], ms(x1), mu_s0_pre
+        e_b = ms(x0)
+        spec_b = (Spec(group="A2", id=MUSIC_B_LAYER_ID, name="MU2-MU8 Black Vertigo (main bed after the bar edit)",
+                          asset=a_mu, E=e_b, D=mu_D - e_b, S0=e_b + mu_s0, intr=mu_intr, modality="music",
+                          source_name=music_file.name, key="mu-main-b", tt=tt[sel_b], pre=(main_env * g_b)[sel_b],
+                          description="Black Vertigo after the MU2 bar edit's seam: track = edit + %.2f s (the anchor: the "
+                                      "drop, track %.2f s, on 'fun' %.3f s), from the equal-power crossfade %.3f-%.3f s "
+                                      "(%d ms before the bar line at %.3f s; breakdown bar %d, track %.3f-%.3f s, is "
+                                      "removed) to the hard stop at the end of 'now?' (MU8). Same envelope as the "
+                                      "main bed (duck, MU4-MU8, x master)." % (
+                                          offset_s, anchor["drop_track_s"], anchor["fun_onset_s"], x0, x1,
+                                          BAR_EDIT_LEAD_S * 1000, bar_edit["seam_bar_line_edit_s"],
+                                          bar_edit["removed_bar"], *bar_edit["removed_track_s"])))
+    specs.append(Spec(group="A2", id=MUSIC_LAYER_ID, name="MU1-MU8 Black Vertigo (main bed)" if not bar_edit["applied"]
+                      else "MU1-MU2 Black Vertigo (main bed up to the bar edit)", asset=a_mu, E=main_E,
+                      D=main_D, S0=main_S0, intr=mu_intr, modality="music", source_name=music_file.name, key="mu-main",
+                      tt=main_tt, pre=main_pre,
+                      description=("Black Vertigo (Alexandre Brovelli) from track %.2f s at edit 0 (MU1, full energy, "
+                                   "no fade-in), drop (track %.2f s) on the 'fun' onset %.3f s (MU5 marks from frame %.3f s), "
+                                   "hard stop at the end of 'now?' %.3f s (MU8). Source start %d ms = %.2f s + %.1f ms MP3 "
+                                   "decoder offset (Tesseract does not skip the LAME encoder delay). Keyframes: base %.1f "
+                                   "dB, %.0f dB duck (50/300 ms) under every VO phrase, MU4 15f mute, MU5 +3 dB for 2 s, MU6 "
+                                   "crossfade to the low-pass copy, MU7 rewind cut then -6 dB, MU8 stop, x master." % (
+                                       offset_s, anchor["drop_track_s"], anchor["fun_onset_s"], marks["MU5"],
+                                       marks["MU8"], mu_s0, offset_s, lag_mu * 1000, MUSIC_BASE_DB, DUCK_DB))
+                      if not bar_edit["applied"] else
+                      ("Black Vertigo (Alexandre Brovelli) from track %.2f s at edit 0 (MU1, full energy, no fade-in: one "
+                       "bar earlier than the anchor, so the breakdown, track %.2f s, arrives at %.3f s inside 'broke' = "
+                       "MU2) up to the MU2 bar edit's equal-power crossfade %.3f-%.3f s, where layer %d (the rest of the "
+                       "track, breakdown bar %d removed) takes over. Source start %d ms = %.4f s + %.1f ms MP3 decoder "
+                       "offset. Keyframes: base %.1f dB, %.0f dB duck (50/300 ms) under every VO phrase, the crossfade, "
+                       "x master." % (bar_edit["offset_before_seam_s"], bar_edit["MU2_edit_s"] + bar_edit[
+                           "offset_before_seam_s"], bar_edit["MU2_edit_s"], bar_edit["xfade_s"][0], bar_edit["xfade_s"][1],
+                                      MUSIC_B_LAYER_ID, bar_edit["removed_bar"], mu_s0_pre,
+                                      bar_edit["offset_before_seam_s"], lag_mu * 1000, MUSIC_BASE_DB, DUCK_DB))))
+    if bar_edit["applied"]:
+        specs.append(spec_b)
     lp_E, lp_end = ms(marks["MU6_start"] - 0.1), ms(marks["MU6_end"] + 0.1)
     sel = (tt >= lp_E / 1000 - 1e-9) & (tt <= lp_end / 1000 + 1e-9)
     lp_intr = int(probe(lp_file)["duration"] * 1000)
@@ -1387,6 +1493,7 @@ def main():
         "music_anchor": anchor, "cue_scaling_v01_to_v02": ev.scaled,
         "beat_start_s": {b: round(ev.beat_start_frame(b) / FPS, 4) for b in ev.beats},
         "music_source": {"file": music_plan["track"], "offset_s": offset_s, "tesseract_source_start_ms": mu_s0,
+                         "bar_edit": bar_edit, "tesseract_source_start_ms_before_seam": mu_s0_pre if bar_edit["applied"] else None,
                          "decoder_offset_ms": round(lag_mu * 1000, 3), "mu6_derivative": str(lp_file.relative_to(ROOT)),
                          "mu6_layer": {"start_ms": lp_E, "end_ms": lp_end, "source_start_ms": lp_s0}},
         "decoder_offsets_ms": {Path(k).name: round(v * 1000, 3) for k, v in lags.items()},
@@ -1460,10 +1567,17 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         s19 = next(c for c in clips if c.cue == "S19")
         b9 = next(s_[0] for s_ in spans if s_[0] >= marks["MU4_end"] - 0.05)
         report["waveform_markers_s"] = {"S08": s08.edit_start, "B9_voice": b9, "S18": s18.edit_start, "S19": s19.edit_start}
-        for tag, a_, b_, mk in (
-                ("mu5-drop-s09-fun", marks["MU5"] - 1.3, marks["MU5"] + 2.7, [marks["MU5"], marks["MU5"] + MU5_HOLD_S]),
-                ("b8-break-mu4-mute", s08.edit_start - 0.55, b9 + 0.6, [s08.edit_start, marks["MU4_start"], marks["MU4_end"], b9]),
-                ("b17-ending", s18.edit_start - 0.8, edit_end, [s18.edit_start, marks["MU8"], s19.edit_start])):
+        an_ = report["music_anchor"]
+        views = [("mu5-drop-s09-fun", marks["MU5"] - 1.3, marks["MU5"] + 2.7, [marks["MU5"], marks["MU5"] + MU5_HOLD_S]),
+                 ("b8-break-mu4-mute", s08.edit_start - 0.55, b9 + 0.6,
+                  [s08.edit_start, marks["MU4_start"], marks["MU4_end"], b9]),
+                 ("b17-ending", s18.edit_start - 0.8, edit_end, [s18.edit_start, marks["MU8"], s19.edit_start]),
+                 ("mu2-breakdown-on-broke", an_["MU2"]["edit_s"] - 1.5, an_["MU2"]["edit_s"] + 1.5,
+                  [an_["MU2"]["broke_s"][0], an_["MU2"]["edit_s"]])]
+        if an_["bar_edit"]["applied"]:
+            x0_, x1_ = an_["bar_edit"]["xfade_s"]
+            views.append(("mu2-bar-edit-seam", x0_ - 1.0, x1_ + 1.0, [x0_, x1_, an_["bar_edit"]["seam_bar_line_edit_s"]]))
+        for tag, a_, b_, mk in views:
             outp = CHECKS / ("wave_%s.png" % tag)
             rr = subprocess.run([sys.executable, str(SOUND_HELPER), "waveform", str(mix), "--mode", "music",
                                  "--clock", "edit", "--start-ms", str(ms(a_)), "--duration-ms", str(ms(b_ - a_)),
@@ -1513,11 +1627,20 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
     bed["title_hold_momentary_median_lufs"] = float(np.median(l04[selh]))
     bed["title_hold_momentary_max_lufs"] = float(np.max(l04[selh]))
     trk = decode(music_file)
+    be = report["music_anchor"].get("bar_edit") or {}
+    off_pre = be["offset_before_seam_s"] if be.get("applied") else offset_s
+    seam = be["seam_bar_line_edit_s"] if be.get("applied") else 0.0
     mref = np.zeros_like(mu)
     seg = trk[int(round(offset_s * SR)):][: len(mu)]
     mref[: len(seg)] = seg
+    if be.get("applied"):                     # before the seam the track runs one bar earlier
+        i_s = int(round(seam * SR))
+        seg = trk[int(round(off_pre * SR)):][: i_s]
+        mref[: len(seg)] = seg
+
     def undecked_st(a_, b_):
-        y = trk[int((offset_s + a_) * SR): int((offset_s + b_) * SR)]
+        o_ = off_pre if b_ <= seam else offset_s
+        y = trk[int((o_ + a_) * SR): int((o_ + b_) * SR)]
         y = y * lin(MUSIC_BASE_DB) * master(a_ + np.arange(len(y)) / SR)[:, None]
         tcr, lr = windowed_lufs(y, 3.0)
         return tcr + a_, lr
@@ -1576,6 +1699,21 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
                                                    mref[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
                                                    int(0.05 * SR)) / SR * 1000,
     }
+    if be.get("applied"):
+        x0, x1 = be["xfade_s"]
+        lag = lambda a_, b_: xcorr_lag(mu[int(a_ * SR): int(b_ * SR), 0], mref[int(a_ * SR): int(b_ * SR), 0],
+                                       int(0.05 * SR)) / SR * 1000
+        rms = lambda a_, b_: 10 * np.log10(np.mean(mu[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
+        chk["bar_edit_track_lag_before_seam_ms"] = lag(max(0.0, x0 - 2.2), x0 - 0.05)
+        chk["bar_edit_track_lag_after_seam_ms"] = lag(x1 + 0.05, x1 + 2.2)
+        chk["bar_edit_seam_level_vs_neighbours_db"] = rms(x0 - 0.02, x1 + 0.02) - 0.5 * (
+            rms(x0 - 0.42, x0 - 0.02) + rms(x1 + 0.02, x1 + 0.42))
+        # the same windows at that bar line of the unedited track (the bed's own pre-downbeat dip, for reference)
+        tb = be["removed_track_s"][1] - (be["seam_bar_line_edit_s"] - x0)
+        tr_ = lambda a_, b_: 10 * np.log10(np.mean(trk[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
+        w_ = x1 - x0
+        chk["bar_edit_same_window_unedited_bar_line_db"] = tr_(tb - 0.02, tb + w_ + 0.02) - 0.5 * (
+            tr_(tb - 0.42, tb - 0.02) + tr_(tb + w_ + 0.02, tb + w_ + 0.42))
     st["music_envelope_checks"] = chk
     st["music_check_windows_s"] = {k: [round(v[0], 3), round(v[1], 3)] for k, v in (
         ("title_hold", th), ("after_MU5", w5), ("MU6", w6), ("after_label", w6b), ("MU7_glow", w7), ("B17", w17))}
@@ -1656,6 +1794,16 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     w("* **Music re-anchored on MU5 first** (plan p.34): the measured drop downbeat (track %.2f s) on the new 'fun' "
       "onset %.3f s: track = edit + %.2f s (v01: + 139.68 s). Every other mark is re-derived from the beat map and the "
       "events exactly as in v01 (table below)." % (an["drop_track_s"], an["fun_onset_s"], off))
+    be = an.get("bar_edit") or {}
+    if be.get("applied"):
+        w("* **MU2 whole-bar edit** (plan p.34's allowed fix, applied on the coordinator's v02 instruction): the track "
+          "starts one bar (%.4f s) earlier, at %.2f s, so the breakdown arrives at %.3f s inside 'broke' (%.3f-%.3f s; "
+          "without the edit %.3f s, %.2f s before it), and breakdown bar %d (track %.3f-%.3f s) is removed on its bar "
+          "line at edit %.3f s with a %d ms equal-power crossfade, so MU3, the MU5 drop and everything after the seam "
+          "keep the anchor's timing (details under the MU table)." % (
+              be["bar_s"], be["offset_before_seam_s"], be["MU2_edit_s"], be["broke_s"][0], be["broke_s"][1],
+              be["MU2_without_edit_s"], be["broke_s"][0] - be["MU2_without_edit_s"], be["removed_bar"],
+              be["removed_track_s"][0], be["removed_track_s"][1], be["seam_bar_line_edit_s"], BAR_EDIT_XFADE_S * 1000))
     s10 = next((c for c in clips if c.cue == "S10"), None)
     if s10:
         w("* **S10 = the glitch** (note 5): B11's flip became the X4 glitch of B8, so its sound changed from S10 Flip "
@@ -1728,12 +1876,16 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     w("| Code | Edit time | Frame | Track time | Implementation |\n|---|---|---|---|---|")
     m2, m3 = an["MU2"], an["MU3"]
     w("| MU1 | 0.000 s | 0 | %.2f s | Bed starts at full energy, no fade-in (10 ms de-click ramp only). The voice starts at %.3f s, so the bed enters already ducked. |" % (
-        off, spans[0][0]))
-    w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, %.3f s %s the onset of 'broke' (%.3f-%.3f s): %s. No edit: the plan's only fix is a whole-bar edit inside the breakdown, and its trigger is MU3 missing 'dull' by more than 1 s, which it does not (as v01, CONFLICTS C11). Removing one bar (%.2f s) would move MU2 to %.3f s, inside 'broke'. |" % (
-        m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], abs(m2["delta_from_onset_s"]),
-        "before" if m2["delta_from_onset_s"] < 0 else "after", m2["broke_s"][0], m2["broke_s"][1],
-        "within half a second" if m2["within_half_second"] else "outside the plan's half second",
-        an["bar_s"], m2["edit_s"] + an["bar_s"]))
+        be["offset_before_seam_s"] if be.get("applied") else off, spans[0][0]))
+    if be.get("applied"):
+        w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives inside 'broke' (%.3f-%.3f s), %.3f s after its onset (%s the plan's half second; v01 was 0.636 s after it), through the whole-bar edit: the track starts one bar earlier and breakdown bar %d is removed at %.3f s (seam), so nothing after the seam moves. |" % (
+            m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], m2["broke_s"][0], m2["broke_s"][1], m2["delta_from_onset_s"],
+            "within" if m2["within_half_second"] else "just outside", be["removed_bar"], be["seam_bar_line_edit_s"]))
+    else:
+        w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, %.3f s %s the onset of 'broke' (%.3f-%.3f s): %s. No edit (MU2_BAR_EDIT off or its conditions failed, see audio_report.json). |" % (
+            m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], abs(m2["delta_from_onset_s"]),
+            "before" if m2["delta_from_onset_s"] < 0 else "after", m2["broke_s"][0], m2["broke_s"][1],
+            "within half a second" if m2["within_half_second"] else "outside the plan's half second"))
     w("| MU3 | %.3f s | %.1f | %.2f s | Near-silent section starts %.3f s %s 'dull' (%.3f s): %s 1 s (the plan's test), %s. |" % (
         m3["edit_s"], m3["edit_s"] * FPS, m3["track_s"], abs(m3["delta_from_onset_s"]),
         "before" if m3["delta_from_onset_s"] < 0 else "after", m3["dull_s"][0],
@@ -1754,6 +1906,25 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
         marks["MU7_start"] + off, marks["MU7_end"] + off, marks["MU7_return"]))
     w("| MU8 | %.3f s | %.1f | %.2f s | Hard stop at the end of 'now?' (beat_map vo_end_s), 10 ms ramp, the layer ends there. No music in the logo tail; S18 and S19 carry it. |\n" % (
         marks["MU8"], marks["MU8"] * FPS, marks["MU8"] + off))
+    if be.get("applied"):
+        w("**MU2 bar edit.** Candidates (breakdown bars 2-%d; the arrival bar and the bar into MU3 are excluded), scored "
+          "by the octave-band level difference of the two sides of the seam (0.5 s before the removed bar vs before the "
+          "bar after it, and 0.5 s after both bar lines): %s. Chosen: bar %d, seam on its bar line at %.3f s (under the "
+          "voice, the bed ducked). Two layers: %d plays the track one bar early up to the crossfade, %d the rest at the "
+          "anchor's offset; the equal-power crossfade runs %.3f-%.3f s, ending %d ms before the bar line, so the next "
+          "bar's downbeat comes through whole and the removed bar's downbeat (up to ~20 ms early on this track) is not "
+          "heard. Checks on the music stem: track lag %s ms before the seam and %s ms after it (vs the FFmpeg-decoded "
+          "track at each offset), level across the crossfade %s dB vs the 0.4 s either side (the same windows at that bar "
+          "line of the unedited track: %s dB, the bed's own dip before a downbeat); MU3 stays %.3f s from "
+          "'dull' (within 1 s), the drop stays at %+.2f ms from the track clock (MU5 frame-exact, frame %d).\n" % (
+              len(be["candidates"]) + 1, ", ".join("bar %d %.2f dB" % (c["bar"], c["score"]) for c in be["candidates"]),
+              be["removed_bar"], be["seam_bar_line_edit_s"], MUSIC_LAYER_ID, MUSIC_B_LAYER_ID, be["xfade_s"][0],
+              be["xfade_s"][1], BAR_EDIT_LEAD_S * 1000,
+              ("%.2f" % chk["bar_edit_track_lag_before_seam_ms"]) if "bar_edit_track_lag_before_seam_ms" in chk else "?",
+              ("%.2f" % chk["bar_edit_track_lag_after_seam_ms"]) if "bar_edit_track_lag_after_seam_ms" in chk else "?",
+              ("%+.2f" % chk["bar_edit_seam_level_vs_neighbours_db"]) if "bar_edit_seam_level_vs_neighbours_db" in chk else "?",
+              ("%+.2f" % chk["bar_edit_same_window_unedited_bar_line_db"]) if "bar_edit_same_window_unedited_bar_line_db" in chk else "?",
+              m3["delta_from_onset_s"], chk.get("drop_offset_vs_track_clock_ms", float("nan")), round(marks["MU5"] * FPS)))
     gaps = [b_[0] - a_[1] for a_, b_ in zip(spans, spans[1:])]
     short = sum(1 for g_ in gaps if g_ < ATTACK_S + RELEASE_S)
     th_ = bed.get("title_hold_window_s", [0, 0])

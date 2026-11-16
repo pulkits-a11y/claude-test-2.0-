@@ -640,13 +640,20 @@ def framing_desc(keys) -> str:
     return " -> ".join(parts)
 
 
-def neutralize_curves(wc, n_shot):
-    """colorCurves points for grade `neutralize`, measured on the shot's own working-copy frames (see NEUTRALIZE)."""
+NEUTRALIZE_CACHE = {}
+
+
+def neutralize_curves(src: Path, t0: float, t1: float):
+    """colorCurves points for grade `neutralize` (see NEUTRALIZE), measured on the SOURCE clip over [t0, t1] s: the
+    span every `neutralize` shot of that clip uses, so shots cut from the same clip share one grade (no jump at
+    their cuts, and a 10-frame shot is not graded from 2 samples)."""
+    key = (str(src), round(t0, 3), round(t1, 3))
+    if key in NEUTRALIZE_CACHE:
+        return NEUTRALIZE_CACHE[key]
     nz = NEUTRALIZE
-    ss = wc["head_f"] / FPS
     import numpy as np
-    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", "%.4f" % ss, "-t", "%.4f" % (max(n_shot, 1) / FPS),
-                          "-i", str(wc["path"]), "-vf", "fps=%d,scale=%d:-2" % (nz["sample_fps"], nz["sample_w"]),
+    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", "%.4f" % t0, "-t", "%.4f" % max(t1 - t0, 1.0 / FPS),
+                          "-i", str(src), "-vf", "fps=%d,scale=%d:-2" % (nz["sample_fps"], nz["sample_w"]),
                           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], capture_output=True, check=True).stdout
     px = np.frombuffer(raw, np.uint8).reshape(-1, 3).astype(float) / 255.0
     px = px[(px.max(axis=1) > 0.02)]                       # ignore the ink pillars of a contain-fit copy
@@ -673,7 +680,10 @@ def neutralize_curves(wc, n_shot):
         out.append((1.0, 1.0))
         curves[c] = [{"x": a, "y": b} for a, b in out]
     rg = float(np.mean(px[:, 0] - px[:, 1]))
-    return curves, "per-decile luma/median RGB %s; source mean R-G %.3f" % (meds, rg)
+    out = (curves, "from %s %.2f-%.2f s at %d fps (%d px): per-decile luma/median RGB %s; source mean R-G %.3f" % (
+        rel(src), t0, t1, nz["sample_fps"], len(px), meds, rg))
+    NEUTRALIZE_CACHE[key] = out
+    return out
 
 
 def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, notes):
@@ -739,11 +749,12 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
     g = GRADES[grade]
     pg_id = None
     if grade == "neutralize":
-        cv, stats = neutralize_curves(wc, n_shot=ef - sf)
+        src_ = ROOT / shot["_src_rel"] if not Path(shot["_src_rel"]).is_absolute() else Path(shot["_src_rel"])
+        cv, stats = neutralize_curves(src_, *shot["_neutralize_span"])
         effects.append(fx(ids.E(), {"type": "colorCurves", "semanticVersion": 1, "curves": cv}))
         effects.append(fx(ids.E(), {"type": "hueCurves", "semanticVersion": 1, "hueVsSaturation": [
             {"x": x_, "y": y_} for x_, y_ in NEUTRALIZE["hue_vs_saturation"]]}))
-        notes.append("%s: neutralize curves from %s: %s" % (shot["id"], wc["path"].name, stats))
+        notes.append("%s: neutralize curves %s" % (shot["id"], stats))
     if g:
         pg_id = ids.E()
         effects.append(fx(pg_id, primary_grade(g)))
@@ -1044,6 +1055,20 @@ def main():
         hf_assets[b["id"]] = (aid, r, nf)
         hf_ok.add(b["id"])
     hf = [(b, mov) for b, mov in hf if b["id"] in hf_ok]
+    # grade `neutralize`: one measurement span per source clip, the union of its neutralize shots' source time
+    spans_nz = {}
+    for b in beats:
+        for s in shots_by_beat.get(b["id"], []):
+            if s.get("grade") == "neutralize" and id(s) in shot_assets:
+                wc_ = shot_assets[id(s)][2]
+                a_ = wc_["t_in"]
+                z_ = a_ + (s["_end_f"] - s["_start_f"]) / FPS * wc_["speed"]
+                lo, hi = spans_nz.get(s["_src_rel"], (a_, z_))
+                spans_nz[s["_src_rel"]] = (min(lo, a_, z_), max(hi, a_, z_))
+    for b in beats:
+        for s in shots_by_beat.get(b["id"], []):
+            if s.get("grade") == "neutralize" and s.get("_src_rel") in spans_nz:
+                s["_neutralize_span"] = spans_nz[s["_src_rel"]]
     if not args.output:                     # a test build must not evict the real build's working copies
         for f in MEDIA.glob("*.mp4"):
             if f.name not in wc_used:

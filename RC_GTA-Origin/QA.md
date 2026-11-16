@@ -20,3 +20,27 @@ Status: `PASS` (verified, evidence named), `FAIL` (what, which beat), `PENDING` 
 | 13 | Export settings and file name are correct, the cover frame is set, and the post caption credits the footage sources. | ffprobe of the delivery; cover PNG; POST_CAPTION.md. | PASS | `RC_GTA-Origin_v01_16x9.mp4` (re-exported after the R9.1 watermark was cropped out of B2, B9 and B16; every check above re-run on it with the same results): H.264 High, 1920x1080, 30 fps CFR, 2472 frames, 2-pass 15.96 Mbps (20 max), bt709, AAC-LC 320 kb/s 48 kHz stereo, 82.400 s. Cover `RC_GTA-Origin_v01_cover.png` 1920x1080. Caption credits every upload on screen (`07_Exports/POST_CAPTION.md`). |
 
 Still blocking a final (not a QA failure of the edit, footage you need to supply): R17.1 (B17 f0-107, GTA 6 Trailer 1 opening, Lucia in custody) and R15.1 (B15 proof shot, Race and Chase gameplay) are labelled stand-ins.
+
+## v02 (your notes on v01; `RC_GTA-Origin_v02_16x9.mp4`)
+
+| # | Check | Status | Evidence |
+|---|---|---|---|
+| 1 | First frame moving; the question reads with the sound off | PASS (R13) | Frame 0 vs 1 differ (1.74); "Why" pops on its spoken frame (beat f1), "does" on its own |
+| 2 | Captions: word by word, max 2 words on screen, on the voice | PASS | Kit + each beat's frame-by-frame audit (every word first visible on its onset frame, never > 2 words); `tools/qa_checks.py captions2`: 0 problems in the 11 beats with v2 markup (`07_Exports/qa/captions_v02.json`); looked at 1-fps sheets of the export |
+| 3 | T-style rotation | PASS (notes override where they remove styles) | B2 T7 chip -> the word (note 8), B3 T8/L12 -> kinetic B-roll type (note 2), B15 T9 removed (note 7); no two neighbours share a featured style |
+| 4 | Glitch / siren discipline | PASS with your overrides | Glitch: B2, B8, B11 (note 5, R8), B16, B17; red: B7 hits (note 3, R6); X9 only on cops / police officer / sirens |
+| 5 | Nothing still > 2 s | PASS | Frame-difference scan: no near-still run >= 1.5 s |
+| 6 | "fun": drop, S09 and flash on one frame | PASS | "fun" = 41.040 s = frame 1231: X3 peak on 1231 (luma 228.6 after the whole-edit vignette/grain), S09 starts 41.040 s, MU5 drop on frame 1231 (+0.06 ms) |
+| 7 | B5 / B11 framing | PASS | B11's front = B5's exact framing (lane check), glitch replaces the flip (note 5) |
+| 8 | B12 calendar = B4's, extended | PASS with note 6 | Same component, 18 -> 30; now enters with an eased rise and sits higher (R9) |
+| 9 | GTA 6 footage official | Your override (R12) | B17's Trailer 1 opening is your Drive clip (madebyajit fan edit of Rockstar's Trailer 1), pink grade neutralised; other GTA 6 shots: R1.2 PlayStation, R17.2 Netflix, R17.4 Rockstar |
+| 10 | B17 wording; B6 attribution | PASS | Recorded line kept; B6 card unchanged (quote on two lines in Coolvetica) |
+| 11 | Loudness | PASS | -14.0 LUFS integrated, -1.6 dBTP, LRA 2.2 (delivered AAC) |
+| 12 | Watched muted / earbuds / phone | PENDING (you) | Muted frame review done |
+| 13 | Export, cover, caption | PASS | H.264 High 1920x1080 30 fps CFR, 2328 frames, 77.600 s, 16.04 Mbps 2-pass, AAC 320 kb/s 48 kHz; `RC_GTA-Origin_v02_cover.png`; `RC_GTA-Origin_v02.srt`; POST_CAPTION credits updated |
+| v02-a | Nothing linear (note 14) | PASS | Kit + beats audited: 0 linear tweens; beat code has no `ease: 'none'/'linear'`; Tesseract: 346 picture keys, all eased (audio gain envelopes stay sampled) |
+| v02-b | Coolvetica (note 12) | PASS | Both faces load (not fallback), no faux bold/oblique; all text in the export reads Coolvetica / Coolvetica Italic |
+| v02-c | Dust overlay, grain, vignette, chroma (note 13) | PASS | Grain p1-p99 10-12.5%; vignette ~-35% corners; dust ~400 soft specks on black, Screen, drifting; chroma 0.6-2.0 px eased 2.4 s cycle (0.1-0.9 px after 4:2:0) |
+| v02-d | Voice faster (note 10) | PASS | 115% (was 108%), same pause edits; music re-anchored; MU2 bar edit puts the breakdown inside "broke" (+0.655 s) |
+
+Still a stand-in: R15.1 (B15's proof shot, Race and Chase gameplay); the plan suggests capturing it in GTA Online.
