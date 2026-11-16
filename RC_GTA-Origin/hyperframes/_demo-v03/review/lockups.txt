@@ -1,10 +1,10 @@
 == A (B15)
 1 f6-31 (25f)  [solo] Don't@6 believe@11 me?@18  | 463 x 43 px ink
-2 f31-100 (69f)  [lead] Open@31 | [key] GTA@39* Online@45* | [tail] and@57 buy@63 an@69 arcade.@75  | key 190 px, 867 x 242 px ink
+2 f31-100 (69f)  [lead] Open@31 | [key +8px] GTA@39* Online@45* | [tail] and@57 buy@63 an@69 arcade.@75  | key 190 px, 867 x 250 px ink
 3 f100-145 (45f)  [lead] One@100 of@104 the@108 | [key] machines@113 | [tail] is@127 called@130  | key 190 px, 763 x 242 px ink
 4 f145-170 (25f)  [key] Race@145* and@148* Chase.@153*  | key 190 px, 1311 x 128 px ink
 == C (B4)
-1 f245-330 (85f)  [lead] planned@245 to@256 take@262 | [key] 18@267 months.@274  | key 190 px, 867 x 185 px ink
+1 f245-330 (85f)  [lead] planned@245 to@256 take@262 | [key +8px] 18@267 months.@274  | key 190 px, 867 x 193 px ink
 == D (B12)
 1 f380-425 (45f)  [lead] turn@380 into@391 | [key] thirty.@395*  | key 190 px, 519 x 185 px ink
 == F (B14)
@@ -13,3 +13,9 @@
 1 f600-640 (40f)  [solo] Until@605 finally,@614  | 357 x 51 px ink
 == G2 (B13 title)
 1 f643-700 (57f)  [key] Grand@645* Theft@651* Auto.@661*  | key 190 px, 1444 x 128 px ink
+== J1 (B1)
+1 f805-830 (25f)  [key] Why@805 | [tail +35px] does@813  | key 190 px, 376 x 220 px ink
+== J2 (B2)
+1 f835-875 (40f)  [lead] And@835 that@846 | [key] bug@851* | [tail +35px] saved@858 it.@866  | key 190 px, 318 x 278 px ink
+== J3 (B3)
+1 f880-910 (30f)  [key] Dundee,@880 | [tail +21px] Scotland.@895  | key 190 px, 650 x 206 px ink

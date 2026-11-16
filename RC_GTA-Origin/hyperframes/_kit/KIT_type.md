@@ -10,10 +10,11 @@ Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`i
 ## v03 (REVISION_v03.md notes 11, 12, 16, 17): caption lockups, dark cards. Read this first
 
 v03 overrides v02 where they conflict; everything else in the v02 / v01 sections below still applies. Proof:
-`hyperframes/_demo-v03/` (built by `tools/gen_demo.cjs` from this kit, the way a beat uses it): `review/snap/` (69 frames,
+`hyperframes/_demo-v03/` (built by `tools/gen_demo.cjs` from this kit, the way a beat uses it): `review/snap/` (74 frames,
 `f<frame>_<what>.png`) + `review/sheet_A..H.jpg`, `review/lockups.txt` (the plans), `review/check.json` (`check`: 0
 errors). Section A (f0-170) = lockups over footage, B = dark year card, C/D = dark calendar cards, E = dark quote card,
-F = stars glitch-in, G = B13 card + title, H = T9 on a dark page + the dark error box, I = the L4 grid with ink tiles.
+F = stars glitch-in, G = B13 card + title, H = T9 on a dark page + the dark error box, I = the L4 grid with ink tiles,
+J = the descender guard ("[Why] does", "And that [bug]* saved it.", "[Dundee,] Scotland.").
 Rebuild: `cd hyperframes/_demo-v03 && rm -r assets/kit && cp -r ../_kit assets/kit && node tools/gen_demo.cjs && bash tools/snap.sh`.
 
 ### What changed in type.js / type.css / base.css
@@ -54,11 +55,11 @@ console.error(T.lockupReport(plan));"
 ```
 prints (one element per lockup; sizes and row offsets are computed from Coolvetica's metrics):
 ```html
-<div id="b15-lk-2" class="clip rc-lk" data-start="1.0333" data-duration="2.3000" data-track-index="20" style="--rc-lk-c: 132.86px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="31">Open</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="39">GTA</span> <span class="rc-lw rc-lw--pop" data-rc-f="45">Online</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="57">and</span> ... <span class="rc-lw" data-rc-f="75">arcade.</span></div></div></div>
+<div id="b15-lk-2" class="clip rc-lk" data-start="1.0333" data-duration="2.3000" data-track-index="20" style="--rc-lk-c: 136.68px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="31">Open</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -20.39px"><span class="rc-lw rc-lw--pop" data-rc-f="39">GTA</span> <span class="rc-lw rc-lw--pop" data-rc-f="45">Online</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="57">and</span> ... <span class="rc-lw" data-rc-f="75">arcade.</span></div></div></div>
 ```
 and the report (check every lockup against the voice):
 ```
-2 f31-100 (69f)  [lead] Open@31 | [key] GTA@39* Online@45* | [tail] and@57 buy@63 an@69 arcade.@75  | key 190 px, 867 x 242 px ink
+2 f31-100 (69f)  [lead] Open@31 | [key +8px] GTA@39* Online@45* | [tail] and@57 buy@63 an@69 arcade.@75  | key 190 px, 867 x 250 px ink
 ```
 In the beat's script, ONE call after all the lockup markup (it wires every `.rc-lk`):
 ```js
@@ -79,7 +80,7 @@ T.lockups(w, ['The [wanted stars.]*', 'The [sirens.]', 'The [running.]'], { from
 plan: `lockups(plan, null, opts)`): `from` (index of the first word in words.json), `end` (s: where the last lockup
 hard-cuts out; default the next word's comp_t, else the last word's comp_end_t), `start` (s: an earlier start for the
 first lockup's clip, e.g. a card's first frame; its words still appear on their own frames), `loose`, `y` (ink centre,
-default 540), `smallSize` (60), `keySize` (190), `soloSize` (64), `card` (solo 76), `gap` (17 px), `wrap` (1.15),
+default 540), `smallSize` (60), `keySize` (190), `soloSize` (64), `card` (solo 76), `gap` (17 px), `clear` (8 px), `wrap` (1.15),
 `maxWidth` (1728), and for the HTML `idPrefix` ('lk'), `z`, `track`, `cls` (extra classes), `inline` (extra CSS).
 `lockupsWire(tl, scope, opts)`: scope = selector / element(s) (default every `.rc-lk`), `opts.pop` overrides the pop
 preset (`{ frames: 6, blur: 20, scale: 0.92, ease: 'expo.out', lead: 0 }`). Plan: `{lockups: [{index, spec, text,
@@ -94,13 +95,24 @@ equivalent ("to their" 183 px wide in the ref, 192 px here), lead baseline -> ke
   centred on x 960; its ink (first cap top .. last baseline) is centred on `--rc-y` (540) through `--rc-lk-c`.
 * Vertical: every row has line-height = its size (baseline 0.867 em, cap top 0.195 em below the row top); small -> key
   and key -> small: 17 px from baseline to the next cap top; small -> small: baseline pitch 1.12 em.
+* **Descender guard (fix, after the B1-B4 report)**: a row's highest glyph actually present must clear the previous
+  row's deepest glyph actually present by `clear` = 8 px (per-glyph ink tops / bottoms of both Coolvetica files,
+  `T.cvExtent(text, italic)`: g j p q y Q 0.233 em = 44 px at 190, comma / semicolon 0.156 em = 30 px, ( ) 0.143 em;
+  tops: caps 0.664, ascenders 0.672, digits / round tops 0.686-0.688, quotes 0.73). When it is needed the row moves
+  down (the report shows it: `[tail +35px]`) and the ink centre (`--rc-lk-c`) is recomputed, so the lockup stays
+  centred. Rows without descenders keep the tight ref 1 spacing. Measured (`_demo-v03` section J, white ink > 235):
+  "[Why] does" tail +35 px, gap 9 px between the y and "does"; "And that [bug]* saved it." tail +35 px, gap 10 px;
+  "[Dundee,] Scotland." tail +21 px, gap 9 px; all three ink-centred at y 539.5-540. A lead with descenders moves the
+  keyword down too ("planned to take" / "Open": key +8 px). **The offsets are written inline by `lockups()`: re-run the
+  generator after syncing the kit; old lockup HTML keeps the old spacing.**
 * Fit (measured with the kit's Coolvetica width table, kerning included, `T.cvWidth(text, px)`; within ~1% of Chrome):
   the keyword shrinks to stay inside the 1728 px title-safe width (warning); a lead / tail row wider than 1.15 x the
   keyword (min 420 px) breaks onto 2+ balanced lines (fewest lines, smallest widest line); a solo line wider than 1400 px
   breaks the same way; `|` forces a break. Warnings for > 7 words, < 6 frames on screen, ink outside 54-1026.
-* Measured in `_demo-v03` (snapshots, white ink bbox): "Open / GTA Online / and buy an arcade." x 539-1386 (centre
-  962.5), y 418-674 (cap-baseline centre 540); "One of the / machines / is called" x 591-1336, y 418-660 (centre 539);
-  "planned to take / 18 months." at y 330: x 540-1380, y 238-425; "Race and Chase." (key only) x 321-1602, y 473-606.
+* Measured in `_demo-v03` (snapshots, white ink bbox, descender guard on): "Open / GTA Online / and buy an arcade."
+  x 539-1386 (centre 962.5), y 414-678 (cap-baseline centre 540); "One of the / machines / is called" x 591-1336,
+  y 418-660 (centre 539); "planned to take / 18 months." at y 330: x 540-1380, y 234-429; "Race and Chase." (key only)
+  x 321-1602, y 473-606.
 * Timing: a lockup's clip = its first word's frame .. the next lockup's first word's frame (hard cut both ends). Inside
   it, each word is hidden until its own frame (round(comp_t x 30)), then shown (0.5f step tween = a cut). Starred words:
   full opacity on their own frame at blur 20 px / scale 92%, settling in 6f expo.out (f k: blur 20, f k+1: 6.3 px / 97.5%,

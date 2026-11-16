@@ -14,6 +14,7 @@ FRAMES=(
   605:G_Until 614:G_finally 630:G_card-hold 645:G_Grand-pop-f0 647:G_Grand-pop-f2 651:G_Theft-pop-f0 661:G_Auto-pop-f0 675:G_title-settled
   705:H_doc 711:H_hl-mid 720:H_hl-done_errbox 750:H_hold
   762:I_ink-tiles 766:I_centre-tile-1-cleared 775:I_both-cleared 795:I_hold
+  813:J_Why-does_full 851:J_bug-pop-f0 857:J_bug-settled 866:J_saved-it_full 895:J_Dundee-Scotland_full
 )
 OUT=review/snap
 mkdir -p "$OUT"

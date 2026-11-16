@@ -135,7 +135,22 @@ const plan = (label, w, specs, o) => { const p = T.lockupPlan(w, specs, o); repo
   tag('i-tag', f0, f1, 'v03 · B1 · L4 grid with rc-l4--ink: the blurred tiles are card ink; the two centre tiles clear to the footage');
 }
 
-const END = 800;
+/* ---------------- J: descender fix: keywords with descenders / a comma push the tail row down (collision guard) ---------------- */
+{
+  const f0 = 800, f1 = 910;
+  html.push(`<div id="j-cam" class="rc-cam" style="z-index: 1">${vid('j-v', 'R3.1.mp4', f0, f1, ' data-media-start="1.0000"')}</div>`);
+  html.push(`<div id="j-dim" class="clip demo-fill demo-dim" data-start="${A(f0)}" data-duration="${D(f0, f1)}" style="z-index: 2"></div>`);
+  const pa = plan('J1 (B1)', words('B1', 798), ['[Why] does'], { from: 0, end: 830 / 30 });
+  const pb = plan('J2 (B2)', words('B2', 704), ['And that [bug]* saved it.'], { from: 10, end: 875 / 30 });
+  const pc = plan('J3 (B3)', words('B3', 819), ['[Dundee,] Scotland.'], { from: 5, end: f1 / 30 });
+  html.push(T.lockups(pa, null, { idPrefix: 'j-lka', z: 40, track: 20 }));
+  html.push(T.lockups(pb, null, { idPrefix: 'j-lkb', z: 40, track: 20 }));
+  html.push(T.lockups(pc, null, { idPrefix: 'j-lkc', z: 40, track: 20 }));
+  js.push(`C.push(tl, '#j-cam', ${S(f0)}, { until: ${S(f1)} });`);
+  tag('j-tag', f0, f1, 'v03 fix · tail rows clear the keyword descenders (g j p q y, comma) by 8 px: [Why] does · And that [bug]* saved it. · [Dundee,] Scotland.');
+}
+
+const END = 910;
 const out = `<!doctype html>
 <html lang="en">
   <head>

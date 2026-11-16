@@ -23,28 +23,27 @@
         transform-origin: 1123.58px 127.27px; transform: scale(1.2395833);
       }
       #b04-hl-clip { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-      /* v03 (note 12): the design document is now a DARK (inverted) scan, white letters on near-black paper. The plan's
-         Multiply highlight would vanish there (yellow x dark = dark), so the T9 box is re-coloured for a dark surface: the
-         same highlighter yellow in Screen blend at 50%: the paper under it turns a translucent highlighter yellow and the
-         white letters stay white on it (measured contrast in REVIEW below). Same box, same 8f swipe on "Race". */
-      #b04-hl { mix-blend-mode: screen; opacity: 0.5; }
+      /* v03 (note 12): the design document is now a DARK (inverted) scan (white letters on near-black paper); the kit's
+         v03 .rc-t9-hl is the dark-surface highlight (highlighter yellow, 50% Screen blend): the paper under it turns a
+         translucent yellow band and the white letters stay white. Same box, same 8f swipe on "Race". */
     </style>
   </head>
   <body>
-    <!-- B4 b04-racenchase v02: beat 100f (3.333s) + 6f handle each end = 112f (REVISION_v02: VO 115%, rules A C D E).
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.5333s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B4 p.21).
+    <!-- B4 b04-racenchase v03 (REVISION_v03 notes 10, 11, 12, 13, 16, 17; otherwise as v02): beat 100f (3.333s) + 6f handle
+         each end = 112f. Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.5333s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, unchanged). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B4 p.21).
 
-         Local 0-46   (incl. head handle): L7 spotlight on the REAL R4.5 design-document title page (still, beat f0-40 on
-                      screen = 1.33 s < 1.5 s, CONFLICTS C16), dimmed to 35% except a rounded spotlight on the title, push
-                      100% -> 118% toward it (local 6 -> 46, easeInOutSine); T9 highlight swipes across "Race'n'Chase" on
-                      "Race" (local 23, 8f power3.out).
-         Local 46-112 (incl. tail handle): hard cut (X1) in the pause after "Chase," to the L9 / M3 calendar on the gray card:
-                      the calendar punches in on the cut (112 -> 100%, 10f expo.out) then pushes 100 -> 106% (sine.inOut);
-                      18 empty slots, 18 squares fill left to right 2f apart from local 47 (18th on 81 = "eighteen"), no dates;
-                      a key punch on "eighteen" (106%, 3f in / 9f out). T2 above the grid, word by word (rule A), steady
-                      (outside the camera): "planned" (59) / "to take" (70, 76) / keyword "18 months." (81, 88: blur punch),
-                      last group exits in 3f (power2.in) ending on the beat end (106).
+         Local 0-46   (incl. head handle): L7 spotlight on the REAL R4.5 design-document title page, now the DARK (inverted)
+                      scan (note 12; still, beat f0-40 on screen = 1.33 s < 1.5 s, CONFLICTS C16), dimmed to 35% except a
+                      rounded spotlight on the title, the plan's push 100% -> 118% toward it (local 6 -> 46, easeInOutSine);
+                      T9 highlight (kit v03: 50% screen, visible on the dark page) swipes across "Race'n'Chase" on "Race"
+                      (local 23, 8f power3.out).
+         Local 46-112 (incl. tail handle): hard cut (X1) in the pause after "Chase," to the L9 / M3 calendar on the kit's DARK
+                      card (light-gray squares): v01's slow push 100 -> 104% (sine.inOut, 46 -> 106, held through the tail; no
+                      punch-in, no key punch); 18 empty slots, 18 squares fill left to right 2f apart from local 47 (18th on
+                      81 = "eighteen"), no dates. One caption lockup above the grid (note 10), steady (outside the camera):
+                      "planned to take" (59 / 70 / 76, small, stays) over the big italic "18 months." (81 / 88, pop + blur-in),
+                      hard cut out on the beat end (106).
          No SFX in B4 (plan p.38: silence by design). Tesseract owns all audio. -->
     <div data-hf-id="hf-yp6j" id="root" data-composition-id="b04-racenchase" data-start="0" data-duration="3.7333333" data-width="1920" data-height="1080">
 
@@ -53,7 +52,8 @@
         <div data-hf-id="hf-1rj7" id="b04-docframe">
           <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.1,&quot;level&quot;:0.04},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-o9g5" id="b04-doc" class="clip rc-l7__media" src="assets/footage/R4.5.png" data-start="0.0000" data-duration="1.5333" data-track-index="1" alt="Race'n'Chase Game Design, 1995 design document title page" style="--rc-pos: 50% 0%">
           <!-- T9 highlight over "Race'n'Chase" (page px 753-1004 x 263-296 + padding), in the page layer so it pushes with
-               the page; multiply blend: paper turns highlighter yellow, the printed letters stay dark (= behind the text) -->
+               the page; v03: the kit's dark-surface highlight (50% screen): the dark paper turns a yellow band, the white
+               printed letters stay white -->
           <div data-hf-id="hf-hjze" id="b04-hl-clip" class="clip" data-start="0.0000" data-duration="1.5333" data-track-index="2" data-layout-ignore="">
             <div data-hf-id="hf-9jci" id="b04-hl" class="rc-t9-hl" style="left: 842.4px; top: 290.8px; width: 299.3px; height: 50px"></div>
           </div>
@@ -63,7 +63,7 @@
         <div data-hf-id="hf-n5u3" id="b04-dim" class="clip rc-l7__dim" data-hole="715,296,488,212" data-radius="16" data-feather="20" data-start="0.0000" data-duration="1.5333" data-track-index="3"></div>
       </div>
 
-      <!-- ============ L9 / M3 calendar on the gray card (hard cut at local 46 = beat f40) ============ -->
+      <!-- ============ L9 / M3 calendar on the card (v03: the kit's dark card; hard cut at local 46 = beat f40) ============ -->
       <div data-hf-id="hf-7ix9" id="b04-card" class="clip rc-card rc-full" data-start="1.5333" data-duration="2.2000" data-track-index="4" style="z-index: 2"></div>
       <!-- untimed camera: v03 (note 13) v01's slow push 100% -> 104% on the calendar (sine.inOut, never linear); the v02
            punch-in on the cut and the key punch on "eighteen" are gone. The uniform card ground stays still; the caption is
@@ -74,13 +74,12 @@
         <div data-hf-id="hf-211p" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="5"></div>
       </div>
 
-      <!-- ============ T2 above the grid, word by word (rule A; card ink on the gray card, --rc-y 390 as v01): groups from
-           RCK.type.captionPlanV2 ('planned to take 18 months.', loose: "18" is the spoken "eighteen"; key: 2 = "18 months."
-           is the keyword); lead words pop (5f expo.out), keyword words blur-punch (30 -> 0 px, 108 -> 100%, 6f expo.out) on
-           their onsets; the last group exits in 3f (power2.in) ending on the beat end (106). ============ -->
-      <div id="b04-t2-1" class="clip rc-t2 rc-cap rc-on-card" data-start="1.9666" data-duration="0.3667" data-track-index="6" style="--rc-y: 390px; z-index: 4"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="59">planned</span></span></div></div>
-      <div id="b04-t2-2" class="clip rc-t2 rc-cap rc-on-card" data-start="2.3333" data-duration="0.3667" data-track-index="6" style="--rc-y: 390px; z-index: 4"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="70">to</span> <span class="rc-w" data-rc-f="76">take</span></span></div></div>
-      <div id="b04-t2-3" class="clip rc-t2 rc-cap rc-on-card" data-start="2.7000" data-duration="0.8333" data-track-index="6" data-rc-exit-f="3" style="--rc-y: 390px; z-index: 4"><div class="rc-t2__row rc-g"><span class="rc-t2__key"><span class="rc-w rc-w--key" data-rc-f="81">18</span> <span class="rc-w rc-w--key" data-rc-f="88">months.</span></span></div></div>
+      <!-- ============ v03 caption (note 10 + notes 11, 16, 17): ONE lockup above the grid (kit RCK.type.lockups, the kit's own
+           B4 example): "planned to take" (small, stays on screen) over the big Coolvetica Italic keyword "18 months." ("18" =
+           the spoken "eighteen", loose); every word appears on its own spoken frame (planned 59, to 70, take 76, 18 81, months.
+           88); the keyword is this beat's one reveal: "18" and "months." pop + blur in (6f expo.out). Ink centred on x 960, y 330
+           (clears the grid, top y 520); white + glow on the dark card; hard cut out on the beat end (106). ============ -->
+      <div id="b04-lk-1" class="clip rc-lk" data-start="1.9666" data-duration="1.5667" data-track-index="6" style="--rc-y: 330px; --rc-lk-c: 104.2px; z-index: 4"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="59">planned</span> <span class="rc-lw" data-rc-f="70">to</span> <span class="rc-lw" data-rc-f="76">take</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="81">18</span> <span class="rc-lw rc-lw--pop" data-rc-f="88">months.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -95,8 +94,8 @@
       // words.json comp_t (v02); every helper snaps to the nearest frame
       const W = { Race: 0.75, eighteen: 2.699 };     // local 23 (22.5 rounds up), 81
 
-      // T2 groups (rule A): every .rc-cap pops word by word on its onset; the last group exits 103-106 (eased)
-      T.captionPops(tl);
+      // v03 caption: the .rc-lk lockup; plain words hard-cut on their frame, the starred keyword "18 months." pops + blurs in
+      T.lockupsWire(tl);
 
       // L7 push toward the title: 100% on the beat's first frame (local 6) -> 118% on the cut (local 46), easeInOutSine,
       // about the hole centre. Head handle (local 0-5) holds the opening state (100%): the push may never go below 100%, or
