@@ -15,15 +15,22 @@
       /* the R17.4 end card fills the frame (never stretched); the world wrapper is what X.zoom scales */
       #b17-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
       #b17-logo { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
-      /* T10 on the T2 keyword (kit rc-t10--key face, built inside the keyword so "now?" breaks apart in place):
-         the glitch layer carries no shadow, as T10 on black; the clean word keeps T2's soft shadow (over the end card). */
+      /* v03: T10 inside the lockup keyword "now?" (row: Coolvetica Italic 170 px, line-height 170 px): the glitch word
+         inherits the row's face; the three slices cut its cap region (33 .. 147 px of the 170 px line: cap top 0.195 em,
+         baseline 0.867 em) in thirds at 71 / 109 px. The glitch layer carries no shadow (T10 on black); the clean word keeps
+         the lockup glow. */
+      #b17-key { position: relative; display: inline-block; font: inherit; line-height: inherit; white-space: nowrap; }
       #b17-key .rc-t10__glitch { text-shadow: none; }
+      #b17-key .rc-t10__slice--1 { clip-path: inset(-80px -80px 99px -80px); }
+      #b17-key .rc-t10__slice--2 { clip-path: inset(71px -80px 61px -80px); }
+      #b17-key .rc-t10__slice--3 { clip-path: inset(109px -80px -80px -80px); }
     </style>
   </head>
   <body>
-    <!-- B17 b17-loop (v02): beat 186f (6.200s, incl. the 45f logo tail after "now?") + 6f handle each end = 198f.
+    <!-- B17 b17-loop (v03): beat 186f (6.200s, incl. the 45f logo tail after "now?") + 6f handle each end = 198f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.4000s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B17 p.27-28).
+         Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B17 p.27-28).
+         v03: ../../REVISION_v03.md (notes 11-13, 16, 17: lockups, no random zooms: the Tesseract shots are back to v01's framing).
          v02: ../../REVISION_v02.md (note 9: the Trailer 1 opening is the client's clip "Video by madebyajit [0-29s].mp4",
          Lucia in the prison yard, Tesseract-owned; rules A-E).
 
@@ -40,9 +47,9 @@
          f129-186 HF opaque (black, T2 "now?", the R17.4 logo push-in, X4 (8f) + T10 at f161, black tail from f169). tesseract_shots.json.
 
          Layer stack (top -> bottom):
-           z40  T1 captions word by word (low line y 860: Lucia's face fills the upper band) and the T2 groups
-                ("chasing who" --rc-y 880 over the chase shots; "now?" --rc-y 925 on black, clear of the logo's bottom tip at 115%);
-                the T10 glitch lives inside the keyword
+           z40  v03 lockups: "And [GTA 6?]" / "It opens with [Lucia] already caught." (ink centre y 820: Lucia's face fills
+                the upper band), "So who's chasing who" (centred, over the chase cuts), "[now?]*" (170 px, ink centre y 960 on
+                black, clear of the logo's bottom tips at 115%); the T10 glitch lives inside the keyword (#b17-key)
            z30  #b17-x4  X4 tear canvas (8f, seed 8, still mode = B8's v02 break; still = this composition at local 167
                          without text)                                                                    local 167-174
            z20  #b17-stars  M1 five stars, 40 px, row centred on (1700, 80) (plan), pop in on "GTA", blink to the first chase cut
@@ -70,21 +77,16 @@
       <!-- ===== f0-100: M1 wanted stars over the Trailer 1 opening (Lucia in the prison yard) ===== -->
       <div data-hf-id="hf-rai4" id="b17-stars" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="3.5333" data-track-index="3" style="z-index: 20"></div>
 
-      <!-- ===== T1 running captions, word by word, max 2 words (kit captionPlanV2 / captionHTMLV2 from words.json) ===== -->
-      <div data-hf-id="hf-5gba" id="b17-cap-1" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.2333" data-duration="0.2000" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="7">And</span></span></div>
-      <div data-hf-id="hf-2lp3" id="b17-cap-2" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.4333" data-duration="0.9667" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="13">GTA</span> <span class="rc-w" data-rc-f="20">6?</span></span></div>
-      <div data-hf-id="hf-dwx9" id="b17-cap-3" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.4000" data-duration="0.4000" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="42">It</span> <span class="rc-w" data-rc-f="45">opens</span></span></div>
-      <div id="b17-cap-4" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.8000" data-duration="0.4666" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="54">with</span> <span class="rc-w" data-rc-f="60">Lucia</span></span></div>
-      <div id="b17-cap-5" class="clip rc-t1 rc-cap rc-t1--low" data-start="2.2666" data-duration="1.1667" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="68">already</span> <span class="rc-w" data-rc-f="80">caught.</span></span></div>
-      <!-- "So who's" hard-cuts out on "chasing" (local 115 = beat 109), where the T2 lead-in and the second chase cut start -->
-      <div data-hf-id="hf-my23" id="b17-cap-6" class="clip rc-t1 rc-cap rc-t1--low" data-start="3.4333" data-duration="0.4000" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="103">So</span> <span class="rc-w" data-rc-f="106">who's</span></span></div>
-
-      <!-- ===== T2 punch pair, word by word (max 2 words): lead-in "chasing who" (beat 109, over the chase shots), then the
-           keyword "now?" alone (blur-in on "now?", beat 129, on black, 45 px lower than the lead-in line so it stays clear
-           of the logo's bottom tip at 115%); at the final hit (beat 161) "now?" breaks apart with T10 (kit glitch on the
-           keyword, rc-t10--key face) while the X4 tears the logo, then the hard cut to black (beat 169). ===== -->
-      <div data-hf-id="hf-at7q" id="b17-t2-1" class="clip rc-t2 rc-cap" data-start="3.8333" data-duration="0.6667" data-track-index="11" style="--rc-y: 880px; z-index: 40"><div class="rc-t2__row rc-g"><span class="rc-t2__lead"><span class="rc-w" data-rc-f="115">chasing</span> <span class="rc-w" data-rc-f="129">who</span></span></div></div>
-      <div id="b17-t2-2" class="clip rc-t2 rc-cap" data-start="4.5000" data-duration="1.3333" data-track-index="11" style="--rc-y: 925px; z-index: 40"><div class="rc-t2__row rc-g"><span id="b17-key" class="rc-t2__key rc-t10--key"><span class="rc-w rc-w--key" data-rc-f="135"><span class="rc-t10__word">now?</span></span></span></div></div>
+      <!-- ===== v03 captions (notes 11, 16, 17): lockups like ref 1, every word a hard cut on its frame. Over the Trailer 1
+           opening the lockups sit low (ink centre y 820: Lucia's face fills the upper band, as the v02 low line did):
+           "And [GTA 6?]" / "It opens with [Lucia] already caught."; over the chase cuts one centred line "So who's chasing who";
+           on the cut to black the keyword "now?" alone, starred (pop + blur-in on its frame), low (ink centre y 960, 170 px)
+           so it stays clear of the logo's bottom tips at 115%; at the final hit (beat 161) "now?" breaks apart with T10
+           (#b17-key inside the keyword) while the X4 tears the logo, then the hard cut to black (beat 169). ===== -->
+      <div id="b17-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.1667" data-track-index="10" style="--rc-y: 820px; --rc-lk-c: 104.2px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="13">GTA</span> <span class="rc-lw" data-rc-f="20">6?</span></div></div></div>
+      <div id="b17-lk-2" class="clip rc-lk" data-start="1.4000" data-duration="2.0333" data-track-index="10" style="--rc-y: 820px; --rc-lk-c: 135.35px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="42">It</span> <span class="rc-lw" data-rc-f="45">opens</span> <span class="rc-lw" data-rc-f="54">with</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span class="rc-lw" data-rc-f="60">Lucia</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="68">already</span> <span class="rc-lw" data-rc-f="80">caught.</span></div></div></div>
+      <div id="b17-lk-c-1" class="clip rc-lk" data-start="3.4333" data-duration="1.0667" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="103">So</span> <span class="rc-lw" data-rc-f="106">who's</span> <span class="rc-lw" data-rc-f="115">chasing</span> <span class="rc-lw" data-rc-f="129">who</span></div></div></div>
+      <div id="b17-lk-now-1" class="clip rc-lk" data-start="4.5000" data-duration="1.3333" data-track-index="11" style="--rc-y: 960px; --rc-lk-c: 90.27px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 170px; line-height: 170px; height: 170px"><span class="rc-lw rc-lw--pop" data-rc-f="135"><span id="b17-key">now?</span></span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -106,10 +108,10 @@
       const kHit = kLogo + 20;                     // local 167 = beat 161: push lands, final hit (X4 + T10, S19); black from local 175
       const kChase = 106;                          // local 106 = beat 100: first chase cut (Tesseract), on "who's"
 
-      // ---- captions (rule A): T1 and the T2 groups pop word by word (T1 / T2 lead presets, easeOutExpo); the keyword
-      //      "now?" appears on its frame with the T2 blur punch (30 -> 0 px, 108 -> 100%, 6f, easeOutExpo)
-      if (CAPTURE) gsap.set('.rc-cap', { opacity: 0 });
-      else T.captionPops(tl);
+      // ---- captions (v03): lockup words hard-cut in on their frames; the starred keyword "now?" pops + blurs in (blur 20 px,
+      //      92% -> 100%, 6f easeOutExpo) on its frame (local 135 = beat 129, the cut to black)
+      if (CAPTURE) gsap.set('.rc-lk', { opacity: 0 });
+      else T.lockupsWire(tl);
 
       // ---- M1: five stars (40 px, row centred on x 1700, y 80) pop in on "GTA" (3f each, 3f apart, easeOutQuart), then
       //      blink (6f on / 6f off, hard) over the Trailer 1 opening until the first chase cut ----

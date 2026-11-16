@@ -1,4 +1,40 @@
-# B7 Shut it down - `b07-shutdown` (v02 REDESIGN: beat 90f = 3.000 s; composition 102f with 6f handles)
+# B7 Shut it down - `b07-shutdown` (v03; v02 redesign; beat 90f = 3.000 s; composition 102f with 6f handles)
+
+## v03 (REVISION_v03.md; client notes 3, 11, 12, 13, 16, 17) - what changed
+Only what the notes ask; everything else is v02 (the same five shots and cuts, the article headline / sentence framings,
+the spotlight, both highlighter swipes landing on "shut" and "down.", the E push shared with b08-break, 102f).
+* **No red (note 3)**: the three siren-red multiply layers and their flashes are removed; no red tint anywhere. The S06
+  hit sounds stay where they were: `cues.json` unchanged, `stamp1` = 35 (the cut to the headline on "keep"), `stamp2` =
+  56 (swipe 1 lands on "shut"), `stamp3` = 66 (swipe 2 lands on "down.").
+* **Dark article (note 12)**: `04_Broll/B07/R7.GD__…png` is now the browser's dark-mode capture (same layout, same rects
+  in the .json); re-synced with `python3 tools/sync_footage.py hyperframes/b07-shutdown`. The paper behind the headline
+  crop is the page's own black. Highlighter = the kit's v03 dark-page T9 (#FFE14D, screen blend, 50%): the black under the
+  line becomes a muted yellow band, the light text brightens to near white on it; the two strokes are opaque inside one
+  group that blends once (`.b07-hlgroup`; no seam where they meet, hl1 overlaps hl2 by 2 px). Spotlight (L7 look, 65%
+  dim, feathered hole) still works on dark: the spotlit headline / sentence stay at full brightness, the rest of the
+  page drops to ~35%; the dim is pure black here (was #0A0A0A), so the hole leaves no visible box on the #000 page.
+* **Camera (note 13)**: the v02 push 100 -> 108% (A), zoom-out 112 -> 100% (B), push 100 -> 108% (C) and the punch-in
+  112 -> 100% on the headline (D) are gone. A-D share ONE slow push 100 -> 104%, easeInOutSine, from local 0 to the cut to
+  the sentence (58): scale(L) = 1 + 0.04 x sine.inOut(L / 58) (22: 101.26%, 31: 102.22%, 41: 103.21%, 58: 104%), each
+  shot's wrapper playing its own segment of the curve (D about the headline centre). E keeps the article push-in the v02
+  note asked for (the L7 spotlight push: 100 -> 118% + drift, easeInOutSine, one move on the edit clock shared with
+  b08-break; unchanged).
+* **Captions (notes 11, 16, 17)**: v03 lockups (kit `lockups` + `lockupsWire`): centred over the office B-roll and the
+  headline; on the sentence shot the frame centre is the spotlit sentence, so the last lockup sits below it (y 840):
+
+| lockup | spec | words (local f; * = pop + blur) | on screen |
+|---|---|---|---|
+| 1 | `So the people [above]* the team` | So 6, the 9, people 13; above* 22 (the cut to B); the 31, team 35 | 6-41 (shots A, B, C) |
+| 2 | `keep trying` (one small line) | keep 41, trying 48 | 41-58 (the headline) |
+| 3 | `to [shut]* it down.`, ink centre y 840 | to 58; shut* 62 (swipe 1 lands); it 68, down. 72 (swipe 2 lands) | 58-102 (through the tail handle) |
+
+Review stills: `review/v03/` (`sheet_v03.jpg`; every word, the cuts, the headline, both swipes, the clean highlight, the
+B8 continuity frame 96). No render (v03). `check`: 0 errors; warnings = nested markup (dims, highlight group, lockups),
+`line_unread` on voice-timed lockups.
+
+(The v02 section below still applies where this v03 section does not change it.)
+
+---
 
 ## v02 (REVISION_v02.md) - what changed and why
 Client note 3: "at 0:31 the motion graphic is really bad again ... I don't really like the cancelled stamp as well, it

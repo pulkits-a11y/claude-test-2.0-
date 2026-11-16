@@ -1,5 +1,23 @@
 # B11 The flip (v02: the glitch) - `b11-flip` (v02: beat 152f = 5.067 s; composition 164f with 6f handles)
 
+## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
+
+Change only what the notes ask; everything else is the v02 section below (the X4 glitch the client liked, timing,
+footage, arrow, cues `glitch` 17).
+
+| Change | Note |
+|---|---|
+| **Front = B5's camera exactly**: b05-copgame v03 (lane 2) is v01's slow push, eased: scale(L) = 1 + 0.04 x sine.inOut(L / 147); this front plays local 0-31 of it (`B5_SPAN` / `B5_PUSH`). Measured: local 0 / 12 / 22 pixel-identical to b05-copgame (rows 0-450, above the captions) | 13 |
+| **Back side**: v01's held-shot push 100 -> 104% (easeInOutSine) from the cut (31) to the end; v02's punch-in on the cut and keyword punch on "chased." removed | 13 |
+| **Caption lockups** (kit, ref 1), centred on x 960, ink centred on **y 500**: "So the team [flips] the whole game." (6-65; "flips" lands with the glitch, no star), "You're not the [cop] anymore." (65-103), "Now you're the one being [chased.]*" (103-164, "chased." pops + blurs in on 135). Words hard-cut in, lockups hard-cut, above the tear and the arrow (z 30). y 500, not 540: at 540 "So the team" sat on the sunlit concrete of B5's left half (check: 1.64:1); at 500 it sits on the dark bridge underside (warning gone) | 11, 16, 17 |
+| X4 still re-captured (`python3 tools/make_x4_stills.py hyperframes/b11-flip`, `--check`: current); `x4_stills.json` hides `.rc-lk` (was `.rc-cap`) + the arrow | 5 (v02) |
+| Arrow on "Now" unchanged (same geometry, aim still on the getaway car at the 104% push) | |
+
+**Verification (v03)**: `check --json` 0 errors (warnings: kit lockup nesting, `line_unread` "chased." = this beat's
+last line, not the film's). Snapshots `review/v03/` (read; `sheet_a.jpg`, `sheet_b.jpg`, `vs_ref.jpg`): head 0, every
+word 6 ... 135, last clean front 22, the glitch 23/25/27/29/30, the cut 31, the arrow 103/107/111, the "chased." pop
+135-141, 157, 163. If b05-copgame's camera changes again: update `B5_SPAN` / `B5_PUSH`, re-run make_x4_stills. Not rendered.
+
 ## v02 (REVISION_v02.md; client notes 5, 10, 11, 12, 14, 15). Read this first
 
 The v01 sections below are kept as reference; where they disagree with this section (the flip, frames, eases, fonts,

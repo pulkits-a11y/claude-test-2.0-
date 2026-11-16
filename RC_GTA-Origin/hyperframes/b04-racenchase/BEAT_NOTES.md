@@ -1,5 +1,26 @@
 # B4 Race'n'Chase — `b04-racenchase` (v02: beat 100f = 3.333 s; composition 112f with 6f handles. v01: 108f / 120f)
 
+## v03 (REVISION_v03.md, client notes 10, 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
+
+Timing, word frames and cues unchanged (beat 100f, composition 112f, local frame = beat frame + 6). Kit refreshed to v03
+(`python3 tools/new_beat.py B4 --refresh`: kit only, words.json identical).
+
+| What changed | Why (note) |
+|---|---|
+| R4.5 re-synced (`python3 tools/sync_footage.py hyperframes/b04-racenchase`): the DARK (inverted) design-document title page (white letters on near-black paper), same 1700 x 2200 geometry, so the framing, the dim + hole and the highlight box are unchanged | 12 |
+| T9 highlight on "Race'n'Chase": the kit's v03 dark-surface `.rc-t9-hl` (highlighter yellow at 50 %, Screen blend): a translucent yellow band on the dark page, the white letters stay white (v02's 85 % Multiply only tinted the letters on the dark page); same 8f power3.out swipe on "Race" (23) | 12 |
+| Calendar card: the kit's v03 dark card (`.rc-card` = ink + charcoal lift; M3 squares light gray, empty slots a 30 % light outline); no markup change | 12 |
+| Calendar camera back to v01, eased: one push 100 -> 104 % (sine.inOut, 46 -> 106, held through the tail); the v02 punch-in on the cut and the key punch on "eighteen" are deleted (and the nested `#b04-key`). The plan's L7 push 100 -> 118 % on the page is kept (eased) | 13 |
+| Caption: ONE lockup (note 10, the kit's own B4 example): `planned to take [18 months.]*` ("18" = the spoken "eighteen", loose), ink centred on (960, 330) above the grid (grid top y 520): "planned" 59, "to" 70, "take" 76 small (they stay on screen), "18" 81 and "months." 88 big Coolvetica Italic, starred (pop + blur-in: the beat's one reveal, with the 18th square on 81); hard cut out on the beat end 106 (v02: planned / to take / 18 months. groups, 3f exit) | 10, 11, 16, 17 |
+
+**v03 frames** (local): 0-6 dark page at 100 % | 6-46 L7 push 100 -> 118 % | 23-31 T9 swipe | 46 cut to the dark calendar card,
+push 100 -> 104 % starts | 47 ... 81 squares fill 2f apart | 59 "planned" | 70 "to" | 76 "take" | 81 "18" pop + 18th square |
+88 "months." pop | 106 beat end: caption out, calendar at 104 % | 106-112 tail.
+
+**Verification v03**: `check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` = the T9 clip and the lockup markup; craft `line_unread` "film's last line" on a beat segment). Snapshots `review/v03/` (18 frames + `sheet.jpg`; `vs_ref.jpg` = ref 3 / ref 1 next to the dark calendar card + lockup and the dark page + highlight), read: the dark page with the yellow band on "Race'n'Chase", the dark calendar card, "planned to take" staying above the big "18 months." ("18" blurred on 81 with the 18th square, "months." on 88, both sharp by 94), clear of the grid, no punch-in / key punch. Not rendered.
+
+---
+
 ## v02 (REVISION_v02.md, client notes 10-15): read this first; the v01 notes below are kept as reference
 
 **Beat 100f (3.333 s, v01 108f), composition 112f = 3.7333333 s** (root `data-duration`), local frame = beat frame + 6.

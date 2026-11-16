@@ -1,4 +1,34 @@
-# B6 It's dull - `b06-dull` (v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+# B6 It's dull - `b06-dull` (v03; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+
+## v03 (REVISION_v03.md; client notes 9, 11, 12, 13, 16, 17) - what changed
+Only what the notes ask; everything else is v02 (split screen continuing B5 with continuous source time, the B&W drain +
+slow-down to 50% on "dull." (46-52, easeInOutCubic), the cut on "One" (64), the same `remove-background` cut-out, the
+quote / name / role texts, 168f).
+* **The Gary Penn card (note 9)**: static: no X2 slide (60 px), no prop float, no card push (`#b06-x2` / `#b06-push`
+  stay as wrappers at rest); the cut on "One" is a plain hard cut. No white outline (kit `.rc-l5__cutout--no-outline`,
+  soft shadow only). The ground is the kit's v03 dark card (`.rc-l5__ground`: ink with the charcoal radial lift, ref 3);
+  the T8 text is white with the ref 3 glow (`.rc-on-card`, v03). The cut-out keeps its static -4 deg tilt (a set, not an
+  animation; the note does not mention it).
+* **Quote (note 9)**: no type-on. Each word of “awful… too sim-y.” pops + blurs in on its spoken frame (kit `wordPops`,
+  the lockup keywords' pop): “awful… 112, too 129, sim-y.” 135 (words.json; spans `.rc-lw[data-rc-f]`). Name
+  "Gary Penn" + role "DMA DESIGN · GAMASUTRA, 2011" simply appear with the card on 64 (no fade, no typing).
+* **Camera (note 13)**: the v02 zoom-out 108 -> 100% is gone: the split continues b05's ONE slow push (scale = 1 + 0.04 x
+  sine.inOut(k / 147), k = this local + 83; curve frames 83..147), landing on 104% on the cut to the card. The card
+  itself has no push (static, note 9).
+* **Captions (notes 11, 16, 17)**: v03 lockups, centred on the split screen (hard cuts, the keyword pops):
+
+| lockup | spec | words (local f; * = pop + blur) | on screen |
+|---|---|---|---|
+| 1 | `But there's a problem:` (one small line) | But 6, there's 9, a 17, problem: 19 | 6-38 |
+| 2 | `it's [dull.]*` | it's 38; dull.* 46 (with the drain + slow-down) | 38-64 (hard cut to the card) |
+
+`cues.json` unchanged (`dull` = 40). Review stills: `review/v03/` (`sheet_v03.jpg`; each caption word, the drain, the cut
+to the static dark card, the three quote pops). No render (v03). `check`: 0 errors; warnings = nested kit markup (T8,
+lockups), `line_unread` on voice-timed lines, the 22 px role line (kit T8 size).
+
+(The v02 section below still applies where this v03 section does not change it.)
+
+---
 
 ## v02 (REVISION_v02.md; client notes 10, 11, 12, 13, 14, 15) - what changed
 Re-timed to the v02 beat map (VO 115%: beat 166f -> 156f, composition 178f -> 168f, root `data-duration` 5.6000000) and

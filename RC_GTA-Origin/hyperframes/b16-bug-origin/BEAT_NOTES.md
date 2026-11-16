@@ -1,5 +1,23 @@
 # B16 Started with a bug: beat notes (b16-bug-origin)
 
+## v03 (REVISION_v03.md, client notes on v02): what changed
+
+Same beat (113f), composition (125f), words and cues (`{"rewind": 0, "rewind_end": 28, "bug": 95}`) as v02; the rewind and
+X7 stay. Frames = beat frames (local = beat + 6).
+
+| What | v02 | v03 | Why (note) |
+|---|---|---|---|
+| T5 glow line | "The whole series started with a bug." word by word (max 2 words), each word blurring in, two glow copies + a warm leak drifting behind | one v03 lockup on the dark (ink) background, like ref 1: "The whole series / started with a" (small, two lines, every word a hard cut on its frame: The 51, whole 55, series 64, started 74, with 87, a 94) above **"bug."** big in Coolvetica Italic, **starred** = pop + blur-in on its frame (f95 = cue `bug`); held through the tail handle. No glow copies / leak (the kit's lockup replaces the T5 style) | notes 11, 12, 16, 17 (v02 note 8: the word, no chip) |
+| T1 | "So that's" / "why you're" / "always running." (max 2 words, y 620) | one lockup "So that's why you're always [running.]" (So 1 ... always 22 hard cuts, "running." f30 big italic, no pop), out on "The" (f51); ink centre y 660 (not 540) so it clears the document's spotlit title box (y 296-508) while the rewind lands on the page | notes 11, 16, 17 |
+| Design document in the rewind | white 1995 page (R4.5 scan) | the **dark (inverted) page** (REVISION_v03 decisions: "the 1995 design document (B4, B16 rewind) is shown as a dark (inverted) page"): `tools/sync_footage.py` brought the new R4.5 still (same file B4 uses), `tools/make_rewind.py` rebuilt `assets/rewind/b16-rewind.mp4` (same 48 frames, same B14 / B9 sources, same eased B4 zoom 118 -> 100%; only the page changed; map.json identical) | note 12 |
+| Camera | no camera moves in B16 except the plan's B4 push (run backwards in the rewind) | unchanged (no v02 zooms were added here) | note 13 |
+
+Checks: `check --json` **0 errors** (warnings: nested lockup markup, `line_unread` on the lockups as "the film's last line").
+Snapshots `review/v03/` (19 frames + `sheet.jpg`: the rewind with the lockup, the dark document landing, X7, black, every
+word of the "bug." lockup, the pop frames, the tail). Not rendered (v03: snapshots only).
+
+---
+
 ## v02 (REVISION_v02.md, client notes on v01): what changed
 
 Beat **113f** (was 120), composition **125f**, root `data-duration="4.1666667"`. Frames below are v02 beat frames (local =

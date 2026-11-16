@@ -1,5 +1,23 @@
 # B9 Straight through you - `b09-throughyou` (v02: beat 202f = 6.733 s; composition 214f with 6f handles)
 
+## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
+
+Change only what the notes ask; everything else is the v02 section below (timing, footage, strips, cues unchanged).
+
+| Change | Note |
+|---|---|
+| **Zooms removed.** L1 (`tesseract_shots.json`): framing back to v01's held-shot push, keys `[{f:0, scale:100}, {f:120, scale:104, ease:easeInOutSine}]`; v02's punch-in 114 -> 101%, push to 108% and the punch on "straight" are gone. Strips: the plan's 4f punch-in to 115% (`gridPop`) stays; the held push after it is back to v01's x 1.04 (was x 1.06), still one easeInOutSine curve to B10's "fun" cut (`PUSH` = b10-fun's `PUSH`) | 13 |
+| **Caption lockups** (kit `T.lockups` + `T.lockupsWire`, ref 1), centred (960, 540), words hard-cut in on their frames, no exit: T1 "The police cars [stop] following you" (local 7-55) / "and [start] trying" (55-75) / "to drive [straight]* through you." (75-126; "straight" pops + blurs in, the beat's only star). T4 "They [ram.]" (126-149) / "They [chase.]" (149-174) / "They don't [let go.]" (174-208, held to the beat end) | 11, 16, 17 |
+| T4 phrases **centred, not in their strips**: centring fits (each lockup stays inside the middle strip, `maxWidth` 580 < 634.67 px, never across a gutter), so they follow the rest of the captions; "They ram." sits on the still-empty ink middle strip, the other two over strip 2's footage | 16 (my call) |
+| Dark: nothing to change (footage on ink-black gutters) | 12 |
+
+**Verification (v03)**: `npx --yes hyperframes@0.9.52 check --json` 0 errors (warnings: kit lockup markup nesting,
+`first_frame_empty` = transparent head handle, `line_unread` on the voice-timed lockups, e.g. "and start trying" 20f).
+Snapshots `review/v03/` (read): every word onset 7 ... 197, the "straight" pop 86-92, the L3 cut 126/130, 148, 202,
+207, tail 208/213; `sheet_a.jpg`, `sheet_b.jpg`; `comp/*_over-L1.jpg` = the transparent overlay composited over the
+R9.1 source frame (crop, 105% x the 104% push, sat -40%: a look check, not the finish); `vs_ref.jpg` = next to ref 1.
+B9 local 202 / 207 and b10-fun local 0 / 5 measured pixel-identical. Not rendered (v03: snapshots only).
+
 ## v02 (REVISION_v02.md; client notes 4, 10, 11, 12, 14, 15). Read this first
 
 The v01 sections below are kept as reference; where they disagree with this section (frames, the path diagram, eases,

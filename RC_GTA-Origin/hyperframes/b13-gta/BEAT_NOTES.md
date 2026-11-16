@@ -1,5 +1,32 @@
 # B13 Grand Theft Auto: beat notes (b13-gta)
 
+## v03 (REVISION_v03.md, client notes on v02): what changed
+
+Same beat (205f), composition (217f), words and cues as v02; only what the notes ask changed. Frames = v02/v03 beat frames
+(local = beat + 6).
+
+| What | v02 | v03 | Why (note) |
+|---|---|---|---|
+| Title concept | T6 GRAND / THEFT / AUTO typed on behind the 4:3 L6 frame over a blurred copy | **removed** (no T6, no L6 frame, no blurred copy). The GTA 1 intro (R13.1, the DMA D-man) plays **full frame**: the 4:3 picture cover-fitted to 16:9 (top/bottom cropped, centred, never stretched), **darkened** with `media-treatment` (archival colour as before + exposure -0.8, highlights -0.4, whites -0.3: the white floor goes to mid grey, about 110-120 of 255; the D-man keeps his colours). Same in-point: his impact frame still lands on the X3 cut (f80) | note 4, note 12 |
+| Title text | T6 type-on, f124-150 | v03 lockups (kit `lockups` + `lockupsWire`, centred like ref 1): "it ships with \| a new name:" (small, 64 px, two centred lines, every word a hard cut on its frame: it 80, ships 82, with 91, a 98, new 101, name: 105), then hard cut to the title **"Grand Theft Auto."** in Coolvetica Italic 190 px (1444 px wide), each word starred = pop + blur-in on its spoken frame (Grand 124, Theft 130, Auto. 140: full opacity on the frame at blur 20 px / 92%, sharp 6f later, easeOutExpo); the title holds 41f (1.37 s) after "Auto." to the hard cut at f181 | note 4, 11, 16, 17 |
+| Year card | gray #E9E9E9 card, ink digits, T1 "Until finally," in card ink | **dark card** (kit v03: ink + charcoal lift, white digits with the ref 3 glow); "Until finally," = a solo lockup on the card (76 px, `card: true`; Until 1, finally, 10), out on "In" (f27) as before | note 12, 11 |
+| Camera | year card push 100 -> 106%; L6 punch-in 112 -> 100% on the cut + push 100 -> 106% | year card push 100 -> 104% and the footage push 100 -> 104% (cut f80 -> f181), both easeInOutSine (v01's moves, eased); no punch-in | note 13 |
+| X3 flash | eased flash centred on the cut f80 | kept (the plan's transition into the clip): the white frame f80 reveals the D-man's impact and the lockup's "it" | |
+| Tesseract unboxing (L2, f181-205) | 112 -> 101% punch-in + push to 105% | v01's push 100 -> 104%, easeInOutSine (`tesseract_shots.json`) | note 13 |
+
+**Cues: unchanged, nothing renamed** (`{"year_digits": 45, "type_on": 124}`). `type_on` = f124 = the frame "Grand" pops in.
+**FLAG: there is no typing any more**, so the S13 "Type (A B C)" keystrokes (sliced one every 2 letters of the old T6
+type-on by `tools/build_tesseract_audio.py`) have no letters to sit on. The frame is kept; the sound is the lead's call
+(e.g. drop S13, or one soft hit per title word: Grand f124, Theft f130, Auto. f140).
+
+Checks: `check --json` **0 errors**. Warnings weighed: `nested_structure_needs_subcomposition` (kit T3 / lockup markup),
+`first_frame_empty` (frame 0 is the head handle on the dark card), `line_unread` on "a new name:" (voice timing) and on
+"Grand Theft Auto." as "the film's last line" (it is not; B14 follows). Snapshots `review/v03/` (21 frames + `sheet.jpg`:
+every lockup word, the digit roll on the dark card, the flash ramp / cut, each title word's pop frames, the hold, the cut
+to transparent). Not rendered (v03: snapshots only).
+
+---
+
 ## v02 (REVISION_v02.md, client notes on v01): what changed
 
 Beat **205f** (was 214), composition **217f** (205 + 2 x 6f handles), root `data-duration="7.2333333"`. Frames below are

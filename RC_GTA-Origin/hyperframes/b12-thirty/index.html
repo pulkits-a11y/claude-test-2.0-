@@ -26,10 +26,10 @@
          expo.out) from local 5, so the beat's first frame already shows it arriving.
          beat f0     18 squares filled (light, v03 dark card) + the counter "18" (Coolvetica 120 px) at the grid's
                      top-left (kit counterPos "left": right edge 32 px left of the grid, digit top on the grid top);
-                     v03 lockup "Of course," (Of 6, course, 10; above the calendar, ink centred on y 240) until "turn".
+                     v03 lockup "Of course," (Of 6, course, 10; above the calendar, ink centred on y 230) until "turn".
          beat f50    "turn": 12 more squares appear and fill siren red #E3262E, 2f apart (local 56 ... 78) while the counter
                      rolls 18 -> 30 (12 odometer rolls, 2f each, easeInOutQuad), landing on 30 on "thirty" (local 71);
-                     v03 lockup "turn into [thirty.]*": turn 56, into 67 hard-cut in, above the grid (ink centre y 240).
+                     v03 lockup "turn into [thirty.]*": turn 56, into 67 hard-cut in, above the grid (ink centre y 230).
          beat f65    "thirty": counter lands + the starred keyword "thirty." pops + blurs in; S11's hit lands here
                      (Tesseract, cues.json). The lockup hard-cuts out on the beat end (local 84; no exit animation).
          Camera (v03, REVISION_v03 note 13: v01's camera, eased): the calendar pushes 100 -> 104% across the composition
@@ -57,14 +57,14 @@
 
       <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), white + glow on the dark
            card, centred on x 960. The calendar holds the frame centre (its v02 place, kept), so both lockups sit above it
-           with their ink centred on y 240 (lowest ink, the "y" of "thirty.", ~372 px, clears the grid top: 400 -> ~394.5
-           at the 104% push). "Of course," = one centred line at the dark-card size (76 px, kit card: true), Of 6, course,
+           with their ink centred on y 230 (lowest ink, the "y" of "thirty.", ~365 px, clears the grid top: 400 -> ~394.5
+           at the 104% push, by ~29 px). "Of course," = one centred line at the dark-card size (76 px, kit card: true), Of 6, course,
            10, held until "turn" (local 56) as v02; then "turn into" small above-left + "thirty." the big Coolvetica Italic
            keyword, starred: turn 56 / into 67 hard-cut in, "thirty." pops + blurs in on local 71 (= the counter landing on
            30 + S11's hit), held to the beat end (local 84). Generated with T.lockups(w, ['Of course,'], { from: 0, end:
-           56/30, y: 240, card: true }) and T.lockups(w, ['turn into [thirty.]*'], { from: 5, end: 84/30, y: 240 }). -->
-      <div id="b12-lk-of-1" class="clip rc-lk" data-start="0.2000" data-duration="1.6666" data-track-index="9" style="--rc-y: 240px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="6">Of</span> <span class="rc-lw" data-rc-f="10">course,</span></div></div></div>
-      <div id="b12-lk-1" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="4" style="--rc-y: 240px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
+           56/30, y: 230, card: true }) and T.lockups(w, ['turn into [thirty.]*'], { from: 5, end: 84/30, y: 230 }). -->
+      <div id="b12-lk-of-1" class="clip rc-lk" data-start="0.2000" data-duration="1.6666" data-track-index="9" style="--rc-y: 230px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="6">Of</span> <span class="rc-lw" data-rc-f="10">course,</span></div></div></div>
+      <div id="b12-lk-1" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="4" style="--rc-y: 230px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>

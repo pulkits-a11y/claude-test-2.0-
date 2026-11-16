@@ -1,5 +1,31 @@
 # B17 The loop - `b17-loop` (beat 196f = 6.533 s incl. the 46f logo tail; composition 208f with 6f handles)
 
+## v03 (REVISION_v03.md, client notes on v02): what changed
+
+Same beat (186f), composition (198f), words and cues (`{"now": 129, "music_stop": 141, "logo_in": 141, "final_hit": 161}`)
+as v02; only what the notes ask changed. Frames = beat frames (local = beat + 6). Transparent over the Tesseract shots
+(f0-129), opaque from the cut to black on "now?" (f129) as before.
+
+| What | v02 | v03 | Why (note) |
+|---|---|---|---|
+| Captions | T1 word by word on the low line (y 860) + T2 "chasing who" / "now?" (140 px, y 925) | v03 lockups (ref 1; every word a hard cut on its frame): "And [GTA 6?]" f1-36 and "It opens with [Lucia] already caught." f36-97, ink centre **y 820** (centring would cover Lucia's face in the upper band; mock-ups `review/v03/mock/`: the lockups sit on her shirt / the yard, her face stays clear); "So who's chasing who" (one centred line) f97-129 over the chase cuts; **"[now?]*"** alone f129-169: Coolvetica Italic 170 px, ink centre y 960 (clear of the logo's bottom tips at 115%, checked on f160 / local 166), starred = pop + blur-in on its frame (the cut to black) | notes 11, 16, 17 |
+| T10 break on "now?" | inside the T2 keyword | kept: `T.glitch` on `#b17-key`, a span inside the lockup's keyword word; slices re-cut for the 170 px row (cap region 33-147 px, cuts at 71 / 109 px), seed 8, 6f, no settle, with the X4 tear (8f, seed 8) at f161, black from f169 | (unchanged look) |
+| Tesseract framing | band 112 -> 101% punch-in + 101 -> 107% push; chase cuts: punch-in / push 106% / accelerating push 110% | v01's: one band push 100 -> 104% across the Trailer 1 opening (f0-100), eased (easeInOutSine), split at the client clip's own cut f10 (shot 1: 100 -> 100.1%, shot 2: 100.1 -> 104%; anchor kept at the band's top edge); chase cuts static 100% | note 13 |
+| Logo push 100 -> 115% (f141-161) | | unchanged (the plan's move) | |
+| M1 stars (pop + blink, top right) | | unchanged (note 5 is B14's stars) | |
+
+The madebyajit Lucia shots (client clip, credit madebyajit) stay as they were (sources, in-points, crops, `neutralize`
+grade). `x4_still.sh`'s capture mode now hides `.rc-lk` (was `.rc-cap`); the X4 still `assets/x4/b17-old.png` is unchanged
+(the logo frame at 115% did not change).
+
+Checks: `check --json` **0 errors** (warnings: nested lockup markup, frame 0 transparent by design, `line_unread` on "So
+who's chasing who" and "now?" as "the film's last line": the voice timing). Snapshots `review/v03/` (26 frames + `sheet.jpg`,
+magenta = transparent: every lockup word, the "now?" pop, the logo push, the X4 + T10 frames, the black tail) and
+`review/v03/mock/` (the overlay composited over the shots' Tesseract working copies: the Lucia band and the chase cuts).
+Not rendered (v03: snapshots only).
+
+---
+
 ## v02 (REVISION_v02.md, client notes on v01): what changed
 
 Beat **186f** (was 196; incl. the 45f logo tail after "now?"), composition **198f**, root `data-duration="6.6000000"`. Frames

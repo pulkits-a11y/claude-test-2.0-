@@ -1,5 +1,21 @@
 # B12 Eighteen becomes thirty — `b12-thirty` (v02: beat 78f = 2.600 s; composition 90f with 6f handles)
 
+## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
+
+Change only what the notes ask; everything else is the v02 section below (the calendar's opening animation and higher
+position the client liked, the 18 -> 30 overrun and counter timing, cues `thirty` 65).
+
+| Change | Note |
+|---|---|
+| **Dark card** (kit v03, ref 3): `.rc-card` = near-black with the charcoal lift; the M3 calendar on it = light squares (#E9E9E9), siren-red overrun (unchanged), white counter with the glow. No markup change needed | 12 |
+| **Zooms removed**: the calendar push is v01's 100 -> 104% (easeInOutSine, was 106%); the 6% keyword punch on "thirty" and its nested `#b12-key` wrapper removed | 13 |
+| **Caption lockups** (kit, ref 1/3), white + glow, centred on x 960 **above the calendar** (it holds the centre), ink centred on y 230: "Of course," = one line at the dark-card size (76 px, `card: true`), Of 6, course, 10, held to "turn" (56) as v02; "turn into [thirty.]*" (56-84): turn / into hard-cut in, "thirty." pops + blurs in on 71 = the counter landing on 30 = S11's hit. Lowest ink (the "y" of "thirty.") at y 365, grid top 395 at the push: 29 px clear (measured) | 11, 16, 17 |
+
+**Verification (v03)**: `check --json` 0 errors (warnings: kit lockup nesting, `first_frame_empty` = head handle before
+the entrance, `line_unread` on the rolling counter digits). Snapshots `review/v03/` (read; `sheet_a.jpg`, `vs_ref.jpg`
+next to ref 3): head 0, calendarIn 5/6/8/17, every word 6/10/56/67/71, rolls 56-70, the "thirty." pop 71-77, last
+square 78, 83, tail 84/89. Not rendered.
+
 ## v02 (REVISION_v02.md; client notes 6, 10, 11, 12, 14, 15). Read this first
 
 The v01 sections below are kept as reference; where they disagree with this section (frames, position, eases, fonts),

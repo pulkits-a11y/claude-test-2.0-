@@ -1,2 +1,2 @@
 {"events": {"year_digits": 0},
- "note": "v02 beat frames (f0 = 'Here's'). year_digits = the first digit's move (S04): the year card now arrives with the B2 -> B3 zoom-through and its digits roll from the boundary frame (beat f0, landing f14), KIT_transitions v02; v01 rolled on the spoken '1995' (v01 f29). The zoom-through itself is silent (no new sound)."}
+ "note": "v03 = v02 beat frames (f0 = 'Here's'; the words did not move). year_digits = the first digit's move (S04): the year card ('It's 1995' in v03) arrives with the B2 -> B3 zoom-through and its digits roll from the boundary frame (beat f0, landing f14). The zoom-through itself is silent. v03's DMA Design logo appears on 'DMA' (beat f97) with no sound of its own (none planned)."}

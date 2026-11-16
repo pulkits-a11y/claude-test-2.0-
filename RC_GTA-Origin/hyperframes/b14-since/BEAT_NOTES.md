@@ -1,5 +1,30 @@
 # B14 Every GTA since: beat notes (b14-since)
 
+## v03 (REVISION_v03.md, client notes on v02): what changed
+
+Same beat (177f), composition (189f), words and cues (`{"sirens": 132, "whip_mid": 154}`) as v02; only what the notes ask
+changed. Frames = beat frames (local = beat + 6). Still a transparent overlay over Tesseract's footage (except the four X9
+embed frames).
+
+| What | v02 | v03 | Why (note) |
+|---|---|---|---|
+| M1 hero stars | scale pop (0 -> 100% in 3f, easeOutQuart), 3f apart | **glitch in** (kit `starsGlitchIn`, `stepF: 3, frames: 6`): each star appears through 6 frames of RGB split (siren red / blue copies), 3-slice jitter and 2 flicker frames, hard per-frame cuts, then clean; starts f91, 94 ... 106, all clean by f112 ("stars." f108); out with the cut to the police lights (f126) as before | note 5 |
+| X5 blinds close (f169-177) | slats shut into B15 | **removed** (no `.rc-x5`, no `blindsClose`): hard cut into B15 at f177; the escape's Tesseract `exit` is now X1 | note 6 |
+| Captions | T1 "that chase." + T4 groups in their own spots (top-left / centre-right / bottom-left), max 2 words | v03 lockups (centred, ref 1; every word a hard cut on its frame): "that [chase.]" f59-91; "The [wanted stars.]*" f91-126 placed UNDER the six stars (ink centre y 800; the stars sit at y 480-600), the keyword words pop + blur in (wanted f96, stars. f108: the beat's reveal, with the stars' glitch); "The [sirens.]" f126-153 and "The [running.]" f153 to the end, centred. Still no captions during the burst (C15) | notes 11, 16, 17 |
+| Tesseract framing | punch-ins / pushes to 107% / zoom-out (framing v2) | v01's: burst static 100%; GTA 5 chase push 100 -> 104%; police lights static 100% (the X9 embed at 100% still matches); escape push 100 -> 104%; all easeInOutSine | note 13 |
+
+Readability over the footage was checked on mock-ups (the overlay snapshots composited over the shots' Tesseract working
+copies, `review/v03/mock/`): "that chase." over the coast highway, "The wanted stars." over the road under the stars,
+"The sirens." over the police car (the dark shadow under the glow carries "The" over the white roof), "The running." over
+the beach.
+
+Checks: `check --json` **0 errors** (warnings: 22 px year tags = the plan's L10 size, nested lockup markup, track density,
+`line_unread` "last line"). Snapshots `review/v03/` (24 frames + `sheet.jpg`, magenta = transparent: every lockup word,
+the star glitch-in frame by frame, the X9 frames, the end), `review/v03/mock/` (7 composites + `sheet_mock.jpg`).
+Not rendered (v03: snapshots only). B16's rewind is unaffected (it reads B14's source in-points and crops, not the framing).
+
+---
+
 ## v02 (REVISION_v02.md, client notes on v01): what changed
 
 Beat **177f** (was 188), composition **189f**, root `data-duration="6.3000000"`. Frames below are v02 beat frames (local =

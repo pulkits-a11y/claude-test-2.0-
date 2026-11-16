@@ -1,5 +1,22 @@
 # B10 It's fun - `b10-fun` (v02: beat 54f = 1.800 s; composition 66f with 6f handles)
 
+## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
+
+Change only what the notes ask; everything else is the v02 section below (timing, flash, cues `fun` 35, footage).
+
+| Change | Note |
+|---|---|
+| **Zooms removed.** R10.1 L1 (`tesseract_shots.json`): framing back to v01's static 100% (v01: "No push on the 20f L1 shot"), keys `[{f:0, scale:100}, {f:19, scale:100, ease:easeInOutSine}]`; v02's 125 -> 101% burst out of the flash and the drift to 102% are gone. B9's strips: the continued held push is v01's x 1.04 (was x 1.06), same curve as b09-throughyou | 13 |
+| **Caption lockup** "And suddenly, \| it's [fun.]*" (kit `T.lockups`, ref 1, centred): And 7, suddenly, 11, it's 34 hard-cut in; the starred keyword "fun." pops + blurs in on local 41 = the X3 flash's 100% frame = S09 + the MU5 drop (under the flash, as v02); holds to the beat end (60), hard cut (no exit). `\|` keeps "And suddenly," on one line (the auto balance put "And" alone) | 11, 16, 17 |
+| Head handle: B9's last lockup "They don't [let go.]" held (local 0-6), hard cut out on beat f0; v02's exit tween removed | 11 |
+| Dark: nothing to change (footage) | 12 |
+
+**Verification (v03)**: `check --json` 0 errors (warnings: kit lockup nesting, `line_unread` on the 6f head handle and
+the voice-timed words). Snapshots `review/v03/` (read, `sheet_a.jpg`): head 0/5, the cut 6, every word 7/11/34, the
+flash 38-46 with the "fun." pop 41-46, settled 47, 59, tail 60; `comp/*_over-L1.jpg` = after the flash over the R10.1
+source frame (look check); `vs_ref.jpg` = next to ref 1. Local 0 / 5 = b09-throughyou local 202 / 207 pixel-identical.
+Not rendered.
+
 ## v02 (REVISION_v02.md; client notes 10, 11, 12, 14, 15). Read this first
 
 The v01 sections below are kept as reference; where they disagree with this section (frames, eases, fonts), this

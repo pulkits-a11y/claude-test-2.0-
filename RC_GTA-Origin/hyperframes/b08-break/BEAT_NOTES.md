@@ -1,4 +1,26 @@
-# B8 The break - `b08-break` (v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+# B8 The break - `b08-break` (v03; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+
+## v03 (REVISION_v03.md; client notes 3, 11, 12, 13, 16, 17) - what changed
+Only what the notes ask; everything else is v02 (b07's article shot E continued with the same framing and the same eased
+push to "breaks", the X4 tear 39-46 (8f, seed 8), the first black on 47, T10 "breaks." (glitch 47-52, clean 53-64), the
+silence, 71f).
+* **Dark article (notes 3, 12)**: the page is b07's dark-mode capture (re-synced: `python3 tools/sync_footage.py
+  hyperframes/b08-break`) with b07's dark-page highlight (both strokes landed, one group, screen 50%) and the same
+  spotlight (pure-black 65% dim). b07 f96 vs this f6 (the cut): mean pixel difference 0.07 / 255 above the lockups.
+* **X4 still rebuilt** from this composition's new frame 39 (`sh hyperframes/b08-break/x4_still.sh`):
+  `assets/x4/b08-old.png` = the dark page, highlight landed, no caption.
+* **Camera (note 13)**: nothing to remove (no zoom of its own; the article push is b07's E move, unchanged).
+* **Caption (notes 11, 16, 17)**: the v03 lockup `Then, something` (one small line; "Then," on 7, "something" on 25, hard
+  cuts, no animation) below the spotlit sentence (ink centre y 840, as b07's last lockup); it leaves at the tear (39).
+  T10 "breaks." is unchanged.
+
+`cues.json` unchanged (`breaks` 33, `first_black` 41). Review stills: `review/v03/` (`sheet_v03.jpg`; the cut from B7,
+each word, the tear frames, the black + T10). No render (v03). `check`: 0 errors; warnings = nested markup, the 12f
+closing word (plan).
+
+(The v02 section below still applies where this v03 section does not change it.)
+
+---
 
 ## v02 (REVISION_v02.md) - what changed and why
 Re-timed to the v02 beat map (VO 115%: 63f -> 59f, composition 75f -> 71f, root `data-duration` 2.3666667) and the

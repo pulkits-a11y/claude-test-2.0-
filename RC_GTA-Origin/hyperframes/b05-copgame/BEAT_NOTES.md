@@ -1,4 +1,40 @@
-# B5 The cop game - `b05-copgame` (v02: beat 83f = 2.767 s; composition 95f with 6f handles)
+# B5 The cop game - `b05-copgame` (v03; timing v02: beat 83f = 2.767 s; composition 95f with 6f handles)
+
+## v03 (REVISION_v03.md; client notes 11, 13, 16, 17) - what changed
+Only what the notes ask; everything else is v02: the same L11 split (same footage windows / crops / positions; B11 copies
+this front framing), the same M2 arrow (seed 7, same geometry, "you" on 20) and X9 wash (33-36), no SFX, 95f.
+* **Camera (note 13, back to v01's camera)**: the v02 push 100 -> 108%, b06's zoom-out and the keyword punch on "police"
+  are gone (the nested `.lc-key` punch wrapper is removed; the video sits directly in `.lc-push`, same 958 x 1080 box,
+  object-fit cover). Now ONE slow push 100 -> 104% inside each half (`.lc-push`, origin = the half's centre; the L11
+  frame never moves), easeInOutSine, on the edit clock shared with b06-dull: from B5 local 0 (edit 600) to b06's cut to
+  the quote card on "One" (B6 local 64 = edit 747), 147 frames:
+  **scale(B5 local L) = 1 + 0.04 x sine.inOut(L / 147)**, sine.inOut(x) = (1 - cos(pi x)) / 2: local 0 100%, 22
+  100.217%, 31 100.423%, 89 (the B5/B6 cut) 102.650%, 94 102.848%; b06 lands on 104% at its local 64. In code:
+  `C.push(tl, '#b05-split .lc-push', 0, { until: f(95), from: 1, to: 1 + 0.04 * SIN(95 / 147), ease: seg(0, 95 / 147) })`
+  (`SIN = gsap.parseEase('sine.inOut')`, `seg(a, b)` = that segment of the curve renormalised). b06 plays curve frames
+  83..147; the cut is seamless (B5 f89 vs B6 f6: picture identical above the captions, mean difference 0.0).
+* **Captions (notes 11, 16, 17)**: the v02 word-pop groups are replaced by v03 lockups (kit `RCK.type.lockups` +
+  `lockupsWire`, ref 1 layout): small Coolvetica words + one big Coolvetica Italic keyword, centred; every word hard-cuts
+  in on its spoken frame (no animation); only the starred keyword pops + blurs in (kit POP3: on its frame at blur 20 px /
+  92%, sharp 6f later, easeOutExpo). Lockups replace each other with a hard cut.
+
+| lockup | spec | words (local f; * = pop + blur) | on screen |
+|---|---|---|---|
+| 1 | `In it, you play` (one small line, 64 px) | In 7, it, 9, you 20, play 25 | 7-31 |
+| 2 | `a [police officer]*` | a 31; police* 33 (with the X9 wash), officer* 42 | 31-53 |
+| 3 | `chasing [criminals.]`, ink centre y 600 | chasing 53, criminals. 64 | 53-95 (through the tail handle) |
+
+  Lockup 3 sits 60 px below centre so the small "chasing" is on the dark road / taxi shadow, not on the bright yellow taxi
+  (at y 540 `check` flagged it, 2.38:1 at two samples). The arrow head stays clear of "criminals.".
+* **Dark (note 12)**: nothing here (footage only, no card).
+
+Review stills: `review/v03/` (`sheet_v03.jpg` + every caption change, the pops, the arrow, the cut, the tail). No render
+(v03: snapshots only). `check`: 0 errors; warnings = the kit's nested lockup markup, `line_unread` on voice-timed lockups,
+contrast on two small words over bright footage at one sample each ("In" 2.9:1, "a" 2.76:1; readable with the kit glow).
+
+(The v02 section below still applies where this v03 section does not change it.)
+
+---
 
 ## v02 (REVISION_v02.md; client notes 10, 11, 12, 14, 15) - what changed
 Re-timed to the v02 beat map (VO 115%: beat 88f -> 83f, composition 100f -> 95f, root `data-duration` 3.1666667) and

@@ -1,7 +1,7 @@
 {
  "tool": "tools/make_x4_stills.py",
  "cli": "hyperframes@0.9.52",
- "captured_utc": "2026-11-16T17:43:03Z",
+ "captured_utc": "2026-11-16T17:52:08Z",
  "stills": {
   "assets/x4/b11-old.png": {
    "frame": 23,
@@ -16,7 +16,7 @@
   }
  },
  "inputs": {
-  "index.html": "f209d4cbd562b8d8826c0195e12427bbe25dd32a4ad7563f11e46a74381139f5",
+  "index.html": "971d3969c546e5a30bef04b9b345f1e557e47a2cb3edb6257bfd6f0d7386c116",
   "x4_stills.json": "8ebc1b905e9f0d1b7358273776e61a6c8c7ff009f2755d79ed92f450bd1c8b16",
   "assets/footage/R5.1.mp4": "20e140153bc71adbc4380fbc00334fdb616d1e654f730da93b9ed05996ccdee9",
   "assets/footage/R5.2.mp4": "daa7dc47c24fe9b2412fb7c8a40d6abfaaa4d12c163a6c6a98b3b6112710af7f",
@@ -30,7 +30,7 @@
   "assets/kit/transitions.css": "1ed6a0ad32e5bf644fe9b4af74b33d9409151ce1dc717e79817bf053f61d1b0d",
   "assets/kit/transitions.js": "25d4369307be9a594a677a730c7d646f25a611b3ff6ac046f970a2e2dc292642",
   "assets/kit/type.css": "4e5ffe7c1b9f7a13009f117a5b9294c30e5b8a0126de5a4f8e64b61b8aaf0f64",
-  "assets/kit/type.js": "9bb15e3bbaca802620d65b051d5b002553454d18a1d82a5ee044d5bda6a65e62",
+  "assets/kit/type.js": "763d2c6b969a090de8e79a886b18d2dceb98cddd07e74c6d227149ef406f42b7",
   "assets/kit/fonts/Coolvetica-Italic.otf": "c0c69a732b4728ffd8a4b993b2155eb345066f0849d4316e322e23bb1ffd7cff",
   "assets/kit/fonts/Coolvetica-Regular.otf": "a7a9b31bc65d442ca97aa33dd588de36a4bb1f6105492a55bfb055ed86398546",
   "assets/kit/fonts/InstrumentSerif-Italic.ttf": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385",

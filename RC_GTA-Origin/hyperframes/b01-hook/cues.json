@@ -1,2 +1,2 @@
 {"events": {"gta6_cell_full": 55, "cops": 119},
- "note": "v02 beat frames (f0 = 'Why'). gta6_cell_full = the frame the GTA 6 cell fills the screen (S01 peak); cops = 'cops?' onset (S02, X9 wash, T2 keyword, picture key punch)."}
+ "note": "v03 = v02 beat frames (f0 = 'Why'; the words did not move). gta6_cell_full = the frame the GTA 6 cell fills the screen (S01 peak); cops = 'cops?' onset (S02, X9 wash, and the caption lockup's keyword 'cops?' popping + blurring in; v03 removed v02's picture key punch on it)."}

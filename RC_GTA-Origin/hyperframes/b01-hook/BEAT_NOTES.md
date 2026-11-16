@@ -1,5 +1,26 @@
 # B1 Hook - `b01-hook` (v02: beat 134f = 4.467 s; composition 146f with 6f handles. v01: 143f / 155f)
 
+## v03 (REVISION_v03.md, client notes 8, 11, 13, 16, 17): read this first; v02 and v01 below are kept as reference
+
+Timing, footage, word frames and cues unchanged (beat 134f, composition 146f, local frame = beat frame + 6). Kit refreshed
+to v03 (`python3 tools/new_beat.py B1 --refresh`: kit only, words.json identical). Change only what the notes ask:
+
+| What changed | Why (note) |
+|---|---|
+| L4 grid: kit modifier `.rc-l4--ink` = every tile is a DARK tile in the dark-card ink (`--card-bg` #0A0A0A, not pure black) with the faint 1 px grid line; the gaussian-blur copy of R1.2 (`#b01-frost-blur`, media-treatment blur) is deleted. Only the two centre tiles (5, 6 = row 2, columns 2-3, the two police cars) show the footage: they clear from dark on "Why" (7) and "does" (15), 3f power2.out (v02's clear timing). Head handle and beat f0 = the dark grid | 8 |
+| Camera back to v01, eased: L4 plate push 100 -> 104 % (sine.inOut, local 0 -> 26; was the v02 zoom-out 110 -> 100 %); no punch-in on the L3 cut (`#b01-gcam` deleted); held GTA 6 push 100 -> 104 % (sine.inOut, 61 -> 140, held through the tail; was 108 %); no key punch on "cops?" (`#b01-cam` deleted). B2's hand-off copy follows the new 104 % curve | 13 |
+| Captions: v03 lockups (kit `T.lockups` + `T.lockupsWire`), centred (960, 540): small Coolvetica 60 px + one Coolvetica Italic 190 px keyword: `[Why] does` (7-26) / `every GTA, even [GTA 6,]` (26-93) / `have you running \| from the [cops?]*` (93-140). Every word appears on its own spoken frame (hard cut, no animation); only "cops?" pops + blurs in (6f expo.out, with the X9 wash); lockups hard-cut into each other; the last one cuts out on the boundary 140 (v02: 3f eased exit). The kit drops "does" below the "y" descender | 11, 16, 17 |
+| Kept: R1.2 L4 moment, L3 cells and the grow (power3.out), M1 stars pop at (1640, 80), X9 wash on "cops?", contrast grade, all frames | "change only what the notes ask" |
+
+**v03 frames** (local; beat = local - 6): 0-6 dark grid (head + beat f0) | 7 "Why" (big) + tile 5 clears | 15 "does" + tile 6
+clears | 26 cut to L3, "every" | 40 "GTA," | 55 "even" + grow | 61 GTA 6 full (S01), push starts | 69 / 80 "GTA 6," (big) |
+93 "have" + stars | 98 "you" | 105 "running" | 114 "from" | 120 "the" | 125 "cops?" pop + blur (X9 red 125-126, blue 127-128,
+S02) | 131 sharp | 140 boundary: caption gone, picture at 104 % | 140-146 tail.
+
+**Verification v03**: `npx --yes hyperframes@0.9.52 check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` = the kit's lockup markup; craft `line_unread` "film's last line" on a beat segment; v02's `duplicate_media_discovery_risk` is gone with the frosted copy). Snapshots `review/v03/` (22 frames `f<local>_<what>.png` + `sheet.jpg`; `vs_ref.jpg` = ref 1 next to the lockups and the dark grid), read: dark tiles with faint grid lines, only the centre tiles show footage (clearing on "Why" / "does"), every lockup word on its frame, "cops?" blurred on 125 and sharp by 131, no zoom on the cut or on "cops?", nothing cut off. Seam: B1 local 140 = B2 local 6, pixel-identical outside the stars (mean diff 0.000). Not rendered (v03: snapshots only).
+
+---
+
 ## v02 (REVISION_v02.md, client notes 10-15): read this first; the v01 notes below are kept as reference
 
 **Beat 134f (4.467 s, v01 143f), composition 146f = 4.8666667 s** (root `data-duration`), local frame = beat frame + 6.

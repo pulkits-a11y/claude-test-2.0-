@@ -1,5 +1,25 @@
 # B2 The bug - `b02-bug` (v02: beat 169f = 5.633 s; composition 181f with 6f handles. v01: 180f / 192f)
 
+## v03 (REVISION_v03.md, client notes 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
+
+Timing, footage, word frames and cues unchanged (beat 169f, composition 181f, local frame = beat frame + 6). Kit refreshed
+to v03 (`python3 tools/new_beat.py B2 --refresh`: kit only, words.json identical).
+
+| What changed | Why (note) |
+|---|---|
+| Camera back to v01, eased: CRT plate push 100 -> 104 % (sine.inOut, local 14 -> 169; was 108 %); the v02 key punches on "broke." (101) and "bug" (147) are deleted (and the nested `#b02-key` wrapper); the hand-off band copy (local 0-6) finishes B1's new 104 % curve. The 0:10 zoom-through OUT is kept: x1.4 on top of the push (104 -> 145.6 %) + 16 px blur, expo.in, 169-174, held through the tail | 13 |
+| Captions: v03 lockups (kit), small 60 px + Italic 190 px keyword: `Because back in [1995,]` (7-61) / `a game about chasing criminals [broke.]` (61-131) / `And that [bug]* saved it.` (131-175). Words appear on their spoken frames (hard cuts); only "bug" pops + blurs in; hard cut out on the boundary 175 (v02: 3f eased exit). **Placement**: ink centred on y 540 but x 1200, not 960 (`padding-left: 480px` on the three lockups): the CRT picture and the error box fill x 230-905, and a lockup on x 960 covered the error box's text and close button (snapshot); at x 1200 it clears them by ~50 px, over the developer's head | 11, 16, 17 |
+| Error box: the kit's v03 dark Windows 95 dialog (charcoal face, near-black title bar, white text), no markup change | 12 |
+| Kept: R3.7 plate, X6 into the CRT, GTA 6 -> GTA 1 cut on "1995,", X4 tear + freeze on "broke.", error box pop (109), flicker, all frames | |
+
+**v03 frames** (local): 0-6 hand-off (B1's push tail, 104 % on 6) | 6-14 X6 | 7 "Because" | 19 "back" | 27 "in" | 30 "1995,"
+(big) + cut to GTA 1 | 61 / 62 "a game" | 69 "about" | 75 "chasing" | 88 "criminals" | 101 "broke." (big) + X4 tear | 109 dark
+error box | 131 "And" | 142 "that" | 147 "bug" pop + blur | 154 "saved" | 162 "it." | 169-174 zoom-through out | 175 boundary.
+
+**Verification v03**: `check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` = the lockup markup; craft `line_unread` on the error box text as "last line"; v02's caption contrast warnings are gone: the lockups sit on the developer's dark hair). Snapshots `review/v03/` (23 frames + `sheet.jpg`; `vs_ref.jpg` = ref 1 next to the lockups and the dark error box), read: words on their frames, "bug" blurred on 147 and sharp by 153, lockups clear of the CRT and the error box, no punch on "broke." / "bug", the zoom-through frames 169-175 as v02 (from 104 %). Seam with B1 checked (see B1). Not rendered.
+
+---
+
 ## v02 (REVISION_v02.md, client notes 1, 8, 10-15): read this first; the v01 notes below are kept as reference
 
 **Beat 169f (5.633 s, v01 180f), composition 181f = 6.0333333 s** (root `data-duration`), local frame = beat frame + 6.

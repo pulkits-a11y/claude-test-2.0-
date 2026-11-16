@@ -1,5 +1,32 @@
 # B3 1995, Dundee - `b03-dundee` (v02: beat 203f = 6.767 s; composition 215f with 6f handles. v01: 215f / 227f)
 
+## v03 (REVISION_v03.md, client notes 1, 2, 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
+
+Timing, word frames and cues unchanged (beat 203f, composition 215f, local frame = beat frame + 6). Kit refreshed to v03
+(`python3 tools/new_beat.py B3 --refresh`: kit only, words.json identical).
+
+| What changed | Why (note) |
+|---|---|
+| Year card text: **"It's 1995"** (the T3 lead-word slot: `<div class="rc-t3__in">It's</div>`, small italic above-left of the year, like ref 1); the card is the kit's v03 dark card (ink + charcoal lift, white digits with the ref 3 glow). Zoom-through IN kept; card push 100 -> 104 % (sine.inOut, 6 -> 61; was 106 %) | 1, 12, 13 |
+| "DMA Design," is NOT spelled out any more: the **DMA Design logo** (your cut-out with transparency, `04_Broll/B03/DMA-logo__cutout_full.png`, copied to `assets/dma/`: figure + "DMA Design" lettering) appears centred over the B-roll (305 x 460 px, downscaled from 456 x 687, ink centred on 960, 540, soft drop shadow 0 4 18 px 55 % so the white lettering reads on the bright office), on "DMA" (103) with the kit's starred-word pop + blur-in (`T.wordPops` on `#b03-logo-pop`: full opacity on 103 at blur 20 px / 92 %, sharp 100 % on 109, expo.out; no zoom, outside the camera), held through "Design," to the hard cut on "the" (135). The v02 kinetic "DMA / Design," type is deleted | 2 |
+| DMA section camera: the v02 punch-ins on the cuts (103, 110, 135, 157) and the per-shot pushes (incl. the accelerating 100 -> 120 % on the Lemmings box) are deleted; the cuts stay; only v01's one slow push across the section, 100 -> 104 % (sine.inOut, 103 -> 175) | 13 |
+| Captions -> v03 lockups (kit), centred (960, 540): `[Dundee,] Scotland.` (61-103, over the Tesseract Dundee band, on the town below the Law; the monument stays clear) / `the studio behind [Lemmings,]` (135-175, over the map / box / Lemmings intro) / `starts a [new game.]` (175-215, over the Tesseract BBC band, through the tail). Words appear on their spoken frames (hard cuts); no starred word (the logo is the beat's one pop + blur-in). The v02 T4 pair, the kinetic-type layouts (`.b03-kt` / `.b03-kw` CSS) and the T1 groups are deleted | 11, 16, 17 |
+| `tesseract_shots.json`: framing back to v01, eased: both L2 bands `keys [{f: 0, scale: 100}, {f: <end>, scale: 104, ease: easeInOutSine}]` (Dundee band f42, was 107 %; BBC band f34, was a 112 -> 100 % punch-in + push); X2 drift and letterbox unchanged; notes updated | 13 |
+
+**v03 frames** (local): 0-6 card at 130 % + blur | 6 boundary, zoom-through in, digits roll 6/8/10/12 | 15 landed | 20 "It's
+1995" complete | 61 cut (Tesseract Dundee band), "Dundee," (big) | 76 "Scotland." | 103 cut to the door plate, logo pops |
+109 logo sharp | 110 cut to the staffer | 135 cut to the map, "the" | 139 "studio" | 148 cut to the box, "behind" | 157 cut to
+the Lemmings intro, "Lemmings," (big) | 175 cut (Tesseract BBC band), "starts" | 185 "a" | 188 / 192 "new game." (big) |
+209 beat end | 215 tail end.
+
+Known: over the Lemmings box shot (148-156) the small "the studio behind" sits on the bright window light (check: contrast
+1.3:1, 9 frames); it stays readable through the kit glow's dark shadow (`review/v03/f148_behind-box.png`); moving the lockup
+would cover the walking lemmings in the next shot, so it stays centred.
+
+**Verification v03**: `check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` = kit T3 / lockup markup; contrast 1.3-1.4:1 on "the studio behind" over the Lemmings box's window light (148-156, see Known above); craft `line_unread` "film's last line" on a beat segment). Snapshots `review/v03/` (27 frames + `sheet.jpg`; `vs_ref.jpg` = ref 3 / ref 2 / ref 1 next to the dark year card, the logo and a lockup), read: "It's 1995" on the dark card, the logo centred with its lettering readable (pop 103, sharp 109, gone on 135), no punch-ins on the cuts, lockup words on their frames, transparent where Tesseract owns the picture (61-102, 175-214). Not rendered.
+
+---
+
 ## v02 (REVISION_v02.md, client notes 1, 2, 10-15): read this first; the v01 notes below are kept as reference
 
 **Beat 203f (6.767 s, v01 215f), composition 215f = 7.1666667 s** (root `data-duration`), local frame = beat frame + 6.

@@ -1,5 +1,37 @@
 # B15 The proof — `b15-proof` (lane B)
 
+## v03 (REVISION_v03.md, client notes on v02): what changed
+
+Same beat (167f), composition (179f), words and cues (`{"label": 139, "zoom_mid": 154}`) as v02; only what the notes ask
+changed. Frames = beat frames (local = beat + 6).
+
+| What | v02 | v03 | Why (note) |
+|---|---|---|---|
+| X5 blinds open (f0-8) | slats open onto the arcade | **removed** (no `.rc-x5`, no `blindsOpen`): hard cut from B14 on f0; the head handle shows the arcade interior at 100% | note 6 |
+| **Proof shot (R15.1)** | labelled stand-in (Race and Chase gameplay missing) | **R15.L1**, a real clip from the client's Drive library: `04_Broll/_originals/Drive2/Grand Theft Auto VI An Extended Look   Now Playing   Netflix.mp4` (Drive id 1hQEweZ2KaM0rARQbyRiPiDbLsSfq6tjN; Rockstar's official GTA VI "An Extended Look", 3840x2160 30 fps), **in 14.10 s, out 14.87 s** (working clip 14.10-15.10): GTA 6 gameplay, a dirt-bike race up a dusty hill, the player's green bike in a pack of riders, the game's race HUD (LAP 1/2, position 11/12, race timer, minimap); no captions, no watermark. Cut in exactly like the stand-in: inside the cabinet screen during the X6 zoom (fades in f150-153), then full frame from the landing f158 (handoff at the same media time) to the tail end | note 7 |
+| Camera | interior push 100 -> 108% + keyword punches on "arcade." / "machines" (nested wrapper); full-frame push 100 -> 106% | interior push 100 -> 104% (f0 -> f124) and full-frame push 100 -> 104% (f158 -> end), both easeInOutSine; no punches, no nested wrapper. The L7 spotlight push 100 -> 118% and the X6 zoom (1379%) are the plan's moves and stay | note 13 |
+| Captions | T1 word by word, max 2 words, y 620, eased 3f exit on "Race" | v03 lockups (centred, ref 1; words hard-cut in on their frames): "Don't believe me?" (solo) f0-25 / "Open [GTA Online]* and buy an arcade." f25-94 (the keyword pops + blurs in: GTA f33, Online f39) / "One of the [machines] is called" f94-139, hard cut out on "Race". "Race and Chase." still has no caption (as v02: the game's own RACE AND CHASE: STREET LEGAL heading in the spotlight is the proof; v02 note 7 removed the label) | notes 11, 16, 17 |
+
+Why this clip: the library has no Race and Chase arcade footage; the brief asked for GTA gameplay of a chase or a race,
+without captions or watermark. Checked: `vice city game play panzer.mp4` (Vice City tank rampage at Fort Baxter: a
+rampage, not a race or chase; mission subtitle / help box burned in at times), `gta city.mp4` (vertical night aerial,
+no gameplay), `fast clip.mp4` (2 s fan edit), the Vice City 10th Anniversary trailer and the Vice City DE fan trailer
+(cutscenes / fan CGI with title cards), GTA VI Trailers 1 and 2 (cinematics, news overlays), the fan edits and montages
+in `Drive2/` (burned-in captions, logos, watermarks). The race shot of the official GTA VI gameplay video reads as "Race"
+in the ~0.8 s it is on screen (race HUD, pack of riders) and is not used anywhere else (B17 uses other moments of the
+same video: 7.2 s and 11.9 s). Only the chosen file was kept in `Drive2/`; the others were deleted after the look.
+`footage.json`: R15.L1 is manifest-free (not in `broll_manifest.json`), so it is recorded under `moments` but not in
+`rids` (`tools/sync_footage.py` would stop on an unknown R-ID); its working clip was cut by hand with sync_footage's recipe
+(command in the note). R15.1's stand-in copy was removed from `assets/footage/`.
+
+Checks: `check --json` **0 errors** (warnings: nested lockup markup, `line_unread` on the lockups the voice forces and
+"last line"). Snapshots `review/v03/` (26 frames + `sheet.jpg`: head handle without slats, every lockup word, the
+"GTA Online" pop, the cut to the catalogue, the spotlight push, the X6 zoom frames with the race picture in the cabinet
+screen, the landing and the full-frame proof shot) and `review/v03/clip/` (the zoom + landing on the new clip). Not
+rendered (v03: snapshots only).
+
+---
+
 ## v02 (REVISION_v02.md, client notes on v01): what changed
 
 Beat **167f** (was 178), composition **179f**, root `data-duration="5.9666667"`. Frames below are v02 beat frames (local =
