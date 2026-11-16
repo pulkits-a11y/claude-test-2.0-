@@ -49,11 +49,11 @@
    "scanlineCount": 0.1126,
    "chromaticAberration": 0.0931
   },
-  "GTA 1 picture (R9.1, 537x406)": {
+  "GTA 1 picture (R9.1, 4:3 crop 536:402:260:53 = watermark excluded, fills the 537x406 screen)": {
    "crtCurvature": 0.16,
    "scanlines": 0.15,
    "scanlineCount": 0.1896,
-   "chromaticAberration": 0.0693
+   "chromaticAberration": 0.0924
   }
  },
  "plan_values": {
