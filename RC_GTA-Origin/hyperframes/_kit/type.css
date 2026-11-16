@@ -8,7 +8,18 @@
    - No CSS transform on anything GSAP transforms (start states are set by the type.js helpers).
    - --rc-y = vertical centre of the text line (px on the 1920 x 1080 canvas). Title-safe: 96 px left/right, 54 px top/bottom.
    - Colour: white + soft shadow by default (text on footage / on black). Add class "rc-on-card" (base.css) on the
-     element for gray cards: card ink #111111, no shadow. */
+     element for gray cards: card ink #111111, no shadow.
+   - v02 fonts: Coolvetica Regular (--sans) / Coolvetica Italic (--serif), one face each (base.css). Vertical constants
+     below come from Coolvetica's metrics as Chrome lays them out: line box ascent 0.967 em, descent 0.233 em (hhea),
+     H 0.672 em, digits / round tops 0.688 em. In a line box of height LH the baseline sits at LH/2 + 0.367 em and the
+     cap centre at LH/2 + 0.031 em, so "centred on --rc-y" lines move up by 0.031 em (Inter's caps were centred). */
+
+/* ---------- v02 captions (rule A): words pop one by one (RCK.type.captionPops), max 2 words per group ---------- */
+.rc-w { display: inline-block; }                          /* one word; GSAP: opacity, scale, y, filter */
+.rc-stack { display: inline-grid; }                       /* groups of one clip stacked in place (wordsV2) */
+.rc-stack > .rc-g { grid-area: 1 / 1; }
+.rc-t2__stack { display: grid; height: 140px; }           /* T2 rows of one clip stacked in place */
+.rc-t2__stack > .rc-t2__row { grid-area: 1 / 1; }
 
 /* ---------- shared ---------- */
 .rc-t1, .rc-t2, .rc-t4, .rc-t6, .rc-t7, .rc-t8, .rc-t10 {
@@ -21,12 +32,12 @@
   text-shadow: none;
 }
 
-/* ---------- T1 Running caption: Inter Medium 46 px, white, soft shadow, centred at x 960, y 620 ---------- */
+/* ---------- T1 Running caption: Coolvetica 46 px (plan: Inter Medium), white, soft shadow, centred at x 960, y 620 ---------- */
 .rc-t1 {
   position: absolute;
   left: var(--safe-x);
   width: calc(1920px - 2 * var(--safe-x));
-  top: calc(var(--rc-y, 620px) - 28px);   /* 56 px line box centred on --rc-y; Inter caps centre lands on --rc-y */
+  top: calc(var(--rc-y, 620px) - 28px - 0.031em);   /* 56 px line box; Coolvetica's cap centre lands on --rc-y (y 620) */
   height: 56px;
   margin: 0;
   font-family: var(--sans);
@@ -38,12 +49,13 @@
 }
 .rc-t1--low { --rc-y: 860px; }            /* "drop to y 860 if a face is in the centre" */
 
-/* ---------- T2 Punch pair: lead-in Inter SemiBold 42 + keyword Instrument Serif Italic 140, baselines aligned, 14 px gap ---------- */
+/* ---------- T2 Punch pair: lead-in Coolvetica 42 + keyword Coolvetica Italic 140 (plan: Inter SemiBold / Instrument Serif
+   Italic), baselines aligned, 14 px gap ---------- */
 .rc-t2 {
   position: absolute;
   left: var(--safe-x);
   width: calc(1920px - 2 * var(--safe-x));
-  top: calc(var(--rc-y, 540px) - 70px);   /* 140 px keyword line box centred on --rc-y; shared baseline = --rc-y + 47.6 px */
+  top: calc(var(--rc-y, 540px) - 74.34px); /* 140 px keyword line box; keyword cap centre on --rc-y; shared baseline = --rc-y + 47.0 px */
   height: 140px;
 }
 .rc-t2__row {
@@ -53,6 +65,17 @@
   column-gap: 14px;                       /* 14 px gap */
   height: 140px;
   white-space: nowrap;
+}
+/* v02: a zero-width keyword-size strut, so a group with only lead-in words ("from", "to take") sits on the same shared
+   baseline as a group with the keyword; margin cancels the 14 px gap it would add */
+.rc-t2__row::after {
+  content: "\200B";
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 140px;
+  line-height: 140px;
+  width: 0;
+  margin-left: -14px;
 }
 .rc-t2__lead {
   font-family: var(--sans);
@@ -69,8 +92,8 @@
   line-height: 140px;
 }
 
-/* ---------- T3 Year card: full-frame #E9E9E9; small "In" (Instrument Serif Italic 64, #111111) above the left edge
-   of the year (Inter Bold 220, #111111, tracking -2%). Digits sit in masks and slide up 40 px. ---------- */
+/* ---------- T3 Year card: full-frame #E9E9E9; small "In" (Coolvetica Italic 64, #111111) above the left edge of the year
+   (Coolvetica 220, #111111, tracking -2%). Digits sit in masks and slide up 40 px. ---------- */
 .rc-t3 {
   position: absolute;
   left: 0;
@@ -78,8 +101,9 @@
   width: 1920px;
   height: 1080px;
   box-sizing: border-box;
-  /* year caps centred on --rc-y: year line top = --rc-y - 110 px; "In" line (64 px) sits directly above it */
-  padding-top: calc(var(--rc-y, 540px) - 110px - 64px);
+  /* year digits centred on --rc-y: digit centre = 115 px into the 220 px line (Coolvetica digits 0.688 em, baseline
+     190.7 px), so the year line top = --rc-y - 115 px; the "In" line (64 px) sits directly above it */
+  padding-top: calc(var(--rc-y, 540px) - 115px - 64px);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -96,6 +120,8 @@
   line-height: 64px;
   height: 64px;
   white-space: nowrap;
+  position: relative;
+  top: 8px;                               /* v02: In's baseline 40 px above the digits' top, as in v01 (else 48 px) */
 }
 .rc-t3__year {
   font-family: var(--sans);
@@ -110,14 +136,14 @@
 .rc-t3__mask {                            /* built by RCK.type.yearCard: one mask per digit */
   display: inline-block;
   vertical-align: top;
-  height: 200px;                          /* clips 10 px below the baseline (baseline at 190 px in the 220 px line) */
+  height: 200px;                          /* clips 9 px below the baseline (Coolvetica baseline at 190.7 px in the 220 px line) */
   overflow: hidden;
   padding: 0 24px;                        /* side slack so tracking never clips ink; cancelled by the margins */
   margin: 0 -24px;
 }
 .rc-t3__digit { display: inline-block; }  /* GSAP y: 40 -> 0 */
 
-/* ---------- T4 Spread words: Inter Medium 44 px, white, pieces placed in empty space around the subject ---------- */
+/* ---------- T4 Spread words: Coolvetica 44 px (plan: Inter Medium), white, pieces placed in empty space around the subject ---------- */
 .rc-t4 {
   position: absolute;
   left: 0;
@@ -128,7 +154,7 @@
 }
 .rc-t4__piece {
   position: absolute;
-  top: calc(var(--rc-y, 540px) - 28px);   /* 56 px line box centred on --rc-y */
+  top: calc(var(--rc-y, 540px) - 28px - 0.031em);   /* 56 px line box; cap centre on --rc-y */
   font-family: var(--sans);
   font-weight: var(--w-caption);
   font-size: 44px;
@@ -146,7 +172,7 @@
 .rc-t4--strip2 { left: 642.67px; width: 634.67px; text-align: center; }
 .rc-t4--strip3 { left: 1285.33px; width: 634.67px; text-align: center; }
 
-/* ---------- T5 Glow line: Instrument Serif Italic 84 px, warm glow #FFF6E0, on black;
+/* ---------- T5 Glow line: Coolvetica Italic 84 px (plan: Instrument Serif Italic), warm glow #FFF6E0, on black;
    glow = two blurred copies (24 px at 60%, 60 px at 30%); a light leak drifts behind ---------- */
 .rc-t5 {
   position: absolute;
@@ -164,11 +190,11 @@
   position: absolute;
   left: var(--safe-x);
   width: calc(1920px - 2 * var(--safe-x));
-  top: calc(var(--rc-y, 540px) - 50px);   /* 100 px line box centred on --rc-y */
+  top: calc(var(--rc-y, 540px) - 52.6px); /* 100 px line box; cap centre on --rc-y */
   display: grid;
   justify-items: center;
   --rc-t5-track: 0em;                     /* tracking, tweened +2% -> 0 by RCK.type.glowLine */
-  --rc-cap: 0.72;                         /* Instrument Serif cap height (for the inline chip) */
+  --rc-cap: 0.672;                        /* Coolvetica Italic cap height (for an inline chip) */
 }
 .rc-t5__line > * { grid-area: 1 / 1; }
 .rc-t5__text, .rc-t5__glow {
@@ -215,7 +241,7 @@
   filter: blur(22px);
 }
 
-/* ---------- T6 Giant type: Inter Black 300-480 px, one word per line, white, tracking -4% ---------- */
+/* ---------- T6 Giant type: Coolvetica 420 px (plan: Inter Black 300-480), one word per line, white, tracking -4% ---------- */
 .rc-t6 {
   position: absolute;
   left: 0;
@@ -228,8 +254,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  --rc-t6-size: 400px;                    /* plan range 300-480 px; 400 fits GRAND/THEFT/AUTO inside title-safe */
-  --rc-t6-pitch: 0.8;                     /* line pitch in em for stacked caps */
+  --rc-t6-size: 420px;                    /* plan range 300-480 px; 420 = the largest round size whose three-line ink stays
+                                             inside title-safe in Coolvetica (y 57-1023 of 54-1026; GRAND 1171 px wide) */
+  --rc-t6-pitch: 0.79;                    /* line pitch in em: 29 px between the lines' ink at 420 px, as v01's 0.8 at 400 */
 }
 .rc-t6__line {
   font-family: var(--sans);
@@ -239,15 +266,17 @@
   letter-spacing: -0.04em;                /* tracking -4% */
   margin-right: 0.04em;                   /* cancels the trailing tracking so each word's ink is centred */
   white-space: nowrap;
+  position: relative;                     /* v02: Coolvetica's caps sit low in the line box (ascent 0.967 em, caps 0.688 em): */
+  top: calc(-0.0395 * var(--rc-t6-size)); /* lift each line so the stack's ink is centred in title-safe (letters only fade) */
 }
 .rc-t6__ch { opacity: 0; }                /* letters typed on by RCK.type.giantType (no fades) */
 
-/* ---------- T7 Inline chip: Inter Medium 46 px sentence + 72 x 56 px chip, 12 px radius ---------- */
+/* ---------- T7 Inline chip: Coolvetica 46 px sentence + 72 x 56 px chip, 12 px radius (v02 note 8: "bug" is a word, no chip) ---------- */
 .rc-t7 {
   position: absolute;
   left: var(--safe-x);
   width: calc(1920px - 2 * var(--safe-x));
-  top: calc(var(--rc-y, 620px) - 28px);   /* same line as T1 by default */
+  top: calc(var(--rc-y, 620px) - 28px - 0.031em);   /* same line as T1 by default */
   height: 56px;
   font-family: var(--sans);
   font-weight: var(--w-caption);
@@ -255,14 +284,14 @@
   line-height: 56px;
   text-align: center;
   white-space: nowrap;
-  --rc-cap: 0.7275;                       /* Inter cap height */
+  --rc-cap: 0.672;                        /* Coolvetica cap height */
 }
 .rc-t7--low { --rc-y: 860px; }
 .rc-t7__chip, .rc-t7__gap {
   display: inline-block;
   width: 72px;
   height: 56px;
-  vertical-align: calc(var(--rc-cap, 0.7275) * 0.5em - 28px);   /* chip centre on the cap-height centre */
+  vertical-align: calc(var(--rc-cap, 0.672) * 0.5em - 28px);    /* chip centre on the cap-height centre */
 }
 .rc-t7__chip {
   position: relative;
@@ -300,7 +329,9 @@
   font-family: var(--serif);
   font-style: italic;
   font-weight: 400;
-  font-size: 110px;
+  font-size: var(--rc-t8-quote, 110px);   /* v02: "“awful… too sim-y.”" is 911 px at 110 px in Coolvetica Italic, wider than
+                                             the 816 px rc-t8--right column: break it with <br> after "awful…" (2 lines)
+                                             or set --rc-t8-quote: 96px (one line, 795 px) */
   line-height: 1.1;
   max-width: 100%;
 }
@@ -308,10 +339,10 @@
 .rc-t8__name {
   position: relative;
   font-family: var(--serif);
-  font-style: italic;                     /* Style kit > Fonts: "Instrument Serif Italic: ... quotes and names"; the T8 row ("Name in Instrument Serif 72 px") is silent on style, so no conflict */
+  font-style: italic;                     /* Style kit > Fonts: italic for "quotes and names" (v02: Coolvetica Italic) */
   font-weight: 400;
   font-size: 72px;
-  line-height: 1.3;                       /* = content area, so the baseline sits at 0.99 em */
+  line-height: 1.3;                       /* Coolvetica: the baseline sits at 1.017 em of the line box */
   white-space: nowrap;
 }
 .rc-t8--name-italic .rc-t8__name { font-style: italic; }  /* kept for compatibility; italic is now the default */
@@ -319,8 +350,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 1.17em;                            /* baseline (0.99 em) + underlinePosition 0.18 em */
-  height: 0.038em;                        /* underlineThickness 0.038 em */
+  top: 1.15em;                            /* baseline (1.017 em) + Coolvetica underlinePosition 0.133 em */
+  height: max(2px, 0.02em);               /* underlineThickness 0.02 em (1.4 px at 72 px), at least 2 px so it reads on video */
   background: currentColor;
   box-shadow: var(--text-shadow);
   container-type: inline-size;
@@ -363,25 +394,25 @@
 }
 .rc-t9__label {
   display: inline-block;
-  padding: 12px 20px;
+  padding: 11px 20px 13px;                /* 12 / 20 px, 1 px up: Coolvetica's caps sit 1.2 px low in the 40 px line */
   border-radius: 4px;
   background: var(--highlighter);
   color: var(--card-ink);
   text-shadow: none;
   font-family: var(--sans);
-  font-weight: var(--w-year);             /* Bold 700 */
+  font-weight: var(--w-year);             /* plan: Inter Bold; v02 Coolvetica has one weight */
   font-size: 40px;
   line-height: 40px;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-/* ---------- T10 Glitch word: Inter Black 160 px, white, on black ---------- */
+/* ---------- T10 Glitch word: Coolvetica 160 px (plan: Inter Black), white, on black ---------- */
 .rc-t10 {
   position: absolute;
   left: var(--safe-x);
   width: calc(1920px - 2 * var(--safe-x));
-  top: calc(var(--rc-y, 540px) - 80px);   /* 160 px line box centred on --rc-y */
+  top: calc(var(--rc-y, 540px) - 85px);   /* 160 px line box; cap centre on --rc-y (whole px: keep --rc-y an integer) */
   height: 160px;
   display: flex;
   justify-content: center;
@@ -396,18 +427,19 @@
   line-height: 160px;
   white-space: nowrap;
 }
-.rc-t10--key { top: calc(var(--rc-y, 540px) - 70px); height: 140px; }   /* B17 option: "now?" keeps the T2 keyword face */
+.rc-t10--key { top: calc(var(--rc-y, 540px) - 74px); height: 140px; }   /* B17 option: "now?" keeps the T2 keyword face */
 .rc-t10--key .rc-t10__word { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 140px; line-height: 140px; }
 .rc-t10__clean { display: block; }
 .rc-t10__glitch { position: absolute; inset: 0; isolation: isolate; opacity: 0; }
 .rc-t10__slice { position: absolute; inset: 0; }   /* GSAP x: +/-20 px per frame */
-/* three slices cut at whole pixels (crisp cuts; keep --rc-y an integer): cap region thirds at 61 / 99 px of the line */
-.rc-t10__slice--1 { clip-path: inset(-80px -80px 99px -80px); }
-.rc-t10__slice--2 { clip-path: inset(61px -80px 61px -80px); }
-.rc-t10__slice--3 { clip-path: inset(99px -80px -80px -80px); }
-.rc-t10--key .rc-t10__slice--1 { clip-path: inset(-80px -80px 90px -80px); }   /* 140 px serif line: cuts at 50 / 84 px */
-.rc-t10--key .rc-t10__slice--2 { clip-path: inset(50px -80px 56px -80px); }
-.rc-t10--key .rc-t10__slice--3 { clip-path: inset(84px -80px -80px -80px); }
+/* three slices cut at whole pixels (crisp cuts; keep --rc-y an integer): Coolvetica cap region (31 .. 139 px of the
+   160 px line) in thirds, cuts at 67 / 103 px */
+.rc-t10__slice--1 { clip-path: inset(-80px -80px 93px -80px); }
+.rc-t10__slice--2 { clip-path: inset(67px -80px 57px -80px); }
+.rc-t10__slice--3 { clip-path: inset(103px -80px -80px -80px); }
+.rc-t10--key .rc-t10__slice--1 { clip-path: inset(-80px -80px 81px -80px); }   /* 140 px italic line: caps 27 .. 121 px, cuts at 59 / 90 px */
+.rc-t10--key .rc-t10__slice--2 { clip-path: inset(59px -80px 50px -80px); }
+.rc-t10--key .rc-t10__slice--3 { clip-path: inset(90px -80px -80px -80px); }
 /* RGB split = the white word separated into its R, G, B channels (additive: aligned they sum back to #FFFFFF) */
 .rc-t10__ch { position: absolute; left: 0; top: 0; mix-blend-mode: screen; }
 .rc-t10__ch--r { color: #FF0000; transform: translateX(6px); }    /* red +6 px */

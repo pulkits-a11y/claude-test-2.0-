@@ -2,25 +2,29 @@
 """Build the AUDIO half of the RC_GTA-Origin Tesseract project, deterministically.
 
 Golden rule: 00_Brief/GTA_VI_Edit_Plan.pdf (Music plan p.32-35, SFX plan p.35-38, Audio mix
-and export settings p.38). Inputs (all established earlier, read-only here):
+and export settings p.38), with the client's v02 notes (REVISION_v02.md) where they override it.
+Inputs (all established earlier, read-only here):
 
-  01_VO/VO_processed_108.wav      locked voiceover (mono, 48 kHz, already through the plan's chain)
-  01_VO/VO_words_108.json          word timings -> ducking phrase spans
-  timing/beat_map.json             beat clock (B1-B17 start frames, vo_end_s, edit_end_s)
-  02_Music/music_plan.json         Black Vertigo cut points MU1-MU8, offset 139.68 s, levels
-  03_SFX/sfx_plan.json             S01-S19 cue rules (event, align, offsets, trims, fades, peaks)
+  01_VO/VO_processed_115.wav      locked v02 voiceover (mono, 48 kHz, 115%, already through the plan's chain)
+  01_VO/VO_words_115.json          word timings -> ducking phrase spans, the 'fun' anchor of the music
+  timing/beat_map.json             beat clock (B1-B17 start frames, vo_end_s, edit_end_s): every duration
+  02_Music/music_plan.json         Black Vertigo analysis (drop downbeat 183.38 s, sections), cut points, levels
+  03_SFX/sfx_plan.json             S01-S19 cue rules (event, align, offsets, trims, fades, peaks); the v02
+                                   change to S10 (note 5) is CUE_OVERRIDES below
   03_SFX/sfx_analysis.json         measured file data
-  hyperframes/<comp>/cues.json     event frames per beat when a beat builder has written them; any
-                                   event it lacks comes from timing/cue_defaults.json (made from the
-                                   STORYBOARD.md "Cues" lines; --refresh-cue-defaults rewrites it)
+  hyperframes/<comp>/cues.json     event frames per beat. A file whose events still equal the v01 snapshot
+                                   (.tesseract-work/cues_v01_snapshot.json) is v01-timed: its frames are scaled
+                                   to the v02 beat length until the beat builder rewrites it. Any event a beat
+                                   lacks comes from the STORYBOARD.md "Cues" lines (v01 frames, scaled the same
+                                   way; cached in .tesseract-work/cue_defaults.json, --refresh-cue-defaults)
 
 Every run (deterministic; one Tesseract export at a time):
-  1. prepares the FFmpeg derivatives the plan needs (MU6 low-pass 800 Hz excerpt, S02/S14 300 Hz
-     high-pass) in 02_Music/derived and 03_SFX/derived, recipes beside them, and measures the MP3
+  1. prepares the FFmpeg derivatives the plan needs (MU6 low-pass 800 Hz excerpt in .tesseract-work/derived,
+     S02/S14 300 Hz high-pass in 03_SFX/derived), recipes beside them, and measures the MP3
      decoder offset of Tesseract vs FFmpeg (cached in .tesseract-work/decoder_offsets.json);
-  2. deletes and recreates .tesseract-work/audio.tsrct: one composition (1920x1080, 82.4 s, #0A0A0A),
-     four groups "A1 Voiceover", "A2 Music", "A3 SFX hits & impacts", "A4 Risers, whooshes &
-     textures" (CONFLICTS.md C6), layer ids >= 9000, asset ids "aud-*", volume envelopes as
+  2. deletes and recreates .tesseract-work/audio.tsrct: one composition (1920x1080, edit_end_s from the
+     beat map, #0A0A0A), four groups "A1 Voiceover", "A2 Music", "A3 SFX hits & impacts", "A4 Risers,
+     whooshes & textures" (CONFLICTS.md C6), layer ids >= 9000, asset ids "aud-*", volume envelopes as
      keyframe animators on propertyType "volume";
   3. pass 1 (pre-master): exports the four group stems, corrects each SFX cue's gain so its rendered
      sample peak sits at the plan's level, then solves the master: one static make-up gain on every
@@ -59,16 +63,18 @@ TSRCT = Path("/root/.local/share/Tesseract/bin/tsrct")
 SKILL = ROOT.parent / ".claude/skills/tesseract-video"
 SOUND_HELPER = SKILL / "scripts/tesseract_sound.py"
 
-VO_FILE = ROOT / "01_VO/VO_processed_108.wav"
-WORDS_JSON = ROOT / "01_VO/VO_words_108.json"
+VO_FILE = ROOT / "01_VO/VO_processed_115.wav"          # v02: the 115% voiceover (REVISION_v02.md)
+WORDS_JSON = ROOT / "01_VO/VO_words_115.json"
+VO_REPORT = ROOT / "01_VO/VO_processing_115.json"
 BEAT_MAP = ROOT / "timing/beat_map.json"
-CUE_DEFAULTS = ROOT / "timing/cue_defaults.json"
+CUE_DEFAULTS = WORK / "cue_defaults.json"               # STORYBOARD.md cues (v01 frames), scaled at load
+CUES_V01 = WORK / "cues_v01_snapshot.json"              # the v01 cues.json events (to spot v01-timed files)
 STORYBOARD = ROOT / "STORYBOARD.md"
 MUSIC_PLAN = ROOT / "02_Music/music_plan.json"
 SFX_PLAN = ROOT / "03_SFX/sfx_plan.json"
 SFX_ANALYSIS = ROOT / "03_SFX/sfx_analysis.json"
 SFX_DIR = ROOT / "03_SFX"
-MUSIC_DERIVED = ROOT / "02_Music/derived"
+MUSIC_DERIVED = WORK / "derived"                        # v02: the MU6 excerpt moves with the new offset
 SFX_DERIVED = ROOT / "03_SFX/derived"
 
 SR = 48000          # Tesseract mixes and exports at 48 kHz (measured)
@@ -109,6 +115,21 @@ MASTER_TARGET_LUFS = -14.0
 MASTER_CEILING_DBTP = -1.5
 MASTER_ATTACK_S = 0.050
 MASTER_RELEASE_S = 0.300
+
+# v02 (REVISION_v02.md note 5): B11's flip became the X4 glitch used in B8, so S10's sound changes from the
+# S10 Flip whoosh to B8's glitch impact (the S08a file) at S08's level (same pre-master gain as S08, which also
+# follows S08's calibration), on B11's new `glitch` event. While B11's cues.json is still v01 it has no
+# `glitch`, so the cue falls back to `flip_start`. It stays in S10's plan group A4: in A3 it would overlap S09's
+# sustained sub drop, and the isolation of each cue's rendered peak (stem minus the model of the others) is not
+# reliable for a sharp transient over a sustained cue (measured: the resampler residual of the glitch, -19 dBFS,
+# moved S09's isolated peak by +1.9 dB and its calibration by -2 dB).
+CUE_OVERRIDES = {
+    "S10": {"group": "A4", "files": ["S08a_Glitch, Impact.wav"], "event": "B11.glitch",
+            "fallback_event": "B11.flip_start", "align": "start", "offset_f": 0, "peak_dbfs": None,
+            "gain_link": "S08",
+            "plan": "v02 note 5: the B11 flip is replaced by the X4 glitch of B8, and the glitch sound replaces "
+                    "the flip whoosh: B8's glitch impact (S08a) at S08's level, starting on the glitch frame."},
+}
 
 # Layer / group ids (>= 9000, picture script uses lower ids)
 GID = {"A1": 9001, "A2": 9002, "A3": 9003, "A4": 9004}
@@ -294,51 +315,76 @@ def parse_storyboard_cues(text: str) -> dict:
     return out
 
 
+def parse_storyboard_durations(text: str) -> dict:
+    """{beat: frames} from the '## Bn Name (143f)' headings (the beat lengths the storyboard frames refer to)."""
+    return {m.group(1): int(m.group(2)) for m in re.finditer(r"^##\s+(B\d+)\b[^\n(]*\((\d+)f\)", text, re.M)}
+
+
 class Events:
-    """Event frames per beat: hyperframes/<comp>/cues.json if present, else timing/cue_defaults.json."""
+    """Event frames per beat (beat-relative, f0 = the beat's first word), in v02 beat lengths:
+    hyperframes/<comp>/cues.json as written by the beat builder; a cues.json whose events still equal the v01
+    snapshot is v01-timed, so its frames are scaled by (v02 dur_frames / v01 dur_frames); an event the beat does
+    not list comes from the STORYBOARD.md cues (v01 frames, scaled by v02 dur / the storyboard's beat length)."""
 
     def __init__(self, beat_map: dict, refresh_defaults: bool):
         self.beats = {b["id"]: b for b in beat_map["beats"]}
-        sb = parse_storyboard_cues(STORYBOARD.read_text())
+        text = STORYBOARD.read_text()
+        sb = parse_storyboard_cues(text)
+        sb_dur = parse_storyboard_durations(text)
         if refresh_defaults or not CUE_DEFAULTS.exists():
-            doc = {"_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames, f0 = the beat's first "
-                              "word). Fallback used by tools/build_tesseract_audio.py for every event that the "
-                              "beat's hyperframes/<composition>/cues.json does not list (or when that file does "
-                              "not exist yet). '~29'/'~48' are taken as 29/48; a range a..b is stored as name=a, "
-                              "name_end=b.",
-                   **{b: sb.get(b, {}) for b in self.beats}}
+            doc = {"_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames in the storyboard's v01 beat "
+                              "lengths, `_durations`). Fallback used by tools/build_tesseract_audio.py for every "
+                              "event that the beat's hyperframes/<composition>/cues.json does not list (or when that "
+                              "file does not exist yet), scaled to the beat map's dur_frames. '~29'/'~48' are taken "
+                              "as 29/48; a range a..b is stored as name=a, name_end=b.",
+                   "_durations": sb_dur, **{b: sb.get(b, {}) for b in self.beats}}
             CUE_DEFAULTS.write_text(json.dumps(doc, indent=1) + "\n")
             log("wrote", CUE_DEFAULTS.relative_to(ROOT))
         self.defaults = load_json(CUE_DEFAULTS)
         drift = {b: (sb.get(b, {}), self.defaults.get(b, {})) for b in self.beats
                  if sb.get(b, {}) != self.defaults.get(b, {})}
         if drift:
-            log("WARNING: timing/cue_defaults.json differs from STORYBOARD.md (use --refresh-cue-defaults):", drift)
+            log("WARNING: .tesseract-work/cue_defaults.json differs from STORYBOARD.md (use --refresh-cue-defaults):", drift)
+        dflt_dur = self.defaults.get("_durations") or sb_dur
+        v01 = load_json(CUES_V01)["beats"] if CUES_V01.exists() else {}
         self.source = {}          # beat -> where its events came from
         self.event_source = {}    # "B16.rewind_end" -> file
+        self.scaled = {}          # beat -> note on v01 frames scaled to the v02 beat
         self.table = {}
         for bid, b in self.beats.items():
             comp = b["composition"]["id"]
+            dur = int(b["dur_frames"])
             cj = ROOT / "hyperframes" / comp / "cues.json"
-            merged = {k: int(v) for k, v in self.defaults.get(bid, {}).items()}
+            k_sb = dur / float(dflt_dur.get(bid) or dur)
+            merged = {k: int(round(int(v) * k_sb)) for k, v in self.defaults.get(bid, {}).items()}
             for k in merged:
-                self.event_source["%s.%s" % (bid, k)] = "timing/cue_defaults.json"
+                self.event_source["%s.%s" % (bid, k)] = "STORYBOARD.md cues (x%.4f to the v02 beat)" % k_sb
             if cj.exists():
-                ev_cj = {k: int(v) for k, v in load_json(cj).get("events", {}).items()}
+                raw = {k: int(v) for k, v in load_json(cj).get("events", {}).items()}
+                snap = (v01.get(bid) or {})
+                stale = bool(raw) and snap.get("events") == raw and int(snap.get("v01_dur_frames") or dur) != dur
+                k_cj = dur / float(snap["v01_dur_frames"]) if stale else 1.0
+                ev_cj = {k: int(round(v * k_cj)) for k, v in raw.items()}
+                if stale:
+                    self.scaled[bid] = "%s is still v01-timed (= the v01 snapshot): %s scaled x%.4f (%d -> %d f) to %s" % (
+                        cj.relative_to(ROOT), raw, k_cj, int(snap["v01_dur_frames"]), dur, ev_cj)
+                    log("note: " + self.scaled[bid])
                 for k, v in ev_cj.items():
-                    if k in merged and merged[k] != v:
-                        log("note: %s.%s = %d from %s (storyboard default %d)" % (bid, k, v, cj.relative_to(ROOT), merged[k]))
                     merged[k] = v
-                    self.event_source["%s.%s" % (bid, k)] = str(cj.relative_to(ROOT))
+                    self.event_source["%s.%s" % (bid, k)] = str(cj.relative_to(ROOT)) + (" (v01, scaled)" if stale else "")
                 missing = sorted(set(self.defaults.get(bid, {})) - set(ev_cj))
-                self.source[bid] = str(cj.relative_to(ROOT)) + (
-                    " (+ cue_defaults.json for %s)" % ", ".join(missing) if missing else "")
+                self.source[bid] = str(cj.relative_to(ROOT)) + (" (v01-timed, scaled)" if stale else "") + (
+                    " (+ STORYBOARD cues for %s)" % ", ".join(missing) if missing else "")
             else:
-                self.source[bid] = "timing/cue_defaults.json"
+                self.source[bid] = "STORYBOARD.md cues (scaled)"
             self.table[bid] = merged
 
     def beat_start_frame(self, beat: str) -> int:
         return int(self.beats[beat]["start_frame"])
+
+    def has(self, ref: str) -> bool:
+        beat, name = ref.split(".", 1)
+        return name == "start" or name in self.table.get(beat, {})
 
     def frame(self, ref: str) -> int:
         """'B8.first_black' -> edit frame; 'B15.start' -> beat start frame."""
@@ -553,6 +599,33 @@ def ramp(tt, t0, t1, v0, v1):
     return np.where(tt <= t0, v0, np.where(tt >= t1, v1, v0 + (v1 - v0) * (tt - t0) / (t1 - t0)))
 
 
+def music_anchor(words: list, music_plan: dict) -> dict:
+    """v02 re-anchor (plan p.34: 'anchor MU5 on fun first'): the measured drop downbeat (track s, FFmpeg clock)
+    on the onset of 'fun' (B10) -> offset = drop - onset. MU2/MU3 are where the track's own measured sections then
+    land; they are checked against 'broke'/'dull' with the plan's rules (a whole-bar edit inside the breakdown is
+    the only allowed fix, and only when MU3 misses 'dull' by more than 1 s)."""
+    sec = music_plan["analysis"]["sections_track_s"]
+    drop = float(sec["drop_downbeat"])
+    word = lambda beat, stem: next(w for w in words if w["beat"] == beat and w["text"].lower().strip(".,?!:").startswith(stem))
+    fun, broke, dull = word("B10", "fun"), word("B2", "broke"), word("B6", "dull")
+    off = round(drop - float(fun["start"]), 4)
+    planned = music_plan.get("offset_s")
+    if planned is None or abs(float(planned) - off) > 0.0005:
+        log("WARNING: 02_Music/music_plan.json offset_s %s != drop %.2f - 'fun' %.3f = %.4f s; using %.4f s" % (
+            planned, drop, float(fun["start"]), off, off))
+    mu2, mu3 = float(sec["breakdown"][0]) - off, float(sec["near_silence"][0]) - off
+    return {"offset_s": off, "drop_track_s": drop, "fun_onset_s": float(fun["start"]),
+            "music_plan_offset_s": planned,
+            "MU2": {"edit_s": round(mu2, 3), "track_s": float(sec["breakdown"][0]), "broke_s": [broke["start"], broke["end"]],
+                    "delta_from_onset_s": round(mu2 - float(broke["start"]), 3),
+                    "within_half_second": abs(mu2 - float(broke["start"])) <= 0.5,
+                    "inside_word": float(broke["start"]) <= mu2 <= float(broke["end"])},
+            "MU3": {"edit_s": round(mu3, 3), "track_s": float(sec["near_silence"][0]), "dull_s": [dull["start"], dull["end"]],
+                    "delta_from_onset_s": round(mu3 - float(dull["start"]), 3),
+                    "within_1s": abs(mu3 - float(dull["start"])) <= 1.0, "on_or_after": mu3 >= float(dull["start"]) - 1e-6},
+            "bar_s": float(music_plan["analysis"]["bar_s"])}
+
+
 def music_envelopes(ev: Events, beat_map: dict, spans):
     t_end = float(beat_map["vo_end_s"])                       # MU8: hard stop at the end of "now?"
     tt = np.arange(0, ms(t_end) + 1) / 1000.0                  # 1 ms grid on the edit clock
@@ -598,6 +671,7 @@ class Clip:
         self.fade_in = 0.0
         self.fade_out = 0.0
         self.rel_gain_db = 0.0
+        self.gain_link = None
         self.notes = []
         self.__dict__.update(kw)
 
@@ -646,6 +720,9 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
     decisions = {}
     for cue in sfx_plan["cues"]:
         cid = cue["cue"]
+        if cid in CUE_OVERRIDES:                      # v02 client notes (CUE_OVERRIDES)
+            cue = {k: v for k, v in dict(cue, **CUE_OVERRIDES[cid]).items() if v is not None}
+            decisions["%s_v02_override" % cid] = {k: v for k, v in CUE_OVERRIDES[cid].items() if v is not None}
         group = cue["group"]
         if cid == "S13":
             clips_s13, dec = build_s13(ev, cue)
@@ -664,6 +741,12 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
             orig = SFX_DIR / fname
             fdur = probe(orig)["duration"]
             event = L.get("event") or cue["event"]
+            fallback_note = None
+            if not ev.has(event) and cue.get("fallback_event"):
+                fallback_note = "%s has no `%s` event yet (source %s): placed on %s instead" % (
+                    event.split(".")[0], event.split(".", 1)[1], ev.source[event.split(".")[0]], cue["fallback_event"])
+                log("note: %s %s" % (cid, fallback_note))
+                event = cue["fallback_event"]
             t_ev = ev.t(event)
             align = L.get("align", cue.get("align", "start"))
             off = frames_to_s(L.get("offset_f", cue.get("offset_f", 0)))
@@ -704,7 +787,12 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
                      plan=cue.get("plan", ""), file_dur=fdur,
                      target_dbfs=L.get("peak_dbfs", cue.get("peak_dbfs", cue.get("peak_dbfs_combined"))),
                      combined=("peak_dbfs_combined" in cue) and len(layer_specs) > 1,
-                     rel_gain_db=float(L.get("extra_gain_db", 0.0)))
+                     rel_gain_db=float(L.get("extra_gain_db", 0.0)), gain_link=cue.get("gain_link"))
+            if fallback_note:
+                c.notes.append(fallback_note)
+                c.rule += " (fallback)"
+            if c.gain_link:
+                c.notes.append("v02: plays at %s's pre-master gain (client note 5: the glitch sound of B8)" % c.gain_link)
             if cue.get("fade_out_f"):
                 c.fade_out = frames_to_s(cue["fade_out_f"])
             if cue.get("highpass_hz"):
@@ -856,6 +944,8 @@ def compute_sfx_gains(clips):
         key = c.cue if c.combined else (c.cue, c.sub)
         groups.setdefault(key, []).append(c)
     for key, cs in groups.items():
+        if cs[0].gain_link:
+            continue
         t0 = min(c.edit_start for c in cs)
         t1 = max(c.end for c in cs)
         buf = np.zeros((int(math.ceil((t1 - t0) * SR)) + 2, 2))
@@ -872,7 +962,25 @@ def compute_sfx_gains(clips):
             c.gain_db = g + c.rel_gain_db             # pre-master gain of this layer
             c.peak_time = t0 + tp_idx / SR
             c.gain_group = key if isinstance(key, str) else key[0] + key[1]
+    link_gains(clips)
     return groups
+
+
+def link_gains(clips):
+    """v02: a cue with `gain_link` plays at the linked cue's pre-master gain (S10 = B8's glitch impact at S08's
+    level). Its reported plan peak is the level the file reaches at that gain. Re-run after every calibration
+    pass so the link follows the linked cue's correction."""
+    for c in clips:
+        if not c.gain_link:
+            continue
+        ref = next(x for x in clips if x.cue == c.gain_link)
+        sig = clip_signal(c)
+        amp = np.max(np.abs(sig), axis=1)
+        c.raw_peak_dbfs = db(float(np.max(amp)))
+        c.gain_db = ref.gain_db - ref.rel_gain_db + c.rel_gain_db
+        c.target_dbfs = round(c.raw_peak_dbfs + c.gain_db, 2)
+        c.peak_time = c.edit_start + int(np.argmax(amp)) / SR
+        c.gain_group = c.cue + c.sub
 
 
 # --------------------------------------------------------------------------------------------
@@ -1081,12 +1189,13 @@ def main():
 
     # ---- MP3 decoder offsets (FFmpeg-made WAVs need none) ---------------------------------------
     music_file = ROOT / music_plan["track"]
-    offset_s = float(music_plan["offset_s"])           # track (FFmpeg decode clock) = edit + 139.68 s
+    anchor = music_anchor(words, music_plan)           # v02: drop downbeat on the new 'fun' (plan p.34: MU5 first)
+    offset_s = anchor["offset_s"]                      # track (FFmpeg decode clock) = edit + offset_s
     mp3s = sorted({c.asset_file for c in clips if c.asset_file.suffix.lower() == ".mp3"} | {music_file}, key=str)
     lags = calibrate_decoder_offsets(mp3s)
     lag_mu = lags[str(music_file)]
     mu_s0 = ms(offset_s + lag_mu)                      # Tesseract source ms of the main bed at edit 0
-    delta = mu_s0 / 1000 - lag_mu                      # FFmpeg-clock track time at edit 0 (139.68 s +- 0.5 ms)
+    delta = mu_s0 / 1000 - lag_mu                      # FFmpeg-clock track time at edit 0 (offset_s +- 0.5 ms)
 
     # ---- MU6 low-passed excerpt, sample-aligned with the main bed --------------------------------
     mu6_a_ms = ms(ev.t("B15.start") - 1.5)
@@ -1119,7 +1228,7 @@ def main():
             assets[asset_id] = path
         return asset_id
 
-    a_vo = import_asset(VO_FILE, "aud-vo-processed-108")
+    a_vo = import_asset(VO_FILE, "aud-vo-processed-115")
     a_mu = import_asset(music_file, "aud-mu-black-vertigo")
     a_lp = import_asset(lp_file, "aud-mu-black-vertigo-mu6-lp%d" % MU6_LOWPASS_HZ)
     for c in clips:
@@ -1135,25 +1244,29 @@ def main():
     specs = []
     vo_ms = int(probe(VO_FILE)["duration"] * 1000)
     vt = np.arange(vo_ms + 1) / 1000.0
-    specs.append(Spec(group="A1", id=VO_LAYER_ID, name="VO processed 108 (locked)", asset=a_vo, E=0, D=vo_ms, S0=0,
+    vo_fm = (load_json(VO_REPORT).get("final_metrics") or {}) if VO_REPORT.exists() else {}
+    specs.append(Spec(group="A1", id=VO_LAYER_ID, name="VO processed 115 (locked v02)", asset=a_vo, E=0, D=vo_ms, S0=0,
                       intr=vo_ms, modality="voiceover", source_name=VO_FILE.name, key="vo", tt=vt,
                       pre=np.full(len(vt), lin(VO_GAIN_DB)),
-                      description="Locked voiceover at unity, edit 0 = file 0. Already through the plan's chain "
-                                  "(HPF 80 Hz, de-esser, 3:1 compression; -16.3 LUFS as a mono track, true peak "
-                                  "-3.4 dBFS; 01_VO/VO_processing_108.json). Volume = the master gain only."))
+                      description="Locked v02 voiceover (115%%, client note 10) at unity, edit 0 = file 0. Already through "
+                                  "the plan's chain (HPF 80 Hz, de-esser, 3:1 compression; %s LUFS as a mono track, true "
+                                  "peak %s dBFS; %s). Volume = the master gain only." % (
+                                      vo_fm.get("integrated_lufs", "?"), vo_fm.get("true_peak_dbfs", "?"),
+                                      VO_REPORT.relative_to(ROOT))))
     mu_D = ms(vo_end)
     mu_intr = int(probe(music_file)["duration"] * 1000)
     specs.append(Spec(group="A2", id=MUSIC_LAYER_ID, name="MU1-MU8 Black Vertigo (main bed)", asset=a_mu, E=0,
                       D=mu_D, S0=mu_s0, intr=mu_intr, modality="music", source_name=music_file.name, key="mu-main",
                       tt=tt, pre=main_env,
                       description="Black Vertigo (Alexandre Brovelli) from track %.2f s at edit 0 (MU1, full energy, "
-                                  "no fade-in), drop (track 183.38 s) on 'fun' %.3f s (MU5), hard stop at the end of "
-                                  "'now?' %.3f s (MU8). Source start %d ms = %.2f s + %.1f ms MP3 decoder offset "
+                                  "no fade-in), drop (track %.2f s) on the 'fun' onset %.3f s (MU5 marks from frame %.3f s), "
+                                  "hard stop at the end of 'now?' %.3f s (MU8). Source start %d ms = %.2f s + %.1f ms MP3 "
+                                  "decoder offset "
                                   "(Tesseract does not skip the LAME encoder delay). Keyframes: base %.1f dB, %.0f dB "
                                   "duck (50/300 ms) under every VO phrase, MU4 15f mute, MU5 +3 dB for 2 s, MU6 "
                                   "crossfade to the low-pass copy, MU7 rewind cut then -6 dB, MU8 stop, x master." % (
-                                      offset_s, marks["MU5"], marks["MU8"], mu_s0, offset_s, lag_mu * 1000,
-                                      MUSIC_BASE_DB, DUCK_DB)))
+                                      offset_s, anchor["drop_track_s"], anchor["fun_onset_s"], marks["MU5"],
+                                      marks["MU8"], mu_s0, offset_s, lag_mu * 1000, MUSIC_BASE_DB, DUCK_DB)))
     lp_E, lp_end = ms(marks["MU6_start"] - 0.1), ms(marks["MU6_end"] + 0.1)
     sel = (tt >= lp_E / 1000 - 1e-9) & (tt <= lp_end / 1000 + 1e-9)
     lp_intr = int(probe(lp_file)["duration"] * 1000)
@@ -1162,11 +1275,12 @@ def main():
     specs.append(Spec(group="A2", id=MUSIC_LP_LAYER_ID, name="MU6 Black Vertigo low-pass %d Hz (-6 dB)" % MU6_LOWPASS_HZ,
                       asset=a_lp, E=lp_E, D=lp_end - lp_E, S0=lp_s0, intr=lp_intr, modality="music",
                       source_name=lp_file.name, key="mu-lp", tt=tt[sel], pre=lp_env[sel],
-                      description="MU6: the same excerpt pre-filtered with FFmpeg lowpass=f=%d (02_Music/derived, recipe "
+                      description="MU6: the same excerpt pre-filtered with FFmpeg lowpass=f=%d (%s, recipe "
                                   "beside it), sample-aligned with the main bed. From 'Don't believe me?' (%.3f s) "
-                                  "until the RACE AND CHASE label lands (%.3f s) the main bed crossfades (%d ms) to "
-                                  "this copy at -6 dB, then opens again." % (
-                                      MU6_LOWPASS_HZ, marks["MU6_start"], marks["MU6_end"], EDGE_S * 1000)))
+                                  "until B15's `label` moment, 'Race' (%.3f s; the v01 RACE AND CHASE label, removed in "
+                                  "v02 by note 7) the main bed crossfades (%d ms) to this copy at -6 dB, then opens "
+                                  "again." % (MU6_LOWPASS_HZ, lp_file.parent.relative_to(ROOT), marks["MU6_start"],
+                                              marks["MU6_end"], EDGE_S * 1000)))
     sub_index = {}
     for c in clips:
         k = sub_index.get(c.cue, 0)
@@ -1209,7 +1323,7 @@ def main():
     for it in range(2):
         model, own = sfx_model(clips, len(pre["sfx_a3"]))
         iso = isolated_peaks(clips, {"A3": pre["sfx_a3"], "A4": pre["sfx_a4"]}, model, own)
-        fix = {k: d["clips"][0].target_dbfs - d["peak_dbfs"] for k, d in iso.items()}
+        fix = {k: d["clips"][0].target_dbfs - d["peak_dbfs"] for k, d in iso.items() if not d["clips"][0].gain_link}
         for k, d in iso.items():
             calib.setdefault(k, {"computed_gain_db": round(d["clips"][0].gain_db - d["clips"][0].rel_gain_db, 3),
                                  "first_render_peak_dbfs": round(d["peak_dbfs"], 3)})
@@ -1220,6 +1334,7 @@ def main():
             for c in iso[k]["clips"]:
                 c.gain_db += v
             calib[k]["correction_db"] = round(calib[k].get("correction_db", 0.0) + v, 3)
+        link_gains(clips)                                # S10 follows S08's corrected gain
         log("SFX gain calibration pass %d: %s" % (it + 1, {k: round(v, 2) for k, v in todo.items()}))
         specs = base_specs + sfx_specs()
         groups, entries = to_layers(specs, unity)
@@ -1269,6 +1384,8 @@ def main():
             "MU5_HOLD_S", "MU5_RETURN_S", "MU6_DB", "MU6_LOWPASS_HZ", "MU7_DB", "MU7_RETURN_S", "MU4_FRAMES", "EDGE_S",
             "MASTER_TARGET_LUFS", "MASTER_CEILING_DBTP", "MASTER_ATTACK_S", "MASTER_RELEASE_S")},
         "master": minfo, "event_sources": ev.source, "music_marks_s": marks,
+        "music_anchor": anchor, "cue_scaling_v01_to_v02": ev.scaled,
+        "beat_start_s": {b: round(ev.beat_start_frame(b) / FPS, 4) for b in ev.beats},
         "music_source": {"file": music_plan["track"], "offset_s": offset_s, "tesseract_source_start_ms": mu_s0,
                          "decoder_offset_ms": round(lag_mu * 1000, 3), "mu6_derivative": str(lp_file.relative_to(ROOT)),
                          "mu6_layer": {"start_ms": lp_E, "end_ms": lp_end, "source_start_ms": lp_s0}},
@@ -1338,10 +1455,15 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
     report["mix"] = m
     if not args.no_waveforms:
         waves = []
+        s08 = next(c for c in clips if c.cue == "S08")
+        s18 = next(c for c in clips if c.cue == "S18")
+        s19 = next(c for c in clips if c.cue == "S19")
+        b9 = next(s_[0] for s_ in spans if s_[0] >= marks["MU4_end"] - 0.05)
+        report["waveform_markers_s"] = {"S08": s08.edit_start, "B9_voice": b9, "S18": s18.edit_start, "S19": s19.edit_start}
         for tag, a_, b_, mk in (
                 ("mu5-drop-s09-fun", marks["MU5"] - 1.3, marks["MU5"] + 2.7, [marks["MU5"], marks["MU5"] + MU5_HOLD_S]),
-                ("b8-break-mu4-mute", 33.8, 35.9, [34.367, marks["MU4_start"], marks["MU4_end"], 35.315]),
-                ("b17-ending", 79.6, edit_end, [80.432, marks["MU8"], 81.533])):
+                ("b8-break-mu4-mute", s08.edit_start - 0.55, b9 + 0.6, [s08.edit_start, marks["MU4_start"], marks["MU4_end"], b9]),
+                ("b17-ending", s18.edit_start - 0.8, edit_end, [s18.edit_start, marks["MU8"], s19.edit_start])):
             outp = CHECKS / ("wave_%s.png" % tag)
             rr = subprocess.run([sys.executable, str(SOUND_HELPER), "waveform", str(mix), "--mode", "music",
                                  "--clock", "edit", "--start-ms", str(ms(a_)), "--duration-ms", str(ms(b_ - a_)),
@@ -1372,8 +1494,11 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
                    (marks["MU7_start"], marks["MU7_return"] + MU7_RETURN_S)):
         ok &= ~((tc3 + 1.5 > a_) & (tc3 - 1.5 < b_))       # normal bed only; MU4/MU6/MU7 checked apart
     under = ok & (cov3 >= 0.85)
-    sections = {"MU1 full beat 0-8.8 s": (0, 8.78), "breakdown 8.8-26.2 s": (8.78, 26.24),
-                "near-silence + build 26.2-43.7 s": (26.24, 43.7), "post-drop 43.7-80.9 s": (43.7, 80.87)}
+    an = report["music_anchor"]
+    m2, m3, m5, m8 = an["MU2"]["edit_s"], an["MU3"]["edit_s"], marks["MU5"], marks["MU8"]
+    sections = {"MU1 full beat 0-%.1f s" % m2: (0.0, m2), "breakdown %.1f-%.1f s" % (m2, m3): (m2, m3),
+                "near-silence + build %.1f-%.1f s" % (m3, m5): (m3, m5),
+                "post-drop %.1f-%.1f s" % (m5, m8): (m5, m8)}
     bed = {"under_voice_short_term_median_lufs": float(np.median(l3[under])),
            "voice_short_term_median_lufs": float(np.median(v3[under])), "by_section": {}}
     for k, (a_, b_) in sections.items():
@@ -1396,11 +1521,12 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         y = y * lin(MUSIC_BASE_DB) * master(a_ + np.arange(len(y)) / SR)[:, None]
         tcr, lr = windowed_lufs(y, 3.0)
         return tcr + a_, lr
-    tcr, lr = undecked_st(55.0, 62.0)
-    bed["undecked_bed_short_term_title_hold_lufs"] = float(lr[np.argmin(np.abs(tcr - (hold_a + hold_b) / 2))])
-    _, lr2 = undecked_st(45.0, 80.8)
+    hc = (hold_a + hold_b) / 2
+    tcr, lr = undecked_st(max(0.0, hc - 3.5), min(m8, hc + 3.5))
+    bed["undecked_bed_short_term_title_hold_lufs"] = float(lr[np.argmin(np.abs(tcr - hc))])
+    _, lr2 = undecked_st(m5 + MU5_HOLD_S + MU5_RETURN_S, m8 - 0.05)
     bed["undecked_bed_short_term_post_drop_median_lufs"] = float(np.median(lr2))
-    _, lr3 = undecked_st(0.0, 8.7)
+    _, lr3 = undecked_st(0.0, max(3.1, m2 - 0.1))
     bed["undecked_bed_short_term_mu1_median_lufs"] = float(np.median(lr3))
     st["music_bed"] = bed
     # ---- music envelope checks (stem vs the FFmpeg-clock track; includes the master) ---------------
@@ -1408,20 +1534,41 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         return db(float(master(np.array([t]))[0]))
     p_ = max(spans, key=lambda s: s[1] - s[0])
     mid = (p_[0] + p_[1]) / 2
+
+    def ducked(a_, b_, length=0.5, guard=0.05):
+        """A window inside one VO phrase (bed at full duck depth) and inside [a_, b_]: the longest such stretch,
+        centred, `length` s (shortened to fit, not under 0.2 s). Windows are derived, so they follow the timing."""
+        best = None
+        for s0_, e0_, _ in spans:
+            lo, hi = max(s0_ + guard, a_), min(e0_ - guard, b_)
+            if hi - lo >= 0.2 and (best is None or hi - lo > best[1] - best[0]):
+                best = (lo, hi)
+        if best is None:
+            raise SystemExit("no voice phrase of >= 0.2 s inside %.3f-%.3f s for a music check" % (a_, b_))
+        c_, L_ = (best[0] + best[1]) / 2, min(length, best[1] - best[0])
+        return c_ - L_ / 2, c_ + L_ / 2
+
+    lp4, hp2 = butter(4, 400, "lowpass", fs=SR, output="sos"), butter(4, 2000, "highpass", fs=SR, output="sos")
+    th = (hold_a + RELEASE_S + 0.05, hold_b - ATTACK_S - 0.05)
+    th = ((th[0] + th[1]) / 2 - min(0.5, (th[1] - th[0]) / 2), (th[0] + th[1]) / 2 + min(0.5, (th[1] - th[0]) / 2))
+    b12 = report["beat_start_s"].get("B12") or m8
+    w5 = ducked(m5 + MU5_HOLD_S + MU5_RETURN_S + 0.1, b12)
+    w6 = ducked(marks["MU6_start"] + 0.1, marks["MU6_end"] - 0.1)
+    w6b = ducked(marks["MU6_end"] + 0.1, marks["MU7_start"] - 0.05, length=0.4)
+    w7 = ducked(marks["MU7_end"] + 0.1, marks["MU7_return"] - 0.05)
+    w17 = ducked(marks["MU7_return"] + MU7_RETURN_S + 0.1, m8 - 0.1)
+    cen = lambda w_: (w_[0] + w_[1]) / 2
     chk = {
-        "title_hold_gain_db": [gain_db_between(mu, mref, 58.5, 59.5), MUSIC_BASE_DB + mdb(59.0)],
+        "title_hold_gain_db": [gain_db_between(mu, mref, *th), MUSIC_BASE_DB + mdb(cen(th))],
         "mid_longest_phrase_gain_db": [gain_db_between(mu, mref, mid - 0.5, mid + 0.5), MUSIC_BASE_DB + DUCK_DB + mdb(mid)],
         "MU5_on_fun_gain_db": [gain_db_between(mu, mref, marks["MU5"] + 0.05, marks["MU5"] + 0.35),
                                MUSIC_BASE_DB + DUCK_DB + MU5_LIFT_DB + mdb(marks["MU5"] + 0.2)],
-        "after_MU5_ducked_gain_db": [gain_db_between(mu, mref, 46.8, 47.2), MUSIC_BASE_DB + DUCK_DB + mdb(47.0)],
-        "MU6_lowband_gain_db": [gain_db_between(mu, mref, 67.6, 68.1, butter(4, 400, "lowpass", fs=SR, output="sos")),
-                                MUSIC_BASE_DB + DUCK_DB + MU6_DB + mdb(67.85)],
-        "MU6_highband_gain_db": [gain_db_between(mu, mref, 67.6, 68.1, butter(4, 2000, "highpass", fs=SR, output="sos")),
-                                 "low-passed: far below the low band"],
-        "after_label_highband_gain_db": [gain_db_between(mu, mref, 71.0, 71.5, butter(4, 2000, "highpass", fs=SR, output="sos")),
-                                         "open again: = full-band ducked gain"],
-        "MU7_glow_line_gain_db": [gain_db_between(mu, mref, 74.4, 74.9), MUSIC_BASE_DB + DUCK_DB + MU7_DB + mdb(74.65)],
-        "B17_back_to_normal_gain_db": [gain_db_between(mu, mref, 77.8, 78.3), MUSIC_BASE_DB + DUCK_DB + mdb(78.05)],
+        "after_MU5_ducked_gain_db": [gain_db_between(mu, mref, *w5), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w5))],
+        "MU6_lowband_gain_db": [gain_db_between(mu, mref, *w6, sos=lp4), MUSIC_BASE_DB + DUCK_DB + MU6_DB + mdb(cen(w6))],
+        "MU6_highband_gain_db": [gain_db_between(mu, mref, *w6, sos=hp2), "low-passed: far below the low band"],
+        "after_label_highband_gain_db": [gain_db_between(mu, mref, *w6b, sos=hp2), "open again: = full-band ducked gain"],
+        "MU7_glow_line_gain_db": [gain_db_between(mu, mref, *w7), MUSIC_BASE_DB + DUCK_DB + MU7_DB + mdb(cen(w7))],
+        "B17_back_to_normal_gain_db": [gain_db_between(mu, mref, *w17), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w17))],
         "MU4_mute_peak_dbfs": region_peak(mu, marks["MU4_start"] + 0.01, marks["MU4_end"] - 0.01),
         "MU7_rewind_cut_peak_dbfs": region_peak(mu, marks["MU7_start"] + 0.01, marks["MU7_end"] - 0.01),
         "after_MU8_peak_dbfs": region_peak(mu, marks["MU8"] + 0.001, edit_end),
@@ -1430,6 +1577,8 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
                                                    int(0.05 * SR)) / SR * 1000,
     }
     st["music_envelope_checks"] = chk
+    st["music_check_windows_s"] = {k: [round(v[0], 3), round(v[1], 3)] for k, v in (
+        ("title_hold", th), ("after_MU5", w5), ("MU6", w6), ("after_label", w6b), ("MU7_glow", w7), ("B17", w17))}
     # ---- SFX: each cue's rendered peak, isolated from overlapping cues of its group via the model ---
     stems_g = {"A3": s3, "A4": s4}
     model, own = sfx_model(clips, len(s3), master)
@@ -1486,15 +1635,40 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     st = R.get("stems", {})
     bed = st.get("music_bed", {})
     chk = st.get("music_envelope_checks", {})
-    off = music_plan["offset_s"]
+    an = R["music_anchor"]
+    off = an["offset_s"]
+    vo_fm = (load_json(VO_REPORT).get("final_metrics") or {}) if VO_REPORT.exists() else {}
     L = []
     w = L.append
-    w("# Audio half of the Tesseract project (A1-A4)\n")
+    w("# Audio half of the Tesseract project (A1-A4), v02\n")
     w("Generated by `tools/build_tesseract_audio.py` on every run (do not hand-edit; change the script's constants "
       "and re-run). Golden rule: the Master Edit Plan, Music plan p.32-35, SFX plan p.35-38, Audio mix and export "
-      "settings p.38. Inputs: `01_VO/VO_processed_108.wav`, `01_VO/VO_words_108.json`, `timing/beat_map.json`, "
-      "`02_Music/music_plan.json`, `03_SFX/sfx_plan.json`, `03_SFX/sfx_analysis.json`, event frames from each beat's "
-      "`hyperframes/<composition>/cues.json` or `timing/cue_defaults.json`.\n")
+      "settings p.38, overridden only where the client's v02 notes (REVISION_v02.md) say so. Inputs: `%s`, `%s`, "
+      "`timing/beat_map.json` (%s), `02_Music/music_plan.json`, `03_SFX/sfx_plan.json`, `03_SFX/sfx_analysis.json`, "
+      "event frames from each beat's `hyperframes/<composition>/cues.json` (else the STORYBOARD.md cues, scaled).\n" % (
+          VO_FILE.relative_to(ROOT), WORDS_JSON.relative_to(ROOT), beat_map.get("version", "?")))
+    w("## v02 changes\n")
+    w("* **Voiceover 115%%** (note 10): `%s` (%.2f s, %s LUFS as a mono track, true peak %s dBFS) and its word times. "
+      "Every duration comes from the beat map: edit %.3f s = %d frames, voice ends %.3f s." % (
+          VO_FILE.relative_to(ROOT), probe(VO_FILE)["duration"], vo_fm.get("integrated_lufs", "?"),
+          vo_fm.get("true_peak_dbfs", "?"), float(beat_map["edit_end_s"]), int(beat_map["edit_end_frame"]),
+          float(beat_map["vo_end_s"])))
+    w("* **Music re-anchored on MU5 first** (plan p.34): the measured drop downbeat (track %.2f s) on the new 'fun' "
+      "onset %.3f s: track = edit + %.2f s (v01: + 139.68 s). Every other mark is re-derived from the beat map and the "
+      "events exactly as in v01 (table below)." % (an["drop_track_s"], an["fun_onset_s"], off))
+    s10 = next((c for c in clips if c.cue == "S10"), None)
+    if s10:
+        w("* **S10 = the glitch** (note 5): B11's flip became the X4 glitch of B8, so its sound changed from S10 Flip "
+          "to B8's glitch impact (`%s`) at S08's pre-master gain (%+.2f dB, following S08's calibration; not "
+          "calibrated on its own, so its 'error' below is Tesseract's resampler on the bare transient), in S10's "
+          "group A4, starting on `%s` (%s)." % (s10.file, s10.gain_db, s10.event,
+                                      "; ".join(s10.notes) if s10.notes else "B11 cues.json"))
+    if R.get("cue_scaling_v01_to_v02"):
+        w("* **v01-timed cue files** (the beat builder has not rewritten them yet): their frames are scaled to the "
+          "v02 beat length until it does: " + "; ".join("%s: %s" % (k, v) for k, v in R["cue_scaling_v01_to_v02"].items()) + ".")
+    w("* Picture keyframes follow the client's 'nothing linear' rule (easings.net curves). The audio volume "
+      "automation below stays piecewise linear on purpose: it is a sampled gain envelope (ducking, de-click ramps, "
+      "limiter dips), not an animation, and the engine interpolates gain linearly every 10 ms anyway.\n")
     w("## What was built\n")
     w("* `.tesseract-work/audio.tsrct`, deleted and recreated on each run. One composition `main`, 1920x1080, "
       "%.1f s, background #0A0A0A. Four Group layers (CONFLICTS C6): `A1 Voiceover` (9001), `A2 Music` (9002), "
@@ -1518,10 +1692,11 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     w("Per-track levels are the plan's track levels (pre-master); the master stage then sets the programme "
       "loudness, as in a DAW (track levels -> master limiter/gain).\n")
     w("| Stage | Setting | Why |\n|---|---|---|")
-    w("| A1 voiceover | unity (0 dB) | The processed VO already meets the plan's voice spec as a track: -16.3 LUFS "
-      "(mono), true peak -3.4 dBFS. Tesseract sends mono at full level to both channels, so the voice reads "
+    w("| A1 voiceover | unity (0 dB) | The processed VO already meets the plan's voice spec as a track: %s LUFS "
+      "(mono), true peak %s dBFS. Tesseract sends mono at full level to both channels, so the voice reads "
       "%.1f LUFS on a stereo meter before the master and %.1f LUFS after it (CONFLICTS C21). Unity keeps the plan's "
       "peak relationships: voice peaks about -3.8 dBFS before the master, every SFX at -6 dBFS or lower except S19. |" % (
+          vo_fm.get("integrated_lufs", "?"), vo_fm.get("true_peak_dbfs", "?"),
           st.get("voice", {}).get("integrated_lufs", float("nan")) - mi["static_makeup_db"],
           st.get("voice", {}).get("integrated_lufs", float("nan"))))
     w("| A2 music bed | base %.1f dB, duck %.0f dB | Calibrated on the measured track: the un-ducked bed reads about "
@@ -1545,23 +1720,33 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
             "%.3f-%.3f s, max %.2f dB at %.3f s" % (d["start_s"], d["end_s"], d["max_db"], d["at_s"]) for d in mi["dips"]) + ".\n")
     w("## A2 music: MU1-MU8\n")
     w("Black Vertigo (`%s`, licensed per the user). Track time (FFmpeg decode clock) = edit + %.2f s, anchored on the "
-      "measured drop downbeat 183.38 s on 'fun' (%.3f s, music_plan.json). Tesseract plays this MP3 %.2f ms later "
-      "than FFmpeg (measured, encoder delay not skipped), so the layer's source start is %d ms; the stem check "
-      "below shows the drop at %+.2f ms from the track clock.\n" % (
-          music_plan["track"], off, marks["MU5"], lag_mu * 1000, mu_s0, chk.get("drop_offset_vs_track_clock_ms", float("nan"))))
+      "measured drop downbeat %.2f s on the onset of 'fun' (%.3f s, `%s`; MU5's lift and S09 start on its frame, "
+      "%.3f s). Tesseract plays this MP3 %.2f ms later than FFmpeg (measured, encoder delay not skipped), so the "
+      "layer's source start is %d ms; the stem check below shows the drop at %+.2f ms from the track clock.\n" % (
+          music_plan["track"], off, an["drop_track_s"], an["fun_onset_s"], WORDS_JSON.name, marks["MU5"],
+          lag_mu * 1000, mu_s0, chk.get("drop_offset_vs_track_clock_ms", float("nan"))))
     w("| Code | Edit time | Frame | Track time | Implementation |\n|---|---|---|---|---|")
-    w("| MU1 | 0.000 s | 0 | %.2f s | Bed starts at full energy, no fade-in (10 ms de-click ramp only). The voice starts at 0.035 s, so the bed enters already ducked. |" % off)
-    w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, inside 'broke' (no edit; CONFLICTS C11). |" % (
-        music_plan["cues"]["MU2"]["edit_s"], music_plan["cues"]["MU2"]["edit_s"] * FPS, music_plan["cues"]["MU2"]["track_s"]))
-    w("| MU3 | %.3f s | %.1f | %.2f s | Near-silent section starts %.3f s after 'dull' (within 1 s: no bar edit). |" % (
-        music_plan["cues"]["MU3"]["edit_s"], music_plan["cues"]["MU3"]["edit_s"] * FPS, music_plan["cues"]["MU3"]["track_s"],
-        music_plan["checks"]["MU3_vs_dull"]["delta_s"]))
+    m2, m3 = an["MU2"], an["MU3"]
+    w("| MU1 | 0.000 s | 0 | %.2f s | Bed starts at full energy, no fade-in (10 ms de-click ramp only). The voice starts at %.3f s, so the bed enters already ducked. |" % (
+        off, spans[0][0]))
+    w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, %.3f s %s the onset of 'broke' (%.3f-%.3f s): %s. No edit: the plan's only fix is a whole-bar edit inside the breakdown, and its trigger is MU3 missing 'dull' by more than 1 s, which it does not (as v01, CONFLICTS C11). Removing one bar (%.2f s) would move MU2 to %.3f s, inside 'broke'. |" % (
+        m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], abs(m2["delta_from_onset_s"]),
+        "before" if m2["delta_from_onset_s"] < 0 else "after", m2["broke_s"][0], m2["broke_s"][1],
+        "within half a second" if m2["within_half_second"] else "outside the plan's half second",
+        an["bar_s"], m2["edit_s"] + an["bar_s"]))
+    w("| MU3 | %.3f s | %.1f | %.2f s | Near-silent section starts %.3f s %s 'dull' (%.3f s): %s 1 s (the plan's test), %s. |" % (
+        m3["edit_s"], m3["edit_s"] * FPS, m3["track_s"], abs(m3["delta_from_onset_s"]),
+        "before" if m3["delta_from_onset_s"] < 0 else "after", m3["dull_s"][0],
+        "within" if m3["within_1s"] else "NOT within",
+        "on or after it as the table asks" if m3["on_or_after"] else
+        "but before it, not 'on or just after' (a bar edit inside the breakdown cannot move MU3 with the drop "
+        "anchored and the build uncut)"))
     w("| MU4 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Hard mute for 15f from B8's first black frame (10 ms ramp into it), then un-mute in place (the track keeps running). |" % (
         marks["MU4_start"], marks["MU4_end"], round(marks["MU4_start"] * FPS), round(marks["MU4_end"] * FPS),
         marks["MU4_start"] + off, marks["MU4_end"] + off))
-    w("| MU5 | %.3f s | %d | 183.38 s | The drop lands on 'fun' with S09 and the X3 flash; +3 dB from the drop for 2 s (to %.3f s), back over 0.3 s. |" % (
-        marks["MU5"], round(marks["MU5"] * FPS), marks["MU5"] + MU5_HOLD_S))
-    w("| MU6 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | From 'Don't believe me?' the main bed crossfades (10 ms) to layer 9202, the same excerpt low-passed at %d Hz, at -6 dB; it opens again (10 ms) when the RACE AND CHASE label lands. |" % (
+    w("| MU5 | %.3f s | %d | %.2f s | The drop lands on 'fun' (onset %.3f s) with S09 and the X3 flash; +3 dB from the 'fun' frame for 2 s (to %.3f s), back over 0.3 s. |" % (
+        marks["MU5"], round(marks["MU5"] * FPS), an["drop_track_s"], an["fun_onset_s"], marks["MU5"] + MU5_HOLD_S))
+    w("| MU6 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | From 'Don't believe me?' the main bed crossfades (10 ms) to layer 9202, the same excerpt low-passed at %d Hz, at -6 dB; it opens again (10 ms) on B15's `label` moment ('Race', where the v01 RACE AND CHASE label landed; the label itself is removed in v02, note 7). |" % (
         marks["MU6_start"], marks["MU6_end"], round(marks["MU6_start"] * FPS), round(marks["MU6_end"] * FPS),
         marks["MU6_start"] + off, marks["MU6_end"] + off, MU6_LOWPASS_HZ))
     w("| MU7 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Music cut under the 1 s rewind (S17 alone), resumes in place 6 dB lower under the glow line, back to the normal bed at the B17 cut %.3f s (30 ms). |" % (
@@ -1571,15 +1756,17 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
         marks["MU8"], marks["MU8"] * FPS, marks["MU8"] + off))
     gaps = [b_[0] - a_[1] for a_, b_ in zip(spans, spans[1:])]
     short = sum(1 for g_ in gaps if g_ < ATTACK_S + RELEASE_S)
-    w("**Ducking.** %d phrase spans from `VO_words_108.json` (word gaps shorter than %.2f s merged). Each phrase ducks the "
+    th_ = bed.get("title_hold_window_s", [0, 0])
+    longer = ["%.3f s after '%s'" % (b_[0] - a_[1], a_[2].split()[-1]) for a_, b_ in zip(spans, spans[1:])
+              if b_[0] - a_[1] >= ATTACK_S + RELEASE_S and abs(a_[1] - th_[0]) > 1e-6]
+    w("**Ducking.** %d phrase spans from `%s` (word gaps shorter than %.2f s merged). Each phrase ducks the "
       "bed by %.0f dB with a 50 ms look-ahead attack (full depth when the phrase starts) and a 300 ms release; the "
       "curve is the minimum of the per-phrase trapezoids (amplitude-linear ramps), i.e. what a 50/300 ms ducker "
-      "does. %d of the %d pauses are shorter than attack + release (0.35 s; most are 0.25-0.29 s after the pause "
-      "cap), so the bed swells by up to about 4-5 dB in those pauses without fully recovering. It comes fully up "
-      "in the B13 title hold (%.3f-%.3f s) and the two 0.445 s pauses (after B7, before B9, the latter mostly under "
-      "MU4). To hold the duck through sentence pauses instead, set MERGE_GAP_S = 0.30 and re-run.\n" % (
-          len(spans), MERGE_GAP_S, DUCK_DB, short, len(gaps), bed.get("title_hold_window_s", [0, 0])[0],
-          bed.get("title_hold_window_s", [0, 0])[1]))
+      "does. %d of the %d pauses are shorter than attack + release (0.35 s), so the bed swells a few dB in those "
+      "pauses without fully recovering. It comes fully up in the B13 title hold (%.3f-%.3f s)%s. To hold the duck "
+      "through sentence pauses instead, set MERGE_GAP_S = 0.30 and re-run.\n" % (
+          len(spans), WORDS_JSON.name, MERGE_GAP_S, DUCK_DB, short, len(gaps), th_[0], th_[1],
+          (" and the other pauses of 0.35 s or more (" + ", ".join(longer) + ")") if longer else ""))
     w("## A3/A4 SFX cues\n")
     w("Edit frame = beat start frame + the event's beat frame. Gain = pre-master layer gain (dB); final = with the "
       "master at the cue's peak. Plan = the cue sheet's peak level; measured = the cue's rendered sample peak, "
@@ -1678,63 +1865,95 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
         w("\n**Waveforms of the mix** (skill helper, edit clock): " + "; ".join(
             "`%s` (%.2f-%.2f s, markers %s)" % (x_["png"], x_["window_s"][0], x_["window_s"][1], x_["markers_s"])
             for x_ in R["waveforms"]) + ".\n")
-        w("What they show (checked on this build): (1) the drop: the bed and S09 hit together exactly on the 43.700 s "
-          "marker, the energy holds through the +3 dB lift and eases after the 45.700 s marker as the lift returns and "
-          "S09 fades; (2) the break: S08 hits at 34.367 s, its tail decays into near-silence through MU4's 15f mute "
-          "(34.700-35.200 s, the mix is about -45 dBFS RMS in its last 100 ms), the bed returns at 35.200 s and the B9 "
-          "voice at 35.315 s; (3) the ending: the bed stops dead at 80.868 s, S18 rises into the logo hit at 81.533 s "
-          "and S19's decay carries the tail to 82.4 s.\n")
+        wm = R.get("waveform_markers_s", {})
+        w("What to look for: (1) the drop: the bed and S09 together on the %.3f s marker ('fun'), the energy held "
+          "through the +3 dB lift, easing after the %.3f s marker; (2) the break: S08 at %.3f s, its tail decaying "
+          "through MU4's 15f mute (%.3f-%.3f s), the bed back at %.3f s and the B9 voice at %.3f s; (3) the ending: the "
+          "bed stopping dead at %.3f s, S18 rising into the logo hit at %.3f s and S19's decay carrying the tail to "
+          "the end of the edit (%.3f s).\n" % (
+              marks["MU5"], marks["MU5"] + MU5_HOLD_S, wm.get("S08", float("nan")), marks["MU4_start"],
+              marks["MU4_end"], marks["MU4_end"], wm.get("B9_voice", float("nan")), marks["MU8"],
+              wm.get("S19", float("nan")), float(beat_map["edit_end_s"])))
     w("## Deviations and interpretations\n")
-    for line in NOTES_DEVIATIONS:
+    for line in deviation_notes(clips, ev, marks, beat_map):
         w("* " + line)
     w("\nChecked by measurement and waveform views only: no listening was possible in this container, so the plan's "
       "'check on phone speakers and on earbuds' and 'If it feels busy, cut S12 first, then S15, then S05' are left "
       "for a listening pass. All 19 cues are in.\n")
     w("## Re-run\n")
     w("`python3 tools/build_tesseract_audio.py` (about 1 minute; one export at a time). `--no-stems` skips the stem "
-      "checks, `--no-waveforms` the PNGs, `--refresh-cue-defaults` rewrites `timing/cue_defaults.json` from "
-      "STORYBOARD.md. When a beat builder writes `hyperframes/<composition>/cues.json`, the next run uses it for that "
-      "beat automatically.")
+      "checks, `--no-waveforms` the PNGs, `--refresh-cue-defaults` rewrites `.tesseract-work/cue_defaults.json` from "
+      "STORYBOARD.md. When a beat builder rewrites `hyperframes/<composition>/cues.json` for v02, the next run uses it "
+      "as written (it no longer equals the v01 snapshot, so it is not scaled).")
     (WORK / "AUDIO_NOTES.md").write_text("\n".join(L) + "\n")
 
 
-NOTES_DEVIATIONS = [
-    "C17 S07: it ends exactly on B8's first black frame (34.700 s), but the file (2.133 s = 64f) is shorter than the "
-    "82f from the second stamp, so it starts 18f after stamp 2 (7f after stamp 3). Not time-stretched.",
-    "C18 music level wording: plan p.35 puts the bed at -22 LUFS 'roughly 14-18 dB below the voice', but -22 is 6 dB "
-    "below the -16 LUFS voice spec. The absolute levels and the 6-8 dB duck are used, and the measured gaps are "
-    "reported above.",
-    "C19 no-voice list: no music in the logo tail (MU8), the B14 burst is under the voice in the processed VO, and "
-    "the B8 hold is MU4's mute. The bed comes fully up in the B13 title hold.",
-    "C20 master: there is no limiter. One static make-up gain on every layer, plus limiter-style master gain "
-    "automation only where the true peak would pass the ceiling (the drop on 'fun').",
-    "C21 voice level: A1 is at unity. The VO is -16.3 LUFS as a mono track, but Tesseract sends mono at full level to "
-    "both channels, so it reads about 3 dB louder on the stereo meter. Track levels are set before the master stage, "
-    "as in a DAW.",
-    "C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice. By "
-    "loudness, though, the loudest moment of the mix is the drop on 'fun'.",
-    "Music base is -7 dB, not music_plan.json's -8 dB. Measured on the track, -7 dB puts the un-ducked bed at about "
-    "-16 LUFS and the ducked full-energy bed at about -22 LUFS (pre-master), as plan p.35 asks.",
-    "S03 keeps sfx_plan.json's reading: the error SOUND (0.11 s into the file) starts 3f before the tear, so the file "
-    "starts 0.21 s before it; the glitch starts on the tear at +12 dB. Plan p.35 can also be read as 'file 3f before "
-    "the tear, sound on it' (0.11 s later). Changing that means one field in sfx_plan.json.",
-    "S01, S11 and S16 put the plan's peak times (0.33/1.14/0.96 s, CONFLICTS C13) on their events. S01 therefore "
-    "starts 0.330 s (9.9f) before the slam, the plan's '10f' to within 3 ms.",
-    "S13 is sliced into single keystrokes, one every 2 letters (see the S13 decision above). The plan allows this "
-    "when the file does not sit with the letters.",
-    "S02/S14: the 0.5-1.3 s slice starts inside the siren, so a 10 ms de-click fade-in comes before the plan's 6f "
-    "fade-out. S19's PowerDown runs 67 ms past the end of the edit, so it is trimmed at 82.4 s with a 4f fade.",
-    "MU1 starts with a 10 ms de-click ramp, and MU4/MU6/MU7/MU8 use 10 ms ramps (the engine's gain resolution). "
-    "MU5's +3 dB returns over 0.3 s after its 2 s; MU7's -6 dB returns at the B17 cut over 30 ms.",
-    "SFX gains are closed-loop: computed from FFmpeg decodes, then corrected once against Tesseract's own render "
-    "(its resampler shaves up to 0.17 dB off some 44.1/96 kHz transients) so every cue's rendered peak is at the "
-    "plan's level.",
-    "The MP3s sit on Tesseract's decode clock. Black Vertigo's source start includes the measured 25 ms decoder "
-    "offset, so the drop lands on 'fun'. The SFX MP3s carry no encoder-delay tag and measured 0 ms.",
-    "Events come from the beats' cues.json files where they exist. A missing event falls back to "
-    "timing/cue_defaults.json; b16-bug-origin/cues.json, for example, has no 'rewind_end', so MU7's end is the "
-    "storyboard's f30.",
-]
+def deviation_notes(clips, ev, marks, beat_map):
+    """The deviations/interpretations list, with this run's numbers (v01 wording kept where it still applies)."""
+    cue = lambda cid: [c for c in clips if c.cue == cid]
+    out = []
+    s07 = cue("S07")
+    if s07:
+        c = s07[0]
+        span = ev.t("B8.first_black") - ev.t("B7.stamp2")
+        out.append("C17 S07: it ends exactly on B8's first black frame (%.3f s), %s" % (
+            ev.t("B8.first_black"),
+            "but the file (%.3f s = %.0ff) is shorter than the %.0ff from the second stamp, so it starts %.0ff after "
+            "stamp 2 (%.0ff after stamp 3). Not time-stretched." % (
+                c.dur, c.dur * FPS, span * FPS, (c.edit_start - ev.t("B7.stamp2")) * FPS,
+                (c.edit_start - ev.t("B7.stamp3")) * FPS) if c.dur < span - 1e-6 else
+            "head-trimmed so it starts on the second stamp (%.3f s)." % ev.t("B7.stamp2")))
+    out += [
+        "C18 music level wording: plan p.35 puts the bed at -22 LUFS 'roughly 14-18 dB below the voice', but -22 is 6 dB "
+        "below the -16 LUFS voice spec. The absolute levels and the 6-8 dB duck are used, and the measured gaps are "
+        "reported above.",
+        "C19 no-voice list: no music in the logo tail (MU8), the B14 burst is under the voice in the processed VO, and "
+        "the B8 hold is MU4's mute. The bed comes fully up in the B13 title hold.",
+        "C20 master: there is no limiter. One static make-up gain on every layer, plus limiter-style master gain "
+        "automation only where the true peak would pass the ceiling.",
+        "C21 voice level: A1 is at unity. The VO is about -16.4 LUFS as a mono track, but Tesseract sends mono at full "
+        "level to both channels, so it reads about 3 dB louder on the stereo meter. Track levels are set before the "
+        "master stage, as in a DAW.",
+        "C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice. By "
+        "loudness, though, the loudest moment of the mix is the drop on 'fun'.",
+        "Music base is -7 dB, not music_plan.json's -8 dB. Measured on the track, -7 dB puts the un-ducked bed at about "
+        "-16 LUFS and the ducked full-energy bed at about -22 LUFS (pre-master), as plan p.35 asks.",
+        "S03 keeps sfx_plan.json's reading: the error SOUND (0.11 s into the file) starts 3f before the tear, so the file "
+        "starts 0.21 s before it; the glitch starts on the tear at +12 dB. Plan p.35 can also be read as 'file 3f before "
+        "the tear, sound on it' (0.11 s later). Changing that means one field in sfx_plan.json.",
+    ]
+    s01 = cue("S01")
+    if s01:
+        c = s01[0]
+        out.append("S01, S11 and S16 put the plan's peak times (0.33/1.14/0.96 s, CONFLICTS C13) on their events. S01 "
+                   "therefore starts %.3f s (%.1ff) before the slam, the plan's '10f' to within %.0f ms." % (
+                       c.event_t - c.edit_start, (c.event_t - c.edit_start) * FPS,
+                       abs((c.event_t - c.edit_start) - 10 / FPS) * 1000))
+    out.append("S13 is sliced into single keystrokes, one every 2 letters (see the S13 decision above). The plan allows "
+               "this when the file does not sit with the letters.")
+    trimmed = [c for c in clips if any("tail trimmed" in n for n in c.notes)]
+    out.append("S02/S14: the 0.5-1.3 s slice starts inside the siren, so a 10 ms de-click fade-in comes before the "
+               "plan's 6f fade-out." + ("".join(" %s%s runs %.0f ms past the end of the edit, so it is trimmed at "
+                                                "%.3f s with a 4f fade." % (c.cue, c.sub, (c.edit_start + c.file_dur -
+                                                                                     c.src_start - float(beat_map["edit_end_s"])) * 1000,
+                                                                            float(beat_map["edit_end_s"]))
+                                                for c in trimmed)))
+    out += [
+        "MU1 starts with a 10 ms de-click ramp, and MU4/MU6/MU7/MU8 use 10 ms ramps (the engine's gain resolution). "
+        "MU5's +3 dB returns over 0.3 s after its 2 s; MU7's -6 dB returns at the B17 cut over 30 ms.",
+        "SFX gains are closed-loop: computed from FFmpeg decodes, then corrected once against Tesseract's own render "
+        "(its resampler shaves up to 0.17 dB off some 44.1/96 kHz transients) so every cue's rendered peak is at the "
+        "plan's level. S10 (v02) is not calibrated on its own: it keeps S08's corrected gain (same file, same level).",
+        "The MP3s sit on Tesseract's decode clock. Black Vertigo's source start includes the measured decoder offset, "
+        "so the drop lands on 'fun'. The SFX MP3s carry no encoder-delay tag and measured 0 ms.",
+    ]
+    used = {c.event for c in clips} | {"B8.first_black", "B10.fun", "B15.label", "B16.rewind", "B16.rewind_end"}
+    fb = sorted(k for k in used if ev.event_source.get(k, "").startswith("STORYBOARD"))
+    out.append("Events come from the beats' cues.json files; v01-timed files are scaled to the v02 beat until their beat "
+               "builder rewrites them, and an event a beat does not list falls back to the STORYBOARD.md cue scaled the "
+               "same way%s. MU7's end is B16's `rewind_end` (%s)." % (
+                   (" (this run: " + ", ".join(fb) + ")") if fb else "", ev.event_source.get("B16.rewind_end", "?")))
+    return out
 
 
 if __name__ == "__main__":

@@ -38,59 +38,60 @@
  "anchor": {
   "cue": "MU5",
   "track_s": 183.38,
-  "edit_s": 43.7,
-  "word": "fun. (B10) onset 43.700 s = frame 1311"
+  "edit_s": 41.04,
+  "word": "fun. (B10) onset 41.040 s = frame 1231 (v02 beat map)"
  },
- "offset_s": 139.68,
- "track_time_at_edit_0": "2:19.68 (plan estimate 2:22.4; the processed voiceover is longer before 'fun')",
+ "offset_s": 142.34,
+ "track_time_at_edit_0": "2:22.34 (plan estimate 2:22.4)",
  "checks": {
   "MU3_vs_dull": {
-   "mu3_edit_s": 26.24,
-   "dull_onset_s": 25.885,
-   "delta_s": 0.355,
-   "rule": "within 1 s, on or just after 'dull'",
-   "pass": true
+   "mu3_edit_s": 23.58,
+   "dull_onset_s": 24.309,
+   "delta_s": -0.729,
+   "rule": "plan p.34: within 1 s of 'dull' (the table: on or just after it)",
+   "pass": true,
+   "note": "Lands 0.729 s before 'dull': inside the plan's 1 s test, so no bar edit; not 'on or just after'. A whole-bar edit inside the breakdown cannot move MU3 while the drop is anchored and the build stays uncut."
   },
   "MU2_vs_broke": {
-   "mu2_edit_s": 8.78,
+   "mu2_edit_s": 6.12,
    "broke_word_s": [
-    8.144,
-    8.915
+    7.648,
+    8.372
    ],
-   "delta_from_onset_s": 0.636,
+   "delta_from_onset_s": -1.528,
    "rule": "within half a second of 'broke'",
    "pass": false,
-   "note": "Lands inside the spoken word 'broke' but 0.64 s after its onset. The only allowed fix is a whole-bar edit inside the breakdown; a bar is 2.18 s, which would move MU2 to 6.60 s (1.54 s early). Left unedited and flagged (CONFLICTS.md C11)."
+   "note": "The breakdown arrives 1.528 s before 'broke'. Removing one whole bar (2.1828 s) inside the breakdown would move it to 8.303 s (inside 'broke', 0.655 s after its onset), but the plan's procedure edits only when MU3 misses 'dull' by more than 1 s, so, as in v01, no edit; flagged (CONFLICTS C11)."
   },
-  "bar_edits": "none (MU3 passes, so the plan's procedure needs no breakdown edit; the build 2:50-3:03 is untouched)"
+  "bar_edits": "none (MU3 passes the plan's 1 s test; the build 2:50-3:03 is untouched)"
  },
  "cues": {
   "MU1": {
    "edit_s": 0.0,
-   "track_s": 139.68,
+   "track_s": 142.34,
    "what": "Start at full energy, no fade-in."
   },
   "MU2": {
-   "edit_s": 8.78,
+   "edit_s": 6.12,
    "track_s": 148.46,
-   "what": "First breakdown begins (inside 'broke')."
+   "what": "First breakdown begins (1.53 s before 'broke')."
   },
   "MU3": {
-   "edit_s": 26.24,
+   "edit_s": 23.58,
    "track_s": 165.92,
-   "what": "Near-silent section starts just after 'dull'."
+   "what": "Near-silent section starts 0.73 s before 'dull'."
   },
   "MU4": {
    "edit_s": "B8 first black frame (from hyperframes/b08-break/cues.json)",
    "what": "Hard-mute 15f from the first black frame, then un-mute in place (track keeps running)."
   },
   "MU5": {
-   "edit_s": 43.7,
+   "edit_s": 41.04,
    "track_s": 183.38,
    "what": "The drop on 'fun'. Lift the music +3 dB for 2 s after it."
   },
   "MU6": {
-   "edit_s": "65.933 ('Don't believe me?') until the B15 label lands (b15 cues.json)",
+   "edit_s": "B15 start ('Don't believe me?') until B15's `label` event ('Race', where the v01 label landed; the label itself is removed in v02, note 7)",
    "what": "Low-pass ~800 Hz and -6 dB, then open it again."
   },
   "MU7": {
@@ -98,8 +99,8 @@
    "what": "Cut the music under the ~1 s rewind, then resume 6 dB lower under the glow line (in place)."
   },
   "MU8": {
-   "edit_s": 80.868,
-   "track_s": 220.548,
+   "edit_s": 76.095,
+   "track_s": 218.435,
    "what": "Hard stop at the end of 'now?'. No music after; S18/S19 carry the logo."
   }
  },
@@ -112,5 +113,34 @@
   "how": "Tesseract Audio layer gain = base_gain; a volume envelope (layerTimeJsCode) ducks 7 dB under every voice phrase with 50 ms attack / 300 ms release, and carries MU4/MU5/MU6/MU7/MU8. MU6's low-pass is a second, pre-filtered (lowpass 800 Hz) copy of the same excerpt cross-faded in by envelope."
  },
  "backup": "ES Conundrums plan (plan p.34) only if Black Vertigo is not licensed.",
- "title_hold": "B13 title hold (57.5-59.67 s) has no voice: let the music come up to about -16 LUFS there (plan: levels)."
+ "title_hold": "B13 title hold (the longest VO gap, before B14) has no voice: let the music come up to about -16 LUFS there (plan: levels).",
+ "version": "v02 (VO 115%, timing/beat_map.json v02); v01 values under 'v01'",
+ "v01": {
+  "offset_s": 139.68,
+  "anchor_edit_s": 43.7,
+  "MU2_edit_s": 8.78,
+  "MU3_edit_s": 26.24,
+  "MU8_edit_s": 80.868,
+  "checks": {
+   "MU3_vs_dull": {
+    "mu3_edit_s": 26.24,
+    "dull_onset_s": 25.885,
+    "delta_s": 0.355,
+    "rule": "within 1 s, on or just after 'dull'",
+    "pass": true
+   },
+   "MU2_vs_broke": {
+    "mu2_edit_s": 8.78,
+    "broke_word_s": [
+     8.144,
+     8.915
+    ],
+    "delta_from_onset_s": 0.636,
+    "rule": "within half a second of 'broke'",
+    "pass": false,
+    "note": "Lands inside the spoken word 'broke' but 0.64 s after its onset. The only allowed fix is a whole-bar edit inside the breakdown; a bar is 2.18 s, which would move MU2 to 6.60 s (1.54 s early). Left unedited and flagged (CONFLICTS.md C11)."
+   },
+   "bar_edits": "none (MU3 passes, so the plan's procedure needs no breakdown edit; the build 2:50-3:03 is untouched)"
+  }
+ }
 }

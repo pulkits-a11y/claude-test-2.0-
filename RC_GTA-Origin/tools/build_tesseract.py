@@ -24,7 +24,13 @@ p.38-39). Steps:
              the delivered AAC; only if it misses -14 LUFS +-1 / <= -1.0 dBTP, a measured two-pass loudnorm is
              applied to the delivery's audio (recipe recorded). Prints ffprobe + loudness.
 
-Usage:  python3 tools/build_tesseract.py [--version v01] [--force-audio] [--skip-export] [--master-crf 14]
+v02 (REVISION_v02.md): the 115% voiceover (01_VO/VO_processed_115.wav + VO_words_115.json), the v02 beat map
+(every duration from it), the music re-anchored on the new 'fun', S10 = B8's glitch (note 5), the whole-edit finish
+(grain, vignette, dust overlay, chromatic aberration) and eased keyframes in the picture half. Disk: the merged
+project is about 2.3 GB, so the picture intermediate (.tesseract-work/picture.tsrct, the same size) is deleted after a
+successful merge (--keep-picture keeps it), and the build stops before a step that would not fit.
+
+Usage:  python3 tools/build_tesseract.py [--version v02] [--force-audio] [--skip-export] [--master-crf 14]
 """
 from __future__ import annotations
 
@@ -92,7 +98,8 @@ def rel(p) -> str:
 # --------------------------------------------------------------------------------------------
 def audio_inputs():
     pats = ["hyperframes/*/cues.json", "timing/*.json", "02_Music/music_plan.json", "03_SFX/sfx_plan.json",
-            "03_SFX/sfx_analysis.json", "01_VO/VO_processed_108.wav", "01_VO/VO_words_108.json",
+            "03_SFX/sfx_analysis.json", "01_VO/VO_processed_115.wav", "01_VO/VO_words_115.json",
+            "01_VO/VO_processing_115.json", "STORYBOARD.md", ".tesseract-work/cues_v01_snapshot.json",
             "tools/build_tesseract_audio.py"]
     out = []
     for p in pats:
@@ -128,10 +135,23 @@ def remap_assets(layers, amap):
     return n
 
 
-def merge(final: Path):
+def free_gb(path: Path = ROOT) -> float:
+    return shutil.disk_usage(str(path)).free / 1e9
+
+
+def need_space(gb: float, what: str):
+    f = free_gb()
+    if f < gb:
+        raise SystemExit("not enough disk for %s: %.1f GB free, about %.1f GB needed" % (what, f, gb))
+    log("  disk: %.1f GB free (%s needs about %.1f GB)" % (f, what, gb))
+
+
+def merge(final: Path, keep_picture: bool = False):
     tmp = WORK / "merge.tmp.tsrct"
     if tmp.exists():
         tmp.unlink()
+    # the merge writes a full package (about the size of the picture half) next to the old final project
+    need_space(PICTURE.stat().st_size / 1e9 * 1.05 + 0.3, "the merged package")
     r = json.loads(tsrct("project", "merge", "--project", PICTURE, "--from", AUDIO, "--mode", "overlay", "--at", "0",
                          "--output", tmp).stdout)
     src = r["sources"][0]
@@ -142,6 +162,14 @@ def merge(final: Path):
     tsrct("project", "checkout", "--project", AUDIO, "--output", aj)
     tsrct("project", "checkout", "--project", tmp, "--output", mj)
     pic, aud, mer = (json.loads(p.read_text()) for p in (pj, aj, mj))
+    deleted = None
+    if not keep_picture:
+        # `project commit` writes a new package next to the old one (temp + rename), so the merged package exists
+        # twice for a moment; the picture half (about the same size) is no longer needed once checked out.
+        deleted = round(PICTURE.stat().st_size / 1e9, 2)
+        PICTURE.unlink()
+        log("  deleted the picture intermediate %s (%.1f GB; its JSON is %s)" % (rel(PICTURE), deleted, rel(pj)))
+    need_space(tmp.stat().st_size / 1e9 + 0.3, "committing the merged package")
     for k in ("dimensions", "duration", "backgroundColor", "colorManagement"):
         if json.dumps(pic.get(k)) != json.dumps(aud.get(k)):
             raise SystemExit("picture/audio differ in %s: %s vs %s" % (k, pic.get(k), aud.get(k)))
@@ -174,7 +202,10 @@ def merge(final: Path):
     for p in (pj, aj, mj, back):
         p.unlink()
     tmp.replace(final)
-    return {"merge_warnings": r.get("warnings", []), "asset_map_shared": {k: v for k, v in amap.items() if k != v},
+    for f in WORK.glob("merge.tmp*"):              # anything the merge/commit left behind
+        f.unlink()
+    return {"merge_warnings": r.get("warnings", []), "picture_intermediate_deleted_gb": deleted,
+            "asset_map_shared": {k: v for k, v in amap.items() if k != v},
             "asset_refs_remapped": n_remap, "commit_warnings": c.get("warnings", []),
             "check": {"valid": chk.get("valid"), "warnings": chk.get("warnings"), "diagnostics": chk.get("diagnostics")},
             "layers": {"picture": len(pids), "audio": len(aids), "picture_max_id": max(pids), "audio_min_id": min(aids)},
@@ -344,7 +375,9 @@ def loudnorm_fix(delivery: Path, wav: Path, measured_delivery: dict):
 # --------------------------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--version", default="v01", help="version tag in the export names (default v01)")
+    ap.add_argument("--version", default="v02", help="version tag in the export names (default v02)")
+    ap.add_argument("--keep-picture", action="store_true",
+                    help="keep .tesseract-work/picture.tsrct (about 2.3 GB) after the merge")
     ap.add_argument("--force-audio", action="store_true", help="rebuild the audio half even if it is up to date")
     ap.add_argument("--skip-export", action="store_true", help="build, merge and filmstrips only")
     ap.add_argument("--skip-filmstrips", action="store_true")
@@ -369,15 +402,20 @@ def main():
         log("[1/5] audio: %s is up to date" % rel(AUDIO))
     report["audio"] = {"rebuilt": bool(why), "why": why}
 
-    # 2. picture
+    # 2. picture (the old intermediate is deleted first by the picture script; it needs about the renders' size)
     log("[2/5] picture: running %s" % rel(PICTURE_SCRIPT))
+    renders = sum(p.stat().st_size for p in (ROOT / "05_GFX/renders").glob("*.mov")) / 1e9
+    old_pic = PICTURE.stat().st_size / 1e9 if PICTURE.exists() else 0.0
+    if free_gb() + old_pic < renders + 0.5:
+        raise SystemExit("not enough disk for the picture half: %.1f GB free (+%.1f GB old picture.tsrct), renders "
+                         "%.1f GB" % (free_gb(), old_pic, renders))
     r = subprocess.run([sys.executable, str(PICTURE_SCRIPT)], cwd=str(ROOT))
     if r.returncode != 0:
         raise SystemExit("picture script failed")
 
     # 3. merge
     log("[3/5] merge -> %s" % rel(FINAL))
-    report["merge"] = merge(FINAL)
+    report["merge"] = merge(FINAL, args.keep_picture)
     m = report["merge"]
     log("  one composition: %d picture layers (ids <= %d) + %d audio layers (ids >= %d), dynamics %d + %d, "
         "%d assets referenced, check valid=%s, shared identical assets %s" % (
@@ -401,6 +439,7 @@ def main():
         delivery = EXPORTS / ("RC_GTA-Origin_%s_16x9.mp4" % args.version)
         log("[5/5] export master %s (tsrct export, external FFmpeg backend, master CRF %s)" % (
             rel(master), args.master_crf or "off (10 Mbps)"))
+        need_space(1.0, "the master + delivery encodes")
         report["master"] = export_master(FINAL, master, args.master_crf)
         log("  master done in %.0f s" % report["master"]["seconds"])
         wav = CHECKS / "delivery_mix.wav"

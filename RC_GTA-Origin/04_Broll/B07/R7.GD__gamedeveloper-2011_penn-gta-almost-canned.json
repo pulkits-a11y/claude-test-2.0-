@@ -1,0 +1,46 @@
+{
+ "url": "https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned-",
+ "title": "Penn: First Grand Theft Auto Was 'Almost Canned'",
+ "captured_utc": "2026-11-16T13:49:32.664Z",
+ "dpr": 2,
+ "clip_css_px": {
+  "x": 82,
+  "y": 136.5,
+  "width": 1116,
+  "height": 1176.25
+ },
+ "rects_png_px": {
+  "headline": [
+   {
+    "x": 80,
+    "y": 120,
+    "w": 2072,
+    "h": 99
+   }
+  ],
+  "almost_canned": [
+   {
+    "x": 253,
+    "y": 1989,
+    "w": 347,
+    "h": 44
+   }
+  ],
+  "bmg_wanted_to_can_it": [
+   {
+    "x": 610,
+    "y": 1989,
+    "w": 773,
+    "h": 44
+   }
+  ],
+  "date": [
+   {
+    "x": 80,
+    "y": 415,
+    "w": 177,
+    "h": 28
+   }
+  ]
+ }
+}

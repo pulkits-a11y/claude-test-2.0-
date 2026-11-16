@@ -13,12 +13,17 @@ Inputs (read at run time, whatever exists then):
 
 Every run deletes and recreates .tesseract-work/picture.tsrct: one composition `main`, 1920x1080, duration
 = beat_map edit_end_s, background #0A0A0A, layer ids 1..8999, asset ids "pic-*". Top to bottom:
-  1. "Grain (whole edit)"        Adjustment, Grain effect (seed animated per frame), whole edit
+  1. "Finish ..."                the v02 whole-edit finish (REVISION_v02.md rule F, client note 13), over
+                                 everything: grain plate (monochrome, linear light, seed per frame), vignette,
+                                 the client's dust overlay twice (Screen, drifting, cross-fading), and an
+                                 animated chromatic aberration; every key eased (easeInOutSine)
   2. "HyperFrames beat renders"  Group, one Video per existing MOV: MOV local frame 6 on the beat's start
                                  frame, visible over [beat start, beat end) only
   3. "Bxx footage"               one Group per beat with Tesseract shots; per shot a Group holding the L2 bars,
-                                 the shot's look/whip Adjustments and a framing Group (push-in, X2 drift)
+                                 the shot's look/whip Adjustments and a framing Group (zoom keys, X2 drift)
                                  around the Video (+ the L1 mask guide)
+Nothing is linear (client note 14, rule C): every keyframe carries an easings.net curve as a cubic-bezier
+(EASINGS below); shots may give zoom/drift keys as `framing.keys` (framing v2, rule D).
 Footage is never imported raw: each shot's window (+ margins) is cut with FFmpeg from the original to an
 H.264 1080p-fit 30 fps CFR working copy in .tesseract-work/media/ (crop applied, pixel aspect corrected,
 never stretched, speed/reverse baked in, no B-frames so the decode clock is exact). Copies are cached by
@@ -27,7 +32,8 @@ a hash of their recipe and re-used; unused copies are deleted.
 Usage:  python3 tools/build_tesseract_picture.py [--no-cache]
 Writes: .tesseract-work/picture.tsrct, picture.editable.json, checks/picture_report.json
 Test only: --shots-dir DIR reads DIR/<composition>/tesseract_shots.json first (falls back to hyperframes/),
-           --output X.tsrct writes the document (and X.editable.json, X.report.json) there instead.
+           --output X.tsrct writes the document (and X.editable.json, X.report.json) there instead,
+           --no-renders leaves the HyperFrames renders out (footage, grades and the finish only).
 """
 from __future__ import annotations
 
@@ -62,19 +68,38 @@ HANDLE_F = 6                       # HF compositions start 6f before the beat (P
 INK = [10 / 255, 10 / 255, 10 / 255, 1.0]   # #0A0A0A ink black (bars, background)
 
 # ---- look constants (PICTURE_NOTES.md has the measurements behind each value) --------------------------
-GRAIN_EDIT = {"amount": 1.0, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0}   # p1-p99 spread 3.7% of full scale at any level
 GRAIN_ARCHIVAL = {"amount": 0.6, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0}  # extra on archival shots: ~4.3% combined
 VIGNETTE_LIGHT = {"amount": 0.25, "radius": 1.0, "feather": 0.8}   # corners about -17%, edge centres -7%
 L1_SCALE = 105.0                   # plan: footage at 105%
 L1_BLUR_PX = 12                    # plan: edges blurred 12 px
 L1_SHARP_FRAC = 0.70               # plan: centre 70% stays sharp
 L1_FEATHER = (192, 108)            # mask feather (x, y) px: the sharp->blurred ramp outside the 70% box
-PUSH_DEFAULT = (100.0, 104.0)      # plan rule 7: every held shot pushes in 100% -> 104%
+PUSH_DEFAULT = (100.0, 108.0)      # v02 rule D: held footage pushes 100 -> 106-110% (sine.inOut) instead of 104%,
+PUSH_ALTERNATE = True              # ... alternating with slow zoom-outs (108 -> 100%) so it is not mechanical
 HELD_MIN_F = 12                    # shots shorter than this get no default push-in (burst clips)
-EASE_OUT = {"type": "cubicBezier", "x1": 0.2, "y1": 0.0, "x2": 0.0, "y2": 1.0}   # plan "ease out"
-EASE_IN = {"type": "cubicBezier", "x1": 0.55, "y1": 0.0, "x2": 1.0, "y2": 0.45}
-LINEAR = {"type": "linear"}
-HOLD = {"type": "hold"}
+
+# ---- easings.net curves as CSS cubic-bezier (client note 14, REVISION_v02.md rule C: nothing linear) ----------
+# Tesseract: a keyframe's easing shapes the segment ARRIVING at it (the first key's easing is never used; it gets
+# the next segment's curve so no key in the document is linear). Elastic/bounce are not cubic-bezier curves.
+EASINGS = {
+    "easeInSine": (0.12, 0, 0.39, 0), "easeOutSine": (0.61, 1, 0.88, 1), "easeInOutSine": (0.37, 0, 0.63, 1),
+    "easeInQuad": (0.11, 0, 0.5, 0), "easeOutQuad": (0.5, 1, 0.89, 1), "easeInOutQuad": (0.45, 0, 0.55, 1),
+    "easeInCubic": (0.32, 0, 0.67, 0), "easeOutCubic": (0.33, 1, 0.68, 1), "easeInOutCubic": (0.65, 0, 0.35, 1),
+    "easeInQuart": (0.5, 0, 0.75, 0), "easeOutQuart": (0.25, 1, 0.5, 1), "easeInOutQuart": (0.76, 0, 0.24, 1),
+    "easeInQuint": (0.64, 0, 0.78, 0), "easeOutQuint": (0.22, 1, 0.36, 1), "easeInOutQuint": (0.83, 0, 0.17, 1),
+    "easeInExpo": (0.7, 0, 0.84, 0), "easeOutExpo": (0.16, 1, 0.3, 1), "easeInOutExpo": (0.87, 0, 0.13, 1),
+    "easeInCirc": (0.55, 0, 1, 0.45), "easeOutCirc": (0, 0.55, 0.45, 1), "easeInOutCirc": (0.85, 0, 0.15, 1),
+    "easeInBack": (0.36, 0, 0.66, -0.56), "easeOutBack": (0.34, 1.56, 0.64, 1), "easeInOutBack": (0.68, -0.6, 0.32, 1.6),
+}
+GSAP_FAMILY = {"sine": "Sine", "quad": "Quad", "power1": "Quad", "cubic": "Cubic", "power2": "Cubic", "quart": "Quart",
+               "power3": "Quart", "quint": "Quint", "power4": "Quint", "strong": "Quint", "expo": "Expo", "circ": "Circ",
+               "back": "Back"}
+EASE_PUSH = "easeInOutSine"        # slow push / zoom across a held shot (rule C table); legacy scale_from/to too
+EASE_X2 = "easeOutQuart"           # X2 cut-then-drift settling into place (the plan's "ease out" = power3.out)
+EASE_BARS = "easeOutQuart"         # L2 bars sliding in and landing
+EASE_WHIP_OUT, EASE_WHIP_IN = "easeInQuart", "easeOutQuart"   # X8: accelerate into the cut / decelerate out of it
+EASE_POP_RETURN = "easeInOutSine"  # b10-pop saturation back to 0 after its second
+POP_RETURN_F = 8
 X2_FRAMES = 20                     # plan X2: slides 40-80 px sideways over 20f, ease out
 X2_DEFAULT_PX = 60
 X8_DEFAULT = {"frames": 6, "blur_px": 80, "dir": "left"}
@@ -89,10 +114,40 @@ GRADES = {   # primaryGrade deltas per shot grade (plan p.10)
     "archival": {"temperature": 0.08, "blacks": 0.12, "saturation": -0.20},   # + vignette + grain (look adj)
     "game": {"contrast": 0.18},
     "b9-sat60": {"contrast": 0.18, "saturation": -0.40},
-    "b10-pop": {"contrast": 0.18, "saturation": 0.10},                          # +10% for 1 s, then 0
+    "b10-pop": {"contrast": 0.18, "saturation": 0.10},                          # +10% for 1 s, then back (eased)
+    "neutralize": {"contrast": 0.18, "saturation": -0.20},                      # v02 B17 fan edit, after NEUTRALIZE
     "none": None,
 }
 B10_POP_MS = 1000
+# v02 grade `neutralize` (REVISION_v02.md B17: the madebyajit fan edit's heavy pink/magenta grade must sit with the
+# other GTA 6 footage). Per shot, from its own working copy: per luma decile, the median R/G/B are pulled
+# `strength` of the way to (decile luma x target_rgb), a slightly warm neutral like the trailer footage
+# (R17.2/R17.4 average R:G:B about 1.03:1:0.97); the three channel curves through those points are a colorCurves
+# effect (a tone-dependent white balance: the cast differs between the magenta shadows and the pinkish
+# highlights). Then hueCurves takes the purple/magenta that remains in the fence and shadows down (hue about
+# 250-320 deg; skin at 10-40 deg is untouched), and the primaryGrade above adds the `game` contrast and -20%
+# saturation. Measured on the clip @ 1-5 s: mean R-G 0.18-0.25 -> 0.01-0.05, chroma 0.19-0.25 -> 0.07-0.08 (the
+# trailer footage: R-G 0.01-0.03, chroma 0.05-0.08). PICTURE_NOTES.md has the frames.
+NEUTRALIZE = {"strength": 0.85, "target_rgb": (1.03, 1.0, 0.97), "bins": 10, "sample_fps": 5, "sample_w": 480,
+              "hue_vs_saturation": [(0.0, 0.5), (0.6, 0.5), (0.7, 0.25), (0.79, 0.12), (0.88, 0.25), (0.96, 0.5),
+                                    (1.0, 0.5)]}
+
+# ---- v02 whole-edit finish (REVISION_v02.md rule F, client note 13), top layers over everything -------------
+# Calibrated on flat fields and test patterns in Tesseract 0.7.0 (PICTURE_NOTES.md "Whole-edit finish").
+FINISH_GRAIN = {"amount": 3.0, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0,   # on a 50% grey Rect plate,
+                "plate": 0.5, "blend": "linearLight", "opacity": 55.0}            # desaturated: monochrome film grain;
+                # linear light adds 2 x opacity x (plate - 0.5): p1-p99 about 12% of full scale on flat grey
+FINISH_VIGNETTE = {"amount": 0.57, "radius": 1.0, "feather": 0.8}   # flat field: corners about -37.5%, edges -17%
+FINISH_DUST = {"file": "04_Broll/Textures/dust_overlay.jpg", "blend": "screen", "exposure": 1.0,  # the file is dim
+               "opacity": (20.0, 55.0), "xfade_s": 3.0,                     # (max 81/255): +1 stop so it reads at ~0.5
+               "copies": [{"name": "A", "pos": (960.0, 540.0), "rotation": 0.0, "drift_px": (24.0, 14.0),
+                           "drift_half_s": (5.0, 3.7), "scale": (104.0, 109.0), "scale_half_s": 6.5, "phase": 0},
+                          {"name": "B (rotated 180, offset)", "pos": (1020.0, 576.0), "rotation": 180.0,
+                           "drift_px": (20.0, 16.0), "drift_half_s": (4.3, 5.5), "scale": (108.0, 103.0),
+                           "scale_half_s": 7.5, "phase": 1}]}
+FINISH_CHROMA = {"direction": 90.0, "px": (0.6, 2.0), "half_period_s": 1.2,   # R and B each shifted 0.6 <-> 2.0 px
+                 "px_per_amount": 19.1}                                       # (horizontal; 2.4 s period, sine)
+                 # measured: amount 1.0 = R -19.06 px, B +19.06 px along `direction` (0 = vertical), uniform
 
 
 def log(*a):
@@ -129,6 +184,74 @@ def rel(p: Path) -> str:
 
 def safe_id(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9_-]+", "-", s).strip("-")
+
+
+EASE_WARNINGS = []
+
+
+def ease_name(name, default=EASE_PUSH, where="") -> str:
+    """An easings.net name ('easeOutExpo'), any spelling of it ('ease-out-expo') or a GSAP name ('expo.out',
+    'power3.out', 'back.out(1.7)', 'sine.inOut') -> the easings.net name. 'linear'/'none'/unknown -> `default`
+    with a warning (client note 14: nothing linear)."""
+    if name is None or name == "":
+        return default
+    n = str(name).strip()
+    if n in EASINGS:
+        return n
+    flat = re.sub(r"[^a-z]", "", n.lower())
+    for k in EASINGS:
+        if k.lower() == flat:
+            return k
+    m = re.fullmatch(r"([a-z]+[1-4]?)(?:\.(in|out|inout))?(?:\(.*\))?", re.sub(r"\s+", "", n.lower()))
+    if m and m.group(1) in GSAP_FAMILY:
+        d = {"in": "In", "out": "Out", "inout": "InOut", None: "Out"}[m.group(2)]
+        return "ease%s%s" % (d, GSAP_FAMILY[m.group(1)])
+    EASE_WARNINGS.append("%s: easing %r is %s; used %s" % (where or "?", name, "linear (not allowed, note 14)" if flat in (
+        "linear", "none") else "unknown", default))
+    return default
+
+
+def ease(name, default=EASE_PUSH, where="") -> dict:
+    x1, y1, x2, y2 = EASINGS[ease_name(name, default, where)]
+    return {"type": "cubicBezier", "x1": float(x1), "y1": float(y1), "x2": float(x2), "y2": float(y2)}
+
+
+def eased_points(points):
+    """[(t, v, easing-name-or-None)] -> [(t, v, cubic-bezier)]: each key arrives with its own curve; the first key
+    (whose easing is never used) gets the second key's curve, so no keyframe in the document is linear."""
+    out = []
+    for i, (t, v, e) in enumerate(points):
+        if i == 0 and e is None and len(points) > 1:
+            e = points[1][2]
+        out.append((t, v, e if isinstance(e, dict) else ease(e)))
+    return out
+
+
+def osc_points(t0, t1, half, a, b, name="easeInOutSine", phase=0):
+    """Keys alternating a, b, a, ... every `half` ms over [t0, t1] (a last key at t1 on the interpolated value),
+    every segment easeInOutSine: a smooth back-and-forth, never linear."""
+    pts, k, t = [], phase, float(t0)
+    while t < t1 - 1e-6:
+        pts.append((int(round(t)), a if k % 2 == 0 else b, name))
+        t += half
+        k += 1
+    last_v = a if k % 2 == 0 else b
+    prev_t, prev_v = pts[-1][0], pts[-1][1]
+    u = (t1 - prev_t) / float(half)
+    x1, y1, x2, y2 = EASINGS[name]
+    pts.append((int(t1), prev_v + (last_v - prev_v) * bezier_y(u, x1, y1, x2, y2), name))
+    return pts
+
+
+def bezier_y(x, x1, y1, x2, y2):
+    """CSS cubic-bezier: y for a given x (bisection on the parametric x)."""
+    lo, hi = 0.0, 1.0
+    for _ in range(40):
+        t = (lo + hi) / 2
+        xt = 3 * (1 - t) ** 2 * t * x1 + 3 * (1 - t) * t ** 2 * x2 + t ** 3
+        lo, hi = (t, hi) if xt < x else (lo, t)
+    t = (lo + hi) / 2
+    return 3 * (1 - t) ** 2 * t * y1 + 3 * (1 - t) * t ** 2 * y2 + t ** 3
 
 
 # --------------------------------------------------------------------------------------------
@@ -230,9 +353,14 @@ class Dyn:
         self.entries = []
 
     def keys(self, target, points, tag):
+        """points: [(t, value, easing)] with easing an easings.net name, None (= the next key's curve for a first
+        key, else the default) or a ready cubic-bezier dict."""
+        points = eased_points(points)
         kfs = []
         for i, (t, v, easing) in enumerate(points):
-            kfs.append({"id": "pic-%s-%02d" % (tag, i), "layerTime": int(t),
+            if not isinstance(easing, dict) or easing.get("type") != "cubicBezier":
+                raise SystemExit("non-eased keyframe %s %s (client note 14)" % (tag, easing))
+            kfs.append({"id": "pic-%s-%03d" % (tag, i), "layerTime": int(t),
                         "value": {"type": "float", "value": round(float(v), 6)}, "easing": easing})
         self.entries.append({"target": target, "animator": {"type": "keyframes", "enabled": True, "keyframes": kfs}})
 
@@ -271,9 +399,10 @@ def resolve_source(shot: dict):
     """'source' (PRODUCTION_SPEC) -> original by R-ID -> labelled stand-in."""
     notes = []
     if shot.get("source"):
-        p = ROOT / shot["source"]
-        if p.exists():
-            return p, "source", notes
+        sp = str(shot["source"]).strip()
+        for p in (ROOT / sp, Path(sp), ROOT.parent / sp):   # project-relative (spec), absolute, or repo-relative
+            if p.is_file():
+                return p.resolve(), "source", notes
         notes.append("source %s missing" % shot["source"])
     rid = shot.get("rid") or ""
     hits = sorted(h for h in glob.glob(str(ROOT / "04_Broll/_originals" / "*" / (glob.escape(rid) + "__*")))
@@ -451,6 +580,99 @@ def x8_parts(shot, beat_start):
     return out
 
 
+DEFAULT_PUSH_COUNT = [0]
+
+
+def framing_keys(shot, screen, n, notes):
+    """The shot's zoom/drift keys [(f, scale %, ease name, x px | None, y px | None)], f = frames from the shot's
+    first frame (0..n). Framing v2 (REVISION_v02.md): framing.keys = [{f, scale, ease, x?, y?}], `ease` = the
+    easings.net curve arriving at that key (default easeInOutSine). Legacy scale_from/scale_to: one move across the
+    shot, easeInOutSine unless framing.ease says otherwise. No framing: a held shot (>= HELD_MIN_F, not L10) gets
+    the rule D default 100 -> 108% push, alternating with 108 -> 100% zoom-outs; bursts/short shots stay at 100%."""
+    fr = shot.get("framing") if isinstance(shot.get("framing"), dict) else {}
+    anchor = fr.get("anchor", "center")
+    where = shot["id"]
+    if isinstance(fr.get("keys"), list) and fr["keys"]:
+        keys, prev = [], float(fr.get("scale_from", 100.0))
+        for k in fr["keys"]:
+            if not isinstance(k, dict):
+                notes.append("%s: framing key %r ignored (not an object)" % (where, k))
+                continue
+            f = int(round(float(k.get("f", 0))))
+            if not 0 <= f <= n:
+                notes.append("%s: framing key f%d outside the shot (0..%d); clamped" % (where, f, n))
+                f = min(max(f, 0), n)
+            prev = float(k.get("scale", prev))
+            keys.append((f, prev, ease_name(k.get("ease"), EASE_PUSH, where) if k.get("ease") else None,
+                         float(k["x"]) if k.get("x") is not None else None,
+                         float(k["y"]) if k.get("y") is not None else None))
+        keys.sort(key=lambda k: k[0])
+        ded = []
+        for k in keys:
+            if ded and ded[-1][0] == k[0]:
+                ded[-1] = k
+            else:
+                ded.append(k)
+        keys = [(f, sc, (e or EASE_PUSH) if i else e, x, y) for i, (f, sc, e, x, y) in enumerate(ded)]
+        return keys, "framing v2 keys", anchor
+    if "scale_from" in fr or "scale_to" in fr:
+        s0 = float(fr.get("scale_from", 100))
+        s1 = float(fr.get("scale_to", s0))
+        e = ease_name(fr.get("ease"), EASE_PUSH, where)
+        return [(0, s0, None, None, None), (n, s1, e, None, None)], "legacy scale_from/to, %s" % e, anchor
+    if screen == "L10" or n < HELD_MIN_F:
+        return [(0, 100.0, None, None, None)], "static (burst or short shot)", anchor
+    k = DEFAULT_PUSH_COUNT[0]
+    DEFAULT_PUSH_COUNT[0] += 1
+    a, b = PUSH_DEFAULT[::-1] if (PUSH_ALTERNATE and k % 2) else PUSH_DEFAULT
+    return [(0, a, None, None, None), (n, b, EASE_PUSH, None, None)], "default %s, %s" % (
+        "push-in" if b > a else "zoom-out", EASE_PUSH), anchor
+
+
+def framing_desc(keys) -> str:
+    parts = []
+    for i, (f, sc, e, x, y) in enumerate(keys):
+        xy = "" if x is None and y is None else " (x %s, y %s)" % (x, y)
+        parts.append("f%d %.1f%%%s%s" % (f, sc, xy, "" if i == 0 else " " + (e or EASE_PUSH)))
+    return " -> ".join(parts)
+
+
+def neutralize_curves(wc, n_shot):
+    """colorCurves points for grade `neutralize`, measured on the shot's own working-copy frames (see NEUTRALIZE)."""
+    nz = NEUTRALIZE
+    ss = wc["head_f"] / FPS
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", "%.4f" % ss, "-t", "%.4f" % (max(n_shot, 1) / FPS),
+                          "-i", str(wc["path"]), "-vf", "fps=%d,scale=%d:-2" % (nz["sample_fps"], nz["sample_w"]),
+                          "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], capture_output=True, check=True).stdout
+    px = np.frombuffer(raw, np.uint8).reshape(-1, 3).astype(float) / 255.0
+    px = px[(px.max(axis=1) > 0.02)]                       # ignore the ink pillars of a contain-fit copy
+    y = px @ np.array([0.2126, 0.7152, 0.0722])
+    edges = np.quantile(y, np.linspace(0, 1, nz["bins"] + 1))
+    pts = {c: [] for c in ("red", "green", "blue")}
+    meds = []
+    for k in range(nz["bins"]):
+        m = (y >= edges[k]) & (y <= edges[k + 1])
+        if not np.any(m):
+            continue
+        yk, med = float(np.median(y[m])), np.median(px[m], axis=0)
+        meds.append((round(yk, 3), [round(float(v), 3) for v in med]))
+        for i, c in enumerate(("red", "green", "blue")):
+            tgt = min(1.0, yk * nz["target_rgb"][i])
+            pts[c].append((float(med[i]), float(med[i] + nz["strength"] * (tgt - med[i]))))
+    curves = {"master": [{"x": 0.0, "y": 0.0}, {"x": 1.0, "y": 1.0}]}
+    for c, p_ in pts.items():
+        out = [(0.0, 0.0)]
+        for x_, y_ in sorted(p_):
+            if x_ <= out[-1][0] + 0.01 or x_ >= 0.99:
+                continue
+            out.append((round(x_, 4), round(max(y_, out[-1][1]), 4)))
+        out.append((1.0, 1.0))
+        curves[c] = [{"x": a, "y": b} for a, b in out]
+    rg = float(np.mean(px[:, 0] - px[:, 1]))
+    return curves, "per-decile luma/median RGB %s; source mean R-G %.3f" % (meds, rg)
+
+
 def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, notes):
     bid = "B%02d" % int(beat["id"][1:])
     screen, grade = shot["screen"], shot["grade"]
@@ -492,18 +714,20 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
         covers_width = fit == "cover" or (pic[2] / pic[3]) <= wc["aspect"]
         if covers_width:
             base = max(base, 100.0 * (1 + drift / (W / 2.0)))
-    # --- framing (push-in) ----------------------------------------------------------------------------
-    fr = shot.get("framing")
-    if isinstance(fr, dict) and ("scale_from" in fr or "scale_to" in fr):
-        s0, s1 = float(fr.get("scale_from", 100)), float(fr.get("scale_to", fr.get("scale_from", 100)))
-        anchor = fr.get("anchor", "center")
-    elif screen == "L10" or (ef - sf) < HELD_MIN_F:
-        s0 = s1 = 100.0
-        anchor = "center"
-    else:
-        s0, s1 = PUSH_DEFAULT
-        anchor = "center"
+    # --- framing: zoom keys (v02 framing v2 / legacy scale_from-to / default push) --------------------
+    fkeys, fmode, anchor = framing_keys(shot, screen, ef - sf, notes)
+    s0, s1 = fkeys[0][1], fkeys[-1][1]
     ax, ay = (W / 2.0, H / 2.0) if not isinstance(anchor, (list, tuple)) else (float(anchor[0]), float(anchor[1]))
+    # drift keys (x/y px) need overscan like X2, so the move never uncovers the frame edge
+    if fit == "cover" or (pic[2] / pic[3]) <= wc["aspect"]:
+        for f_, sc, _, kx, ky in fkeys:
+            need = 100.0 * max(1 + 2 * abs(kx or 0) / W, 1 + 2 * abs(ky or 0) / H) / (max(sc, 1.0) / 100.0)
+            if need > base + 1e-6:
+                notes.append("%s: framing key f%d (scale %.1f, x %s, y %s) needs %.2f%% overscan; video scaled to it" % (
+                    shot["id"], f_, sc, kx, ky, need))
+                base = need
+    if min(k[1] for k in fkeys) < 100.0 - 1e-6 and fit == "cover":
+        notes.append("%s: framing scale below 100%% (%.1f) uncovers the frame edge" % (shot["id"], min(k[1] for k in fkeys)))
 
     # --- the Video (+ L1 mask guide) inside the framing group -----------------------------------------
     offset = -(((sf - wc["head_f"]) * 1000) // FPS)         # content ms = parent ms + offset (exact frame pick)
@@ -511,6 +735,12 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
     effects, masks, inner = [], [], []
     g = GRADES[grade]
     pg_id = None
+    if grade == "neutralize":
+        cv, stats = neutralize_curves(wc, n_shot=ef - sf)
+        effects.append(fx(ids.E(), {"type": "colorCurves", "semanticVersion": 1, "curves": cv}))
+        effects.append(fx(ids.E(), {"type": "hueCurves", "semanticVersion": 1, "hueVsSaturation": [
+            {"x": x_, "y": y_} for x_, y_ in NEUTRALIZE["hue_vs_saturation"]]}))
+        notes.append("%s: neutralize curves from %s: %s" % (shot["id"], wc["path"].name, stats))
     if g:
         pg_id = ids.E()
         effects.append(fx(pg_id, primary_grade(g)))
@@ -539,20 +769,41 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
                             desc="%s; working copy %s (%dx%d, head %df)" % (src_note, wc["path"].name, wc["w"], wc["h"],
                                                                             wc["head_f"])))
     if grade == "b10-pop" and pg_id:
-        t0 = start + offset
-        dyn.effect(pg_id, "saturation", [(t0, GRADES["b10-pop"]["saturation"], LINEAR), (t0 + B10_POP_MS, 0.0, HOLD)])
+        t0 = start + offset          # +10% for 1 s, then eased back to 0 (v01: a hold step; v02 note 14)
+        sat = GRADES["b10-pop"]["saturation"]
+        dyn.effect(pg_id, "saturation", [(t0, sat, EASE_POP_RETURN), (t0 + B10_POP_MS, sat, EASE_POP_RETURN),
+                                         (t0 + B10_POP_MS + frames_ms(POP_RETURN_F), 0.0, EASE_POP_RETURN)])
 
     fid = ids.L()
-    framing = group_json(fid, "%s framing" % label, start, dur, inner, transform=tr(ax, ay, s0, ax, ay),
-                         desc="push-in %.0f%% -> %.0f%% across the shot%s" % (s0, s1, "; X2 drift %d px %s over %df" % (
-                             drift, shot.get("x2_dir") or "left", X2_FRAMES) if x2 else ""))
-    if s1 != s0:
+    kx0 = next((k[3] for k in fkeys if k[3] is not None), None)
+    ky0 = next((k[4] for k in fkeys if k[4] is not None), None)
+    framing = group_json(fid, "%s framing" % label, start, dur, inner,
+                         transform=tr(ax + (kx0 or 0.0), ay + (ky0 or 0.0), s0, ax, ay),
+                         desc="%s: %s%s" % (fmode, framing_desc(fkeys), "; X2 drift %d px %s over %df (%s)" % (
+                             drift, shot.get("x2_dir") or "left", X2_FRAMES, EASE_X2) if x2 else ""))
+    key_ms = lambda f_: ms_floor(sf + f_)
+    if len(fkeys) > 1 and any(abs(k[1] - s0) > 1e-9 for k in fkeys):
         for p in ("scaleX", "scaleY"):
-            dyn.layer(fid, p, [(start, s0, LINEAR), (end, s1, LINEAR)])
+            dyn.layer(fid, p, [(key_ms(f_), sc, e) for f_, sc, e, _, _ in fkeys])
+    for p, idx, base_v in (("positionX", 3, ax), ("positionY", 4, ay)):
+        if any(k[idx] is not None for k in fkeys):
+            last, pts = 0.0, []
+            for k in fkeys:
+                last = float(k[idx]) if k[idx] is not None else last
+                pts.append((key_ms(k[0]), base_v + last, k[2]))
+            if len({round(v, 6) for _, v, _ in pts}) > 1:
+                dyn.layer(fid, p, pts)
+    outer = framing
     if x2:
         sign = 1 if (shot.get("x2_dir") or "left").lower() == "left" else -1   # 'left' = slides leftwards
         d_ms = min(frames_ms(X2_FRAMES), dur)
-        dyn.layer(fid, "positionX", [(start, ax + sign * drift, LINEAR), (start + d_ms, ax, EASE_OUT)])
+        x2_pts = [(start, ax + sign * drift, None), (start + d_ms, ax, EASE_X2)]
+        if any(k[3] is not None for k in fkeys):          # drift keys own the framing group's positionX
+            outer = group_json(ids.L(), "%s X2 drift" % label, start, dur, [framing], transform=tr(ax, ay, 100.0, ax, ay),
+                               desc="X2 cut-then-drift %d px over %df, %s" % (drift, X2_FRAMES, EASE_X2))
+            dyn.layer(outer["id"], "positionX", x2_pts)
+        else:
+            dyn.layer(fid, "positionX", x2_pts)
 
     # --- shot-level adjustments: whip (lowest), then the look (vignette/grain) -----------------------
     shot_layers = []
@@ -571,11 +822,11 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
         sgn = -1 if str(x8.get("dir", "left")).lower() == "left" else 1   # content moves this way
         blur = float(x8.get("blur_px", 80))
         if part == "out":
-            mt_keys = [(0, 0.5, LINEAR), (wd, 0.5 + sgn * X8_TRAVEL, EASE_IN)]
-            db_keys = [(0, 0.0, LINEAR), (wd, blur, EASE_IN)]
+            mt_keys = [(0, 0.5, None), (wd, 0.5 + sgn * X8_TRAVEL, EASE_WHIP_OUT)]
+            db_keys = [(0, 0.0, None), (wd, blur, EASE_WHIP_OUT)]
         else:
-            mt_keys = [(0, 0.5 - sgn * X8_TRAVEL, LINEAR), (wd, 0.5, EASE_OUT)]
-            db_keys = [(0, blur, LINEAR), (wd, 0.0, EASE_OUT)]
+            mt_keys = [(0, 0.5 - sgn * X8_TRAVEL, None), (wd, 0.5, EASE_WHIP_IN)]
+            db_keys = [(0, blur, None), (wd, 0.0, EASE_WHIP_IN)]
         whips.append(adjustment_json(aid, "%s X8 whip %s" % (label, part), wa, wd, [
             fx(mt_id, {"type": "motionTile", "tileCenterX": 0.5, "tileCenterY": 0.5, "tileWidth": 100.0,
                        "tileHeight": 100.0, "outputWidth": 100.0, "outputHeight": 100.0, "phase": 0.0,
@@ -593,15 +844,15 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
                                      desc="L2 bar %d px%s" % (bars, ", slides in over %df" % lb.get("slide_in_f", 8) if enter else "")))
         shot_layers.append(rect_json(bot_id, "%s L2 bar bottom" % label, start, dur, (W, bars), (0, H - bars), INK))
         if enter and slide_ms > 0:
-            dyn.layer(top_id, "positionY", [(0, -bars, LINEAR), (slide_ms, 0.0, EASE_OUT)])
-            dyn.layer(bot_id, "positionY", [(0, H, LINEAR), (slide_ms, H - bars, EASE_OUT)])
+            dyn.layer(top_id, "positionY", [(0, -bars, None), (slide_ms, 0.0, EASE_BARS)])
+            dyn.layer(bot_id, "positionY", [(0, H, None), (slide_ms, H - bars, EASE_BARS)])
     if look:
         shot_layers.append(adjustment_json(ids.L(), "%s look (%s%s)" % (label, "L1 vignette" if screen == "L1" else "",
                                                                        (" + " if screen == "L1" and grade == "archival" else "") +
                                                                        ("archival vignette + grain" if grade == "archival" else "")),
                                            start, dur, look))
     shot_layers += whips
-    shot_layers.append(framing)
+    shot_layers.append(outer)
     sg = group_json(ids.L(), "%s · %s" % (label, shot["id"]), start, dur, shot_layers,
                     desc=(shot.get("notes") or "")[:600] or None)
     info = {"id": shot["id"], "beat": beat["id"], "rid": rid, "screen": screen, "grade": grade,
@@ -610,9 +861,89 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
             "speed": wc["speed"], "reverse": wc["reverse"], "crop": wc["crop"],
             "working_copy": rel(wc["path"]), "wc_size": [wc["w"], wc["h"]], "aspect": round(wc["aspect"], 4),
             "fit": fit, "picture_rect": [round(v, 2) for v in pic], "video_scale": round(base, 3), "push": [s0, s1],
+            "framing_mode": fmode, "framing_keys": [{"f": k[0], "scale": k[1], "ease": k[2], "x": k[3], "y": k[4]}
+                                                    for k in fkeys],
             "x2_drift_px": drift if x2 else None, "x8": [p[0] for p in x8_parts(shot, beat["start_frame"])],
             "bars": bars or None, "content_offset_ms": offset, "video_layer": vid_id, "group_layer": sg["id"]}
     return sg, info
+
+
+# --------------------------------------------------------------------------------------------
+# v02 whole-edit finish (REVISION_v02.md rule F, client note 13)
+# --------------------------------------------------------------------------------------------
+def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, dust_asset: str):
+    """Top-of-stack finishing layers over the whole edit (footage + HyperFrames renders), all editable in the
+    .tsrct, every keyframe easeInOutSine. Top to bottom: grain plate, vignette, dust B, dust A, chromatic
+    aberration (lens first, then film plane: the CA works on the picture only, the vignette also calms the dust in
+    the corners, the grain sits on top of everything)."""
+    layers, info = [], {}
+    pg = lambda **k: primary_grade(k)
+    # grain: a 50% grey plate with the engine's grain, desaturated (monochrome), linear light over the picture
+    gid, geff, gsat = ids.L(), ids.E(), ids.E()
+    g = {k: v for k, v in FINISH_GRAIN.items() if k in ("amount", "size", "softness", "aspectRatio")}
+    plate = FINISH_GRAIN["plate"]
+    layers.append({"type": "Rect", "id": gid, "name": "Finish: grain (whole edit)", "blendMode": FINISH_GRAIN["blend"],
+                   "activeRange": {"start": 0, "duration": int(edit_ms)},
+                   "transform": tr(0, 0, 100.0, o=FINISH_GRAIN["opacity"]),
+                   "rect": {"size": [W, H], "fillColor": [plate, plate, plate, 1.0]},
+                   "effects": [fx(geff, dict({"type": "grain", "seed": 1.0}, **g)), fx(gsat, pg(saturation=-1.0))],
+                   "description": "v02 note 13 'a pretty visible / obvious grain': monochrome film grain (grain on a 50%% "
+                                  "grey plate, saturation -1) added in linear light at %.0f%% opacity; seed changes "
+                                  "every frame. Flat grey: p1-p99 about 12%% of full scale (PICTURE_NOTES.md)." %
+                                  FINISH_GRAIN["opacity"]})
+    dyn.script(geff, "seed", "return Math.round(input.time.seconds * 30) + 1;")
+    info["grain"] = {"layer": gid, **FINISH_GRAIN}
+    # vignette
+    vid = ids.L()
+    layers.append(adjustment_json(vid, "Finish: vignette (whole edit)", 0, edit_ms,
+                                  [fx(ids.E(), dict({"type": "vignette"}, **FINISH_VIGNETTE))],
+                                  desc="v02 note 13 'a fairly visible vignette throughout': on a flat field the corners "
+                                       "are about 37% darker than the centre, the edge centres about 17%."))
+    info["vignette"] = {"layer": vid, **FINISH_VIGNETTE}
+    # dust overlay: two copies (B rotated 180 deg and offset), Screen, slow eased drift/scale, cross-fading
+    lo, hi = FINISH_DUST["opacity"]
+    half_x = FINISH_DUST["xfade_s"] * 1000.0
+    dust_ids = []
+    for cp in reversed(FINISH_DUST["copies"]):        # B above A
+        lid, eid = ids.L(), ids.E()
+        x0, y0 = cp["pos"]
+        ph = cp["phase"]
+        layers.append({"type": "Image", "id": lid, "name": "Finish: dust overlay %s" % cp["name"],
+                       "blendMode": FINISH_DUST["blend"], "activeRange": {"start": 0, "duration": int(edit_ms)},
+                       "transform": {"anchorPoint": [W / 2.0, H / 2.0], "position": [x0, y0],
+                                     "scale": [cp["scale"][0], cp["scale"][0]], "rotation": cp["rotation"],
+                                     "opacity": hi if ph == 0 else lo},
+                       "source": {"assetId": dust_asset, "fit": "cover",
+                                  "sourceRect": {"x": 0, "y": 0, "width": W, "height": H}},
+                       "effects": [fx(eid, pg(exposure=FINISH_DUST["exposure"]))],
+                       "description": "v02 note 13: the client's dust/particle overlay (%s), Screen, opacity %.0f%% <-> "
+                                      "%.0f%% cross-fading with the other copy every %.1f s, drifting %s px and "
+                                      "breathing %s%% (easeInOutSine); exposure +%.1f stop because the file is dim "
+                                      "(max 81/255)." % (FINISH_DUST["file"], hi, lo, FINISH_DUST["xfade_s"],
+                                                         cp["drift_px"], cp["scale"], FINISH_DUST["exposure"])})
+        dyn.layer(lid, "opacity", osc_points(0, edit_ms, half_x, hi, lo, phase=ph))
+        dyn.layer(lid, "positionX", osc_points(0, edit_ms, cp["drift_half_s"][0] * 1000, x0 - cp["drift_px"][0],
+                                               x0 + cp["drift_px"][0], phase=ph))
+        dyn.layer(lid, "positionY", osc_points(0, edit_ms, cp["drift_half_s"][1] * 1000, y0 - cp["drift_px"][1],
+                                               y0 + cp["drift_px"][1], phase=1 - ph))
+        for prop in ("scaleX", "scaleY"):
+            dyn.layer(lid, prop, osc_points(0, edit_ms, cp["scale_half_s"] * 1000, cp["scale"][0], cp["scale"][1]))
+        dust_ids.append(lid)
+    info["dust"] = {"layers": dust_ids, **{k: v for k, v in FINISH_DUST.items()}}
+    # chromatic aberration: R and B shifted opposite ways along `direction`, oscillating (eased) between px[0], px[1]
+    cid, ceff = ids.L(), ids.E()
+    a0, a1 = (v / FINISH_CHROMA["px_per_amount"] for v in FINISH_CHROMA["px"])
+    layers.append(adjustment_json(cid, "Finish: chromatic aberration (whole edit)", 0, edit_ms,
+                                  [fx(ceff, {"type": "chromaticAberration", "amount": round(a0, 5),
+                                             "direction": FINISH_CHROMA["direction"]})],
+                                  desc="v02 note 13 'a subtle chromatic animation': red and blue shifted %.1f <-> %.1f px "
+                                       "(opposite ways, horizontal) and back every %.1f s, easeInOutSine." % (
+                                           FINISH_CHROMA["px"][0], FINISH_CHROMA["px"][1],
+                                           2 * FINISH_CHROMA["half_period_s"])))
+    dyn.effect(ceff, "amount", [(t, round(v, 5), e) for t, v, e in osc_points(
+        0, edit_ms, FINISH_CHROMA["half_period_s"] * 1000, a0, a1)])
+    info["chroma"] = {"layer": cid, "amount": [round(a0, 5), round(a1, 5)], **FINISH_CHROMA}
+    return layers, info
 
 
 # --------------------------------------------------------------------------------------------
@@ -621,6 +952,7 @@ def main():
     ap.add_argument("--no-cache", action="store_true", help="re-cut every footage working copy")
     ap.add_argument("--shots-dir", help="test only: read <dir>/<composition>/tesseract_shots.json first")
     ap.add_argument("--output", help="test only: write the project here instead of .tesseract-work/picture.tsrct")
+    ap.add_argument("--no-renders", action="store_true", help="test only: leave the HyperFrames renders out")
     args = ap.parse_args()
     global PROJECT, JSON_OUT, REPORT
     if args.output:
@@ -643,7 +975,7 @@ def main():
     for b in beats:
         comp = b["composition"]["id"]
         mov = RENDERS / ("%s.mov" % comp)
-        if mov.exists():
+        if mov.exists() and not args.no_renders:
             hf.append((b, mov))
         else:
             missing_renders.append(comp)
@@ -659,11 +991,25 @@ def main():
     if PROJECT.exists():
         PROJECT.unlink()
     tsrct("project", "create", "--project", PROJECT)
-    hf_assets = {}
-    for b, mov in hf:
+    dust_src = ROOT / FINISH_DUST["file"]
+    if not dust_src.is_file():
+        raise SystemExit("dust overlay missing: %s" % rel(dust_src))
+    dust_asset = "pic-tex-dust-overlay"
+    tsrct("project", "import-asset", "--project", PROJECT, "--file", dust_src, "--asset-id", dust_asset, "--kind", "image")
+    hf_assets, hf_ok = {}, []
+    for b, mov in hf:          # a beat being re-rendered right now can be an incomplete file: skip it, say so
         aid = "pic-hf-%s" % b["composition"]["id"]
-        r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", mov, "--asset-id", aid).stdout)
-        hf_assets[b["id"]] = (aid, r)
+        try:
+            nf = int(probe(mov)["nb_frames"] or 0)
+            r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", mov, "--asset-id", aid).stdout)
+        except (SystemExit, ValueError, KeyError, IndexError) as e:
+            warnings.append("%s: unreadable or incomplete (being re-rendered?); beat render skipped: %s" % (
+                rel(mov), str(e).strip().splitlines()[0][:200] if str(e).strip() else type(e).__name__))
+            missing_renders.append(b["composition"]["id"] + " (unreadable)")
+            continue
+        hf_assets[b["id"]] = (aid, r, nf)
+        hf_ok.append((b, mov))
+    hf = hf_ok
     wc_used = set()
     shot_assets, imported = {}, {}
     for b in beats:
@@ -702,23 +1048,18 @@ def main():
     ids, dyn = Ids(), Dyn()
     root = []
 
-    grain_adj, grain_eff = ids.L(), ids.E()
-    root.append(adjustment_json(grain_adj, "Grain (whole edit)", 0, edit_ms,
-                                [fx(grain_eff, dict({"type": "grain", "seed": 1.0}, **GRAIN_EDIT))],
-                                desc="Plan p.10: a very light grain layer (3-5%) over the whole edit to glue the sources "
-                                     "together; seed advances every frame"))
-    dyn.script(grain_eff, "seed", "return Math.round(input.time.seconds * 30) + 1;")
+    finish, finish_info = finish_layers(ids, dyn, edit_ms, dust_asset)
+    root += finish
 
     hf_group_id = ids.L()
     hf_layers, hf_info = [], []
     for b, mov in hf:
-        aid, imp = hf_assets[b["id"]]
+        aid, imp, nf = hf_assets[b["id"]]
         sf, ef = int(b["start_frame"]), int(b["end_frame"])
         start, end = ms_floor(sf), ms_floor(ef)
         # content(t) = t + offset must pick MOV local frame 6 + (n - sf) at edit frame n:
         # offset = ceil(200 - sf*1000/30) = 200 - floor(sf*1000/30) (6f = exactly 200 ms)
         offset = (HANDLE_F * 1000) // FPS - start
-        nf = int(probe(mov)["nb_frames"] or 0)
         want = int(b["dur_frames"]) + 2 * HANDLE_F
         if nf and nf != want:
             warnings.append("%s: render has %d frames, beat + 12 = %d (stale render vs timing?)" % (rel(mov), nf, want))
@@ -758,8 +1099,16 @@ def main():
               "layers_max_id": ids.layer, "hf_renders": hf_info, "missing_renders": missing_renders,
               "shots": shot_info, "shot_files": shot_files, "commit_warnings": r.get("warnings", []),
               "check": {"valid": chk.get("valid"), "diagnostics": chk.get("diagnostics"), "warnings": chk.get("warnings")},
-              "warnings": warnings, "notes": notes,
-              "constants": {"GRAIN_EDIT": GRAIN_EDIT, "GRAIN_ARCHIVAL": GRAIN_ARCHIVAL, "VIGNETTE_LIGHT": VIGNETTE_LIGHT,
+              "warnings": warnings + EASE_WARNINGS, "notes": notes, "finish": finish_info,
+              "keyframes": {"total": sum(len(e["animator"].get("keyframes", [])) for e in dyn.entries),
+                            "linear_or_hold": sum(1 for e in dyn.entries for k in e["animator"].get("keyframes", [])
+                                                  if k["easing"].get("type") != "cubicBezier"),
+                            "scripts": sum(1 for e in dyn.entries if e["animator"]["type"] == "jsScript")},
+              "constants": {"FINISH_GRAIN": FINISH_GRAIN, "FINISH_VIGNETTE": FINISH_VIGNETTE, "FINISH_DUST": FINISH_DUST,
+                            "FINISH_CHROMA": FINISH_CHROMA, "NEUTRALIZE": NEUTRALIZE, "PUSH_DEFAULT": PUSH_DEFAULT,
+                            "EASES": {"push": EASE_PUSH, "x2": EASE_X2, "bars": EASE_BARS, "whip": [EASE_WHIP_OUT, EASE_WHIP_IN],
+                                      "b10_pop_return": EASE_POP_RETURN},
+                            "GRAIN_ARCHIVAL": GRAIN_ARCHIVAL, "VIGNETTE_LIGHT": VIGNETTE_LIGHT,
                             "L1": [L1_SCALE, L1_BLUR_PX, L1_SHARP_FRAC, L1_FEATHER], "GRADES": GRADES,
                             "X8_TRAVEL": X8_TRAVEL, "MARGIN_F": MARGIN_F, "WC_RECIPE": WC_RECIPE}}
     REPORT.write_text(json.dumps(report, indent=1) + "\n")
@@ -768,8 +1117,9 @@ def main():
     log("  missing renders (skipped): %s" % (", ".join(missing_renders) or "none"))
     for w in r.get("warnings", []) + (chk.get("warnings") or []):
         log("  tesseract warning: %s" % (w if isinstance(w, str) else json.dumps(w)))
-    for w in warnings:
+    for w in warnings + EASE_WARNINGS:
         log("  WARN %s" % w)
+    log("  keyframes: %(total)d, all cubic-bezier (linear/hold: %(linear_or_hold)d), %(scripts)d seed scripts" % report["keyframes"])
     for n in notes:
         log("  note %s" % n)
     log("  report: %s" % rel(REPORT))

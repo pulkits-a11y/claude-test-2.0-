@@ -1287,6 +1287,19 @@
    "source_in": null,
    "source_out": null,
    "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
+  },
+  {
+   "rid": "R7.GD",
+   "beats": "B7",
+   "role": "article still (v02, your note 3: 'pull an article broll talking about its cancellation and highlight the text')",
+   "desc": "Game Developer (Gamasutra), Jan 31 2011: \"Penn: First Grand Theft Auto Was 'Almost Canned'\" - body: \"It was almost canned. The publisher, BMG Interactive, wanted to can it, as it didn't seem to be going anywhere.\"",
+   "url": "https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned-",
+   "note": "Screenshot of the live page (left column = article; right column = the site's unrelated 'Latest News' sidebar: crop it out). Highlight rects in the .json (PNG px, DPR 2). Same Gamasutra interview as the B6 quote.",
+   "official_required": false,
+   "folder": "04_Broll/B07",
+   "file": "04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png",
+   "status": "used",
+   "channel": "Game Developer"
   }
  ]
 }
