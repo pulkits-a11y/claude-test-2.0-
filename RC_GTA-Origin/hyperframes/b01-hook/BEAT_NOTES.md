@@ -1,4 +1,61 @@
-# B1 Hook - `b01-hook` (beat 143f = 4.767 s; composition 155f with 6f handles)
+# B1 Hook - `b01-hook` (v02: beat 134f = 4.467 s; composition 146f with 6f handles. v01: 143f / 155f)
+
+## v02 (REVISION_v02.md, client notes 10-15): read this first; the v01 notes below are kept as reference
+
+**Beat 134f (4.467 s, v01 143f), composition 146f = 4.8666667 s** (root `data-duration`), local frame = beat frame + 6.
+Re-timed from `timing/beat_map.json` v02 (`python3 tools/new_beat.py B1 --refresh`: kit + words.json). No footage,
+moment or position changed; every frame below moved to the 115% voice.
+
+| What changed | Why (note / rule) |
+|---|---|
+| All frames re-timed (table below); root 5.1666667 -> 4.8666667 | note 10 (VO 115%), REVISION "every beat ~6% shorter" |
+| T1 chunks -> word-by-word groups of max 2 words: `Why does / every GTA, / even / GTA 6, / have you / running` (each word pops on its own onset, 5f expo.out, 1f lead; groups hard-cut) | note 11, rule A (kit `captionPlanV2` + `captionPops`) |
+| T2 "from the *cops?*" -> `from / the cops?` (lead words pop; keyword blur punch 30 -> 0 px, 108 -> 100 %, 6f expo.out on its onset); the last group exits in 3f (power2.in) ending on the boundary instead of v01's 4f linear fade | note 11 + 14, rules A C |
+| Coolvetica / Coolvetica Italic (kit base.css) | note 12 |
+| L4 plates: v01 linear push 100 -> 104 % -> **zoom OUT 110 -> 100 %** (easeInOutSine) across the frosted shot | notes 14 + 15, rules C D ("alternate with slow zoom-outs") |
+| L3 grid: **punch-in on the cut** 112 -> 100 % over 10f (easeOutExpo) on a new wrapper `#b01-gcam` | note 15, rule D ("cuts into a new shot") |
+| Held GTA 6 shot: v01 linear 100 -> 104 % -> **push 100 -> 108 %** (easeInOutSine, local 61 -> 140), held at 108 % through the tail | notes 14 + 15, rules C D |
+| **Key punch on "cops?"** (whole picture, new outer wrapper `#b01-cam`): 100 -> 106 % in 3f (expo.out, from 1f before the onset), back over 7f (sine.inOut), at rest on 134 | note 15, rule D ("emphasis words") |
+| Frost clears (power2.out), cell pops (fade power2.out + scale power3.out), grow (power3.out), stars (power3.out): kit v02, all eased; X9 = hard frames (a cut pattern) | note 14, rule C |
+| Kept: M1 stars at (1640, 80) (CONFLICTS C35), outside the camera (steady); captions outside the camera; no grain/vignette/chroma (assembly, rule F) | "don't change anything else" |
+
+**v02 frames** (local; beat = local - 6):
+
+| local | beat | what |
+|---|---|---|
+| 0-26 | -6-20 | L4 frosted tiles over R1.2 (31.6 s), zoom-out 110 -> 100 %; tiles clear on "Why" 7 and "does" 15 (3f each) |
+| 7 / 15 | 1 / 9 | "Why" / "does" pop (group 1) |
+| 26 | 20 | hard cut on "every" to L3 (cells pop 26, 29, 32, 35, 38, 41; landed 45); grid punch-in 26-36; "every" pops |
+| 40 | 34 | "GTA," |
+| 55 | 49 | "even" (group 3); cell 6 switches to GTA 6 (R1.2 8.2 s) and grows to full frame over 6f |
+| 61 | 55 | full frame = `gta6_cell_full` (S01 peak); push 100 -> 108 % starts |
+| 69 / 80 | 63 / 74 | "GTA" / "6," (group 4) |
+| 93 / 98 | 87 / 92 | "have" / "you" (group 5); M1 stars pop 93, 96, 99, 102, 105 (landed 108) |
+| 105 | 99 | "running" (group 6) |
+| 114 | 108 | T2 "from" |
+| 120 / 125 | 114 / 119 | T2 "the" / keyword "cops?" (blur punch, lands 131); X9 red 125-126, blue 127-128 (`cops` = beat 119, S02); key punch 124-134 |
+| 137-140 | 131-134 | T2 last group exits (3f, power2.in); gone on the boundary |
+| 140 | 134 | boundary (= B2 local 6): picture at 108 %, push at rest |
+| 140-146 | 134-140 | tail handle: GTA 6 at 108 % + stars |
+
+`cues.json`: `gta6_cell_full` 55, `cops` 119 (v01 58, 127). `tesseract_shots.json`: no shots (HF-owned beat, opaque).
+
+**B1 -> B2 hand-off**: B2 local 0 = this local 134, B2's GTA 6 copies use media-start 79/30 = 2.6334 s and finish this
+same easeInOutSine push (local 134 -> 140) before holding 108 %: B1 local 140 and B2 local 6 snapshots are
+pixel-identical outside the stars (mean abs diff 0.00/255).
+
+**Conflict (rule A vs plan p.20 "f0 already shows 'Why does'")**: words now pop on their own onset, so "Why" first shows
+on beat f1 (local 7; its pop starts on f0 at 0 %). The client's note 11 (word by word) wins; f0 still moves (zoom-out).
+
+**Verification v02**: `npx --yes hyperframes@0.9.52 check --json` 0 errors (warnings: `duplicate_media_discovery_risk` =
+the L4 sharp/frosted pair by design; `timeline_track_too_dense` caption lane; `nested_structure_needs_subcomposition` kit
+T2 markup; `contrast_aa_failure` 2.2:1 on "every GTA," over the light GTA 3 sky cell at local 40 (white caption + kit
+shadow, as v01); craft `line_unread` on 1-word groups (voice timing wins)). Snapshots in `review/v02/` (25 frames + 3
+contact sheets: every word onset, the cut, punch-in, grow, key punch, X9, the T2 exit, boundary, tail), read: max 2 caption
+words on every frame, words appear on their onset frames, Coolvetica, nothing cut off.
+Render: `05_GFX/renders/b01-hook.mov` = prores (4444), 1920x1080, 30 fps, **146 frames** (134 + 12), yuva444p12le.
+
+---
 
 Plan: B1 build p.19-20, overview p.18, into each beat p.16 ("B1 opens cold"), B-roll p.28, style kit p.9-11, T1/T2 p.11,
 L3/L4 p.14, X9 p.16, M1/M5 p.17. Storyboard: STORYBOARD.md B1. Frames below are **beat frames** (f0 = "Why"

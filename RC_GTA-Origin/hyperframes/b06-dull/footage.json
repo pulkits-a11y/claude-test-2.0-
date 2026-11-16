@@ -1,8 +1,8 @@
 {"beat": "B6", "rids": ["R5.2", "R5.1", "R6.1"],
  "moments": {
   "R5.2": {"in": 230.5, "out": 235.8, "crop": "814:918:713:162",
-           "note": "L11 left half, continued from B5 (same window; this composition starts 88f into it): the LSPD SUV with lights on chasing the taxi."},
+           "note": "L11 left half, continued from B5 (same window; this composition starts 83f into it, v02): the LSPD SUV with lights on chasing the taxi."},
   "R5.1": {"in": 41.2, "out": 46.4, "crop": "819:923:405:0",
-           "note": "L11 right half, continued from B5 (same window, +88f): the red target car ahead of the police motorbike."},
+           "note": "L11 right half, continued from B5 (same window, +83f, v02): the red target car ahead of the police motorbike."},
   "R6.1": {"in": 30.0, "out": 34.6, "crop": "800:720:120:0",
            "note": "Gary Penn talking to camera in a cinema (BAFTA Games Mini Masterclass), one continuous medium shot (cuts at 27.12 s and 55.88 s); 10:9 window holds both shoulders, keeps the BAFTA corner logo out. Source of the background-removed cut-out (tools/make_cutout.sh)."}}}

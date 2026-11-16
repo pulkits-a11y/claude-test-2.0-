@@ -21,49 +21,52 @@
     </style>
   </head>
   <body>
-    <!-- B16 b16-bug-origin: beat 120f (4.000s) + 6f handle each end = 132f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 4.2000s.
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+    <!-- B16 b16-bug-origin (v02): beat 113f (3.767s) + 6f handle each end = 125f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.9667s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+         v02: ../../REVISION_v02.md (note 8: the word "bug", no chip; rules A-E).
 
          Plan p.27 (B16 build), STORYBOARD.md B16. Fully opaque (HF-owned). Local frame = beat frame + 6.
          beat    local    what
-         -6..30  0..36    VHS rewind (~1 s): B14 clips -> B9's GTA 1 -> the 1995 design document, all reversed at 8x
-                          (assets/rewind/b16-rewind.mp4, built by tools/make_rewind.py from the originals), VHS look = media
-                          treatment on the <video> + the real RT1 VHS overlay (Screen) + tracking lines drawn here. Cue rewind = 0 (S17).
-         0       6        T1 "So that's why" on "So"
-         14      20       T1 "you're always running." on "you're" (stays to "The", beat 53)
-         23..29  29..35   the design document zooms back out 118% -> 100% (B4's push at 8x, reversed), lands on B4's framing;
-                          shown as B4 showed it (kit L7 dim at 65% with the spotlight on the title), so the T1 stays legible
-         30..44  36..50   X7 light-leak dissolve (14f, Screen blend) through the real RT6 leak (orange burst) to black #0A0A0A
-         53      59       T5 glow line "The whole series started with a [bug]." fades in 12f (blur 20->0, tracking +2%->0),
-                          a light leak drifts behind (on screen beat 53..120 = 2.2 s >= 1.5 s)
-         101     107      M4 bug chip pops in place of "bug" (T7 pop 0 -> 112% -> 100% over 8f) = cue chip
-         120..126 126..132 tail handle: line + chip held -->
-    <div data-hf-id="hf-vp96" id="root" data-composition-id="b16-bug-origin" data-start="0" data-duration="4.4000000" data-width="1920" data-height="1080">
+         -6..28  0..34    VHS rewind (~0.9 s): B14 clips -> B9's GTA 1 -> the 1995 design document, all reversed at 8x
+                          (assets/rewind/b16-rewind.mp4, 48 frames, built by tools/make_rewind.py from the originals), VHS look
+                          = media treatment on the <video> + the real RT1 VHS overlay (Screen) + tracking lines drawn here. Cue rewind = 0 (S17).
+         1       7        T1 "So that's" word by word (So 7, that's 8)
+         12      18       T1 "why you're" (why 18, you're 20)
+         22      28       T1 "always running." (always 28, running. 36), stays to "The" (beat 51)
+         22..27  28..33   the design document zooms back out 118% -> 100% (B4's v02 eased push run backwards at 8x), lands on B4's
+                          framing; shown as B4 showed it (kit L7 dim at 65% with the spotlight on the title), so the T1 stays legible
+         28..40  34..46   X7 light-leak dissolve (12f, Screen blend) through the real RT6 leak (orange burst) to black #0A0A0A
+                          (picture fades easeInCubic, leak rises easeOutSine and falls easeInSine) = cue rewind_end (MU7 resumes)
+         51      57       T5 glow line on black, word by word (max 2 words): The / whole series / started with / a bug. Each word
+                          blurs in (easeOutExpo, fade easeOutCubic) in the text and both glow copies; a light leak drifts behind
+         95      101      "bug." = the word (note 8: no bug chip) = cue bug (no SFX: silence under the glow line)
+         113..119 119..125 tail handle: "a bug." held -->
+    <div data-hf-id="hf-vp96" id="root" data-composition-id="b16-bug-origin" data-start="0" data-duration="4.1666667" data-width="1920" data-height="1080">
 
       <!-- ===== ink-black ground for the whole beat (B16 is a black screen: plan p.10) ===== -->
-      <div data-hf-id="hf-9kcj" id="b16-ground" class="clip rc-ink rc-full" data-start="0.0000" data-duration="4.4000" data-track-index="0" style="z-index: 0"></div>
+      <div data-hf-id="hf-9kcj" id="b16-ground" class="clip rc-ink rc-full" data-start="0.0000" data-duration="4.1666" data-track-index="0" style="z-index: 0"></div>
 
       <!-- ===== VHS rewind picture (untimed wrapper = the X7 "from" layer; the <video> is the clip) ===== -->
       <div data-hf-id="hf-zbfq" id="b16-rewind-wrap" class="rc-full" style="z-index: 2">
-        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:-0.04,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.08},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.16,&quot;grainSize&quot;:0.12,&quot;grainRoughness&quot;:0.72},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0.5,&quot;tapeDamage&quot;:0.85,&quot;tapeTracking&quot;:0.9,&quot;tapeNoise&quot;:0.35,&quot;tapeSpeed&quot;:0.65,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0.35,&quot;scanlineCount&quot;:0.17,&quot;scanlineSoftness&quot;:1,&quot;chromaticAberration&quot;:0.18,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0.32,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0.08,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0.5,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-iz0k" id="b16-rewind" class="clip rc-full" src="assets/rewind/b16-rewind.mp4" data-start="0.0000" data-duration="1.6666" data-track-index="1" muted playsinline></video>
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:-0.04,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.08},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.12,&quot;grainRoughness&quot;:0.72},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0.5,&quot;tapeDamage&quot;:0.85,&quot;tapeTracking&quot;:0.9,&quot;tapeNoise&quot;:0.35,&quot;tapeSpeed&quot;:0.65,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0.35,&quot;scanlineCount&quot;:0.17,&quot;scanlineSoftness&quot;:1,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0.32,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0.08,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0.5,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-iz0k" id="b16-rewind" class="clip rc-full" src="assets/rewind/b16-rewind.mp4" data-start="0.0000" data-duration="1.5333" data-track-index="1" muted playsinline></video>
         <!-- The design document as B4 showed it: kit L7 dim (#0A0A0A at 65%) with B4's rounded, feathered spotlight hole on
              the title (b04-racenchase data-hole 715,296,488,212). The wrapper is scaled per frame to the zoom baked into the
              rewind clip (assets/rewind/b16-rewind.map.json) about the hole centre (959, 402), like B4's push. A DOM overlay,
              not a filter on the footage; it fades out with the picture in X7. -->
-        <div id="b16-doc-l7" class="rc-l7">
-          <div id="b16-docdim" class="clip rc-l7__dim" data-hole="715,296,488,212" data-radius="16" data-feather="20" data-start="0.9666" data-duration="0.7000" data-track-index="6"></div>
+        <div data-hf-id="hf-3f1n" id="b16-doc-l7" class="rc-l7">
+          <div data-hf-id="hf-osqm" id="b16-docdim" class="clip rc-l7__dim" data-hole="715,296,488,212" data-radius="16" data-feather="20" data-start="0.9333" data-duration="0.6000" data-track-index="6"></div>
         </div>
       </div>
 
       <!-- ===== RT1 VHS overlay (real: the pack's transition 4 noise bands / glitch / tape crease, working clip from source 13.0 s,
-           crop drops the pack's number badge), Screen blend, f-6..30 ===== -->
+           crop drops the pack's number badge), Screen blend, beat f-6..28 ===== -->
       <!-- two pieces, skipping the pack's two full-white flash frames (working clip frames 16-17 = source 13.53-13.57),
-           which under Screen would read as an X3 white flash: local 0-15 = clip 0.000-0.500 s, local 16-35 = clip 0.600-1.233 s -->
+           which under Screen would read as an X3 white flash: local 0-15 = clip 0.000-0.500 s, local 16-33 = clip 0.600-1.167 s -->
       <video data-hf-id="hf-rt1v" id="b16-rt1" class="clip b16-rt1" src="assets/footage/RT1.mp4" data-start="0.0000" data-duration="0.5333" data-media-start="0.0000" data-track-index="7" muted playsinline style="z-index: 4"></video>
-      <video data-hf-id="hf-rt1w" id="b16-rt1b" class="clip b16-rt1" src="assets/footage/RT1.mp4" data-start="0.5333" data-duration="0.6667" data-media-start="0.6000" data-track-index="7" muted playsinline style="z-index: 4"></video>
+      <video data-hf-id="hf-rt1w" id="b16-rt1b" class="clip b16-rt1" src="assets/footage/RT1.mp4" data-start="0.5333" data-duration="0.6000" data-media-start="0.6000" data-track-index="7" muted playsinline style="z-index: 4"></video>
       <!-- ===== tracking lines: two noise bands rolling through the frame during the rewind only ===== -->
-      <div data-hf-id="hf-q1nl" id="b16-track" class="clip" data-start="0.0000" data-duration="1.2000" data-track-index="2" data-layout-ignore="" style="z-index: 5">
+      <div data-hf-id="hf-q1nl" id="b16-track" class="clip" data-start="0.0000" data-duration="1.1333" data-track-index="2" data-layout-ignore="" style="z-index: 5">
         <svg data-hf-id="hf-hfvd" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
           <defs data-hf-id="hf-mh0t">
             <lineargradient data-hf-id="hf-nniz" id="b16-trk-glow" x1="0" y1="0" x2="0" y2="1">
@@ -93,19 +96,18 @@
 
       <!-- ===== X7 light-leak dissolve (Screen blend, above the picture it dissolves) ===== -->
       <div data-hf-id="hf-w2ib" id="b16-x7" class="rc-x7" style="z-index: 6">
-        <!-- RT6 (real): the orange leak burst, working clip 0.08 s = source 3.98 s on local 36 (beat 30); the kit drives the
-             container (opacity 0 -> 0.9 -> 0, Screen) and adds no drawn layers when this footage is present -->
-        <video data-hf-id="hf-rt6v" id="b16-rt6" class="clip rc-x7__footage" src="assets/footage/RT6.mp4" data-start="1.2000" data-duration="0.4667" data-media-start="0.0800" data-track-index="8" muted playsinline></video>
+        <!-- RT6 (real): the orange leak burst, working clip 0.08 s = source 3.98 s on local 34 (beat 28); the kit drives the
+             container (opacity 0 -> 0.9 -> 0, Screen, sine eases) and adds no drawn layers when this footage is present -->
+        <video data-hf-id="hf-rt6v" id="b16-rt6" class="clip rc-x7__footage" src="assets/footage/RT6.mp4" data-start="1.1333" data-duration="0.4000" data-media-start="0.0800" data-track-index="8" muted playsinline></video>
       </div>
 
-      <!-- ===== T5 glow line on black with the M4 bug chip in place of "bug" ===== -->
-      <div data-hf-id="hf-airt" id="b16-t5" class="clip rc-t5" data-start="1.9666" data-duration="2.4334" data-track-index="5" style="z-index: 10">
-        <div data-hf-id="hf-nu5d" class="rc-t5__text">The whole series started with a <span data-hf-id="hf-z9ng" id="b16-chip" class="rc-t7__chip m4-chip"><img data-hf-id="hf-iepi" class="m4-bug" src="assets/kit/svg/motifs-bug.svg" alt="bug"></span>.</div>
-      </div>
+      <!-- ===== T5 glow line on black, word by word, max 2 words (one line per group); the word "bug" (note 8, no chip) ===== -->
+      <div data-hf-id="hf-tcsd" id="b16-t5" class="clip rc-t5 rc-cap" data-start="1.9000" data-duration="2.2666" data-track-index="5" style="z-index: 10"><div data-hf-id="hf-rqy7" class="rc-t5__text rc-g" data-rc-from-f="57" data-rc-to-f="61"><span data-hf-id="hf-l28l" class="rc-w" data-rc-f="57">The</span></div><div data-hf-id="hf-ftjb" class="rc-t5__text rc-g" data-rc-from-f="61" data-rc-to-f="80"><span data-hf-id="hf-vvy0" class="rc-w" data-rc-f="61">whole</span> <span data-hf-id="hf-wdai" class="rc-w" data-rc-f="70">series</span></div><div data-hf-id="hf-dhpd" class="rc-t5__text rc-g" data-rc-from-f="80" data-rc-to-f="100"><span data-hf-id="hf-vlx7" class="rc-w" data-rc-f="80">started</span> <span data-hf-id="hf-2c0q" class="rc-w" data-rc-f="93">with</span></div><div data-hf-id="hf-984z" class="rc-t5__text rc-g" data-rc-from-f="100"><span data-hf-id="hf-rig2" class="rc-w" data-rc-f="100">a</span> <span data-hf-id="hf-wrvy" class="rc-w" data-rc-f="101">bug.</span></div></div>
 
-      <!-- ===== T1 captions (white + soft shadow, on footage / black) ===== -->
-      <div data-hf-id="hf-1r3m" id="b16-cap-1" class="clip rc-t1" data-start="0.2000" data-duration="0.4666" data-track-index="3" style="z-index: 20">So that's why</div>
-      <div data-hf-id="hf-ivzz" id="b16-cap-2" class="clip rc-t1" data-start="0.6666" data-duration="1.3000" data-track-index="3" style="z-index: 20">you're always running.</div>
+      <!-- ===== T1 captions (white + soft shadow, on footage / black), word by word, max 2 words ===== -->
+      <div data-hf-id="hf-1r3m" id="b16-cap-1" class="clip rc-t1 rc-cap" data-start="0.2333" data-duration="0.3667" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-ida4" class="rc-g"><span data-hf-id="hf-wn0z" class="rc-w" data-rc-f="7">So</span> <span data-hf-id="hf-l8m9" class="rc-w" data-rc-f="8">that's</span></span></div>
+      <div data-hf-id="hf-ivzz" id="b16-cap-2" class="clip rc-t1 rc-cap" data-start="0.6000" data-duration="0.3333" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-7p6c" class="rc-g"><span data-hf-id="hf-j829" class="rc-w" data-rc-f="18">why</span> <span data-hf-id="hf-6qbt" class="rc-w" data-rc-f="20">you're</span></span></div>
+      <div data-hf-id="hf-xqif" id="b16-cap-3" class="clip rc-t1 rc-cap" data-start="0.9333" data-duration="0.9667" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-6i99" class="rc-g"><span data-hf-id="hf-9cvd" class="rc-w" data-rc-f="28">always</span> <span data-hf-id="hf-loa2" class="rc-w" data-rc-f="36">running.</span></span></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -117,14 +119,15 @@
       const T = RCK.type, X = RCK.transitions;
       const f = (n) => n / 30;   // local frame -> seconds (local frame = beat frame + 6)
 
-      // Word onsets from words.json (comp_t snapped to the nearest frame, local):
-      // So 6, that's 8, why 18, you're 20, always 29, running 37, The 59, whole 64, series 74, started 85, with 98,
-      // a 106, bug 107 (voice ends 119).
-      const W = { The: 59, bug: 107 };
-      const REWIND_END = 36;     // beat 30: the tape stops; X7 runs beat 30..44
+      // Word onsets from words.json (v02, comp_t snapped to the nearest frame, local):
+      // So 7, that's 8, why 18, you're 20, always 28, running 36, The 57, whole 61, series 70, started 80, with 93,
+      // a 100, bug 101 (voice ends 112).
+      const W = { The: 57 };
+      const REWIND_END = 34;     // beat 28: the tape stops; X7 runs beat 28..40
 
       // ---- tracking lines: a new noise pattern, position and strength on every frame of the rewind (seeded, so every
-      //      frame is a pure function of the timeline). Band A rolls up through the frame, band B rolls down, faster.
+      //      frame is a pure function of the timeline; one value per frame = cuts, not moves). Band A rolls up through the
+      //      frame, band B rolls down, faster.
       (function trackingLines() {
         // Both bands stay clear of the T1 caption line (box y 592-648): band A (thick) rolls up through the lower third
         // (band + glow inside y 651-1140), band B (thin) rolls down through the upper half (inside y 6-563).
@@ -147,21 +150,25 @@
         }
       })();
 
-      // ---- X7: the rewind picture dissolves to black through the light leak over 14f (beat 30..44). Silent.
-      X.leakDissolve(tl, '#b16-x7', f(REWIND_END), { frames: 14, from: '#b16-rewind-wrap' });
+      // ---- X7: the rewind picture dissolves to black through the light leak over 12f (beat 28..40; picture fades
+      //      easeInCubic, leak sine). Silent.
+      X.leakDissolve(tl, '#b16-x7', f(REWIND_END), { frames: 12, from: '#b16-rewind-wrap' });
 
-      // ---- the document's L7 dim follows the zoom baked into the rewind clip (local 29..35: 1.18 -> 1.00, B4's push run
-      //      backwards at 8x), then holds B4's opening framing (1.00) under the dissolve.
+      // ---- the document's L7 dim follows the zoom baked into the rewind clip (local 28..33: 1.18 -> 1.00 = B4's v02 push,
+      //      f0-40 easeInOutSine, run backwards at 8x; values from assets/rewind/b16-rewind.map.json), then holds B4's
+      //      opening framing (1.00) under the dissolve. One value per frame, matching the baked frames.
       (function docDimZoom() {
-        const Z = { 29: 1.18, 30: 1.14727, 31: 1.11455, 32: 1.08182, 33: 1.04909, 34: 1.01636, 35: 1.0 };
-        gsap.set('#b16-doc-l7', { scale: Z[29], transformOrigin: '959px 402px' });
-        for (let n = 30; n <= 35; n++) tl.set('#b16-doc-l7', { scale: Z[n] }, (n - 0.5) / 30);
+        const Z = { 28: 1.18, 29: 1.16281, 30: 1.11781, 31: 1.06219, 32: 1.01719, 33: 1.0, 34: 1.0 };
+        gsap.set('#b16-doc-l7', { scale: Z[28], transformOrigin: '959px 402px' });
+        for (let n = 29; n <= 34; n++) tl.set('#b16-doc-l7', { scale: Z[n] }, (n - 0.5) / 30);
       })();
 
-      // ---- T5 glow line from "The" (12f fade-in from blur), light leak behind; M4 chip pops on "bug" (T7, 8f)
-      T.glowLine(tl, '#b16-t5', f(W.The), { chipAt: f(W.bug) });
+      // ---- captions (rule A): T1 and the T5 glow line pop word by word (T5: each word blurs in, 6f, in the text and both
+      //      glow copies); the T5 leak drifts behind from "The" to the end (kit: rises, settles, drifts on sine eases)
+      T.captionPops(tl, '#b16-t5', { leakFrom: f(W.The), leakPeak: 0.16 });
+      T.captionPops(tl);
 
-      tl.set({}, {}, f(132));
+      tl.set({}, {}, f(125));
       window.__timelines["b16-bug-origin"] = tl;
     </script>
   </body>

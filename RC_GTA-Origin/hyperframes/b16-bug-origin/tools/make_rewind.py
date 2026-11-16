@@ -2,7 +2,7 @@
 """B16 VHS rewind: build the reversed-at-8x picture run as one frame-exact clip.
 
   cd hyperframes/b16-bug-origin && python3 tools/make_rewind.py
-  -> assets/rewind/b16-rewind.mp4   (1920x1080, 30 fps, 52 frames = composition local frames 0..51, no audio)
+  -> assets/rewind/b16-rewind.mp4   (1920x1080, 30 fps, 48 frames = composition local frames 0..47, no audio)
      assets/rewind/b16-rewind.map.json  (which source frame / zoom every output frame shows)
 
 Plan p.27 B16 step 1: "VHS rewind for about 1 s: the B14 clips, then B9 GTA 1, then the 1995 design document, all
@@ -21,8 +21,14 @@ Usage: python3 tools/make_rewind.py [output_dir]   (default assets/rewind; anoth
 
 Output frame j = composition local frame j (local = beat + 6). An 8x rewind of an edit frame e steps e -> e - 8 per
 output frame; the B14 run is compressed (it jumps from shot to shot: 3 escape, 2 lights, 3 chase, then 1 frame per
-burst game, newest to oldest), then 10 frames of B9's GTA 1, then the R4.5 page zooming back out 118% -> 100% at
-8x the B4 push rate (18% over 44f -> 3.27% a frame), landing on B4's opening framing, held under the X7 dissolve.
+burst game, newest to oldest), then 9 frames of B9's GTA 1, then the R4.5 page zooming back out 118% -> 100%: B4's
+eased push (easeInOutSine over its frames) sampled backwards every 8 frames, so the zoom-out is eased too (v02 rule C),
+landing on B4's opening framing, held under the X7 dissolve.
+
+v02 (REVISION_v02.md, VO 115%): every beat is ~6% shorter. B16's rewind is beat f-6..28 (local 0..33, the tape stops on
+local 34 = beat 28; v01 beat 30) and the X7 dissolve local 34..46 (12f), so the clip is 48 frames (v01 52). The B14 shot
+boundaries (escape / lights / chase / burst clips) and B14's last frame are read from B14's v02 shots, B9's R9.1 shot end
+from B9's shots; the edit frames picked inside them are v02 frames (see plan()).
 """
 import json, os, shutil, subprocess, sys, tempfile
 from PIL import Image
@@ -32,7 +38,7 @@ PROJ = os.path.dirname(HERE)
 FOOT = os.path.join(PROJ, "assets", "footage")
 OUT_DIR = os.path.join(PROJ, "assets", "rewind")
 W, H, FPS = 1920, 1080, 30
-N_FRAMES = 52                     # local 0..51 (the clip is used to local 50, the end of the X7 dissolve)
+N_FRAMES = 48                     # local 0..47 (the clip is used to local 46, the end of the X7 dissolve)
 
 # ---- source in-points of the shots being rewound (seconds into the R-ID file) ----
 B14 = {   # filled by load_inpoints() from hyperframes/b14-since/tesseract_shots.json (required)
@@ -45,6 +51,7 @@ B14 = {   # filled by load_inpoints() from hyperframes/b14-since/tesseract_shots
 # B2 also uses) with B2's crop 736:414:59:40 (16:9 inside the 4:3 picture). Flagged in BEAT_NOTES.
 B9_R91_SRC_IN = 125.0
 B9_R91_START_F = 0
+B9_R91_END_F = 120
 B9_R91_CROP = "736:414:59:40"
 ROOT = os.path.dirname(os.path.dirname(PROJ))
 B9_R91_SOURCE = "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4"
@@ -54,7 +61,7 @@ HF = os.path.dirname(PROJ)
 def load_inpoints():
     """Overrides the defaults above with the live Tesseract shot lists, so the rewind always mirrors what B14 and B9
     actually show: hyperframes/b14-since/tesseract_shots.json (this lane) and hyperframes/b09-throughyou/... (lane E)."""
-    global B9_R91_SRC_IN, B9_R91_START_F, B9_R91_CROP, B9_R91_SOURCE
+    global B9_R91_SRC_IN, B9_R91_START_F, B9_R91_CROP, B9_R91_SOURCE, B9_R91_END_F
     src = {"B14": "defaults", "B9": "defaults"}
     p14 = os.path.join(HF, "b14-since", "tesseract_shots.json")
     if os.path.exists(p14):
@@ -62,11 +69,11 @@ def load_inpoints():
         full = {s["id"]: s for s in shots}
         for key, sid in (("escape", "B14-escape"), ("lights", "B14-police-lights"), ("chase", "B14-gta5-chase-stars")):
             if sid in full:
-                B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "src_in": full[sid]["source_in_s"],
-                            "source": full[sid]["source"], "crop": full[sid].get("crop")}
+                B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "end_f": full[sid]["end_f"],
+                            "src_in": full[sid]["source_in_s"], "source": full[sid]["source"], "crop": full[sid].get("crop")}
         burst = sorted([s for s in shots if s.get("screen") == "L10"], key=lambda s: s["start_f"])
         if len(burst) == 10:
-            B14["burst"] = [(s["rid"], s["source_in_s"], s["source"], s.get("crop")) for s in burst]
+            B14["burst"] = [(s["rid"], s["source_in_s"], s["source"], s.get("crop"), s["start_f"], s["end_f"]) for s in burst]
         src["B14"] = os.path.relpath(p14, HF)
     p9 = os.path.join(HF, "b09-throughyou", "tesseract_shots.json")
     if os.path.exists(p9):
@@ -74,52 +81,73 @@ def load_inpoints():
         if r91:
             s = sorted(r91, key=lambda s: s["start_f"])[0]
             B9_R91_SRC_IN, B9_R91_START_F = float(s["source_in_s"]), int(s["start_f"])
+            B9_R91_END_F = int(s["end_f"])
             B9_R91_CROP = s.get("crop")
             if s.get("source"): B9_R91_SOURCE = s["source"]
             src["B9"] = os.path.relpath(p9, HF)
     return src
 # B4 framing of the R4.5 title page (b04-racenchase): page drawn at 1.4 x page px, boxed-title centre (878, 307.5)
-# on screen (960, 400); L7 push 1.00 -> 1.18 about the spotlight-hole centre (959, 402) over B4 f0-44, linear.
+# on screen (960, 400); L7 push 1.00 -> 1.18 about the spotlight-hole centre (959, 402). v02 (b04-racenchase v02:
+# S.spotPush(tl, '#b04-l7', L(6), { until: L(46), from: 1, to: 1.18 })): B4 f0 -> f40, easeInOutSine (the kit's v02
+# spotPush ease). Keep push_frames in sync with b04-racenchase by hand.
 DOC = {"page_scale": 1.4, "title_page": (878.0, 307.5), "title_screen": (960.0, 400.0), "push_origin": (959.0, 402.0),
-       "push_from": 1.0, "push_to": 1.18, "push_frames": 44}
+       "push_from": 1.0, "push_to": 1.18, "push_frames": 40, "push_ease": "easeInOutSine"}
+
+
+def ease_in_out_sine(p):
+    import math
+    return -(math.cos(math.pi * p) - 1) / 2
+
+
+def b4_zoom_at(f):
+    """B4's eased push value on B4 frame f (0 .. push_frames)."""
+    p = min(1.0, max(0.0, f / DOC["push_frames"]))
+    return DOC["push_from"] + (DOC["push_to"] - DOC["push_from"]) * ease_in_out_sine(p)
 
 
 def b14_source(e):
-    """B14 edit frame e (beat-relative) -> (rid, source seconds in the original, original path, crop)."""
-    for key, f0 in (("escape", 163), ("lights", 133), ("chase", 60)):
-        if e >= f0:
-            s = B14[key]; return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS, s["source"], s["crop"]
-    k = e // 6
-    rid, src_in, source, crop = B14["burst"][k]
-    return rid, src_in + (e - 6 * k) / FPS, source, crop
+    """B14 edit frame e (beat-relative) -> (rid, source seconds in the original, original path, crop). The shot
+    boundaries come from B14's tesseract_shots.json (v02: escape f154, lights f126, chase f59, burst 9 x 6f + 5f)."""
+    for key in ("escape", "lights", "chase"):
+        s = B14[key]
+        if e >= s["start_f"]:
+            return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS, s["source"], s["crop"]
+    for rid, src_in, source, crop, f0, f1 in B14["burst"]:
+        if f0 <= e < f1:
+            return rid, src_in + (e - f0) / FPS, source, crop
+    raise SystemExit("make_rewind: B14 edit frame %d is in no shot" % e)
 
 
 def plan():
     frames = []
     def add(kind, **kw):
         frames.append(dict(local=len(frames), beat=len(frames) - 6, kind=kind, **kw))
-    # beat -6..2 (head handle + 3 frames): the escape shot rewinding from B14's last frame (edit 188), 8 edit frames per
-    # output frame; the handle continues it backward in time (= later source frames under B14's shut slats)
+    end14 = B14["escape"]["end_f"]          # B14's last frame (v02: 177)
+    # beat -6..2 (head handle + 3 frames): the escape shot rewinding from B14's last frame, 8 edit frames per output
+    # frame; the handle continues it backward in time (= later source frames under B14's shut slats)
     for b in range(-6, 3):
-        e = 188 - 8 * b
+        e = end14 - 8 * b
         rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
-    # beat 3..4: police lights (edit 156, 148); beat 5..7: GTA 5 chase (edit 132, 124, 116)
-    for e in (156, 148, 132, 124, 116):
+    # beat 3..4: police lights (v02 f126-154: edit 150, 142); beat 5..7: GTA 5 chase (v02 f59-126: edit 118, 110, 102)
+    for e in (150, 142, 118, 110, 102):
         rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
     # beat 8..12: the L10 burst, one frame per game, newest to oldest (2013 -> 2001)
     for e in (52, 44, 28, 20, 4):
         rid, t, so, cr = b14_source(e); add("B14", rid=rid, edit_f=e, src_s=round(t, 4), source=so, crop=cr)
-    # beat 13..22: B9's GTA 1 chase (R9.1, the L1 shot B9 f0-127) rewinding from its last frame, 8x
-    for i in range(10):
-        e = 127 - 8 * i
+    # beat 13..21: B9's GTA 1 chase (R9.1, the L1 shot, v02 B9 f0-120) rewinding from its last frame, 8x, 9 frames
+    for i in range(9):
+        e = B9_R91_END_F - 8 * i
         add("B9", rid="R9.1", edit_f=e, src_s=round(B9_R91_SRC_IN + (e - B9_R91_START_F) / FPS, 4),
             source=B9_R91_SOURCE, crop=B9_R91_CROP)
-    # beat 23..29: the 1995 design document, B4's push (1.00 -> 1.18 over 44f) run backwards at 8x, then B4's opening
-    # framing (1.00); beat 30..45: held there (the tape has stopped) under the X7 light-leak dissolve
-    rate = (DOC["push_to"] - DOC["push_from"]) / DOC["push_frames"] * 8
-    for i in range(N_FRAMES - len(frames)):
-        z = max(DOC["push_from"], DOC["push_to"] - rate * i)
-        add("B4", rid="R4.5", zoom=round(z, 5))
+    # beat 22..27: the 1995 design document, B4's eased push (1.00 -> 1.18 over push_frames, easeInOutSine) run backwards
+    # at 8x: B4 frames push_frames, -8, -16 ... down to 100%; beat 28.. (local 34 on): held at B4's opening framing (the
+    # tape has stopped) under the X7 light-leak dissolve
+    f4 = DOC["push_frames"]
+    while f4 > 0:
+        add("B4", rid="R4.5", b4_f=f4, zoom=round(b4_zoom_at(f4), 5))
+        f4 -= 8
+    while len(frames) < N_FRAMES:
+        add("B4", rid="R4.5", b4_f=0, zoom=round(DOC["push_from"], 5))
     return frames
 
 

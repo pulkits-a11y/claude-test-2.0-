@@ -1,5 +1,49 @@
 # B17 The loop - `b17-loop` (beat 196f = 6.533 s incl. the 46f logo tail; composition 208f with 6f handles)
 
+## v02 (REVISION_v02.md, client notes on v01): what changed
+
+Beat **186f** (was 196; incl. the 45f logo tail after "now?"), composition **198f**, root `data-duration="6.6000000"`. Frames
+below are v02 beat frames (local = beat + 6). Everything after this section is the v01 record (v01 frames, Inter fonts,
+the R17.1 stand-in).
+
+**Substitution (client note 9):** the Trailer 1 opening (the R17.1 stand-in `trailer1-band`) is replaced by the client's clip
+`04_Broll/_originals/Drive2/Video by madebyajit [0-29s].mp4` (1500x1078, 25 fps, a fan edit of GTA 6 Trailer 1's opening;
+**credit: madebyajit, Instagram**). Clip map (frames at 25 fps): n0-11 the guard's face, n10-54 the prison yard behind the
+chain-link fence with the guard in the white "Let Freedom Reign!" shirt in the right foreground and Lucia walking toward camera
+in the background, n55-131 Lucia walking toward camera (medium), n132+ another scene (never used, nor the clip's "madebyajit"
+end card). Two Tesseract shots (same source, `grade: "neutralize"` so the assembly tones down the heavy pink grade):
+
+| Shot | Beat | Source (s) | Crop | Framing v2 (anchor = the band's top edge 960, 138) | Why |
+|---|---|---|---|---|---|
+| `B17-trailer1-band` | 0-10 | 1.86-2.16 (n46-54: the guard + Lucia walking in the yard) | `1500:844:0:0` (16:9, full width, top rows) | 112% -> 101% over 10f, easeOutExpo (punch-in on the cut from B16's black) | 16:9 so the L2 bars visibly slide in over the picture (8f, as v01). In-point: at 1.0-1.8 s the guard's white shirt fills the T1 caption spot (white on off-white is unreadable); from 1.86 s "And" / "GTA 6?" sit on the dark yard left of it (mock-ups checked) |
+| `B17-trailer1-band-2` | 10-100 | 2.22-5.22 (n56-130: Lucia walking toward camera) | `1500:628:0:0` (2.39:1, full width, top rows) | 101% -> 107%, easeInOutSine | in this edit Lucia's head touches the top of the frame: a 16:9 crop puts her eyes on the top bar's edge; a crop wider than 16:9 is fitted by the assembly exactly into the band (1920x804 at y 138), so her whole head stays in (face at band y ~290-540). Bars already in (an L2 shot ends where it starts) |
+
+No stretching (16:9 = 1500x844, 1.7773; the band crop 1500x628 = 2.389:1, the band's own aspect). "It" (beat 36) reads as the
+trailer: Trailer 1 stays on screen through "It opens with Lucia already caught." (Accuracy p.39). No voice actor named or implied.
+
+| What | v01 | v02 | Why (note / rule) |
+|---|---|---|---|
+| Timing | 196f; "who's" 106, "chasing" 116, "now?" 137, end of "now?" 150 | 186f; "And" 1, "GTA" 7, "It" 36, "Lucia" 54, "caught." 74, "So" 97, "who's" 100, "chasing" 109, "who" 123, "now?" 129, end of "now?" 141 | note 10 |
+| T1 | 4 chunk clips (low line y 860) | word by word, max 2 words, low line: "And" 1 / "GTA 6?" 7 / "It opens" 36 / "with Lucia" 48 / "already caught." 62 / "So who's" 97 -> out on "chasing" 109. Grouping note: the kit's split inside the plan chunk "It opens with" leaves "with" alone; it goes with the word after it ("with Lucia", rule A) | note 11, rule A |
+| T2 | "chasing who" + "now?" on screen together; the pair dropped 45 px on the cut (an `ease: 'none'` tween) | word by word, max 2: "chasing who" (lead, `--rc-y` 880, over the chase shots) 109 -> "now?" alone (keyword blur punch 30 -> 0 px, 108 -> 100%, 6f easeOutExpo, on black at `--rc-y` 925 = the v01 dropped line, clear of the logo's bottom tip at 115%) 129; no drop tween any more | note 11, rules A, C |
+| T10 on "now?" | f170 | f161 (6f, seed 8 = B8's slice pattern, hard per-frame cuts, breaks apart, no settle), then black f167 | re-time |
+| M1 stars | pop on "GTA", blink to f107 | pop on "GTA" (7), blink (hard) to the first chase cut f100; row centred on (1700, 80) on the top bar (C34) | re-time |
+| Chase shots (Tesseract) | f107-117-127-137, static 100% | chase-1 R17.2 @ 7.2 f100-109 (9f, punch-in 112 -> 100% easeOutExpo, on "who's") / chase-2 R17.4 @ 47.2 f109-119 (push 100 -> 106% easeInOutSine, on "chasing") / chase-3 R17.2 @ 11.9 f119-129 (push 102 -> 110% easeInQuart, accelerating into the hard cut to black on "now?") | rules D, E |
+| Logo end card (R17.4, HF) | f150-176, push 100 -> 115% over 20f | f141-167 (local 147-173): the same push, log-space easeInCubic with per-frame motion blur, landing on the final hit f161 | re-time |
+| X4 still | `assets/x4/b17-old.png` at local 176 | re-made by `x4_still.sh` at local 167 (FRAME updated): identical pixels (same logo frame at 115%) | re-time |
+
+`cues.json` = `{"now": 129, "music_stop": 141, "logo_in": 141, "final_hit": 161}`. `footage.json`: only R17.4's end card is
+synced here; the client clip is Tesseract-owned.
+
+Checks: `check --json` 0 errors (warnings: frame 0 transparent by design, `line_unread` on "And" 6f and on "now?" as "the film's
+last line", nested T2 markup, track density). Snapshots `review/v02/a/` + `sheet_a.jpg` (magenta = transparent): every caption
+word, star pops, the cut to black, the keyword blur, the logo push, the tear + T10 frames, the black tail; plus a mock-up of the
+overlay on the cropped client clip (band, captions legible over the dark yard and Lucia's shirt). Render
+`05_GFX/renders/b17-loop.mov`: see "v02 render" below.
+
+---
+
+
 Plan p.27-28 (B17), p.39 (accuracy: B17 wording, official GTA 6 footage only, no voice actor), p.16 (X4), p.12 (T2,
 T10), p.17 (M1), p.36-38 (MU8, S18, S19). Storyboard B17. Bug beat (final X4; echoes B8).
 Render: `05_GFX/renders/b17-loop.mov` (ProRes 4444): transparent over the Tesseract shots (beat f0-137), opaque from
@@ -76,7 +120,7 @@ the tail rides its decay). No SFX before "now?" (silence by design).
 * SUBSTITUTE (Rule 5): R17.2 Grand Theft Auto VI: An Extended Look | Now Playing | Netflix [uphThaa97ig] @ 00:11.9-00:12.2 for R17.3 (GTA 6 Trailer 2, not downloaded; a second, different chase moment for the third cut)
 * Chase-2 stays on R17.4 as the plan lists it.
 
-## BLOCKING
+## BLOCKING (v01; resolved in v02 by the client's madebyajit clip, see the v02 section)
 * **R17.1 (GTA 6 Trailer 1, Lucia in custody) is missing and no substitute exists.** Searched every shot of the
   official R17.4 launch trailer (30 cuts, 0-1:30), R17.2 "An Extended Look" (13 cuts) and R17.6 "Pre-Load Now" (sheets
   every 0.5 s): none shows Lucia in custody (no cell, booking room, prison clothing or police holding her). The labelled

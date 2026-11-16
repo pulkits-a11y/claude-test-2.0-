@@ -1,4 +1,53 @@
-# B12 Eighteen becomes thirty — `b12-thirty` (lane B)
+# B12 Eighteen becomes thirty — `b12-thirty` (v02: beat 78f = 2.600 s; composition 90f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 6, 10, 11, 12, 14, 15). Read this first
+
+The v01 sections below are kept as reference; where they disagree with this section (frames, position, eases, fonts),
+this section wins.
+
+**What changed and why**
+| Change | Client note / rule |
+|---|---|
+| **Opening animation**: the calendar (grid + counter) comes into the screen with the kit's `M.calendarIn`: rises 90 px and scales 90 -> 100% about the grid centre over 12f (easeOutExpo) while fading in over 6f (easeOutCubic), from local 5, so the beat's first frame (local 6) already shows it arriving (42% / 94.4% / +51 px); landed by local 17 | note 6 "add a opening animation where it comes into the screen" |
+| **Higher, nearer the centre**: grid top y 400 (was 520; `calendarInit` `y: 400`, the kit's suggestion). Same component, size and geometry as B4 otherwise (64 px squares, 8 px gaps, 6 columns, x 748-1172, counter at its top-left). The whole group (T2 keyword cap top ~213 to the 30-square grid bottom 752) is centred ~y 482 | note 6 "move it a bit more above to the center" |
+| T2 moved above the higher grid: row `--rc-y` 260 (was 390; baseline 307, "thirty." descender ~340, >= 40 px clear of the grid top even at the push + punch peak). T1 "Of course," stays low (y 860), under the grid | note 6 / rule A layout check |
+| Re-timed (VO 115%): beat 78f (was 83), edit 1402-1480 (46.733-49.333 s); composition 90f, root `data-duration="3.0000000"` | note 10 |
+| Captions word by word, max 2 (kit `captionPlanV2`): T1 "Of course," (Of 6, course, 10; held until "turn" as in v01) -> T2 "turn" (56) / "into thirty." (into 67, keyword **thirty.** 71, blur punch); last group exits 3f (power2.in) on the beat end | note 11, rule A |
+| Coolvetica (captions, counter) | note 12 |
+| Nothing linear: counter rolls easeInOutQuad (power1.inOut, was power3.out), the push easeInOutSine (was linear 100 -> 104%), T2 exit eased (was a 4f linear fade) | note 14, rule C |
+| Camera: the calendar (inside `.rc-cam` wrappers; captions outside, steady) pushes 100 -> 106% across the composition (easeInOutSine) and punches 106% on "thirty" (3f easeOutExpo, back 9f easeInOutSine, nested wrapper) | note 15, rule D |
+| Same overrun logic as v01: squares 19-30 from "turn" 2f apart; the counter detached from the squares and rolled on its own schedule so 30 lands on "thirty" (the kit's `calendarExtend` still ties one roll to each square) | "as before" |
+
+**New frames (beat frames; local = beat + 6)**
+| What | beat f | local |
+|---|---|---|
+| head handle: gray card, calendar not in yet | -6..-2 | 0..4 |
+| calendarIn (12f) | -1 .. 11 | 5 .. 17 |
+| T1 "Of course," | 0 (course, 4) -> 50 | 6 (10) -> 56 |
+| "turn": T2 lead + first red square + first roll | 50 | 56 |
+| red squares 19-30, 2f apart | 50, 52 ... 72 | 56, 58 ... 78 |
+| counter roll starts (2f each, easeInOutQuad) | 50 51 52 54 55 56 57 58 59 61 62 63 | 56 57 58 60 61 62 63 64 65 67 68 69 |
+| "into thirty." | 61 | 67 |
+| **"thirty"**: counter lands on 30 + T2 keyword + calendar key punch (S11 hit) | **65** | **71** |
+| T2 exit | 75-78 | 81-84 |
+| tail handle: 30 squares, counter 30, no text | 78-84 | 84-90 |
+
+`cues.json`: `{"events": {"thirty": 65}}` (S11's hit on "thirty" and the counter landing).
+`tesseract_shots.json`: `"shots": []` (HyperFrames only, opaque). `footage.json`: no R-IDs (built graphic; R12.1 still skipped).
+
+**Verification (v02)**
+* `check --json`: 0 errors. Warnings: `nested_structure_needs_subcomposition` (kit T2 markup), craft `first_frame_empty`
+  (head handle before the entrance, by design) and `line_unread` on the rolling counter digits (odometer, as v01).
+* Snapshots `review/v02/` (read, `sheet_a.jpg`, `sheet_b.jpg`, `f076_keyword-landed.png` full size): the entrance
+  (5, 6, 7, 8, 11, 17), every caption word (6, 10, 56, 67, 71), rolls (56, 57, 59, 62, 65, 69, 70), the landing on 71,
+  the punch (73), the last square (78), the exit (81, 83), 84, 89. Max 2 words on screen; T2 and T1 clear of the
+  calendar in every frame; Coolvetica.
+* Render: see the bottom of this section.
+
+---
+
+# v01 reference (beat 83f; superseded where the v02 section above says otherwise)
+
 
 Beat: edit frames 1493-1576 (49.767-52.533 s), **83f**; composition **95f** (6f handle each end; local frame = beat frame + 6).
 Render: `05_GFX/renders/b12-thirty.mov` (ProRes 4444, 1920x1080, 30 fps, 95 frames, `yuva444p12le`, no audio stream; opaque).

@@ -5,18 +5,18 @@
   "RT1",
   "RT6"
  ],
- "note": "The VHS rewind (tools/make_rewind.py -> assets/rewind/b16-rewind.mp4, reversed at 8x) takes its frames straight from the ORIGINALS of the B14 shots (hyperframes/b14-since/tesseract_shots.json: source, source_in_s, crop), B9's GTA 1 (R9.1; provisional moment until lane E writes B9's shot) and the B4 design document (R4.5 real still, synced here). RT1 (VHS overlay, Screen blend over the rewind) and RT6 (light leak inside the X7 container) are real working clips.",
+ "note": "The VHS rewind (tools/make_rewind.py -> assets/rewind/b16-rewind.mp4, reversed at 8x) takes its frames straight from the ORIGINALS of the B14 shots (hyperframes/b14-since/tesseract_shots.json: source, source_in_s, crop), B9's GTA 1 (R9.1, read live from b09-throughyou/tesseract_shots.json) and the B4 design document (R4.5 real still, synced here). RT1 (VHS overlay, Screen blend over the rewind) and RT6 (light leak inside the X7 container) are real working clips.",
  "moments": {
   "RT1": {
    "in": 13.0,
    "out": 14.4,
    "crop": "1632:918:0:0",
-   "note": "VHS overlay: the pack's transition 4 - VHS noise bands, glitch blocks and a tape-crease streak on black, then black. Crop drops the pack's burned-in number badge (bottom-right). Used on beat f-6..30 in two pieces that skip the pack's two full-white flash frames (source 13.53-13.57): 13.00-13.50 then 13.60-14.23, Screen blend."
+   "note": "VHS overlay: the pack's transition 4 - VHS noise bands, glitch blocks and a tape-crease streak on black, then black. Crop drops the pack's burned-in number badge (bottom-right). Used on beat f-6..28 (v02) in two pieces that skip the pack's two full-white flash frames (source 13.53-13.57): 13.00-13.50 then 13.60-14.17, Screen blend."
   },
   "RT6": {
    "in": 3.9,
    "out": 4.6,
-   "note": "Light leak for X7: an orange leak rising out of black (4.00), peaking at 4.20, gone by 4.48 - one 14f dissolve. Used 3.98-4.45 on beat f30-44 (media start 0.08) inside the kit X7 container (Screen blend, kit opacity envelope 0 -> 0.9 -> 0)."
+   "note": "Light leak for X7: an orange leak rising out of black (4.00), peaking at 4.20, gone by 4.48 - one 14f dissolve. Used 3.98-4.38 on beat f28-40 (v02, 12f; media start 0.08) inside the kit X7 container (Screen blend, kit opacity envelope 0 -> 0.9 -> 0)."
   }
  }
 }

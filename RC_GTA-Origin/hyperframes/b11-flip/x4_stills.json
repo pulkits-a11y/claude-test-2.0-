@@ -1,0 +1,12 @@
+{
+ "stills": [
+  {
+   "png": "assets/x4/b11-old.png",
+   "frame": 23,
+   "hide": [
+    ".rc-cap",
+    "#b11-arrow"
+   ]
+  }
+ ]
+}

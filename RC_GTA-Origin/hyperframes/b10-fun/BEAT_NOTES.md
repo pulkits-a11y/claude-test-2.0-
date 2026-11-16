@@ -1,4 +1,45 @@
-# B10 It's fun - `b10-fun` (beat 57f = 1.900 s; composition 69f with 6f handles)
+# B10 It's fun - `b10-fun` (v02: beat 54f = 1.800 s; composition 66f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 10, 11, 12, 14, 15). Read this first
+
+The v01 sections below are kept as reference; where they disagree with this section (frames, eases, fonts), this
+section wins.
+
+**What changed and why**
+| Change | Client note / rule |
+|---|---|
+| Re-timed to the v02 beat map (VO 115%): beat 54f (was 57), edit 1196-1250 (39.867-41.667 s); composition 66f, root `data-duration="2.2000000"`. **"fun" = beat f35 = local 41 = edit frame 1231 = 41.040 s** | note 10 |
+| T2 "And suddenly, it's fun." word by word, max 2 words (kit `captionPlanV2` style t2, key 1): "And suddenly," (And 7, suddenly, 11) / "it's fun." (it's 34, keyword **fun.** 41: on screen at full opacity on its own frame with the kit's blur punch 30 -> 0 px + 108 -> 100%, 6f expo.out); the last group exits 3f (power2.in) ending on the beat end | note 11, rule A |
+| Coolvetica / Coolvetica Italic (keyword) | note 12 |
+| Nothing linear: the strips' v01 `ease: 'none'` push is replaced by the second half of B9's single easeInOutSine strip push (same function of the edit frame as b09-throughyou; B9 local 202 / 207 and B10 local 0 / 5 measured pixel-identical); B9's T4 phrases no longer fade linearly (v02 B9 ends on "let go.", whose 3f eased exit is finished here in the head handle); X3 = kit eased flash (ramp easeInQuad, fade easeOutQuad) | note 14, rule C |
+| R10.1 L1 (Tesseract) framing keys: bursts out of the flash 125 -> 101% over f0-10 (easeOutExpo; f0 is under 100% white), then 101 -> 102% to the cut (easeInOutSine) | note 15, rule D |
+
+**New frames (beat frames; local = beat + 6)**
+| What | beat f | local |
+|---|---|---|
+| head handle: B9's strips + "let go." finishing its exit | -6..0 | 0..6 |
+| "And suddenly," | 1 (suddenly, 5) | 7 (11) |
+| "it's fun." | 28 | 34 |
+| X3 flash: 0 / 11.1 / 44.4 / **100%** / 64 / 36 / 16 / 4 / 0 % | 32 .. 40 (100% on 35) | 38 .. 46 (100% on 41) |
+| **"fun"** = flash 100% = keyword lands = strips end under the white = Tesseract R10.1 starts = S09 + MU5 drop | **35** | **41** |
+| "it's fun." exit | 51-54 | 57-60 |
+| tail handle: transparent (Tesseract footage only) | 54-60 | 60-66 |
+
+`cues.json`: `{"events": {"fun": 35}}` (S09 Sub Drop starts here, MU5's drop lands here, = the flash's 100% frame).
+`tesseract_shots.json`: B10-killfrenzy-L1 `start_f` 35, `end_f` 54 (was 37-57), `framing.keys` as above, grade b10-pop.
+`footage.json`: windows unchanged; strip media-starts 76/30, 53/30, 28/30 s (B9 local 202 minus each strip's B9 start).
+
+**Verification (v02)**
+* `check --json`: 0 errors. Warnings: `nested_structure_needs_subcomposition` (kit T2 markup), craft `line_unread` on
+  the head-handle "let go." and the beat-segment "it's" / "fun." (voice timing).
+* Snapshots `review/v02/` (read, `sheet_a.jpg`): head handle 0/3/5 (exit), 6, every word (7, 11, 34, 41), the flash
+  38-46, 50, the exit 57/59, 60, 65. Max 2 words on screen; "fun." lands on the flash's 100% frame; Coolvetica Italic.
+* Render: see the bottom of this section.
+
+---
+
+# v01 reference (beat 57f; superseded where the v02 section above says otherwise)
+
 
 Plan: B10 build p.24, overview p.18, T2 p.11, X3 p.15, L1/L3 p.14, B-roll p.31 (R10.1, R10.2), SFX S09 p.37, music
 MU5 p.34, QA "the flash, the sub drop and the music drop on the same frame". Storyboard: STORYBOARD.md B10.

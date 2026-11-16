@@ -1,0 +1,49 @@
+{
+ "tool": "tools/make_x4_stills.py",
+ "cli": "hyperframes@0.9.52",
+ "captured_utc": "2026-11-16T15:06:53Z",
+ "stills": {
+  "assets/x4/b11-old.png": {
+   "frame": 23,
+   "at_s": 0.76672,
+   "crop": null,
+   "hide": [
+    ".rc-cap",
+    "#b11-arrow"
+   ],
+   "flatten": [],
+   "sha256": "60a50724fd6a1de00dd78141780a880ee97850a03b92345f581aa0f67bdddfd1"
+  }
+ },
+ "inputs": {
+  "index.html": "ca01d07f1be648102711db590ebefce84c206099e7b21b91a3bc4126d9ac469a",
+  "x4_stills.json": "9e9b34c892997f9325f3dd2a779dd2153e4d241e67bc6218837b68c27a82489f",
+  "assets/footage/R5.1.mp4": "20e140153bc71adbc4380fbc00334fdb616d1e654f730da93b9ed05996ccdee9",
+  "assets/footage/R5.2.mp4": "daa7dc47c24fe9b2412fb7c8a40d6abfaaa4d12c163a6c6a98b3b6112710af7f",
+  "assets/footage/R5.4.mp4": "52f0131dc96a3fd80b91781cdc9dd2a556e705c2f05d6bac6606a76aa86c28ee",
+  "assets/footage/R9.1.mp4": "ccbf76ca22a4a3f105f49a23c0cd4aaa8a855f328e42471dbfef95ddc7575b12",
+  "assets/kit/base.css": "9120479c5070017d5bca9cd7beca4b75eaa69ca597e06018ad5dbf451eac9e15",
+  "assets/kit/motifs.css": "df5492f3251194b9802dd7d4e9fb6b136f87e4fbc502fb179a17107e09e33429",
+  "assets/kit/motifs.js": "15603103b40b9f3b6fcd572662569500e9bd5d7a332f50f64b19862b38d29016",
+  "assets/kit/screens.css": "9174534057c17fdd542350e521685e9d41d2d04e5be291aefc89fc64a7a59db9",
+  "assets/kit/screens.js": "c0bf56f96b8070fd973cd97291af0434d843f335c9b38ca562f6cfeda7c5c0f7",
+  "assets/kit/transitions.css": "1ed6a0ad32e5bf644fe9b4af74b33d9409151ce1dc717e79817bf053f61d1b0d",
+  "assets/kit/transitions.js": "25d4369307be9a594a677a730c7d646f25a611b3ff6ac046f970a2e2dc292642",
+  "assets/kit/type.css": "5fcecc1a7daada8fbdcfc17fb7a08eea6e7daba50c7ca29334c81dac5e3813d5",
+  "assets/kit/type.js": "a851f845a25d3b71567187f8e7246448a6f01be397273947854b5c00c0abae3b",
+  "assets/kit/fonts/Coolvetica-Italic.otf": "c0c69a732b4728ffd8a4b993b2155eb345066f0849d4316e322e23bb1ffd7cff",
+  "assets/kit/fonts/Coolvetica-Regular.otf": "a7a9b31bc65d442ca97aa33dd588de36a4bb1f6105492a55bfb055ed86398546",
+  "assets/kit/fonts/InstrumentSerif-Italic.ttf": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385",
+  "assets/kit/fonts/InstrumentSerif-OFL.txt": "129ed7618959716959f2941fdd5b49e0ad6e6c1d78726761786a00253d865521",
+  "assets/kit/fonts/InstrumentSerif-Regular.ttf": "498efd461f6ddfcb7a111bf9a565709d2085d48201d501ead960d93e84ffbb88",
+  "assets/kit/fonts/Inter-Black.ttf": "6342d3ea6dc088b43867f615e807d898adf100c93edb978b8e52c5eb71a264da",
+  "assets/kit/fonts/Inter-Bold.ttf": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f",
+  "assets/kit/fonts/Inter-Medium.ttf": "97ad806f526e41546d46365bb3a393145f75b7b1568913db74549ad8b8dba872",
+  "assets/kit/fonts/Inter-OFL-LICENSE.txt": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+  "assets/kit/fonts/Inter-Regular.ttf": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+  "assets/kit/fonts/Inter-SemiBold.ttf": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+  "assets/kit/svg/motifs-bug-chip.svg": "7f43c8c4d8df265b992d74c40c87e9747a7e3229076b0d709fad1cf8ea464a2e",
+  "assets/kit/svg/motifs-bug.svg": "e6974aeae7dd300d34a6cf3326a69cb9b3e7ca884c379ee623e191ac149999be",
+  "assets/kit/svg/motifs-star.svg": "9bbc41f576f06055b1fc5fd50b977b16be166645e7de39b45ab1cf2d900b3449"
+ }
+}

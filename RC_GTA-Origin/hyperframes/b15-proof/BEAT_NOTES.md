@@ -1,5 +1,36 @@
 # B15 The proof — `b15-proof` (lane B)
 
+## v02 (REVISION_v02.md, client notes on v01): what changed
+
+Beat **167f** (was 178), composition **179f**, root `data-duration="5.9666667"`. Frames below are v02 beat frames (local =
+beat + 6). Everything after this section is the v01 record (v01 frames, Inter fonts, the T9 label).
+
+| What | v01 | v02 | Why (note / rule) |
+|---|---|---|---|
+| **T9 "RACE AND CHASE" label** | yellow label popped beside the cabinet on "Race" (f148) | **removed** (element, pop and its X6 blur entry). The proof is the game's own "RACE AND CHASE: STREET LEGAL" heading inside the spotlight | **note 7** |
+| Timing | 178f; "called" f132, "Race" 148 | 167f; "Open" 25, "arcade." 69, "machines" 107, "called" 124, "Race" 139, "Chase." 147 | note 10 |
+| T1 captions | 5 chunk clips (up to 4 words) | word by word, max 2 words: Don't 0 / believe me? 5 / Open 25 / GTA Online 33 / and buy 51 / an arcade. 63 / One of 94 / the machines 102 / is called 121 -> eased 3f exit (easeInCubic) ending on "Race" 139; above the slats (z 60), outside the camera wrappers | note 11, rule A |
+| X5 open | f0-8, constant speed | f0-8, easeOutQuart (kit v02) | rule C |
+| Arcade floor (R15.3 @ 229.4-233.73 s) | f-6..132, push 100 -> 104% linear | f-6..123, push 100 -> 108% (easeInOutSine) on `#b15-int-wrap`; keyword punches on a nested wrapper `#b15-int-key` on "arcade." (f69) and "machines" (f107): 106% in 3f (easeOutExpo), back in 9f (easeInOutSine) | rule D |
+| Cut to the catalogue (L7) | X1 on "called" f133 | X1 on "called" f124; R15.3 catalogue @ 191.035 s plays in real time f124-158 (34 of its 35 static frames) | re-time |
+| L7 spotlight push | 100 -> 118% f133-160, linear | 100 -> 118% f124-150, easeInOutSine (kit `spotPush` v02) about the STREET LEGAL card | rule C |
+| X6 zoom into the cabinet screen | f160-168, cue `zoom_mid` 164 | f150-158 (3f after "Chase."), same geometry and scale 'fill' (1379%, log-space easeInQuad); motion blur as per-frame steps (the plate's local blur loop now uses step cuts, was 1-frame linear tweens); the R15.1 picture fades into the cabinet screen over f150-153 easeOutCubic (was linear); cue `zoom_mid` = 154 | rules C, D |
+| R15.1 full frame (STAND-IN, still missing) | f168-178, push 100 -> 104% linear | landing f158 (handoff at the same media time 5.4666 s), push 100 -> 106% (easeInOutSine) to the tail end | rule D |
+
+`cues.json` = `{"label": 139, "zoom_mid": 154}`: `label` keeps its v01 name because the assembly reads it as MU6's end (low-pass
+and -6 dB from "Don't believe me?" until here); with the label removed it is now the frame "Race" is spoken. No Tesseract
+shots (`"shots": []`, the beat carries its own footage).
+
+Checks: `check --json` 0 errors (warnings: `line_unread` on the short groups the voice forces and on "is called" as "the film's
+last line", track density). Snapshots `review/v02/a/` + `sheet_a.jpg`: slats, every caption word, both keyword punches, the cut
+on "called", the spotlight push, the zoom frames, the landing. Render `05_GFX/renders/b15-proof.mov`: ProRes 4444, 1920x1080, 30 fps, **179 frames**, `yuva444p12le` (ffprobe, counted).
+
+Still pending (unchanged from v01): **R15.1** (Race and Chase gameplay, the proof shot) is missing; the labelled stand-in stays
+inside the cabinet screen and full frame (f150-167).
+
+---
+
+
 Beat: edit frames 1978-2156 (65.933-71.867 s), **178f**; composition **190f** (6f handle each end; local frame = beat frame + 6).
 Render: `05_GFX/renders/b15-proof.mov` (ProRes 4444, 1920x1080, 30 fps, 190 frames, `yuva444p12le`, no audio stream; opaque).
 Golden rule: Master Edit Plan p.26-27 (B15 build), p.19 (overview), p.16 (X5, X6, into each beat), p.14 (L7), p.13 (T9), p.11 (T1),

@@ -1,6 +1,1 @@
-{
- "events": {
-  "rewind": 0,
-  "chip": 101
- }
-}
+{"events": {"rewind": 0, "rewind_end": 28, "bug": 95}}

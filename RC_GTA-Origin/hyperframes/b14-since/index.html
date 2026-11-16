@@ -15,57 +15,59 @@
     </style>
   </head>
   <body>
-    <!-- B14 b14-since: beat 188f (6.267s) + 6f handle each end = 200f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.4667s.
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+    <!-- B14 b14-since (v02): beat 177f (5.900s) + 6f handle each end = 189f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.1000s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/. v02: ../../REVISION_v02.md.
 
          Plan p.26 (B14 build), STORYBOARD.md B14, CONFLICTS.md C15. TRANSPARENT OVERLAY: all footage is Tesseract's
-         (tesseract_shots.json): L10 burst (10 x 6f), GTA 5 chase R1.3, police lights R1.6 (for RT3), X8 whip, escape R14.5.
-         Local frame = beat frame + 6.
+         (tesseract_shots.json, framing v2 keys = the eased zooms): L10 burst (9 x 6f + 1 x 5f), GTA 5 chase R1.3, police
+         lights R1.6 (for RT3), X8 whip, escape R14.5.
          beat     local    what this overlay draws
          -6..12   0..18    L10 year tag "2001" (R14.1 x2)  - the year tags are the ONLY text during the burst (C15)
          12..24   18..30   "2002" (R14.2 x2)
          24..36   30..42   "2004" (R14.3 x2)
          36..48   42..54   "2008" (R14.4 x2)
-         48..60   54..66   "2013" (R14.5 x2)
-         62       68       T1 "that chase." on "that" (first caption after the burst, C15) .. out on "The" (96)
-         96       102      T4 "The wanted stars." top-left; M1 six stars 120 px centred pop 3f apart (land 99..114 = "stars.")
-         133      139      stars out with the cut to the police lights; T4 "The sirens." centre-right
-         140-143  146-149  X9 siren wash on "sirens" (red 2f, blue 2f, Overlay 35%) over an EMBEDDED copy of the R1.6 police lights (opaque
-                           on these 4 frames only, so the Overlay blend has the picture under it) = cue sirens (S14)
-         160-166  166-172  X8 whip (Tesseract), midpoint 163 = cue whip_mid (S15 starts 2f before)
-         162      168      T4 "The running." bottom-left; all three phrases stay until the slats close
-         180-188  186-194  X5 blinds CLOSE (out half of B15's X5), shut from beat 188 and through the tail handle -->
-    <div id="root" data-composition-id="b14-since" data-start="0" data-duration="6.6666667" data-width="1920" data-height="1080">
+         48..59   54..65   "2013" (R14.5 6f + 5f)
+         59       65       T1 "that chase." word by word on "that" (the cut to R1.3 lands on "that") .. out on "The" (97)
+         91       97       T4 "The" then "wanted stars." (102) top-left; M1 six stars 120 px centred pop 3f apart (land 100..115 = "stars.")
+         126      132      stars out with the cut to the police lights; T4 "The sirens." centre-right (replaces "wanted stars.": max 2 words)
+         132-135  138-141  X9 siren wash on "sirens" (red 2f, blue 2f, Overlay 35%) over an EMBEDDED copy of the R1.6 police lights (opaque
+                           on these 4 frames only, so the Overlay blend has the picture under it; the shot is at 100% there) = cue sirens (S14)
+         151-157  157-163  X8 whip (Tesseract), midpoint 154 = cue whip_mid (S15 starts 2f before)
+         153      159      T4 "The running." bottom-left; stays until the slats close
+         169-177  175-183  X5 blinds CLOSE (out half of B15's X5, easeInQuart), shut from beat 177 and through the tail handle -->
+    <div id="root" data-composition-id="b14-since" data-start="0" data-duration="6.3000000" data-width="1920" data-height="1080">
 
-      <!-- ===== X9: embedded police-lights plate, only under the 4 wash frames (beat 140-143). Must match the Tesseract shot
+      <!-- ===== X9: embedded police-lights plate, only under the 4 wash frames (beat 132-135). Must match the Tesseract shot
            B14-police-lights exactly: R1.6 (SUBSTITUTE for the missing RT3), same crop 1264:711:300:289, same source time
-           (shot source_in_s 129.5 + 7f = 129.733 s = working clip 0.4333 s, window in 129.3), full frame, 100%, no grade. ===== -->
-      <video id="b14-x9-plate" class="clip rc-full" src="assets/footage/R1.6.mp4" data-start="4.8666" data-duration="0.1334" data-media-start="0.4333" data-track-index="1" muted playsinline style="z-index: 1; object-fit: cover"></video>
+           (shot source_in_s 129.5 on beat 126 + 6f = 129.7 s = working clip 0.4000 s, window in 129.3), full frame, 100%
+           (the shot's punch-in has settled at 100% on beat 132), no grade. ===== -->
+      <video id="b14-x9-plate" class="clip rc-full" src="assets/footage/R1.6.mp4" data-start="4.6000" data-duration="0.1333" data-media-start="0.4000" data-track-index="1" muted playsinline style="z-index: 1; object-fit: cover"></video>
       <div id="b14-x9" class="rc-x9" style="z-index: 2"></div>
 
-      <!-- ===== M1: six wanted stars, 120 px, centred (960, 540), beat 96..133 ===== -->
-      <div id="b14-stars" class="clip m1-stars" data-preset="hero" data-start="3.4000" data-duration="1.2333" data-track-index="2" style="z-index: 4"></div>
+      <!-- ===== M1: six wanted stars, 120 px, centred (960, 540), beat 91..126 ===== -->
+      <div id="b14-stars" class="clip m1-stars" data-preset="hero" data-start="3.2333" data-duration="1.1667" data-track-index="2" style="z-index: 4"></div>
 
-      <!-- ===== L10 year tags: Inter Medium 22 px, top-left (96, 54), hard cut with the burst clips ===== -->
+      <!-- ===== L10 year tags: Coolvetica 22 px, top-left (96, 54), hard cut with the burst clips ===== -->
       <div id="b14-tag-2001" class="clip rc-l10-tag" data-start="0.0000" data-duration="0.6000" data-track-index="4" style="z-index: 6">2001</div>
       <div id="b14-tag-2002" class="clip rc-l10-tag" data-start="0.6000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2002</div>
       <div id="b14-tag-2004" class="clip rc-l10-tag" data-start="1.0000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2004</div>
       <div id="b14-tag-2008" class="clip rc-l10-tag" data-start="1.4000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2008</div>
-      <div id="b14-tag-2013" class="clip rc-l10-tag" data-start="1.8000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2013</div>
+      <div id="b14-tag-2013" class="clip rc-l10-tag" data-start="1.8000" data-duration="0.3666" data-track-index="4" style="z-index: 6">2013</div>
 
-      <!-- ===== T1 (resumes after the burst, C15) ===== -->
-      <div id="b14-cap-1" class="clip rc-t1" data-start="2.2666" data-duration="1.1334" data-track-index="3" style="z-index: 20">that chase.</div>
+      <!-- ===== T1 (resumes after the burst, C15), word by word ===== -->
+      <div id="b14-cap-1" class="clip rc-t1 rc-cap" data-start="2.1666" data-duration="1.0667" data-track-index="3" style="z-index: 20"><span class="rc-g"><span class="rc-w" data-rc-f="65">that</span> <span class="rc-w" data-rc-f="72">chase.</span></span></div>
 
-      <!-- ===== T4 spread words: each phrase in its own spot, staying until the slats close (no fade-out) ===== -->
-      <div id="b14-t4" class="clip rc-t4" data-start="3.4000" data-duration="3.2666" data-track-index="5" style="z-index: 21">
-        <span id="b14-t4-stars" class="rc-t4__piece rc-t4--left rc-t4--top">The wanted stars.</span>
-        <span id="b14-t4-sirens" class="rc-t4__piece rc-t4--right">The sirens.</span>
-        <span id="b14-t4-running" class="rc-t4__piece rc-t4--left rc-t4--bottom">The running.</span>
-      </div>
+      <!-- ===== T4 spread words, word by word, max 2 words: each phrase in its own spot (top-left / centre-right /
+           bottom-left); a group is replaced by the next (note 11 overrides "staying until the beat ends"); the last stays
+           until the slats close ===== -->
+      <div id="b14-t4-1" class="clip rc-t4 rc-cap" data-start="3.2333" data-duration="0.1667" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--left rc-t4--top"><span class="rc-w" data-rc-f="97">The</span></span></div>
+      <div id="b14-t4-2" class="clip rc-t4 rc-cap" data-start="3.4000" data-duration="1.0000" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--left rc-t4--top"><span class="rc-w" data-rc-f="102">wanted</span> <span class="rc-w" data-rc-f="114">stars.</span></span></div>
+      <div id="b14-t4-3" class="clip rc-t4 rc-cap" data-start="4.4000" data-duration="0.9000" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--right"><span class="rc-w" data-rc-f="132">The</span> <span class="rc-w" data-rc-f="138">sirens.</span></span></div>
+      <div id="b14-t4-4" class="clip rc-t4 rc-cap" data-start="5.3000" data-duration="1.0000" data-track-index="5" style="z-index: 21"><span class="rc-t4__piece rc-g rc-t4--left rc-t4--bottom"><span class="rc-w" data-rc-f="159">The</span> <span class="rc-w" data-rc-f="163">running.</span></span></div>
 
-      <!-- ===== X5 blinds CLOSE over the last 8f (out half; B15 opens), above everything incl. the T4 phrases ===== -->
-      <div id="b14-x5" class="clip rc-x5" data-start="6.2000" data-duration="0.4666" data-track-index="6" style="z-index: 50"></div>
+      <!-- ===== X5 blinds CLOSE over the last 8f (out half; B15 opens), above everything incl. the T4 phrase ===== -->
+      <div id="b14-x5" class="clip rc-x5" data-start="5.8333" data-duration="0.4667" data-track-index="6" style="z-index: 50"></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -77,25 +79,25 @@
       const T = RCK.type, M = RCK.motifs, X = RCK.transitions;
       const f = (n) => n / 30;   // local frame -> seconds (local frame = beat frame + 6)
 
-      // Word onsets from words.json (comp_t snapped to the nearest frame, local):
-      // And 6, every 15, GTA 24, since 34, is 40, built 44, around 55, that 68, chase 76,
-      // The 102, wanted 107, stars 120, The 139, sirens 146, The 168, running 172.
-      const W = { The1: 102, The2: 139, sirens: 146, The3: 168 };
-      const BOUNDARY_B15 = 194;   // beat 188 = B15's first frame
+      // Word onsets from words.json (v02, comp_t snapped to the nearest frame, local):
+      // And 7, every 15, GTA 24, since 32, is 39, built 43, around 53, that 65, chase 72,
+      // The 97, wanted 102, stars 114, The 132, sirens 138, The 159, running 163.
+      const W = { that: 65, The1: 97, The2: 132, sirens: 138, The3: 159 };
+      const BOUNDARY_B15 = 183;   // beat 177 = B15's first frame
 
-      // ---- M1: six stars fill in, centred, 120 px, each pops over 3f, 3f apart, from "The" (land 105..120 = "stars.")
+      // ---- captions (rule A): T1 "that chase." and the T4 groups pop word by word (T1 / T4 presets, easeOutExpo)
+      T.captionPops(tl);
+
+      // ---- M1: six stars fill in, centred, 120 px, each pops over 3f (easeOutQuart), 3f apart, from "The" (land 100..115 = "stars.")
       M.starsPopIn(tl, '#b14-stars', f(W.The1));
 
-      // ---- T4: each phrase fades in over 4f while drifting 12 px up on its spoken word; no outAt (stays to the slats)
-      T.spreadWords(tl, '#b14-t4', f(W.The1), { times: [f(W.The1), f(W.The2), f(W.The3)] });
-
-      // ---- X9 siren wash on "sirens" (cop word): red 35% Overlay 2f, blue 2f, over the embedded R1.6 police-lights plate (RT3 substitute)
+      // ---- X9 siren wash on "sirens" (cop word): red 35% Overlay 2f, blue 2f (hard per-frame changes), over the embedded R1.6 plate
       X.sirenWash(tl, '#b14-x9', f(W.sirens));
 
-      // ---- X5 blinds close: slats rotate shut over the 8f before the B15 boundary, shut through the tail handle
+      // ---- X5 blinds close: slats rotate shut over the 8f before the B15 boundary (easeInQuart), shut through the tail handle
       X.blindsClose(tl, '#b14-x5', f(BOUNDARY_B15));
 
-      tl.set({}, {}, f(200));
+      tl.set({}, {}, f(189));
       window.__timelines["b14-since"] = tl;
     </script>
   </body>

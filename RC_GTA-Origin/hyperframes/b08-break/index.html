@@ -12,55 +12,69 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* b07-shutdown's shot E, exactly: the article page in its own pixels with the same static base framing */
+      .b08-page { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; transform-origin: 0 0; }
+      #b08-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5 */
+      .b08-art, .b08-dim, .b08-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
+      .b08-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
     </style>
   </head>
   <body>
-    <!-- B8 b08-break: beat 63f (2.100s) + 6f handle each end = 75f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.3000s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B8 p.23).
+    <!-- B8 b08-break (v02): beat 59f (1.967s) + 6f handle each end = 71f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.1667s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B8 p.23).
 
-         Plan B8 (p.23): T1 "Then, something" -> T10 "breaks.". On "breaks" the stamp card shatters with X4 and cuts to
-         black (#0A0A0A). T10 "breaks." glitches for 6f, settles clean and holds 12f, then hard cut. The only fully silent
-         moment besides the very end (MU4 mutes the music 15f from the first black frame): add nothing to it.
-         Storyboard: f0-35 the B7 stamped card held (final state, slow push) + T1 "Then, something" @0 (out at 35);
-         f35-45 X4 shatter (10f); f45 cut to black; T10 glitch f45-50, clean f51-62, hard cut to B9 at f63.
+         Plan B8 (p.23): T1 "Then, something" -> T10 "breaks.". On "breaks" the picture shatters with X4 and cuts to black
+         (#0A0A0A). T10 "breaks." glitches for 6f, settles clean and holds 12f, then hard cut. The only fully silent moment
+         besides the very end (MU4 mutes the music 15f from the first black frame): add nothing to it.
+         v02: B7 now ends on the Game Developer article (the highlighted sentence, client note 3), so the X4 breaks THAT:
+         local  0-39  b07-shutdown's last shot continued: the same page, framing, spotlight and highlights, and the same
+                      eased push (one easeInOutSine move on the edit clock from B7's cut on "to" to "breaks", 100 -> 118% +
+                      drift; this composition plays its last 39 frames) + T1 "Then, something" word by word (rule A)
+         local 39-47  X4 tear on "breaks" (8f: the kit default inside the plan's 6-10f, so the plan's 12f clean hold of T10
+                      still fits the shorter v02 beat), still = this composition's own frame at local 39 (x4_still.sh)
+         local 47     first black (S07 riser end, MU4 mute start)
+         local 47-52  T10 glitch (6f, hard per-frame cuts), clean from 53, holds 12f to the hard cut at local 65 (beat end);
+                      the tail handle 65-71 holds the clean word.
+         Layer stack (top -> bottom): z40 T1 (white, low line y 860) | z30 T10 | z20 X4 tear canvas | z10 ink black |
+         z2 #b08-driftE > #b08-camE > the page (R7.GD + highlights + spotlight dim). -->
+    <div id="root" data-composition-id="b08-break" data-start="0" data-duration="2.3666667" data-width="1920" data-height="1080">
 
-         Layer stack (top -> bottom):
-           z40  T1 caption (card ink, low line: same place as B7's captions)          local  6-41
-           z30  T10 "breaks." (Inter Black 160 px, white, centred)                      local 51-75
-           z20  #b08-x4  X4 tear canvas (still mode, still = this composition's own frame at local 41)   41-50
-           z10  #b08-black  ink black #0A0A0A                                           local 51-75
-           z2   #b08-cam  camera: push continues B7's (same function of the edit frame) local  0-51
-                  #b08-prop  L5 prop, tilt -4 deg, float continuing B7's phase
-                    frame + R7.1 (continuous source time: B7 in-point + 3.2 s) + the three stamps, landed
-           z1   #b08-ground  card gray #E9E9E9                                          local  0-51 -->
-    <div data-hf-id="hf-1bdy" id="root" data-composition-id="b08-break" data-start="0" data-duration="2.5000000" data-width="1920" data-height="1080">
-
-      <!-- ===== f-6..34: B7's final stamped card, exactly (layout copied from b07-shutdown) ===== -->
-      <div data-hf-id="hf-5j7l" id="b08-ground" class="clip rc-l5__ground" data-start="0" data-duration="1.7000" data-track-index="1" style="z-index: 1"></div>
-      <div data-hf-id="hf-pxin" id="b08-cam" class="rc-scr" style="z-index: 2">
-        <div data-hf-id="hf-d9kt" id="b08-prop" class="rc-l5__prop" data-rot="-4" style="--x: 560px; --y: 140px; --w: 800px; --h: 600px; --rc-pos: 50% 50%;">
-          <div data-hf-id="hf-8tq4" id="b08-frame" class="clip rc-l5__frame" data-start="0" data-duration="1.7000" data-track-index="2"></div>
-          <!-- R7.1: b07's in-point (media 0 = original 0:03.6) + 3.2 s = continuous source time across the B7/B8 cut. -->
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-71kr" id="b08-r71" class="clip rc-l5__media" src="assets/footage/R7.1.mp4" data-start="0" data-duration="1.7000" data-media-start="3.2000" data-track-index="3" muted playsinline></video>
-          <div data-hf-id="hf-b5ju" id="b08-stamp1" class="clip m-stamp" data-start="0" data-duration="1.7000" data-track-index="4" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
-          <div data-hf-id="hf-wuok" id="b08-stamp2" class="clip m-stamp" data-start="0" data-duration="1.7000" data-track-index="5" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
-          <div data-hf-id="hf-kjwm" id="b08-stamp3" class="clip m-stamp" data-start="0" data-duration="1.7000" data-track-index="6" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+      <!-- ===== local 0-47: b07-shutdown's shot E continued (Game Developer, Jan 31 2011, the sentence "It was almost canned.
+           The publisher, BMG Interactive, wanted to can it" highlighted; R7.GD = live screenshot of
+           https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- , never edited) ===== -->
+      <div id="b08-driftE" class="rc-cam" style="z-index: 2">
+        <div id="b08-camE" class="rc-cam">
+          <div id="b08-pageE" class="b08-page" data-layout-allow-overflow="">
+            <img id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.5666" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
+            <!-- the two T9 highlighter strokes, landed (b07 swipes them on "shut" and "down.") -->
+            <div id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.5666" data-track-index="2" data-layout-ignore="">
+              <div id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 358px; height: 48px"></div>
+              <div id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+            </div>
+            <div id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.5666" data-track-index="3" data-layout-ignore="">
+              <svg width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs>
+                <filter id="b08-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="3.6"/></filter>
+                <mask id="b08-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect x="0" y="0" width="2232" height="2352" fill="#FFFFFF"/><rect x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b08-dimE-f)"/></mask>
+              </defs><rect x="0" y="0" width="2232" height="2352" fill="#0A0A0A" fill-opacity="0.65" mask="url(#b08-dimE-m)"/></svg>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ===== X4 pixel-block tear on "breaks" (beat f35 = local 41), 10f, shatter to black, then the cut ===== -->
-      <!-- still mode: assets/x4/b08-old.png = this composition at local 41 WITHOUT the tear (made by x4_still.sh) -->
-      <div data-hf-id="hf-o4zi" id="b08-x4" class="rc-x4" style="z-index: 20">
-        <img data-hf-id="hf-ha5p" class="rc-x4__still" src="assets/x4/b08-old.png" alt="">
+      <!-- ===== X4 pixel-block tear on "breaks" (local 39 = beat f33), 8f, then the hard cut to black ===== -->
+      <!-- still mode: assets/x4/b08-old.png = this composition at local 39 WITHOUT the tear (made by x4_still.sh) -->
+      <div id="b08-x4" class="rc-x4" style="z-index: 20">
+        <img class="rc-x4__still" src="assets/x4/b08-old.png" alt="">
       </div>
 
-      <!-- ===== f45-63 (+ tail handle): black, T10 "breaks." ===== -->
-      <div data-hf-id="hf-svfe" id="b08-black" class="clip rc-ink rc-full" data-start="1.7000" data-duration="0.8000" data-track-index="7" style="z-index: 10"></div>
-      <div data-hf-id="hf-us1x" id="b08-t10" class="clip rc-t10" data-start="1.7000" data-duration="0.8000" data-track-index="8" style="z-index: 30"><span data-hf-id="hf-iiag" class="rc-t10__word">breaks.</span></div>
+      <!-- ===== local 47-71 (beat 41-59 + tail handle): black, T10 "breaks." ===== -->
+      <div id="b08-black" class="clip rc-ink rc-full" data-start="1.5666" data-duration="0.8000" data-track-index="7" style="z-index: 10"></div>
+      <div id="b08-t10" class="clip rc-t10" data-start="1.5666" data-duration="0.8000" data-track-index="8" style="z-index: 30"><span class="rc-t10__word">breaks.</span></div>
 
-      <!-- T1 "Then, something" (kit T.captionPlan from words.json): in on "Then," (local 6), out at the tear (local 41) -->
-      <div data-hf-id="hf-894m" id="b08-cap-1" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.2000" data-duration="1.1666" data-track-index="10" style="z-index: 40">Then, something</div>
+      <!-- T1 "Then, something", v02 rule A (kit captionPlanV2 + captionHTMLV2): "Then," pops on local 7, "something" on 25;
+           the group leaves at the tear (local 39). White + soft shadow on the dimmed page, low line (as in b07-shutdown). -->
+      <div id="b08-cap-1" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.2333" data-duration="1.0667" data-track-index="10" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="7">Then,</span> <span class="rc-w" data-rc-f="25">something</span></span></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -69,41 +83,38 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, M = RCK.motifs, X = RCK.transitions, S = RCK.screens;
-      const F = (n) => n / 30;
+      const T = RCK.type, X = RCK.transitions, C = RCK.cam;
+      const f = (n) => n / 30;
       // x4_still.sh renders a copy of this page with data-x4-capture on <html>: same picture, no tear (the X4 still).
       const CAPTURE = document.documentElement.hasAttribute("data-x4-capture");
 
-      // Word onsets on this composition's clock (words.json comp_t, s)
-      const W = { Then: 0.205, something: 0.875, breaks: 1.366 };
-      const kBreaks = T.frame(W.breaks);          // local 41 = beat 35
-      const kBlack = kBreaks + 10;                // local 51 = beat 45: first black frame (X4 is 10f)
+      // Word frames (local) from words.json: Then, 7, something 25, breaks. 39.
+      const kBreaks = 39;                 // beat 33: the X4 tear's first frame (cues.json "breaks")
+      const kBlack = kBreaks + 8;         // beat 41: first black frame (cues.json "first_black")
 
-      // ---- B7's card, continued (same functions of the EDIT frame as b07-shutdown) ----
-      // local frame L of this composition = edit frame 990 + L (B8 beat f0 = edit 996).
-      const PUSH = (e) => 1 + 0.04 * (e - 900) / 131;     // 100% at B7 f0 -> 104% at B8 f35 (edit 1031)
-      const ORIGIN = "960px 440px";
-      const PHASE = 0 + Math.PI * 3.2 / 2;                 // b07's PHASE + pi * (96f / 30) / 2 s  (= 1.6 pi)
-      S.push(tl, "#b08-cam", 0, { until: F(kBlack), from: PUSH(990), to: PUSH(990 + kBlack), origin: ORIGIN });
-      S.propFloat(tl, "#b08-prop", 0, { until: F(kBlack), phase: PHASE, amp: 6, legS: 2 });
+      // ---- b07-shutdown's article camera, continued: ONE easeInOutSine move on the EDIT clock from B7's cut on "to" (edit
+      //      897) to "breaks" (edit 968 = this local 39), 71f: scale 100 -> 118% about the sentence centre (1053.257, 613.029)
+      //      + drift (-93.257, -53.029) px. This composition (local L = edit 929 + L) plays frames 32..71 of it on the same curve
+      //      (segment of the ease, not restarted), so b07's last frame and this first frame match. From the tear on the page
+      //      is covered (X4 still mode) and holds the end state. ----
+      const SIN = gsap.parseEase('sine.inOut');
+      const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
+      const E_LEN = 71, E_S = 1.18, E_DX = -93.257, E_DY = -53.029, k0 = 32 / E_LEN, p0 = SIN(k0);
+      C.push(tl, '#b08-camE', f(0), { until: f(kBreaks), from: 1 + (E_S - 1) * p0, to: E_S, ease: seg(k0, 1), origin: '1053.257px 613.029px' });
+      gsap.set('#b08-driftE', { x: E_DX * p0, y: E_DY * p0, force3D: false });
+      tl.fromTo('#b08-driftE', { x: E_DX * p0, y: E_DY * p0 }, { x: E_DX, y: E_DY, duration: kBreaks / 30, ease: seg(k0, 1), force3D: false, immediateRender: false }, 0);
 
-      // the three stamps, already landed (b07: centre (400, 300) in the prop, offsets (0,-30) (0,0) (0,+30),
-      // rotations -4 / 0 / +10 inside the -4 deg prop = -8 / -4 / +6 deg on screen)
-      const rots = [-4, 0, 10], offs = M.STAMP_OFF;
-      ["#b08-stamp1", "#b08-stamp2", "#b08-stamp3"].forEach((id, i) => {
-        const st = M.stampInit(id, { x: 400 + offs[i][0], y: 300 + offs[i][1], rotation: rots[i] });
-        gsap.set(st.slam, { opacity: 1, scale: 1 });
-      });
-
-      // ---- X4 on "breaks": 10f tear exactly as the X library defines it (16 x 9 blocks jumping +/-30 px, some freezing
-      //      on the old frame, 6 px RGB split), then the hard cut to black on local 51. Kit defaults (no `gap`
-      //      drop-outs: the plan's X4 has none). Same settings as b17-loop's final tear (the ending echoes this break).
+      // ---- X4 on "breaks": 8f tear as the X library defines it (16 x 9 blocks jumping +/-30 px, some freezing on the old
+      //      frame, 6 px RGB split; per-frame cuts), then the hard cut to black on local 47. Seed 8 (as v01 and b17-loop). ----
       if (CAPTURE) document.getElementById("b08-x4").remove();
-      else X.tear(tl, "#b08-x4", F(kBreaks), { frames: 10, seed: 8 });
+      else X.tear(tl, "#b08-x4", f(kBreaks), { frames: 8, seed: 8 });
 
-      // ---- T10 "breaks." on black: 6f glitch (local 51-56), clean from 57, holds 12f to the hard cut (local 69),
-      //      tail handle 69-74 holds the clean word (closing state continued) ----
-      T.glitch(tl, "#b08-t10", F(kBlack), { seed: 8 });
+      // ---- T10 "breaks." on black: 6f glitch (local 47-52, hard per-frame cuts), clean from 53, holds 12f to the hard cut
+      //      (local 65); the tail handle 65-70 holds the clean word (closing state continued) ----
+      T.glitch(tl, "#b08-t10", f(kBlack), { seed: 8 });
+
+      // ---- T1 word pops ----
+      T.captionPops(tl);
 
       window.__timelines["b08-break"] = tl;
     </script>

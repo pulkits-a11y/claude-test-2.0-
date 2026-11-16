@@ -1,4 +1,66 @@
-# B11 The flip - `b11-flip` (beat 162f = 5.400 s; composition 174f with 6f handles)
+# B11 The flip (v02: the glitch) - `b11-flip` (v02: beat 152f = 5.067 s; composition 164f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 5, 10, 11, 12, 14, 15). Read this first
+
+The v01 sections below are kept as reference; where they disagree with this section (the flip, frames, eases, fonts,
+cues), this section wins.
+
+**What changed and why**
+| Change | Client note / rule |
+|---|---|
+| **The 180 deg L11 flip is replaced by B8's glitch**: the kit X4 pixel-block tear with B8's exact settings (b08-break v02: `X.tear(tl, el, at, { frames: 8, seed: 8 })`: still mode, 16 x 9 blocks jumping +/-30 px, 25% freezing on the old frame, 6 px RGB split, kit defaults), on "flips": it tears the front split screen for 8f, then a hard cut to the back split screen (the chased roles). No flip, no flip motion blur, no S10 whoosh | note 5 "instead of a flip animation, add a glitch animation there. for what you used when the voice over said 'it breaks'"; REVISION B11 |
+| X4 still rebuilt from B11's own front frame: `assets/x4/b11-old.png` = this composition at local 23 with captions/arrow hidden, captured by `tools/make_x4_stills.py hyperframes/b11-flip` (registered in `x4_stills.json`; `--check` passes, inputs hashed in `assets/x4/SOURCES.json`). Re-run it after ANY change to index.html or the assets | note 5 / KIT_transitions X4 |
+| Front = B5's exact framing, as v01: same L11 frame (halves 0-958 / 962-1920), same clips, crops and in-points, and B5 v02's own camera curve (b05-copgame: push 100 -> 108%, easeInOutSine, B5 local 0 -> 89), so B11 local 0-22 repeat B5 local 0-22 frame for frame | REVISION B11, plan p.25 "Watch out" |
+| The faces lost the kit's `--front` / `--back` modifiers: the kit auto-inits every `.rc-l11` for the flip (back face at rotationY -180), which with no flip left the back side mirrored (seen in the first snapshots, fixed) | fix |
+| Back side: media-start 0.4333 s, so "Now" (local 103) shows the same R9.1 moment as v01 (5:14.83) and the arrow geometry (175, 800) -> (335, 520) still lands on the getaway car | re-timing |
+| Re-timed (VO 115%): beat 152f (was 162), edit 1250-1402 (41.667-46.733 s); composition 164f, root `data-duration="5.4666667"` | note 10 |
+| T1 word by word, max 2 (kit `captionPlanV2`): So / the team / flips / the / whole game. / You're not / the cop / anymore. / Now you're / the one / being chased. The captions stay above the tear (steady) | note 11, rule A |
+| Coolvetica | note 12 |
+| Nothing linear; camera (rule D, on `.lc-push` / `.lc-key` inside each half, never on the L11 frame): front = B5's eased push; back = punch-in on the cut 115 -> 100% (10f easeOutExpo), push 100 -> 108% to the end (easeInOutSine), keyword punch 106% on "chased." (3f easeOutExpo, back 9f easeInOutSine) | notes 14, 15 |
+
+**New frames (beat frames; local = beat + 6)**
+| What | beat f | local |
+|---|---|---|
+| front (B5 returned), "So" | 0 | 6 |
+| T1 groups first frames | 0, 3, 17, 27, 36, 59, 70, 77, 97, 111, 122 | 6, 9, 23, 33, 42, 65, 76, 83, 103, 117, 128 |
+| **X4 glitch** on "flips" (first torn frame = `glitch` cue) | **17** | **23** |
+| torn frames | 17-24 | 23-30 |
+| hard cut to the back side + punch-in 115% | 25 | 31 |
+| punch landed, push starts | 35 | 41 |
+| M2 arrow on "Now" (drawn by +8) | 97 (-> 105) | 103 (-> 111) |
+| keyword punch on "chased." | 128-140 (onset 129) | 134-146 (onset 135) |
+| tail handle: back side + "being chased." held | 152-158 | 158-164 |
+
+`cues.json`: `{"events": {"glitch": 17}}` (replaces `flip_start` / `flip_mid`; = the first torn frame, as B8's `breaks`
+cue is its tear's first frame; the assembly maps it to the glitch impact sound).
+`tesseract_shots.json`: `"shots": []` (HyperFrames only, opaque). `footage.json`: windows unchanged.
+
+**Cross-beat notes**
+* `hyperframes/cover` (not this lane) mirrors v01's B11 back side (local 170, linear 104% push, flip-era media
+  timing). If the cover should follow v02 exactly: back side media-start 0.4333 s at local 31, punch-in 115 -> 100%
+  local 31-41, push 100 -> 108% (easeInOutSine) local 41 -> 164, arrow unchanged.
+* B8's settings are copied from `b08-break/index.html` as its lane revised it for v02 (15:03 UTC: `frames: 8, seed: 8`;
+  v01 was 10f). If B8 changes them again, B11 follows with one line (`X.tear(... { frames: N, seed: 8 })`, `CUT =
+  GLITCH + N`, the front/back video windows and the back media-start), then `tools/make_x4_stills.py` and a re-render.
+
+**Verification (v02)**
+* `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings: `timeline_track_too_dense` (caption lane), craft
+  `line_unread` on the voice-timed groups ("So" 3f, "flips", "the", "You're not", "the cop", "the one") and the
+  beat-segment "being chased.", contrast 2.61:1 on "the" (local 9, white T1 with the plan's soft shadow over the light
+  asphalt of B5's left half; same picture and style as B5, no caption boxes by plan rule).
+* `python3 tools/make_x4_stills.py hyperframes/b11-flip --check`: "X4 stills current (1)".
+* Snapshots `review/v02/` (read; `sheet_a.jpg`, `sheet_b.jpg`, `sheet_c.jpg`): head handle 0; every caption word (6 ...
+  135); the last clean front frame 22; the glitch 23, 25, 27, 29, 30 (front torn, blocks + RGB split, "flips"
+  steady above it); the cut 31 (back at 115%), 32, 33, 35, 41 (landed); the arrow 103 / 107 / 111 and its tip on the
+  getaway car at 111, 137 (punch peak) and 163; the "chased." punch 135 / 137 / 146; 157; 163. The first pass showed
+  the back side mirrored (kit L11 auto-init, see above), fixed and re-shot. Max 2 words on screen, words on their
+  onsets, Coolvetica, no flip left.
+* Render: see below.
+
+---
+
+# v01 reference (beat 162f, the flip; superseded where the v02 section above says otherwise)
+
 
 Plan p.24-25 (B11), p.15 (L11 incl. the flip), p.17 (M2), p.39 (cover frame). Storyboard B11.
 Render: `05_GFX/renders/b11-flip.mov` (ProRes 4444, opaque; no Tesseract shots, `tesseract_shots.json` has none).

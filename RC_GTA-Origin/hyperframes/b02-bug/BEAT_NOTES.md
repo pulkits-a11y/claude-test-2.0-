@@ -1,4 +1,58 @@
-# B2 The bug - `b02-bug` (beat 180f = 6.000 s; composition 192f with 6f handles)
+# B2 The bug - `b02-bug` (v02: beat 169f = 5.633 s; composition 181f with 6f handles. v01: 180f / 192f)
+
+## v02 (REVISION_v02.md, client notes 1, 8, 10-15): read this first; the v01 notes below are kept as reference
+
+**Beat 169f (5.633 s, v01 180f), composition 181f = 6.0333333 s** (root `data-duration`), local frame = beat frame + 6.
+Re-timed from `timing/beat_map.json` v02 (`python3 tools/new_beat.py B2 --refresh`). Footage, plate geometry, CRT
+treatment, X6, X4 and the error box are unchanged apart from their frames.
+
+| What changed | Why (note / rule) |
+|---|---|
+| All frames re-timed (table below); root 6.4000000 -> 6.0333333 | note 10, REVISION "every beat ~6% shorter" |
+| **X5 slat close removed** and replaced by the kit's **zoom-through OUT** (`RCK.cam.zoomThroughOut` on `#b02-cam`): the CRT shot scales x1.4 (108 % -> 151.2 %) + 16 px blur, easeInExpo, over local 169-174 (B-6 at rest, peak on 174 = the beat's last frame), held zoomed/blurred through the tail handle; split at the boundary (B3 plays the in half). Blur = the R3.7 plate's media-treatment blur control (footage is never CSS-filtered); the X4 canvas region (`#b02-pin`) and the error box (DOM) get a CSS blur. Silent (no new sound) | note 1 ("the transition on 0:10"), KIT_transitions v02 |
+| "And that [bug chip] saved it." (T7 + M4 chip) -> T1 words **And / that bug / saved it.**: the word "bug", no chip | note 8 |
+| T1 chunks -> word-by-word groups of max 2 words: `Because back / in 1995, / a game / about / chasing criminals / broke.` then `And / that bug / saved it.`; each word pops on its onset (5f expo.out, 1f lead); "saved it." exits in 3f (power2.in) ending on the boundary | note 11, rule A |
+| Coolvetica (kit) | note 12 |
+| Linear moves removed: the v01 clean-copy fade (`ease: 'none'`) -> easeInCubic (power2.in, a fade out); the v01 hand-off band push (`ease: 'none'`, B1's linear push) -> the last 6 frames of B1's new easeInOutSine push (a function ease = that curve's tail), then held 108 %; the v01 plate push `S.push(... to: 1 + 0.04 * 178 / 172)` (linear 104 %) -> 100 -> 108 % easeInOutSine (local 14 -> 169) | note 14, rule C (kit report) |
+| **Key punches** on "broke." (101, with the tear) and "bug" (147): 100 -> 106 % in 3f (expo.out), back over 9f (sine.inOut), on a nested wrapper `#b02-key` about the screen centre (560, 410) | note 15, rule D |
+| GTA 1 (R9.1) media-start 0 -> 0.1334 so the frozen tear frame is still source 128.5 s: the X4 still `assets/x4/b02-old.png` stays valid (re-captured with `sh tools/make_x4_still.sh`, now at local 101: pixel-identical, mean diff 0.0) | keep the v01 picture |
+| GTA 6 hand-off copies: media-start 2.8334 -> 2.6334 (= 79/30: B2 local 0 = B1 local 134) | re-time, continuity |
+| Kept: plate R3.7 (SUBSTITUTE for R3.9), R9.1 crop, CRT look, X6 'fill' zoom (log-space power1.out), X4 tear (seeded, still mode, hold), error box (hard pop), flicker (seeded per-frame values: cuts, not moves); no grain/vignette/whole-frame chroma (assembly, rule F). The CRT screen's own 1 px fringe, scanlines and bulge stay: they are the L8 monitor look inside the 537 x 406 screen only, not a finish on the frame | "don't change anything else" |
+
+**v02 frames** (local; beat = local - 6):
+
+| local | beat | what |
+|---|---|---|
+| 0-6 | -6-0 | head handle: B1's straight GTA 6 picture (hand-off copy), B1's push finishing (107.89 % -> 108 %) |
+| 6-14 | 0-8 | X6 OUT into the CRT (hand-off hidden from 7); clean copy fades 9-14; "Because" pops 7 |
+| 14-169 | 8-163 | push on the CRT shot 100 -> 108 % |
+| 19 | 13 | "back" |
+| 27 / 30 | 21 / 24 | "in" / "1995," + hard cut of the CRT picture to GTA 1 (R9.1) |
+| 61, 62 / 69 | 55, 56 / 63 | "a game" / "about" |
+| 75 / 88 | 69 / 82 | "chasing" / "criminals" |
+| 101 | 95 | "broke." + X4 tear (8f, then frozen; `tear` = beat 95, S03) + key punch (100-112) |
+| 109 | 103 | error box hard pop |
+| 131 | 125 | "And" |
+| 142 / 147 | 136 / 141 | "that" / "bug" (+ key punch 146-158; `bug` = beat 141) |
+| 154 / 162 | 148 / 156 | "saved" / "it." |
+| 169-174 | 163-168 | zoom-through out (x1.4 + blur, expo.in); caption exit 172-175 |
+| 175 | 169 | boundary (= B3 local 6): B3's year card arrives from 130 % + blur |
+| 175-181 | 169-175 | tail handle: zoomed, blurred state held |
+
+`cues.json`: `tear` 95 (v01 101), `bug` 141 (v01 key `bug_chip` 150: renamed, there is no chip any more; no SFX uses it).
+`tesseract_shots.json`: no shots (HF-owned beat, opaque).
+
+**Seam**: B1 local 140 and B2 local 6 (the boundary frame) are pixel-identical outside B1's stars (mean diff 0.00/255).
+
+**Verification v02**: `check --json` 0 errors (warnings: `timeline_track_too_dense` caption lane; `contrast_aa_failure`
+1.7-3.0:1 on the white T1 words over the bright BBC office plate at y 620 (kit caption style unchanged since v01); craft
+`line_unread` on the voice-timed groups and the error box text as "last line" (beat segment)). Snapshots `review/v02/`
+(31 frames + 3 sheets: hand-off, X6, every word, the GTA 1 cut, tear + punch, error box, "bug" punch, every zoom-through
+frame, tail), read: max 2 words, words on their onset frames, Coolvetica, the word "bug", nothing linear, nothing cut off.
+Render: `05_GFX/renders/b02-bug.mov` = prores (4444), 1920x1080, 30 fps, **181 frames** (169 + 12), yuva444p12le,
+opaque on every frame; decoded frames 101 and 174 match the snapshots (mean diff < 1.4/255).
+
+---
 
 Plan: B2 build p.20, overview p.18, into each beat p.16 ("B2 X6, footage shrinks into the CRT"), B-roll p.28-29
 (R3.9, R9.1; real footage + substitutions below), style kit p.9-11, T1/T7 p.11-12, L8 p.14, X4/X5/X6 p.16, M4 p.17, accuracy p.40 (error box).

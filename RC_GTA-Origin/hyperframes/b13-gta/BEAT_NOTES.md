@@ -1,5 +1,36 @@
 # B13 Grand Theft Auto: beat notes (b13-gta)
 
+## v02 (REVISION_v02.md, client notes on v01): what changed
+
+Beat **205f** (was 214), composition **217f** (205 + 2 x 6f handles), root `data-duration="7.2333333"`. Frames below are
+v02 beat frames (local = beat + 6). Everything after this section is the v01 record (v01 frames, Inter fonts).
+
+| What | v01 | v02 | Why (note / rule) |
+|---|---|---|---|
+| Timing | VO 108%, B13 214f | VO 115%, 205f: "Until" 1, "in" 27, "November" 30, "1997," 45, "it" 80, "Grand" 124, "Auto." 140, voice ends 155; 43f title-hold room tone after "Auto." | note 10 (shared re-time) |
+| Fonts | Inter / Instrument Serif | Coolvetica / Coolvetica Italic (kit `base.css`) | note 12 |
+| T1 captions | chunk clips "Until finally," / "it ships with" / "a new name:" | word by word, max 2 words (kit `captionPlanV2` + `captionHTMLV2` + `captionPops`): "Until finally," 1 (card ink) / "it ships" 80 / "with" 91 / "a" 98 / "new name:" 101 -> out on "Grand" 124 | note 11, rule A |
+| T3 "In Nov 1997" | push 100 -> 104% linear | same card (M6), "In" hard cut on "in" 27, "Nov" on "November" 30, digits roll on "1997," 45 (easeOutQuart, land 59, cue `year_digits` = 45); card push 100 -> 106% easeInOutSine to the cut | rules C, D |
+| X3 into L6 | linear ramp/fade | kit v02 eased flash centred on the cut at 80 (ramp easeInQuad 77-80, 100% on 80, fade easeOutQuad 80-85), silent | rule C |
+| L6 camera | push 100 -> 104% linear | `#b13-l6` is the camera: punch-in 112 -> 100% over 10f (easeOutExpo) on the cut under the flash fade, then push 100 -> 106% (easeInOutSine) to the cut out at 181 | rule D |
+| **THEFT vs the L6 frame** | Inter Black 400 px; THEFT's outer letters peeked out of the 4:3 frame | Coolvetica is narrower (kit report: THEFT hides behind the 62% frame). Restored v01's look: the 4:3 frame is **768 x 576** (53.3%, still exactly 4:3, the 1997 intro is never cropped or stretched; `--rc-l6-w/h` on `#b13-l6`) and T6 is **396 px** (`--rc-t6-size` on `#b13-t6`): the frame covers the middle letters H-E-F, both T's of THEFT show ~70% (v01 ~85%), G and D of GRAND and A, O of AUTO stay clear; the stack's ink stays inside title-safe at the end of the 106% push (measured on the last L6 frame: y 56-1016, x 329-1588) | kit report, plan p.12 "the frame overlaps the middle letters" |
+| T6 type-on | a letter every 2f (constant) | same 26f total, start times on easeOutQuad (kit `giantType`: +0 4 7 11 14 16 18 20 22 24 25 25 26 26f) from "Grand" 124 (cue `type_on` = 124), last letter 150, hold 31f (>= 1 s) to the hard cut at 181 | rules C, E; plan "hold 1 s" |
+| L2 unboxing (Tesseract) | f190-214, push 100 -> 104% linear | f181-205 (24f = 0.8 s), framing v2 keys: 112% -> 101% in 10f (easeOutExpo) -> 105% at f24 (easeInOutSine); same moment R13.2 @ 101.6 s, crop, archival grade, bars slide in 8f | rules C, D |
+| Framed clip treatment | archival grade incl. grain 0.10 + vignette 0.12 (media-treatment) | archival colour only (saturation -0.2, temperature +0.06, shadows +0.04): grain and vignette set to 0 with `media-treatment`, because the assembly now adds the whole-edit grain and vignette (rule F: no beat-level grain/vignette/chroma) | rule F |
+| R13.1 window | 48.333-51.80 s | 48.333-51.70 s (same `data-media-start` 0.4333 on the cut: the D-man's impact lands on the cut frame 80) | re-time |
+
+`cues.json` = `{"year_digits": 45, "type_on": 124}`. `tesseract_shots.json`: B13-unboxing-band f181-205 with framing keys. No grain,
+vignette or chroma in the beat (the assembly adds them).
+
+Checks: `check --json` 0 errors (warnings as v01: duplicate media by design, nested T3/T6 markup, track density, frame 0 on
+the gray card, `line_unread` on the 1-word groups the voice forces ("with" 7f, "a" 3f) and on T6 "as the film's last line",
+contrast 2.2:1 on THEFT's "H", which is covered by the frame). Snapshots `review/v02/a/` + `review/v02/sheet_a.jpg` (every
+caption word, the digit roll, the flash frames, the punch-in, T6 letters, the hold, the cut out). Render
+`05_GFX/renders/b13-gta.mov`: ProRes 4444, 1920x1080, 30 fps, **217 frames**, `yuva444p12le` (ffprobe, counted).
+
+---
+
+
 Plan p.25 (B13 build), p.18-19 (overview row), p.16 (into the beat: "B13 X1, then X3 into the framed clip"), T3/T6 p.11-12,
 L2/L6 p.13-14, X3 p.16, M6 p.18, grade p.10, accuracy p.40 ("November 1997, it ships": fine as written). STORYBOARD.md B13,
 CONFLICTS.md C14. Frames below are **beat frames** (f0 = "Until"); composition local frame = beat frame + 6.

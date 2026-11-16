@@ -1,4 +1,42 @@
-# B5 The cop game - `b05-copgame` (beat 88f = 2.933 s; composition 100f with 6f handles)
+# B5 The cop game - `b05-copgame` (v02: beat 83f = 2.767 s; composition 95f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 10, 11, 12, 14, 15) - what changed
+Re-timed to the v02 beat map (VO 115%: beat 88f -> 83f, composition 100f -> 95f, root `data-duration` 3.1666667) and
+the global rules applied. Nothing else changed: same L11 split, same footage windows / crops / positions (B11 reuses this
+exact framing for its front side), same M2 arrow (seed 7, same geometry), same X9 wash, no SFX.
+* **Rule A (note 11)**: T1 rebuilt with the kit's `captionPlanV2` / `captionHTMLV2` + `T.captionPops`: groups of max 2
+  words, each word pops on its own onset (5f easeOutExpo, 1f lead). Groups: In it, (local 7) / you play (20) / a (31) /
+  police officer (33) / chasing criminals. (53, held through the tail handle). Measured (headless audit): every word first
+  visible on its onset frame, never more than 2 words on screen. "a" is on screen 2f (the voice: kit-reported).
+* **Fonts (note 12)**: Coolvetica (kit); the M2 label "you" is Coolvetica too.
+* **Rule C (note 14)**: the v01 linear 100 -> 104% push (one linear function across B5 + B6) is gone. 0 linear tweens
+  (audit: 19 eased, 4 hard-cut steps = the X9 frames).
+* **Rule D (note 15)**: camera inside each 958 px half (the L11 frame never moves): push 100 -> 108% easeInOutSine from
+  local 0 to the B5/B6 cut (local 89), where it rests; b06-dull answers it with an eased zoom-out (108 -> 100%) to its X2
+  cut. Both compositions play the other's frames in their handles on the same curve (B5 f83 = B6 f0 and B5 f89 = B6 f6,
+  pixel-identical). Keyword punch on "police" (local 33, nested `.lc-key` wrapper): 100 -> 106% in 3f easeOutExpo, back
+  in 9f easeInOutSine, together with the X9 wash.
+* **Rule F**: no grain / vignette / chroma (the grade is contrast 0.15 only, as v01).
+
+| element | v01 local f | v02 local f (beat f) |
+|---|---|---|
+| T1 groups | 6 / 20 / 32 / 56 (4 chunks) | In it, 7 (1) / you play 20 (14) / a 31 (25) / police officer 33 (27) / chasing criminals. 53 (47) |
+| M2 arrow ("you") | 20, drawn by 28 | 20 (14), drawn by 28 |
+| X9 wash ("police") | 34-37 | 33-36 (27-30) |
+| keyword punch | - | 32-44 (peak 35) |
+| push / zoom | linear 100 -> 102.6% (0-100) | push 100 -> 108% (0-89, easeInOutSine), then b06's zoom-out begins (89-95) |
+| end | 100f | 95f |
+
+Render `05_GFX/renders/b05-copgame.mov` (v02): ffprobe 95 frames (beat 83 + 12), 1920 x 1080, 30 fps, ProRes 4444
+`yuva444p12le`, opaque (alpha 255). `check`: 0 errors (warnings: track density, `line_unread` on groups the voice keeps
+short). `cues.json` = `{"events": {}}` (no SFX).
+`tesseract_shots.json`: no shots (HF owns every frame). Review stills: `review/v02/`.
+
+---
+
+# v01 reference (superseded where the v02 section above differs; frames below are v01)
+
+## B5 The cop game - `b05-copgame` (beat 88f = 2.933 s; composition 100f with 6f handles)
 
 Plan p.22 (B5), p.15 (L11), p.17 (M2), p.16 (X9), p.11 (T1). Storyboard B5. Render: `05_GFX/renders/b05-copgame.mov`
 (ProRes 4444, opaque: HyperFrames owns every frame; no Tesseract shots, `tesseract_shots.json` has none).

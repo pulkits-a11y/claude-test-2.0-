@@ -1,5 +1,35 @@
 # B16 Started with a bug: beat notes (b16-bug-origin)
 
+## v02 (REVISION_v02.md, client notes on v01): what changed
+
+Beat **113f** (was 120), composition **125f**, root `data-duration="4.1666667"`. Frames below are v02 beat frames (local =
+beat + 6). Everything after this section is the v01 record (v01 frames, Inter fonts, the bug chip).
+
+| What | v01 | v02 | Why (note / rule) |
+|---|---|---|---|
+| **"bug"** | the M4 bug chip popped in place of the word (T7) | **the word "bug."** in the T5 line, no chip, no icon | **note 8** |
+| T5 glow line | whole line faded in over 12f (linear opacity) from "The" f53 | word by word, max 2 words, one line per group: "The" 51 / "whole series" 55 / "started with" 74 / "a bug." 94 ("bug." 95); each word blurs in (14 -> 0 px easeOutExpo, opacity easeOutCubic, 6f) in the text and both glow copies; the warm leak drifts behind from "The" to the end (kit, sine eases). T5 on screen f51-119 (2.27 s incl. the tail handle, >= 1.5 s) | note 11, rules A, C |
+| T1 | "So that's why" / "you're always running." | word by word: "So that's" 1 / "why you're" 12 / "always running." 22 -> out on "The" 51. Grouping note: the kit's split inside the plan chunks gives "why" alone for 2 frames (f12-14); "why" is grouped with the word after it instead (rule A: a short function word goes with the word after it) | note 11, rule A |
+| VHS rewind | beat -6..30 (~1 s), 52-frame clip | beat -6..28 (local 0-33; the tape stops on beat 28), 48-frame clip rebuilt by `tools/make_rewind.py` (v02): B14's v02 shots read live (escape from B14's last frame f177, lights f150/142, chase f118/110/102, burst 52/44/28/20/4), then 9 frames of B9's v02 R9.1 shot (f120 -> f56, read live from b09-throughyou), then the design document | re-time |
+| Design document zoom-out in the rewind | 118% -> 100% linear (B4's linear push at 8x) | B4's v02 push (b04-racenchase: beat f0-40, 100 -> 118%, easeInOutSine) sampled backwards every 8 frames: 118, 116.3, 111.8, 106.2, 101.7, 100% (local 28-33, eased), held at 100% under X7; the DOM dim (B4's L7 spotlight, same hole) follows with one value per frame | rule C |
+| X7 light-leak dissolve | 14f, picture/leak opacity linear | 12f (beat 28-40, local 34-46), picture fades easeInCubic, RT6 leak container sine.out / sine.in (kit v02); black beat 40-51 | rules C, E |
+| VHS media treatment on the rewind | VHS Playback recipe incl. grain 0.16 and chromaticAberration 0.18 | grain and chromatic aberration set to 0 with `media-treatment` (the assembly's whole-edit finish adds both; rule F); the tape-specific VHS controls stay (tape damage/tracking/noise/speed, chroma bleed, scanlines, glitch line tear), so the rewind still reads as a VHS tape | rule F |
+| Tracking lines, RT1 | to beat 30 | to beat 28 (RT1 second piece local 16-33) | re-time |
+
+`cues.json` = `{"rewind": 0, "rewind_end": 28, "bug": 95}` (`rewind_end` added: the assembly reads it for MU7's end; the v01
+`chip` cue is now `bug`, the frame the word "bug." appears, no SFX). No Tesseract shots (fully HyperFrames-owned and opaque).
+
+Checks: `check --json` 0 errors (warnings: nested T5/tracking markup, `line_unread` on "why you're" 10f, "The" 4f and on "a bug."
+as "the film's last line"). Snapshots `review/v02/a/` + `sheet_a.jpg`: every rewind section, each caption word, the doc zoom,
+X7, black, every T5 word. Render `05_GFX/renders/b16-bug-origin.mov`: see "v02 render" below.
+
+Sync: the rewind mirrors B14 v02 (this lane), B9 v02 (R9.1 shot f0-120, in 314.1 s, crop 536:302:260:108, read live) and B4 v02
+(push f0-40 eased, `DOC` in `tools/make_rewind.py`, checked against b04-racenchase's v02 index.html). Re-run
+`python3 tools/make_rewind.py` and re-render after any change to those shots.
+
+---
+
+
 Plan p.27 (B16 build), p.19 (overview row: VHS rewind run -> black glow line, M4 bug chip; T5 -> T7; X1, X7; S17; MU7),
 p.16 (into the beat: "B16 X1, then X7"), T5/T7 p.12, X7 p.16, M4 p.17, palette p.10 ("Ink black: black screens (B8, B16)"),
 B-roll p.32 (RT1, RT6), music MU7 p.34, silence p.38. STORYBOARD.md B16. Frames are **beat frames** (f0 = "So");

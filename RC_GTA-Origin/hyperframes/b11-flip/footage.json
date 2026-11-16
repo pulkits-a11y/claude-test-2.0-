@@ -1,10 +1,35 @@
-{"beat": "B11", "rids": ["R5.2", "R5.1", "R9.1", "R5.4"],
+{
+ "beat": "B11",
+ "rids": [
+  "R5.2",
+  "R5.1",
+  "R9.1",
+  "R5.4"
+ ],
  "moments": {
-  "R5.2": {"in": 230.5, "out": 235.8, "crop": "814:918:713:162",
-           "note": "Front left = B5's left half returned (same window, same crop as b05-copgame): LSPD SUV in pursuit of a taxi, cop side."},
-  "R5.1": {"in": 41.2, "out": 46.4, "crop": "819:923:405:0",
-           "note": "Front right = B5's right half returned (same window, same crop): the red target car chased by the police bike."},
-  "R9.1": {"in": 312.0, "out": 317.2, "crop": "370:418:257:38",
-           "note": "Back left: the player's getaway car (purple 'Beast GTS', white stripes) fleeing in GTA 1: skids away from the police car, turns into a corner and is pinned there by the chasing police cars (5:14.8-5:17). Crop keeps the picture area only (no black border) and leaves the 'Sakura240' watermark out."},
-  "R5.4": {"in": 702.5, "out": 707.7, "crop": "958:1080:562:0",
-           "note": "Back right: police SUV with blue lights flashing speeding down a night street (LSPDFR, third person behind the car) = police chasing. Crop (x 562-1520) leaves out the mod's left-hand report list, minimap, clock, right-hand panel and top icons; the speedometer under the car stays (game/mod HUD)."}}}
+  "R5.2": {
+   "in": 230.5,
+   "out": 235.8,
+   "crop": "814:918:713:162",
+   "note": "Front left = B5's left half returned (same window, same crop, same in-point as b05-copgame): LSPD SUV in pursuit of a taxi, cop side. v02: on screen local 0-31 (media 0-1.03 s), torn by the X4 glitch from local 23."
+  },
+  "R5.1": {
+   "in": 41.2,
+   "out": 46.4,
+   "crop": "819:923:405:0",
+   "note": "Front right = B5's right half returned (same window, same crop, same in-point): the red target car chased by the police bike. v02: on screen local 0-31 (media 0-1.03 s), torn by the X4 glitch from local 23."
+  },
+  "R9.1": {
+   "in": 312.0,
+   "out": 317.2,
+   "crop": "370:418:257:38",
+   "note": "Back left: the player's getaway car (purple 'Beast GTS', white stripes) fleeing in GTA 1: skids away from the police car, turns into a corner and is pinned there by the chasing police cars (5:14.8-5:17). Crop keeps the picture area only (no black border) and leaves the 'Sakura240' watermark out. v02: on screen from the glitch's cut (local 31) at media 0.4333 s (= 312.43 s) to local 164 (316.87 s); 'Now' (local 103) = 314.83 s, the same source moment as v01, so the arrow aim holds."
+  },
+  "R5.4": {
+   "in": 702.5,
+   "out": 707.7,
+   "crop": "958:1080:562:0",
+   "note": "Back right: police SUV with blue lights flashing speeding down a night street (LSPDFR, third person behind the car) = police chasing. Crop (x 562-1520) leaves out the mod's left-hand report list, minimap, clock, right-hand panel and top icons; the speedometer under the car stays (game/mod HUD). v02: on screen local 31-164 at media 0.43-4.87 s (702.93-707.37 s)."
+  }
+ }
+}

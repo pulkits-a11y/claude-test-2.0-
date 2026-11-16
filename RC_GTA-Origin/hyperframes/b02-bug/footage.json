@@ -9,7 +9,7 @@
   "R1.2": {
    "in": 8.2,
    "out": 12.4,
-   "note": "Official PS5 features trailer: B1's GTA 6 police-truck shot continued (same in-point 8.2 as b01-hook's window; media-start 2.8334 here = source 11.033 s). SUBSTITUTE for R17.1/R17.3, see BEAT_NOTES."
+   "note": "Official PS5 features trailer: B1's GTA 6 police-truck shot continued (same in-point 8.2 as b01-hook's window; v02 media-start 2.6334 here = 79/30 s = source 10.833 s, B1 local 134 = B2 local 0). SUBSTITUTE for R17.1/R17.3, see BEAT_NOTES."
   },
   "R3.7": {
    "in": 60.4,
@@ -21,7 +21,7 @@
    "in": 126.0,
    "out": 131.6,
    "crop": "536:402:260:53",
-   "note": "GTA 1 (PlayStation) top-down: white police car with lights right on the player's red car's tail along the road (126.0-129.5 s, on screen 126.0-128.5 before the tear freezes the picture; the rest of the window only pads the clip under the frozen X4 frame). Crop 536:402:260:53 = x 260-796, y 53-455 (4:3, fills the 537x406 CRT screen): excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame), because plan Rule 5 treats a watermarked clip as unusable; re-cropped, never blurred or stretched. y 53 keeps the white police car whole down to the picture's last full row (it reaches y ~453 at 127.2 s) and drops the score row of the HUD; the red car stays mostly left of the crop (its nose shows at the left edge on the frozen frame)."
+   "note": "GTA 1 (PlayStation) top-down: white police car with lights right on the player's red car's tail along the road (126.0-129.5 s, on screen 126.0-128.5 before the tear freezes the picture; the rest of the window only pads the clip under the frozen X4 frame). Crop 536:402:260:53 = x 260-796, y 53-455 (4:3, fills the 537x406 CRT screen): excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame), because plan Rule 5 treats a watermarked clip as unusable; re-cropped, never blurred or stretched. y 53 keeps the white police car whole down to the picture's last full row (it reaches y ~453 at 127.2 s) and drops the score row of the HUD; the red car stays mostly left of the crop (its nose shows at the left edge on the frozen frame). v02: the clip starts at media 0.1334 (source 126.133 s) on the cut to GTA 1 (local 30) so the frozen tear frame (local 101) is still source 128.5 s, i.e. the v01 X4 still (re-captured: pixel-identical)."
   }
  }
 }

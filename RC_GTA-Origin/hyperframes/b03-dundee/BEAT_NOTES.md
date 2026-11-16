@@ -1,4 +1,101 @@
-# B3 1995, Dundee - `b03-dundee` (beat 215f = 7.167 s; composition 227f with 6f handles)
+# B3 1995, Dundee - `b03-dundee` (v02: beat 203f = 6.767 s; composition 215f with 6f handles. v01: 215f / 227f)
+
+## v02 (REVISION_v02.md, client notes 1, 2, 10-15): read this first; the v01 notes below are kept as reference
+
+**Beat 203f (6.767 s, v01 215f), composition 215f = 7.1666667 s** (root `data-duration`), local frame = beat frame + 6.
+v02 words (local): Here's 7, how. 14, It's 27, 1995 34, in 57, Dundee, 61, Scotland. 76, DMA 103, Design, 110, the 135,
+studio 139, behind 148, Lemmings, 157, starts 175, a 185, new 188, game. 192 (`tools/new_beat.py B3 --refresh`).
+
+### What changed and why
+
+| What changed | Why (note / rule) |
+|---|---|
+| All frames re-timed (table below); root 7.5666667 -> 7.1666667 | note 10 |
+| **No "Here's how." caption** (v01 T1 on the card) | note 1, rule B |
+| **X5 blinds open removed**; the year card arrives with the kit's **zoom-through IN** (`RCK.cam.zoomThroughIn` on the untimed wrapper `#b03-zt`): 130 % + 16 px blur on the boundary (local 6; the head handle holds it), settling to 100 % sharp over 9f, easeOutExpo (CSS blur on the wrapper: it holds no footage). B2 plays the out half | note 1, KIT_transitions v02 |
+| T3 digits roll **from the boundary** (local 6, 8, 10, 12, 8f power3.out, land 20) instead of on the spoken "1995" (v01 beat f29): the year rolls in while the zoom settles and holds 41f (1.37 s) before "Dundee," (plan: hold >= 1 s; rolling on "1995" would hold only 13f); "In" is part of the card from the start (v01: hard cut on "It's"). S04 moves with the roll: `year_digits` = beat 0 | notes 1 + 10, KIT_transitions v02 recommendation |
+| T3 push 100 -> 104 % linear -> **100 -> 106 %** easeInOutSine (local 6 -> 61) | notes 14 + 15 |
+| T4 "Dundee," / "Scotland." = **one group of two pieces** (max 2 words), each word pops on its own onset (61, 76; 5f expo.out, 12 px rise); exits in 3f (power2.in) ending on the cut (103) instead of v01's 4f linear fade | notes 11 + 14, rule A |
+| **"DMA Design, the studio behind Lemmings," REDESIGNED** (local 103-175): v01's L12 photo cards, T8 "DMA Design" card + role line and the walking Lemming cut-out are removed; now **full-frame B-roll in fast cuts on the words with punch-ins** and **kinetic typography in three layouts, each word popping on its own onset** (details below) | note 2 |
+| T1 "starts a new game." -> **starts / a / new game.** (175, 185, 188/192), white over Tesseract's BBC band, through the tail | note 11, rule A |
+| Coolvetica; Coolvetica Italic for "DMA Design," and "Lemmings," | notes 2 + 12 |
+| Tesseract shots re-timed (`start_f`/`end_f` beat-relative) with v2 `framing.keys`: Dundee band push 100 -> 107 % (easeInOutSine); BBC band punch-in 112 -> 100 % (9f easeOutExpo) then push -> 104 % (easeInOutSine). Notes ask the assembly to ease the 8f letterbox slide-in (rule C) | notes 14 + 15, REVISION "Tesseract shot framing v2" |
+| No grain/vignette/chroma in the beat: the HF footage keeps v01's archival grade (temperature +0.06, saturation -0.2, shadows +0.04) without its vignette 0.12 / grain 0.1 | rule F (the assembly adds them) |
+
+### The DMA section (local 103-175, HF-owned, opaque)
+
+| local (beat) | shot (camera `#b03-dma-cam`, one move at a time) | kinetic type (`#b03-kt-1..3`, groups from `captionPlanV2`) |
+|---|---|---|
+| 103-110 (97-104) | R3.8 13.4 s: the door plate **"21 DMA Design"** on the black door (handheld; object-position 50 % 80 % lifts the plate above the type); punch-in 122 -> 104 % over 7f (expo.out) | "DMA" (103): Coolvetica Italic 300 px, bottom-left (x 96, baseline 830), **slams** in from 140 % + 14 px blur (6f expo.out, scaling from its left edge) |
+| 110-135 (104-129) | R3.8 43.35 s: a young staffer at his desk sweeps his hand to his two CRT monitors and turns to the camera (v01 card-1 moment); punch-in 116 -> 100 % (9f expo.out), then push 100 -> 105 % (119-135, sine.inOut) | "Design," (110): Italic 160 px, staggered under "DMA" (x 330, baseline 979), same slam |
+| 135-148 (129-142) | R3.7 51.9 s: BBC 1996, the printed GTA 1 city map on a DMA desk, the presenter's hand on it (v01 card-2 moment); punch-in 118 -> 100 % (12f expo.out) | "the" (135) 100 px + "studio" (139) 260 px, Coolvetica Regular, a centred baseline pair (baseline 700); each **rises** 50 px from 90 % (5f expo.out) |
+| 148-157 (142-151) | R3.3 572.3 s: the Lemmings box (v01 card-3 moment); push 100 -> 120 % **accelerating into the cut** (power3.in = easeInQuart) | "behind" (148): Regular 110 px, top-left (x 104, baseline 230), **pops** from 30 % with an overshoot (7f back.out(1.7) = easeOutBack, from its left edge) |
+| 157-175 (151-169) | R3.6 16.0 s: the Lemmings Amiga intro, lemmings walking on the grass while one floats down under its umbrella (full frame, crop removes the upload's side borders); punch-in 120 -> 100 % (10f expo.out), then push 100 -> 104 % (167-175) | "Lemmings," (157): Italic 240 px under "behind" (x 96, baseline 470, clear of the floater), same overshoot pop |
+
+Never more than 2 words on screen (each group hard-cuts with the picture cut where the next group starts; the T4 group
+exits before 103; "starts" takes over at 175). White type with the kit's soft shadow plus a wider soft shadow
+(0 8px 48px, 45 % black) scaled to the 100-300 px sizes: still no outline and no box. All type inside title-safe
+(left-aligned words scale from their left edge so the slam / overshoot never cross x 96).
+
+### v02 frames (local; beat = local - 6)
+
+| local | beat | what |
+|---|---|---|
+| 0-6 | -6-0 | head handle: the year card at 130 % + 16 px blur ("In" visible, digits hidden) |
+| 6 | 0 | boundary: zoom-through in starts; digits roll 6/8/10/12 (S04 `year_digits` = 0); card push starts |
+| 15 / 20 | 9 / 14 | zoom landed (100 %, sharp) / last digit landed |
+| 61 | 55 | hard cut on "Dundee," -> TRANSPARENT (Tesseract B3-dundee-band, `start_f` 55); T4 "Dundee," pops |
+| 76 | 70 | "Scotland." pops |
+| 100-103 | 94-97 | T4 exit (3f, power2.in); band `end_f` 97 |
+| 103-175 | 97-169 | DMA section (above) |
+| 175 | 169 | hard cut on "starts" -> TRANSPARENT (Tesseract B3-bbc-team-band, `start_f` 169); "starts" pops |
+| 185 / 188 / 192 | 179 / 182 / 186 | "a" / "new" / "game." |
+| 209 | 203 | beat end (band `end_f` 203); "new game." continues through the tail handle (209-215) |
+
+`cues.json`: `year_digits` 0 (v01 29). `tesseract_shots.json`: B3-dundee-band 55-97, B3-bbc-team-band 169-203 (v01 58-103,
+180-215), both with v2 framing keys.
+
+### Footage v02 (`footage.json`, `python3 tools/sync_footage.py hyperframes/b03-dundee`)
+
+| R-ID | window (s, original) | used | link |
+|---|---|---|---|
+| R3.8 | 13.0-45.9 (one window, two shots; 384 x 288 4:3, cut to 1440 x 1080, upscaled: soft archive) | 13.4-13.63 door plate (shot 1), 43.35-44.18 staffer at his desk (shot 2) | https://www.youtube.com/watch?v=f14k2j9V33Q&t=13 |
+| R3.7 | 51.3-54.0, crop 1440:1080:240:0 (4:3 picture) | 51.9-52.33 the GTA 1 city map (shot 3) | https://www.youtube.com/watch?v=7vWSi44ZTSw&t=51 |
+| R3.3 | 572.0-574.7 | 572.3-572.6 the Lemmings box (shot 4) | https://www.youtube.com/watch?v=Ev7FqNa5rD0&t=572 |
+| R3.6 | 15.4-17.8, crop 1160:720:59:0 (side borders removed) | 16.0-16.6 lemmings walking + a floater (shot 5) | https://www.youtube.com/watch?v=xSKod9Xmrgo&t=15 |
+| R3.1 | unchanged (Tesseract band; reference copy only) | | |
+
+All five are cover-fitted to the frame (cropped, never stretched). The R3.6 moment changed (v01 23.2 s was the source of
+the cut-out lemming, which is gone with the T8 card; `assets/lemming/R3.6_lemming.webm` is no longer used).
+
+### Conflicts / interpretations (v02)
+
+1. **Plan B3 build (T8 "DMA Design" + role line "THE STUDIO BEHIND LEMMINGS", L12 tilted cards, the tiny Lemming on the
+   underline) vs note 2**: the note wins (REVISION R5): the card, the role line and the cut-out are gone; the spoken words
+   are the type, word by word.
+2. **Plan "keep 4:3 archive inside the band or the cards" vs note 2 "focus more on the broll"** (full frame): the 4:3
+   archive is cropped to 16:9 by a cover fit, never stretched (R3.8 is a 384 x 288 VHS source, so it is soft at full
+   frame; the assembly's grain sits on top).
+3. **Plan "X5 ... into the T3 year card. Hold it at least 1 s"**: X5 replaced (note 1); the card holds 46f after the
+   zoom lands and 41f after the last digit lands.
+4. **"In 1995" before the spoken "1995"**: the card (a designed card, not a running caption, rule A) arrives at the
+   boundary, so the year shows while "Here's how. It's" is spoken (no "Here's how." caption any more).
+5. **Wider soft shadow on the giant type** (kit: 0 2px 12px at 45 %, sized for 46 px captions): the kit shadow is kept and a
+   proportional soft shadow is added so white words stay readable over the bright 1990s offices; no outline, no box.
+6. The kinetic type is a custom layout, but its timing is the kit's (`captionPlanV2` groups, `captionPops` word pops with
+   one preset per group, 1f lead): every word is first visible on its onset frame.
+
+### Verification v02
+`check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` kit T3 markup; craft `line_unread` on the
+voice-timed 1-word groups "studio", "starts", "a" and the "last line"; layout infos = the T3 digit masks by design).
+Snapshots `review/v02/` (36 frames + 3 sheets: the zoom-through in, the roll, the push, T4 words and exit, every cut,
+punch-in and word pop of the DMA section, "starts / a / new game.", beat end, tail) read: max 2 words on every frame,
+words on their onsets, Coolvetica / Coolvetica Italic, nothing linear, nothing cut off; transparent where Tesseract owns
+the picture. Render: `05_GFX/renders/b03-dundee.mov` = prores (4444), 1920x1080, 30 fps, **215 frames** (203 + 12),
+yuva444p12le; alpha checked on decoded frames: opaque on the HF sections (card, DMA section), transparent apart from the
+caption words on the Tesseract sections (local 61-102, 175-214); decoded frames match the snapshots (mean diff < 1.7/255).
+
+---
 
 Plan: B3 build p.21, overview p.18, T3/T4/T8 p.11-13, L2/L12 p.14-15, X5/X2 p.16, M6 p.18, B-roll p.29, SFX S04 p.36.
 Storyboard: STORYBOARD.md B3. Frames are **beat frames** (f0 = "Here's"; composition local frame = beat frame + 6).

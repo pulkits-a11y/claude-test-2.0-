@@ -1,4 +1,48 @@
-# B6 It's dull - `b06-dull` (beat 166f = 5.533 s; composition 178f with 6f handles)
+# B6 It's dull - `b06-dull` (v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 10, 11, 12, 13, 14, 15) - what changed
+Re-timed to the v02 beat map (VO 115%: beat 166f -> 156f, composition 178f -> 168f, root `data-duration` 5.6000000) and
+the global rules applied. Kept as built: the split screen continuing B5 (same clips/crops, continuous source time: media
+start = B5's + 83f = 2.7666667 s), the B&W drain + slow-down to 50% on "dull", T2 "it's dull.", X2 into the L5 card, the
+Gary Penn cut-out (the same `remove-background` clip), the T8 quote card and its exact text.
+* **Rule A (note 11)**: T1 and T2 rebuilt with `captionPlanV2` / `captionHTMLV2` + `T.captionPops`: "But there's" (local
+  6) / "a problem:" (17) / T2 "it's" (38) + keyword "dull." (46: blur punch 30 -> 0 px, 108 -> 100%, 6f easeOutExpo); the
+  pair exits over 3f (easeInCubic) ending on the X2 cut (64). Max 2 words on screen, every word on its onset (audit).
+  The T8 quote card is a designed card (rule A exemption): it keeps its type-on.
+* **Fonts (note 12)**: Coolvetica / Coolvetica Italic. The T8 quote in Coolvetica Italic 110 px is 911 px wide on one
+  line (wider than the 816 px column, kit report), so it breaks after "awful…": `“awful…<br>too sim-y.”` (same words,
+  same punctuation, 2 lines). Name "Gary Penn" and role "DMA DESIGN · GAMASUTRA, 2011" unchanged.
+* **Rule C (note 14)**: the v01 `ease: 'none'` drain is now easeInOutCubic (power2.inOut) on the LUT intensity (still the
+  LUT's own intensity, so the B5 contrast grade stays on across the cut); the rate lane (1.0 -> 0.5 over 6f) is the kit's
+  `rateRamp` sampled from easeInOutCubic every 1/4 frame (no linear segment); the v01 `S.push ... to: 1.04` calls are gone;
+  T8 type-on placed on easeOutQuad timing (kit `quoteType`), name/role fade easeOutCubic. 0 linear tweens (audit).
+* **Rule D (note 15)**: split screen: the head handle finishes b05's push (100 -> 108%, same curve), then an eased
+  zoom-out 108 -> 100% (easeInOutSine) from the cut (local 6) to the X2 cut (64), under the drain and slow-down. Card:
+  push 100 -> 108% easeInOutSine from the X2 cut (64) to the end (168) (v01: 104%). The X2 slide stays (60 px, 20f,
+  easeOutQuart); the prop float stays (easeInOutSine legs).
+* **Rule F (note 13)**: the Penn cut-out's media treatment lost its grain (0.12) and vignette (0.15): the assembly adds
+  the whole-edit grain/vignette. Kept: saturation -0.2 and the warm shadows wheel (archival look, plan p.10).
+
+| element | v01 local f | v02 local f (beat f) |
+|---|---|---|
+| T1 | But there's 6 / a problem: 18 | But there's 6 (0) / a problem: 17 (11) |
+| T2 | it's 40, dull. 49, fade 63-67 | it's 38 (32), dull. 46 (40), exit 61-64 |
+| drain + slow to 50% | 49-55 (linear) | 46-52 (40-46), easeInOutCubic |
+| X2 cut on "One" | 67 | 64 (58) |
+| T8 name + role | 67-73 | 64-70 (58-64) |
+| T8 quote type-on | 118-127 (19 chars, 2/f) | 112-120 (106-114; 18 chars, eased timing) |
+| end | 178f | 168f |
+
+`cues.json`: `dull` = beat 40 (S05 starts on "dull"; MU3 sits under it). `tesseract_shots.json`: no shots.
+Review stills: `review/v02/`. Render `05_GFX/renders/b06-dull.mov` (v02): ffprobe 168 frames (beat 156 + 12), 1920 x 1080,
+30 fps, ProRes 4444 `yuva444p12le`, opaque. `check`: 0 errors (warnings: nested T2/T8 kit markup, the 22 px role line,
+`line_unread` on voice-timed groups).
+
+---
+
+# v01 reference (superseded where the v02 section above differs; frames below are v01)
+
+## B6 It's dull - `b06-dull` (beat 166f = 5.533 s; composition 178f with 6f handles)
 
 Plan p.22 (B6), p.14 (L5), p.16 (X2), p.11-12 (T1, T2, T8), p.10 (grades), p.4 (background removal). Storyboard B6.
 Render: `05_GFX/renders/b06-dull.mov` (ProRes 4444, opaque; no Tesseract shots).

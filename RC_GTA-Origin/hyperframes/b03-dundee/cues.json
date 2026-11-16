@@ -1,1 +1,2 @@
-{"events": {"year_digits": 29}}
+{"events": {"year_digits": 0},
+ "note": "v02 beat frames (f0 = 'Here's'). year_digits = the first digit's move (S04): the year card now arrives with the B2 -> B3 zoom-through and its digits roll from the boundary frame (beat f0, landing f14), KIT_transitions v02; v01 rolled on the spoken '1995' (v01 f29). The zoom-through itself is silent (no new sound)."}

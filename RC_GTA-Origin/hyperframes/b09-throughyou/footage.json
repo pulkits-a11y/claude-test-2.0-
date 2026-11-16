@@ -1,10 +1,29 @@
 {
  "beat": "B9",
- "rids": ["R9.1", "R9.3", "R9.5"],
- "note": "The three L3 strips (this composition, f127-215, continuing into b10-fun): R9.1 = strip 1 'They ram.' (SUBSTITUTE for the missing R9.2: the GTA 1 ram that ends the L1 shot, continued in the strip), R9.3 = strip 2 GTA 2 chase, R9.5 = strip 3 London 1969. The L1 GTA 1 chase under the path diagram (f0-127) is Tesseract-owned (tesseract_shots.json, R9.1 313.9 s). R9.4 (GTA 1 in 4K, listed in the plan's B9 B-roll) is not placed.",
+ "rids": [
+  "R9.1",
+  "R9.3",
+  "R9.5"
+ ],
+ "note": "The three L3 strips (this composition, beat f120-202, continuing into b10-fun until 'fun'): R9.1 = strip 1 'They ram.' (SUBSTITUTE for the missing R9.2: the GTA 1 ram that ends the L1 shot, continued in the strip), R9.3 = strip 2 GTA 2 chase, R9.5 = strip 3 London 1969. The L1 GTA 1 chase under the T1 captions (beat f0-120) is Tesseract-owned (tesseract_shots.json, R9.1 314.1-318.1 s). v02: windows unchanged (the strips start on the new 'They' frames, media 0 = these in-points). R9.4 (GTA 1 in 4K, listed in the plan's B9 B-roll) is not placed.",
  "moments": {
-  "R9.1": {"in": 318.1, "out": 322.4, "crop": "276:414:274:40", "note": "GTA 1: a police car drives straight down into the player's purple Beast GTS and rams it (318.0-318.7 s), then the player breaks away and speeds off with the cops behind (319-322 s, the camera zooms out). Vertical strip crop centred on the player's car (excludes the uploader's 'Sakura240' watermark at the left)."},
-  "R9.3": {"in": 55.6, "out": 59.2, "crop": "288:480:247:0", "note": "GTA 2 (5 stars): several white-and-blue police cars swarm the junction around the player. Vertical strip crop of the 4:3 picture over the cops and the player."},
-  "R9.5": {"in": 566.0, "out": 569.0, "crop": "288:480:96:0", "note": "GTA London 1969 rampage: a blue van mounts the pavement and keeps driving after the player on foot. Vertical strip crop of the 4:3 picture over the van and the player."}
+  "R9.1": {
+   "in": 318.1,
+   "out": 322.4,
+   "crop": "276:414:274:40",
+   "note": "GTA 1: a police car drives straight down into the player's purple Beast GTS and rams it (318.0-318.7 s), then the player breaks away and speeds off with the cops behind (319-322 s, the camera zooms out). Vertical strip crop centred on the player's car (excludes the uploader's 'Sakura240' watermark at the left)."
+  },
+  "R9.3": {
+   "in": 55.6,
+   "out": 59.2,
+   "crop": "288:480:247:0",
+   "note": "GTA 2 (5 stars): several white-and-blue police cars swarm the junction around the player. Vertical strip crop of the 4:3 picture over the cops and the player."
+  },
+  "R9.5": {
+   "in": 566.0,
+   "out": 569.0,
+   "crop": "288:480:96:0",
+   "note": "GTA London 1969 rampage: a blue van mounts the pavement and keeps driving after the player on foot. Vertical strip crop of the 4:3 picture over the van and the player."
+  }
  }
 }

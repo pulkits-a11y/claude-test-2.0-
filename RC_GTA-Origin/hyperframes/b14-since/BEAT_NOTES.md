@@ -1,5 +1,38 @@
 # B14 Every GTA since: beat notes (b14-since)
 
+## v02 (REVISION_v02.md, client notes on v01): what changed
+
+Beat **177f** (was 188), composition **189f**, root `data-duration="6.3000000"`. Frames below are v02 beat frames (local =
+beat + 6). Everything after this section is the v01 record (v01 frames, Inter fonts). Still a transparent overlay over
+Tesseract's footage, except the four X9 frames and the shut slats.
+
+| What | v01 | v02 | Why (note / rule) |
+|---|---|---|---|
+| Timing | 188f; "that" 62, "The" 96 / 133 / 162, "sirens" 140 | 177f; "that" 59, "The" 91, "wanted" 96, "stars." 108, "The" 126, "sirens." 132, "The" 153, "running." 157 | note 10 |
+| L10 burst (Tesseract) | 10 x 6f, f0-60 | 9 x 6f + 1 x 5f, f0-59, ending on "that" (the cut to R1.3 lands on the word); static framing (6f clips, no punches) | re-time, rule E |
+| Year tags | 2001 -6..12 ... 2013 48..60 | 2001 -6..12, 2002 12-24, 2004 24-36, 2008 36-48, 2013 48-59 (Coolvetica 22 px, hard cuts with their clips) | re-time, note 12 |
+| T1 | "that chase." chunk, f62-96 | word by word: "that chase." (that 59, chase. 66) -> out on "The" 91. Still no captions during the burst (C15) | note 11, rule A |
+| M1 hero stars | from "The" f96 | from "The" f91: six stars 120 px centred, pop 3f apart (easeOutQuart), all in by f109 ("stars." 108); out with the cut to the police lights f126 | re-time |
+| T4 | three phrases fading in (linear), all staying to the slats | word by word, max 2 words, each group in its spot and replacing the previous one: "The" (top-left) 91 / "wanted stars." (top-left) 96 / "The sirens." (centre-right) 126 / "The running." (bottom-left) 153 -> stays until the slats close (note 11 overrides the plan's "each phrase staying until the beat ends") | note 11, rule A |
+| X9 on "sirens" | f140-143, embed media 0.4333 | f132-135 (red 2f, blue 2f, hard), over the embedded R1.6 plate at media 0.4000 (= shot in 129.5 s + 6f, working clip in 129.3) | re-time |
+| R1.3 chase (Tesseract) | f60-133, push 100 -> 104% linear | f59-126, framing v2: punch-in 112 -> 101% in 10f (easeOutExpo) on "that", then push 101 -> 107% (easeInOutSine) | rule D |
+| Police lights R1.6 (Tesseract) | f133-163, no push | f126-154, framing v2: punch-in 110 -> 100% in 6f (easeOutExpo) on "The", **exactly 100% on f132-136** (the four wash frames, where the overlay embeds the shot at 100%), then push 100 -> 104% (easeInOutSine) into the whip | rule D (keeps the X9 embed frame-exact) |
+| X8 whip (Tesseract) | f160-166, mid 163 | f151-157, mid 154 (cue `whip_mid` = 154, S15 starts f152) | re-time |
+| Escape R14.5 (Tesseract) | f163-188, push 100 -> 104% linear | f154-177 (+ tail handle under the slats), framing v2: the alternate move, zoom-out 110 -> 101% (easeInOutSine) | rule D |
+| X5 close | f180-188, constant speed | f169-177, easeInQuart (kit v02), shut from f177 through the tail handle | rule C |
+
+`cues.json` = `{"sirens": 132, "whip_mid": 154}`. `tesseract_shots.json`: all 13 shots re-timed with framing v2 keys (source,
+in-points and crops unchanged). `footage.json`: the R1.6 embed note updated (media start 0.4000 on f132). B16's
+`tools/make_rewind.py` reads this file (re-run in v02 after these shots were final).
+
+Checks: `check --json` 0 errors (warnings: 22 px year tags below the 28 px phone floor = the plan's L10 size, `line_unread`
+on "The" 5f and on "The running." as "the film's last line", track density). Snapshots `review/v02/a/` + `sheet_a.jpg`
+(magenta = transparent): tags, every caption/T4 word, the star pops, the four wash frames, the slats. Render
+`05_GFX/renders/b14-since.mov`: ProRes 4444, 1920x1080, 30 fps, **189 frames**, `yuva444p12le` (ffprobe, counted).
+
+---
+
+
 Plan p.26 (B14 build), p.19 (overview row: L10 burst -> M1 six stars -> siren -> whip into an escape; T4; X1, X9, X8;
 S14, S15), p.16 (into the beat: "B14 X1, X9 and X8 inside the beat"; X5 is B15's way in), T4 p.12, L10 p.15, X5/X8/X9 p.16,
 M1/M5 p.17. STORYBOARD.md B14, CONFLICTS.md C15. Frames are **beat frames** (f0 = "And"); composition local frame = beat + 6.

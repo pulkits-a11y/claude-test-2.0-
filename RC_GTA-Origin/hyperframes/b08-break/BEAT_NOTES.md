@@ -1,4 +1,70 @@
-# B8 The break - `b08-break` (beat 63f = 2.100 s; composition 75f with 6f handles)
+# B8 The break - `b08-break` (v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+
+## v02 (REVISION_v02.md) - what changed and why
+Re-timed to the v02 beat map (VO 115%: 63f -> 59f, composition 75f -> 71f, root `data-duration` 2.3666667) and the
+global rules. Because B7 was redesigned (client note 3), **the X4 break now breaks what B7 ends on**: the Game Developer
+article with the highlighted sentence (https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned-),
+no longer the stamped card. Kept: T1 "Then, something", the X4 shatter to black, T10 "breaks." (6f glitch, clean 12f hold,
+hard cut), the silence.
+
+### 1. What the viewer sees
+B7's last shot simply carries on: the article page, dimmed except the highlighted sentence "It was almost canned. The
+publisher, BMG Interactive, wanted to can it", still pushing in, while "Then," and "something" pop in word by word. On
+"breaks" the page shatters into jumping, colour-split blocks for 8f and cuts to black; "breaks." glitches for 6f,
+settles clean and holds 12f, then a hard cut to B9.
+
+### 2. Assets
+* R7.GD (the article still, as b07-shutdown; `footage.json` rids `["R7.GD"]`; the v01 R7.1 working copy is no longer used
+  and was removed from `assets/footage/`).
+* `assets/x4/b08-old.png` = this composition's own frame at local 39 ("breaks") without the tear, re-made with
+  `x4_still.sh` (FRAME 39) from the new picture.
+* Kit: the same page framing / spotlight / highlighter strokes as b07, `RCK.cam.push` (with the shared curve),
+  `X.tear` (X4, still mode, seed 8), `T.glitch` (T10, seed 8), `.rc-ink`, `captionPlanV2` / `captionPops`.
+* Audio (Tesseract): S08 on "breaks"; S07 ends on the first black frame; MU4 15f hard mute from it.
+
+### 3. Tool and layer stack (HyperFrames, top -> bottom)
+z40 T1 (white, low line y 860, local 7-39) | z30 T10 "breaks." (47-71) | z20 X4 tear canvas (39-46) | z10 ink black
+(47-71) | z2 `#b08-driftE` > `#b08-camE` > `#b08-pageE` (page x 50-1450, y 1564-2351.5) > R7.GD + 2 highlighter strokes
+(landed) + spotlight dim (local 0-47).
+
+### 4. Step-by-step build (local frames; beat f = local - 6)
+1. Camera: b07's article push is ONE easeInOutSine move on the edit clock (b07 local 58 = edit 897 -> this local 39 =
+   edit 968; scale 100 -> 118% about the sentence centre + drift (-93.257, -53.029) px). This composition plays its frames
+   32..71 (segment of the same curve, not restarted): b07 f96 and this f6 (the cut) are the same picture (measured mean
+   pixel difference 0.035 / 255 outside the caption band).
+2. T1 "Then, something" (kit captionPlanV2): "Then," pops on 7, "something" on 25; the group ends at the tear (39).
+3. X4 on "breaks" (39 = beat 33): **8f** (39-46; v01 10f): the kit default inside the plan's 6-10f, so the plan's "T10
+   ... settles clean and holds 12f" still fits the 4f-shorter v02 beat. 16 x 9 blocks jumping +/-30 px, some frozen on
+   the old frame, 6 px RGB split, seed 8. Hard cut to black on 47 (beat 41).
+4. T10 "breaks." on 47: 6f glitch (47-52, hard per-frame cuts), clean from 53, holds 12f to the hard cut at 65 (beat
+   59); the tail handle 65-70 holds the clean word.
+
+### 5. On-screen text
+| element | text | local f (beat f) |
+|---|---|---|
+| T1 | Then, / Then, something (one group, word by word) | 7 (1) / 25 (19), out at 39 (33) |
+| T10 (Coolvetica, white, on black) | breaks. | glitch 47-52 (41-46), clean 53-64 (47-58) |
+
+### 6. Audio cues (`cues.json`, beat frames)
+`breaks` = 33: S08 (glitch impact + power-down, both start on this frame). `first_black` = 41: S07 riser ends here
+(it starts from B7's `stamp2` logic, unchanged); MU4 hard-mutes the music for 15f from here. Nothing else.
+
+### 7. Mistakes to avoid
+* The picture before the break must be exactly b07's last state (page framing, highlights, spotlight, the camera
+  function); after any change there re-run `sh hyperframes/b08-break/x4_still.sh` so the X4 still matches.
+* B8 and B17 are the same break (seed 8, same T10 glitch); note B8's tear is now 8f (see 4.3).
+* Glitch only on the bug beats; nothing added to the silence.
+
+### Footage used (v02)
+| R-ID | original | window on screen | crop | shows | link |
+|---|---|---|---|---|---|
+| R7.GD | `04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png` (live screenshot, captured 2026-11-16) | still, local 0-47 | article column (page x 50-1450), sidebar outside the frame | Game Developer, Jan 31 2011: "It was almost canned. The publisher, BMG Interactive, wanted to can it" (highlighted) | https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- |
+
+---
+
+# v01 reference (SUPERSEDED where the v02 section above differs: B8 no longer shows B7's stamped card or R7.1)
+
+## B8 The break - `b08-break` (beat 63f = 2.100 s; composition 75f with 6f handles)
 
 Plan p.23 (B8), p.16 (X4), p.12 (T10), p.36 (MU4). Storyboard B8. CONFLICTS C10, C17. Bug beat (glitch allowed).
 Render: `05_GFX/renders/b08-break.mov` (ProRes 4444, opaque; no Tesseract shots).

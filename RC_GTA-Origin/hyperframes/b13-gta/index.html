@@ -12,62 +12,73 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* v02: Coolvetica is narrower than Inter Black, so at the kit's 62% L6 frame THEFT would hide behind it. The 4:3
+         frame is 768 x 576 (53.3%, still exact 4:3, the 1997 intro is never cropped or stretched) and T6 is 396 px, so
+         the frame covers the MIDDLE letters (HEF) and both T's of THEFT show ~70% (as in v01), and the stack's ink stays
+         inside title-safe at the end of the 106% push (BEAT_NOTES v02). */
+      #b13-l6 { --rc-l6-w: 768px; --rc-l6-h: 576px; }
+      #b13-t6 { --rc-t6-size: 396px; }
     </style>
   </head>
   <body>
-    <!-- B13 b13-gta: beat 214f (7.133s) + 6f handle each end = 226f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.3333s.
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+    <!-- B13 b13-gta (v02): beat 205f (6.833s) + 6f handle each end = 217f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.0333s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/. v02: ../../REVISION_v02.md.
 
          Plan p.25 (B13 build), STORYBOARD.md B13. Local frame = beat frame + 6.
          beat  local  what
          -6..0  0..6   head handle: the gray year card (opening state continued backward), push already running
-         1      7      T1 "Until finally," (card ink) hard cut in on "Until"
-         28     34     "In" hard cut in on "in"; T1 out (next text chunk)
-         32     38     "Nov" hard cut in on "November"
-         48     54     year digits 1-9-9-7 roll up (odometer, 8f each, 2f stagger), landed beat 62 (local 68) = cue year_digits (S12)
-         83-90  89-96  X3 white flash centred on the cut at beat 85 (local 91, 100% on 91-92)
-         85     91     cut to L6: R13.1 framed at 62% (4:3 frame) over its own 50 px blurred, 40% darker copy; push 100->104% to beat 190
-         85     91     T1 "it ships with" (white + soft shadow) on "it"
-         105    111    T1 "a new name:" on "a"
-         132    138    T6 GRAND / THEFT / AUTO types on BEHIND the frame, one letter every 2f (14 letters, last beat 158 / local 164) = cue type_on (S13)
-         158-190       title holds 32f (>= 1 s) ... hard cut at beat 190 (local 196)
-         190-214 196-220  TS only: GTA 1 big-box unboxing R13.2 in the L2 band (tesseract_shots.json); this composition is transparent
-         214-220 220-226  tail handle: transparent (closing state = Tesseract footage) -->
-    <div data-hf-id="hf-iwki" id="root" data-composition-id="b13-gta" data-start="0" data-duration="7.5333333" data-width="1920" data-height="1080">
+         1      7      T1 "Until finally," (card ink): "Until" pops on its frame, "finally," on 16 (rule A: word by word, one group)
+         27     33     "In" hard cut in on "in"; T1 out (hard cut, next text)
+         30     36     "Nov" hard cut in on "November"
+         45     51     year digits 1-9-9-7 roll up (odometer, 8f each, 2f stagger, easeOutQuart), landed beat 59 (local 65) = cue year_digits (S12)
+         77-84  83-90  X3 white flash centred on the cut at beat 80 (local 86; ramp easeInQuad, fade easeOutQuad)
+         80     86     cut to L6: R13.1 framed (4:3, 768 x 576) over its own 50 px blurred, 40% darker copy; punch-in 112 -> 100%
+                       (10f, easeOutExpo) under the flash fade, then push 100 -> 106% (easeInOutSine) to the cut at beat 181
+         80     86     T1 "it ships" / "with" / "a" / "new name:" word by word (white + soft shadow)
+         124    130    T6 GRAND / THEFT / AUTO types on BEHIND the frame: 14 letters over 26f, start times on easeOutQuad
+                       (last letter beat 150 / local 156) = cue type_on (S13)
+         150-181       title holds 31f (>= 1 s) ... hard cut at beat 181 (local 187)
+         181-205 187-211  TS only: GTA 1 big-box unboxing R13.2 in the L2 band (tesseract_shots.json); this composition is transparent
+         205-211 211-217  tail handle: transparent (closing state = Tesseract footage) -->
+    <div data-hf-id="hf-iwki" id="root" data-composition-id="b13-gta" data-start="0" data-duration="7.2333333" data-width="1920" data-height="1080">
 
-      <!-- ===== T3 year card (M6: same kit component and geometry as B3), beat -6..85 ===== -->
-      <div data-hf-id="hf-pnes" id="b13-t3" class="clip rc-t3" data-start="0.0000" data-duration="3.0333" data-track-index="1" style="z-index: 1">
+      <!-- ===== T3 year card (M6: same kit component and geometry as B3), beat -6..80 ===== -->
+      <div data-hf-id="hf-pnes" id="b13-t3" class="clip rc-t3" data-start="0.0000" data-duration="2.8666" data-track-index="1" style="z-index: 1">
         <div data-hf-id="hf-sx2m" class="rc-t3__block">
           <div data-hf-id="hf-9nbv" id="b13-t3-in" class="rc-t3__in">In</div>
           <div data-hf-id="hf-071w" class="rc-t3__year"><span data-hf-id="hf-m70g" id="b13-t3-month" class="rc-t3__month">Nov</span> <span data-hf-id="hf-9gty" class="rc-t3__num">1997</span></div>
         </div>
       </div>
 
-      <!-- T1 on the gray card: card ink, no shadow -->
-      <div data-hf-id="hf-f1dv" id="b13-cap-a-1" class="clip rc-t1 rc-on-card" data-start="0.2333" data-duration="0.9000" data-track-index="3" style="z-index: 20">Until finally,</div>
+      <!-- T1 on the gray card: card ink, no shadow; word by word (kit captionPlanV2 / captionHTMLV2) -->
+      <div data-hf-id="hf-f1dv" id="b13-cap-a-1" class="clip rc-t1 rc-cap rc-on-card" data-start="0.2333" data-duration="0.8667" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-ida4" class="rc-g"><span data-hf-id="hf-o7sb" class="rc-w" data-rc-f="7">Until</span> <span data-hf-id="hf-9vdm" class="rc-w" data-rc-f="16">finally,</span></span></div>
 
       <!-- ===== L6 framed clip (4:3 frame: the 1997 intro is 4:3 material, plan p.10 "keep 4:3 inside a band or frame"),
-           beat 85..190. Layer order inside .rc-l6 (DOM order): blurred back copy < T6 giant type < frame. ===== -->
+           beat 80..181. Layer order inside .rc-l6 (DOM order): blurred back copy < T6 giant type < frame.
+           #b13-l6 is the camera (untimed, full frame): punch-in on the cut, then the held-shot push. ===== -->
       <div data-hf-id="hf-q0m9" id="b13-l6" class="rc-l6 rc-l6--4x3" style="z-index: 2">
         <div data-hf-id="hf-5e6b" class="rc-l6__bg"><div data-hf-id="hf-hhr1" class="rc-l6__blurscale">
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.737,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-0iq6" id="b13-l6-bg" class="clip" src="assets/footage/R13.1.mp4" data-start="3.0333" data-duration="3.5000" data-media-start="0.4333" data-track-index="2" muted playsinline></video>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.737,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-0iq6" id="b13-l6-bg" class="clip" src="assets/footage/R13.1.mp4" data-start="2.8666" data-duration="3.3667" data-media-start="0.4333" data-track-index="2" muted playsinline></video>
         </div></div>
-        <div data-hf-id="hf-kaxc" id="b13-t6" class="clip rc-t6" data-start="4.6000" data-duration="1.9333" data-track-index="4">
+        <div data-hf-id="hf-kaxc" id="b13-t6" class="clip rc-t6" data-start="4.3333" data-duration="1.9000" data-track-index="4">
           <div data-hf-id="hf-16cq" class="rc-t6__line">GRAND</div><div data-hf-id="hf-d7ol" class="rc-t6__line">THEFT</div><div data-hf-id="hf-1psj" class="rc-t6__line">AUTO</div>
         </div>
         <div data-hf-id="hf-rjf3" class="rc-l6__frame" data-layout-allow-occlusion="">
-          <div data-hf-id="hf-b0a5" id="b13-l6-border" class="clip rc-l6__border" data-start="3.0333" data-duration="3.5000" data-track-index="5"></div>
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-7jgx" id="b13-l6-clip" class="clip rc-l6__media" src="assets/footage/R13.1.mp4" data-start="3.0333" data-duration="3.5000" data-media-start="0.4333" data-track-index="6" muted playsinline></video>
+          <div data-hf-id="hf-b0a5" id="b13-l6-border" class="clip rc-l6__border" data-start="2.8666" data-duration="3.3667" data-track-index="5"></div>
+          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-7jgx" id="b13-l6-clip" class="clip rc-l6__media" src="assets/footage/R13.1.mp4" data-start="2.8666" data-duration="3.3667" data-media-start="0.4333" data-track-index="6" muted playsinline></video>
         </div>
       </div>
 
-      <!-- T1 on the framed clip: white + soft shadow (text on footage). Under the flash, so the flash reveals them with the picture. -->
-      <div data-hf-id="hf-qi54" id="b13-cap-b-1" class="clip rc-t1" data-start="3.0333" data-duration="0.6667" data-track-index="3" style="z-index: 20">it ships with</div>
-      <div data-hf-id="hf-o06z" id="b13-cap-b-2" class="clip rc-t1" data-start="3.7000" data-duration="0.9000" data-track-index="3" style="z-index: 20">a new name:</div>
+      <!-- T1 on the framed clip: white + soft shadow (text on footage), word by word, max 2 words. Under the flash, so the
+           flash reveals them with the picture. Outside the camera wrapper: the captions stay steady (rule D). -->
+      <div data-hf-id="hf-qi54" id="b13-cap-b-1" class="clip rc-t1 rc-cap" data-start="2.8666" data-duration="0.3667" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-7p6c" class="rc-g"><span data-hf-id="hf-lipt" class="rc-w" data-rc-f="86">it</span> <span data-hf-id="hf-yi4p" class="rc-w" data-rc-f="88">ships</span></span></div>
+      <div data-hf-id="hf-o06z" id="b13-cap-b-2" class="clip rc-t1 rc-cap" data-start="3.2333" data-duration="0.2333" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-6i99" class="rc-g"><span data-hf-id="hf-1xuu" class="rc-w" data-rc-f="97">with</span></span></div>
+      <div data-hf-id="hf-ar75" id="b13-cap-b-3" class="clip rc-t1 rc-cap" data-start="3.4666" data-duration="0.1000" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-6wka" class="rc-g"><span data-hf-id="hf-u1me" class="rc-w" data-rc-f="104">a</span></span></div>
+      <div data-hf-id="hf-ddn4" id="b13-cap-b-4" class="clip rc-t1 rc-cap" data-start="3.5666" data-duration="0.7667" data-track-index="3" style="z-index: 20"><span data-hf-id="hf-8w3f" class="rc-g"><span data-hf-id="hf-dwbq" class="rc-w" data-rc-f="107">new</span> <span data-hf-id="hf-2590" class="rc-w" data-rc-f="111">name:</span></span></div>
 
-      <!-- ===== X3 white flash centred on the cut (local 89..96; silent) ===== -->
-      <div data-hf-id="hf-d3w7" id="b13-x3" class="clip rc-x3" data-start="2.9666" data-duration="0.2667" data-track-index="7" style="z-index: 40"></div>
+      <!-- ===== X3 white flash centred on the cut (local 83..90; silent) ===== -->
+      <div data-hf-id="hf-d3w7" id="b13-x3" class="clip rc-x3" data-start="2.7666" data-duration="0.2667" data-track-index="7" style="z-index: 40"></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -76,35 +87,41 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, S = RCK.screens, X = RCK.transitions;
+      const T = RCK.type, S = RCK.screens, X = RCK.transitions, C = RCK.cam;
       const f = (n) => n / 30;   // local frame -> seconds (local frame = beat frame + 6)
 
-      // Word onsets from words.json (comp_t snapped to the nearest frame, local):
-      // Until 7, finally 16, in 34, November 38, 1997 54, it 91, ships 94, with 103, a 111, new 113, name 118,
-      // Grand 138, Theft 144, Auto 155 (voice ends 171).
-      const W = { in: 34, November: 38, y1997: 54, it: 91, Grand: 138 };
-      const CUT_L6 = W.it;        // X3 is centred on this cut (beat 85)
-      const CUT_TS = 196;         // beat 190: hard cut to the Tesseract unboxing
+      // Word onsets from words.json (v02, comp_t snapped to the nearest frame, local):
+      // Until 7, finally 16, in 33, November 36, 1997 51, it 86, ships 88, with 97, a 104, new 107, name 111,
+      // Grand 130, Theft 136, Auto 146 (voice ends 161; then the 43f title-hold room tone).
+      const W = { in: 33, November: 36, y1997: 51, it: 86, Grand: 130 };
+      const CUT_L6 = W.it;        // X3 is centred on this cut (beat 80)
+      const CUT_TS = 187;         // beat 181: hard cut to the Tesseract unboxing (the last 0.8 s = 24f)
+
+      // ---- captions (rule A): every .rc-cap word pops on its own frame (T1 preset: 5f, easeOutExpo, 1f lead); groups hard-cut
+      T.captionPops(tl);
 
       // ---- T3 year card: "In" on "in", "Nov" on "November", digits roll on "1997" (S12 on the first digit's move).
-      //      Held shot: slow push 100 -> 104% of the card content from the head handle to the cut (rule 7).
+      //      Held card: slow push 100 -> 106% of the card content (easeInOutSine) from the head handle to the cut (rule D).
       gsap.set(['#b13-t3-in', '#b13-t3-month'], { opacity: 0 });
       S.hard(tl, '#b13-t3-in', { opacity: 0 }, { opacity: 1 }, f(W.in));
       S.hard(tl, '#b13-t3-month', { opacity: 0 }, { opacity: 1 }, f(W.November));
-      T.yearCard(tl, '#b13-t3', f(W.y1997), { pushFrom: 0, pushUntil: f(CUT_L6) });   // last digit lands local 68 (beat 62)
+      T.yearCard(tl, '#b13-t3', f(W.y1997), { pushFrom: 0, pushUntil: f(CUT_L6), pushTo: 1.06 });   // last digit lands local 65 (beat 59)
 
-      // ---- X3 white flash, centred on the cut into L6 (ramp 89-91, 100% 91-92, fade 92-96). Silent.
+      // ---- X3 white flash, centred on the cut into L6 (ramp 83-86 easeInQuad, 100% on 86, fade 86-91 easeOutQuad). Silent.
       X.flash(tl, '#b13-x3', f(CUT_L6));
 
-      // ---- L6: held shot pushes 100 -> 104% (back copy, T6 and frame together) across the shot.
-      S.push(tl, '#b13-l6', f(CUT_L6), { until: f(CUT_TS) });
+      // ---- L6 camera (rule D): the cut punches in 112 -> 100% over 10f (easeOutExpo) while the flash fades, then the held
+      //      shot pushes 100 -> 106% (easeInOutSine) to the cut out. Back copy, T6 and frame move together (one wrapper).
+      C.punchIn(tl, '#b13-l6', f(CUT_L6), { from: 1.12, to: 1.0, frames: 10 });
+      C.push(tl, '#b13-l6', f(CUT_L6 + 10), { until: f(CUT_TS), from: 1.0, to: 1.06 });
 
-      // ---- T6 GRAND / THEFT / AUTO behind the frame from "Grand": one letter every 2f, no fades (S13 on the first letter).
-      //      Last letter local 164 (beat 158); holds 32f (>= 1 s) to the hard cut at local 196 (beat 190).
+      // ---- T6 GRAND / THEFT / AUTO behind the frame from "Grand": 14 letters, hard (no fades), v01 length 26f, start
+      //      times on easeOutQuad (kit: +0 4 7 11 14 16 18 20 22 24 25 25 26 26f). Last letter local 156 (beat 150);
+      //      holds 31f (>= 1 s) to the hard cut at local 187 (beat 181). S13 on the first letter.
       T.giantType(tl, '#b13-t6', f(W.Grand));
 
       // keep the timeline as long as the composition (the tail handle is transparent)
-      tl.set({}, {}, f(226));
+      tl.set({}, {}, f(217));
       window.__timelines["b13-gta"] = tl;
     </script>
   </body>

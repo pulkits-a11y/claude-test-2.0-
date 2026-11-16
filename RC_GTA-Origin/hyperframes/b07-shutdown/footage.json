@@ -1,4 +1,6 @@
-{"beat": "B7", "rids": ["R7.1"],
+{"beat": "B7", "rids": ["R7.1", "R7.3", "R7.GD"],
  "moments": {
-  "R7.1": {"in": 3.6, "out": 9.2, "crop": "440:330:110:0",
-           "note": "Early-1990s office: a woman with a headset typing at her desk, CRT monitors, colleagues in the cubicles behind; from ~6.5 s the camera pans right across the open-plan office. 4:3 crop of the top 330 px leaves the burned-in 'www.PublicDomainFootage.com' watermark (y 335-365) out. b08-break continues this window (+3.2 s)."}}}
+  "R7.1": {"in": 0.4, "out": 9.0, "crop": "576:324:32:0",
+           "note": "v02 full-frame office B-roll. Early-1990s office: from 0.4 s a woman with a headset typing at her desk, CRT monitors, colleagues behind (shot A, 'So the people'); from ~6.5 s the camera pans right across the open-plan office, wide at 8.0 s (shot B, 'above'). 16:9 crop of the top 324 px (x 32-608) leaves the burned-in 'www.PublicDomainFootage.com' watermark (y 335-365) out."},
+  "R7.3": {"in": 62.6, "out": 64.2, "crop": "384:216:0:24",
+           "note": "v02 shot C ('the team'): DMA Design office tour, 1990 - a developer with glasses at his desk, joystick in hand, a game on the CRT monitor beside the PC. 16:9 crop (y 24-240) of the 384 x 288 VHS frame; a hand enters the frame at 64.3 s (window ends before it)."}}}

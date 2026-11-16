@@ -1,4 +1,61 @@
-# B9 Straight through you - `b09-throughyou` (beat 215f = 7.167 s; composition 227f with 6f handles)
+# B9 Straight through you - `b09-throughyou` (v02: beat 202f = 6.733 s; composition 214f with 6f handles)
+
+## v02 (REVISION_v02.md; client notes 4, 10, 11, 12, 14, 15). Read this first
+
+The v01 sections below are kept as reference; where they disagree with this section (frames, the path diagram, eases,
+fonts), this section wins.
+
+**What changed and why**
+| Change | Client note / rule |
+|---|---|
+| **Path diagram removed entirely**: white dot, dotted yellow path, red arrow, the per-frame TRACK, the dot shake and the diagram push. B9 f0-120 is now the Tesseract L1 footage with the T1 captions only. | note 4 "Remove the 0:38 overlayed arrow and other animations, the broll is perfect" |
+| Re-timed to the v02 beat map (VO 115%): beat 202f (was 215), edit 994-1196 (33.133-39.867 s); composition 214f, root `data-duration="7.1333333"` | note 10 / REVISION "What is already done" |
+| T1 word by word, max 2 words (kit `captionPlanV2` + `captionHTMLV2` + `captionPops`): The / police cars / stop / following you / and start / trying / to drive / straight / through you. | note 11, rule A |
+| T4 word by word, max 2 words, one group at a time in its strip: "They ram." (strip 1) / "They chase." (strip 2) / "They don't" -> "let go." (strip 3); the last group exits 3f (power2.in) ending on the beat end | note 11, rule A |
+| Coolvetica (kit base.css) | note 12 |
+| Nothing linear: the v01 `ease: 'none'` strip push (115% -> x1.04) and the diagram's linear moves are gone; the strip push is ONE easeInOutSine curve 115% -> 115% x 1.06 from each punch landing to the "fun" cut in B10 (this composition plays its head with an ease that is exactly that part of easeInOutSine, b10-fun plays the rest: same function of the edit frame, B9 local 202/207 = B10 local 0/5 pixel-identical, measured) | note 14, rule C |
+| L1 framing v2 (Tesseract keys, `tesseract_shots.json`): punch-in on the cut from B8's black 114 -> 101% (f0-10, easeOutExpo), push 101 -> 108% to the cut (easeInOutSine), one keyword punch on "straight" (105.86% f79 -> 112.5% f82 easeOutExpo -> 106.87% f91 easeInOutSine). Strips: kit gridPop pop + 4f punch-in to 115% (plan), then the eased push above | note 15, rule D |
+| L1 `source_in_s` 313.9 -> 314.1 s so the shorter L1 shot (120f) still ends exactly where strip 1 starts (R9.1 318.1 s, continuous source time across "They ram.") | re-timing |
+
+**New frames (beat frames; local = beat + 6)**
+| What | beat f | local |
+|---|---|---|
+| X1 from B8's black, L1 R9.1 (Tesseract) starts; "The" | 0 / 1 | 6 / 7 |
+| T1 groups first frames | 1, 5, 21, 28, 49, 61, 69, 80, 95 | 7, 11, 27, 34, 55, 67, 75, 86, 101 |
+| words | The 1, police 5, cars 15, stop 21, following 28, you 47, and 49, start 53, trying 61, to 69, drive 72, straight 80, through 95, you. 102 | +6 |
+| "straight" keyword punch (L1 keys) | 79-91 | 85-97 |
+| X1 to L3 on "They ram.": L1 ends, strip 1 pops + punch, T4 "They ram." | 120 (ram. 128) | 126 (134) |
+| strip 2 + "They chase." | 143 (chase. 149) | 149 (155) |
+| strip 3 + "They don't" | 168 (don't 175) | 174 (181) |
+| "let go." | 185 (go. 191), exits 199-202 | 191 (197), 205-208 |
+| strip push (sine.inOut) | from each landing (124 / 147 / 172) to B10 f35 | 130 / 153 / 178 -> 243 |
+| tail handle: strips, no caption | 202-208 | 208-214 |
+
+`cues.json`: `{"events": {}}` (unchanged: the plan gives B9 no SFX and no music event).
+`tesseract_shots.json`: B9-gta1-chase-L1 `start_f` 0, `end_f` 120, `source_in_s` 314.1, crop unchanged, `framing.keys` as above.
+`footage.json`: windows unchanged (the strips start on the new "They" frames at media 0).
+
+**Cross-beat note**: `b16-bug-origin/tools/make_rewind.py` reads this shot's `source_in_s` / `start_f` / `crop` live; its
+B9 frames move 0.2 s later in the source if B16 re-runs it (no other effect). Nothing in this composition depends on the
+L1 in-point any more (the dot track is gone).
+
+**Verification (v02)**
+* `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings: `timeline_track_too_dense` (caption lanes 9/10),
+  craft `first_frame_empty` (transparent head handle by design), `line_unread` on the voice-timed groups "The" (4f),
+  "stop", "trying", "to drive" and the beat-segment "let go." (the voice sets the timing, as in the kit table).
+* Snapshots `review/v02/` (read): every caption word (local 7 ... 197), the L1 -> L3 cut (125/126), pops and punch
+  landings (128, 130, 149, 174), the "let go." exit (205, 207), handles (0, 208, 213); sheets `review/v02/sheet_a.jpg`,
+  `sheet_b.jpg`. Max 2 words on screen in every frame, each word visible on its onset frame, Coolvetica, no dot / path /
+  arrow anywhere.
+* Render (v02): `cd hyperframes/b09-throughyou && npx --yes hyperframes@0.9.52 render . --format mov --workers 2 -o
+  ../../05_GFX/renders/b09-throughyou.mov`: ffprobe prores 4444, 1920x1080, 30 fps, **214 frames** (= 202 + 12),
+  `yuva444p12le`; alpha checked on the render: frame 60 transparent except the caption (841 opaque px), frame 150 fully
+  opaque (strips).
+
+---
+
+# v01 reference (beat 215f; superseded where the v02 section above says otherwise)
+
 
 Plan: B9 build p.23-24, overview p.18, T1/T4 p.11-12, L1/L3 p.14, B-roll p.31 (R9.1-R9.5), style kit p.9-11.
 Storyboard: STORYBOARD.md B9. Frames are **beat frames** (f0 = "The"; local frame = beat frame + 6).

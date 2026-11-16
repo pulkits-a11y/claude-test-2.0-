@@ -8,21 +8,50 @@
    "rid": "R9.1",
    "screen": "L1",
    "start_f": 0,
-   "end_f": 127,
+   "end_f": 120,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
-   "source_in_s": 313.9,
+   "source_in_s": 314.1,
    "crop": "536:302:260:108",
    "speed": 1.0,
    "reverse": false,
    "framing": {
-    "scale_from": 100,
-    "scale_to": 104,
-    "anchor": "center"
+    "anchor": "center",
+    "keys": [
+     {
+      "f": 0,
+      "scale": 114
+     },
+     {
+      "f": 10,
+      "scale": 101,
+      "ease": "easeOutExpo"
+     },
+     {
+      "f": 79,
+      "scale": 105.86,
+      "ease": "easeInOutSine"
+     },
+     {
+      "f": 82,
+      "scale": 112.5,
+      "ease": "easeOutExpo"
+     },
+     {
+      "f": 91,
+      "scale": 106.87,
+      "ease": "easeInOutSine"
+     },
+     {
+      "f": 120,
+      "scale": 108,
+      "ease": "easeInOutSine"
+     }
+    ]
    },
    "enter": "X1",
    "exit": "X1",
    "grade": "b9-sat60",
-   "notes": "Plan p.23-24 step 1 / STORYBOARD B9 f0-127: X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation, push 100 -> 104% (beat f0 -> f127, centre anchor; the HF path diagram is pushed the same way). Moment: R9.1 313.9-318.13 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it (the ram continues in the HF strip 1 at 318.13 s, continuous source time). Crop 536:302:260:108 (x 260-796, y 108-410 of the 854x480 upload; 16:9 within 0.2%) excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame): plan Rule 5 treats a watermarked clip as unusable, so it is re-cropped out (no blur, no inpainting). The crop keeps the player's car and the police cars; y 108 (not 100) keeps the overlay's white dot above the T1 caption band (y 592-648) while the car sits low at the start. The HF overlay's white dot tracks the purple car (template-matched positions in b09-throughyou/index.html TRACK, measured in this crop), assuming exactly this source_in, crop, the L1 105% base scale and this push: change any of them and the dot drifts off the car. Game HUD left as it is (only the Coords line falls inside this crop)."
+   "notes": "v02 (REVISION_v02 note 4 + rules D/E, VO 115%): beat f0-120 (was f0-127). X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation (grade b9-sat60). The HF overlay is now captions only: the v01 path diagram (white dot, dotted path, red arrow, per-frame TRACK) is removed (note 4: 'Remove the 0:38 overlayed arrow and other animations, the broll is perfect'), so nothing in the overlay depends on this shot's in-point, crop or scale any more. Framing v2 (rule D): punch-in on the cut 114 -> 101% over f0-10 (easeOutExpo), slow push 101 -> 108% to the cut (easeInOutSine), with one keyword punch on 'straight' (onset beat f80): 105.86% at f79 -> 112.5% at f82 (easeOutExpo, = push x 1.06) -> back on the push curve 106.87% at f91 (easeInOutSine). Moment: R9.1 314.1-318.1 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it; source_in moved 313.9 -> 314.1 s so the shot ends exactly where the HF strip 1 starts (318.1 s, continuous source time across the 'They ram.' cut at f120). Crop 536:302:260:108 (x 260-796, y 108-410 of the 854x480 upload; 16:9 within 0.2%) excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame): plan Rule 5, re-cropped out, never blurred/inpainted. Game HUD left as it is (only the Coords line falls inside this crop). b16-bug-origin/tools/make_rewind.py reads source_in_s/start_f/crop from here."
   }
  ]
 }

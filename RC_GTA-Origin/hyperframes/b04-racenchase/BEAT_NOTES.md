@@ -1,4 +1,52 @@
-# B4 Race'n'Chase — `b04-racenchase` (lane B)
+# B4 Race'n'Chase — `b04-racenchase` (v02: beat 100f = 3.333 s; composition 112f with 6f handles. v01: 108f / 120f)
+
+## v02 (REVISION_v02.md, client notes 10-15): read this first; the v01 notes below are kept as reference
+
+**Beat 100f (3.333 s, v01 108f), composition 112f = 3.7333333 s** (root `data-duration`), local frame = beat frame + 6.
+v02 words (local): It's 6, called 12, Race 22.5 (frame 23), and 29, Chase, 35 (ends 44.5), and 49, it's 52, planned 59,
+to 70, take 76, eighteen 81, months. 88 (`tools/new_beat.py B4 --refresh`). The design-document push + T9 highlight and
+the calendar fill stay as they are (REVISION B4), re-timed and eased.
+
+| What changed | Why (note / rule) |
+|---|---|
+| All frames re-timed (table below); root 4.0000000 -> 3.7333333 | note 10 |
+| X1 cut to the calendar at local 46 (beat f40), still in the pause after "Chase," (v01 beat f44, CONFLICTS C16): the still is on screen beat f0-40 = 1.33 s < 1.5 s | note 10, plan p.28 |
+| Calendar fill starts at local 47, so the 18th square lands on 81 = the spoken "eighteen" (v01: from "and", 18th 1f before "eighteen"; 18 squares 2f apart no longer fit between "and" (49) and "eighteen" (81)) | note 10 |
+| T2 "planned to take *18 months.*" -> word by word: **planned / to take / 18 months.** (59, 70/76, 81/88); lead words pop (5f expo.out), keyword words keep the blur punch (30 -> 0 px, 108 -> 100 %, 6f expo.out); the last group exits in 3f (power2.in) ending on the beat end, instead of v01's 4f linear fade. The T2 now sits outside the camera (steady), same --rc-y 390 | notes 11 + 14, rules A C D ("zoom the picture, not the caption layer") |
+| Coolvetica / Coolvetica Italic (kit) | note 12 |
+| L7 push 100 -> 118 % (local 6 -> 46): v01 linear -> easeInOutSine (kit `spotPush`); T9 highlight 8f power3.out (unchanged) | note 14 |
+| Calendar camera: v01 `S.push(... to: 1 + 0.04 * 70 / 64)` (linear 104 %) -> **punch-in on the cut** 112 -> 100 % (10f easeOutExpo), then **push 100 -> 106 %** (local 56 -> 106, easeInOutSine), held through the tail; **key punch on "eighteen"** (nested `#b04-key`, about the grid centre (960, 624): 100 -> 106 % in 3f expo.out from 80, back over 9f sine.inOut) | notes 14 + 15, rules C D |
+| R4.5 archival grade: its v01 `details.vignette 0.12` and `details.grain 0.08` set to 0 (desaturate -0.2 and the warm shadow lift stay) | rule F: the assembly adds the whole-edit grain + vignette; beats must not add their own |
+| Kept: the real R4.5 title page, its framing, dim + hole, T9 box; 18 empty slots, hard 2f fills, no dates; no SFX | "don't change anything else" |
+
+**v02 frames** (local; beat = local - 6):
+
+| local | beat | what |
+|---|---|---|
+| 0-6 | -6-0 | head handle: L7 at 100 % |
+| 6-46 | 0-40 | L7 push 100 -> 118 % (sine.inOut) |
+| 23-31 | 17-25 | T9 highlight swipes over "Race'n'Chase" (on "Race") |
+| 46 | 40 | X1 hard cut to the gray card + 18 empty slots; calendar punch-in 46-56 |
+| 47 ... 81 | 41 ... 75 | squares fill 2f apart (18th on "eighteen") |
+| 56-106 | 50-100 | calendar push 100 -> 106 % |
+| 59 | 53 | T2 "planned" |
+| 70 / 76 | 64 / 70 | T2 "to" / "take" |
+| 81 / 88 | 75 / 82 | T2 keyword "18" / "months." (blur punches); key punch 80-92 |
+| 103-106 | 97-100 | T2 exit (3f, power2.in), gone on the beat end |
+| 106-112 | 100-106 | tail handle: full calendar at 106 %, no text |
+
+`cues.json`: `{"events": {}}` (no SFX in B4, plan p.38). `tesseract_shots.json`: no shots (HF-owned, opaque).
+
+**Note for B12** (another lane): B4's calendar geometry is unchanged (grid 748, 520; 64 / 8 px; 6 columns); only its
+camera moves are new (v02 B12 has its own opening animation and sits higher, REVISION note 6).
+
+**Verification v02**: `check --json` 0 errors (warnings: `nested_structure_needs_subcomposition` kit markup; craft
+`line_unread` on "to take" (voice timing) and the "last line"). Snapshots `review/v02/` (22 frames + 2 sheets: handle, push,
+T9 swipe, the cut, fills, every T2 word, key punch, exit, beat end, tail) read: max 2 words, words on their onsets,
+Coolvetica, nothing linear, nothing cut off. Render: `05_GFX/renders/b04-racenchase.mov` = prores (4444), 1920x1080, 30 fps, **112 frames** (100 + 12),
+yuva444p12le, opaque on every frame; decoded frames match the snapshots (mean diff 0.05/255).
+
+---
 
 Beat: edit frames 538-646 (17.933-21.533 s), **108f**; composition **120f** (6f handle each end; local frame = beat frame + 6).
 Render: `05_GFX/renders/b04-racenchase.mov` (ProRes 4444, 1920x1080, 30 fps, 120 frames, `yuva444p12le`, no audio stream; opaque on every frame).

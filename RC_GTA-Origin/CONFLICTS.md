@@ -57,3 +57,5 @@ Resolution order used: (1) Locked script v2, (2) Beat-by-beat build, (3) Beat pl
 | R10 | B15: T9 label "RACE AND CHASE" | "remove the text with the yellow background" | Removed |
 | R11 | T7 / M4 bug chip in B2 and B16 | "don't use that bug icon, just use the word" | The word "bug" |
 | R12 | GTA 6 footage only from official uploads; R17.1 Trailer 1 | "go through this link and use a fitting BROLL" | Your Drive clip (madebyajit edit of Trailer 1's opening, Lucia in the prison yard), its pink grade toned down |
+| R13 | QA item 1: "the first frame ... shows 'Why does'" | "captions appear word by word" | "Why" pops on its spoken onset, beat f1 (frame 0 shows the moving frosted shot); "does" on its own onset |
+| R14 | B3: year digits roll on the spoken "1995" (S04 on the digits) | Note 1 (new transition, no "Here's how.") | The digits roll in from the cut while the zoom-through settles, so S04 moves to B3 f0 with them; the card still holds over 1 s before "Dundee" |

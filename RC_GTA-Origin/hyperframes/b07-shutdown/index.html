@@ -12,57 +12,120 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* full-frame footage inside its camera wrapper (16:9 working clips, never stretched) */
+      .b07-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      /* The article page in its own pixels (R7.GD = 2232 x 2352 PNG, DPR 2). A static base framing (page px -> frame px,
+         origin 0 0) per shot; GSAP only moves the .rc-cam wrappers around it. */
+      .b07-page { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; transform-origin: 0 0; }
+      #b07-pageD { transform: translate(-26.5412px, 0px) scale(1.1294118); }       /* page x 23.5-1723.5, y 0-956: the headline centred, 1700 page px wide */
+      #b07-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5: the article column only */
+      .b07-art, .b07-paper, .b07-dim, .b07-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
+      .b07-paper { background: var(--white); }
+      /* the site's unrelated right sidebar ("Latest News", x >= 1504 from y 405 down) is cropped out of the headline shot;
+         the page's own white shows there. The article itself is untouched. */
+      #b07-d { clip-path: polygon(0 0, 2232px 0, 2232px 395px, 1495px 395px, 1495px 2352px, 0 2352px); }
+      .b07-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
+      /* red hit: the picture turns siren red (multiply: the white page becomes #E3262E, the ink stays dark). Above the
+         picture, below the captions. Opacity only (eased in 2f before the hit, out over 6f: kit X3 flash curve). */
+      .b07-red { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: var(--siren-red);
+                 mix-blend-mode: multiply; opacity: 0; pointer-events: none; }
     </style>
   </head>
   <body>
-    <!-- B7 b07-shutdown: beat 96f (3.200s) + 6f handle each end = 108f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.4000s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B7 p.23).
+    <!-- B7 b07-shutdown (v02 REDESIGN, client note 3): beat 90f (3.000s) + 6f handle each end = 102f.
+         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.2000s (local frame = beat frame + 6).
+         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B7 p.23).
+         Note 3: "the motion graphic is really bad ... I don't really like the cancelled stamp ... just make it turn red or
+         something. Or pull an article broll talking about its cancellation (if that exists) and highlight the text which
+         says it." -> no L5 card, no CANCELLED stamps. Full-frame office B-roll in fast cuts with eased zooms on "So the
+         people / above the team", then the real article (Game Developer, Jan 31 2011, "Penn: First Grand Theft Auto Was
+         'Almost Canned'") on "keep trying / to shut it down": the headline, then the sentence "It was almost canned. The
+         publisher, BMG Interactive, wanted to can it" highlighted (T9 yellow highlighter, two eased swipes) under a push-in.
+         On the old stamp words ("keep", "shut", "down" = the S06 hits, cues stamp1-3) the picture turns siren red.
 
-         Plan B7 (p.23): L5 gray card with the early-1990s office clip (R7.1) in a white-bordered frame; a red CANCELLED
-         stamp (Inter Black 120 px, #E3262E, rough-edged mask) slams onto the frame three times, on "keep trying", "shut"
-         and "down", each 130% -> 100% over 2f with a 4 px camera shake for 4f, offset ~30 px, rotations -8 / -4 / +6 deg.
-         T1: So the people / above the team / keep trying / to shut it down.   Fully opaque (HF owns every frame).
+         local  0-22  A  R7.1 early-1990s office, woman with a headset typing   push 100 -> 108% (easeInOutSine)
+         local 22-31  B  R7.1 the open-plan office, wide (on "above")          zoom-out 112 -> 100% (easeInOutSine)
+         local 31-41  C  R7.3 DMA Design office 1990, developer at his desk     push 100 -> 108% (easeInOutSine)
+                          (on "the team"); red hit 1 ramps in from local 38
+         local 41-58  D  the article headline (cut on "keep" = red hit 1 peak)  punch-in 112 -> 100% / 10f (easeOutExpo)
+         local 58-102 E  the article sentence (cut on "to")                    push 100 -> 118% + drift (easeInOutSine) from
+                          local 58 to b08-break's "breaks" (edit clock, shared with b08); highlighter swipe 1 "It was almost
+                          canned." lands on "shut" (red hit 2), swipe 2 "The publisher, BMG Interactive, wanted to can it"
+                          lands on "down." (red hit 3)
+         Layer stack (top -> bottom): z40 T1 captions (white, low line y 860) | z30 red hit layers (multiply) | z5 E | z4 D |
+         z3 C | z2 B | z1 A. On the article, the page is dimmed to 35% except the headline / the sentence (the kit's L7
+         spotlight values: #0A0A0A 65%, rounded feathered hole), as on B4's design document, so the white captions read.
+         Fully opaque (HF owns every frame). No grain / vignette / chroma (REVISION_v02 rule F: the assembly adds them).
+         b08-break continues shot E exactly (same page framing, same camera function of the edit frame). -->
+    <div data-hf-id="hf-m014" id="root" data-composition-id="b07-shutdown" data-start="0" data-duration="3.4000000" data-width="1920" data-height="1080">
 
-         Layer stack (top -> bottom):
-           z40  T1 captions, low line (y 860: faces + stamps in the centre), card ink #111111 on the gray card
-           z2   #b07-cam  "camera" (untimed): push-in 100% -> 104% (shared with b08-break) + the 4 px / 4f shakes
-                  #b07-prop  L5 prop (untimed): tilt -4 deg, float +/-6 px over 2 s (shared phase with b08-break)
-                    #b07-frame   8 px white border + soft shadow (0, 12, 30 px, black 25%)
-                    #b07-r71     R7.1 office clip, 4:3 picture 800 x 600, archival media treatment
-                    #b07-stamp1..3  CANCELLED x3 (inside the prop: stamped onto the frame, they float with it)
-           z1   #b07-ground  card gray #E9E9E9 (outside the camera: a flat card never shows a shaken edge)
-         b08-break continues this exact card (same layout, same motion functions, continuous R7.1 source time). -->
-    <div data-hf-id="hf-mq82" id="root" data-composition-id="b07-shutdown" data-start="0" data-duration="3.6000000" data-width="1920" data-height="1080">
+      <!-- A: R7.1 working clip = original 0:00.4-0:09.0, 16:9 crop of the top 324 px (watermark band left out), media 0 =
+           original 0:00.4. Archival look (plan p.10: desaturate ~20%, slight warm lift): media treatment, no grain/vignette. -->
+      <div data-hf-id="hf-1kvb" id="b07-camA" class="rc-cam" style="z-index: 1">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-hstf" id="b07-a" class="clip b07-fill" src="assets/footage/R7.1.mp4" data-start="0.0000" data-duration="0.7333" data-media-start="0" data-track-index="1" muted playsinline></video>
+      </div>
+      <!-- B: R7.1 at original 0:08.0 (media 7.6): the camera has panned onto the open-plan office -->
+      <div data-hf-id="hf-bos9" id="b07-camB" class="rc-cam" style="z-index: 2">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-7cyl" id="b07-b" class="clip b07-fill" src="assets/footage/R7.1.mp4" data-start="0.7333" data-duration="0.3000" data-media-start="7.6" data-track-index="2" muted playsinline></video>
+      </div>
+      <!-- C: R7.3 (DMA Design office tour, 1990) at original 1:03.0 (window 62.6-64.2 s, media 0.4): a developer at his desk,
+           joystick in hand, a game on the CRT. 16:9 crop of the 384 x 288 VHS frame. -->
+      <div data-hf-id="hf-1iev" id="b07-camC" class="rc-cam" style="z-index: 3">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-ktdl" id="b07-c" class="clip b07-fill" src="assets/footage/R7.3.mp4" data-start="1.0333" data-duration="0.3333" data-media-start="0.4" data-track-index="3" muted playsinline></video>
+      </div>
 
-      <!-- L5 gray card (full frame, static) -->
-      <div data-hf-id="hf-9ke5" id="b07-ground" class="clip rc-l5__ground" data-start="0" data-duration="3.6000" data-track-index="1" style="z-index: 1"></div>
-
-      <!-- camera: push-in + shake. Untimed wrapper, no CSS transform (GSAP owns scale, x, y). -->
-      <div data-hf-id="hf-c15u" id="b07-cam" class="rc-scr" style="z-index: 2">
-        <!-- L5 prop: picture 800 x 600 (4:3 archival, never stretched; object-fit cover) centred on (960, 440).
-             Tilt -4 deg (data-rot), float +/-6 px. R7.1 working clip = 4:3 (440 x 330 crop of the 640 x 480 original, the
-             watermark band below it left out), so the 800 x 600 frame shows it whole (no further crop). -->
-        <div data-hf-id="hf-guhq" id="b07-prop" class="rc-l5__prop" data-rot="-4" style="--x: 560px; --y: 140px; --w: 800px; --h: 600px; --rc-pos: 50% 50%;">
-          <div data-hf-id="hf-y62k" id="b07-frame" class="clip rc-l5__frame" data-start="0" data-duration="3.6000" data-track-index="2"></div>
-          <!-- R7.1 early-1990s office workers, original @ 0:03.6 (footage.json; the working clip starts there, media-start 0):
-               a woman with a headset at her desk, CRT monitors, colleagues behind; the camera starts panning right across the
-               office after the third stamp. b08-break plays the same clip from 3.2 s (continuous source time). -->
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0.12,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.1,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.6},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-c6gg" id="b07-r71" class="clip rc-l5__media" src="assets/footage/R7.1.mp4" data-start="0" data-duration="3.6000" data-media-start="0" data-track-index="3" muted playsinline></video>
-          <!-- CANCELLED stamps (motifs kit). Timed for the whole window; each slam shows its stamp on its own frame. -->
-          <div data-hf-id="hf-hwrq" id="b07-stamp1" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="4" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
-          <div data-hf-id="hf-njc0" id="b07-stamp2" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="5" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
-          <div data-hf-id="hf-tukm" id="b07-stamp3" class="clip m-stamp" data-start="0" data-duration="3.6000" data-track-index="6" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+      <!-- D: the article headline (R7.GD = live screenshot of https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned-
+           captured 2026-11-16, never edited). Headline "Penn: First Grand Theft Auto Was 'Almost Canned'" spotlit. -->
+      <div data-hf-id="hf-70st" id="b07-camD" class="rc-cam" style="z-index: 4">
+        <div data-hf-id="hf-d82l" id="b07-pageD" class="b07-page" data-layout-allow-overflow="">
+          <div data-hf-id="hf-m9mw" id="b07-paperD" class="clip b07-paper" data-start="1.3666" data-duration="0.5667" data-track-index="4"></div>
+          <img data-hf-id="hf-bp6j" id="b07-d" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.3666" data-duration="0.5667" data-track-index="5" alt="Game Developer, January 31 2011: Penn: First Grand Theft Auto Was 'Almost Canned'">
+          <div data-hf-id="hf-9pig" id="b07-dimD" class="clip b07-dim" data-start="1.3666" data-duration="0.5667" data-track-index="7" data-layout-ignore="">
+              <svg data-hf-id="hf-buxh" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-mh0t">
+                <filter data-hf-id="hf-hvdu" id="b07-dimD-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-1v6c" stdDeviation="4.4" /></filter>
+                <mask data-hf-id="hf-yn3c" id="b07-dimD-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-g9ea" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-dgee" x="68" y="124" width="1611" height="89" rx="14" ry="14" fill="#000000" filter="url(#b07-dimD-f)" /></mask>
+              </defs><rect data-hf-id="hf-qsy4" x="0" y="0" width="2232" height="2352" fill="#0A0A0A" fill-opacity="0.65" mask="url(#b07-dimD-m)" /></svg>
+            </div>
         </div>
       </div>
 
-      <!-- T1 running captions (kit T.captionPlan/captionHTML from words.json; chunks exactly as the plan's On screen line).
-           Hard cut in on the first syllable (local 6 / 23 / 43 / 61 = beat 0 / 17 / 37 / 55), out on the next chunk;
-           the last chunk holds through the tail handle (closing state continued). -->
-      <div data-hf-id="hf-u7dp" id="b07-cap-1" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.2000" data-duration="0.5666" data-track-index="10" style="z-index: 40">So the people</div>
-      <div data-hf-id="hf-zsbs" id="b07-cap-2" class="clip rc-t1 rc-t1--low rc-on-card" data-start="0.7666" data-duration="0.6667" data-track-index="10" style="z-index: 40">above the team</div>
-      <div data-hf-id="hf-9ilo" id="b07-cap-3" class="clip rc-t1 rc-t1--low rc-on-card" data-start="1.4333" data-duration="0.6000" data-track-index="10" style="z-index: 40">keep trying</div>
-      <div data-hf-id="hf-m9v7" id="b07-cap-4" class="clip rc-t1 rc-t1--low rc-on-card" data-start="2.0333" data-duration="1.5667" data-track-index="10" style="z-index: 40">to shut it down.</div>
+      <!-- E: the same page, the article column (sidebar outside the frame): the sentence "It was almost canned." + "The
+           publisher, BMG Interactive, wanted to can it" (rects from R7.GD__*.json) spotlit and highlighted. Camera: #b07-driftE
+           (translate) > #b07-camE (scale about the sentence centre) > the page. -->
+      <div data-hf-id="hf-81lr" id="b07-driftE" class="rc-cam" style="z-index: 5">
+        <div data-hf-id="hf-e7vd" id="b07-camE" class="rc-cam">
+          <div data-hf-id="hf-cges" id="b07-pageE" class="b07-page" data-layout-allow-overflow="">
+            <img data-hf-id="hf-a0xs" id="b07-e" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.9333" data-duration="1.4667" data-track-index="6" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
+            <!-- T9 highlighter (kit .rc-t9-hl: #FFE14D 85%, multiply = behind the ink) in page px, two swipes -->
+            <div data-hf-id="hf-zm9l" id="b07-hlclip" class="clip b07-hls" data-start="1.9333" data-duration="1.4667" data-track-index="8" data-layout-ignore="">
+              <div data-hf-id="hf-xzcl" id="b07-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 358px; height: 48px"></div>
+              <div data-hf-id="hf-d1id" id="b07-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+            </div>
+            <div data-hf-id="hf-kj5u" id="b07-dimE" class="clip b07-dim" data-start="1.9333" data-duration="1.4667" data-track-index="7" data-layout-ignore="">
+              <svg data-hf-id="hf-l1ft" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-vl9d">
+                <filter data-hf-id="hf-4zit" id="b07-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-ajt9" stdDeviation="3.6" /></filter>
+                <mask data-hf-id="hf-2bd5" id="b07-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-pt5i" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-teeq" x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b07-dimE-f)" /></mask>
+              </defs><rect data-hf-id="hf-3hc9" x="0" y="0" width="2232" height="2352" fill="#0A0A0A" fill-opacity="0.65" mask="url(#b07-dimE-m)" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- red hits on "keep" (local 41), "shut" (62), "down." (72) = S06 hit peaks (cues.json stamp1-3) -->
+      <div data-hf-id="hf-nfa6" id="b07-red1" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
+      <div data-hf-id="hf-lbv5" id="b07-red2" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
+      <div data-hf-id="hf-fup8" id="b07-red3" class="b07-red" style="z-index: 30" data-layout-ignore=""></div>
+
+      <!-- T1 running captions, v02 rule A (plan B7 p.23 "T1: So the people / above the team / keep trying / to shut it
+           down."): kit captionPlanV2 + captionHTMLV2 from words.json, low line (y 860), white + soft shadow (on footage and
+           on the dimmed page). Groups: So / the people / above / the team / keep trying / to shut / it down. -->
+      <div data-hf-id="hf-rs51" id="b07-cap-1" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.2000" data-duration="0.1000" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-ida4" class="rc-g"><span data-hf-id="hf-2w6q" class="rc-w" data-rc-f="6">So</span></span></div>
+      <div data-hf-id="hf-ht59" id="b07-cap-2" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.3000" data-duration="0.4333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-7p6c" class="rc-g"><span data-hf-id="hf-384i" class="rc-w" data-rc-f="9">the</span> <span data-hf-id="hf-kqat" class="rc-w" data-rc-f="13">people</span></span></div>
+      <div data-hf-id="hf-w2o7" id="b07-cap-3" class="clip rc-t1 rc-cap rc-t1--low" data-start="0.7333" data-duration="0.3000" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-6i99" class="rc-g"><span data-hf-id="hf-tnnz" class="rc-w" data-rc-f="22">above</span></span></div>
+      <div data-hf-id="hf-jejx" id="b07-cap-4" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.0333" data-duration="0.3333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-6wka" class="rc-g"><span data-hf-id="hf-ybut" class="rc-w" data-rc-f="31">the</span> <span data-hf-id="hf-xkpn" class="rc-w" data-rc-f="35">team</span></span></div>
+      <div data-hf-id="hf-yu8m" id="b07-cap-5" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.3666" data-duration="0.5667" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-8w3f" class="rc-g"><span data-hf-id="hf-zdvy" class="rc-w" data-rc-f="41">keep</span> <span data-hf-id="hf-hwe1" class="rc-w" data-rc-f="48">trying</span></span></div>
+      <div data-hf-id="hf-nu1e" id="b07-cap-6" class="clip rc-t1 rc-cap rc-t1--low" data-start="1.9333" data-duration="0.3333" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-9aeg" class="rc-g"><span data-hf-id="hf-r228" class="rc-w" data-rc-f="58">to</span> <span data-hf-id="hf-qafc" class="rc-w" data-rc-f="62">shut</span></span></div>
+      <div data-hf-id="hf-3vw8" id="b07-cap-7" class="clip rc-t1 rc-cap rc-t1--low" data-start="2.2666" data-duration="1.1334" data-track-index="10" style="z-index: 40"><span data-hf-id="hf-83hd" class="rc-g"><span data-hf-id="hf-f0v1" class="rc-w" data-rc-f="68">it</span> <span data-hf-id="hf-7165" class="rc-w" data-rc-f="72">down.</span></span></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -71,31 +134,47 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, M = RCK.motifs, S = RCK.screens;
-      const F = (n) => n / 30;
+      const T = RCK.type, X = RCK.transitions, C = RCK.cam;
+      const f = (n) => n / 30;                         // composition-local frame -> seconds (local = beat frame + 6)
 
-      // Word onsets on this composition's clock (words.json comp_t, s). Frames = T.frame(t) (nearest frame).
-      const W = { So: 0.205, above: 0.775, keep: 1.44, trying: 1.682, to: 2.045, shut: 2.165, down: 2.528 };
+      // Word frames (local) from words.json: So 6, the 9, people 13, above 22, the 31, team 35, keep 41, trying 48, to 58,
+      // shut 62, it 68, down. 72 (voice ends 84).
 
-      // ---- shared card motion (b08-break uses the SAME functions of the edit frame, so the cut is seamless) ----
-      // local frame L of this composition = edit frame 894 + L (B7 beat f0 = edit 900).
-      // Push-in (style rule 7, held shot): linear 100% at B7 f0 (edit 900) -> 104% at B8 f35 (edit 1031, the shatter).
-      const PUSH = (e) => 1 + 0.04 * (e - 900) / 131;
-      const ORIGIN = "960px 440px";          // the picture centre
-      // L5 float: y = -6 cos(PHASE + pi * t / 2 s), t = seconds since edit frame 894; b08 uses PHASE + 1.6 pi.
-      const PHASE = 0;
+      // ---- office B-roll, fast cuts with eased zooms (rule D: alternate pushes and zoom-outs) ----
+      C.push(tl, '#b07-camA', f(0), { until: f(22), from: 1, to: 1.08 });
+      C.zoomOut(tl, '#b07-camB', f(22), { until: f(31), from: 1.12, to: 1 });
+      C.push(tl, '#b07-camC', f(31), { until: f(41), from: 1, to: 1.08 });
 
-      // head handle (local 0-5) continues the push backward (99.8%), tail handle (102-107) forward
-      S.push(tl, "#b07-cam", 0, { until: F(108), from: PUSH(894), to: PUSH(1002), origin: ORIGIN });
-      S.propFloat(tl, "#b07-prop", 0, { until: F(108), phase: PHASE, amp: 6, legS: 2 });
+      // ---- D: the cut to the headline on "keep" (red hit 1): punch-in that settles, 112 -> 100% over 10f, easeOutExpo,
+      //      about the headline centre ----
+      C.punchIn(tl, '#b07-camD', f(41), { from: 1.12, to: 1, frames: 10, origin: '960px 190.3px' });
 
-      // ---- CANCELLED x3: land ON "keep" (beat 37), "shut" (beat 59), "down" (beat 70); slam = 2f before landing ----
-      // On-screen rotations -8 / -4 / +6 deg (plan). The prop is tilted -4, so the stamps inside it take -4 / 0 / +10.
-      // Offsets (0,-30) (0,0) (0,+30) px around the picture centre (kit default). Each landing shakes #b07-cam 4 px for 4f.
-      const land = [T.frame(W.keep), T.frame(W.shut), T.frame(W.down)];      // local 43, 65, 76
-      M.stampTriple(tl, ["#b07-stamp1", "#b07-stamp2", "#b07-stamp3"], land.map((k) => F(k - 2)), {
-        center: [400, 300], camera: "#b07-cam", rotations: [-4, 0, 10],
-      });
+      // ---- E: the article push, ONE eased move on the EDIT clock shared with b08-break: from the cut on "to" (B7 local 58 =
+      //      edit 897) to "breaks" (B8 local 39 = edit 968), 71f, easeInOutSine: scale 100 -> 118% about the sentence centre
+      //      (frame px 1053.3, 613.0 in the base framing) + drift (-93.3, -53.0) px, so the sentence ends centred at (960, 560).
+      //      This composition plays its first 44 frames (to local 102) on the same curve (segment of the ease, not restarted);
+      //      b08-break plays the rest. The page never leaves the article column (checked: page x 50-1450, y 1564-2351.5). ----
+      const SIN = gsap.parseEase('sine.inOut');
+      const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
+      const E_LEN = 71, E_S = 1.18, E_DX = -93.257, E_DY = -53.029, pEnd = SIN(44 / E_LEN);
+      C.push(tl, '#b07-camE', f(58), { until: f(102), from: 1, to: 1 + (E_S - 1) * pEnd, ease: seg(0, 44 / E_LEN), origin: '1053.257px 613.029px' });
+      gsap.set('#b07-driftE', { x: 0, y: 0, force3D: false });
+      tl.fromTo('#b07-driftE', { x: 0, y: 0 }, { x: E_DX * pEnd, y: E_DY * pEnd, duration: 44 / 30, ease: seg(0, 44 / E_LEN), force3D: false, immediateRender: false }, f(58));
+
+      // ---- highlighter (kit T9: left -> right swipe over 8f, easeOutQuart), each one starting on the word before the hit, so
+      //      it is 94% across on the hit frame: swipe 1 on "to" (58) lands on "shut" (62); swipe 2 on "it" (68) on "down." (72) ----
+      T.highlight(tl, '#b07-hl1', f(58));
+      T.highlight(tl, '#b07-hl2', f(68));
+
+      // ---- red hits on "keep" (41), "shut" (62), "down." (72): the kit X3 flash curve on a siren-red multiply layer:
+      //      C-3 0 | C-2 11% | C-1 44% | C 100% (easeInQuad) | C+1 73% | C+2 51% | C+3 33% | C+4 18% | C+5 8% | C+6 2% | C+7 0
+      //      (easeOutQuad over 7 frames = out over ~6f). Peaks = the S06 hit peaks (cues.json stamp1-3 = beat 35, 56, 66). ----
+      X.flash(tl, '#b07-red1', f(41), { ramp: 2, hold: 1, fade: 6 });
+      X.flash(tl, '#b07-red2', f(62), { ramp: 2, hold: 1, fade: 6 });
+      X.flash(tl, '#b07-red3', f(72), { ramp: 2, hold: 1, fade: 6 });
+
+      // ---- T1 word pops (every .rc-cap above): each word on its onset frame, max 2 words on screen ----
+      T.captionPops(tl);
 
       window.__timelines["b07-shutdown"] = tl;
     </script>
