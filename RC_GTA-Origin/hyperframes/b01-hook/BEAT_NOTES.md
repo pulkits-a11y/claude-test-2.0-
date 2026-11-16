@@ -10,10 +10,11 @@ police chases from GTA 1 to GTA 5, the GTA 5 cell switching to GTA 6 and filling
 stars popping in, and "from the *cops?*" landing with a red/blue siren wash.
 
 ## 2. Assets
-- B-roll (all `assets/footage/<RID>.mp4`, stand-ins for now): **R1.2** (L4 police moment, official PlayStation
-  features trailer), **R1.5** GTA 1, **R14.1** GTA 3, **R1.7** Vice City, **R1.6** San Andreas, **R14.4** GTA 4,
-  **R1.3** GTA 5 (L3 cells 1-6), **R17.1** official GTA 6 Trailer 1 (cell 6 switch -> full frame; continues into B2).
-  Not used: R1.1 (unofficial, plan says avoid), R17.3 (the plan's alternative to R17.1), RT7 (M1 is built).
+- B-roll (real footage, `assets/footage/<RID>.mp4` cut by `tools/sync_footage.py`, see "Footage used"): **R1.2**
+  official PlayStation features trailer, two moments: the L4 police moment and the cell-6 switch -> full-frame GTA 6
+  shot (SUBSTITUTE for the missing R17.1/R17.3; continues into B2), **R1.5** GTA 1, **R14.1** GTA 3, **R1.7** Vice
+  City, **R1.6** San Andreas, **R14.4** GTA 4, **R1.3** GTA 5 (L3 cells 1-6).
+  Not used: R1.1 (unofficial, plan says avoid), R17.1 / R17.3 (missing), RT7 (M1 is built).
 - SFX: **S01** (Cinematic Hit 1), **S02** (Siren). Music: **MU1**.
 - Fonts: Inter Medium 46 (T1), Inter SemiBold 42 + Instrument Serif Italic 140 (T2). Kit fonts (`assets/kit/fonts`).
 - Graphics: M1 stars (kit `RCK.motifs`), X9 wash (kit). No cut-outs.
@@ -27,7 +28,7 @@ Top to bottom:
 2. `#b01-cap-1..4` T1 captions (z 40)
 3. `#b01-stars` M1 five stars (z 20)
 4. `#b01-x9` X9 siren wash, Overlay blend 35% (z 10; direct child of the root so it blends with the picture)
-5. `#b01-grid` L3 (z 2): `#b01-grow` (R17.1, last child = on top) > cells 1-6 > `#b01-grid-ground` ink black
+5. `#b01-grid` L3 (z 2): `#b01-grow` (R1.2 police-truck shot, last child = on top) > cells 1-6 > `#b01-grid-ground` ink black
 6. `#b01-frost` L4 (z 1): `#b01-frost-tiles` overlays > frosted copy of R1.2 (masked per tile) > sharp R1.2 plate
 
 ## 4. Step-by-step build (HTML `index.html`, GSAP timeline `window.__timelines["b01-hook"]`)
@@ -35,17 +36,17 @@ Top to bottom:
 |---|---|---|
 | -6..21 | L4: R1.2 sharp plate + frosted copy (same src/start/media-start) + 12 tile overlays | blur = media treatment `effects.blur 1` laid out at 1/1.76 and scaled 1.76 = sigma 40 px; tile 480x360, 10% white, 1 px white 20% border |
 | -6..21 | push both plates | 100 -> 104%, linear (`S.push`) |
-| 1, 9 | one tile clears per spoken word ("Why", "does"), seeded order (seed 1: tile 4, then tile 10) | 3f linear (`S.frostClear`), clear on f4 / f12 |
+| 1, 9 | one tile clears per spoken word ("Why", "does"), seeded order (seed 2: tile 5, then tile 6 = row 2, columns 2-3, over the two police cars) | 3f linear (`S.frostClear`), clear on f4 / f12 |
 | 21 | hard cut to L3 3x2 (8 px ink-black gutters, cells 634.67x536) | `data-start` boundary |
 | 21,24,27,30,33,36 | cells 1-6 pop L->R, T->B | 4f: opacity 0->1 linear, scale 96->100% power3.out (`S.gridBuild`, stepF 3); landed f25..40 |
-| 52 | cell 6 (R1.3) ends; R17.1 starts in cell 6's rect and grows to full frame | 6f, clip-path + picture scale, power3.out (`S.gridGrow`); full on **f58** |
+| 52 | cell 6 (R1.3) ends; the GTA 6 shot (R1.2, 8.2 s) starts in cell 6's rect and grows to full frame | 6f, clip-path + picture scale, power3.out (`S.gridGrow`); full on **f58** |
 | 58..143 (+6) | held full-frame GTA 6 push | 100% (f58) -> 104% (f143), linear; same rate on through the tail handle (104.28% at f149) |
-| 92,95,98,101,104 | M1 stars pop (40 px each, row centred on (1700, 80): x 1584-1816, y 60-100, 8 px gap) | scale 0->1 over 3f, power3.out, no overshoot (`M.starsPopIn`); all landed f107 |
+| 92,95,98,101,104 | M1 stars pop (40 px each, row centred on (1640, 80): x 1524-1756, y 60-100, 8 px gap; see Interpretations 12) | scale 0->1 over 3f, power3.out, no overshoot (`M.starsPopIn`); all landed f107 |
 | 127-130 | X9 siren wash on "cops" | #E3262E 35% Overlay f127-128, #2D5BFF 35% Overlay f129-130, gone f131 (`X.sirenWash`) |
 | 115 / 127 | T2 lead-in "from the" hard cut / keyword "cops?" blur-in | keyword 6f: blur 30->0 px, scale 108->100%, power3.out (`T.punchPair`); lands f133 |
 | 139-143 | T2 out | 4f linear fade; gone on f143 |
 Handles: head (local 0-5) = the frosted R1.2 opening state with "Why does" and the push already running; tail
-(local 149-154) = full-frame R17.1 + stars, push continuing (T2 already gone).
+(local 149-154) = full-frame GTA 6 (R1.2) + stars, push continuing (T2 already gone).
 
 ## 5. On-screen text (locked-script words; chunks as the plan's slashes)
 | text | style | position / size | beat frames |
@@ -70,10 +71,10 @@ from -0.0f, cops? +0.4f: all within +/-2f.
 ## 7. Mistakes to avoid
 - No fade from black and no logo before the hook; f0 must already move and read "Why does" (it does: video + push).
 - The question must read with the sound off: every word is on screen (T1 chunks + T2).
-- GTA 6 shots only from official uploads (R1.2 PlayStation, R17.1 Rockstar); never R1.1.
+- GTA 6 shots only from official uploads (here R1.2 PlayStation, both shots); never R1.1 or R17.5.
 - X9 only on "cops"; no other red/blue flash. No glitch in B1.
-- Stars and T2 do not carry into B2 (B2 starts on the bare R17.1 picture).
-- Keep R17.1's source time continuous with B2 (see Pending: R17_IN).
+- Stars and T2 do not carry into B2 (B2 starts on the bare GTA 6 picture).
+- Keep the GTA 6 shot's source time continuous with B2 (same R1.2 window in-point 8.2 s; B2 media-start 2.8334).
 
 ## Interpretations / conflicts
 1. **"Why does" on f0** (B1 build p.20, priority 2) vs T1 "hard cut in on the first syllable" (T library p.11): the
@@ -89,37 +90,50 @@ from -0.0f, cops? +0.4f: all within +/-2f.
    the reading line of the captions it replaces; kit default would be y 540.
 7. **X9 z-order**: above the picture, below the text and stars (Overlay of 35% red/blue on white = white, so text
    would read the same either way).
-8. **Footage choice**: R1.2 for the L4 police moment (plan: "R1.2 or R17.1"), R17.1 for the switch (plan: "R17.1 or
-   R17.3"), so the hook shows two different official GTA 6 images.
+8. **Footage choice**: R1.2 for the L4 police moment (plan: "R1.2 or R17.1"). For the switch the plan's R17.1/R17.3
+   are missing; R1.2 (official) supplies a second, different police moment (see Substitutions).
 9. **Grade**: "Game footage: punchy contrast" (p.10) implemented as media-treatment contrast +0.15 (shared value with
    B15); the whole-edit grain is Tesseract's.
 10. **Push**: the grid build (f21-52) is not pushed (cells pop throughout, it is a build, not a held shot); the L4
     shot and the held GTA 6 shot are.
 11. SUGGESTION (not built): none.
+12. **M1 position** (plan p.17: "40 px at the top-right (x 1700, y 80)"): the official trailer's own in-game HUD
+    (wanted stars and icons) sits in the top-right corner of the R1.2 shot, and at x 1700 the fifth M1 star collided
+    with it. The row centre is moved 60 px left to (1640, 80); same y, size, timing. DEVIATION, flagged.
+13. **Cell framing**: cell 4 (San Andreas) uses object-position 70% to push the game's mission text out of the cell;
+    R1.7 and R14.4 are cropped in footage.json (watermark band / corner logos and the ultrawide 2276x720 frame).
 
-## Pending real footage
-- **R1.2**: pick the police moment in the official features trailer; set the same `data-media-start` on
-  `#b01-frost-sharp` and `#b01-frost-blur` (stand-in 0).
-- **R1.5, R14.1, R1.7, R1.6, R14.4, R1.3**: in-points of a police-chase moment in each (`data-media-start` on
-  `#b01-c1-v..#b01-c6-v`), reframe inside the 634.67x536 cells with `--rc-pos` (object-position) if the action is
-  off-centre. R1.5 is a GTA 1-to-GTA 6 compilation: use its GTA 1 part.
-- **R17.1 (R17_IN)**: a police-pursuit moment of Trailer 1 (not the opening Lucia-in-custody seconds, which B17
-  uses). Set `#b01-gta6` `data-media-start` = R17_IN and in B2 `#b02-g6-crt` / `#b02-g6-clean` `data-media-start`
-  = R17_IN + 2.8334 (B1 local f143 = B2 local f0). If the manifest gets a `source_in/out` window for R17.1, it must
-  contain both this moment and B17's opening, or the offsets change.
-- Re-check the contrast +0.15 game grade and the caption legibility (y 620) on the real pictures.
-- Re-render: `python3 tools/sync_footage.py hyperframes/b01-hook`, then the render command below.
+## Footage used
+| R-ID | file (`04_Broll/_originals/B01/`) | in-out (s, original) | what it shows | link |
+|---|---|---|---|---|
+| R1.2 | `R1.2__Grand Theft Auto VI - Features Trailer ｜ PS5 Games [8L0CzL2V72c].mp4` | 31.6-32.5 | L4: two marked POLICE cruisers with light bars, seen from a driver's POV (official) | https://www.youtube.com/watch?v=8L0CzL2V72c&t=31 |
+| R1.2 | same | 8.2-11.43 (continues in B2 to 12.1) | cell 6 -> full frame: a police truck (light bar, roof number) charges the shooter, is shot up and flips over (official) | https://www.youtube.com/watch?v=8L0CzL2V72c&t=8 |
+| R1.5 | `R1.5__Wanted Levels： GTA 1 to GTA 6 Evolution (1997–2026) [nTL0QWjllf8].mp4` | 95.6-96.83 | cell 1, GTA 1: a white police car with lights spinning in on the player's limo (top-down) | https://www.youtube.com/watch?v=nTL0QWjllf8&t=95 |
+| R14.1 | `R14.1__GTA 3 Epic 6 Stars Wanted Level Shootout+ Tank Rampage + Escape [6lSy09Uruz0].mp4` | 44.0-45.23 | cell 2, GTA 3: an LCPD car right behind / ramming the player's car | https://www.youtube.com/watch?v=6lSy09Uruz0&t=44 |
+| R1.7 | `R1.7__GTA Vice City Epic 6-Stars Police Chase Escape [s2KJsYEngS8].mp4` | 6.4-7.63 | cell 3, Vice City: VCPD cars with flashing lights burning while Tommy fires at them (crop 782:660:560:0 keeps the uploader's watermark band out) | https://www.youtube.com/watch?v=s2KJsYEngS8&t=6 |
+| R1.6 | `R1.6__The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S [flgIZbQHwN8].mp4` | 46.0-47.23 | cell 4, San Andreas: an LSPD cruiser with lights in pursuit of a biker | https://www.youtube.com/watch?v=flgIZbQHwN8&t=46 |
+| R14.4 | `R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4` | 64.0-65.23 | cell 5, GTA 4: an LCPD car with lights chasing a silver sedan (crop 852:720:450:0 of the 2276x720 frame; no corner logos) | https://www.youtube.com/watch?v=WNZMK7KPZWs&t=64 |
+| R1.3 | `R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4` | 46.0-47.03 | cell 6, GTA 5: a white supercar fleeing past POLICE cars (5 stars) | https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=46 |
+
+## Substitutions
+- SUBSTITUTE (Rule 5): R1.2 Grand Theft Auto VI - Features Trailer | PS5 Games [8L0CzL2V72c] @ 00:08-00:11 for R17.3
+  (missing: Trailer 2 not downloaded; R17.1, the plan's other option for the switch, is missing too). Official
+  PlayStation upload, a police-chase moment (police truck charging and flipping). Chosen over R17.4/R17.2/R17.6 because
+  it is the clearest police moment among the official clips, and it keeps B1/B2 on one official source.
+
+## Pending / blocking
+- Nothing blocking. If R17.1/R17.3 are uploaded later, the switch can move to them (change B1 `#b01-gta6` and B2
+  `#b02-g6-*` together, same in-point rule).
 
 ## Verification
 - `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings weighed: `duplicate_media_discovery_risk` (the L4
   sharp/frosted pair, by design), `timeline_track_too_dense` (all T1 chunks on one caption lane, by design),
   `nested_structure_needs_subcomposition` (kit T2 markup), craft `line_unread` (plan's voice timing wins; "film's last
   line" does not apply to a beat segment).
-- Snapshots in `review/` (read): `A_*` local 0-121 (handles, frost clears, grid pops, switch/grow, stars),
-  `B_*` local 132-154 (X9 red/blue frames, T2 blur-in, fade, tail handle), `G_*` graded frames,
-  `render_check_strip.jpg` (decoded frames of the MOV).
-- B1 -> B2 seam: B1 local 149 vs B2 local 6 snapshot, mean pixel difference 0.74/255 (same source frame 91, same
-  104% push) apart from the stars.
+- Snapshots in `review/` (read, real footage): local 0, 6, 12, 20, 26, 27, 40, 52, 58, 64, 110, 133, 135, 149, 154
+  (handle, frost clears, the L3 cut and pops, switch/grow, stars, X9, T2 blur-in, tail); decoded MOV frames checked.
+- B1 -> B2 seam: B1 local 149 and B2 local 6 show the same source frame (R1.2 11.233 s) at the same 104% push
+  (B2's straight hand-off copy), apart from the stars.
 - Render: `cd hyperframes/b01-hook && npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o
   ../../05_GFX/renders/b01-hook.mov` -> see the final ffprobe in the lane report (1920x1080, 30 fps, 155 frames,
   yuva444p12le, no audio; alpha opaque on all frames).

@@ -22,7 +22,8 @@
       #b03-t8 { padding-top: 574px; }
       /* the tiny Lemming (SUBSTITUTE: R3.6 Amiga intro for the missing R3.5): a cut-out clip
          (assets/lemming/R3.6_lemming.webm, alpha) made from a 240 x 270 crop that tracks one lemming walking left along a
-         flat ledge (R3.6 23.33-25.87 s), background removed (hyperframes remove-background). Shown at 20% (48 x 54 box,
+         flat ledge (R3.6 23.33-25.87 s), matted by differencing against a clean background plate of the same static shot
+         (the u2net remove-background model drops pixel-art sprites entirely). Shown at 20% (48 x 54 box,
          lemming ~30 x 44 px), feet (crop y 262) on the T8 underline. It lives outside the timed T8 element (a timed
          <video> may not sit inside a timed element), so its walk is an x tween over the underline (LEM below). */
       #b03-lem-walk { position: absolute; left: 0; top: 0; width: 48px; height: 54px; opacity: 0; }

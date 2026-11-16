@@ -470,8 +470,8 @@ def build_shot(shot, beat, wc, asset, intrinsic, ids: Ids, dyn: Dyn, all_shots, 
         lb = dict(BARS_DEFAULT)
         lb.update(shot.get("letterbox") or {})
         bars = int(lb["bars_px"])
-        if narrow:   # 4:3 archival stays inside the band (fit the band height, ink pillars)
-            pic = (0, bars, W, H - 2 * bars)
+        if narrow:   # 4:3 archival: full height with ink pillars, never stretched; the bars slide in over it
+            pic = (0, 0, W, H)   # (visibly, as L2 asks) and leave it inside the band (style kit: 4:3 in a band)
             fit = "contain"
         else:        # 16:9 (or wider) fills the band width; the bars cover the rest
             pic = (0, 0, W, H) if not wide else (0, bars, W, H - 2 * bars)

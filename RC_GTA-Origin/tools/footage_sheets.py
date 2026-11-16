@@ -6,7 +6,8 @@
   python3 tools/footage_sheets.py --every 2       # seconds between thumbnails (default: auto)
 
 For each clip: 04_Broll/_sheets/<RID>_sheetNN.jpg - 5x6 grids of 384x216 thumbnails, each stamped with
-its source time (mm:ss.s), plus <RID>.json (duration, size, fps). Long videos (> 10 min, the plan says
+its source time (mm:ss.s), plus <RID>.json (duration, size, fps). Thumbnails show the true shape (pixel aspect
+corrected); crops in footage.json are still given in the original's stored pixels (see sync_footage.py). Long videos (> 10 min, the plan says
 they are there for specific moments) get one thumbnail every 10 s on a first pass; re-run with
 --range START,END --every 1 to zoom in. Set the chosen window in 04_Broll/broll_manifest.json
 (source_in / source_out, seconds), then run tools/sync_footage.py for the beats that use the clip.
@@ -54,7 +55,9 @@ def main():
         pattern = f"{OUT}/{tag}_sheet%02d.jpg"
         for old in glob.glob(f"{OUT}/{tag}_sheet*.jpg"):
             os.remove(old)
-        vf = (f"fps=1/{every},scale=384:216:force_original_aspect_ratio=decrease,pad=384:216:(ow-iw)/2:(oh-ih)/2,"
+        # square the pixels first (anamorphic sources such as R14.4 would otherwise look stretched)
+        vf = (f"fps=1/{every},scale=w='trunc(iw*sar/2)*2':h=ih,setsar=1,"
+              f"scale=384:216:force_original_aspect_ratio=decrease,pad=384:216:(ow-iw)/2:(oh-ih)/2,"
               f"drawtext=fontfile={FONT}:text='%{{pts\\:hms\\:{t0}}}':x=6:y=6:fontsize=18:fontcolor=white:box=1:boxcolor=black@0.6,"
               f"tile=5x6:padding=4:color=black")
         fast = ["-skip_frame", "nokey"] if every >= 2 else []

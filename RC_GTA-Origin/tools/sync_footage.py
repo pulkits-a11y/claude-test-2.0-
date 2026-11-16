@@ -9,7 +9,8 @@ footage.json:
    "rids": ["R3.1", "R3.7", ...],
    "moments": {                                  # the window cut from the real clip, per R-ID
      "R3.7": {"in": 61.2, "out": 69.5,           # seconds in the ORIGINAL download
-              "crop": "1440:1080:240:0",         # optional ffmpeg crop (w:h:x:y), e.g. remove 4:3 pillarbox
+              "crop": "1440:1080:240:0",         # optional ffmpeg crop (w:h:x:y) in the ORIGINAL's stored pixels
+                                                 # (ffprobe width x height), e.g. remove a 4:3 pillarbox
               "note": "team at computers, wide"}}}
 
 Resolution per R-ID:
@@ -19,6 +20,10 @@ Resolution per R-ID:
   3. otherwise the labelled stand-in 04_Broll/_placeholders/<RID>.mp4 (an original without a moment is
      reported as "needs-moment" so it is never used blindly)
 assets/footage/SOURCES.json records what was used (for credits and the QA list).
+
+Non-square pixels (e.g. R14.4, stored 2276x720 with SAR 320:569 = 1280x720 on screen): the crop is applied in
+stored pixels first, then the pixel aspect is corrected to square, then the picture is fitted - never stretched.
+tools/build_tesseract_picture.py uses the same crop convention.
 """
 import glob, json, os, shutil, subprocess, sys
 
@@ -45,11 +50,25 @@ def find_original(rid):
     return sorted(hits)[0] if hits else None
 
 
+def sar_of(src):
+    """Sample (pixel) aspect ratio of the source as 'n:d' when it is not square, else None."""
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=sample_aspect_ratio",
+                        "-of", "csv=p=0", src], capture_output=True, text=True).stdout.strip()
+    try:
+        n, d = (int(x) for x in r.split(":"))
+    except ValueError:
+        return None
+    return f"{n}:{d}" if n > 0 and d > 0 and n != d else None
+
+
 def cut(src, dst, m):
     vf = []
     if m.get("crop"):
         vf.append(f"crop={m['crop']}")
-    vf.append("scale=w=1920:h=1080:force_original_aspect_ratio=decrease:flags=lanczos,setsar=1,fps=30")
+    if sar_of(src):  # anamorphic source: make the pixels square before fitting (else it comes out stretched)
+        vf.append("scale=w='trunc(iw*sar/2)*2':h=ih:flags=lanczos")
+        vf.append("setsar=1")
+    vf.append("scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2:flags=lanczos,setsar=1,fps=30")
     cmd = ["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-ss", str(m["in"]), "-i", src, "-t", str(float(m["out"]) - float(m["in"])),
            "-an", "-vf", ",".join(vf), "-c:v", "libx264", "-crf", "14", "-preset", "medium", "-pix_fmt", "yuv420p", "-movflags", "+faststart", dst]
     subprocess.run(cmd, check=True)
@@ -77,6 +96,8 @@ def sync(proj):
         elif orig and rid in moments:
             m = moments[rid]
             entry = {"kind": "real", "source": os.path.relpath(orig, ROOT), "in": m["in"], "out": m["out"], "crop": m.get("crop"), "note": m.get("note")}
+            if sar_of(orig):
+                entry["sar"] = sar_of(orig)  # also forces a re-cut of copies made before the pixel-aspect fix
             dst = f"{out_dir}/{rid}.mp4"
             same = prev.get(rid) == entry and os.path.exists(dst)
             if not same:
