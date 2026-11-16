@@ -13,6 +13,10 @@
 
 /* ---------- shared ---------- */
 .rc-scr { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }   /* untimed full-frame wrapper */
+/* v02 camera (rule D): an untimed full-frame picture wrapper that RCK.cam.push / zoomOut / punchIn / keyPunch /
+   zoomThroughOut / zoomThroughIn scale (GSAP, no CSS transform). Nest a second one for a move that overlaps another
+   (a keyword punch during a push). Captions stay outside it. */
+.rc-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 .rc-scr__fill {                                                                      /* footage filling its box */
   position: absolute; left: 0; top: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: var(--rc-pos, 50% 50%);
@@ -162,7 +166,7 @@
 
 /* ===================================================================================================================
    L6 Framed clip: clip at 62% scale with a 2 px white border and a 30 px warm outer glow (#FFF6E0 at 40%), over a
-   50 px blurred, 40% darker copy of the same clip. Small label under it in Instrument Serif Italic 32 px.
+   50 px blurred, 40% darker copy of the same clip. Small label under it in Coolvetica Italic 32 px (plan: Instrument Serif Italic).
    16:9 frame = 1190.4 x 669.6 px centred (x 364.8, y 205.2); 4:3 frame (.rc-l6--4x3) = 892.8 x 669.6 (x 513.6).
    Back copy: media treatment {effects.blur 1, adjust.exposure -0.737} at layout 1/k, scaled k (--rc-l6-k 2.2):
    sigma 22.8 x 2.2 = 50 px; 2^-0.737 = 0.60 = 40% darker (measured: 255 -> 153). Layer order (DOM order inside .rc-l6):
@@ -270,7 +274,7 @@
 }
 
 /* ===================================================================================================================
-   L10 year tag (HF overlay over the Tesseract L10 montage burst, B14): Inter Medium 22 px, white, soft shadow,
+   L10 year tag (HF overlay over the Tesseract L10 montage burst, B14): Coolvetica 22 px (plan: Inter Medium), white, soft shadow,
    top-left inside the title-safe area (x 96, y 54). One timed element per tag, hard cut with its clip.
    =================================================================================================================== */
 .rc-l10-tag {

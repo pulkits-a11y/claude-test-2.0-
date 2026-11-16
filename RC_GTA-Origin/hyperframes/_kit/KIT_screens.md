@@ -10,7 +10,80 @@ Proof: `hyperframes/_demo-screens/` plays every item in sequence, built exactly 
 `assets/kit/`, footage via `tools/sync_footage.py`); named stills + zoom crops in `_demo-screens/review/`.
 L1, L2, L10 footage framings are Tesseract-owned; L8 (CRT) and L9 (calendar) are in `KIT_motifs.md`.
 
+## v02 (REVISION_v02.md rules C and D): camera moves, nothing linear. Read this first
+
+The v01 reference below still describes every screen; this section lists what v02 changes and the new camera API.
+Proof: `hyperframes/_demo-v02/` (sections A, B, E: push / zoomOut / punchIn / keyPunch; values in
+`review/measure_v02.json` `camera`).
+
+Easing map (easings.net name -> GSAP -> CSS bezier, and which curve the kit uses where): KIT_type.md, v02 > Easing
+(`RCK.ease`, defined in type.js). Every helper's `opts.ease` accepts `'easeOutExpo'` or `'expo.out'`.
+
+### Camera on the picture (rule D), `RCK.cam` (screens.js; the zoom-through halves come from transitions.js)
+
+All camera helpers scale ONE untimed full-frame picture wrapper, `class="rc-cam"` (screens.css), that holds the footage /
+card; captions stay outside it, steady ("zoom the picture, not the caption layer"). `force3D: false` (re-rasterised every
+frame, sharp). Signature as every kit helper: `(tl, wrapper, atSeconds, opts) -> endSeconds`; `opts.ease` takes an
+easings.net or GSAP name; `opts.origin` (default centre; one origin per wrapper, it applies to all its moves).
+
+| Helper | Rule D | Defaults | Measured (demo frames) |
+|---|---|---|---|
+| `C.push(tl, el, at, { until \| durF, from, to, ease, origin, x, y })` | held footage: push 100 -> 106-110% across the shot, sine.inOut | from = the scale the wrapper's previous move left (else 1), to = from x 1.08, easeInOutSine; `x` / `y` = an optional drift (px) on the same curve | f50 100% -> f75 101.2% -> f100 104.0% -> f125 106.8% -> f149 108% |
+| `C.zoomOut(tl, el, at, { until \| durF, from, to, ease })` | "alternate with slow zoom-outs (110 -> 100%)" | 110% -> 100%, easeInOutSine | f0 110% -> f10 108.5% -> f20 105% -> f30 101.5% -> f39 100% |
+| `C.punchIn(tl, el, cutAt, { from, to, frames, ease })` | cuts: 112-118% -> 100-102% over 8-12f, expo.out | 115% -> 100% over 10f, easeOutExpo; the cut frame shows 115% | f40 115%, f41 107.6%, f42 103.8%, f43 101.8%, f45 100.4%, f50 100% |
+| `C.keyPunch(tl, el, wordAt, { peak, inF, outF, lead, inEase, outEase, base })` | emphasis words: 100 -> 105-108% in 3-4f expo.out, back over 8-10f sine.inOut | 106% in 3f (easeOutExpo), back in 9f (easeInOutSine), `lead` 1: starts 1 frame before the onset so the onset frame already shows 105.4% | f124 100%, **f125 (onset) 105.4%**, f126 106.0%, f127 106% (peak), f130 104.5%, f133 101.5%, f136 100% |
+| `C.zoomThroughOut` / `C.zoomThroughIn` / `C.zoomThrough` | transitions: zoom-throughs | see KIT_transitions.md v02 | |
+
+`RCK.screens.push` is the same function as `RCK.cam.push` (also `zoomOut`, `punchIn`, `keyPunch` on `RCK.screens`).
+"No more than about one punch per second" (rule D) is the builder's call; the helpers don't limit it.
+
+**One wrapper, one move at a time; nest for overlaps.** Every helper drives the wrapper's scale. Moves on one wrapper
+must follow each other in time (punchIn on the cut, then push to the next cut, then zoomThroughOut into the boundary);
+each starts from the scale the previous one left. A move that overlaps another (a keyword punch during the push) goes on
+a nested wrapper; the helpers keep a registry on each element and `console.warn` overlaps. Copy-paste:
+```html
+<div id="b05-cam" class="rc-cam" style="z-index: 1">       <!-- cut moves + held-shot push -->
+  <div id="b05-key" class="rc-cam">                         <!-- keyword punches -->
+    <video id="b05-v1" class="clip" src="assets/footage/R5.2.mp4" muted playsinline data-start="0.2000" data-duration="1.4000"></video>
+    <video id="b05-v2" class="clip" src="assets/footage/R5.1.mp4" muted playsinline data-start="1.6000" data-duration="1.5666"></video>
+  </div>
+</div>
+<!-- captions (rc-cap) outside the wrappers -->
+```
+```js
+const C = RCK.cam, L = n => n / 30;
+C.push(tl, '#b05-cam', L(6), { until: L(48) });           // shot 1: 100 -> 108%, sine.inOut
+C.punchIn(tl, '#b05-cam', L(48), { from: 1.22, to: 1.10 });   // the cut to shot 2: punch settles at 110% (10f expo.out)
+C.zoomOut(tl, '#b05-cam', L(58), { until: L(95) });       // ...then the alternate move: 110 -> 100%, sine.inOut
+C.keyPunch(tl, '#b05-key', W.police);                     // "police officer": 100 -> 106 -> 100% on the inner wrapper
+```
+Inside the existing screens, use the screen's own untimed wrapper as the camera (e.g. `#b01-grow`, `.rc-l4__plate`,
+`.rc-l12__drop` is taken by the drop: wrap the stack instead); `S.spotPush` already pushes the `.rc-l7` root (eased).
+Footage-only Tesseract shots get the same moves from `tesseract_shots.json` framing keys (REVISION_v02 "framing v2").
+
+### What changed in screens.js / screens.css
+
+| Item | v01 | v02 |
+|---|---|---|
+| `S.push` (held shots) | 100 -> 104%, linear | to = from x 1.08 (rule D), easeInOutSine; starts from the previous move's scale; x / y drift option. Old calls with explicit `from` / `to` keep their values, now eased |
+| L3 `gridPop` fade | opacity linear 4f | power2.out (easeOutCubic) 4f; the 96 -> 100% scale and the B9 punch stay power3.out |
+| L4 `frostClear` | each tile clears linearly in 3f | power2.out in 3f (the sharp picture "fades in") |
+| L5 `propFloat` / `collage` | sine path | unchanged: each leg is exactly easeInOutSine (rule C "float loops") |
+| L7 `spotPush` | 100 -> 118% linear | easeInOutSine (the 118% stays) |
+| L11 `splitDrain` (B6) | intensity 0 -> 1 linear over 6f | power2.inOut (a colour change between two rests) |
+| L11 `rateRamp` (B6 "slows to 50%") | one linear rate segment | rate sampled from power2.inOut every 1/4 frame (`ease` option): 1.0, 0.99 ... 0.75 at mid ... 0.5; the runtime interpolates between the points. In Node, require type.js first for other curve names |
+| L12 `cardsDrift` | linear | easeInOutSine |
+| `S.hard` | 0.5f tween, ease none | 0.5f `steps(1)` tween (a cut) |
+| internal `span()` | default ease none | default power2.inOut (every call names its ease) |
+| `.rc-cam` (css) | | new: untimed full-frame camera wrapper |
+| L10 tag, L6 label | Inter Medium 22 / Instrument Serif Italic 32 | Coolvetica 22 / Coolvetica Italic 32 (base.css), no layout change needed |
+
+The L12 stacked cards, the L5 card with CANCELLED stamps and the B11 flip are not used by the v02 beats (B3 section
+redesigned, B7 card removed, B11 flip -> X4 glitch) but stay in the kit, eased.
+
 ---
+
+# v01 reference (still valid where the v02 section above does not override it)
 
 ## 0. How to use (every item)
 
@@ -53,12 +126,13 @@ tile overlays, L6 blur scale, L5 cut-out filters, L7 dims, L11 back face, L12 ti
 them again. Nothing is hidden by these inits (cells / cards are hidden only when you call `gridPop` / `cardDrop`).
 
 **Held shots.** Plan rule 7: every held shot gets a slow push-in 100% -> 104%: `S.push(tl, wrapper, at, {until})`.
+**v02 (rule D): `S.push` defaults to 100 -> 108%, easeInOutSine; plus zoomOut / punchIn / keyPunch (v02 section).**
 
 ### API summary
 
 | Helper | Item | Returns |
 |---|---|---|
-| `S.push(tl, els, at, {until \| durF, from=1, to=1.04, ease='none', origin='50% 50%'})` | any held shot | end |
+| `S.push(tl, els, at, {until \| durF, from=1, to=1.04, ease='none', origin='50% 50%'})` (v02: to = from x 1.08, sine.inOut; + `zoomOut`, `punchIn`, `keyPunch`) | any held shot | end |
 | `S.gridBuild(tl, grid, at, {stepF=3, order, times, durF=4, punch, punchF=4})` | L3 | last landing |
 | `S.gridPop(tl, cell, at, {durF=4, from=0.96, punch, punchF=4})` | L3 one cell / strip | landing |
 | `S.gridGrow(tl, grow, at, {cell, durF=6, ease='power3.out'})` | L3 cell -> full frame | fills the frame |

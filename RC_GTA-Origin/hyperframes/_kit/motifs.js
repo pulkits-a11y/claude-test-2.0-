@@ -13,7 +13,10 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
      placed 0.1 ms before their frame so the HyperFrames seek (floor(t*30)/30) always includes them.
    - Deterministic: no Date.now(), no Math.random() (RCK.rng(seed)), no timers, no repeat:-1.
    - Never animates a .clip itself: put class="clip" on the outer element, the helpers animate children
-     (stamp/chip/shake containers are documented in KIT_motifs.md). */
+     (stamp/chip/shake containers are documented in KIT_motifs.md).
+   - v02 (REVISION_v02 rule C): every move is eased (stars / arrow / chip / stamp were already eased; the counter roll is
+     now power1.inOut = easeInOutQuad, "number rolls, counters"); fills, blinks, flicker and shake are hard per-frame
+     changes (cuts, not moves). New: calendarIn (B12 note 6, the calendar's opening animation). Fonts: Coolvetica. */
 (function () {
   "use strict";
 
@@ -39,6 +42,14 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   function pick() { for (var i = 0; i < arguments.length; i++) { var v = arguments[i]; if (v !== undefined && v !== null && v !== "") return v; } return undefined; }
   function num() { var v = pick.apply(null, arguments); return v === undefined ? undefined : Number(v); }
   function round2(v) { return Math.round(v * 100) / 100; }
+  // easings.net name ('easeOutExpo') or GSAP name -> GSAP ease; 'none' / 'linear' are refused (rule C) -> dflt
+  function easeOf(e, dflt) {
+    if (e === undefined || e === null || e === "") e = dflt;
+    if (typeof e === "function") return e;
+    if (/^(none|linear|power0(\.\w+)?)$/i.test(String(e).trim())) { if (window.console) console.warn("RCK.motifs: ease \"" + e + "\" is linear (REVISION_v02 rule C), using " + dflt); e = dflt; }
+    if (window.RCK && RCK.ease && RCK.ease.gsap) return RCK.ease.gsap(e);
+    return e;
+  }
   function svgEl(tag, attrs) {
     var e = document.createElementNS(SVGNS, tag);
     for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, attrs[k]);
@@ -127,7 +138,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     list.forEach(function (star, i) {
       var k = opts.times ? frameOf(opts.times[i]) : k0 + i * stepF;
       last = Math.max(last, k);
-      tl.fromTo(star, { scale: 0 }, { scale: 1, duration: durF * F, ease: "power3.out", immediateRender: true }, tF(k));
+      tl.fromTo(star, { scale: 0 }, { scale: 1, duration: durF * F, ease: easeOf(opts.ease, "power3.out"), immediateRender: true }, tF(k));
     });
     return tF(last + durF);
   }
@@ -252,7 +263,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var st = arrowInit(target, opts);
     var k = frameOf(at), durF = num(opts.durF, 8), D = durF * F;
-    var E = gsap.parseEase(opts.ease || "power3.out");
+    var E = gsap.parseEase(easeOf(opts.ease, "power3.out"));
     var g = st.geometry, fs = g.shaftLen / (g.shaftLen + g.headLen);
     var lo = 0, hi = 1;                                   // t* where the pen reaches the tip: E(t*) = fs
     for (var i = 0; i < 40; i++) { var mid = (lo + hi) / 2; if (E(mid) < fs) lo = mid; else hi = mid; }
@@ -272,7 +283,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var st = arrowInit(target, opts);
     var k = frameOf(at), durF = num(opts.durF, 6);
     tl.fromTo([st.shaft, st.head], { attr: { "stroke-dashoffset": 0 } },
-      { attr: { "stroke-dashoffset": 110 }, duration: durF * F, ease: opts.ease || "power3.in", immediateRender: false }, tF(k));
+      { attr: { "stroke-dashoffset": 110 }, duration: durF * F, ease: easeOf(opts.ease, "power3.in"), immediateRender: false }, tF(k));
     if (st.label) tl.set(st.label, { opacity: 0 }, setAt(k + durF));
     return tF(k + durF);
   }
@@ -280,9 +291,10 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   /* ================================================================ M3 calendar grid = L9 calendar counter */
   // One component for B4 and B12. Squares are generated once (max slots); slots beyond `slots` are
   // hidden until the grid grows. Fill = hard change (no tween) on its frame, 2f apart, left to right.
-  var INTER_ASC = 1984 / 2048, INTER_DESC = 494 / 2048, INTER_CAP = 1490 / 2048;
-  function interBaseline(fs) { return fs * (1 - (INTER_ASC + INTER_DESC)) / 2 + fs * INTER_ASC; } // line-height 1
-  function interCapTop(fs) { return interBaseline(fs) - fs * INTER_CAP; }
+  // v02: the counter is Coolvetica (hhea ascent 0.967 em, descent 0.233 em; digits 0.688 em tall); v01 used Inter.
+  var FONT_ASC = 0.967, FONT_DESC = 0.233, FONT_DIGIT = 0.688;
+  function fontBaseline(fs) { return fs * (1 - (FONT_ASC + FONT_DESC)) / 2 + fs * FONT_ASC; } // line-height 1
+  function digitTop(fs) { return fontBaseline(fs) - fs * FONT_DIGIT; }
 
   // opts: cols 6, max 30, slots 18 (visible slots), filled 0 (already filled at the start),
   // overFrom 18 (index of the first overrun = red square), x/y = grid top-left (default x 748 = grid
@@ -364,11 +376,11 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     if (pos === "above") {
       var gA = gapOpt === undefined ? 24 : gapOpt;
       c.style.left = "0px";
-      c.style.top = round2(-(gA + interBaseline(fs))) + "px";   // baseline gA px above the grid
+      c.style.top = round2(-(gA + fontBaseline(fs))) + "px";    // baseline gA px above the grid
     } else {
       var gL = gapOpt === undefined ? 32 : gapOpt;
       c.style.right = "calc(100% + " + gL + "px)";
-      c.style.top = round2(-interCapTop(fs)) + "px";            // cap top aligned with the grid top
+      c.style.top = round2(-digitTop(fs)) + "px";               // digit top aligned with the grid top
     }
     var cs = { el: c, strips: strips, fs: fs };
     setCounter(cs, value);
@@ -399,7 +411,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
 
   // B12: the grid grows from its current count to `to` (30): each new square appears and fills siren
   // red on its frame, stepF (2) frames apart; the counter rolls +1 per square (odometer: digits slide
-  // up over rollF=2 frames, ease out), so it lands on `to` rollF after the last square.
+  // up over rollF=2 frames, power1.inOut = easeInOutQuad, opts.rollEase; v01 power3.out), so it lands on `to`
+  // rollF after the last square.
   // opts: to 30, stepF 2, rollF 2, grow 'with-fill' | 'before' (empty slots all appear at growAt,
   // default `at`, then fill), landAt (sec: ignore `at` and start so the counter lands on this frame).
   // Returns the time the counter has landed (or the last fill without a counter).
@@ -424,7 +437,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
         var nv = v + 1;
         st.counter.strips.forEach(function (s) {
           var a = counterIndex(v, s.place), b = counterIndex(nv, s.place);
-          if (a !== b) tl.fromTo(s.el, { y: -a * st.counter.fs }, { y: -b * st.counter.fs, duration: rollF * F, ease: "power3.out", immediateRender: false }, tF(k));
+          if (a !== b) tl.fromTo(s.el, { y: -a * st.counter.fs }, { y: -b * st.counter.fs, duration: rollF * F, ease: easeOf(opts.rollEase, "power1.inOut"), immediateRender: false }, tF(k));
         });
         v = nv;
       }
@@ -433,6 +446,27 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     st.slots = Math.max(st.slots, to);
     st.value = v;
     return st.counter ? tF(k + rollF) : tF(k);
+  }
+
+  // v02 (B12 note 6: "add an opening animation where it comes into the screen"): grid + counter rise and scale in
+  // together, opts.durF (12) frames, easeOutExpo (opts.ease; e.g. "back.out(1.7)" for a small overshoot), from
+  // y + opts.rise (90 px) and scale opts.from (0.9) about the grid centre, opacity 0 -> 1 over the first 6 frames
+  // (power2.out). The calendar root stays the clip; its generated children move inside an untimed .m3-body wrapper
+  // created here. Place it higher with calendarInit's y (B12: "a bit more above, to the center"). Returns at + durF.
+  function calendarIn(tl, target, at, opts) {
+    opts = opts || {};
+    var st = calendarInit(target, opts), root = st.root, body = root.querySelector(".m3-body");
+    if (!body) {
+      body = document.createElement("div");
+      body.className = "m3-body";
+      while (root.firstChild) body.appendChild(root.firstChild);
+      root.appendChild(body);
+    }
+    var k = frameOf(at), d = num(opts.durF, 12), rise = num(opts.rise, 90), s0 = num(opts.from, 0.9), fd = Math.min(d, num(opts.fadeF, 6));
+    gsap.set(body, { y: rise, scale: s0, opacity: 0, transformOrigin: "50% 50%" });
+    tl.fromTo(body, { y: rise, scale: s0 }, { y: 0, scale: 1, duration: d * F, ease: easeOf(opts.ease, "expo.out"), immediateRender: false }, tF(k));
+    tl.fromTo(body, { opacity: 0 }, { opacity: 1, duration: fd * F, ease: easeOf(opts.fadeEase, "power2.out"), immediateRender: false }, tF(k));
+    return tF(k + d);
   }
 
   /* ================================================================ M4 bug chip */
@@ -459,7 +493,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var chip = bugChipInit(target);
     var k = frameOf(at);
     if (opts.ease) {
-      tl.fromTo(chip, { scale: 0 }, { scale: 1, duration: 8 * F, ease: opts.ease, immediateRender: true }, tF(k));
+      tl.fromTo(chip, { scale: 0 }, { scale: 1, duration: 8 * F, ease: easeOf(opts.ease, "back.out(1.7)"), immediateRender: true }, tF(k));
     } else {
       tl.fromTo(chip, { scale: 0 }, { scale: 1.12, duration: 5 * F, ease: "power3.out", immediateRender: true }, tF(k));
       tl.fromTo(chip, { scale: 1.12 }, { scale: 1, duration: 3 * F, ease: "power2.inOut", immediateRender: false }, tF(k + 5));
@@ -732,7 +766,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     // M2
     arrowInit: arrowInit, arrowDraw: arrowDraw, arrowErase: arrowErase, arrowGeometry: arrowGeometry,
     // M3 / L9
-    calendarInit: calendarInit, calendarFill: calendarFill, calendarExtend: calendarExtend,
+    calendarInit: calendarInit, calendarFill: calendarFill, calendarExtend: calendarExtend, calendarIn: calendarIn,
     // M4
     bugChipInit: bugChipInit, bugChipPop: bugChipPop, BUG_D: BUG_D,
     // B2 error box
@@ -743,6 +777,6 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     // L8
     crtFit: crtFit, crtSize: crtSize, crtGrading: crtGrading, crtFlicker: crtFlicker,
     // utilities
-    frameOf: frameOf, ensureDefs: ensureDefs
+    frameOf: frameOf, ensureDefs: ensureDefs, ease: easeOf
   };
 })();

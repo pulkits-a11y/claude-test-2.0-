@@ -7,6 +7,240 @@ value) or **conflict** (see "Conflicts and decisions" at the end).
 
 Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`index.html`, proof frames in `review/`).
 
+## v02 (REVISION_v02.md): captions word by word, nothing linear, Coolvetica. Read this first
+
+Everything after this section is the v01 reference (markup, geometry, plan values) and still applies, except where this
+section says otherwise: fonts are Coolvetica, nothing is linear any more, and every caption that transcribes the voice is
+word by word with max 2 words on screen. Proof: `hyperframes/_demo-v02/` (built by its `tools/gen_demo.cjs` from this kit,
+the way a beat uses it); `review/snap/` + `review/sheet_*.jpg` = snapshots, `review/measure_v02.json` = measurements
+(`node tools/measure_v02.cjs`), `review/check.json` = `check` (0 errors).
+
+### What changed in type.js / type.css
+
+| Item | v01 | v02 |
+|---|---|---|
+| T1 captions | one clip per plan chunk (1-4 words), hard cut, no animation | groups of max 2 words; each word pops on its own frame (`captionPlanV2` + `captionHTMLV2` + `captionPops`) |
+| T2 pair | lead-in hard cut, keyword 6f blur punch (power3.out), 4f linear fade | split into groups of max 2 words (`from / the cops?`); lead words pop, the keyword keeps its blur punch (30 -> 0 px, 108 -> 100%, 6f, expo.out); optional 2-3f eased exit of the last group |
+| T4 spread words | each piece fades in 4f (linear) + drifts 12 px; all pieces stay | pieces split into groups of max 2 words that replace each other; words pop (opacity, 12 px rise, 90 -> 100%, 5f expo.out); two one-word pieces can share a group (B3 `Dundee, + Scotland.`) |
+| T5 glow line | the whole line fades in over 12f (linear opacity) | one line per group; each word blurs in (14 -> 0 px expo.out, opacity power2.out, 6f) in the text and both glow copies; the leak is unchanged (sine eases) |
+| T6 type-on | a letter every 2f (constant rate) | same total length ((n-1) x 2f), start times placed on easeOutQuad (GSAP stagger ease `power1.out`): GRAND THEFT AUTO = +0 4 7 11 14 16 18 20 22 24 25 25 26 26f |
+| T8 quote type-on | 2 characters a frame (constant) | same total length (floor((n-1)/2) f), eased the same way (18 characters: +0 1 2 3 3 4 5 5 6 6 7 7 7 8 8 8 8 8f) |
+| T8 name / role fade | 6f linear | 6f power2.out (easeOutCubic) |
+| T8 walk | linear | sine.inOut |
+| T3 push (`pushUntil`) | 100 -> 104% linear | sine.inOut; `pushTo` (1.04), `pushEase` |
+| T2 / T4 v01 helpers (`punchPair`, `spreadIn/Out/Words`) | linear fades | fade in power2.out, fade out power2.in (they still work, but break rule A: switch to the v2 calls) |
+| T5 v01 `glowLine` | linear opacity | power2.out (still works; v02 uses `glowLineV2` / style t5) |
+| hard cuts (word / letter appears, glitch jumps) | 0.5f tween, ease `none` | 0.5f tween, ease `steps(1)`: still a cut between two frames (rule C exempts cuts); no `ease: 'none'` is left in the kit |
+| `captionPlan` (v01) | | still works and prints a reminder to use `captionPlanV2` (`{ v01: true }` silences it) |
+| `opts.ease` on every helper | GSAP names | GSAP or easings.net names (`'easeOutExpo'`); `'none'` / `'linear'` are refused (console warning, the helper's default is used) |
+| fonts | Inter / Instrument Serif | Coolvetica / Coolvetica Italic; the layout constants are re-derived (Fonts, below) |
+
+### Captions v2 (rule A)
+
+Every word that transcribes the voice (T1, T2 pairs, T4 phrases, the T5 line; T10 is one word and needs nothing) appears on
+its own first syllable, frame = round(comp_t x 30) (<= 0.5f from the voice), never more than 2 words on screen. A group
+holds 1-2 words; it is replaced by a hard cut when the next group's first word starts. An eased exit (2-3f, power2.in:
+opacity 1 -> 0, scale 1 -> 0.96, blur 0 -> 4 px, ending exactly on the cut) is optional, by default only on the LAST group
+of a run (before the next style takes over); `exitAll: true` gives every group one.
+
+**Chunk syntax** (the plan's "On screen" line): `/` = a plan chunk boundary (a group never crosses it); `|` = force a group
+break inside a chunk (`a | police officer`); `+` = keep two phrases in ONE group (T4: two pieces on screen together,
+`Dundee, + Scotland.`). A chunk of 3+ words without `|` is split automatically by `RCK.type.groupWords`.
+
+**Automatic grouping** (kit heuristic, tuned on the locked script): it chooses the breaks with the lowest total cost:
+after punctuation 0; before an article / preposition / conjunction 0.5; before a verb form (-ed, -ing) or an adverb 1.5;
+after a conjunction or an auxiliary ("it's", "don't") 3; after an article or a preposition 6; inside a two-word content
+unit ("police | officer", "drive | straight" is cheap: an adverb follows) 8; an object pronoun stays with its verb
+("following you") 8; name parts ("GTA 6", "GTA Online") 9; plus 1 per one-word group, 4 for a group ending on an article,
+and groups that would be on screen for less than 2 frames are avoided. It reproduces the client's examples
+"a / police officer" and "have you / running": a short function word goes with the word after it, unless that would split
+a two-word unit, then it stands alone. Always read `captionReport(plan)` and override with `|` where a group reads badly.
+
+**Per-beat groups** (computed by the kit from `timing/beat_map.json` v02; pass exactly the chunk string, `from` = index
+of the first word in the beat's words.json; frames = composition frames of each group's first word):
+
+| Beat | Style | Chunk string (`from`) | Groups on screen | First frames |
+|---|---|---|---|---|
+| B1 | T1 | `Why does / every GTA, / even GTA 6, / have you running` (0) | Why does / every GTA, / even / GTA 6, / have you / running | 7, 26, 55, 69, 93, 105 |
+| B1 | T2 | `from the cops?` (10) | from / the cops? | 114, 120 |
+| B2 | T1 | `Because back / in 1995, / a game about / chasing criminals / broke.` (0) | Because back / in 1995, / a game / about / chasing criminals / broke. | 7, 27, 61, 69, 75, 101 |
+| B2 | T1 | `And that bug saved it.` (10; note 8: the word, no chip) | And / that bug / saved it. | 131, 142, 154 |
+| B3 | T4 | `Dundee, + Scotland.` (5; place `['left', 'right']`) | Dundee, Scotland. (one group, two pieces) | 61 |
+| B3 | T1 / new layout | `DMA Design, / the studio behind Lemmings,` (7) | DMA Design, / the studio / behind Lemmings, | 103, 135, 148 |
+| B3 | T1 | `starts a new game.` (13) ("Here's how." has no caption, rule B) | starts / a / new game. | 175, 185, 188 |
+| B4 | T2 | `planned to take 18 months.` (7, `loose: true`; `key: 2`) | planned / to take / 18 months. | 59, 70, 81 |
+| B5 | T1 | `In it, / you play / a police officer / chasing criminals.` (0) | In it, / you play / a / police officer / chasing criminals. | 7, 20, 31, 33, 53 |
+| B6 | T1 | `But there's / a problem:` (0) | But there's / a problem: | 6, 17 |
+| B6 | T2 | `it's dull.` (4) | it's dull. | 38 |
+| B7 | T1 | `So the people / above the team / keep trying / to shut it down.` (0) | So / the people / above / the team / keep trying / to shut / it down. | 6, 9, 22, 31, 41, 58, 68 |
+| B8 | T1 | `Then, something` (0) (then T10 `breaks.`) | Then, something | 7 |
+| B9 | T1 | `The police cars / stop following you / and start trying / to drive straight / through you.` (0) | The / police cars / stop / following you / and start / trying / to drive / straight / through you. | 7, 11, 27, 34, 55, 67, 75, 86, 101 |
+| B9 | T4 | `They ram. / They chase. / They don't let go.` (14; place `['strip1', 'strip2', 'strip3']`) | They ram. / They chase. / They don't / let go. | 126, 149, 174, 191 |
+| B10 | T2 | `And suddenly, it's fun.` (0) | And suddenly, / it's fun. | 7, 34 |
+| B11 | T1 | `So the team / flips the whole game. / You're not the cop / anymore. / Now you're the one / being chased.` (0) | So / the team / flips / the / whole game. / You're not / the cop / anymore. / Now you're / the one / being chased. | 6, 9, 23, 33, 42, 65, 76, 83, 103, 117, 128 |
+| B12 | T1 | `Of course,` (0) | Of course, | 6 |
+| B12 | T2 | `turn into thirty.` (5) | turn / into thirty. | 56, 67 |
+| B13 | T1 | `Until finally,` (0) | Until finally, | 7 |
+| B13 | T1 | `it ships with / a new name:` (5) | it ships / with / a / new name: | 86, 97, 104, 107 |
+| B14 | T1 | `And every GTA since / is built around / that chase.` (0) | And / every GTA / since / is built / around / that chase. | 7, 15, 32, 39, 53, 65 |
+| B14 | T4 | `The wanted stars. / The sirens. / The running.` (9; place `['left top', 'right', 'left bottom']`) | The / wanted stars. / The sirens. / The running. | 97, 102, 132, 159 |
+| B15 | T1 | `Don't believe me? / Open GTA Online / and buy an arcade. / One of the machines / is called` (0) | Don't / believe me? / Open / GTA Online / and buy / an arcade. / One of / the machines / is called | 6, 11, 31, 39, 57, 69, 100, 108, 127 |
+| B16 | T1 | `So that's why / you're always running.` (0) | So that's / why / you're always / running. | 7, 18, 20, 36 |
+| B16 | T5 | `The whole series started with a bug.` (6; note 8: the word) | The / whole series / started with / a bug. | 57, 61, 80, 100 |
+| B17 | T1 | `And GTA 6? / It opens with / Lucia already caught. / So who's` (0) | And / GTA 6? / It opens / with / Lucia / already caught. / So who's | 7, 13, 42, 54, 60, 68, 103 |
+| B17 | T2 | `chasing who now?` (11) (then T10 on "now?") | chasing who / now? | 115, 135 |
+
+Short groups the voice forces (report warnings): B5 "a" 2f, B16 "why" 2f, B11 "So" / B7 "So" 3f. `check` will also print
+`line_unread` craft warnings for 1-word groups; the voice timing wins (same as v01).
+
+**Path A, generate the HTML in Node** (recommended: one timed element per group, Studio shows each on the captions track):
+```bash
+cd hyperframes/b01-hook && node -e "
+globalThis.window = globalThis; require('./assets/kit/type.js'); const T = RCK.type;
+const w = require('./words.json').words;
+const plan = T.captionPlanV2(w, 'Why does / every GTA, / even GTA 6, / have you running', { from: 0 });
+console.log(T.captionHTMLV2(plan, { idPrefix: 'b01-cap', z: 40, track: 20 }));
+console.error(T.captionReport(plan));"
+```
+It prints one element per group, each word with its frame:
+```html
+<div id="b01-cap-1" class="clip rc-t1 rc-cap" data-start="0.2333" data-duration="0.6333" data-track-index="20" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="7">Why</span> <span class="rc-w" data-rc-f="15">does</span></span></div>
+```
+and in the beat's script, ONE call after all the caption markup (it animates every `.rc-cap`):
+```js
+const T = RCK.type;
+T.captionPops(tl);
+```
+The other styles, same two steps (`L(n)` = local frame n in seconds):
+```js
+// T2 (key = how many words at the end are keyword words, default 1; the last group exits in 3f, eased)
+T.captionHTMLV2(T.captionPlanV2(w, 'from the cops?', { from: 10, end: L(149), exitF: 3 }), { style: 't2', idPrefix: 'b01-t2', z: 40 })
+// B4 on the gray card: "18" for "eighteen" needs loose
+T.captionHTMLV2(T.captionPlanV2(w, 'planned to take 18 months.', { from: 7, loose: true }), { style: 't2', idPrefix: 'b04-t2', key: 2, onCard: true, y: 300 })
+// T4 (place = one placement per phrase: left / right / centre / top / bottom / strip1-3, or rc- classes; pieceStyle = inline CSS per phrase)
+T.captionHTMLV2(T.captionPlanV2(w, 'The wanted stars. / The sirens. / The running.', { from: 9 }), { style: 't4', idPrefix: 'b14-t4', place: ['left top', 'right', 'left bottom'] })
+T.captionHTMLV2(T.captionPlanV2(w, 'Dundee, + Scotland.', { from: 5, end: L(103) }), { style: 't4', idPrefix: 'b03-t4', place: ['left', 'right'] })
+// T5: ONE clip (black + leak), one line per group inside it; clipStart lets the black start before the first word
+T.captionHTMLV2(T.captionPlanV2(w, 'The whole series started with a bug.', { from: 6 }), { style: 't5', id: 'b16-t5', clipStart: L(50) })
+```
+For T5 leak options call `T.captionPops(tl, '#b16-t5', { leakFrom: L(50), leakPeak: 0.16 })` BEFORE the global
+`T.captionPops(tl)` (a processed clip is skipped by later calls). `captionHTMLV2` options: `style` t1 | t2 | t4 | t5,
+`idPrefix`, `id` (t5), `z`, `track`, `low` (T1 y 860), `onCard`, `y` (--rc-y px), `cls`, `inline`, `exitF`, `exitAll`,
+`key` (t2), `place` / `pieceStyle` (t4), `clipStart` / `clipEnd` (t5). `captionPlanV2` options: `from`, `end` (s; default
+the next word's comp_t, else the last word's comp_end_t), `start` (s, an earlier clip start for the first group; its words
+still pop on their own frames), `loose`, `exitF`, `max` (2). The plan: `{groups: [{text, words: [{text, i, frame, voiceT,
+offsetFrames}], startFrame, endFrame, frames, startAttr, durAttr}], next, endFrame, warnings}`.
+
+**Path B, convert v01 markup at runtime** (fastest switch: keep the beat's v01 caption clips, replace the old helper call;
+each clip keeps its window, its groups are stacked in place and shown one after the other):
+```js
+// T1 chunk clips (any number, reading order = DOM order); words: one time per word, or words.json entries (spell-checked)
+T.wordsV2(tl, '#b01-cap-1, #b01-cap-2, #b01-cap-3, #b01-cap-4', [W.Why, W.does, W.every, W.GTA_1, W.even, W.GTA_2, W.six, W.have, W.you, W.running]);
+T.punchPairV2(tl, '#b01-t2', [W.from, W.the, W.cops], { exitF: 3 });     // was T.punchPair(tl, '#b01-t2', W.cops, { outAt })
+T.spreadWordsV2(tl, '#b14-t4', [W.The1, W.wanted, W.stars, W.The2, W.sirens, W.The3, W.running]);   // was T.spreadWords
+T.glowLineV2(tl, '#b16-t5', [W.The, W.whole, W.series, W.started, W.with, W.a, W.bug]);              // was T.glowLine; write the word "bug"
+```
+`opts`: `from` (index into a words.json array), `loose`, `end` (s), `exitF` (last group), `exitAll`, `join` (T4: two
+neighbouring one-word pieces share a group; default true), `pop` (preset overrides), T5 leak options. A `|` written in the
+v01 text forces a break and is removed.
+
+**Word pops** (`RCK.type.POP`, kit choices inside rule A's "4-5f opacity 0 -> 1 + scale 0.86 -> 1 + small rise"; `lead` =
+frames the pop starts before the onset, so the onset frame already shows the word):
+
+| Style | frames | lead | from | ease | measured (B1 "does", onset f15) |
+|---|---|---|---|---|---|
+| T1 | 5 | 1 | opacity 0, scale 0.86, y +8 px | expo.out | f14 hidden, f15 75% / 96.5% / +2.0 px, f16 94% / 99.2%, f17 99%, f19 100% |
+| T2 lead | 5 | 1 | opacity 0, scale 0.86, y +6 px | expo.out | as T1 |
+| T2 keyword | 6 | 0 | full opacity on its frame, blur 30 px, scale 1.08 | expo.out | f125 blur 30 / 108%, f126 9.5 px / 102.6%, f127 2.9 px, f128 0.7 px, f131 sharp |
+| T4 | 5 | 1 | opacity 0, scale 0.9, y +12 px | expo.out | |
+| T5 | 6 | 1 | opacity 0 (power2.out), blur 14 px (expo.out) | | text and both glow copies together |
+
+`T.captionPops(tl, scope, { pop: { t1: { ease: 'back.out(1.7)', scale: 0.8 } } })` overrides a preset.
+Measured in the demo (`review/measure_v02.json` `ruleA`): 50 words, every frame of the 36 s demo has at most 2 caption
+words visible, and all 50 words are first visible exactly on their onset frame.
+
+**Migration from v01 `captionPlan`** (one Node line per beat): replace `captionPlan` -> `captionPlanV2` and `captionHTML`
+-> `captionHTMLV2` (same `words`, same chunk string, same `from` / `end` / `loose`), paste the new HTML over the old T1
+clips, add `T.captionPops(tl)` once. T2 / T4 / T5 markup: either regenerate it with `style: 't2' | 't4' | 't5'` or keep it
+and swap `punchPair` / `spreadWords` / `glowLine` for `punchPairV2` / `spreadWordsV2` / `glowLineV2` with one time per word.
+T7 sentences become plain T1 captions ("bug" is a word, note 8). T10 (`glitch`) is unchanged.
+
+### Easing (rule C): `RCK.ease`
+
+Defined by type.js (every beat loads it). `RCK.ease.<easings.net name>` = the GSAP ease; `RCK.ease.css.<name>` = the
+easings.net CSS bezier; `RCK.ease.fn(nameOrGsap)` = the reference curve (Node too); `RCK.ease.name('expo.out')` =
+'easeOutExpo'; `RCK.ease.get(e)` / any helper's `opts.ease` accept both spellings and refuse `none` / `linear`.
+
+| easings.net | GSAP | CSS cubic-bezier | kit use (REVISION_v02 table) |
+|---|---|---|---|
+| easeInOutSine | `sine.inOut` | 0.37, 0, 0.63, 1 | pushes / zoom-outs across a held shot, drifts, floats, leak drift |
+| easeOutExpo | `expo.out` | 0.16, 1, 0.3, 1 | word pops, T2 keyword punch, punch-ins settling, zoom-through in-half, calendar opening |
+| easeOutQuart | `power3.out` | 0.25, 1, 0.5, 1 | T3 digit roll, T9, X2 drift, X5 open, stars, arrow |
+| easeOutBack | `back.out(1.70158)` | 0.34, 1.56, 0.64, 1 | optional pops (`opts.pop`, chip `ease`) |
+| easeInExpo | `expo.in` | 0.7, 0, 0.84, 0 | zoom-through out-half |
+| easeInQuart | `power3.in` | 0.5, 0, 0.75, 0 | X5 close, arrow erase |
+| easeOutCubic / easeInCubic | `power2.out` / `power2.in` | 0.33, 1, 0.68, 1 / 0.32, 0, 0.67, 0 | fades in / out (T8 name, L3 cell, L4 tile, X7, caption exits) |
+| easeInOutCubic | `power2.inOut` | 0.65, 0, 0.35, 1 | moves between two rests (L11 drain, flip, rate ramp) |
+| easeInQuad / easeOutQuad | `power1.in` / `power1.out` | 0.11, 0, 0.5, 0 / 0.5, 1, 0.89, 1 | X3 flash ramp / fade; type-on timing (stagger ease power1.out) |
+| easeInOutQuad | `power1.inOut` | 0.45, 0, 0.55, 1 | counter rolls (M3) |
+| every other easings.net name | `sine.in/out`, `power1-4.*`, `expo.*`, `circ.*`, `back.*`, `elastic.*(1, 0.3 / 0.45)`, `bounce.*` | `RCK.ease.css` (no bezier for elastic / bounce) | |
+
+All GSAP curves equal the easings.net formulas to 4 decimals except `expo`: GSAP 3.15's expo is corrected to end exactly
+at 0 and 1 and differs from easings.net's 2^(10x-10) by up to 0.008 of the range mid-curve (measured, invisible on screen).
+
+Measured in the demo (`node tools/measure_v02.cjs`): the demo timeline has 238 tweens = 106 eased + 89 hard cuts (0.5f
+step tweens) + 43 sets, 0 linear; an audit timeline calling all 49 kit helpers (type, transitions, screens, motifs, camera)
+has 0 linear tweens; 184 tween properties sampled at 25 / 50 / 75 % render their curve within 0.0011 and are never closer
+than 0.10 (10% of the move) to a straight line.
+
+### Fonts (Coolvetica), checked in the render Chrome
+
+* base.css: `--sans` = Coolvetica (Regular file), `--serif` = "Coolvetica Italic" (Italic file), every weight 100-900 maps
+  to the one face, `font-synthesis: none`.
+* All four `@font-face` rules load (`document.fonts`), `document.fonts.check` is true for both families, and the text is
+  not a fallback (canvas: "Hamburgefonts 1995?" at 120 px is 1062 px wide in Coolvetica, 1187 px in the fallback, the
+  pixels differ).
+* No faux bold: weights 400 / 600 / 900 render pixel-identical glyphs (the faces cover 100-900, and synthesis is off).
+  No faux oblique: `italic` on `--sans`, `italic` on `--serif` and "Coolvetica Italic" upright all render the same pixels
+  = the real Italic file (italicAngle -10 deg); the Regular renders differently. Computed `font-synthesis: none` on the
+  caption words.
+* Snapshots through `hyperframes snapshot` (`_demo-v02/review/snap`) show Coolvetica / Coolvetica Italic in T1, T2, T3,
+  T5, T6, T8, T9, T10.
+* Metrics the kit uses (`RCK.type.METRICS`, em): line box ascent 0.967 / descent 0.233 (hhea, used by Chrome; Coolvetica
+  has no USE_TYPO_METRICS), H 0.672, digits and round tops 0.688, x-height 0.5, underline 0.133 under the baseline, 0.02
+  thick, italic angle -10 deg. In a line box of height LH the baseline sits at LH/2 + 0.367 em and the cap centre at
+  LH/2 + 0.031 em (Inter's caps were centred), so every "centred on --rc-y" style moved up by 0.031 em.
+
+| Style | Constant | v01 (Inter / Instrument Serif) | v02 (Coolvetica) | Measured in `_demo-v02` |
+|---|---|---|---|---|
+| T1 | line top | --rc-y - 28 px | - 28 px - 0.031 em | cap centre y 619.1 (want 620) |
+| T2 | row top; lead-only rows | --rc-y - 70 px | - 74.34 px; a keyword-size zero-width `::after` strut | keyword cap centre 539.6; shared baseline --rc-y + 47.0 for pairs AND lead-only groups ("from", "to take"); gap 14 px; centred on 960 |
+| T3 | block top; "In"; mask; tracking | --rc-y - 110 - 64; 0; 200 px (baseline 190); -2% | --rc-y - 115 - 64; "In" `top: 8px`; 200 px (baseline 190.7); -1% | digits centred 540.3; In baseline to digit top 40.7 px (v01 40); mask clips 9 px under the baseline |
+| T4 | piece top | --rc-y - 28 px | - 28 px - 0.031 em | |
+| T5 | line top; --rc-cap | --rc-y - 50 px; 0.72 | - 52.6 px; 0.672 | |
+| T6 | size; pitch; tracking; line lift | 400 px; 0.8; -4%; 0 | 420 px; 0.79; -1%; `top: -0.0395 x size` per line | ink y 55.7-1022.3 inside title-safe 54-1026; GRAND 1270, THEFT 1133, AUTO 973 px wide, x 322-1593 |
+| T7 | line top; --rc-cap | - 28 px; 0.7275 | - 28 px - 0.031 em; 0.672 | (no chips in v02) |
+| T8 | underline; quote size | top 1.17 em, 0.038 em thick; 110 px | top 1.15 em, max(2 px, 0.02 em); `var(--rc-t8-quote, 110px)` | "“awful… too sim-y.”" = 911 px at 110 px, wider than the 816 px `rc-t8--right` column: write `“awful…<br>too sim-y.”` (2 lines, 496 x 242 px, demo) or set `--rc-t8-quote: 96px` (one line, ~795 px) |
+| T9 | label padding | 12 / 20 px | 11 / 20 / 13 px | caps centre 732.6 vs box centre 732 |
+| T10 | line top; slice cuts | --rc-y - 80; 61 / 99 px | --rc-y - 85; 67 / 103 px (`rc-t10--key`: - 74; 59 / 90) | cap centre 540.2; caps 31.5-139 px of the line, cut in thirds |
+| M3 counter, M2 label | Inter metrics | Coolvetica metrics (motifs.js) | counter digit top 399.97 on the grid top 400 |
+
+**Looks that changed noticeably in Coolvetica** (all intended by note 12, flagged so nobody is surprised):
+* T6: Coolvetica has one weight, lighter and much narrower than Inter Black: GRAND 1270 px (v01 1404). THEFT (1133 px) is
+  now fully hidden behind the 62% L6 frame (1190 px); in v01 its outer letters peeked out. The stack reads as GRAND
+  above and AUTO below the frame.
+* T3 and T6 tracking relaxed (-2% -> -1%, -4% -> -1%): at the plan's values Coolvetica's digits / letters touch
+  ("99", R-A-N merge).
+* T2: lead-in and keyword are one family now (Coolvetica / Coolvetica Italic): the keyword is set apart by size and slant
+  only, no serif contrast. T3 "In", T5, T8 quote / name, L6 label: the serif roles are a slanted sans.
+* T8 quote: two lines (or 96 px) at the right of the L5 card.
+* T10 and the CANCELLED stamp: no Black weight, the glitch word reads lighter.
+* The B2 error box keeps the system sans (Liberation Sans, bold exists, so `font-synthesis: none` does not affect it).
+
+---
+
+# v01 reference (still valid where the v02 section above does not override it)
+
 ## Setup (already done by `tools/new_beat.py`)
 
 ```html
@@ -44,13 +278,18 @@ Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`i
   Everything defaults inside title-safe (96 px left/right, 54 px top/bottom).
 * **Fonts** come from base.css: Inter 500 captions, 600 lead-ins, 700 year numerals and label, 900 giant type and
   glitch word; Instrument Serif Italic for the emotional word, the small *In*, glow line, quotes; Instrument Serif
-  Italic for T8 names too (Style kit > Fonts: "quotes and names").
+  Italic for T8 names too (Style kit > Fonts: "quotes and names"). **v02: all of these are Coolvetica (sans roles) and
+  Coolvetica Italic (serif roles), one weight; see "v02 > Fonts".**
 * **Eases.** "Ease out" = GSAP `power3.out` (the plan's HyperFrames translation). Where the plan names no ease the
-  kit uses: fades linear (`none`), moves `power3.out` (marked **kit choice** below).
+  kit uses: fades linear (`none`), moves `power3.out` (marked **kit choice** below). **v02: nothing is linear: fades
+  are power2.out / power2.in, type-ons eased, hard cuts are steps(1) cuts; see "v02 > What changed".**
 * `RCK.type.<helper>(tl, target, atSeconds, opts) -> endSeconds`. `target` is a selector or an Element.
   Helpers set start states with `gsap.set` when they are called; call each helper once per element.
 
 ## API summary
+
+v02 adds (see the v02 section): `captionPlanV2`, `captionHTMLV2`, `captionReport`, `groupWords`, `captionPops`,
+`wordsV2`, `punchPairV2`, `spreadWordsV2`, `glowLineV2`, `typeOnOffsets`, `ease`, `METRICS`, `POP`, and `RCK.ease`.
 
 | Helper | Item | Returns |
 |---|---|---|
@@ -73,6 +312,8 @@ Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`i
 ---
 
 ## T1 Running caption
+
+**v02: T1 is word by word, max 2 words (v02 > Captions v2); the v01 chunk mechanics below are kept for reference.**
 
 **Plan:** Inter Medium 46 px, white, soft shadow. Centred at x 960, y 620; drop to y 860 if a face is in the centre.
 Hard cut in on the first syllable, hard cut out on the next chunk. 1-3 words per chunk, never more than 4; within

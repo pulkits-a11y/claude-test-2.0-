@@ -1,0 +1,26 @@
+== A T1 (B1)
+1 f7-26 (19f)  Why does   Why@7 does@15
+2 f26-55 (29f)  every GTA,   every@26 GTA,@40
+3 f55-69 (14f)  even   even@55
+4 f69-93 (24f)  GTA 6,   GTA@69 6,@80
+5 f93-105 (12f)  have you   have@93 you@98
+6 f105-114 (9f)  running   running@105
+== A T2 (B1)
+1 f114-120 (6f)  from   from@114
+2 f120-150 (30f)  the cops?   the@120 cops?@125
+== B T1 (B5, converted at runtime): In it, / you play / a / police officer / chasing criminals.
+== C T1 (B2 end)
+1 f270-292 (22f)  saved it.   saved@270 it.@278
+== D1 T2 (B4)
+1 f369-380 (11f)  planned   planned@369
+2 f380-391 (11f)  to take   to@380 take@386
+3 f391-422 (31f)  18 months.   18@391 months.@398
+== D2 T1 (B12)
+1 f431-451 (20f)  Of course,   Of@431 course,@435
+== E1 T4 (B3)
+1 f531-575 (44f)  Dundee, Scotland.   Dundee,@531 Scotland.@546
+== F T5 (B16)
+1 f692-696 (4f)  The   The@692
+2 f696-715 (19f)  whole series   whole@696 series@705
+3 f715-735 (20f)  started with   started@715 with@728
+4 f735-760 (25f)  a bug.   a@735 bug.@736

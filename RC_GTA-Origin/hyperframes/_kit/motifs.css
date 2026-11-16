@@ -60,7 +60,7 @@
 .m2-arrow .m2-label {
   position: absolute;
   font-family: var(--sans);
-  font-weight: 600; /* Inter SemiBold */
+  font-weight: 600; /* plan: Inter SemiBold; v02 Coolvetica (one weight, no synthetic bold) */
   font-size: 36px;
   line-height: 1;
   color: var(--highlighter);
@@ -108,7 +108,7 @@
   position: absolute;
   display: flex;
   font-family: var(--sans);
-  font-weight: 700; /* Inter Bold */
+  font-weight: 700; /* plan: Inter Bold; v02 Coolvetica (one weight) */
   font-size: 120px;
   line-height: 1;
   color: var(--card-ink);
@@ -129,6 +129,14 @@
   display: block;
   height: 1em;
   line-height: 1;
+}
+/* v02: RCK.motifs.calendarIn moves grid + counter together inside this untimed wrapper (the .m3-cal root stays the clip) */
+.m3-body {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* ------------------------------------------------------------------ M4 bug chip */
@@ -276,7 +284,7 @@
 .m-stamp__ink {
   display: block;
   font-family: var(--sans);
-  font-weight: 900; /* Inter Black */
+  font-weight: 900; /* plan: Inter Black; v02 Coolvetica (one weight) */
   font-size: 120px;
   line-height: 1;
   letter-spacing: 0;

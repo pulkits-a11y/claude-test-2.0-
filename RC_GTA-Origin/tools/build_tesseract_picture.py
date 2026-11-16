@@ -540,6 +540,9 @@ def load_shots(beat: dict, warnings: list, shots_dir=None):
         if ef <= sf:
             warnings.append("%s %s: end_f <= start_f; skipped" % (beat["id"], s["id"]))
             continue
+        if ef > int(beat["dur_frames"]):
+            warnings.append("%s %s: ends at beat f%d, %d f past the beat's %d frames (shot file still v01-timed?)" % (
+                beat["id"], s["id"], ef, ef - int(beat["dur_frames"]), int(beat["dur_frames"])))
         s["_beat_f"] = (sf, ef)
         s["_start_f"] = beat["start_frame"] + sf
         s["_end_f"] = beat["start_frame"] + ef
@@ -996,20 +999,6 @@ def main():
         raise SystemExit("dust overlay missing: %s" % rel(dust_src))
     dust_asset = "pic-tex-dust-overlay"
     tsrct("project", "import-asset", "--project", PROJECT, "--file", dust_src, "--asset-id", dust_asset, "--kind", "image")
-    hf_assets, hf_ok = {}, []
-    for b, mov in hf:          # a beat being re-rendered right now can be an incomplete file: skip it, say so
-        aid = "pic-hf-%s" % b["composition"]["id"]
-        try:
-            nf = int(probe(mov)["nb_frames"] or 0)
-            r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", mov, "--asset-id", aid).stdout)
-        except (SystemExit, ValueError, KeyError, IndexError) as e:
-            warnings.append("%s: unreadable or incomplete (being re-rendered?); beat render skipped: %s" % (
-                rel(mov), str(e).strip().splitlines()[0][:200] if str(e).strip() else type(e).__name__))
-            missing_renders.append(b["composition"]["id"] + " (unreadable)")
-            continue
-        hf_assets[b["id"]] = (aid, r, nf)
-        hf_ok.append((b, mov))
-    hf = hf_ok
     wc_used = set()
     shot_assets, imported = {}, {}
     for b in beats:
@@ -1034,6 +1023,27 @@ def main():
                 imported[aid] = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", wc["path"],
                                                  "--asset-id", aid).stdout)
             shot_assets[id(s)] = (aid, imported[aid], wc)
+    # every import rewrites the whole package (temp copy + rename, measured), so the small assets go in first and
+    # the beat renders last, smallest first: far less rewriting, and the package is at most twice its size on disk
+    hf_assets, hf_ok = {}, set()
+    def size_or_0(path):
+        try:
+            return path.stat().st_size
+        except OSError:
+            return 0
+    for b, mov in sorted(hf, key=lambda bm: size_or_0(bm[1])):
+        aid = "pic-hf-%s" % b["composition"]["id"]   # a beat being re-rendered can be an incomplete file: skip it
+        try:
+            nf = int(probe(mov)["nb_frames"] or 0)
+            r = json.loads(tsrct("project", "import-video", "--project", PROJECT, "--file", mov, "--asset-id", aid).stdout)
+        except (SystemExit, OSError, ValueError, KeyError, IndexError) as e:
+            warnings.append("%s: unreadable or incomplete (being re-rendered?); beat render skipped: %s" % (
+                rel(mov), str(e).strip().splitlines()[0][:200] if str(e).strip() else type(e).__name__))
+            missing_renders.append(b["composition"]["id"] + " (unreadable)")
+            continue
+        hf_assets[b["id"]] = (aid, r, nf)
+        hf_ok.add(b["id"])
+    hf = [(b, mov) for b, mov in hf if b["id"] in hf_ok]
     if not args.output:                     # a test build must not evict the real build's working copies
         for f in MEDIA.glob("*.mp4"):
             if f.name not in wc_used:

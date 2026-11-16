@@ -7,7 +7,12 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
      seeded RCK.rng only, no repeat:-1, no onUpdate);
    - `target` = selector string or Element written by the beat in its HTML (timed leaves carry class="clip");
    - times snap to the 30 fps grid. A tween placed at frame k shows its START state on frame k and its END state on
-     frame k + d ("lands on k + d"); "ease out" = power3.out; fades are linear;
+     frame k + d ("lands on k + d"); "ease out" = power3.out; v02 (REVISION_v02 rule C): nothing is linear any more,
+     fades are power2.out / power2.in, held-shot pushes sine.inOut, drifts and parallax sine.inOut, the B6 rate ramp is
+     sampled from power2.inOut; hard changes are 0.5-frame step tweens (cuts, not moves); opts.ease takes an
+     easings.net name ('easeOutExpo') or a GSAP name, 'none' / 'linear' are refused;
+   - v02 camera (rule D, also on RCK.cam): push / zoomOut across a held shot, punchIn on a cut, keyPunch on a keyword;
+     transitions.js adds zoomThroughOut / zoomThroughIn. They scale an untimed picture wrapper, never the captions;
    - only untimed wrappers / children are transformed; start states are set with gsap.set at build time (each helper
      calls its idempotent init itself), never with CSS transforms; footage is never CSS-filtered (media treatments
      are animated through their documented CSS properties --hf-color-grading-*).
@@ -16,6 +21,26 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
 (function () {
   'use strict';
   var FPS = 30, F = 1 / FPS, EASE_OUT = 'power3.out';
+  function warn(msg) { if (window.console) console.warn('RCK.screens: ' + msg); }
+  // easings.net name ('easeInOutSine') or GSAP name -> GSAP ease; 'none' / 'linear' are refused (rule C) -> dflt
+  function easeOf(e, dflt) {
+    if (e == null || e === '') e = dflt;
+    if (typeof e === 'function') return e;
+    if (/^(none|linear|power0(\.\w+)?)$/i.test(String(e).trim())) { warn('ease "' + e + '" is linear (REVISION_v02 rule C), using ' + dflt); e = dflt; }
+    if (window.RCK && RCK.ease && RCK.ease.gsap) return RCK.ease.gsap(e);
+    var m = /^ease(InOut|In|Out)(Sine|Quad|Cubic|Quart|Quint|Expo|Circ|Back|Elastic|Bounce)$/.exec(String(e));
+    if (!m) return e;
+    var fam = { Sine: 'sine', Quad: 'power1', Cubic: 'power2', Quart: 'power3', Quint: 'power4', Expo: 'expo', Circ: 'circ', Back: 'back', Elastic: 'elastic', Bounce: 'bounce' }[m[2]];
+    return fam + '.' + (m[1] === 'InOut' ? 'inOut' : m[1].toLowerCase());
+  }
+  // pure ease curves for the no-GSAP helpers (rateRamp runs in Node): RCK.ease.fn when type.js is loaded, else these
+  function easeFn(name) {
+    if (window.RCK && RCK.ease && RCK.ease.fn) { var f = RCK.ease.fn(easeOf(name, 'power2.inOut')); if (f) return f; }
+    var n = String(easeOf(name, 'power2.inOut'));
+    if (n === 'sine.inOut') return function (x) { return -(Math.cos(Math.PI * x) - 1) / 2; };
+    if (n === 'power1.inOut') return function (x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
+    return function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };   // power2.inOut
+  }
   var W = 1920, H = 1080;
 
   /* ---------------- frame grid ---------------- */
@@ -39,17 +64,17 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   function cssNum(el, name, d) { return num(window.getComputedStyle(el).getPropertyValue(name), d); }
   function seedOf(str) { var h = 2166136261; str = String(str); for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
   function shuffle(arr, rnd) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
-  // a tween of d frames placed at frame k: frame k = `from`, frame k + d = `to`
+  // a tween of d frames placed at frame k: frame k = `from`, frame k + d = `to` (ease required: nothing is linear)
   function span(tl, target, from, to, t, dF, ease) {
     var t0 = snap(t);
-    tl.fromTo(target, from, Object.assign({ duration: dF / FPS, ease: ease || 'none', immediateRender: false }, to), t0);
+    tl.fromTo(target, from, Object.assign({ duration: dF / FPS, ease: easeOf(ease, 'power2.inOut'), immediateRender: false }, to), t0);
     return t0 + dF / FPS;
   }
-  // hard change: frame n shows `to`, frame n-1 shows `from` (0.5-frame tween placed strictly between the two frames)
+  // hard change: frame n shows `to`, frame n-1 shows `from` (0.5-frame step tween placed strictly between the two frames)
   function hard(tl, target, from, to, t) {
     var n = frame(t), pos = (n - 0.75) / FPS;
     if (pos < 0) { G().set(target, to); return; }
-    tl.fromTo(target, from, Object.assign({ duration: 0.5 / FPS, ease: 'none', immediateRender: false }, to), pos);
+    tl.fromTo(target, from, Object.assign({ duration: 0.5 / FPS, ease: 'steps(1)', immediateRender: false }, to), pos);
   }
   // earliest data-start of the timed leaves inside `el` (seconds), or null
   function windowStart(el) {
@@ -62,17 +87,77 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return snap(at) + (opts.durF != null ? opts.durF : defF) / FPS;
   }
 
-  /* ================================ generic held-shot push-in ================================ */
-  // Style kit rule 7: every held shot gets a slow push-in 100% -> 104% (linear). Scales `target` (an untimed wrapper,
-  // or several: a selector matching all of them) from `from` to `to` between `at` and opts.until (or at + durF).
-  // opts.origin: transform-origin (default centre). Returns the end time.
+  /* ================================ v02 camera on a held shot (rule D) ================================ */
+  // Every camera helper scales ONE untimed picture wrapper (footage / card inside; captions stay outside it, steady).
+  // Moves on one wrapper must follow each other in time: each starts from the scale the previous move left (a registry
+  // on the element; overlapping moves are reported with console.warn). A keyword punch during a push needs its own
+  // nested wrapper:  <div class="rc-cam" id="b05-cam"><div class="rc-cam" id="b05-key"> picture </div></div>
+  function camReg(el, kind, f0, f1, s0, s1) {
+    var reg = el.__rcCam || (el.__rcCam = []), first = true, prev = null;
+    reg.forEach(function (r) {
+      if (f0 < r.f1 && r.f0 < f1) warn(kind + ' f' + f0 + '-' + f1 + ' overlaps ' + r.kind + ' f' + r.f0 + '-' + r.f1 + ' on #' + (el.id || el.className) + ': put one of them on a nested wrapper');
+      if (r.f0 <= f0) first = false;
+      if (r.f1 <= f0 && (!prev || r.f1 > prev.f1)) prev = r;
+    });
+    reg.push({ kind: kind, f0: f0, f1: f1, s0: s0, s1: s1 });
+    return { first: first, prevScale: prev ? prev.s1 : null, entry: reg[reg.length - 1] };
+  }
+  // scale (+ optional x/y drift) of each element from vars0 to vars1 over [f0, f1], ease; registers the move and sets
+  // the start state at build time only when it is the element's earliest move. Returns f1 in seconds.
+  function camMove(tl, els, kind, f0, f1, s0, s1, ease, opts) {
+    els.forEach(function (el) {
+      var r = camReg(el, kind, f0, f1, s0, s1), v0 = { scale: s0 }, v1 = { scale: s1 };
+      if (opts.x != null || opts.y != null) { v0.x = opts.x0 || 0; v0.y = opts.y0 || 0; v1.x = opts.x || 0; v1.y = opts.y || 0; }
+      if (r.first) G().set(el, Object.assign({ transformOrigin: opts.origin || '50% 50%', force3D: false }, v0));
+      else if (opts.origin) G().set(el, { transformOrigin: opts.origin });   // one origin per wrapper: it applies to every move
+      tl.fromTo(el, v0, Object.assign({ duration: Math.max(1, f1 - f0) * F, ease: ease, force3D: false, immediateRender: false }, v1), f0 * F);
+    });
+    return f1 * F;
+  }
+  // Held shot push (v02 rule D: "push 100 -> 106-110% across the shot (sine.inOut) instead of v01's linear 104%"):
+  // scales `target` (an untimed wrapper, or several: a selector matching all of them) from opts.from (1, or the scale a
+  // previous move on the wrapper left) to opts.to (1.08) between `at` and opts.until (or at + durF), easeInOutSine
+  // (opts.ease). opts.origin (centre), opts.x / opts.y: optional drift (px) on the same curve. Returns the end time.
   function push(tl, target, at, opts) {
     opts = opts || {};
-    var els = $$(target), t0 = snap(at), t1 = endOf(at, opts, 60);
-    var a = opts.from != null ? opts.from : 1, b = opts.to != null ? opts.to : 1.04;
-    G().set(els, { scale: a, transformOrigin: opts.origin || '50% 50%' });
-    tl.fromTo(els, { scale: a }, { scale: b, duration: Math.max(F, t1 - t0), ease: opts.ease || 'none', immediateRender: false }, t0);
-    return t1;
+    var els = $$(target), f0 = frame(at), f1 = frame(endOf(at, opts, 60));
+    var prev = els[0] && els[0].__rcCam ? camPrev(els[0], f0) : null;
+    var a = opts.from != null ? opts.from : (prev != null ? prev : 1), b = opts.to != null ? opts.to : a * 1.08;
+    return camMove(tl, els, 'push', f0, f1, a, b, easeOf(opts.ease, 'sine.inOut'), opts);
+  }
+  function camPrev(el, f0) { var p = null; (el.__rcCam || []).forEach(function (r) { if (r.f1 <= f0 && (!p || r.f1 > p.f1)) p = r; }); return p ? p.s1 : null; }
+  // The alternate held-shot move (rule D "alternate with slow zoom-outs (110 -> 100%)"): opts.from 1.10 -> opts.to 1.0,
+  // sine.inOut, between `at` and opts.until. Returns the end time.
+  function zoomOut(tl, target, at, opts) {
+    opts = opts || {};
+    return camMove(tl, $$(target), 'zoomOut', frame(at), frame(endOf(at, opts, 60)), opts.from != null ? opts.from : 1.10,
+      opts.to != null ? opts.to : 1.0, easeOf(opts.ease, 'sine.inOut'), opts);
+  }
+  // Punch-in on a cut (rule D "cuts into a new shot: a punch-in that settles, 112-118% -> 100-102% over 8-12f, expo.out"):
+  // frame `at` (the cut, the shot's first frame) shows opts.from (1.15), settling to opts.to (1.0) over opts.frames (10),
+  // easeOutExpo: k 115% | k+1 107.5% | k+2 103.8% | k+3 101.9% | ... | k+10 100%. Returns the landing time.
+  function punchIn(tl, target, at, opts) {
+    opts = opts || {};
+    var f0 = frame(at), N = opts.frames != null ? opts.frames : 10;
+    return camMove(tl, $$(target), 'punchIn', f0, f0 + N, opts.from != null ? opts.from : 1.15, opts.to != null ? opts.to : 1.0, easeOf(opts.ease, 'expo.out'), opts);
+  }
+  // Keyword punch (rule D "a quick frame punch: content 100 -> 105-108% in 3-4f expo.out, back over 8-10f sine.inOut";
+  // max about one punch per second): opts.peak (1.06) in opts.inF (3) frames, easeOutExpo, back to the base scale over
+  // opts.outF (9) frames, easeInOutSine. opts.lead (1): the punch starts 1 frame before the word's onset frame, so the
+  // onset frame already shows 105.4%: k-1 100% | k 105.4% | k+1 105.9% | k+2 106% (peak) | ... | k+11 100%. Put it on its
+  // own wrapper when the shot also pushes (both drive scale). opts.base: the wrapper's resting scale (1). Returns the end.
+  function keyPunch(tl, target, at, opts) {
+    opts = opts || {};
+    var els = $$(target), k = frame(at), lead = opts.lead != null ? opts.lead : 1, inF = opts.inF || 3, outF = opts.outF || 9;
+    var base = opts.base != null ? opts.base : 1, peak = base * (opts.peak != null ? opts.peak : 1.06), f0 = Math.max(0, k - lead);
+    els.forEach(function (el) {
+      var r = camReg(el, 'keyPunch', f0, f0 + inF + outF, base, base);
+      if (r.first) G().set(el, { scale: base, transformOrigin: opts.origin || '50% 50%', force3D: false });
+      else if (opts.origin) G().set(el, { transformOrigin: opts.origin });
+      tl.fromTo(el, { scale: base }, { scale: peak, duration: inF * F, ease: easeOf(opts.inEase, 'expo.out'), force3D: false, immediateRender: false }, f0 * F);
+      tl.fromTo(el, { scale: peak }, { scale: base, duration: outF * F, ease: easeOf(opts.outEase, 'sine.inOut'), force3D: false, immediateRender: false }, (f0 + inF) * F);
+    });
+    return (f0 + inF + outF) * F;
   }
 
   /* ================================ L3 Grid build ================================ */
@@ -89,14 +174,15 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     });
     return out;
   }
-  // One cell pops in: 4f, scale 96% -> 100% (ease out) with a fade 0 -> 1 (linear). Frame k = invisible, k+4 = landed.
+  // One cell pops in: 4f, scale 96% -> 100% (ease out) with a fade 0 -> 1 (power2.out = easeOutCubic; v01 linear).
+  // Frame k = invisible, k+4 = landed.
   // opts.punch (B9: 1.15): the cell's .rc-l3__media also punches in 100% -> punch over opts.punchF (4f, ease out).
   // Returns the landing time.
   function gridPop(tl, cell, at, opts) {
     opts = opts || {};
     var c = $(cell), d = opts.durF || 4, s0 = opts.from != null ? opts.from : 0.96, t0 = snap(at);
     G().set(c, { opacity: 0, scale: s0, transformOrigin: '50% 50%' });
-    span(tl, c, { opacity: 0 }, { opacity: 1 }, t0, d, 'none');
+    span(tl, c, { opacity: 0 }, { opacity: 1 }, t0, d, easeOf(opts.fadeEase, 'power2.out'));
     var end = span(tl, c, { scale: s0 }, { scale: 1 }, t0, d, EASE_OUT);
     if (opts.punch) {
       var m = c.querySelector('.rc-l3__media');
@@ -104,7 +190,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       var pf = opts.punchF || 4;
       m.setAttribute('data-layout-allow-overflow', '');   // the punch-in overflows the cell on purpose (clipped)
       G().set(m, { scale: 1, transformOrigin: '50% 50%' });
-      end = Math.max(end, span(tl, m, { scale: 1 }, { scale: opts.punch }, t0, pf, opts.punchEase || EASE_OUT));
+      end = Math.max(end, span(tl, m, { scale: 1 }, { scale: opts.punch }, t0, pf, easeOf(opts.punchEase, EASE_OUT)));
     }
     return end;
   }
@@ -138,7 +224,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var s0 = Math.max(r.w / gw, r.h / gh), dx = r.x + r.w / 2 - gw / 2, dy = r.y + r.h / 2 - gh / 2;
     var ins0 = 'inset(' + r.y + 'px ' + (gw - r.x - r.w) + 'px ' + (gh - r.y - r.h) + 'px ' + r.x + 'px)';
     var ins1 = 'inset(0px 0px 0px 0px)';
-    var d = opts.durF || 6, ease = opts.ease || EASE_OUT;
+    var d = opts.durF || 6, ease = easeOf(opts.ease, EASE_OUT);
     G().set(g, { clipPath: ins0 });
     G().set(media, { x: dx, y: dy, scale: s0, transformOrigin: '50% 50%' });
     span(tl, g, { clipPath: ins0 }, { clipPath: ins1 }, at, d, ease);
@@ -167,14 +253,16 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     root.__rcsFrost = st;
     return st;
   }
-  // One tile clears over opts.durF (3f, linear): its frosted copy (mask alpha --rc-l4-a<i>) and its overlay + border
-  // fade 1 -> 0 together. tile = 0..11, row-major (0 = top-left, 11 = bottom-right). Returns the clear time.
+  // One tile clears over opts.durF (3f, power2.out = easeOutCubic: the sharp picture "fades in"; v01 linear): its frosted
+  // copy (mask alpha --rc-l4-a<i>) and its overlay + border fade 1 -> 0 together. tile = 0..11, row-major (0 = top-left,
+  // 11 = bottom-right). Returns the clear time.
   function frostClearTile(tl, frost, tile, at, opts) {
     opts = opts || {};
     var st = frostInit(frost, opts), d = opts.durF || 3, a = {}, b = {};
     a['--rc-l4-a' + tile] = 1; b['--rc-l4-a' + tile] = 0;
-    if (st.mask) span(tl, st.mask, a, b, at, d, 'none');
-    if (st.tiles[tile]) span(tl, st.tiles[tile], { opacity: 1 }, { opacity: 0 }, at, d, 'none');
+    var e = easeOf(opts.ease, 'power2.out');
+    if (st.mask) span(tl, st.mask, a, b, at, d, e);
+    if (st.tiles[tile]) span(tl, st.tiles[tile], { opacity: 1 }, { opacity: 0 }, at, d, e);
     return snap(at) + d / FPS;
   }
   // Tiles clear one at a time in the seeded random order, one per entry of `times` (s; e.g. each spoken word's
@@ -229,6 +317,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
   // A prop floats +/-6 px (opts.amp) on a sine path: one leg (-6 -> +6 px) takes opts.legS (2 s), then back.
   // y(t) = -amp * cos(phase + PI * (t - at) / legS); phase seeded (opts.phase in radians, else from opts.seed / the id).
+  // Each leg is exactly easeInOutSine (rule C "float loops: sine.inOut"); the custom ease only chains the legs.
   // From `at` until opts.until (required, s). Returns opts.until.
   function propFloat(tl, prop, at, opts) {
     opts = opts || {};
@@ -303,13 +392,13 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return st;
   }
   // Push in 100% -> 118% towards the target across the beat: scales the .rc-l7 root (picture + dim + anything inside
-  // it, e.g. the T9 highlight) about the hole's centre, linear (opts.ease), from `at` to opts.until (or at + durF).
-  // opts.from (1) / opts.to (1.18). Returns the end time.
+  // it, e.g. the T9 highlight) about the hole's centre, sine.inOut (v02; v01 linear; opts.ease), from `at` to opts.until
+  // (or at + durF). opts.from (1) / opts.to (1.18). Returns the end time.
   function spotPush(tl, target, at, opts) {
     opts = opts || {};
     var st = spotInit(target, opts);
     return push(tl, st.root, at, { until: opts.until, durF: opts.durF, from: opts.from != null ? opts.from : 1, to: opts.to != null ? opts.to : 1.18,
-      ease: opts.ease || 'none', origin: st.cx + 'px ' + st.cy + 'px' });
+      ease: easeOf(opts.ease, 'sine.inOut'), origin: st.cx + 'px ' + st.cy + 'px' });
   }
   // Optional: move / resize the spotlight box to opts.hole "x,y,w,h" over opts.durF (12f), ease opts.ease (power3.out).
   // Note: the push origin stays where spotInit put it. Returns the end time.
@@ -317,7 +406,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var st = spotInit(target, opts), b = holeOf(st.dim, { hole: opts.hole }), d = opts.durF || 12;
     return span(tl, st.rect, { attr: { x: st.hole.x, y: st.hole.y, width: st.hole.w, height: st.hole.h } },
-      { attr: { x: b.x, y: b.y, width: b.w, height: b.h } }, at, d, opts.ease || EASE_OUT);
+      { attr: { x: b.x, y: b.y, width: b.w, height: b.h } }, at, d, easeOf(opts.ease, EASE_OUT));
   }
 
   /* ================================ L11 Split screen ================================ */
@@ -342,7 +431,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // opts.blur = 0 skips it. Returns the landing time (k + 10).
   function splitFlip(tl, root, at, opts) {
     opts = opts || {};
-    var f = splitInit(root), d = opts.durF || 10, ease = opts.ease || 'power2.inOut', t0 = snap(at), end = t0 + d / FPS;
+    var f = splitInit(root), d = opts.durF || 10, ease = easeOf(opts.ease, 'power2.inOut'), t0 = snap(at), end = t0 + d / FPS;
     if (f.front) span(tl, f.front, { rotationY: 0 }, { rotationY: 180 }, t0, d, ease);
     if (f.back) span(tl, f.back, { rotationY: -180 }, { rotationY: 0 }, t0, d, ease);
     var peak = opts.blur != null ? opts.blur : 1;
@@ -356,7 +445,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     }
     return end;
   }
-  // B6 "dull": the split screen drains to black and white over opts.durF (6f, linear). Every <video>/<img> of the face
+  // B6 "dull": the split screen drains to black and white over opts.durF (6f, power2.inOut = easeInOutCubic: a colour
+  // change between two rests; v01 linear). Every <video>/<img> of the face
   // (opts.face 'front' | 'back' | 'both', default 'front') must carry the media treatment {"adjust":{"saturation":-1}}
   // and an inline style="--hf-color-grading-intensity: 0"; this tweens that intensity 0 -> 1. Returns the end time.
   function splitDrain(tl, root, at, opts) {
@@ -364,16 +454,23 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var f = splitInit(root), which = opts.face || 'front', d = opts.durF || 6;
     var vids = (which === 'back' ? [] : media(f.front)).concat(which === 'front' ? [] : media(f.back));
     if (!vids.length) throw new Error('RCK.screens.splitDrain: no media in the face');
-    return span(tl, vids, { '--hf-color-grading-intensity': 0 }, { '--hf-color-grading-intensity': opts.to != null ? opts.to : 1 }, at, d, opts.ease || 'none');
+    return span(tl, vids, { '--hf-color-grading-intensity': 0 }, { '--hf-color-grading-intensity': opts.to != null ? opts.to : 1 }, at, d, easeOf(opts.ease, 'power2.inOut'));
   }
   // data-automation value for a seek-safe speed change on a <video> (HyperFrames `rate` lane, t in clip seconds).
   // {clipStart (the video's data-start, s), at (composition s where the change starts), from 1, to 0.5, durF 6
-  //  (0 = a step), clipDur (optional: adds an end point)} -> JSON string to paste into data-automation='...'.
+  //  (0 = a step), ease ('power2.inOut' = easeInOutCubic; v01 one linear segment), clipDur (optional: adds an end
+  //  point)} -> JSON string to paste into data-automation='...'. v02: the ramp is sampled from the ease every 1/4 frame
+  // (the runtime interpolates between points), so the speed follows the curve, not a straight line.
+  // In Node, require type.js first if you name a curve other than sine.inOut / power1.inOut / power2.inOut.
   function rateRamp(o) {
     o = o || {};
-    var a = Math.max(0, snap(o.at) - (o.clipStart || 0)), d = (o.durF != null ? o.durF : 6) / FPS;
+    var a = Math.max(0, snap(o.at) - (o.clipStart || 0)), dF = o.durF != null ? o.durF : 6, d = dF / FPS;
     var from = o.from != null ? o.from : 1, to = o.to != null ? o.to : 0.5, r4 = function (v) { return Math.round(v * 10000) / 10000; };
-    var pts = [{ t: 0, v: from }, { t: r4(a), v: from }, { t: r4(a + Math.max(d, 0.001)), v: to }];
+    var pts = [{ t: 0, v: from }, { t: r4(a), v: from }];
+    if (dF > 0) {
+      var E = easeFn(o.ease), n = Math.max(1, Math.round(dF * 4));
+      for (var i = 1; i <= n; i++) pts.push({ t: r4(a + d * i / n), v: r4(from + (to - from) * E(i / n)) });
+    } else pts.push({ t: r4(a + 0.001), v: to });
     if (o.clipDur != null && o.clipDur > a + d) pts.push({ t: r4(o.clipDur), v: to });
     return JSON.stringify({ version: 1, lanes: [{ target: 'rate', points: pts }] });
   }
@@ -407,7 +504,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var off = opts.fromY != null ? opts.fromY : info.off, t0 = snap(at);
     var w0 = opts.from != null ? snap(opts.from) : windowStart(c);
     if (w0 !== null && frame(w0) < frame(t0)) hard(tl, drop, { y: 0 }, { y: off }, w0);
-    return span(tl, drop, { y: off }, { y: 0 }, t0, opts.durF || 8, opts.ease || EASE_OUT);
+    return span(tl, drop, { y: off }, { y: 0 }, t0, opts.durF || 8, easeOf(opts.ease, EASE_OUT));
   }
   // Cards drop in one at a time, DOM order (bottom card first): each takes 8f and starts when the previous lands
   // (opts.stepF, default = durF), or at explicit opts.times. Returns the last landing time.
@@ -421,7 +518,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return end;
   }
   // Slow parallax drift: card i (DOM order, bottom -> top) drifts opts.px[i] px along x (default 8, 16, 24, 32: the top
-  // card moves most) and opts.py[i] px along y (default 0), linear, from `at` to opts.until. Returns opts.until.
+  // card moves most) and opts.py[i] px along y (default 0), sine.inOut (v02; v01 linear), from `at` to opts.until.
+  // Returns opts.until.
   function cardsDrift(tl, root, at, opts) {
     opts = opts || {};
     var st = cardsInit(root);
@@ -430,7 +528,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     st.cards.forEach(function (c, i) {
       var dx = opts.px ? opts.px[i] : -8 * (i + 1), dy = opts.py ? opts.py[i] : 0;
       G().set(c, { x: 0, y: 0 });
-      tl.fromTo(c, { x: 0, y: 0 }, { x: dx, y: dy, duration: D, ease: opts.ease || 'none', immediateRender: false }, t0);
+      tl.fromTo(c, { x: 0, y: 0 }, { x: dx, y: dy, duration: D, ease: easeOf(opts.ease, 'sine.inOut'), immediateRender: false }, t0);
     });
     return t1;
   }
@@ -450,8 +548,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   };
 
   RCK.screens = {
-    FPS: FPS, frame: frame, snap: snap, geom: GEOM, hard: hard,
-    push: push,
+    FPS: FPS, frame: frame, snap: snap, geom: GEOM, hard: hard, ease: easeOf,
+    // v02 camera (rule D; also RCK.cam)
+    push: push, zoomOut: zoomOut, punchIn: punchIn, keyPunch: keyPunch, camReg: camReg,
     // L3
     gridRects: gridRects, gridPop: gridPop, gridBuild: gridBuild, gridGrow: gridGrow,
     // L4
@@ -467,6 +566,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     // L12
     cardsInit: cardsInit, cardDrop: cardDrop, cardsDrop: cardsDrop, cardsDrift: cardsDrift
   };
+
+  RCK.cam = RCK.cam || {};
+  RCK.cam.push = push; RCK.cam.zoomOut = zoomOut; RCK.cam.punchIn = punchIn; RCK.cam.keyPunch = keyPunch;
 
   // Static inits that need no timeline: L4 blur scale + tiles, L6 blur scale, L5 cut-out filters, L7 dims, L11 faces,
   // L12 tilts (no hidden states: cells / cards are hidden only once the beat calls gridPop / cardDrop).

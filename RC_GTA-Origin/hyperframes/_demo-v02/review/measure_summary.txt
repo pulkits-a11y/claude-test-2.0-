@@ -1,0 +1,7 @@
+demo timeline: 238 tweens | 89 hard cuts (0.5f steps) | 43 sets | 106 eased | 0 LINEAR
+  curve check: 184 tween props sampled at 25/50/75%: max |rendered - easings.net curve| = 0.00109 ; min distance from a straight line = 0.1025 ; flat: 0
+  vs the easings.net formulas themselves: {"checked":184,"maxErr":0.00825,"byEase":{"easeInOutSine":0.00105,"easeOutExpo":0.00825,"easeInCubic":0.00063,"easeInExpo":0.00781,"easeOutQuart":0.00109,"easeOutCubic":0.00004,"easeInOutQuad":0,"easeOutSine":0.00023,"easeInQuad":0,"easeOutQuad":0,"easeInQuart":0}}
+all helpers (49): 256 tweens | 66 cuts | 72 sets | 118 eased | 0 LINEAR 
+  eases used: {"power1.in":1,"power1.out":1,"expo.out":15,"power2.out":18,"power3.out":27,"sine.inOut":18,"sine.out":3,"power2.in":6,"function":4,"power2.inOut":5,"power3.in":3,"sine.in":1,"expo.in":2,"power1.inOut":14}
+rule A: 50 words | max on screen 2 at f15 ["Why","does"] | frames with > 2: 0 | first visible == onset: 50/50 | off by > 1f: 0
+console warnings: none

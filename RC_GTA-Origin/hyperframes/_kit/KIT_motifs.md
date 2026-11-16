@@ -5,6 +5,49 @@ Golden rule: the Master Edit Plan (`00_Brief/GTA_VI_Edit_Plan.pdf`). Page refs: 
 B1/B2 p.20, B4 p.21, B5 p.22, B7 p.23, B11 p.24, B12 p.25, B14 p.26, B16/B17 p.27.
 Proof: `hyperframes/_demo-motifs/` (every item in sequence, used exactly as a beat uses the kit; stills in `review/`).
 
+## v02 (REVISION_v02.md): the calendar's opening animation, nothing linear, Coolvetica. Read this first
+
+The v01 reference below still describes every motif; this section lists what v02 changes. Proof: `hyperframes/_demo-v02/`
+section D2 (B12 calendar); values in `review/measure_v02.json` (`camera.calendarIn`, `counter`, `layout.M3counter`).
+
+Easing map (easings.net name -> GSAP -> CSS bezier, and which curve the kit uses where): KIT_type.md, v02 > Easing
+(`RCK.ease`, defined in type.js). Every helper's `opts.ease` accepts `'easeOutExpo'` or `'expo.out'`.
+
+### What changed in motifs.js / motifs.css
+
+| Item | v01 | v02 |
+|---|---|---|
+| M3 calendar opening (B12, note 6: "an opening animation where it comes into the screen ... a bit more above, to the center") | none | new `calendarIn` (below); place the calendar higher with `calendarInit`'s `y` |
+| M3 counter roll | 2f per roll, power3.out | 2f per roll, power1.inOut = easeInOutQuad (REVISION_v02 table: "number rolls, counters"); the frame between two values shows the strip mid-roll (two half digits), as an odometer does. `opts.rollEase` |
+| M3 counter position | Inter metrics | Coolvetica metrics (ascent 0.967, descent 0.233, digits 0.688 em): the digit top sits on the grid top (measured 399.97 vs 400) |
+| M2 label "you", M3 counter, stamp | Inter SemiBold / Bold / Black | Coolvetica (one weight; `font-synthesis: none`, so no faux bold) |
+| `opts.ease` (stars, arrow, chip, roll) | GSAP names | GSAP or easings.net names; `none` / `linear` refused |
+| unchanged, already eased | star pop power3.out, arrow draw power3.out / erase power3.in, chip pop power3.out + power2.inOut, stamp slam power2.in | |
+| unchanged, cuts (not moves) | calendar fills, star blink, error box pop, camera shake offsets, CRT flicker values | one value per frame, hard |
+
+Not used by the v02 beats (kept, eased): the CANCELLED stamps and their shake (B7 note 3: "just make it turn red"), the
+M4 bug chip (note 8: the word "bug").
+
+### `RCK.motifs.calendarIn(tl, target, at, opts)`: the B12 opening animation
+
+Grid and counter rise and scale in together: from `y` + `rise` (90 px) and `from` (90%) about the grid centre to rest
+over `durF` (12) frames, easeOutExpo (`ease`; e.g. `'back.out(1.7)'` = easeOutBack for a small overshoot), with opacity
+0 -> 1 over the first `fadeF` (6) frames (power2.out). The calendar root (`.m3-cal`) stays the clip; its generated children
+move inside an untimed `.m3-body` wrapper that the helper creates. Returns at + durF.
+Measured (demo, start f428): f428 90% / +90 px / 0 | f429 94.4% / +50.8 px / 0.42 | f430 96.8% / +28.7 px / 0.70 |
+f431 98.2% / +15.9 px / 0.88 | f434 99.8% / +2.1 px / 1 | f440 100% / 0 / 1.
+```js
+const M = RCK.motifs;
+M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, y: 400 });   // higher than v01's 520 (note 6); first init wins
+M.calendarIn(tl, '#b12-cal', L(6));                                           // comes into the screen on the beat's first frame
+M.calendarExtend(tl, '#b12-cal', 0, { to: 30, landAt: W.thirty });           // 12 red squares 2f apart, counter lands on "thirty"
+```
+(`calendarInit` must run before `calendarIn` / `calendarExtend` when you pass layout options: the first init wins.)
+
+---
+
+# v01 reference (still valid where the v02 section above does not override it)
+
 ## 0. How to use (all items)
 
 * The beat skeleton (`tools/new_beat.py`) already links `assets/kit/motifs.css` and `assets/kit/motifs.js` (after GSAP and
@@ -155,6 +198,7 @@ RCK.motifs.calendarExtend(tl, "#b12-cal", at, { slots: 18, filled: 18, counter: 
 //   counter (start value or null), counterPos "left"|"above", counterGap
 ```
 
+**v02:** counter rolls are power1.inOut (easeInOutQuad), and `calendarIn` adds the B12 opening animation (v02 section).
 **Timing:** square i (from the first unfilled) fills on frame `k0 + 2i`. B4: 18 squares on k0 ... k0+34. B12: square 19..30 on
 k0 ... k0+22; with `grow: "with-fill"` each new square appears already red on its frame (the grid grows square by square);
 `grow: "before"` shows all 12 empty slots at `growAt` first. Counter = 18 + filled red squares, each roll 2f, so it lands on 30

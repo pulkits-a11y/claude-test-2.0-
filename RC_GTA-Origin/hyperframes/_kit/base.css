@@ -4,7 +4,10 @@
    so every url() here is relative to assets/kit/. */
 
 /* v02 (your revision): Coolvetica replaces Inter (regular text) and Instrument Serif (-> Coolvetica Italic).
-   One weight per face: any weight maps to the same file, and font-synthesis is off so nothing is faux-bolded or slanted. */
+   One weight per face: any weight maps to the same file, and font-synthesis is off so nothing is faux-bolded or slanted.
+   Checked in the render Chrome (KIT_type.md "v02 > Fonts"): all four faces load, the text is not a fallback, weights
+   100-900 render the identical Regular glyphs, and "italic" always draws the real Italic file (no synthetic oblique).
+   Layout metrics the kit uses (em): line box ascent 0.967 / descent 0.233 (hhea), H 0.672, digits 0.688, x 0.5. */
 @font-face { font-family: "Coolvetica"; src: url("fonts/Coolvetica-Regular.otf") format("opentype"); font-weight: 100 900; font-style: normal; font-display: block; }
 @font-face { font-family: "Coolvetica"; src: url("fonts/Coolvetica-Italic.otf") format("opentype"); font-weight: 100 900; font-style: italic; font-display: block; }
 @font-face { font-family: "Coolvetica Italic"; src: url("fonts/Coolvetica-Italic.otf") format("opentype"); font-weight: 100 900; font-style: normal; font-display: block; }
@@ -21,9 +24,9 @@
   --siren-red: #E3262E;          /* X9 wash, CANCELLED stamp, the 12 overrun squares (B12), B9 red arrow */
   --siren-blue: #2D5BFF;         /* X9 wash only */
 
-  /* Fonts (plan: Style kit > Fonts). Both families are bundled in fonts/ (OFL), so the plan's
-     fallbacks (Helvetica Neue / Neue Haas Grotesk for Inter, Playfair Display Italic for Instrument
-     Serif) are never needed, and HyperFrames' check rejects unresolvable family names in a stack. */
+  /* Fonts (v02: Coolvetica Regular for every sans role, Coolvetica Italic for every serif / italic role; files in
+     fonts/). The generic fallback is never used (the faces load with font-display: block), and HyperFrames' check
+     rejects unresolvable family names in a stack. The --w-* weights below are kept for the markup; Coolvetica has one. */
   --sans: "Coolvetica", sans-serif;
   --serif: "Coolvetica Italic", sans-serif;
   --w-caption: 500;   /* Medium: captions */
@@ -38,8 +41,12 @@
   --safe-x: 96px;
   --safe-y: 54px;
 
-  /* Units: 30 fps; "ease out" = cubic-bezier(0.2, 0, 0, 1) = GSAP power3.out. */
+  /* Units: 30 fps; "ease out" = cubic-bezier(0.2, 0, 0, 1) = GSAP power3.out. v02 (rule C): easings.net curves,
+     RCK.ease in type.js maps the names (RCK.ease.easeOutExpo = 'expo.out', RCK.ease.css.easeOutExpo = the bezier). */
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);       /* easeOutExpo: entrances, pops, punch-ins settling */
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);        /* easeInExpo: exits, zoom-throughs into a cut */
+  --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);   /* easeInOutSine: pushes, drifts, floats */
 }
 
 /* Every beat composition is a 1920 x 1080 canvas. */

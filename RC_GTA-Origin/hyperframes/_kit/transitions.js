@@ -676,6 +676,83 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return tF(w + 2 * half);
   }
 
+  /* ================================================================ v02 zoom-through (rule D: B2 -> B3) */
+  // Camera moves drive the scale of ONE untimed picture wrapper (`.rc-cam`, holding the footage / card, never the
+  // captions). Moves on one wrapper must follow each other in time (each starts from the scale the previous one left);
+  // overlapping moves (a keyword punch during a push) need a second, nested wrapper. Shared with screens.js (RCK.cam).
+  function camReg(el, kind, f0, f1, s0, s1) {
+    var reg = el.__rcCam || (el.__rcCam = []), first = true, prev = null;
+    reg.forEach(function (r) {
+      if (f0 < r.f1 && r.f0 < f1) warn(kind + ' f' + f0 + '-' + f1 + ' overlaps ' + r.kind + ' f' + r.f0 + '-' + r.f1 + ' on #' + (el.id || el.className) + ': put one of them on a nested wrapper');
+      if (r.f0 <= f0) first = false;
+      if (r.f1 <= f0 && (!prev || r.f1 > prev.f1)) prev = r;
+    });
+    reg.push({ kind: kind, f0: f0, f1: f1, s0: s0, s1: s1 });
+    return { first: first, prevScale: prev ? prev.s1 : null, entry: reg[reg.length - 1] };
+  }
+  function hasBlurCtl(m) { return /"blur"\s*:\s*(0\.0*[1-9]|[1-9])/.test(m.getAttribute('data-color-grading') || ''); }
+  // Blur targets of a camera wrapper: <video>/<img> with a media-treatment blur control get --hf-color-grading-blur
+  // (footage is never CSS-filtered); opts.blurDom (default: the wrapper itself when it holds no media) gets a CSS blur.
+  function camBlurTargets(el, opts) {
+    var media = opts.blurMedia ? $$(opts.blurMedia, el) : $$('video, img', el), ok = [];
+    media.forEach(function (m) {
+      if (!hasBlurCtl(m)) { warn('zoom-through: ' + (m.id || m.tagName) + ' has no media-treatment blur control (media-treatment --grading \'{"effects":{"blur":0.01}}\' --apply); it stays sharp'); return; }
+      if (!m.style.getPropertyValue('--hf-color-grading-blur')) m.style.setProperty('--hf-color-grading-blur', '0');
+      ok.push(m);
+    });
+    return { media: ok, dom: opts.blurDom != null ? $$(opts.blurDom, el) : (media.length ? [] : [el]) };
+  }
+  function camBlur(tl, bt, px0, px1, t0, d, ease) {
+    if (!(px0 > 0 || px1 > 0)) return;
+    bt.dom.forEach(function (dm) { tl.fromTo(dm, { filter: 'blur(' + px0 + 'px)' }, { filter: 'blur(' + px1 + 'px)', duration: d, ease: ease, immediateRender: false }, t0); });
+    bt.media.forEach(function (m) { tl.fromTo(m, { '--hf-color-grading-blur': blurValue(px0) }, { '--hf-color-grading-blur': blurValue(px1), duration: d, ease: ease, immediateRender: false }, t0); });
+  }
+  // OUTGOING half (the beat before the boundary): the picture wrapper scales 100% -> 140% (opts.to, a factor on the
+  // scale the wrapper already has) while blurring 0 -> 16 px (opts.blur: CSS px on DOM, media-treatment blur on
+  // footage), expo.in (easeInExpo, opts.ease), over the LAST opts.frames (5) frames before the boundary B: frame B-6 is
+  // at rest, B-5 .. B-1 move, B-1 = the peak (the last frame the cut shows), held from B on (tail handle):
+  // B-5 100.03% | B-4 100.35% | B-3 102.3% | B-2 110.1% | B-1 140% (measured; GSAP 3.15's expo, within 0.008 of the
+  // easings.net formula). boundaryAt = B (local time of the incoming beat's first frame). Returns boundaryAt.
+  function zoomThroughOut(tl, target, boundaryAt, opts) {
+    opts = opts || {};
+    var el = $(target), g = G(), b = frame(boundaryAt), N = num(opts.frames, 5), px = num(opts.blur, 16), e = easeOf(opts.ease, 'expo.in');
+    var f0 = b - 1 - N, reg = camReg(el, 'zoomThroughOut', f0, b - 1, null, null);
+    var s0 = num(opts.from, reg.prevScale != null ? reg.prevScale : 1), s1 = s0 * num(opts.to, 1.4);
+    reg.entry.s0 = s0; reg.entry.s1 = s1;
+    var bt = camBlurTargets(el, opts), a = Math.max(0, f0), t0 = tF(a), d = (b - 1 - a) * F;
+    if (reg.first) g.set(el, { scale: s0, transformOrigin: opts.origin || '50% 50%', force3D: false });
+    else if (opts.origin) g.set(el, { transformOrigin: opts.origin });   // one origin per wrapper: it applies to every move
+    if (reg.first) bt.dom.forEach(function (dm) { g.set(dm, { filter: 'blur(0px)' }); });
+    tl.fromTo(el, { scale: s0 }, { scale: s1, duration: d, ease: e, force3D: false, immediateRender: false }, t0);
+    camBlur(tl, bt, 0, px, t0, d, e);
+    return tF(b);
+  }
+  // INCOMING half (the beat after the boundary): from the boundary frame B the picture wrapper is at 130% (opts.from)
+  // and blurred 16 px (opts.blur), and settles to 100% sharp over opts.frames (9), expo.out (easeOutExpo, opts.ease):
+  // B 130% / 16 px | B+1 114.0% / 7.5 px | B+2 106.5% / 3.5 px | B+3 102.9% | B+4 101.2% | B+6 100.1% | B+9 100% / 0
+  // (measured). The head handle (before B) holds the zoomed, blurred state. Returns boundaryAt + frames.
+  function zoomThroughIn(tl, target, boundaryAt, opts) {
+    opts = opts || {};
+    var el = $(target), g = G(), b = frame(boundaryAt), N = num(opts.frames, 9), px = num(opts.blur, 16), e = easeOf(opts.ease, 'expo.out');
+    var s0 = num(opts.from, 1.3), s1 = num(opts.to, 1), reg = camReg(el, 'zoomThroughIn', b, b + N, s0, s1);
+    var bt = camBlurTargets(el, opts);
+    if (reg.first) {
+      g.set(el, { scale: s0, transformOrigin: opts.origin || '50% 50%', force3D: false });
+      bt.dom.forEach(function (dm) { g.set(dm, { filter: 'blur(' + px + 'px)' }); });
+      bt.media.forEach(function (m) { g.set(m, { '--hf-color-grading-blur': blurValue(px) }); });
+    }
+    tl.fromTo(el, { scale: s0 }, { scale: s1, duration: N * F, ease: e, force3D: false, immediateRender: false }, tF(b));
+    camBlur(tl, bt, px, 0, tF(b), N * F, e);
+    return tF(b + N);
+  }
+  // Both halves in one composition (a cut inside a beat, or the demo): outWrapper zooms through into the cut at cutAt,
+  // inWrapper arrives from it. opts.out / opts.in = options for each half. Returns cutAt + the in-half's frames.
+  function zoomThrough(tl, outWrapper, inWrapper, cutAt, opts) {
+    opts = opts || {};
+    zoomThroughOut(tl, outWrapper, cutAt, opts.out);
+    return zoomThroughIn(tl, inWrapper, cutAt, opts.in);
+  }
+
   /* ================================================================ export */
   RCK.transitions = {
     FPS: FPS, frame: frame, snap: snap,
@@ -692,6 +769,10 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     // X7
     leakInit: leakInit, leakDissolve: leakDissolve,
     // X9
-    sirenWash: sirenWash
+    sirenWash: sirenWash,
+    // v02 zoom-through (rule D)
+    zoomThroughOut: zoomThroughOut, zoomThroughIn: zoomThroughIn, zoomThrough: zoomThrough, camReg: camReg, ease: easeOf
   };
+  RCK.cam = RCK.cam || {};
+  RCK.cam.zoomThroughOut = zoomThroughOut; RCK.cam.zoomThroughIn = zoomThroughIn; RCK.cam.zoomThrough = zoomThrough;
 })();

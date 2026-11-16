@@ -262,7 +262,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // syntax above; opts: from (index of the first word), end (s, where the last group hard-cuts out; default the next
   // word's comp_t, else the last word's comp_end_t), start (s, optional earlier start of the first group's clip; its
   // words still pop on their own frames), max (2), loose (accept deliberate spelling differences, e.g. "18" for
-  // "eighteen"), exitF (0 = hard cut; 2-3 = eased exit before the next group, see captionPops).
+  // "eighteen"), exitF (0 = hard cut; 2-3 = eased exit of the last group before `end`, see captionPops).
   // Returns {groups, phrases, next, endFrame, warnings}; each group {index, text, words:[{text, i, frame, voiceT,
   // offsetFrames, phrase}], startFrame, endFrame, start, end, startAttr, durAttr, frames}.
   function captionPlanV2(words, chunks, opts) {
@@ -327,7 +327,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
   function wordSpan(w, extra) { return '<span class="rc-w' + (extra ? ' ' + extra : '') + '" data-rc-f="' + w.frame + '">' + esc(w.text) + '</span>'; }
   // v02 HTML to paste. opts: style 't1' (default) | 't2' | 't4' | 't5'; idPrefix; z; track; low (T1 y 860); onCard
-  // (rc-on-card); y (--rc-y px); cls (extra classes); inline (extra inline CSS); exitF (writes data-rc-exit-f); t2: key = number of keyword words at
+  // (rc-on-card); y (--rc-y px); cls (extra classes); inline (extra inline CSS); exitF (2-3: an eased exit on the LAST group,
+  // data-rc-exit-f; exitAll: true puts it on every group; default a hard cut); t2: key = number of keyword words at
   // the end of the pair (default 1); t4: place = one placement per phrase ('left top', 'right', 'strip2', or rc- classes),
   // pieceStyle = inline style per phrase; t5: id, clipStart (s, the black + leak may start before the first word),
   // clipEnd (s). T1/T2/T4: one timed element per group. T5: one timed element, one line per group inside it.
@@ -340,14 +341,15 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var css = [opts.y != null ? '--rc-y: ' + opts.y + 'px' : '', opts.z != null ? 'z-index: ' + opts.z : '', opts.inline || ''].filter(Boolean).join('; ');
     var st = css ? ' style="' + css + '"' : '';
     var track = opts.track != null ? ' data-track-index="' + opts.track + '"' : '';
-    var exit = (opts.exitF != null ? opts.exitF : plan.exitF) ? ' data-rc-exit-f="' + (opts.exitF != null ? opts.exitF : plan.exitF) + '"' : '';
+    var exF = opts.exitF != null ? opts.exitF : plan.exitF, nG = plan.groups.length;
+    var exitOf = function (gi) { return exF && (opts.exitAll || gi === nG - 1) ? ' data-rc-exit-f="' + exF + '"' : ''; };
     var nWords = 0; plan.groups.forEach(function (g) { nWords += g.words.length; });
     var keyFrom = nWords - (opts.key != null ? opts.key : 1), wordIx = 0;
     if (style === 't5') {
       var g0 = plan.groups[0], gl = plan.groups[plan.groups.length - 1];
       var s0 = opts.clipStart != null ? frame(opts.clipStart) : g0.startFrame, s1 = opts.clipEnd != null ? frame(opts.clipEnd) : gl.endFrame;
-      var lines = plan.groups.map(function (g) {
-        return '<div class="rc-t5__text rc-g" data-rc-from-f="' + g.startFrame + '" data-rc-to-f="' + g.endFrame + '"' + exit + '>' + g.words.map(function (w) { return wordSpan(w); }).join(' ') + '</div>';
+      var lines = plan.groups.map(function (g, gi) {
+        return '<div class="rc-t5__text rc-g" data-rc-from-f="' + g.startFrame + '"' + (gi < nG - 1 ? ' data-rc-to-f="' + g.endFrame + '"' : '') + exitOf(gi) + '>' + g.words.map(function (w) { return wordSpan(w); }).join(' ') + '</div>';
       });
       return '<div id="' + (opts.id || prefix) + '" class="' + cls + '" data-start="' + attrF(s0) + '" data-duration="' + durF(s0, s1) + '"' + track + st + '>' + lines.join('') + '</div>';
     }
@@ -369,7 +371,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       } else {
         inner = '<span class="rc-g">' + g.words.map(function (w) { return wordSpan(w); }).join(' ') + '</span>';
       }
-      return '<div id="' + prefix + '-' + (gi + 1) + '" class="' + cls + '" data-start="' + g.startAttr + '" data-duration="' + g.durAttr + '"' + track + exit + st + '>' + inner + '</div>';
+      return '<div id="' + prefix + '-' + (gi + 1) + '" class="' + cls + '" data-start="' + g.startAttr + '" data-duration="' + g.durAttr + '"' + track + exitOf(gi) + st + '>' + inner + '</div>';
     }).join('\n');
   }
 
@@ -776,12 +778,17 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     }
     return (k0 + p.frames) / FPS;
   }
-  // A group's window inside a longer clip: hidden before fromF, shown fromF .. toF-1, gone from toF (hard cuts), or an
+  // A group's window inside a longer clip: hidden before fromF, shown fromF .. toF-1, gone from toF (hard cut), or an
   // eased exit (exitF 2-3 frames: opacity 1 -> 0, scale 1 -> 0.96, blur 0 -> 4 px, power2.in) ending exactly on toF.
-  function groupWindow(tl, g, fromF, toF, exitF, lastPopF) {
+  // The last group (no toF) ends with the clip; with exitF it exits before clipEndF instead. An exit is skipped (hard
+  // cut) when it would start before the group's last word has landed.
+  function groupWindow(tl, g, fromF, toF, exitF, lastPopF, clipEndF) {
     G().set(g, { opacity: 0 });
     hard(tl, g, { opacity: 0 }, { opacity: 1 }, fromF / FPS);
-    if (toF == null) return;
+    if (toF == null) {
+      if (exitF && clipEndF != null && clipEndF - exitF >= lastPopF) groupExit(tl, g, clipEndF, exitF);
+      return;
+    }
     if (exitF && toF - exitF >= lastPopF) groupExit(tl, g, toF, exitF);
     else hard(tl, g, { opacity: 1 }, { opacity: 0 }, toF / FPS);
   }
@@ -811,9 +818,11 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
   // Animates v02 caption markup (captionHTMLV2 output, or anything wordsV2 converted): every .rc-w[data-rc-f] pops on
   // its frame with its style's preset (opts.pop overrides any preset field, e.g. { t1: { ease: 'back.out(1.7)' } });
-  // groups with data-rc-from-f / data-rc-to-f are shown only in that window (hard cuts); data-rc-exit-f (or opts.exitF)
-  // gives a 2-3f eased exit before the clip end / window end instead of the hard cut. T5: glow copies + leak (opts.leak
-  // false, leakFrom (s), leakUntil (s), leakPeak, leakHold). scope: selector / element(s); default every .rc-cap.
+  // groups with data-rc-from-f / data-rc-to-f are shown only in that window. Between groups: a hard cut. Exits (rule A
+  // "<= 3f, eased"): a data-rc-exit-f attribute on a group / a one-group clip (captionHTMLV2 writes it on the LAST group
+  // only) gives that group a 2-3f eased exit; opts.exitF does the same for the last group of each converted clip, and
+  // opts.exitAll = true applies opts.exitF to every group. T5: glow copies + leak (opts.leak false, leakFrom (s),
+  // leakUntil (s), leakPeak, leakHold). scope: selector / element(s); default every .rc-cap.
   // Call once per element (later calls skip processed clips). Returns the time the last word has landed.
   function captionPops(tl, scope, opts) {
     opts = opts || {};
@@ -837,15 +846,16 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
         lastPopF[grp.__rcgId] = Math.max(lastPopF[grp.__rcgId] || 0, frame(e));
         rootLast = Math.max(rootLast, frame(e));
       });
-      var defExit = opts.exitF != null ? opts.exitF : (root.hasAttribute('data-rc-exit-f') ? +root.getAttribute('data-rc-exit-f') : 0);
+      var ceT = clipEnd(root), ceF = ceT != null ? frame(ceT) : null, optEx = opts.exitF || 0;
       var windows = $$('[data-rc-from-f]', root).filter(function (g) { return !g.closest('.rc-t5__glow'); });
       windows.forEach(function (g) {
-        var ex = g.hasAttribute('data-rc-exit-f') ? +g.getAttribute('data-rc-exit-f') : defExit;
-        groupWindow(tl, g, +g.getAttribute('data-rc-from-f'), g.hasAttribute('data-rc-to-f') ? +g.getAttribute('data-rc-to-f') : null, ex, lastPopF[g.__rcgId] || 0);
+        var toF = g.hasAttribute('data-rc-to-f') ? +g.getAttribute('data-rc-to-f') : null;
+        var ex = g.hasAttribute('data-rc-exit-f') ? +g.getAttribute('data-rc-exit-f') : (opts.exitAll || toF == null ? optEx : 0);
+        groupWindow(tl, g, +g.getAttribute('data-rc-from-f'), toF, ex, lastPopF[g.__rcgId] || 0, ceF);
       });
-      if (!windows.length && defExit) {             // a single-group clip (captionHTMLV2): exit before the clip end
-        var ce = clipEnd(root), g1 = root.querySelector('.rc-g');
-        if (ce != null && g1 && frame(ce) - defExit >= rootLast) groupExit(tl, g1, frame(ce), defExit);
+      if (!windows.length) {                        // a one-group clip (captionHTMLV2): exit before the clip end
+        var ex1 = root.hasAttribute('data-rc-exit-f') ? +root.getAttribute('data-rc-exit-f') : (opts.exitAll ? optEx : 0), g1 = root.querySelector('.rc-g');
+        if (ex1 && ceF != null && g1 && ceF - ex1 >= rootLast) groupExit(tl, g1, ceF, ex1);
       }
       if (style === 't5' && opts.leak !== false) {
         var first = words.length ? Math.min.apply(null, words.map(function (w) { return +w.getAttribute('data-rc-f'); })) : frame(clipStart(root) || 0);

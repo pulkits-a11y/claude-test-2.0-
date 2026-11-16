@@ -93,7 +93,8 @@
 }
 
 /* ---------- T3 Year card: full-frame #E9E9E9; small "In" (Coolvetica Italic 64, #111111) above the left edge of the year
-   (Coolvetica 220, #111111, tracking -2%). Digits sit in masks and slide up 40 px. ---------- */
+   (Coolvetica 220, #111111, tracking -1%: the plan's -2% was set for Inter Bold; Coolvetica's digits already sit tight
+   and touch at -2%). Digits sit in masks and slide up 40 px. ---------- */
 .rc-t3 {
   position: absolute;
   left: 0;
@@ -129,8 +130,8 @@
   font-size: 220px;
   line-height: 220px;
   height: 220px;
-  letter-spacing: -0.02em;                /* tracking -2% */
-  margin-right: 0.02em;                   /* cancels the trailing tracking so the year's ink is centred */
+  letter-spacing: -0.01em;                /* tracking -1% (plan -2% for Inter; in Coolvetica "99" touches at -2%) */
+  margin-right: 0.01em;                   /* cancels the trailing tracking so the year's ink is centred */
   white-space: nowrap;
 }
 .rc-t3__mask {                            /* built by RCK.type.yearCard: one mask per digit */
@@ -241,7 +242,8 @@
   filter: blur(22px);
 }
 
-/* ---------- T6 Giant type: Coolvetica 420 px (plan: Inter Black 300-480), one word per line, white, tracking -4% ---------- */
+/* ---------- T6 Giant type: Coolvetica 420 px (plan: Inter Black 300-480), one word per line, white, tracking -1% (plan -4%
+   for Inter Black; Coolvetica's letters already sit tight and R-A-N merge at -4%) ---------- */
 .rc-t6 {
   position: absolute;
   left: 0;
@@ -255,7 +257,7 @@
   align-items: center;
   justify-content: center;
   --rc-t6-size: 420px;                    /* plan range 300-480 px; 420 = the largest round size whose three-line ink stays
-                                             inside title-safe in Coolvetica (y 57-1023 of 54-1026; GRAND 1171 px wide) */
+                                             inside title-safe in Coolvetica (ink y 56-1022 of 54-1026; GRAND 1270 px wide) */
   --rc-t6-pitch: 0.79;                    /* line pitch in em: 29 px between the lines' ink at 420 px, as v01's 0.8 at 400 */
 }
 .rc-t6__line {
@@ -263,8 +265,8 @@
   font-weight: var(--w-giant);
   font-size: var(--rc-t6-size);
   line-height: var(--rc-t6-pitch);
-  letter-spacing: -0.04em;                /* tracking -4% */
-  margin-right: 0.04em;                   /* cancels the trailing tracking so each word's ink is centred */
+  letter-spacing: -0.01em;                /* tracking -1% (v02: Coolvetica; plan -4% for Inter Black) */
+  margin-right: 0.01em;                   /* cancels the trailing tracking so each word's ink is centred */
   white-space: nowrap;
   position: relative;                     /* v02: Coolvetica's caps sit low in the line box (ascent 0.967 em, caps 0.688 em): */
   top: calc(-0.0395 * var(--rc-t6-size)); /* lift each line so the stack's ink is centred in title-safe (letters only fade) */
