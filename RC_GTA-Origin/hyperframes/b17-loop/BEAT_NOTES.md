@@ -39,7 +39,8 @@ Checks: `check --json` 0 errors (warnings: frame 0 transparent by design, `line_
 last line", nested T2 markup, track density). Snapshots `review/v02/a/` + `sheet_a.jpg` (magenta = transparent): every caption
 word, star pops, the cut to black, the keyword blur, the logo push, the tear + T10 frames, the black tail; plus a mock-up of the
 overlay on the cropped client clip (band, captions legible over the dark yard and Lucia's shirt). Render
-`05_GFX/renders/b17-loop.mov`: see "v02 render" below.
+`05_GFX/renders/b17-loop.mov`: ProRes 4444, 1920x1080, 30 fps, **198 frames**, `yuva444p12le` (ffprobe, counted); transparent
+over the Tesseract shots (beat f0-129), opaque from the cut to black on "now?" (f129) to the end.
 
 ---
 

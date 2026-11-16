@@ -60,6 +60,15 @@ z40 T1 (white, low line y 860, local 7-39) | z30 T10 "breaks." (47-71) | z20 X4 
 |---|---|---|---|---|---|
 | R7.GD | `04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png` (live screenshot, captured 2026-11-16) | still, local 0-47 | article column (page x 50-1450), sidebar outside the frame | Game Developer, Jan 31 2011: "It was almost canned. The publisher, BMG Interactive, wanted to can it" (highlighted) | https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- |
 
+### Checks (v02)
+* `check`: 0 errors (warnings: nested dim/highlight markup, the 12f closing word under the CLI's 2 s floor: the plan
+  sets 12f).
+* Headless audit: 0 linear tweens (the camera segments are eased; the X4 counter and the T10 glitch are hard per-frame
+  cuts); captions max 2 words, "Then," / "something" first visible on their onset frames; Coolvetica.
+* Continuity with b07: b07 f96 vs this f6 (the cut), mean pixel difference 0.035 / 255 above the caption band.
+* Render `05_GFX/renders/b08-break.mov`: ffprobe 71 frames (beat 59 + 12), 1920 x 1080, 30 fps, ProRes 4444
+  `yuva444p12le`, opaque. Review stills: `review/v02/`.
+
 ---
 
 # v01 reference (SUPERSEDED where the v02 section above differs: B8 no longer shows B7's stamped card or R7.1)

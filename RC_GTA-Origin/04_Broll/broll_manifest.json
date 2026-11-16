@@ -587,8 +587,7 @@
    "source_in": null,
    "source_out": null,
    "used_in": [
-    "b07-shutdown",
-    "b08-break"
+    "b07-shutdown"
    ],
    "channel": "PublicDomainFootage"
   },
@@ -617,9 +616,12 @@
    "official_required": false,
    "folder": "04_Broll/B07",
    "file": null,
-   "status": "downloaded, not used",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b07-shutdown"
+   ]
   },
   {
    "rid": "R9.1",
@@ -1299,7 +1301,11 @@
    "folder": "04_Broll/B07",
    "file": "04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png",
    "status": "used",
-   "channel": "Game Developer"
+   "channel": "Game Developer",
+   "used_in": [
+    "b07-shutdown",
+    "b08-break"
+   ]
   }
  ]
 }
