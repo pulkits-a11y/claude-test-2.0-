@@ -105,11 +105,12 @@ that shot is built inside the composition.
 B10: "the flash, the sub drop and the music drop must land on the same frame." B13: "The flash itself is silent."
 
 **Values:** `#FFFFFF` (`--white`) full frame, normal blend. Linear opacity keyframes (**kit choice**: "ramp"/"fade"
-with no ease named) at C-2 = 0, C = 1, C+1 = 1, C+5 = 0, where C = the cut frame (first frame of the new picture).
+with no ease named) at C-3 = 0, C = 1, C+5 = 0, where C = the cut frame (first frame of the new picture): 2 ramp
+frames, 1 frame at 100% (the hold), 4 fade frames, 7 visible frames in all (`flash()` in transitions.js).
 
-| frame | C-2 | C-1 | C | C+1 | C+2 | C+3 | C+4 | C+5 |
-|---|---|---|---|---|---|---|---|---|
-| white | 0 | 50% | 100% | 100% | 75% | 50% | 25% | 0 |
+| frame | C-3 | C-2 | C-1 | C | C+1 | C+2 | C+3 | C+4 | C+5 |
+|---|---|---|---|---|---|---|---|---|---|
+| white | 0 | 33% | 67% | 100% | 80% | 60% | 40% | 20% | 0 |
 
 Frame C is where the flash "lands": put S09 + the music drop (B10) on C. The cut itself (old -> new clip) is a
 `data-start` boundary at C, hidden under 100% white. Measured exactly in the demo (`review/X3_flash_*`).
@@ -361,7 +362,7 @@ Frames are beat frames (f0 = the beat's first word, STORYBOARD.md); composition 
 | B7 | X1 | | |
 | B8 | X1 (the stamped card holds) | X4 on "breaks" f35-44, cut to black f45 | b08-break |
 | B9 | X1 | | |
-| B10 | X1 | X3 centred on "fun": f35-41, 100% on f37-38 | b10-fun |
+| B10 | X1 | X3 centred on "fun": f35-41, 100% on f37 | b10-fun |
 | B11, B12 | X1 | | |
 | B13 | X1 | X3 into the framed clip: centred on f85 (f83-89) | b13-gta |
 | B14 | X1 | X9 on "sirens" f140-143; X8 whip f160-166 (Tesseract); X5 close f180-187 | b14-since (X9: see caveat) |

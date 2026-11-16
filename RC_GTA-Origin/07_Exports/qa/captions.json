@@ -1,0 +1,670 @@
+{
+ "problems": [],
+ "beats": {
+  "B1": {
+   "composition": "b01-hook",
+   "captions": [
+    {
+     "id": "hf-fc6m",
+     "text": "Why does",
+     "start_f_local": 0.0,
+     "end_f_local": 27.0,
+     "n_words": 2,
+     "word_f_local": 7.05,
+     "offset_f": -1.05
+    },
+    {
+     "id": "hf-n5qn",
+     "text": "every GTA,",
+     "start_f_local": 27.0,
+     "end_f_local": 58.0,
+     "n_words": 2,
+     "word_f_local": 27.21,
+     "offset_f": -0.21
+    },
+    {
+     "id": "hf-a1e8",
+     "text": "even GTA 6,",
+     "start_f_local": 58.0,
+     "end_f_local": 98.0,
+     "n_words": 3,
+     "word_f_local": 58.05,
+     "offset_f": -0.05
+    },
+    {
+     "id": "hf-laai",
+     "text": "have you running",
+     "start_f_local": 98.0,
+     "end_f_local": 121.0,
+     "n_words": 3,
+     "word_f_local": 98.37,
+     "offset_f": -0.37
+    }
+   ],
+   "words_not_in_T1": [
+    "from",
+    "the",
+    "cops?"
+   ],
+   "last_caption_end_vs_beat_end_f": -28.0
+  },
+  "B2": {
+   "composition": "b02-bug",
+   "captions": [
+    {
+     "id": "hf-3oh2",
+     "text": "Because back",
+     "start_f_local": 7.0,
+     "end_f_local": 28.0,
+     "n_words": 2,
+     "word_f_local": 6.54,
+     "offset_f": 0.46
+    },
+    {
+     "id": "hf-49ti",
+     "text": "in 1995,",
+     "start_f_local": 28.0,
+     "end_f_local": 64.0,
+     "n_words": 2,
+     "word_f_local": 27.84,
+     "offset_f": 0.16
+    },
+    {
+     "id": "hf-o20y",
+     "text": "a game about",
+     "start_f_local": 64.0,
+     "end_f_local": 79.0,
+     "n_words": 3,
+     "word_f_local": 64.14,
+     "offset_f": -0.14
+    },
+    {
+     "id": "hf-3tni",
+     "text": "chasing criminals",
+     "start_f_local": 79.0,
+     "end_f_local": 107.0,
+     "n_words": 2,
+     "word_f_local": 79.38,
+     "offset_f": -0.38
+    },
+    {
+     "id": "hf-ijxy",
+     "text": "broke.",
+     "start_f_local": 107.0,
+     "end_f_local": 139.0,
+     "n_words": 1,
+     "word_f_local": 107.31,
+     "offset_f": -0.31
+    }
+   ],
+   "words_not_in_T1": [
+    "And",
+    "that",
+    "bug",
+    "saved",
+    "it."
+   ],
+   "last_caption_end_vs_beat_end_f": -47.0
+  },
+  "B3": {
+   "composition": "b03-dundee",
+   "captions": [
+    {
+     "id": "hf-4sja",
+     "text": "Here's how.",
+     "start_f_local": 7.0,
+     "end_f_local": 28.0,
+     "n_words": 2,
+     "word_f_local": 6.69,
+     "offset_f": 0.31
+    },
+    {
+     "id": "hf-wsf1",
+     "text": "starts a new game.",
+     "start_f_local": 186.0,
+     "end_f_local": 227.0,
+     "n_words": 4,
+     "word_f_local": 185.64,
+     "offset_f": 0.36
+    }
+   ],
+   "words_not_in_T1": [
+    "It's",
+    "1995",
+    "in",
+    "Dundee,",
+    "Scotland.",
+    "DMA",
+    "Design,",
+    "the",
+    "studio",
+    "behind",
+    "Lemmings,"
+   ],
+   "last_caption_end_vs_beat_end_f": 6.0
+  },
+  "B4": {
+   "composition": "b04-racenchase",
+   "captions": [],
+   "words_not_in_T1": [
+    "It's",
+    "called",
+    "Race",
+    "and",
+    "Chase,",
+    "and",
+    "it's",
+    "planned",
+    "to",
+    "take",
+    "eighteen",
+    "months."
+   ],
+   "last_caption_end_vs_beat_end_f": null
+  },
+  "B5": {
+   "composition": "b05-copgame",
+   "captions": [
+    {
+     "id": "hf-iqh2",
+     "text": "In it,",
+     "start_f_local": 0.0,
+     "end_f_local": 20.0,
+     "n_words": 2,
+     "word_f_local": 6.06,
+     "offset_f": -0.06
+    },
+    {
+     "id": "hf-pnby",
+     "text": "you play",
+     "start_f_local": 20.0,
+     "end_f_local": 32.0,
+     "n_words": 2,
+     "word_f_local": 20.46,
+     "offset_f": -0.46
+    },
+    {
+     "id": "hf-scwa",
+     "text": "a police officer",
+     "start_f_local": 32.0,
+     "end_f_local": 56.0,
+     "n_words": 3,
+     "word_f_local": 31.89,
+     "offset_f": 0.11
+    },
+    {
+     "id": "hf-ja37",
+     "text": "chasing criminals.",
+     "start_f_local": 56.0,
+     "end_f_local": 100.0,
+     "n_words": 2,
+     "word_f_local": 55.77,
+     "offset_f": 0.23
+    }
+   ],
+   "words_not_in_T1": [],
+   "last_caption_end_vs_beat_end_f": 6.0
+  },
+  "B6": {
+   "composition": "b06-dull",
+   "captions": [
+    {
+     "id": "hf-tpv6",
+     "text": "But there's",
+     "start_f_local": 0.0,
+     "end_f_local": 18.0,
+     "n_words": 2,
+     "word_f_local": 6.09,
+     "offset_f": -0.09
+    },
+    {
+     "id": "hf-9oli",
+     "text": "a problem:",
+     "start_f_local": 18.0,
+     "end_f_local": 40.0,
+     "n_words": 2,
+     "word_f_local": 17.88,
+     "offset_f": 0.12
+    }
+   ],
+   "words_not_in_T1": [
+    "it's",
+    "dull.",
+    "One",
+    "developer",
+    "later",
+    "calls",
+    "it",
+    "\u201cawful\u2026",
+    "too",
+    "sim-y.\u201d"
+   ],
+   "last_caption_end_vs_beat_end_f": -132.0
+  },
+  "B7": {
+   "composition": "b07-shutdown",
+   "captions": [
+    {
+     "id": "hf-u7dp",
+     "text": "So the people",
+     "start_f_local": 6.0,
+     "end_f_local": 23.0,
+     "n_words": 3,
+     "word_f_local": 6.15,
+     "offset_f": -0.15
+    },
+    {
+     "id": "hf-zsbs",
+     "text": "above the team",
+     "start_f_local": 23.0,
+     "end_f_local": 43.0,
+     "n_words": 3,
+     "word_f_local": 23.25,
+     "offset_f": -0.25
+    },
+    {
+     "id": "hf-9ilo",
+     "text": "keep trying",
+     "start_f_local": 43.0,
+     "end_f_local": 61.0,
+     "n_words": 2,
+     "word_f_local": 43.2,
+     "offset_f": -0.2
+    },
+    {
+     "id": "hf-m9v7",
+     "text": "to shut it down.",
+     "start_f_local": 61.0,
+     "end_f_local": 108.0,
+     "n_words": 4,
+     "word_f_local": 61.35,
+     "offset_f": -0.35
+    }
+   ],
+   "words_not_in_T1": [],
+   "last_caption_end_vs_beat_end_f": 6.0
+  },
+  "B8": {
+   "composition": "b08-break",
+   "captions": [
+    {
+     "id": "hf-894m",
+     "text": "Then, something",
+     "start_f_local": 6.0,
+     "end_f_local": 41.0,
+     "n_words": 2,
+     "word_f_local": 6.15,
+     "offset_f": -0.15
+    }
+   ],
+   "words_not_in_T1": [
+    "breaks."
+   ],
+   "last_caption_end_vs_beat_end_f": -28.0
+  },
+  "B9": {
+   "composition": "b09-throughyou",
+   "captions": [
+    {
+     "id": "hf-31y9",
+     "text": "The police cars",
+     "start_f_local": 6.0,
+     "end_f_local": 28.0,
+     "n_words": 3,
+     "word_f_local": 6.45,
+     "offset_f": -0.45
+    },
+    {
+     "id": "hf-5ouv",
+     "text": "stop following you",
+     "start_f_local": 28.0,
+     "end_f_local": 58.0,
+     "n_words": 3,
+     "word_f_local": 28.11,
+     "offset_f": -0.11
+    },
+    {
+     "id": "hf-30gl",
+     "text": "and start trying",
+     "start_f_local": 58.0,
+     "end_f_local": 79.0,
+     "n_words": 3,
+     "word_f_local": 57.72,
+     "offset_f": 0.28
+    },
+    {
+     "id": "hf-l955",
+     "text": "to drive straight",
+     "start_f_local": 79.0,
+     "end_f_local": 106.0,
+     "n_words": 3,
+     "word_f_local": 79.38,
+     "offset_f": -0.38
+    },
+    {
+     "id": "hf-wyxf",
+     "text": "through you.",
+     "start_f_local": 106.0,
+     "end_f_local": 133.0,
+     "n_words": 2,
+     "word_f_local": 106.44,
+     "offset_f": -0.44
+    }
+   ],
+   "words_not_in_T1": [
+    "They",
+    "ram.",
+    "They",
+    "chase.",
+    "They",
+    "don't",
+    "let",
+    "go."
+   ],
+   "last_caption_end_vs_beat_end_f": -88.0
+  },
+  "B10": {
+   "composition": "b10-fun",
+   "captions": [],
+   "words_not_in_T1": [
+    "And",
+    "suddenly,",
+    "it's",
+    "fun."
+   ],
+   "last_caption_end_vs_beat_end_f": null
+  },
+  "B11": {
+   "composition": "b11-flip",
+   "captions": [
+    {
+     "id": "hf-0npp",
+     "text": "So the team",
+     "start_f_local": 0.0,
+     "end_f_local": 24.0,
+     "n_words": 3,
+     "word_f_local": 6.39,
+     "offset_f": -0.39
+    },
+    {
+     "id": "hf-hbdm",
+     "text": "flips the whole game.",
+     "start_f_local": 24.0,
+     "end_f_local": 69.0,
+     "n_words": 4,
+     "word_f_local": 23.94,
+     "offset_f": 0.06
+    },
+    {
+     "id": "hf-r8p6",
+     "text": "You're not the cop",
+     "start_f_local": 69.0,
+     "end_f_local": 88.0,
+     "n_words": 4,
+     "word_f_local": 69.24,
+     "offset_f": -0.24
+    },
+    {
+     "id": "hf-ch18",
+     "text": "anymore.",
+     "start_f_local": 88.0,
+     "end_f_local": 109.0,
+     "n_words": 1,
+     "word_f_local": 87.84,
+     "offset_f": 0.16
+    },
+    {
+     "id": "hf-nsfo",
+     "text": "Now you're the one",
+     "start_f_local": 109.0,
+     "end_f_local": 135.0,
+     "n_words": 4,
+     "word_f_local": 109.44,
+     "offset_f": -0.44
+    },
+    {
+     "id": "hf-7q6g",
+     "text": "being chased.",
+     "start_f_local": 135.0,
+     "end_f_local": 174.0,
+     "n_words": 2,
+     "word_f_local": 135.45,
+     "offset_f": -0.45
+    }
+   ],
+   "words_not_in_T1": [],
+   "last_caption_end_vs_beat_end_f": 6.0
+  },
+  "B12": {
+   "composition": "b12-thirty",
+   "captions": [
+    {
+     "id": "b12-cap-1",
+     "text": "Of course,",
+     "start_f_local": 6.0,
+     "end_f_local": 59.0,
+     "n_words": 2,
+     "word_f_local": 6.24,
+     "offset_f": -0.24
+    }
+   ],
+   "words_not_in_T1": [
+    "the",
+    "eighteen",
+    "months",
+    "turn",
+    "into",
+    "thirty."
+   ],
+   "last_caption_end_vs_beat_end_f": -30.0
+  },
+  "B13": {
+   "composition": "b13-gta",
+   "captions": [
+    {
+     "id": "hf-f1dv",
+     "text": "Until finally,",
+     "start_f_local": 7.0,
+     "end_f_local": 34.0,
+     "n_words": 2,
+     "word_f_local": 6.96,
+     "offset_f": 0.04
+    },
+    {
+     "id": "hf-qi54",
+     "text": "it ships with",
+     "start_f_local": 91.0,
+     "end_f_local": 111.0,
+     "n_words": 3,
+     "word_f_local": 90.81,
+     "offset_f": 0.19
+    },
+    {
+     "id": "hf-o06z",
+     "text": "a new name:",
+     "start_f_local": 111.0,
+     "end_f_local": 138.0,
+     "n_words": 3,
+     "word_f_local": 110.64,
+     "offset_f": 0.36
+    }
+   ],
+   "words_not_in_T1": [
+    "in",
+    "November",
+    "1997,",
+    "Grand",
+    "Theft",
+    "Auto."
+   ],
+   "last_caption_end_vs_beat_end_f": -82.0
+  },
+  "B14": {
+   "composition": "b14-since",
+   "captions": [
+    {
+     "id": "b14-cap-1",
+     "text": "that chase.",
+     "start_f_local": 68.0,
+     "end_f_local": 102.0,
+     "n_words": 2,
+     "word_f_local": 67.86,
+     "offset_f": 0.14
+    }
+   ],
+   "words_not_in_T1": [
+    "And",
+    "every",
+    "GTA",
+    "since",
+    "is",
+    "built",
+    "around",
+    "The",
+    "wanted",
+    "stars.",
+    "The",
+    "sirens.",
+    "The",
+    "running."
+   ],
+   "last_caption_end_vs_beat_end_f": -92.0
+  },
+  "B15": {
+   "composition": "b15-proof",
+   "captions": [
+    {
+     "id": "hf-c2kf",
+     "text": "Don't believe me?",
+     "start_f_local": 6.0,
+     "end_f_local": 33.0,
+     "n_words": 3,
+     "word_f_local": 6.06,
+     "offset_f": -0.06
+    },
+    {
+     "id": "hf-xryw",
+     "text": "Open GTA Online",
+     "start_f_local": 33.0,
+     "end_f_local": 60.0,
+     "n_words": 3,
+     "word_f_local": 32.61,
+     "offset_f": 0.39
+    },
+    {
+     "id": "hf-qp2o",
+     "text": "and buy an arcade.",
+     "start_f_local": 60.0,
+     "end_f_local": 106.0,
+     "n_words": 4,
+     "word_f_local": 60.24,
+     "offset_f": -0.24
+    },
+    {
+     "id": "hf-2mxn",
+     "text": "One of the machines",
+     "start_f_local": 106.0,
+     "end_f_local": 135.0,
+     "n_words": 4,
+     "word_f_local": 105.66,
+     "offset_f": 0.34
+    },
+    {
+     "id": "hf-ywfq",
+     "text": "is called",
+     "start_f_local": 135.0,
+     "end_f_local": 154.0,
+     "n_words": 2,
+     "word_f_local": 134.55,
+     "offset_f": 0.45
+    }
+   ],
+   "words_not_in_T1": [
+    "Race",
+    "and",
+    "Chase."
+   ],
+   "last_caption_end_vs_beat_end_f": -30.0
+  },
+  "B16": {
+   "composition": "b16-bug-origin",
+   "captions": [
+    {
+     "id": "hf-1r3m",
+     "text": "So that's why",
+     "start_f_local": 6.0,
+     "end_f_local": 20.0,
+     "n_words": 3,
+     "word_f_local": 6.39,
+     "offset_f": -0.39
+    },
+    {
+     "id": "hf-ivzz",
+     "text": "you're always running.",
+     "start_f_local": 20.0,
+     "end_f_local": 59.0,
+     "n_words": 3,
+     "word_f_local": 20.46,
+     "offset_f": -0.46
+    }
+   ],
+   "words_not_in_T1": [
+    "The",
+    "whole",
+    "series",
+    "started",
+    "with",
+    "a",
+    "bug."
+   ],
+   "last_caption_end_vs_beat_end_f": -67.0
+  },
+  "B17": {
+   "composition": "b17-loop",
+   "captions": [
+    {
+     "id": "hf-5gba",
+     "text": "And GTA 6?",
+     "start_f_local": 7.0,
+     "end_f_local": 44.0,
+     "n_words": 3,
+     "word_f_local": 6.84,
+     "offset_f": 0.16
+    },
+    {
+     "id": "hf-2lp3",
+     "text": "It opens with",
+     "start_f_local": 44.0,
+     "end_f_local": 63.0,
+     "n_words": 3,
+     "word_f_local": 44.49,
+     "offset_f": -0.49
+    },
+    {
+     "id": "hf-dwx9",
+     "text": "Lucia already caught.",
+     "start_f_local": 63.0,
+     "end_f_local": 109.0,
+     "n_words": 3,
+     "word_f_local": 63.21,
+     "offset_f": -0.21
+    },
+    {
+     "id": "hf-my23",
+     "text": "So who's",
+     "start_f_local": 109.0,
+     "end_f_local": 123.0,
+     "n_words": 2,
+     "word_f_local": 108.99,
+     "offset_f": 0.01
+    }
+   ],
+   "words_not_in_T1": [
+    "chasing",
+    "who",
+    "now?"
+   ],
+   "last_caption_end_vs_beat_end_f": -79.0
+  }
+ }
+}

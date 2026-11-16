@@ -57,3 +57,4 @@ Substitutions: none.
 
 ## Pending / notes
 * Nothing pending. check: 0 errors; 1 warning (closing line under the CLI's 2 s floor: the plan sets 12f).
+* Render `05_GFX/renders/b08-break.mov`: 75 frames (beat + 12), 1920 x 1080, 30 fps, yuva444p12le (ffprobe, counted).

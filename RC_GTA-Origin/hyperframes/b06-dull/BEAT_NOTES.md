@@ -76,3 +76,4 @@ Substitutions: none. R6.2 (context) and R6.5 (optional) were not downloaded and 
   hair in the source); left as is.
 * check: 0 errors; warnings = nested T2/T8 blocks (kit markup) and the role line at 22 px under the CLI's 28 px phone
   floor (kit T8 size).
+* Render `05_GFX/renders/b06-dull.mov`: 178 frames (beat + 12), 1920 x 1080, 30 fps, yuva444p12le (ffprobe, counted).

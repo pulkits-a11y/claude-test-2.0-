@@ -157,7 +157,7 @@ Plan p.27-28. T2 -> T10. Bug beat (final X4). Official Rockstar/PlayStation foot
 | frames | owner | picture | text |
 |---|---|---|---|
 | 0-103 | TS+HF | L2 letterbox (bars slide in 8f) on the opening seconds of Trailer 1, Lucia in custody (R17.1). M1: five stars blink at the top-right (40 px, x 1700, y 80 - inside the band edge? keep them inside title-safe) | T1 "And GTA 6?" @1 · "It opens with" @38 · "Lucia already caught." @57 |
-| 103-137 | TS+HF | On "So who's chasing who": three fast GTA 6 chase shots (R17.3, R17.4, R17.3) 10f/12f/12f [8-10f each per plan; the third holds to "now?": interp] | T1 "So who's" @103 · T2 lead-in "chasing who" @116 |
+| 107-137 | TS+HF | On "So who's chasing who": three fast GTA 6 chase shots, 10f each (plan: 8-10f each): R17.2 @7.2 s, R17.4 @47.2 s, R17.2 @11.9 s (R17.2 = SUBSTITUTE (Rule 5) for the missing R17.3) | T1 "So who's" @103 · T2 lead-in "chasing who" @116 |
 | 137-150 | HF | On "now?": hard cut to black with the T2 text | T2 keyword "now?" blur-in @137 |
 | 150-170 | HF | The GTA 6 logo (end card of R17.4) pushes in 100 -> 115% over 20f with motion blur; T2 stays on screen | T2 |
 | 170-176 | HF | Final hit: X4 tear on the logo and T10 on "now?" (the word breaks apart) | T10 |

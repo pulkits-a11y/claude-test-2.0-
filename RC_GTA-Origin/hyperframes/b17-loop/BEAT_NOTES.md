@@ -89,3 +89,5 @@ the tail rides its decay). No SFX before "now?" (silence by design).
   re-made, chase shots and substitutions written, these notes. `music_stop`/`logo_in` both at f150 as the storyboard.
 * check: 0 errors; warnings = frame 0 transparent (Tesseract footage underneath, by design), T1/T2 reading-floor
   heuristics (voice timing), nested T2 markup, track density.
+* Render `05_GFX/renders/b17-loop.mov`: 208 frames (beat + 12), 1920 x 1080, 30 fps, yuva444p12le (ffprobe, counted).
+* B17 alpha (rendered): local 0-142 transparent except captions/stars; opaque from local 143 (beat f137, the cut to black).

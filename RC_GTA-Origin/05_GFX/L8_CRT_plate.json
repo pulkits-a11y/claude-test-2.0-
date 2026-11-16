@@ -1,12 +1,66 @@
 {
-  "plan": "L8 CRT monitor screen insert (Master Edit Plan p.14, p.20); kit: hyperframes/_kit/KIT_motifs.md section 5",
-  "plate_footage": "R3.9 (stand-in in _demo-motifs/assets/footage/R3.9.mp4); L8_CRT_plate.png is an OPAQUE 1920x1080 frame of _demo-motifs at 24.5 s (plate + R9.1 picture in the CRT screen, error box not yet shown)",
-  "canvas": [1920, 1080],
-  "screen_corners_TL_TR_BR_BL": [[1060, 230], [1760, 250], [1750, 770], [1070, 790]],
-  "screen_corners_note": "ASSUMED quad on the R3.9 stand-in (data-corners in _demo-motifs); re-fit to the real plate",
-  "insert_size_px": {"w": 690, "h": 540, "via": "RCK.motifs.crtSize(corners)"},
-  "picture_clip": "R9.1 (GTA 1 picture), source aspect 16/9, object-fit cover into the 4:3 insert",
-  "crt_grading": {"intensity": 1, "effects": {"crtCurvature": 0.16, "scanlines": 0.15, "scanlineCount": 0.2889, "scanlineSoftness": 0, "chromaticAberration": 0.0521, "chromaticAngle": 0}},
-  "plan_values": {"bulge": "8% (crtCurvature 0.16 = 2 x 8%)", "scanlines": "3 px at 15%", "colour_fringing": "1 px (chromaticAberration = 50 / mediaW)", "flicker": "brightness 97% to 100%, via RCK.motifs.crtFlicker (seed 97, every frame, exposure = log2(b))"},
-  "how": "RCK.motifs.crtFit('#sel') corner-pins the .l8-screen; RCK.motifs.crtGrading(size, {srcAspect: 16/9}) returns the grading above; written to the <video> as data-color-grading (hyperframes media-treatment --apply)"
+ "plan": "L8 CRT monitor screen insert (Master Edit Plan p.14, p.20); kit: hyperframes/_kit/KIT_motifs.md section 5",
+ "plate_footage": "R3.7 GRAND THEFT AUTO 1996 Making Of (BBC) [youtube id in 04_Broll/broll_manifest.json] @ 60.4-66.8 s: a DMA developer at a beige 1990s CRT (SUBSTITUTE (Rule 5) for R3.9, which is unusable: burned-in TVDATA.TV watermark, 492x360, no front-facing screen). L8_CRT_plate.png is an opaque 1920x1080 frame of b02-bug at local 2.2 s (beat f60), captions hidden, with the GTA 1 picture (R9.1) in the screen and the CRT treatment applied.",
+ "canvas": [
+  1920,
+  1080
+ ],
+ "screen_corners_TL_TR_BR_BL": [
+  [
+   286.6,
+   196.4
+  ],
+  [
+   838.2,
+   217.7
+  ],
+  [
+   818.6,
+   601.9
+  ],
+  [
+   296.7,
+   624.0
+  ]
+ ],
+ "screen_corners_note": "measured on the real R3.7 plate as placed in b02-bug (plate rotated +6.5 deg, scaled 149.97%); glass ~537 x 406 px, centre (560, 410)",
+ "letterboxed_16x9_band_corners_TL_TR_BR_BL": [
+  [
+   287.9,
+   254.1
+  ],
+  [
+   835.5,
+   269.3
+  ],
+  [
+   821.0,
+   555.0
+  ],
+  [
+   295.5,
+   572.0
+  ]
+ ],
+ "crt_grading_used_in_b02": {
+  "GTA 6 picture (R1.2, laid out at 3.5754x for the X6 zoom)": {
+   "crtCurvature": 0.16,
+   "scanlines": 0.15,
+   "scanlineCount": 0.1126,
+   "chromaticAberration": 0.0931
+  },
+  "GTA 1 picture (R9.1, 537x406)": {
+   "crtCurvature": 0.16,
+   "scanlines": 0.15,
+   "scanlineCount": 0.1896,
+   "chromaticAberration": 0.0693
+  }
+ },
+ "plan_values": {
+  "bulge": "8% (crtCurvature 0.16 = 2 x 8%)",
+  "scanlines": "3 px at 15%",
+  "colour_fringing": "1 px",
+  "flicker": "brightness 97% to 100% (RCK.motifs.crtFlicker, per frame)"
+ },
+ "how": "RCK.motifs.crtGrading(size) for the pinned screen; screens corner-pinned with the transitions kit's X.zoomFit(..., {corners}) (needed when X6 zooms the screen); values written to each <video> as data-color-grading (hyperframes media-treatment)"
 }

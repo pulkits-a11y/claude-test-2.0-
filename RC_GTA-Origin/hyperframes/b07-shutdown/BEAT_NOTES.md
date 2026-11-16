@@ -61,3 +61,4 @@ Substitutions: none.
 ## Pending / notes
 * Nothing pending. check: 0 errors; warnings = T1/stamp lines under the CLI's reading floor (voice timing) and track
   density.
+* Render `05_GFX/renders/b07-shutdown.mov`: 108 frames (beat + 12), 1920 x 1080, 30 fps, yuva444p12le (ffprobe, counted).

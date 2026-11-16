@@ -76,3 +76,4 @@ Substitutions: none (R9.1 is a plan-listed option).
   notes added. Cover = this back side at local 170 (`hyperframes/cover`, `07_Exports/RC_GTA-Origin_v01_cover.png`).
 * The R5.4 light bar strobes: lights visible at local ~24-70 and ~160-174, dark in between (source as is).
 * check: 0 errors; warnings = T1 chunks under the CLI's reading floor (the voice sets the timing) and track density.
+* Render `05_GFX/renders/b11-flip.mov`: 174 frames (beat + 12), 1920 x 1080, 30 fps, yuva444p12le (ffprobe, counted).

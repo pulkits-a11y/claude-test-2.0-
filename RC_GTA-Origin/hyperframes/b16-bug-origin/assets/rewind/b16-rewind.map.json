@@ -2,7 +2,7 @@
  "note": "local frame j of b16-bug-origin shows output frame j (beat = j - 6); see make_rewind.py",
  "inpoints_from": {
   "B14": "b14-since/tesseract_shots.json",
-  "B9": "defaults"
+  "B9": "b09-throughyou/tesseract_shots.json"
  },
  "sources": {
   "B14": {
@@ -68,13 +68,13 @@
      "R14.4",
      124.6,
      "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
-     "1116:628:400:0"
+     "1978:626:298:0"
     ],
     [
      "R14.4",
      155.2,
      "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
-     "1116:628:0:0"
+     "1978:626:0:0"
     ],
     [
      "R14.5",
@@ -90,7 +90,7 @@
     ]
    ]
   },
-  "B9_R9.1_src_in": 125.0,
+  "B9_R9.1_src_in": 313.9,
   "B9_R9.1_start_f": 0,
   "B4_doc": {
    "page_scale": 1.4,
@@ -270,7 +270,7 @@
    "edit_f": 44,
    "src_s": 155.2667,
    "source": "04_Broll/_originals/B01/R14.4__Deadly Pursuit (GTA IV) [WNZMK7KPZWs].mp4",
-   "crop": "1116:628:0:0"
+   "crop": "1978:626:0:0"
   },
   {
    "local": 16,
@@ -308,7 +308,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 127,
-   "src_s": 129.2333,
+   "src_s": 318.1333,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -318,7 +318,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 119,
-   "src_s": 128.9667,
+   "src_s": 317.8667,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -328,7 +328,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 111,
-   "src_s": 128.7,
+   "src_s": 317.6,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -338,7 +338,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 103,
-   "src_s": 128.4333,
+   "src_s": 317.3333,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -348,7 +348,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 95,
-   "src_s": 128.1667,
+   "src_s": 317.0667,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -358,7 +358,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 87,
-   "src_s": 127.9,
+   "src_s": 316.8,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -368,7 +368,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 79,
-   "src_s": 127.6333,
+   "src_s": 316.5333,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -378,7 +378,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 71,
-   "src_s": 127.3667,
+   "src_s": 316.2667,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -388,7 +388,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 63,
-   "src_s": 127.1,
+   "src_s": 316.0,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },
@@ -398,7 +398,7 @@
    "kind": "B9",
    "rid": "R9.1",
    "edit_f": 55,
-   "src_s": 126.8333,
+   "src_s": 315.7333,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "crop": "736:414:59:40"
   },

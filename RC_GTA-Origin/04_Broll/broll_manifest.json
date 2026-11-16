@@ -12,10 +12,11 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
    "source_out": null,
-   "warning": "unofficial upload"
+   "warning": "unofficial upload",
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R1.2",
@@ -27,9 +28,14 @@
    "official_required": true,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook",
+    "b02-bug"
+   ],
+   "channel": "PlayStation"
   },
   {
    "rid": "R1.3",
@@ -41,9 +47,14 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook",
+    "b14-since"
+   ],
+   "channel": "rechyyy"
   },
   {
    "rid": "R1.4",
@@ -55,9 +66,10 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R1.5",
@@ -69,9 +81,13 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook"
+   ],
+   "channel": "Sixth Star"
   },
   {
    "rid": "R1.6",
@@ -83,9 +99,14 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook",
+    "b14-since"
+   ],
+   "channel": "Madd Carl"
   },
   {
    "rid": "R1.7",
@@ -97,9 +118,13 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook"
+   ],
+   "channel": "Momit the Vicious"
   },
   {
    "rid": "R2.1",
@@ -111,9 +136,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R2.2",
@@ -125,9 +151,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R2.3",
@@ -139,9 +166,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R2.4",
@@ -153,9 +181,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R3.1",
@@ -167,9 +196,13 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b03-dundee"
+   ],
+   "channel": "DPSflight"
   },
   {
    "rid": "R3.2",
@@ -181,9 +214,10 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R3.3",
@@ -195,9 +229,13 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b03-dundee"
+   ],
+   "channel": "/noclip"
   },
   {
    "rid": "R3.4",
@@ -209,9 +247,10 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R3.5",
@@ -223,9 +262,10 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "download failed (B3 Lemming uses R3.6)"
   },
   {
    "rid": "R3.6",
@@ -237,9 +277,13 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b03-dundee"
+   ],
+   "channel": "Kuokka77"
   },
   {
    "rid": "R3.7",
@@ -251,9 +295,14 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b02-bug",
+    "b03-dundee"
+   ],
+   "channel": "BBC Archive"
   },
   {
    "rid": "R3.8",
@@ -265,9 +314,13 @@
    "official_required": false,
    "folder": "04_Broll/B03",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b03-dundee"
+   ],
+   "channel": "Mike Dailly"
   },
   {
    "rid": "R3.9",
@@ -279,9 +332,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "unusable",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "unusable: burned-in TVDATA.TV watermark across the frame, 492x360, no front-facing CRT screen (B2 plate uses R3.7)"
   },
   {
    "rid": "R4.1",
@@ -293,9 +347,10 @@
    "official_required": false,
    "folder": "04_Broll/B04",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R4.2",
@@ -307,23 +362,25 @@
    "official_required": false,
    "folder": "04_Broll/B04",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R4.3",
    "beats": "B4",
    "role": "alternate",
-   "desc": "\"GTA Prototype 1 \u2013 How it works\", uploaded by Mike Dailly",
+   "desc": "\"GTA Prototype 1 – How it works\", uploaded by Mike Dailly",
    "url": "https://www.youtube.com/watch?v=XsF4GnPQrvo",
    "note": "GTA Prototype 1, Mike Dailly.",
    "official_required": false,
    "folder": "04_Broll/B04",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R4.4",
@@ -335,9 +392,10 @@
    "official_required": false,
    "folder": "04_Broll/B04",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R4.5",
@@ -349,7 +407,7 @@
    "official_required": false,
    "folder": "04_Broll/B04",
    "file": "04_Broll/B04/R4.5__design-doc-1995_title-page.png",
-   "status": "real-still",
+   "status": "used",
    "source_in": null,
    "source_out": null,
    "links": [
@@ -357,7 +415,11 @@
     "https://igrandtheftauto.com/gta/race-n-chase-game-design-docs",
     "https://www.engadget.com/2011/03/22/race-n-chase-original-gta-design-docs-posted/"
    ],
-   "source_detail": "1995 Race'n'Chase design document (Version 1.05, (c) 1995 DMA Design Ltd), page 1, scanned PDF linked from the plan's iGrandTheftAuto page: https://github.com/gheja/game-design-documents/blob/master/grand-theft-auto.pdf (rendered at 200 dpi, 1700x2200). Title page only: no robber-mode pages (plan: Accuracy notes)."
+   "source_detail": "1995 Race'n'Chase design document (Version 1.05, (c) 1995 DMA Design Ltd), page 1, scanned PDF linked from the plan's iGrandTheftAuto page: https://github.com/gheja/game-design-documents/blob/master/grand-theft-auto.pdf (rendered at 200 dpi, 1700x2200). Title page only: no robber-mode pages (plan: Accuracy notes).",
+   "used_in": [
+    "b04-racenchase",
+    "b16-bug-origin"
+   ]
   },
   {
    "rid": "R5.1",
@@ -369,9 +431,15 @@
    "official_required": false,
    "folder": "04_Broll/B05",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b05-copgame",
+    "b06-dull",
+    "b11-flip"
+   ],
+   "channel": "Stilefty"
   },
   {
    "rid": "R5.2",
@@ -383,9 +451,15 @@
    "official_required": false,
    "folder": "04_Broll/B05",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b05-copgame",
+    "b06-dull",
+    "b11-flip"
+   ],
+   "channel": "SteveTheGamer55"
   },
   {
    "rid": "R5.3",
@@ -397,9 +471,10 @@
    "official_required": false,
    "folder": "04_Broll/B05",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R5.4",
@@ -411,9 +486,14 @@
    "official_required": false,
    "folder": "04_Broll/B05",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b11-flip",
+    "cover"
+   ],
+   "channel": "SteveTheGamer55"
   },
   {
    "rid": "R6.1",
@@ -425,9 +505,13 @@
    "official_required": false,
    "folder": "04_Broll/B06",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b06-dull"
+   ],
+   "channel": "BAFTA Guru"
   },
   {
    "rid": "R6.2",
@@ -439,9 +523,10 @@
    "official_required": false,
    "folder": "04_Broll/B06",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R6.3",
@@ -453,9 +538,10 @@
    "official_required": false,
    "folder": "04_Broll/B06",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R6.4",
@@ -467,9 +553,10 @@
    "official_required": false,
    "folder": "04_Broll/B06",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R6.5",
@@ -481,9 +568,10 @@
    "official_required": false,
    "folder": "04_Broll/B06",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R7.1",
@@ -495,9 +583,14 @@
    "official_required": false,
    "folder": "04_Broll/B07",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b07-shutdown",
+    "b08-break"
+   ],
+   "channel": "PublicDomainFootage"
   },
   {
    "rid": "R7.2",
@@ -509,9 +602,10 @@
    "official_required": false,
    "folder": "04_Broll/B07",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R7.3",
@@ -523,7 +617,7 @@
    "official_required": false,
    "folder": "04_Broll/B07",
    "file": null,
-   "status": "pending-download",
+   "status": "downloaded, not used",
    "source_in": null,
    "source_out": null
   },
@@ -537,9 +631,17 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b02-bug",
+    "b09-throughyou",
+    "b10-fun",
+    "b11-flip",
+    "cover"
+   ],
+   "channel": "Sakura240"
   },
   {
    "rid": "R9.2",
@@ -551,9 +653,10 @@
    "official_required": false,
    "folder": "04_Broll/B09",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "download failed (B9 strip 1 uses R9.1)"
   },
   {
    "rid": "R9.3",
@@ -565,9 +668,14 @@
    "official_required": false,
    "folder": "04_Broll/B09",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b09-throughyou",
+    "b10-fun"
+   ],
+   "channel": "joe tanxbox360"
   },
   {
    "rid": "R9.4",
@@ -579,7 +687,7 @@
    "official_required": false,
    "folder": "04_Broll/B09",
    "file": null,
-   "status": "pending-download",
+   "status": "downloaded, not used",
    "source_in": null,
    "source_out": null
   },
@@ -593,9 +701,14 @@
    "official_required": false,
    "folder": "04_Broll/B09",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b09-throughyou",
+    "b10-fun"
+   ],
+   "channel": "Evil Strawberry Cartoons"
   },
   {
    "rid": "R10.1",
@@ -607,9 +720,13 @@
    "official_required": false,
    "folder": "04_Broll/B10",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b10-fun"
+   ],
+   "channel": "GTAFreak05"
   },
   {
    "rid": "R10.2",
@@ -621,7 +738,7 @@
    "official_required": false,
    "folder": "04_Broll/B10",
    "file": null,
-   "status": "pending-download",
+   "status": "downloaded, not used",
    "source_in": null,
    "source_out": null
   },
@@ -635,9 +752,10 @@
    "official_required": false,
    "folder": "04_Broll/B11",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R12.1",
@@ -649,9 +767,10 @@
    "official_required": false,
    "folder": "04_Broll/B12",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R12.2",
@@ -663,9 +782,10 @@
    "official_required": false,
    "folder": "04_Broll/B12",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R13.1",
@@ -677,9 +797,13 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b13-gta"
+   ],
+   "channel": "gtavideos"
   },
   {
    "rid": "R13.2",
@@ -691,9 +815,13 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b13-gta"
+   ],
+   "channel": "RaZzi - PC Big Box Games"
   },
   {
    "rid": "R13.3",
@@ -705,9 +833,10 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R13.4",
@@ -719,9 +848,10 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R13.5",
@@ -733,9 +863,10 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R13.6",
@@ -747,9 +878,10 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R14.1",
@@ -761,9 +893,14 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook",
+    "b14-since"
+   ],
+   "channel": "Momit the Vicious"
   },
   {
    "rid": "R14.2",
@@ -775,9 +912,13 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b14-since"
+   ],
+   "channel": "Srj Gaming"
   },
   {
    "rid": "R14.3",
@@ -789,9 +930,13 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b14-since"
+   ],
+   "channel": "MaddSmoke"
   },
   {
    "rid": "R14.4",
@@ -803,9 +948,14 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b01-hook",
+    "b14-since"
+   ],
+   "channel": "State Projects"
   },
   {
    "rid": "R14.5",
@@ -817,9 +967,13 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b14-since"
+   ],
+   "channel": "ozʌɴ - slouddy"
   },
   {
    "rid": "R14.6",
@@ -831,9 +985,10 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "unusable",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "unusable: permanent logo overlay and burned-in commentary"
   },
   {
    "rid": "R14.7",
@@ -845,9 +1000,10 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R15.1",
@@ -859,9 +1015,10 @@
    "official_required": false,
    "folder": "04_Broll/B15",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "download failed (BLOCKING: B15 proof shot is a labelled stand-in)"
   },
   {
    "rid": "R15.2",
@@ -873,7 +1030,7 @@
    "official_required": false,
    "folder": "04_Broll/B15",
    "file": null,
-   "status": "pending-download",
+   "status": "downloaded, not used",
    "source_in": null,
    "source_out": null
   },
@@ -887,9 +1044,12 @@
    "official_required": false,
    "folder": "04_Broll/B15",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b15-proof"
+   ]
   },
   {
    "rid": "R15.4",
@@ -901,9 +1061,10 @@
    "official_required": false,
    "folder": "04_Broll/B15",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded (B15 uses R15.3)"
   },
   {
    "rid": "R17.1",
@@ -915,9 +1076,10 @@
    "official_required": true,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded (BLOCKING: B17 f0-107 is a labelled stand-in)"
   },
   {
    "rid": "R17.2",
@@ -929,9 +1091,13 @@
    "official_required": true,
    "folder": "04_Broll/B17",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b17-loop"
+   ],
+   "channel": "Netflix"
   },
   {
    "rid": "R17.3",
@@ -943,9 +1109,10 @@
    "official_required": true,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded (B1/B17 chases use R1.2, R17.2, R17.4)"
   },
   {
    "rid": "R17.4",
@@ -957,9 +1124,13 @@
    "official_required": true,
    "folder": "04_Broll/B17",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b17-loop"
+   ],
+   "channel": "Rockstar Games"
   },
   {
    "rid": "R17.5",
@@ -971,10 +1142,11 @@
    "official_required": true,
    "folder": "04_Broll/B17",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
    "source_out": null,
-   "warning": "unofficial upload"
+   "warning": "unofficial upload",
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "R17.6",
@@ -986,7 +1158,7 @@
    "official_required": true,
    "folder": "04_Broll/B17",
    "file": null,
-   "status": "pending-download",
+   "status": "downloaded, not used",
    "source_in": null,
    "source_out": null
   },
@@ -1000,9 +1172,13 @@
    "official_required": false,
    "folder": "04_Broll/B16",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b16-bug-origin"
+   ],
+   "channel": "Cannon FX"
   },
   {
    "rid": "RT2",
@@ -1014,9 +1190,10 @@
    "official_required": false,
    "folder": "04_Broll/B02",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded"
   },
   {
    "rid": "RT3",
@@ -1028,9 +1205,10 @@
    "official_required": false,
    "folder": "04_Broll/B14",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded (B14 police lights use R1.6)"
   },
   {
    "rid": "RT4",
@@ -1042,9 +1220,10 @@
    "official_required": false,
    "folder": "04_Broll/Textures",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "RT5",
@@ -1056,9 +1235,10 @@
    "official_required": false,
    "folder": "04_Broll/Textures",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   },
   {
    "rid": "RT6",
@@ -1070,9 +1250,13 @@
    "official_required": false,
    "folder": "04_Broll/B16",
    "file": null,
-   "status": "pending-download",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b16-bug-origin"
+   ],
+   "channel": "Flat Media"
   },
   {
    "rid": "RT7",
@@ -1084,9 +1268,10 @@
    "official_required": false,
    "folder": "04_Broll/B01",
    "file": null,
-   "status": "pending-download",
+   "status": "missing",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not downloaded"
   },
   {
    "rid": "RT8",
@@ -1098,9 +1283,10 @@
    "official_required": false,
    "folder": "04_Broll/Textures",
    "file": null,
-   "status": "pending-download",
+   "status": "not downloaded",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "status_note": "not in the shared Drive folder; not needed for v01 (each beat used the plan's other listed clips)"
   }
  ]
 }

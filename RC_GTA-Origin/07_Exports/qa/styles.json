@@ -1,0 +1,207 @@
+{
+ "B1": {
+  "composition": "b01-hook",
+  "featured_T": [
+   "t2"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": true
+  }
+ },
+ "B2": {
+  "composition": "b02-bug",
+  "featured_T": [
+   "t7"
+  ],
+  "motifs": {
+   "X4": true,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B3": {
+  "composition": "b03-dundee",
+  "featured_T": [
+   "t3",
+   "t4",
+   "t8"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B4": {
+  "composition": "b04-racenchase",
+  "featured_T": [
+   "t2",
+   "t9"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B5": {
+  "composition": "b05-copgame",
+  "featured_T": [],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": true
+  }
+ },
+ "B6": {
+  "composition": "b06-dull",
+  "featured_T": [
+   "t2",
+   "t8"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B7": {
+  "composition": "b07-shutdown",
+  "featured_T": [],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B8": {
+  "composition": "b08-break",
+  "featured_T": [
+   "t10"
+  ],
+  "motifs": {
+   "X4": true,
+   "T10": true,
+   "rgb_split": true,
+   "X9": false
+  }
+ },
+ "B9": {
+  "composition": "b09-throughyou",
+  "featured_T": [
+   "t4"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B10": {
+  "composition": "b10-fun",
+  "featured_T": [
+   "t2",
+   "t4"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B11": {
+  "composition": "b11-flip",
+  "featured_T": [],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": true
+  }
+ },
+ "B12": {
+  "composition": "b12-thirty",
+  "featured_T": [
+   "t2"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B13": {
+  "composition": "b13-gta",
+  "featured_T": [
+   "t3",
+   "t6"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B14": {
+  "composition": "b14-since",
+  "featured_T": [
+   "t4"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": true
+  }
+ },
+ "B15": {
+  "composition": "b15-proof",
+  "featured_T": [
+   "t9"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B16": {
+  "composition": "b16-bug-origin",
+  "featured_T": [
+   "t5"
+  ],
+  "motifs": {
+   "X4": false,
+   "T10": false,
+   "rgb_split": false,
+   "X9": false
+  }
+ },
+ "B17": {
+  "composition": "b17-loop",
+  "featured_T": [
+   "t2",
+   "t10"
+  ],
+  "motifs": {
+   "X4": true,
+   "T10": true,
+   "rgb_split": false,
+   "X9": false
+  }
+ }
+}
