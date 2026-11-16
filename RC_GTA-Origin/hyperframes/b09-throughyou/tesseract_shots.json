@@ -11,7 +11,7 @@
    "end_f": 127,
    "source": "04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4",
    "source_in_s": 313.9,
-   "crop": "736:414:59:40",
+   "crop": "536:302:260:108",
    "speed": 1.0,
    "reverse": false,
    "framing": {
@@ -22,7 +22,7 @@
    "enter": "X1",
    "exit": "X1",
    "grade": "b9-sat60",
-   "notes": "Plan p.23-24 step 1 / STORYBOARD B9 f0-127: X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation, push 100 -> 104% (beat f0 -> f127, centre anchor; the HF path diagram is pushed the same way). Moment: R9.1 313.9-318.13 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it (the ram continues in the HF strip 1 at 318.13 s, continuous source time). Crop 736:414:59:40 removes the upload's black borders (picture 742x418 at 56,38). The HF overlay's white dot tracks the purple car (template-matched positions in b09-throughyou/index.html TRACK), assuming exactly this source_in, crop, the L1 105% base scale and this push: change any of them and the dot drifts off the car. Game HUD (Coords, location names, score) stays as it is; the uploader's faint 'Sakura240' watermark sits low-left under the L1 soft edge."
+   "notes": "Plan p.23-24 step 1 / STORYBOARD B9 f0-127: X1 hard cut from B8's black on 'The'. L1 (105%, soft edges), GTA 1 top-down police chase at ~60% saturation, push 100 -> 104% (beat f0 -> f127, centre anchor; the HF path diagram is pushed the same way). Moment: R9.1 313.9-318.13 s: the player's purple Beast GTS swerves through a junction with police cars around it, stops, and at 317.6-318.1 a police car drives straight down into it (the ram continues in the HF strip 1 at 318.13 s, continuous source time). Crop 536:302:260:108 (x 260-796, y 108-410 of the 854x480 upload; 16:9 within 0.2%) excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame): plan Rule 5 treats a watermarked clip as unusable, so it is re-cropped out (no blur, no inpainting). The crop keeps the player's car and the police cars; y 108 (not 100) keeps the overlay's white dot above the T1 caption band (y 592-648) while the car sits low at the start. The HF overlay's white dot tracks the purple car (template-matched positions in b09-throughyou/index.html TRACK, measured in this crop), assuming exactly this source_in, crop, the L1 105% base scale and this push: change any of them and the dot drifts off the car. Game HUD left as it is (only the Coords line falls inside this crop)."
   }
  ]
 }

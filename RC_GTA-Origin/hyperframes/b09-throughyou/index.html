@@ -29,16 +29,17 @@
          beat     local    what
          -6..0    0..6     head handle: transparent (Tesseract L1 R9.1 under it), path diagram's white dot already on the
                            player's car (opening state continued backward), diagram push extrapolated backward (99.81%)
-         0        6        X1 hard cut from B8's black. TS+HF: Tesseract L1 R9.1 313.9 s+ (~60% sat, 105%, soft edges, push
-                           100->104% f0-127). HF overlay = path diagram + T1. T1 "The police cars" on "The"
+         0        6        X1 hard cut from B8's black. TS+HF: Tesseract L1 R9.1 313.9 s+ (crop 536:302:260:108 = the
+                           'Sakura240' watermark cropped out, plan Rule 5; ~60% sat, 105%, soft edges, push 100->104% f0-127).
+                           HF overlay = path diagram + T1. T1 "The police cars" on "The"
          22       28       T1 "stop following you" on "stop"; the dotted yellow path (#FFE14D, 4 px dots) draws the normal
-                           chase path curving behind the dot, from the police position S (240,470) to the dot, 24f, linear
+                           chase path curving behind the dot, from the police position S (600,470) to the dot, 24f, linear
                            (drawn by f46 = local 52, before "you" f49)
          52       58       T1 "and start trying" on "and"
          73       79       T1 "to drive straight" on "to"
          84-92    90-98    on "straight": the solid red arrow (#E3262E, 10 px) shoots from S straight at the dot and through
-                           it, 8f, ease out (power3.out); its head passes the dot between local 92 and 93
-         87-95    93-101   the dot shakes (kit RCK.motifs.shake, 6 px decaying, 8f) from the first frame the arrow is through
+                           it, 8f, ease out (power3.out); its head passes the dot between local 91 and 92
+         86-94    92-100   the dot shakes (kit RCK.motifs.shake, 6 px decaying, 8f) from the first frame the arrow is through
          100      106      T1 "through you." on "through"; diagram holds (on screen f0-127 = 4.2 s, plan: >= 1.5 s)
          127      133      X1 hard cut on "They ram.": HF L3, three vertical strips (8 px ink-black gutters). Strip 1 GTA 1 ram
                            (R9.1 318.1 s+ = the ram that ends the L1 shot; SUBSTITUTE for R9.2) pops (4f, 96->100% + fade)
@@ -70,11 +71,13 @@
       <!-- ===== Path diagram (HF overlay over the Tesseract L1 shot), local 0 .. 133 (beat f-6 .. f127).
            Layer order inside the SVG: dotted yellow path < white dot < red arrow (the arrow crosses the dot = "through").
            Geometry (SVG px; the group #b09-track is translated per frame so D rides the player's purple Beast GTS in the real
-           R9.1 shot, see TRACK below): white dot D (960,540) r 22 (44 px) = the player's car; police position S (240,470);
-           normal chase path =
-           cubic S -> C1 (330,170) -> C2 (830,170) -> D (ends under the dot); red arrow = straight line S -> D -> E, 200 px
-           past the dot centre (E 1159.06,559.35), 10 px, solid triangular head 36 x 32 px. All above the T1 caption band
-           (y 592-648). ===== -->
+           R9.1 shot, see TRACK below): white dot D (960,540) r 22 (44 px) = the player's car; police position S (600,470)
+           (360 px left of D: in the watermark-free crop the car rides as far left as screen x ~484, so S sits closer than
+           the first build's 720 px to stay on screen); normal chase path =
+           cubic S -> C1 (645,170) -> C2 (895,170) -> D (ends under the dot); red arrow = straight line S -> D -> E, 200 px
+           past the dot centre (E 1156.32,578.17), 10 px, solid triangular head 36 x 32 px. Tracked and pushed, all of it
+           stays on screen and above the T1 caption band (y 592-648): measured dot bottom <= 580, path top >= 64,
+           S x >= 116. ===== -->
       <div data-hf-id="hf-tb41" id="b09-diagram" style="z-index: 20">
         <div data-hf-id="hf-ef0x" id="b09-dg" class="clip" data-start="0.0000" data-duration="4.4333" data-track-index="5">
           <svg data-hf-id="hf-ji9f" viewBox="0 0 1920 1080" width="1920" height="1080" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -82,20 +85,20 @@
             <defs data-hf-id="hf-mh0t">
               <!-- reveal mask for the dotted path: a solid stroke of the same curve, dash-offset 100 -> 0 (pathLength 100) -->
               <mask data-hf-id="hf-zm5i" id="b09-path-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
-                <path data-hf-id="hf-762r" id="b09-path-reveal" d="M240,470 C330,170 830,170 960,540" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
+                <path data-hf-id="hf-762r" id="b09-path-reveal" d="M600,470 C645,170 895,170 960,540" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
               </mask>
             </defs>
             <!-- dotted yellow line: 4 px round dots, 12 px pitch -->
-            <path data-hf-id="hf-golg" id="b09-path" d="M240,470 C330,170 830,170 960,540" fill="none" style="stroke: var(--highlighter)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#b09-path-mask)" />
+            <path data-hf-id="hf-golg" id="b09-path" d="M600,470 C645,170 895,170 960,540" fill="none" style="stroke: var(--highlighter)" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 12" mask="url(#b09-path-mask)" />
             <!-- white dot = the player's car; the <g> shakes -->
             <g data-hf-id="hf-uu6w" id="b09-dot">
               <circle data-hf-id="hf-vx03" cx="960" cy="540" r="22" style="fill: var(--white)" />
             </g>
             <!-- solid red arrow: line S -> head base (E - 36 px), dash-offset reveal; the head rides the tip -->
             <g data-hf-id="hf-qbnu" id="b09-arrow">
-              <line data-hf-id="hf-q9au" id="b09-arrow-line" x1="240" y1="470" x2="1123.2304" y2="555.8696" style="stroke: var(--siren-red)" stroke-width="10" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
+              <line data-hf-id="hf-q9au" id="b09-arrow-line" x1="600" y1="470" x2="1120.9849" y2="571.3026" style="stroke: var(--siren-red)" stroke-width="10" stroke-linecap="butt" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="100" />
               <g data-hf-id="hf-rvmy" id="b09-arrow-tip">
-                <polygon data-hf-id="hf-slpz" points="0,0 -36,-16 -36,16" style="fill: var(--siren-red)" transform="rotate(5.55297)" />
+                <polygon data-hf-id="hf-slpz" points="0,0 -36,-16 -36,16" style="fill: var(--siren-red)" transform="rotate(11.00354)" />
               </g>
             </g>
             </g>
@@ -142,12 +145,19 @@
       // anchor); the head handle continues the same line backward (local 0 = 99.811%).
       const P0 = 1 - 0.04 * 6 / 127;
       S.push(tl, '#b09-diagram', f(0), { until: f(CUT_L3), from: P0, to: 1.04 });
-      // Track: the dot rides the player's car (purple Beast GTS) in the Tesseract L1 shot. Car centre measured by template
-      // matching on R9.1 (crop 736:414:59:40 scaled to 1920 x 1080), source time -> (x, y); mapped through the L1 base scale
-      // 105% about the frame centre (the push is shared: #b09-diagram is pushed like the shot). Beat f0 = source 313.9 s.
-      const TRACK = [[313.70,1250,578],[314.0,1260,580],[314.2,1248,584],[314.4,1208,560],[314.6,1112,496],[314.8,1016,452],
-        [315.0,920,440],[315.2,912,452],[315.6,904,456],[316.0,900,456],[316.2,928,472],[316.5,928,484],[316.8,960,508],
-        [317.0,968,532],[317.9,968,532],[318.0,964,540],[318.14,968,528]];
+      // Track: the dot rides the player's car (purple Beast GTS) in the Tesseract L1 shot. Car centre measured on every
+      // source frame 313.7-318.13 s by template matching on R9.1 (the car sprite cut from 316.5 s, rotated in 0.5 deg steps,
+      // masked NCC), in the shot's crop 536:302:260:108 scaled to 1920 x 1080 (x' = (sx - 260) * 1920/536,
+      // y' = (sy - 108) * 1080/302), then reduced to the keypoints below (linear in between stays within 12 px of every
+      // measured frame; the clip's 15 fps steps are kept so the dot does not slide on the car). Source time -> (x, y);
+      // mapped through the L1 base scale 105% about the frame centre (the push is shared: #b09-diagram is pushed like the
+      // shot). Beat f0 = source 313.9 s.
+      const TRACK = [[313.7,1020,554],[313.7667,1002,551],[314.0667,1016,552],[314.2,992,557],[314.5,922,507],
+        [314.5333,894,490],[314.5667,872,446],[314.6,872,446],[314.6333,836,426],[314.6667,836,426],[314.7,779,411],
+        [314.7333,779,411],[314.7667,737,386],[314.8,737,386],[314.8667,651,370],[314.9,651,370],[314.9333,599,370],
+        [314.9667,599,370],[315,545,370],[315.0667,531,365],[315.2,531,382],[315.2333,558,393],[315.4,544,382],
+        [315.4333,522,387],[316,515,387],[316.0333,557,393],[316.5667,549,429],[316.7,572,440],[316.7667,600,460],
+        [316.9667,608,493],[318.1333,607,490]];
       const SRC0 = 313.9;                                                  // source time at beat f0 (local 6)
       for (let k = 0; k <= CUT_L3; k++) {
         const t = SRC0 + (k - 6) / 30;
@@ -170,11 +180,12 @@
       S.hard(tl, '#b09-arrow', { opacity: 0 }, { opacity: 1 }, f(W.straight));
       tl.fromTo('#b09-arrow-line', { attr: { 'stroke-dashoffset': 100 } },
         { attr: { 'stroke-dashoffset': 0 }, duration: f(8), ease: 'power3.out', immediateRender: false }, f(W.straight));
-      gsap.set('#b09-arrow-tip', { x: 275.8311, y: 473.4836 });                  // tip at S + 36 px along the line
-      tl.fromTo('#b09-arrow-tip', { x: 275.8311, y: 473.4836 },
-        { x: 1159.0614, y: 559.3532, duration: f(8), ease: 'power3.out', immediateRender: false }, f(W.straight));
-      // Tip passes the dot (723 px from S) between local 92 (643 px) and 93 (788 px): the dot shakes from local 93.
-      const HIT = W.straight + 3;
+      gsap.set('#b09-arrow-tip', { x: 635.3382, y: 476.8713 });                  // tip at S + 36 px along the line
+      tl.fromTo('#b09-arrow-tip', { x: 635.3382, y: 476.8713 },
+        { x: 1156.3231, y: 578.1739, duration: f(8), ease: 'power3.out', immediateRender: false }, f(W.straight));
+      // Tip passes the dot (367 px from S; far edge 389 px) between local 91 (256 px) and 92 (399 px): the dot shakes
+      // from local 92.
+      const HIT = W.straight + 2;
       M.shake(tl, '#b09-dot', f(HIT), { amp: 6, frames: 8, seed: 9, decay: true });
 
       // ---------------- L3 three vertical strips (beat f127 ..), one per phrase, with its T4 phrase ----------------

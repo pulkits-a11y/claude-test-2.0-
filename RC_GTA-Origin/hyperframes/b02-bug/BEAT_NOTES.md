@@ -21,7 +21,8 @@ top-down police footage on "1995", tears into pixel blocks on "broke", freezes u
   (all kit). No cut-outs.
 - Grades (media-treatment): R1.2 + R9.1 "game" contrast +0.15 (same as B1); CRT = `crtCurvature 0.16` (8% bulge),
   `scanlines 0.15` + `scanlineCount` 0.1126 (GTA 6 band, 302 px) / 0.1896 (GTA 1, 406 px) = 3 px lines,
-  `chromaticAberration` 0.0931 / 0.0693 = 1 px fringe (`RCK.motifs.crtGrading` for the real screen); blur control
+  `chromaticAberration` 0.0931 / 0.0924 = 1 px fringe (`RCK.motifs.crtGrading` for the real screen; GTA 1 = 50 /
+  541.3 px now that R9.1 is a 4:3 crop filling the screen, was 0.0693 = 50 / 721.8 px for the 16:9 clip); blur control
   (0.01, inline 0) on the plate and both GTA 6 copies for the X6 motion blur. R3.7 plate: no grade.
 
 ## 3. Tool and layer stack
@@ -51,7 +52,7 @@ axis-aligned when zoomed, so the first frame is the straight hand-off copy (`han
 | 3..8 | clean R1.2 copy fades 1 -> 0 so the CRT look settles as it lands | linear |
 | 0..26 | CRT GTA 6 (bulge, 3 px scanlines 15%, 1 px fringe) + flicker | flicker 97-100%, one seeded value per frame (`M.crtFlicker`, seed 97) |
 | 8..180 (+6) | **slow push on the plate** (camera) | 100 -> 104% at f180, linear, origin = screen centre (560, 410) |
-| 26 | hard cut of the CRT picture to GTA 1 R9.1 on "1995" | 16:9 picture covered into the 537x406 pinned screen; flicker seed 98 |
+| 26 | hard cut of the CRT picture to GTA 1 R9.1 on "1995" | 4:3 picture (crop 536:402:260:53, watermark-free) fills the 537x406 pinned screen (cover, 0.8% overscan); flicker seed 98 |
 | 101..108 | **X4 tear** on the CRT picture only (still mode, `X.tear`, 8f, seed 101) | 16x9 blocks (20x26.7 px), jump +/-30 px (70% of non-frozen), 25% freeze, 6 px RGB split (R +6 / B -6) |
 | 109..end | picture frozen on the last torn frame (`end: 'hold'`); flicker kept alive by an ink veil 0-3% | seeded (99), one value per frame |
 | 109 | **error box hard pop** (its `data-start`), 640 px wide at (240, 395) = centred on the screen, 28 px text | no tween |
@@ -115,13 +116,21 @@ saved -0.29f: all within +/-2f.
 10. **X6 motion blur** is the kit's media-treatment defocus (peaks with zoom speed), not a radial streak.
 11. Optional R2.3 glitch overlay not used (plan lists it as optional; the X4 carries the glitch).
 12. SUGGESTION (not built): a generic "OK" button would complete the Win95 look but adds on-screen text.
+13. **Watermark (plan Rule 5: a watermarked clip is unusable)**: R9.1 carries the uploader's "Sakura240" watermark in
+    every frame (x 100-258, y 352-385 of the 854x480 upload). The old 16:9 crop 736:414:59:40, covered into the 4:3
+    screen, still showed "kura240" at the lower left of the CRT picture. R9.1 is now cut as a 4:3 crop that starts right
+    of it, 536:402:260:53 (x 260-796, y 53-455): re-cropped, never blurred, inpainted or stretched. It fills the screen
+    exactly (no more 16:9 cover), so only the fringe value follows the kit formula (0.0693 -> 0.0924). y 53 keeps the
+    white police car whole over 126.0-128.5 s (it reaches the picture's last full row, y ~453, at 127.2 s) and on the
+    frozen f101 frame (128.5 s), and drops the HUD's score row. Trade-off: the red car it is on the tail of now stays
+    mostly left of the crop (its nose shows at the left edge on the frozen frame).
 
 ## Footage used
 | R-ID | file | in-out (s, original) | what it shows | link |
 |---|---|---|---|---|
 | R1.2 | `04_Broll/_originals/B01/R1.2__Grand Theft Auto VI - Features Trailer ｜ PS5 Games [8L0CzL2V72c].mp4` | 11.03-12.10 (window 8.2-12.4, shared with b01-hook) | official GTA 6 trailer: the police truck flipping after the shooter fires at it (B1's full-frame shot continued) | https://www.youtube.com/watch?v=8L0CzL2V72c&t=11 |
 | R3.7 | `04_Broll/_originals/B03/R3.7__GRAND THEFT AUTO 1996 Making Of ... BBC Archive [7vWSi44ZTSw].mp4` | 60.4-66.8 | BBC 1996: static over-the-shoulder shot of a DMA developer at a beige 1990s CRT monitor and keyboard (the plate; its own screen content is fully covered by the composited picture). Crop 1440:1080:240:0 | https://www.youtube.com/watch?v=7vWSi44ZTSw&t=60 |
-| R9.1 | `04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` | 126.0-128.5 (window 126.0-131.6; frozen on the torn frame from f101) | GTA 1 top-down: a white police car with lights right on the player's red car's tail (crop 736:414:59:40 removes the black borders) | https://www.youtube.com/watch?v=HX8infRFBTc&t=126 |
+| R9.1 | `04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` | 126.0-128.5 (window 126.0-131.6; frozen on the torn frame from f101) | GTA 1 top-down: a white police car with lights right on the player's red car's tail (the red car mostly left of the frame). Crop 536:402:260:53 (4:3, x 260-796, y 53-455) excludes the uploader's "Sakura240" watermark (x 100-258, y 352-385; plan Rule 5) and the black borders (was 736:414:59:40, which left "kura240" visible in the CRT) | https://www.youtube.com/watch?v=HX8infRFBTc&t=126 |
 
 ## Substitutions
 - SUBSTITUTE (Rule 5): R1.2 Grand Theft Auto VI - Features Trailer | PS5 Games [8L0CzL2V72c] @ 00:11-00:12 for R17.1
@@ -135,8 +144,8 @@ saved -0.29f: all within +/-2f.
 
 ## Pending / blocking
 - Nothing blocking. If R17.1 (Trailer 1) is uploaded later, B1 cell 6 + B2 can switch together (same in-point rule).
-- Known: R9.1 carries the uploader's faint "Sakura240" watermark (lower left of the game picture); inside the CRT it
-  is small and under the scanlines. A tighter crop would lose the police car behind the player.
+- Resolved: R9.1's "Sakura240" watermark is cropped out of the CRT picture (interpretation 13); the X4 still was
+  re-captured from the new picture (`sh tools/make_x4_still.sh`).
 
 ## Verification
 - `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings weighed: `timeline_track_too_dense` (caption lane),
@@ -146,5 +155,11 @@ saved -0.29f: all within +/-2f.
   footage: hand-off, X6 frames, CRT GTA 6, the cut to GTA 1, tear, error box, T7, slats); earlier stand-in notes:
   captions), `B_*` local 107-191 (tear frames, error box pop, T7 words + chip 0/112/100%, slats closing, shut tail),
   `G_*` graded frames, `x4-still-source_L107_b101.png` (the still's source frame).
+- Watermark re-crop (R9.1 536:402:260:53): `python3 tools/sync_footage.py hyperframes/b02-bug` (R9.1.mp4 now 1440x1080,
+  168 frames), fringe 0.0693 -> 0.0924 via `media-treatment --selector "#b02-g1"` (dry-run diff: only that value),
+  `sh tools/make_x4_still.sh` (new `assets/x4/b02-old.png` = the 4:3 picture at f101, 537x406), `check --json` 0 errors
+  (same warnings as above). Snapshots read at local 32 (cut to GTA 1), 60, 90, 106, 107 + 110 (tear), 116 (frozen +
+  error box), 140 (T7): the 4:3 picture fills the screen, the police car stays in it, no watermark. All 16 `review/`
+  frames and both contact sheets were re-shot after the re-crop (the old ones still showed the stand-in era).
 - Render: `cd hyperframes/b02-bug && npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o
-  ../../05_GFX/renders/b02-bug.mov` (ffprobe in the lane report).
+  ../../05_GFX/renders/b02-bug.mov`: ffprobe prores 1920x1080, 30 fps, 192 frames, yuva444p12le.

@@ -17,7 +17,7 @@ series started with a [bug]." with the pixel bug popping in as "bug" is spoken.
 | Kind | ID / file | Use |
 |---|---|---|
 | B-roll (reused B14) | R14.5 (escape + 2013), R1.6 (police lights, B14's RT3 substitute), R1.3, R14.4, R14.3, R14.2, R14.1 - frames taken from the ORIGINALS with B14's in-points and crops | rewind f-6..12, reversed 8x |
-| B-roll (reused B9) | R9.1 GTA 1 police chase (PROVISIONAL moment 126.83-129.23 with B2's crop until lane E writes B9's R9.1 shot) | rewind f13-22, reversed 8x |
+| B-roll (reused B9) | R9.1 GTA 1 police chase = B9's L1 shot (source 318.13 -> 315.73 s, B9's crop 536:302:260:108: the uploader's "Sakura240" watermark cropped out, plan Rule 5), read live from `../b09-throughyou/tesseract_shots.json` | rewind f13-22, reversed 8x |
 | B-roll (reused B4) | R4.5 design-document title page (REAL still, `assets/footage/R4.5.png`) | rewind f23-29 (zoom back out), held f30-44 under X7 (0.7 s on screen in all: < 1.5 s, always with camera motion until it stops) |
 | Derived clip | `assets/rewind/b16-rewind.mp4` (52 frames) + `b16-rewind.map.json` | built by `tools/make_rewind.py` from the synced footage |
 | Textures (REAL) | **RT1** VHS overlay (Screen blend over the rewind, f-6..30) + the media-treatment VHS look + drawn tracking lines; **RT6** light leak inside the kit X7 container (f30-44) | `assets/footage/RT1.mp4`, `RT6.mp4` |
@@ -128,7 +128,7 @@ VHS/tape glitch look is allowed; no X9, no X4, no T10 here.
 | R1.6 | `B01/R1.6__The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S [flgIZbQHwN8].mp4` (crop 1264:711:300:289) | 130.27, 130.00 | 3..4 | B14's police lights (RT3 substitute) | https://www.youtube.com/watch?v=flgIZbQHwN8&t=129 |
 | R1.3 | `B01/R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4` | 109.40, 109.13, 108.87 | 5..7 | B14's GTA 5 chase under the stars | https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=107 |
 | R14.5 / R14.4 / R14.3 / R14.2 / R14.1 | B14's burst files, crops as in B14 | 429.73 / 155.27 / 64.13 / 274.07 / 60.43 | 8..12 | one frame per burst game, 2013 -> 2001 | see b14-since BEAT_NOTES |
-| R9.1 | `B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` (crop 736:414:59:40) | 129.23 -> 126.83 (8x reverse) | 13..22 | GTA 1 top-down: the white police car on the red car's tail (PROVISIONAL, see pending) | https://www.youtube.com/watch?v=HX8infRFBTc&t=126 |
+| R9.1 | `B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` (crop 536:302:260:108 = B9's L1 crop: x 260-796, y 108-410, excludes the uploader's "Sakura240" watermark at x 100-258, y 352-385, plan Rule 5; was 736:414:59:40, which showed it) | 318.13 -> 315.73 (8x reverse; B9 f127 -> f55) | 13..22 | GTA 1 top-down, B9's chase run backwards: the police car pulls back off the player's purple Beast GTS, which then sits by the kerb | https://www.youtube.com/watch?v=HX8infRFBTc&t=315 |
 | R4.5 | `04_Broll/B04/R4.5__design-doc-1995_title-page.png` (real still) | B4's push run back 118% -> 100% | 23..45 | the 1995 Race'n'Chase design-document title page as B4 showed it | (plan p.29 sources) |
 | RT1 | `B16/RT1__Retro VHS Transitions Glitch 5-Pack Video Overlays (4K) [QV4F0CygC3U].mp4` (crop 1632:918:0:0) | 13.00-13.50 + 13.60-14.23 | -6..30 | VHS noise bands / glitch / tape crease (Screen) | https://www.youtube.com/watch?v=QV4F0CygC3U&t=13 |
 | RT6 | `B16/RT6__FREE Light Leak Transitions Pack - 4K (ULTRA HD) [b-jt77qrRoA].mp4` | 3.98-4.45 | 30..44 | orange light-leak burst (X7) | https://www.youtube.com/watch?v=b-jt77qrRoA&t=3 |
@@ -144,9 +144,14 @@ lists every output frame's source and `inpoints_from`. Working clips: only R4.5,
 
 ## Still pending
 
-* **B9's R9.1 shot (lane E):** `../b09-throughyou/tesseract_shots.json` does not exist yet, so the rewind's 10 GTA 1 frames use a
-  PROVISIONAL moment (R9.1 126.83-129.23, the police-car-on-the-tail moment B2 also uses, B2's crop). When lane E writes B9's L1 R9.1
-  shot: `python3 tools/make_rewind.py` (picks it up automatically, `inpoints_from` then names it), re-check, re-render.
-* Re-run `tools/make_rewind.py` and re-render after any change to B14's shots (e.g. if RT3 arrives) or to B4's R4.5 framing.
+* Resolved: **B9's R9.1 shot** exists (`../b09-throughyou/tesseract_shots.json`, `inpoints_from` names it): the rewind's 10 GTA 1
+  frames are B9 f127 -> f55 (source 318.13 -> 315.73 s) with B9's L1 crop. That crop is now 536:302:260:108, which cuts the
+  uploader's "Sakura240" watermark out (plan Rule 5: a watermarked clip is unusable); the rewind was rebuilt with
+  `python3 tools/make_rewind.py` (only local frames 19-28 changed), re-checked (`check --json` 0 errors; warnings as in
+  interpretation 9) and re-rendered (ffprobe prores 1920x1080, 30 fps, 132 frames, yuva444p12le). Snapshots read at
+  local 19, 22, 24, 25, 28 (`review/footage-pass/r91-recrop-L19-28.jpg`, `f024_b018_R9.1.png` re-shot): new crop, no
+  watermark.
+* Re-run `tools/make_rewind.py` and re-render after any change to B9's L1 shot, B14's shots (e.g. if RT3 arrives) or B4's
+  R4.5 framing.
 
 Render: `npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o ../../05_GFX/renders/b16-bug-origin.mov`

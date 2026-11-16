@@ -34,12 +34,12 @@ TS+HF f0-127: Tesseract L1 R9.1 (`tesseract_shots.json` B9-gta1-chase-L1) under 
 | beat f | what | values / ease |
 |---|---|---|
 | -6..0 | head handle: transparent, dot already on the car, diagram push continued backward (99.81%) | |
-| 0 | X1 hard cut from B8's black (Tesseract); T1 "The police cars" | |
+| 0 | X1 hard cut from B8's black (Tesseract L1, crop 536:302:260:108 = watermark cropped out, see "Footage used"); T1 "The police cars" | |
 | 0-127 | diagram pushed exactly like the L1 shot: 100% (f0) -> 104% (f127), centre anchor | linear |
-| -6..127 | `#b09-track` = the player's car position per frame (template-matched on R9.1 313.7-318.14 s, mapped through the L1 105% base scale) | one `set` per frame |
-| 22-46 | dotted yellow path draws from the police position S (240, 470) round to the dot | masked dash reveal, 24f linear, done before "you" f49 |
-| 84-92 | on "straight": red arrow (10 px, solid head 36 x 32) shoots S -> through the dot -> 200 px past it | 8f power3.out |
-| 87-95 | dot shakes (first frame the arrow is through) | kit shake, 6 px decaying, 8f, seed 9 |
+| -6..127 | `#b09-track` = the player's car position per frame (template-matched on every source frame of R9.1 313.7-318.13 s in the shot's crop 536:302:260:108, reduced to 31 keypoints within 12 px, mapped through the L1 105% base scale) | one `set` per frame |
+| 22-46 | dotted yellow path draws from the police position S (600, 470) round to the dot (C1 (645, 170), C2 (895, 170)) | masked dash reveal, 24f linear, done before "you" f49 |
+| 84-92 | on "straight": red arrow (10 px, solid head 36 x 32) shoots S -> through the dot -> 200 px past it (E (1156.32, 578.17)) | 8f power3.out |
+| 86-94 | dot shakes (first frame the arrow is through: the tip passes the dot between f85 and f86) | kit shake, 6 px decaying, 8f, seed 9 |
 | 127 | **X1 hard cut on "They ram."** to L3 (8 px ink gutters); strip 1 pops + T4 "They ram." | pop 4f 96->100% + fade, then 4f punch-in to 115% |
 | 151 | strip 2 pops + punch + T4 "They chase." | same |
 | 178 | strip 3 pops + punch + T4 "They don't let go." | same |
@@ -67,14 +67,16 @@ B10 = T2: rotation holds).
 - Not full colour yet: L1 at ~60% saturation, strips matched (B10 snaps to full colour on "fun").
 - The dot must sit on the player's car: if the L1 `source_in_s`, crop, 105% base or push changes, re-track (TRACK in
   `index.html`).
+- No watermark on screen (plan Rule 5): R9.1 carries the uploader's "Sakura240" in every frame at x 100-258, y 352-385
+  of the 854x480 upload, so every R9.1 crop starts at x >= 260. Remove it by cropping, never by blur/inpaint/stretch.
 - No SFX, no siren wash (X9 only in B1/B5/B14), no glitch here.
 - Stretch nothing: the strips are vertical crops of the game pictures (cover), never squeezed.
 
 ## Footage used
 | R-ID | file | in-out (s, original) | what it shows | link |
 |---|---|---|---|---|
-| R9.1 | `04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` | 313.9-318.13 (Tesseract L1, crop 736:414:59:40) | GTA 1: the player's purple Beast GTS swerves through a junction among police cars, stops, and a police car drives straight down into it | https://www.youtube.com/watch?v=HX8infRFBTc&t=313 |
-| R9.1 | same | 318.13-321.0 here (window 318.1-322.4, continues in B10 to 322.2), crop 276:414:274:40 | strip 1: the police car rams the Beast GTS (318.1-318.9), the player breaks away with the cops behind as the camera pulls out | https://www.youtube.com/watch?v=HX8infRFBTc&t=318 |
+| R9.1 | `04_Broll/_originals/B02/R9.1__GTA 1 Police Chase 001 [HX8infRFBTc].mp4` | 313.9-318.13 (Tesseract L1, crop 536:302:260:108 = x 260-796, y 108-410: the uploader's "Sakura240" watermark (x 100-258, y 352-385) is cropped out, plan Rule 5; was 736:414:59:40, which showed it low-left for ~4 s) | GTA 1: the player's purple Beast GTS swerves through a junction among police cars, stops, and a police car drives straight down into it | https://www.youtube.com/watch?v=HX8infRFBTc&t=313 |
+| R9.1 | same | 318.13-321.0 here (window 318.1-322.4, continues in B10 to 322.2), crop 276:414:274:40 (x 274-550: clear of the watermark, unchanged) | strip 1: the police car rams the Beast GTS (318.1-318.9), the player breaks away with the cops behind as the camera pulls out | https://www.youtube.com/watch?v=HX8infRFBTc&t=318 |
 | R9.3 | `04_Broll/_originals/B09/R9.3__GTA2 5 Stars Gameplay [LNqEGdO9HDI].mp4` | 55.6-57.7 here (window 55.6-59.2), crop 288:480:247:0 | strip 2, GTA 2 (5 stars): white-and-blue police cars swarm the junction around the player | https://www.youtube.com/watch?v=LNqEGdO9HDI&t=55 |
 | R9.5 | `04_Broll/_originals/B09/R9.5__Grand Theft Auto London 1969 Rampage (NO COMMENTARY) [3f0Zmrg9NUk].mp4` | 566.0-567.2 here (window 566.0-569.0), crop 288:480:96:0 | strip 3, London 1969: a blue van mounts the pavement and keeps driving after the player on foot | https://www.youtube.com/watch?v=3f0Zmrg9NUk&t=566 |
 
@@ -86,7 +88,10 @@ B10 = T2: rotation holds).
 ## Interpretations / conflicts
 1. **Dot tracking**: the plan's dot "marks the player's car"; the whole diagram (dot, path, arrow) is translated per
    frame so the dot rides the car (GTA 1's camera does not keep the car centred). The schematic S point and path keep
-   their shape relative to the dot.
+   their shape relative to the dot. Since the watermark-free crop (interpretation 6) the car rides further left
+   (screen x ~484-1024), so S sits 360 px left of the dot instead of 720 (S (600, 470), C1 (645, 170), C2 (895, 170),
+   E (1156.32, 578.17)) to stay on screen; the TRACK was re-measured in the new crop and keeps the clip's 15 fps steps
+   (the dot moves with the car, it does not glide over it).
 2. **Arrow vs the real ram**: the arrow fires on "straight" (f84); in the footage the real ram follows at f~117-127
    and continues in strip 1 - the diagram explains it, the footage then shows it.
 3. **L3 cut frame**: strips pop in from the cut frame (frame 0 of a pop is empty), as the L3 library's "cells pop in".
@@ -94,18 +99,32 @@ B10 = T2: rotation holds).
    weapon at them); chosen as the densest police moment in the GTA 2 clip for "They chase.".
 5. SUGGESTION (not built): R9.4 (GTA 1 in 4K) could replace strip 1 with a sharper ram if one is found; after ~1 s the
    R9.1 strip shows the player escaping at a wider camera zoom, so the ram itself reads mainly at the pop.
+6. **Watermark (plan Rule 5: a watermarked clip is unusable)**: R9.1 carries the uploader's "Sakura240" watermark in
+   every frame (x 100-258, y 352-385 of the 854x480 upload). The L1 shot's old crop 736:414:59:40 left it readable at
+   the lower left for ~4 s, so the L1 crop is now 536:302:260:108 (x 260-796, y 108-410; 16:9 within 0.2%, scaled
+   3.58x instead of 2.61x): it is re-cropped out, never blurred, inpainted or stretched. The crop keeps the player's
+   car and the police cars (the ramming car enters at the top at ~317.6 s). Its y is 108, not 100, because at y 100 the
+   car sits so low at the start (313.7-314.4 s) that the white dot would dip into the T1 caption band (dot bottom 609 >
+   592, over "police"); at y 108 the dot bottom stays <= 580. Strip 1 (276:414:274:40) already excluded the watermark.
 
 ## Pending / blocking
 - Nothing blocking.
-- Known: R9.1 (the plan's GTA 1 chase clip) carries the uploader's faint "Sakura240" watermark in every frame (lower
-  left). Strip 1's crop excludes it; in the L1 shot it sits in the soft-edge zone at the lower left (a tighter crop
-  would zoom the car out of frame and invalidate the dot track). SUGGESTION: R9.4 (GTA 1 4K, no watermark seen) if a
-  matching chase-and-ram moment is found.
+- Resolved: the "Sakura240" watermark is cropped out of the L1 shot (interpretation 6); strip 1 already excluded it, so
+  no R9.1 frame in B9 shows it. B16's rewind reads this shot's crop live (`b16-bug-origin/tools/make_rewind.py`):
+  re-run it after any change here. SUGGESTION: R9.4 (GTA 1 4K, no watermark seen) if a matching chase-and-ram moment is
+  found (a sharper picture at this zoom).
 
 ## Verification
 - `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings weighed: `timeline_track_too_dense` (caption lane),
   `nested_structure_needs_subcomposition` (the SVG diagram), craft warnings (beat segment).
 - Snapshots in `review/` (read): local 6, 20, 52, 93, 110 (dot on the car, path, arrow, shake, captions), 128, 133,
-  137, 161, 190, 226 (L3 cut, pops, T4 phrases, tail).
+  137, 161, 190, 226 (L3 cut, pops, T4 phrases, tail); re-shot after the watermark re-crop (new S / path / arrow).
+- Watermark re-crop (L1 536:302:260:108) check: `review/l1-dotcheck-1.jpg` / `-2.jpg` = overlay snapshots at local 6,
+  21, 28 ("stop"), 40, 52, 92 ("straight", arrow through), 110, 132 (end) composited over the cropped source frame
+  (1920 x 1080, x 1.05 x the push about the centre); green cross = measured car centre, cyan = caption band. Read: the
+  dot sits on the car in all eight, no watermark, everything on screen. Measured on every frame of the render
+  (local 0-132): dot-to-car centre error max 12.7 px (mean 4.3) outside the intended shake (17.2 px with the 6 px shake
+  at local 96); dot bottom <= 579; path/arrow y 65-536, x >= 116.
+- `check --json` after the re-crop: 0 errors (same 2 lint + 5 craft warnings as before).
 - Render: `cd hyperframes/b09-throughyou && npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o
-  ../../05_GFX/renders/b09-throughyou.mov` (ffprobe in the lane report).
+  ../../05_GFX/renders/b09-throughyou.mov`: ffprobe prores 1920x1080, 30 fps, 227 frames, yuva444p12le.
