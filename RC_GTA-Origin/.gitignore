@@ -9,6 +9,7 @@
 04_Broll/B*/*
 !04_Broll/B*/.gitkeep
 04_Broll/Textures/*
+!04_Broll/Textures/dust_overlay.jpg
 05_GFX/renders/
 07_Exports/*.mp4
 07_Exports/*.mov

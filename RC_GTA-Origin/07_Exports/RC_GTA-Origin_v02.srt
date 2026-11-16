@@ -1,0 +1,151 @@
+1
+00:00:00,033 --> 00:00:04,493
+Why does every GTA, even GTA 6,
+have you running from the cops?
+
+2
+00:00:04,494 --> 00:00:08,625
+Because back in 1995,
+a game about chasing criminals broke.
+
+3
+00:00:08,626 --> 00:00:10,132
+And that bug saved it.
+
+4
+00:00:10,133 --> 00:00:10,799
+Here's how.
+
+5
+00:00:10,800 --> 00:00:13,339
+It's 1995 in Dundee, Scotland.
+
+6
+00:00:13,340 --> 00:00:16,866
+DMA Design, the studio behind
+Lemmings, starts a new game.
+
+7
+00:00:16,867 --> 00:00:20,223
+It's called Race'n'Chase,
+and it's planned to take eighteen months.
+
+8
+00:00:20,224 --> 00:00:22,980
+In it, you play a police
+officer chasing criminals.
+
+9
+00:00:22,981 --> 00:00:24,886
+But there's a problem: it's dull.
+
+10
+00:00:24,887 --> 00:00:28,178
+One developer later calls
+it “awful… too sim-y.”
+
+11
+00:00:28,179 --> 00:00:31,166
+So the people above the team
+keep trying to shut it down.
+
+12
+00:00:31,184 --> 00:00:33,147
+Then, something breaks.
+
+13
+00:00:33,165 --> 00:00:34,894
+The police cars stop following you and
+
+14
+00:00:34,895 --> 00:00:37,123
+start trying to drive
+straight through you.
+
+15
+00:00:37,124 --> 00:00:37,888
+They ram.
+
+16
+00:00:37,889 --> 00:00:38,729
+They chase.
+
+17
+00:00:38,730 --> 00:00:39,884
+They don't let go.
+
+18
+00:00:39,885 --> 00:00:41,678
+And suddenly, it's fun.
+
+19
+00:00:41,679 --> 00:00:43,645
+So the team flips the whole game.
+
+20
+00:00:43,646 --> 00:00:44,904
+You're not the cop anymore.
+
+21
+00:00:44,905 --> 00:00:46,744
+Now you're the one being chased.
+
+22
+00:00:46,745 --> 00:00:49,364
+Of course, the eighteen
+months turn into thirty.
+
+23
+00:00:49,365 --> 00:00:54,902
+Until finally, in November 1997, it
+ships with a new name: Grand Theft Auto.
+
+24
+00:00:56,188 --> 00:00:59,192
+And every GTA since is
+built around that chase.
+
+25
+00:00:59,193 --> 00:01:00,361
+The wanted stars.
+
+26
+00:01:00,362 --> 00:01:01,263
+The sirens.
+
+27
+00:01:01,264 --> 00:01:02,070
+The running.
+
+28
+00:01:02,071 --> 00:01:02,902
+Don't believe me?
+
+29
+00:01:02,903 --> 00:01:05,188
+Open GTA Online and buy an arcade.
+
+30
+00:01:05,189 --> 00:01:07,654
+One of the machines is
+called Race and Chase.
+
+31
+00:01:07,655 --> 00:01:09,316
+So that's why you're always running.
+
+32
+00:01:09,317 --> 00:01:11,424
+The whole series started with a bug.
+
+33
+00:01:11,425 --> 00:01:12,603
+And GTA 6?
+
+34
+00:01:12,604 --> 00:01:14,622
+It opens with Lucia already caught.
+
+35
+00:01:14,623 --> 00:01:16,495
+So who's chasing who now?

@@ -1,0 +1,758 @@
+{
+ "speed": 1.15,
+ "raw_file": "ElevenLabs_2026-11-15T08_04_46_Clara_-_Corporate__Training_Trusted_Professional_pvc_s20_sim50_v4.mp3",
+ "raw_duration_s": 93.388,
+ "trim_head_s": 0.0754,
+ "speech_onset_s": 0.1087,
+ "trim_tail_at_s": 93.3266,
+ "pause_edits": [
+  {
+   "after": "GTA,",
+   "before": "even",
+   "punct": ",",
+   "start": 1.725,
+   "end": 1.96,
+   "dur": 0.235,
+   "target": 0.235,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "cops?",
+   "before": "Because",
+   "punct": "?",
+   "start": 4.955,
+   "end": 5.565,
+   "dur": 0.61,
+   "target": 0.3,
+   "removed": 0.31,
+   "rule": "cap"
+  },
+  {
+   "after": "1995,",
+   "before": "a",
+   "punct": ",",
+   "start": 7.475,
+   "end": 7.645,
+   "dur": 0.17,
+   "target": 0.17,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "broke.",
+   "before": "And",
+   "punct": ".",
+   "start": 10.025,
+   "end": 10.55,
+   "dur": 0.525,
+   "target": 0.3,
+   "removed": 0.225,
+   "rule": "deliberate: 0.3 s after 'broke' (B2)"
+  },
+  {
+   "after": "bug",
+   "before": "saved",
+   "punct": "",
+   "start": 11.305,
+   "end": 11.435,
+   "dur": 0.13,
+   "target": 0.13,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "it.",
+   "before": "Here's",
+   "punct": ".",
+   "start": 12.005,
+   "end": 12.585,
+   "dur": 0.58,
+   "target": 0.3,
+   "removed": 0.28,
+   "rule": "cap"
+  },
+  {
+   "after": "how.",
+   "before": "It's",
+   "punct": ".",
+   "start": 13.06,
+   "end": 13.92,
+   "dur": 0.86,
+   "target": 0.3,
+   "removed": 0.56,
+   "rule": "cap"
+  },
+  {
+   "after": "Scotland.",
+   "before": "DMA",
+   "punct": ".",
+   "start": 16.54,
+   "end": 17.09,
+   "dur": 0.55,
+   "target": 0.3,
+   "removed": 0.25,
+   "rule": "cap"
+  },
+  {
+   "after": "Design,",
+   "before": "the",
+   "punct": ",",
+   "start": 18.175,
+   "end": 18.305,
+   "dur": 0.13,
+   "target": 0.13,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "game.",
+   "before": "It's",
+   "punct": ".",
+   "start": 20.865,
+   "end": 21.415,
+   "dur": 0.55,
+   "target": 0.3,
+   "removed": 0.25,
+   "rule": "cap"
+  },
+  {
+   "after": "Chase,",
+   "before": "and",
+   "punct": ",",
+   "start": 22.88,
+   "end": 23.045,
+   "dur": 0.165,
+   "target": 0.165,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "take",
+   "before": "eighteen",
+   "punct": "",
+   "start": 23.98,
+   "end": 24.105,
+   "dur": 0.125,
+   "target": 0.125,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "months.",
+   "before": "In",
+   "punct": ".",
+   "start": 24.995,
+   "end": 25.525,
+   "dur": 0.53,
+   "target": 0.3,
+   "removed": 0.23,
+   "rule": "cap"
+  },
+  {
+   "after": "it,",
+   "before": "you",
+   "punct": ",",
+   "start": 25.835,
+   "end": 26.035,
+   "dur": 0.2,
+   "target": 0.2,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "criminals.",
+   "before": "But",
+   "punct": ".",
+   "start": 28.39,
+   "end": 28.925,
+   "dur": 0.535,
+   "target": 0.3,
+   "removed": 0.235,
+   "rule": "cap"
+  },
+  {
+   "after": "problem:",
+   "before": "it's",
+   "punct": ":",
+   "start": 29.86,
+   "end": 30.38,
+   "dur": 0.52,
+   "target": 0.3,
+   "removed": 0.22,
+   "rule": "cap"
+  },
+  {
+   "after": "dull.",
+   "before": "One",
+   "punct": ".",
+   "start": 31.065,
+   "end": 31.64,
+   "dur": 0.575,
+   "target": 0.3,
+   "removed": 0.275,
+   "rule": "cap"
+  },
+  {
+   "after": "later",
+   "before": "calls",
+   "punct": "",
+   "start": 33.055,
+   "end": 33.4,
+   "dur": 0.345,
+   "target": 0.3,
+   "removed": 0.045,
+   "rule": "cap"
+  },
+  {
+   "after": "it",
+   "before": "\u201cawful\u2026",
+   "punct": "",
+   "start": 33.905,
+   "end": 34.275,
+   "dur": 0.37,
+   "target": 0.3,
+   "removed": 0.07,
+   "rule": "cap"
+  },
+  {
+   "after": "sim-y.\u201d",
+   "before": "So",
+   "punct": ".",
+   "start": 35.255,
+   "end": 35.825,
+   "dur": 0.57,
+   "target": 0.3,
+   "removed": 0.27,
+   "rule": "cap"
+  },
+  {
+   "after": "down.",
+   "before": "Then,",
+   "punct": ".",
+   "start": 38.8,
+   "end": 39.375,
+   "dur": 0.575,
+   "target": 0.5,
+   "removed": 0.075,
+   "rule": "deliberate: 0.5 s before 'Then, something breaks.' (B8)"
+  },
+  {
+   "after": "Then,",
+   "before": "something",
+   "punct": ",",
+   "start": 39.795,
+   "end": 40.115,
+   "dur": 0.32,
+   "target": 0.3,
+   "removed": 0.02,
+   "rule": "cap"
+  },
+  {
+   "after": "breaks.",
+   "before": "The",
+   "punct": ".",
+   "start": 41.195,
+   "end": 41.735,
+   "dur": 0.54,
+   "target": 0.5,
+   "removed": 0.04,
+   "rule": "deliberate: 0.5 s after 'Then, something breaks.' (B8)"
+  },
+  {
+   "after": "you.",
+   "before": "They",
+   "punct": ".",
+   "start": 46.0,
+   "end": 46.505,
+   "dur": 0.505,
+   "target": 0.3,
+   "removed": 0.205,
+   "rule": "cap"
+  },
+  {
+   "after": "ram.",
+   "before": "They",
+   "punct": ".",
+   "start": 47.24,
+   "end": 47.385,
+   "dur": 0.145,
+   "target": 0.145,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "chase.",
+   "before": "They",
+   "punct": ".",
+   "start": 48.125,
+   "end": 48.345,
+   "dur": 0.22,
+   "target": 0.22,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "go.",
+   "before": "And",
+   "punct": ".",
+   "start": 49.39,
+   "end": 49.93,
+   "dur": 0.54,
+   "target": 0.3,
+   "removed": 0.24,
+   "rule": "cap"
+  },
+  {
+   "after": "suddenly,",
+   "before": "it's",
+   "punct": ",",
+   "start": 50.695,
+   "end": 51.02,
+   "dur": 0.325,
+   "target": 0.3,
+   "removed": 0.025,
+   "rule": "cap"
+  },
+  {
+   "after": "fun.",
+   "before": "So",
+   "punct": ".",
+   "start": 51.73,
+   "end": 52.31,
+   "dur": 0.58,
+   "target": 0.3,
+   "removed": 0.28,
+   "rule": "cap"
+  },
+  {
+   "after": "game.",
+   "before": "You're",
+   "punct": ".",
+   "start": 54.29,
+   "end": 54.79,
+   "dur": 0.5,
+   "target": 0.3,
+   "removed": 0.2,
+   "rule": "cap"
+  },
+  {
+   "after": "anymore.",
+   "before": "Now",
+   "punct": ".",
+   "start": 55.94,
+   "end": 56.27,
+   "dur": 0.33,
+   "target": 0.3,
+   "removed": 0.03,
+   "rule": "cap"
+  },
+  {
+   "after": "chased.",
+   "before": "Of",
+   "punct": ".",
+   "start": 58.095,
+   "end": 58.64,
+   "dur": 0.545,
+   "target": 0.3,
+   "removed": 0.245,
+   "rule": "cap"
+  },
+  {
+   "after": "turn",
+   "before": "into",
+   "punct": "",
+   "start": 60.825,
+   "end": 60.975,
+   "dur": 0.15,
+   "target": 0.15,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "thirty.",
+   "before": "Until",
+   "punct": ".",
+   "start": 61.36,
+   "end": 61.765,
+   "dur": 0.405,
+   "target": 0.3,
+   "removed": 0.105,
+   "rule": "cap"
+  },
+  {
+   "after": "1997,",
+   "before": "it",
+   "punct": ",",
+   "start": 64.51,
+   "end": 64.8,
+   "dur": 0.29,
+   "target": 0.29,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "name:",
+   "before": "Grand",
+   "punct": ":",
+   "start": 66.195,
+   "end": 66.6,
+   "dur": 0.405,
+   "target": 0.3,
+   "removed": 0.105,
+   "rule": "cap"
+  },
+  {
+   "after": "Auto.",
+   "before": "And",
+   "punct": ".",
+   "start": 67.795,
+   "end": 68.345,
+   "dur": 0.55,
+   "target": 0.3,
+   "removed": 0.25,
+   "rule": "cap"
+  },
+  {
+   "after": "chase.",
+   "before": "The",
+   "punct": ".",
+   "start": 71.515,
+   "end": 71.955,
+   "dur": 0.44,
+   "target": 0.3,
+   "removed": 0.14,
+   "rule": "cap"
+  },
+  {
+   "after": "stars.",
+   "before": "The",
+   "punct": ".",
+   "start": 73.135,
+   "end": 73.295,
+   "dur": 0.16,
+   "target": 0.16,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "sirens.",
+   "before": "The",
+   "punct": ".",
+   "start": 74.15,
+   "end": 74.33,
+   "dur": 0.18,
+   "target": 0.18,
+   "removed": 0.0,
+   "rule": "cap"
+  },
+  {
+   "after": "running.",
+   "before": "Don't",
+   "punct": ".",
+   "start": 74.965,
+   "end": 75.515,
+   "dur": 0.55,
+   "target": 0.3,
+   "removed": 0.25,
+   "rule": "cap"
+  },
+  {
+   "after": "me?",
+   "before": "Open",
+   "punct": "?",
+   "start": 76.195,
+   "end": 76.7,
+   "dur": 0.505,
+   "target": 0.3,
+   "removed": 0.205,
+   "rule": "cap"
+  },
+  {
+   "after": "arcade.",
+   "before": "One",
+   "punct": ".",
+   "start": 79.035,
+   "end": 79.57,
+   "dur": 0.535,
+   "target": 0.3,
+   "removed": 0.235,
+   "rule": "cap"
+  },
+  {
+   "after": "Chase.",
+   "before": "So",
+   "punct": ".",
+   "start": 82.105,
+   "end": 82.65,
+   "dur": 0.545,
+   "target": 0.3,
+   "removed": 0.245,
+   "rule": "cap"
+  },
+  {
+   "after": "running.",
+   "before": "The",
+   "punct": ".",
+   "start": 84.285,
+   "end": 84.69,
+   "dur": 0.405,
+   "target": 0.3,
+   "removed": 0.105,
+   "rule": "cap"
+  },
+  {
+   "after": "bug.",
+   "before": "And",
+   "punct": ".",
+   "start": 86.82,
+   "end": 87.41,
+   "dur": 0.59,
+   "target": 0.3,
+   "removed": 0.29,
+   "rule": "cap"
+  },
+  {
+   "after": "6?",
+   "before": "It",
+   "punct": "?",
+   "start": 88.485,
+   "end": 88.925,
+   "dur": 0.44,
+   "target": 0.3,
+   "removed": 0.14,
+   "rule": "cap"
+  },
+  {
+   "after": "caught.",
+   "before": "So",
+   "punct": ".",
+   "start": 90.94,
+   "end": 91.475,
+   "dur": 0.535,
+   "target": 0.3,
+   "removed": 0.235,
+   "rule": "cap"
+  }
+ ],
+ "total_removed_in_pauses_s": 6.885,
+ "tightened_duration_s": 86.016,
+ "processed_duration_s": 74.797,
+ "keep_segments": [
+  {
+   "raw_start": 0.07535416666666667,
+   "raw_end": 5.105,
+   "out_start": 0.0
+  },
+  {
+   "raw_start": 5.415,
+   "raw_end": 10.175,
+   "out_start": 5.029645833333333
+  },
+  {
+   "raw_start": 10.4,
+   "raw_end": 12.155,
+   "out_start": 9.779645833333333
+  },
+  {
+   "raw_start": 12.435,
+   "raw_end": 13.21,
+   "out_start": 11.524645833333333
+  },
+  {
+   "raw_start": 13.77,
+   "raw_end": 16.69,
+   "out_start": 12.289645833333333
+  },
+  {
+   "raw_start": 16.94,
+   "raw_end": 21.014979166666667,
+   "out_start": 15.199645833333333
+  },
+  {
+   "raw_start": 21.265,
+   "raw_end": 25.145,
+   "out_start": 19.264625000000002
+  },
+  {
+   "raw_start": 25.375,
+   "raw_end": 28.54,
+   "out_start": 23.134625000000003
+  },
+  {
+   "raw_start": 28.775,
+   "raw_end": 30.01,
+   "out_start": 26.289625000000004
+  },
+  {
+   "raw_start": 30.23,
+   "raw_end": 31.215,
+   "out_start": 27.514625000000006
+  },
+  {
+   "raw_start": 31.49,
+   "raw_end": 33.205,
+   "out_start": 28.489625000000007
+  },
+  {
+   "raw_start": 33.25,
+   "raw_end": 34.055,
+   "out_start": 30.19462500000001
+  },
+  {
+   "raw_start": 34.125,
+   "raw_end": 35.405,
+   "out_start": 30.98962500000001
+  },
+  {
+   "raw_start": 35.675,
+   "raw_end": 39.04997916666667,
+   "out_start": 32.259625000000014
+  },
+  {
+   "raw_start": 39.125,
+   "raw_end": 39.945,
+   "out_start": 35.62460416666668
+  },
+  {
+   "raw_start": 39.965,
+   "raw_end": 41.445,
+   "out_start": 36.43460416666668
+  },
+  {
+   "raw_start": 41.485,
+   "raw_end": 46.15,
+   "out_start": 37.90460416666668
+  },
+  {
+   "raw_start": 46.355,
+   "raw_end": 49.54,
+   "out_start": 42.55960416666668
+  },
+  {
+   "raw_start": 49.78,
+   "raw_end": 50.845,
+   "out_start": 45.73460416666668
+  },
+  {
+   "raw_start": 50.87,
+   "raw_end": 51.88,
+   "out_start": 46.78960416666668
+  },
+  {
+   "raw_start": 52.16,
+   "raw_end": 54.44,
+   "out_start": 47.78960416666668
+  },
+  {
+   "raw_start": 54.64,
+   "raw_end": 56.09,
+   "out_start": 50.05960416666668
+  },
+  {
+   "raw_start": 56.12,
+   "raw_end": 58.245,
+   "out_start": 51.49960416666668
+  },
+  {
+   "raw_start": 58.49,
+   "raw_end": 61.51,
+   "out_start": 53.61460416666668
+  },
+  {
+   "raw_start": 61.615,
+   "raw_end": 66.34497916666666,
+   "out_start": 56.62460416666668
+  },
+  {
+   "raw_start": 66.44997916666667,
+   "raw_end": 67.945,
+   "out_start": 61.34458333333335
+  },
+  {
+   "raw_start": 68.195,
+   "raw_end": 71.665,
+   "out_start": 62.82960416666668
+  },
+  {
+   "raw_start": 71.805,
+   "raw_end": 75.115,
+   "out_start": 66.28960416666668
+  },
+  {
+   "raw_start": 75.365,
+   "raw_end": 76.34497916666666,
+   "out_start": 69.58960416666667
+  },
+  {
+   "raw_start": 76.55,
+   "raw_end": 79.185,
+   "out_start": 70.55958333333334
+  },
+  {
+   "raw_start": 79.41997916666666,
+   "raw_end": 82.255,
+   "out_start": 73.18458333333334
+  },
+  {
+   "raw_start": 82.5,
+   "raw_end": 84.435,
+   "out_start": 76.00960416666668
+  },
+  {
+   "raw_start": 84.54,
+   "raw_end": 86.96997916666666,
+   "out_start": 77.93460416666667
+  },
+  {
+   "raw_start": 87.26,
+   "raw_end": 88.635,
+   "out_start": 80.35458333333334
+  },
+  {
+   "raw_start": 88.775,
+   "raw_end": 91.09,
+   "out_start": 81.71958333333333
+  },
+  {
+   "raw_start": 91.325,
+   "raw_end": 93.32660416666667,
+   "out_start": 84.02458333333334
+  }
+ ],
+ "crossfade_s": 0.01,
+ "rubberband": "tempo=1.15 pitch=1 formant=preserved pitchq=quality (pitch preserved)",
+ "loudness_before_chain": {
+  "integrated_lufs": -23.4,
+  "true_peak_dbfs": -0.6,
+  "short_term_median_lufs": -23.8,
+  "short_term_p90_lufs": -22.5
+ },
+ "pre_gain_db": 7.8,
+ "chain": "volume=7.80dB,highpass=f=80:poles=2,deesser=i=0.25:m=0.5:f=0.5:s=o,acompressor=threshold=-18.0dB:ratio=3:attack=8:release=150:knee=2.8:makeup=1:detection=rms",
+ "compressor_gain_reduction_db": {
+  "median_speech": 5.14,
+  "p90_speech": 8.71,
+  "max": 11.32
+ },
+ "compressor_threshold_db": -18.0,
+ "post_gain_db": 6.6,
+ "limiter": "alimiter limit=-3.80 dBFS sample peak (true peak checked <= -3 dBFS)",
+ "final_metrics": {
+  "integrated_lufs": -16.4,
+  "true_peak_dbfs": -3.4,
+  "short_term_median_lufs": -16.5,
+  "short_term_p90_lufs": -15.7
+ },
+ "title_hold_gap": {
+  "after_word": "Auto. (B13)",
+  "inserted_at_s": 54.6284,
+  "inserted_s": 1.4333,
+  "frames": 43,
+  "reason": "B13 build: T6 type-on (28f) + hold 1 s + 0.8 s unboxing after 'Grand'; CONFLICTS.md C14 (recomputed for 115%)",
+  "room_tone_rms_dbfs": -69.4
+ },
+ "final_file": "01_VO/VO_processed_115.wav",
+ "final_duration_s": 76.23,
+ "word_times": "mapped from VO_words_108.json: identical pause edits, t115 = t108(no gap) * 1.08/1.15, then the 115 gap"
+}

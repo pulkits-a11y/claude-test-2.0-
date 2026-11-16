@@ -2,7 +2,7 @@
 """Voiceover .srt for accessibility (plan: "Also upload an .srt of the voiceover for accessibility").
 
 Cues follow sentences (split at clause punctuation only when a sentence would exceed two lines),
-two lines of at most 42 characters, text = locked-script spelling, times = 01_VO/VO_words_108.json.
+two lines of at most 42 characters, text = locked-script spelling, times = 01_VO/VO_words_115.json (v02).
 """
 import json
 
@@ -36,7 +36,7 @@ def two_lines(t):
 
 
 def main():
-    words = json.load(open(f"{ROOT}/01_VO/VO_words_108.json"))["words"]
+    words = json.load(open(f"{ROOT}/01_VO/VO_words_115.json"))["words"]
     sentences, cur = [], []
     for w in words:
         cur.append(w)
@@ -69,7 +69,7 @@ def main():
             end = min(end, cues[i + 1][0]["start"] - 0.001)
         lines = two_lines(text_of(c)) or [text_of(c)]
         out.append(f"{i + 1}\n{tc(start)} --> {tc(end)}\n" + "\n".join(lines) + "\n")
-    open(f"{ROOT}/07_Exports/RC_GTA-Origin_v01.srt", "w").write("\n".join(out))
+    open(f"{ROOT}/07_Exports/RC_GTA-Origin_v02.srt", "w").write("\n".join(out))
     n = sum(len(text_of(c).split()) for c in cues)
     print(len(cues), "cues,", n, "words (Race'n'Chase counted as one)")
 
