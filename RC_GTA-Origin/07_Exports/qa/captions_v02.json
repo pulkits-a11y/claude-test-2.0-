@@ -1,0 +1,217 @@
+{
+ "problems": [],
+ "beats": {
+  "B1": {
+   "groups": 6,
+   "words_shown": 10,
+   "words_spoken": 13,
+   "not_shown_as_caption_words": [
+    "from",
+    "the",
+    "cops?"
+   ]
+  },
+  "B2": {
+   "groups": 9,
+   "words_shown": 15,
+   "words_spoken": 15,
+   "not_shown_as_caption_words": []
+  },
+  "B3": {
+   "groups": 7,
+   "words_shown": 12,
+   "words_spoken": 17,
+   "not_shown_as_caption_words": [
+    "Here's",
+    "how.",
+    "It's",
+    "1995",
+    "in"
+   ]
+  },
+  "B4": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 12,
+   "not_shown_as_caption_words": [
+    "It's",
+    "called",
+    "Race",
+    "and",
+    "Chase,",
+    "and",
+    "it's",
+    "planned",
+    "to",
+    "take",
+    "eighteen",
+    "months."
+   ]
+  },
+  "B5": {
+   "groups": 5,
+   "words_shown": 9,
+   "words_spoken": 9,
+   "not_shown_as_caption_words": []
+  },
+  "B6": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 14,
+   "not_shown_as_caption_words": [
+    "But",
+    "there's",
+    "a",
+    "problem:",
+    "it's",
+    "dull.",
+    "One",
+    "developer",
+    "later",
+    "calls",
+    "it",
+    "\u201cawful\u2026",
+    "too",
+    "sim-y.\u201d"
+   ]
+  },
+  "B7": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 12,
+   "not_shown_as_caption_words": [
+    "So",
+    "the",
+    "people",
+    "above",
+    "the",
+    "team",
+    "keep",
+    "trying",
+    "to",
+    "shut",
+    "it",
+    "down."
+   ]
+  },
+  "B8": {
+   "groups": 1,
+   "words_shown": 2,
+   "words_spoken": 3,
+   "not_shown_as_caption_words": [
+    "breaks."
+   ]
+  },
+  "B9": {
+   "groups": 13,
+   "words_shown": 22,
+   "words_spoken": 22,
+   "not_shown_as_caption_words": []
+  },
+  "B10": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 4,
+   "not_shown_as_caption_words": [
+    "And",
+    "suddenly,",
+    "it's",
+    "fun."
+   ]
+  },
+  "B11": {
+   "groups": 11,
+   "words_shown": 18,
+   "words_spoken": 18,
+   "not_shown_as_caption_words": []
+  },
+  "B12": {
+   "groups": 1,
+   "words_shown": 2,
+   "words_spoken": 8,
+   "not_shown_as_caption_words": [
+    "the",
+    "eighteen",
+    "months",
+    "turn",
+    "into",
+    "thirty."
+   ]
+  },
+  "B13": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 14,
+   "not_shown_as_caption_words": [
+    "Until",
+    "finally,",
+    "in",
+    "November",
+    "1997,",
+    "it",
+    "ships",
+    "with",
+    "a",
+    "new",
+    "name:",
+    "Grand",
+    "Theft",
+    "Auto."
+   ]
+  },
+  "B14": {
+   "groups": 5,
+   "words_shown": 9,
+   "words_spoken": 16,
+   "not_shown_as_caption_words": [
+    "And",
+    "every",
+    "GTA",
+    "since",
+    "is",
+    "built",
+    "around"
+   ]
+  },
+  "B15": {
+   "groups": 9,
+   "words_shown": 16,
+   "words_spoken": 19,
+   "not_shown_as_caption_words": [
+    "Race",
+    "and",
+    "Chase."
+   ]
+  },
+  "B16": {
+   "groups": 0,
+   "words_shown": 0,
+   "words_spoken": 13,
+   "not_shown_as_caption_words": [
+    "So",
+    "that's",
+    "why",
+    "you're",
+    "always",
+    "running.",
+    "The",
+    "whole",
+    "series",
+    "started",
+    "with",
+    "a",
+    "bug."
+   ]
+  },
+  "B17": {
+   "groups": 6,
+   "words_shown": 11,
+   "words_spoken": 14,
+   "not_shown_as_caption_words": [
+    "chasing",
+    "who",
+    "now?"
+   ]
+  }
+ }
+}

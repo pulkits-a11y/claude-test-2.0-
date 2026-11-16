@@ -161,10 +161,53 @@ def check_video(path):
     print("fun:", rep["fun"])
 
 
+def check_captions_v2():
+    """v02 (your note 11): every caption word is its own span (.rc-w, data-rc-f = local onset frame); a group holds
+    at most 2 words; every word appears within 1 frame of its spoken onset; plus a static scan for linear eases."""
+    rep, problems = {}, []
+    for b in beats():
+        comp = b["composition"]["id"]
+        src = open(f"{ROOT}/hyperframes/{comp}/index.html").read()
+        words = b["words"]
+        groups = []
+        for m in re.finditer(r'<div\b([^>]*\bclass="[^"]*\bclip\b[^"]*"[^>]*)>((?:(?!<div\b).)*?rc-w.*?)</div>', src, re.S):
+            ws = re.findall(r'<span class="rc-w[^"]*"[^>]*data-rc-f="(-?\d+)"[^>]*>(.*?)</span>', m.group(2), re.S)
+            if ws:
+                idm = re.search(r'\bid="([^"]+)"', m.group(1))
+                groups.append({"id": idm.group(1) if idm else "?", "words": [(int(f), html.unescape(re.sub(r"<[^>]+>", "", t)).strip()) for f, t in ws]})
+        used = set()
+        for g in groups:
+            if len(g["words"]) > 2:
+                problems.append(f"{b['id']} {g['id']}: {len(g['words'])} words in one group")
+            for f, t in g["words"]:
+                cands = [j for j, w in enumerate(words) if norm(w["text"]) == norm(t) and j not in used]
+                if not cands:
+                    problems.append(f"{b['id']} {g['id']}: '{t}' is not a spoken word of this beat"); continue
+                j = min(cands, key=lambda k: abs(words[k]["comp_t"] * FPS - f))
+                used.add(j)
+                off = f - words[j]["comp_t"] * FPS
+                if abs(off) > 1.5:
+                    problems.append(f"{b['id']} {g['id']}: '{t}' pops at local f{f}, spoken at f{words[j]['comp_t'] * FPS:.1f}")
+        lin = re.findall(r"ease\s*:\s*['\"](?:none|linear)['\"]", src)
+        if lin:
+            problems.append(f"{b['id']}: {len(lin)} linear ease(s) in index.html")
+        shown = sorted({j for j in used})
+        rep[b["id"]] = {"groups": len(groups), "words_shown": len(shown), "words_spoken": len(words),
+                        "not_shown_as_caption_words": [words[k]["text"] for k in range(len(words)) if k not in used]}
+    os.makedirs(OUT, exist_ok=True)
+    json.dump({"problems": problems, "beats": rep}, open(f"{OUT}/captions_v02.json", "w"), indent=1)
+    for bid, r in rep.items():
+        print("%-4s %2d groups, %2d/%2d words as pop-in caption words; not: %s" % (bid, r["groups"], r["words_shown"], r["words_spoken"],
+              " ".join(r["not_shown_as_caption_words"]) or "-"))
+    print("PROBLEMS:" if problems else "no v02 caption problems", *problems, sep="\n  ")
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "captions":
         check_captions()
+    elif cmd == "captions2":
+        check_captions_v2()
     elif cmd == "styles":
         check_styles()
     elif cmd == "video":
