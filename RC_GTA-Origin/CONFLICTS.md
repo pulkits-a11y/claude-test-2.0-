@@ -40,3 +40,20 @@ Resolution order used: (1) Locked script v2, (2) Beat-by-beat build, (3) Beat pl
 | C34 | M1 "(x 1700, y 80) in B1 and B17" vs B17 "the stars blink over Lucia" + L2 bars 138 px | At y 80 the star row sits on the top L2 bar, not on Lucia's picture. | The explicit coordinates win (row centred on x 1700, y 80); "over Lucia" is read as "while Lucia is on screen". |
 | C35 | M1 "(x 1700, y 80) in B1" vs the footage | B1's GTA 6 shot is the official PlayStation gameplay trailer (R1.2, used because R17.1/R17.3 are missing), which shows the game's own HUD (wanted stars, icons, ammo) in the top-right corner; at x 1700 the fifth M1 star sits on that HUD. | The row moves 60 px left, centred on (1640, 80): same y, size, gap and timing. B17's row stays at (1700, 80) (its opening shot is still the R17.1 stand-in: re-check when Trailer 1 arrives). |
 | C36 | T8 (p.12) "role in Inter Medium 22 px caps" vs HyperFrames check | The HyperFrames contrast/legibility check warns that 22 px is below its 28 px phone floor. | The plan's 22 px is kept (the tool's warning is advisory). |
+
+## v02 revision (your notes on v01 override the plan where they conflict; see REVISION_v02.md)
+
+| # | Plan says | Your note | v02 |
+|---|---|---|---|
+| R1 | Speed-up instruction: 108% | "make the voiceover a bit more faster" | 115% (same pause edits); edit 77.6 s; B13 title hold re-derived (43f gap) |
+| R2 | T1: 1-3 words per chunk, max 4 on screen; Inter / Instrument Serif | "captions word by word ... only 2 words on screen"; "Use ... Coolvetica" | Every voiceover text pops word by word, max 2 words; Coolvetica Regular for Inter, Coolvetica Italic for Instrument Serif |
+| R3 | "Ease out" + some linear moves (push-ins 100->104% linear, X3 linear ramps) | "no animation should be linear" (easings.net) | Every motion uses an easings.net curve; push-ins 106-110% eased |
+| R4 | Whole-edit grain 3-5%, light vignette on archival only | "a pretty visible ... grain ... a fairly visible vignette ... subtle chromatic animation" + the dust overlay | Grain ~10-14%, vignette over the whole edit, animated chromatic aberration, your dust overlay |
+| R5 | B3: X5 blinds into the T3 card, T1 "Here's how.", L12 photo cards + T8 card | "the transition on 0:10 is so bad", "Remove the Here's How", 0:15 "too basic ... focus more on the broll" | Zoom-through transition, no "Here's how." caption, full-frame B-roll cuts with word-by-word kinetic type |
+| R6 | B7: L5 card + CANCELLED stamps; motif discipline: no red flashes outside X9 | "the cancelled stamp ... make it turn red or something. Or pull an article" | Full-frame office B-roll turning red on the three hits (article if one exists) |
+| R7 | B9: path diagram (dot, path, arrow) | "Remove the 0:38 overlayed arrow and other animations" | Removed |
+| R8 | B11: L11 flip; glitch only in B2/B8/B16/B17; S10 Flip | "instead of a flip animation, add a glitch animation" | X4 glitch, glitch impact sound instead of S10 |
+| R9 | B12: the B4 calendar returns (same composition) | "add a opening animation ... move it a bit more above to the center" | Eased entrance, placed higher (B4 unchanged) |
+| R10 | B15: T9 label "RACE AND CHASE" | "remove the text with the yellow background" | Removed |
+| R11 | T7 / M4 bug chip in B2 and B16 | "don't use that bug icon, just use the word" | The word "bug" |
+| R12 | GTA 6 footage only from official uploads; R17.1 Trailer 1 | "go through this link and use a fitting BROLL" | Your Drive clip (madebyajit edit of Trailer 1's opening, Lucia in the prison yard), its pink grade toned down |
