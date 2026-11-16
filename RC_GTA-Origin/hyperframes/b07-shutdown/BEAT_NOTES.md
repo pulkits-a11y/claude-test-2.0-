@@ -92,6 +92,13 @@ riser: unchanged logic (`B8.first_black`, from `B7.stamp2`); B8's first black is
 | R7.GD | `04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png` (live screenshot, captured 2026-11-16) | still, local 41-102 (+ b08) | sidebar cropped out | Game Developer, Jan 31 2011: headline "Penn: First Grand Theft Auto Was 'Almost Canned'"; body "It was almost canned. The publisher, BMG Interactive, wanted to can it, as it didn't seem to be going anywhere." | https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- |
 Substitutions: none (R7.1 and R7.3 are the plan's B7 B-roll; R7.GD answers note 3).
 
+### Checks (v02)
+* `check`: 0 errors (warnings: track density, nested dim/highlight markup, `line_unread` on voice-timed groups).
+* Headless audit (GSAP timeline): 26 tweens, all eased (sine.inOut, expo.out, power1.in/out, power3.out, two segments
+  of sine.inOut), 0 linear; captions: max 2 words on screen, all 12 words first visible on their onset frame; Coolvetica.
+* Render `05_GFX/renders/b07-shutdown.mov`: ffprobe 102 frames (beat 90 + 12), 1920 x 1080, 30 fps, ProRes 4444
+  `yuva444p12le`, opaque. Review stills: `review/v02/` (every word, cut, zoom, red hit and both swipes).
+
 ---
 
 # v01 reference (SUPERSEDED by the v02 redesign above: no L5 card, no CANCELLED stamps any more)
