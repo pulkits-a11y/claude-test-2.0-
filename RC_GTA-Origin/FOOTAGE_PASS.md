@@ -34,15 +34,6 @@ Available originals: R1.2 R1.3 R1.5 R1.6 R1.7 R14.1 R14.4 (B01) · R3.9 R9.1 (B0
 
 Boundaries: edit only your beats' folders, their renders in `05_GFX/renders/`, and (for the cover) `hyperframes/cover/` + `07_Exports/RC_GTA-Origin_v01_cover.png`. Do not edit `_kit`, `tools`, `timing`, the shared .md files or other beats; report needed changes. One render at a time, always `--workers 1`; CPU and the account's usage are shared, so be economical: look at what you need, not everything. No git commits.
 
-## Status at hand-off (renders in 05_GFX/renders)
+## Status: done (Nov 16)
 
-| Beat | State |
-|---|---|
-| B1, B4, B5, B6, B7, B8, B12, B13, B14, B16 | built + rendered on stand-ins: footage pass + re-render |
-| B2 | built (notes, shots, cues), NOT rendered |
-| B3 | built (shots, cues), no BEAT_NOTES, NOT rendered |
-| B9, B10 | partly built (no shots/cues/notes), NOT rendered |
-| B11 | partly built (no shots/cues/notes/review), NOT rendered |
-| B15 | built (notes, shots, cues), NOT rendered |
-| B17 | built (shots, cues), no BEAT_NOTES, NOT rendered |
-| cover | not started: `hyperframes/cover/` (init with `npx --yes hyperframes@0.9.52 init cover --skip-skills --skill=hyperframes --non-interactive` from `hyperframes/`, copy `_kit` to `cover/assets/kit`): the B11 flipped split screen with the arrow on the getaway car + "GTA started as a cop game" in T2 style ("cop game" in the serif); snapshot to `07_Exports/RC_GTA-Origin_v01_cover.png` (1920x1080) |
+All 17 beats and the cover are on real footage and rendered (`05_GFX/renders/`, beat + 12 frames, yuva444p12le); each BEAT_NOTES.md lists the footage used with links, substitutions and anything pending. Still stand-ins: R17.1 (B17 f0-107, BLOCKING for the B17 line) and R15.1 (B15 proof shot). R9.1's uploader watermark is cropped out everywhere (B2, B9, B16). Final export: `07_Exports/RC_GTA-Origin_v01_16x9.mp4` (QA.md).

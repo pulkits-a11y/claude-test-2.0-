@@ -13,7 +13,7 @@
     "color_primaries": "bt709",
     "r_frame_rate": "30/1",
     "avg_frame_rate": "30/1",
-    "bit_rate": "15964053",
+    "bit_rate": "15964810",
     "nb_frames": "2472"
    },
    {
@@ -29,7 +29,7 @@
   ],
   "format": {
    "duration": "82.400000",
-   "bit_rate": "16293357"
+   "bit_rate": "16294119"
   }
  },
  "loudness": {
@@ -38,7 +38,7 @@
   "true_peak_dBFS": -1.5
  },
  "frames": 2472,
- "frame0_vs_1_mean_abs_diff": 2.289,
+ "frame0_vs_1_mean_abs_diff": 2.299,
  "still_runs_ge_1.5s": [
   {
    "from_f": 1493,
