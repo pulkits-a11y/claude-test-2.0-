@@ -97,6 +97,10 @@ B10 = T2: rotation holds).
 
 ## Pending / blocking
 - Nothing blocking.
+- Known: R9.1 (the plan's GTA 1 chase clip) carries the uploader's faint "Sakura240" watermark in every frame (lower
+  left). Strip 1's crop excludes it; in the L1 shot it sits in the soft-edge zone at the lower left (a tighter crop
+  would zoom the car out of frame and invalidate the dot track). SUGGESTION: R9.4 (GTA 1 4K, no watermark seen) if a
+  matching chase-and-ram moment is found.
 
 ## Verification
 - `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings weighed: `timeline_track_too_dense` (caption lane),

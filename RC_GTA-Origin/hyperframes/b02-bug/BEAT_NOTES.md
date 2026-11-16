@@ -135,6 +135,8 @@ saved -0.29f: all within +/-2f.
 
 ## Pending / blocking
 - Nothing blocking. If R17.1 (Trailer 1) is uploaded later, B1 cell 6 + B2 can switch together (same in-point rule).
+- Known: R9.1 carries the uploader's faint "Sakura240" watermark (lower left of the game picture); inside the CRT it
+  is small and under the scanlines. A tighter crop would lose the police car behind the player.
 
 ## Verification
 - `npx --yes hyperframes@0.9.52 check --json`: 0 errors. Warnings weighed: `timeline_track_too_dense` (caption lane),

@@ -392,16 +392,15 @@ B8: glitch 6f, clean, hold 12f, hard cut (clip end = at + 18f).
 1. **T7 overshoot.** T library: "scales 0 → 112% → 100% over 8f"; HyperFrames note: "T7 overshoot = back.out(1.7)",
    which peaks at 110.0% (back.out(s) peak = 1 + 4s³/27(s+1)²). The T library wins: 0 → 112% (5f) → 100% (3f), exactly
    112% on frame +5, identical to `RCK.motifs.bugChipPop`. `ease: 'back.out(1.7)'` is available.
-2. **T8 name face.** Fonts list: Instrument Serif Italic for "quotes and names"; T library: "Name in Instrument Serif
-   72 px" (italic named only for the quote). T library wins: upright Regular (base.css loads it). Class
-   `rc-t8--name-italic` switches to italic if decided otherwise.
+2. **T8 name face.** Fonts list: Instrument Serif Italic for "quotes and names"; the T8 row says only "Name in
+   Instrument Serif 72 px" and does not say upright, so there is no conflict: names are italic by default
+   (`.rc-t8__name { font-style: italic }`).
 3. **One serif word per screen** (style rule 1) vs B4's T2 keyword "18 months." and the cover's "cop game" (two serif
    words each) and T5/T8 (already CONFLICTS.md C4). The beat build (B4) and the explicit cover instruction are followed.
 4. **4 words on screen** (rule 5, written for T1 captions) vs B4's T2 "planned to take 18 months." (5) and the cover
    line (6). Not T1, so allowed; `checkChunks` only enforces T1.
-5. **B13 timing.** T6 types 14 letters (26f) from "Grand" (local f138), then holds 1 s (to f194), and step 4 wants the
-   unboxing in the L2 band for the last 0.8 s; the processed B13 ends at local f179. They cannot all fit; the B13
-   builder must choose (e.g. a shorter hold or a shorter unboxing) and flag it.
+5. **B13 timing.** Resolved by CONFLICTS.md C14 (41f title-hold gap after "Auto."): B13 is 214f, so the type-on
+   (from "Grand", beat f132-160), the 1 s hold (to f190) and the 0.8 s L2 unboxing (f190-214) all fit.
 6. **T3 "hold at least 1 s"**: read as ≥ 1 s after the last digit lands (the stricter reading). See T3 timing advice.
 7. **B17 "now?"**: T library T10 is Inter Black 160 px; B17's "now?" is the T2 serif keyword that "breaks apart with
    T10". Default = the T10 look; `rc-t10--key` keeps the serif.
