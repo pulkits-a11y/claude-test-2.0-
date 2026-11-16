@@ -14,26 +14,13 @@
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       /* DMA section (note 2): full-frame B-roll, cover-fitted (4:3 archive cropped to 16:9 by the fit, never stretched) */
       .b03-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
-      /* Kinetic type (note 2 "unique layouts ... each word popping up as he says it"): one full-frame layer per group of max
-         2 words (RCK.type.captionPlanV2 groups), each word placed on its own; Coolvetica, Coolvetica Italic for "DMA Design"
-         and "Lemmings". White on footage with the kit's soft shadow plus a wider one scaled to the 100-300 px type (still a
-         soft shadow: no outline, no box). Boxes: line-height 1, so baseline = top + 0.867 em, cap top = top + 0.195 em. */
-      .b03-kt { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; color: var(--white);
-        text-shadow: var(--text-shadow), 0 8px 48px rgba(0, 0, 0, 0.45); }
-      .b03-kw { position: absolute; white-space: nowrap; font-family: var(--sans); font-weight: 400; line-height: 1; }
-      .b03-kw--it { font-family: var(--serif); font-style: italic; }
       /* v03 (note 2): the DMA Design logo, centred. The PNG (456 x 687) is shown at 460 px high (x 0.6696, never upscaled):
          ink box (figure y 9-518, lettering y 596-677, x 9-447) centred on (960, 540). A soft drop shadow, as the captions'
          text shadow scaled up, keeps the white lettering and outline readable over the bright 1990s office. */
       #b03-logo { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-      #b03-logo-img { position: absolute; left: 807.3px; top: 310px; width: 305.4px; height: 460px; object-fit: contain;
+      #b03-logo-pop { position: absolute; left: 807.3px; top: 310px; width: 305.4px; height: 460px; }   /* the pop box */
+      #b03-logo-img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain;
         filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.55)); }
-      /* group 2 "the studio": a centred baseline pair, small + giant, baseline y 700 */
-      #b03-kw-the    { left: 526px; top: 613px; font-size: 100px; }   /* baseline 700, x 526-672 */
-      #b03-kw-studio { left: 700px; top: 475px; font-size: 260px; }   /* baseline 700, x 700-1395 */
-      /* group 3 "behind Lemmings,": small over giant, top-left (above the walking lemmings, left of the floater) */
-      #b03-kw-behind   { left: 104px; top: 135px; font-size: 110px; } /* baseline 230 */
-      #b03-kw-lemmings { left: 96px;  top: 262px; font-size: 240px; } /* baseline 470, descender 526, x 96-1145 */
     </style>
   </head>
   <body>
@@ -81,27 +68,27 @@
 
       <!-- ===== v03 (note 2): the words "DMA Design," are NOT spelled out: the DMA Design logo (cut-out, transparent PNG:
            figure + "DMA Design" lettering, 04_Broll/B03/DMA-logo__cutout_full.png) appears centred over the B-roll on "DMA"
-           (local 103) and holds through "Design," to the cut on "the" (135). Outside the camera: it never zooms. ===== -->
-      <div id="b03-logo" style="z-index: 30">
+           (local 103) with the kit's starred-word pop + blur-in (full opacity on 103 at blur 20 px / 92 %, sharp 100 % by 109,
+           expo.out; no zoom), and holds through "Design," to the hard cut on "the" (135). Outside the camera: it never zooms.
+           ===== -->
+      <div id="b03-logo" style="z-index: 30"><div id="b03-logo-pop" data-rc-f="103">
         <img id="b03-logo-img" class="clip" src="assets/dma/DMA-logo__cutout_full.png" data-start="3.4333" data-duration="1.0667" data-track-index="12" alt="DMA Design logo">
-      </div>
+      </div></div>
 
-      <!-- ===== kinetic type, word by word (rule A + note 2): groups from captionPlanV2 ("DMA Design, / the studio behind
-           Lemmings," from word 7), each word pops on its own onset frame (captionPops with one pop preset per group);
-           a group hard-cuts out with the picture cut where the next group starts ===== -->
-      <div id="b03-kt-2" class="clip rc-cap b03-kt" data-start="4.5000" data-duration="0.4333" data-track-index="12" style="z-index: 30"><span class="rc-g"><span id="b03-kw-the" class="b03-kw"><span class="rc-w" data-rc-f="135">the</span></span><span id="b03-kw-studio" class="b03-kw"><span class="rc-w" data-rc-f="139">studio</span></span></span></div>
-      <div id="b03-kt-3" class="clip rc-cap b03-kt" data-start="4.9333" data-duration="0.9000" data-track-index="12" style="z-index: 30"><span class="rc-g"><span id="b03-kw-behind" class="b03-kw"><span class="rc-w" data-rc-f="148">behind</span></span><span id="b03-kw-lemmings" class="b03-kw b03-kw--it"><span class="rc-w" data-rc-f="157">Lemmings,</span></span></span></div>
+      <!-- ===== v03 lockup (notes 11, 16, 17; kit RCK.type.lockups) over the map / Lemmings box / Lemmings intro cuts: small
+           "the studio behind" + the big Coolvetica Italic keyword "Lemmings,", centred (960, 540); each word appears on its own
+           frame (135, 139, 148, 157; hard cuts, no animation); hard cut out on "starts" (175) ===== -->
+      <div id="b03-lk-dma-1" class="clip rc-lk" data-start="4.5000" data-duration="1.3333" data-track-index="12" style="--rc-lk-c: 104.2px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="135">the</span> <span class="rc-lw" data-rc-f="139">studio</span> <span class="rc-lw" data-rc-f="148">behind</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="157">Lemmings,</span></div></div></div>
 
-      <!-- ===== T4 over Tesseract's L2 Dundee band (picture area y 138-942): "Dundee," left / "Scotland." right in the dark sky
-           either side of the Law (--rc-y 280), ONE group of two pieces (rule A, max 2 words), each word pops on its onset;
-           3f eased exit (power2.in) ending on the cut to the DMA section (103) ===== -->
-      <div id="b03-t4-1" class="clip rc-t4 rc-cap" data-start="2.0333" data-duration="1.4000" data-track-index="11" data-rc-exit-f="3" style="--rc-y: 280px; z-index: 20"><span class="rc-t4__piece rc-g rc-t4--left"><span class="rc-w" data-rc-f="61">Dundee,</span></span><span class="rc-t4__piece rc-g rc-t4--right"><span class="rc-w" data-rc-f="76">Scotland.</span></span></div>
+      <!-- ===== v03 lockup over Tesseract's L2 Dundee band (picture y 138-942): the big keyword "Dundee," over the small tail
+           "Scotland." (right-aligned under it, moved down to clear the comma), centred (960, 540) on the town below the Law
+           (the monument stays clear above it); words appear on 61 / 76 (hard cuts); hard cut out on the cut to the DMA
+           section (103). "in" (57, over the year card) has no caption, as in v02 ===== -->
+      <div id="b03-lk-dundee-1" class="clip rc-lk" data-start="2.0333" data-duration="1.4000" data-track-index="11" style="--rc-lk-c: 139.87px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span class="rc-lw" data-rc-f="61">Dundee,</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 0.67px"><span class="rc-lw" data-rc-f="76">Scotland.</span></div></div></div>
 
-      <!-- ===== T1 "starts / a / new game." white inside Tesseract's L2 BBC band (local 175 to the end: the closing state continues
-           through the tail handle), word by word ===== -->
-      <div id="b03-cap-1" class="clip rc-t1 rc-cap" data-start="5.8333" data-duration="0.3333" data-track-index="20" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="175">starts</span></span></div>
-      <div id="b03-cap-2" class="clip rc-t1 rc-cap" data-start="6.1666" data-duration="0.1000" data-track-index="20" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="185">a</span></span></div>
-      <div id="b03-cap-3" class="clip rc-t1 rc-cap" data-start="6.2666" data-duration="0.9000" data-track-index="20" style="z-index: 40"><span class="rc-g"><span class="rc-w" data-rc-f="188">new</span> <span class="rc-w" data-rc-f="192">game.</span></span></div>
+      <!-- ===== v03 lockup inside Tesseract's L2 BBC band: small "starts a" + the big keyword "new game.", centred (960, 540);
+           words appear on 175 / 185 / 188 / 192 (hard cuts); on through the tail handle (to 215) as v02's closing state ===== -->
+      <div id="b03-lk-starts-1" class="clip rc-lk" data-start="5.8333" data-duration="1.3333" data-track-index="20" style="--rc-lk-c: 104.2px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="175">starts</span> <span class="rc-lw" data-rc-f="185">a</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="188">new</span> <span class="rc-lw" data-rc-f="192">game.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -122,16 +109,12 @@
       // v03 (note 13): v01's slow push on the card content 100 -> 104% (easeInOutSine) from the boundary to the cut (61).
       T.yearCard(tl, '#b03-t3', L(6), { pushFrom: L(6), pushUntil: L(61), pushTo: 1.04 });
 
-      // ---- kinetic type (DMA section): one pop preset per group, every word on its own onset frame (1f lead)
-      //   2 "the studio": rises 50 px from 90%, 5f easeOutExpo (the 135, studio 139)
-      T.captionPops(tl, '#b03-kt-2', { pop: { t1: { frames: 5, lead: 1, scale: 0.9, rise: 50, ease: 'expo.out' } } });
-      //   3 "behind Lemmings,": pops from 30% with an overshoot, 7f easeOutBack (behind 148, Lemmings, 157)
-      T.captionPops(tl, '#b03-kt-3', { pop: { t1: { frames: 7, lead: 1, scale: 0.3, rise: 0, ease: 'back.out(1.7)' } } });
-      // the left-aligned words scale about their left edge (the kit pops about 50% 75%), so the 140% slam and the back.out
-      // overshoot grow to the right and never cross the 96 px title-safe margin
-      gsap.set('#b03-kw-behind .rc-w, #b03-kw-lemmings .rc-w', { transformOrigin: '0% 75%' });
-      // ---- every other caption (T4 group with its 3f exit; T1 "starts / a / new game.")
-      T.captionPops(tl);
+      // ---- v03 captions: every .rc-lk (Dundee / the studio behind Lemmings / starts a new game): each word hard-cuts on
+      // its own data-rc-f frame (no starred word in B3: the logo is this beat's one pop).
+      T.lockupsWire(tl);
+      // ---- the DMA Design logo (note 2): the kit's starred-word pop + blur-in (POP3) on "DMA" (local 103): full opacity on
+      // its frame, blur 20 px -> 0 and scale 92 -> 100 % over 6f (expo.out). No zoom, no push (outside the camera).
+      T.wordPops(tl, '#b03-logo', null);
 
       // ---- DMA section camera, v03 (note 13: no random zooms): the v02 punch-ins on the cuts and the per-shot pushes are
       // gone; the cuts stay. Only v01's one slow push across the section (the v01 card stack pushed 100 -> 104% the same
