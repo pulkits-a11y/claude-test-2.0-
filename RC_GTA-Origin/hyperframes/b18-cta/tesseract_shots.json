@@ -1,0 +1,7 @@
+{
+ "beat": "B18",
+ "composition": "b18-cta",
+ "render": "05_GFX/renders/b18-cta.mov",
+ "shots": [],
+ "note": "v05 NEW: the CTA card is HyperFrames, opaque on every frame."
+}

@@ -1291,7 +1291,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
   // fx.rgbGrading(px): the media-treatment payload for footage (channel separation; static), e.g. the B2 freeze frame:
   // npx --yes hyperframes@0.9.52 media-treatment --selector "#b02-freeze" --grading '<JSON>' --apply --json
-  var CA_PER_PX = 0.0125;   // chromaticAberration per px at 1920 x 1080 (measured in _demo-v05, KIT_v05.md)
+  var CA_PER_PX = 0.025;    // chromaticAberration per px of channel offset on a full-frame 1920 px layer (measured in _demo-v05: 0.1 -> R -4 px, B +4 px)
   function rgbGrading(px) { return { effects: { chromaticAberration: r2(Math.min(1, num(px, 9) * CA_PER_PX) * 1000) / 1000, chromaticAngle: 0 } }; }
 
   /* ---------------- highlighter sweep ---------------- */

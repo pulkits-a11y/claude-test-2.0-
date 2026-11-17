@@ -1,4 +1,5 @@
 {
  "beat": "B18",
- "rids": []
+ "rids": [],
+ "note": "v05: no footage yet. TODO when hyperframes/b01-hook/LOOP_FRAME.json exists (lane 1): B1's police lightbar clip (a) as the faint blurred footage of the dark card (15-25 %) and (b) for the last-6-frame cross to B1's frame 0 (in-point - 6/30 s, B1's f0 scale), cut with the same settings as B1's working copy."
 }

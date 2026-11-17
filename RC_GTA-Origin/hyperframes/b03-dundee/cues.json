@@ -1,32 +1,30 @@
 {
  "events": {},
  "word_pops": [
-  13,
-  72,
-  76,
-  85,
-  112,
+  1,
+  31,
+  50,
+  109,
+  113,
   122,
-  129
+  149,
+  159,
+  166
  ],
  "key_words": [
-  0,
-  40,
-  94,
-  125
+  8,
+  35,
+  77,
+  131,
+  162
  ],
- "sfx": [
-  {
-   "f": 46,
-   "name": "type_on"
-  }
- ],
+ "sfx": [],
  "dropouts": [],
  "archival": [
   [
    0,
-   85
+   122
   ]
  ],
- "note": "v05 beat frames (f0 = 'Dundee,' = local 6; beat 146f). key_words: 'Dundee,' 0 (tier B, [DEPTH] behind the Law), the DMA logo pop on 'DMA' 40 (the logo + pill stand for 'DMA Design,'), 'Lemmings,' 94, 'new' 125 ('new game.' is one tier-B key phrase: whoosh + thump on 'new', a tick on 'game.' 129 so two thumps do not land 4f apart). word_pops: 'Scotland.' 13, 'the' 72, 'studio' 76, 'behind' 85, 'starts' 112, 'a' 122, 'game.' 129. sfx type_on 46 = the 'DMA DESIGN' highlight pill typing on after its 6f box wipe (40-46; kit v05 pill, adjust if its timing differs). archival 0-85 = full-frame 1990s/old camera pictures: the old Dundee photograph 0-40 (incl. the depth word: the finish wobbles the whole frame), the R3.8 DMA office tour 40-72, the R3.7 BBC map 72-85. Not archival: the R3.3 Lemmings box 85-94 (modern /noclip footage), the R3.6 Amiga intro 94-112 (game), the R3.7 team card insert 112-146 (a card on a blurred copy, not full frame; kit card insert decides its archival look). The v04 event year_digits is gone with the 'It's 1995' card (cut A)."
+ "note": "v05 beat frames (f0 = 'It's' = local 6; beat 183f, REVISION_v05 U7). word_pops (caption words that simply appear): 'It's' 1, 'in' 31, 'Scotland.' 50, 'the' 109, 'studio' 113, 'behind' 122, 'starts' 149, 'a' 159, 'game.' 166. key_words: '1995' 8 (hero, [DEPTH] behind the developer, enters with the client's glow flicker; also the hard cut from office angle 1 to angle 2), 'Dundee,' 35 ([DEPTH] behind the Law, pops), the DMA logo pop on 'DMA' 77 (the client's logo stands for 'DMA Design,'; U11), 'Lemmings,' 131 (pops), 'new' 162 ('new game.' is one tier-B key phrase: whoosh + thump on 'new', a tick on 'game.' 166 so two thumps do not land 4f apart). archival 0-122 = full-frame 1990s / old camera pictures: the R3.8 DMA office, two angles 0-35, the old Dundee photograph 35-77 (the finish wobbles the whole frame, depth words included), the R3.8 door plate + staffer 77-109, the R3.7 BBC map 109-122. Not archival: the R3.3 Lemmings box 122-131 (modern /noclip footage), the R3.6 Amiga intro 131-149 (game), the R3.7 team card insert 149-183 (a card on a blurred copy, not full frame; the kit card insert decides its archival look). No SFX of its own (no pill, no type-on: U2, U11)."
 }

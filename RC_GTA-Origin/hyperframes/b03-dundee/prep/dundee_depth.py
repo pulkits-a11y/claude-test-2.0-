@@ -9,14 +9,14 @@ is a photograph, so HyperFrames pushes the still itself (100 -> 108 %) and the p
 (one image, two layers, the same push on both).
 
 * Plate: crop 640:360:40:0 of the 854x478 upload (16:9, the burned-in caption "La Hull from Hawkhill" at source
-  y 365-398 stays out; the v04 crop), BT.709 -> RGB, Lanczos x3 -> 1920x1080. assets/footage/R3.1_plate.jpg
+  y 365-398 stays out; the v04 crop), BT.709 -> RGB, Lanczos x3 -> 1920x1080. assets/depth/R3.1_plate.jpg
 * Cut-out (foreground = everything that is not sky): a colour key of the overcast sky. The sky is a smooth, nearly
   neutral grey gradient; it is modelled by a 2nd-order polynomial in (x, y) fitted to the sky pixels (iterated: fit ->
   keep pixels close to the model -> refit), then every pixel's distance to the model (CIE Lab, chroma weighted x1.5)
   gives a soft alpha (D <= T0 sky, D >= T1 foreground, smoothstep between). Only the sky region connected to the top
   edge counts as sky (dark roofs further down that match the sky colour stay opaque), holes are filled, and the alpha
   is kept soft only within 6 px of the sky boundary. Saved as RGBA with the plate's own pixels (straight alpha), cropped
-  to the band the word can occupy: assets/footage/R3.1_hill_cutout.png placed at CUT_BOX in the plate's coordinates.
+  to the band the word can occupy: assets/footage/R3.1_hill_cutout.png (assets/depth/) placed at CUT_BOX in the plate's coordinates.
 Deterministic (no randomness). Needs ffmpeg, numpy, PIL, scipy.
 """
 import json, os, subprocess, sys
@@ -107,7 +107,7 @@ def main():
     prev_dir = sys.argv[sys.argv.index("--preview") + 1] if "--preview" in sys.argv else None
     img = plate()
     alpha, D, sky, _ = key(img)
-    out = f"{PROJ}/assets/footage"
+    out = f"{PROJ}/assets/depth"
     os.makedirs(out, exist_ok=True)
     Image.fromarray(img).save(f"{out}/R3.1_plate.jpg", quality=93, subsampling=0, optimize=True)
     # edge decontamination: a semi-transparent edge pixel is foreground mixed with sky; take the sky out
@@ -122,7 +122,7 @@ def main():
     # skyline (first row from the top with alpha >= 0.5) every 40 px, for placing the word
     sk = {int(c): int(np.argmax(alpha[:, c] >= 0.5)) for c in range(0, W, 40)}
     meta = {"source": os.path.relpath(SRC, ROOT), "t_s": T_SRC, "crop": "%d:%d:%d:%d" % CROP, "scale": 3,
-            "plate": "assets/footage/R3.1_plate.jpg", "cutout": "assets/footage/R3.1_hill_cutout.png",
+            "plate": "assets/depth/R3.1_plate.jpg", "cutout": "assets/depth/R3.1_hill_cutout.png",
             "cutout_box_xywh": list(CUT_BOX), "key": {"T0": T0, "T1": T1, "edge_px": EDGE_PX},
             "skyline_y_at_x": sk}
     json.dump(meta, open(f"{out}/R3.1_depth.SOURCE.json", "w"), indent=1)

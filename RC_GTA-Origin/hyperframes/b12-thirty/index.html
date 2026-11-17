@@ -14,18 +14,17 @@
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       /* v05: the 12 overrun cells in the doc's danger red #E3262B (kit: siren red #E3262E) */
       #b12-cal .m3-sq.m3-over .m3-fill { background: #E3262B; }
-      .b12-bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; opacity: 0.25; }
     </style>
   </head>
   <body>
     <!-- B12 b12-thirty v05 phase 1 (REVISION_v05 lane 3 + client override; doc 46.5-49.5): beat 78f (2.600 s) + 6f handle
          each end = 90f. Local frame = beat frame + 6. Words: words.json (v05; local frames unchanged, "course," on 9).
          The B4 L9 / M3 calendar returns (same kit component), now CENTRED and LARGER (doc): 88 px cells, 11 px gaps,
-         6 x 5 = 583 x 484 px, grid x 876-1459 / y 413-897 (its left edge leaves the room the 330 px counter needs so that
-         counter + grid are centred as a group; the lockups sit above it, ink centred on y 276). Kept from v02 (client
+         6 x 5 = 583 x 484 px, grid x 876-1459 / y 425-909 (its left edge leaves the room the 330 px counter needs so that
+         counter + grid are centred as a group; the lockups sit above it, ink centred on y 250). Kept from v02 (client
          liked it): the opening animation (kit calendarIn from local 5).
-         Behind: the dark card + the DMA office (R3.8, a developer playtesting at a CRT) full frame at 25%, blurred
-         (media-treatment blur at its maximum), the doc's "blurred, darkened office footage (25%) behind the whole stretch".
+         Behind: the dark card + the DMA office (R3.7, BBC 1996 making-of) full frame at 25%, blurred and darkened, the
+         doc's "blurred, darkened office footage (25%) behind the whole stretch", continuous with b13-gta's (same clip).
          local  6-17   the calendar comes in (18 cells filled, light grey) + counter 18
          local  9      "Of course," appears as ONE unit on "course," (doc: no lone "Of")
          local 26-55   "the eighteen months" (every spoken word on screen, REVISION_v05 G10)
@@ -42,9 +41,13 @@
            (light squares and counter with the glow, the 12 overrun squares stay siren red) -->
       <div id="b12-card" class="clip rc-card rc-full" data-start="0.0000" data-duration="3.0000" data-track-index="1" style="z-index: 1"></div>
 
-      <!-- v05: blurred, darkened office footage behind the stretch (doc 46.5): R3.8 61.5-64.5 s, full frame (cover), 25%
-           opacity over the dark card, media-treatment blur 1 (the maximum, ~22 px), saturation -30% -->
-      <video id="b12-bg" class="clip b12-bg" src="assets/footage/R3.8.mp4" data-start="0.0000" data-duration="3.0000" data-media-start="0" data-track-index="2" muted playsinline data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.3},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" style="z-index: 2; --hf-color-grading-blur: 1"></video>
+      <!-- v05: blurred, darkened office footage behind the stretch (doc 46.5), shared with b13-gta so the dark-card stretch is
+           one piece across the cut: R3.7 (BBC 1996 making-of at DMA) 173.4-176.4 s here, continuing into b13's 176.0 s+ (both
+           show 176.2 s at the cut), crop 1440:1080:240:0, b13's exact grade (exposure -1, saturation -30%, blur 1), at 25% on
+           an UNTIMED wrapper (the runtime drives a clip's own opacity) -->
+      <div id="b12-bg-dim" style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 2; opacity: 0.25">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-1,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.3},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b12-bg" class="clip rc-full" src="assets/footage/R3.7.mp4" data-start="0.0000" data-duration="3.0000" data-media-start="0" data-track-index="2" muted playsinline style="object-fit: cover"></video>
+      </div>
 
       <!-- untimed camera wrapper (kit .rc-cam): #b12-cam = the slow held-shot push (v05: 100 -> 108%, eased; no punches).
            Only the calendar is inside; the captions and the background are not. -->
@@ -53,13 +56,13 @@
       </div>
 
       <!-- caption lockups (kit RCK.type.lockups, white + glow on the dark card; phase 2 regenerates them with kit v05),
-           centred on x 960, ink centred on y 276 above the grid: "Of course," (ONE unit on "course,", local 9) /
+           centred on x 960, ink centred on y 250 above the grid: "Of course," (ONE unit on "course,", local 9) /
            "the eighteen months" (26 / 32 / 44) / "turn into [thirty.]*" (56 / 67; "thirty." pops + blurs in on 71 with
            the counter landing). Generated with T.lockups(w, ['Of course,', 'the eighteen months', 'turn into
-           [thirty.]*'], { from: 0, end: 84/30, y: 276, card: true }); "Of" moved from 6 to 9 by hand (one unit). -->
-      <div id="b12-lk-1" class="clip rc-lk" data-start="0.3000" data-duration="0.5666" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="9">Of</span> <span class="rc-lw" data-rc-f="9">course,</span></div></div></div>
-      <div id="b12-lk-2" class="clip rc-lk" data-start="0.8666" data-duration="1.0000" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="26">the</span> <span class="rc-lw" data-rc-f="32">eighteen</span> <span class="rc-lw" data-rc-f="44">months</span></div></div></div>
-      <div id="b12-lk-3" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
+           [thirty.]*'], { from: 0, end: 84/30, y: 250, card: true }); "Of" moved from 6 to 9 by hand (one unit). -->
+      <div id="b12-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.3000" data-duration="0.5666" data-track-index="9" style="--rc-y: 250px; --rc-lk-c: 30.27px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 57px; line-height: 57px; height: 57px"><span class="rc-lw" data-rc-f="9">Of</span> <span class="rc-lw" data-rc-f="9">course,</span></div></div></div>
+      <div id="b12-lk-2" class="clip rc-lk" data-rc-v="5" data-start="0.8666" data-duration="1.0000" data-track-index="9" style="--rc-y: 250px; --rc-lk-c: 30.27px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 57px; line-height: 57px; height: 57px"><span class="rc-lw" data-rc-f="26">the</span> <span class="rc-lw" data-rc-f="32">eighteen</span> <span class="rc-lw" data-rc-f="44">months</span></div></div></div>
+      <div id="b12-lk-3" class="clip rc-lk" data-rc-v="5" data-start="1.8666" data-duration="0.9334" data-track-index="9" style="--rc-y: 250px; --rc-lk-c: 101.01px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -75,8 +78,8 @@
       const TURN = 56, THIRTY = 71, END = 90;
 
       // ---- M3 / L9: the B4 calendar, 18 filled + counter 18 (same kit component), v05: centred and larger (doc): 88 px
-      //      cells, 11 px gaps, grid x 876 / y 413 (583 x 484 at 30 cells) ----
-      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left', sq: 88, gap: 11, x: 876, y: 413 });
+      //      cells, 11 px gaps, grid x 876 / y 425 (583 x 484 at 30 cells) ----
+      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left', sq: 88, gap: 11, x: 876, y: 425 });
 
       // ---- opening animation (note 6): the calendar comes into the screen (kit calendarIn: +90 px -> 0, 90 -> 100%,
       //      12f expo.out, opacity 0 -> 1 over 6f power2.out) from local 5: the beat's first frame (local 6) shows it

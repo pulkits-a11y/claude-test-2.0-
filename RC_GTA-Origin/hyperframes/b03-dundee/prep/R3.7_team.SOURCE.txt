@@ -1,0 +1,11 @@
+R3.7_team.mp4: B3 v05 card insert ("starts a new game.", local 118-158; media-start 0.2 = source 195.0 s, v04's
+Tesseract band in-point). A second R3.7 moment beside R3.7.mp4 (the map, 51.3-54.0 s): tools/sync_footage.py cuts one
+window per R-ID, so this one is cut by hand with the tool's own settings (H.264 CRF 14, 30 fps, fit 1920x1080, no audio):
+
+  ffmpeg -ss 194.8 -i "04_Broll/_originals/B03/R3.7__GRAND THEFT AUTO 1996 Making Of - GTA - ｜ Retro Gaming ｜ BBC Archive [7vWSi44ZTSw].mp4" \
+    -t 2.0 -an -vf "crop=1308:980:306:100,scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2:flags=lanczos,setsar=1,fps=30" \
+    -c:v libx264 -crf 14 -preset medium -pix_fmt yuv420p -movflags +faststart R3.7_team.mp4
+
+Crop (original 1920x1080 pixels): the 4:3 picture is x 240-1680; 1308x980 at (306, 100) keeps 4:3 and removes the
+BBC Archive channel bug (top-left of the picture, x 27-186 / y 47-93 of the 1440x1080 4:3 frame) and the 4 px black
+line at the top. Cropped out, not blurred (watermark rule). Source: https://www.youtube.com/watch?v=7vWSi44ZTSw&t=195

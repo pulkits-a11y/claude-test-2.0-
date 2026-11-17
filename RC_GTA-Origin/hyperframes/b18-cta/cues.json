@@ -1,0 +1,14 @@
+{
+ "events": {},
+ "word_pops": [],
+ "key_words": [],
+ "sfx": [
+  {
+   "f": 18,
+   "name": "click"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 CTA end card (beat 75f, no voice; f0 = local 6). sfx: click on CTA frame 18 (the cursor clicks Follow, the button greys; doc 1:17.6). The header slide-up (0-8) and the CTA line (appears whole on 24) have no sound in the doc; a soft whoosh_in on 0 would fit if wanted. Frames 69-75 cross to B1's frame 0 (the loop): B1's own f0 sounds (siren_whoop + sub_hit) play when the video loops; nothing here."
+}

@@ -1,4 +1,65 @@
-# B3 1995, Dundee - `b03-dundee` (v02: beat 203f = 6.767 s; composition 215f with 6f handles. v01: 215f / 227f)
+# B3 1995, Dundee - `b03-dundee` (v05: beat 183f = 6.100 s, starts on "It's"; composition 195f with 6f handles. v04: 203f / 215f)
+
+## v05 (REVISION_v05.md "Lane 5" + CLIENT OVERRIDE U1-U3, U7, U11; doc section 3 beat 9 "If the line stays" and section 4 0:12.0-0:17.0): read this first; v04 and older below are kept as reference
+
+**Status: phase 1** (everything that needs no new kit component). Kit v05 components still to drop in are marked
+`TODO kit v05` in `index.html` (placeholders with their geometry). Not rendered.
+
+Timing: "Here's how." is cut (cut A, 20f); B3 starts on "It's" (edit f303 as in v04), **v05 local = v04 local - 20**.
+Root `data-duration` 6.5000000 (183 + 12 = 195f). Words (local): It's 7, 1995 14, in 37, Dundee, 41, Scotland. 56, DMA 83,
+Design, 90, the 115, studio 119, behind 128, Lemmings, 137, starts 155, a 165, new 168, game. 172; beat end 189.
+
+| What changed | Why |
+|---|---|
+| **The whole beat is HyperFrames** (opaque): `tesseract_shots.json` has no shots. The v04 Dundee band (R3.1) is a [DEPTH] shot, the v04 BBC band (R3.7) a card insert | [DEPTH] must live in HF (G6); card insert (doc 15.5-17.0) |
+| **"It's 1995 in" (0-41), U7** (the line stays; the doc's "If the line stays" items): full-frame 1990s office B-roll (the client's v04 #4), light grade only (exposure -0.3, no heavy dim). Angle 1 R3.8 media 8.45 (a staffer at his desk) 0-14 with "It's" (tier A, 7); **hard cut on "1995" (14, = v04 11.0)** to angle 2 R3.8 media 14.9 (the developer in black at his CRT, turning to camera) 14-41 | doc beat 9: "cut to a second archival angle at 0:11.00 so it's never one 2 s shot" |
+| **[DEPTH] "1995"**, Coolvetica Italic 420 px (U1), the client's glow flicker from the spoken "1995" (14; kit `T.glowFlicker`, 11 steps, steady from ~29): layers plate -> "1995" -> the developer's cut-out (`assets/depth/R3.8_dev_cutout.webm`, `remove-background`) -> "It's" / "in". Placed right of centre (ink x ~820-1610, baseline ~640): his head (top ~500-518 from local 20, x ~1200-1650) covers the lower ~45 % of "95", "19" clear. `review/v05/zoom/depth1995_f30_200pct.png`: clean hair edge | doc beat 9 [DEPTH]; U1; v04 #3 glow flicker |
+| **[DEPTH] Dundee (41-83)**: one frame of the R3.1 photograph (21.6 s) as the plate, the hill cut-out from a sky colour key of the same frame (`prep/dundee_depth.py`: Lab distance to a fitted sky polynomial, top-connected sky, 6 px soft edge, edge colours decontaminated). Push 100 -> 108% (41 -> 83, sine.inOut) on BOTH layers (two wrappers, one move), origin (960, 356) just under the Law's top so the ridge stays put and keeps covering ~33-37 % of "nde" (centre origin ate the "d"). "Dundee," (tier B 190 px, pops) between plate and cut-out; "Scotland." (tier A, 56) and the location tag above. `review/v05/zoom/dundee_f47/f82_200pct.png` | doc 12.0-13.5 |
+| **DMA logo (83-115)**: the client's full cut-out (figure + "DMA Design" lettering) pops 140 -> 95 -> 100% over 5f on "DMA" (83). **No pill** | doc 13.5-14.5; U11 (v03 #2) |
+| DMA section shots and camera as v04 (re-timed): door plate 83, staffer 90, map 115, Lemmings box 128, Lemmings intro 137; one slow push 100 -> 104% (83 -> 155) | "anything not mentioned stays" |
+| Lockup "the studio behind [Lemmings,]" lifted to y 500 (the circle round the front walker needs the space under "Lemmings,") | doc 15.0-15.5 |
+| **"starts a new game." (155-195)**: the BBC 1996 team shot (R3.7 195.0 s, re-cut by hand as `R3.7_team.mp4`, crop 1308:980:306:100 = 4:3 below the BBC Archive channel bug: cropped, not blurred) as a provisional card insert: white 15 px border, 3 deg, shadow 0 27 60 50 %, on a 130 % copy of itself (exposure -1 = 50 %, media-treatment blur at max); push 100 -> 106% | doc 15.5-17.0 |
+| Captions (U2): kit lockups (Coolvetica, current API, `prep/gen_captions.cjs` writes them between `@lk:` markers): words appear on their own frame, white; chosen key words pop + blur in ("Dundee,", "Lemmings,"); "1995" enters with the glow flicker. [DEPTH] lockups are written twice with identical geometry (behind copy = key row, front copy = the other rows) | U2; G10 sound-off |
+| `cues.json` v05 (word_pops / key_words / archival, no SFX of its own) | REVISION_v05 S |
+
+**v05 frames (local)**: 0-14 office angle 1, "It's" 7 | 14 cut, "1995" + glow flicker | 37 "in" | 41 cut to Dundee, "Dundee,"
+pops, push starts | 56 "Scotland." | 83 cut, door plate, logo 140% | 86 95% | 88 100% | 90 staffer | 115 map, "the" |
+128 box | 137 Lemmings intro, "Lemmings," pops | 155 card insert, "starts" | 165 / 168 / 172 "a" / "new" / "game." |
+189 beat end | 195 tail end.
+
+**TODO kit v05 (phase 2)**:
+* Location tag (`#b03-loctag`, 41-83, bottom-left, z above the hill): UK outline, white 3 px, zooming toward a #FF2E7E pin on
+  Dundee over 12f from 41 (lands 53, before "Scotland." 56). Any label in Coolvetica (U1).
+* Yellow hand-drawn circle (`#b03-lemcircle`, inside the DMA camera so it scales with the footage) round the FRONT walker of the
+  pair from 137 to the cut (155): measured on this framing, ellipse centre (850, 750) at 137 moving to (666, 750) at 155
+  (the walker goes left ~10.2 px/frame, y constant), about 230 x 330 px.
+* Card insert (`#b03-cardbg-wrap` / `#b03-card`): swap the provisional build for the kit component (same clip, push kept).
+* The pop preset: the kit's POP3 today (blur 20 px, 92 %, 6f expo.out); U2's doc pop (112 -> 100 %, blur 9 -> 0 by f4) when
+  the kit v05 lands. Re-run `node hyperframes/b03-dundee/prep/gen_captions.cjs` after the kit sync (tier A size 51-57 px may
+  move the rows; then re-check the depth overlaps at 200 %).
+* Archival filter (VHS wobble) on full-frame archival (cues `archival` 0-122) is the assembly finish / kit; no CSS here.
+* The pixel-glitch from B2 into B3: lane 1 plays the out half; if the kit splits it across the boundary, B3 plays the in
+  half at local 6-9.
+
+**Known / weighed**:
+* "in" (37) is on screen 4f before the cut to Dundee (it is spoken at 37, the cut is on "Dundee," 41): kept as the tail of
+  "It's 1995 in" (craft `line_unread`). It sits on the developer's dark hair (readable).
+* Contrast warnings: "It's" over angle 1's light wall 2.65:1 (after exposure -0.3); "a" over the card 1.98:1. White + kit glow.
+* The media-treatment blur works in SOURCE pixels (max ~22 px): the card background's blur is ~38 px on screen at the
+  maximum, not the doc's 60 px; the kit card insert may need a lower-res copy (or accept). Same for B4.
+* `duplicate_media_discovery_risk` (card + its blurred copy) and `nested_structure_needs_subcomposition` (kit lockup markup)
+  are by design.
+
+**Assets / recipes** (`assets/depth/` is tracked; `assets/footage/` is git-ignored working copies): `prep/dundee_depth.py`
+(-> `assets/depth/R3.1_plate.jpg`, `R3.1_hill_cutout.png`, `R3.1_depth.SOURCE.json`), `assets/depth/R3.8_dev_cutout.webm`
+(+ `.SOURCE.txt`), `assets/footage/R3.7_team.mp4` (working copy; re-cut with `prep/R3.7_team.SOURCE.txt`), `assets/dma/DMA-logo__cutout_full.png` (the client cut-out, as v03/v04).
+
+**Verification v05**: `check --json` 0 errors (warnings above). Snapshots `review/v05/` (22 frames + `sheet.jpg`, `f010_its.png`),
+`review/v05/zoom/` (200 %: "1995" over the developer, Dundee at 47 and 82), read. Not rendered.
+
+---
+
+# (pre-v05 title) B3 1995, Dundee - `b03-dundee` (v02: beat 203f = 6.767 s; composition 215f with 6f handles. v01: 215f / 227f)
 
 ## v04 (REVISION_v04.md, review #4, #3): read this first; v03 and older below are kept as reference
 

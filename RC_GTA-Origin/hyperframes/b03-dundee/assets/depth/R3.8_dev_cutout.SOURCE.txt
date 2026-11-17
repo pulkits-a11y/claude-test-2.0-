@@ -1,0 +1,11 @@
+R3.8_dev_cutout.webm: B3 v05 [DEPTH] "1995" (U7, doc beat 9 "If the line stays"): the matte of the developer in black at his CRT
+(DMA office tour, R3.8 source 27.9-29.0 s), so "1995" sits between the plate and him. VP9 with alpha, 720x540 (4:3), 33 frames
+at 30 fps; played with the plate (assets/footage/R3.8.mp4, data-media-start 14.9) from local 14, same box and object-fit
+(cover), so frame n of both is the same source frame.
+
+  ffmpeg -ss 14.9 -i assets/footage/R3.8.mp4 -t 1.1 -an -vf "scale=720:540:flags=lanczos,fps=30" -c:v libx264 -crf 12 \
+    -pix_fmt yuv420p dev_trim2.mp4
+  NODE_USE_ENV_PROXY=1 npx --yes hyperframes@0.9.52 remove-background dev_trim2.mp4 -o R3.8_dev_cutout.webm --quality best
+
+(local model, CPU, ~4.2 s per frame). Checked: one subject only (the man in white at the back desk is not in the matte);
+head track in frame px: top y 414 (local 14) -> ~500-518 (local 20-41), centre x 1310 -> 1462.

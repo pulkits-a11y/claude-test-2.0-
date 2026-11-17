@@ -126,7 +126,7 @@ the helper builds the graphic inside the host and animates only its children.
 | `fx.flashStar(tl, host, at, { x, y, size: 560, frames: 5, rotate: 18 })` | `FX.flashStar(tl, '#b10-star', L(30))` | k at 40%; k..k+2 -> 100% (expo.out); k+2..k+5 -> 125% and transparent (power2.out) |
 | `fx.logoSlam(tl, el, at, { from: 150, overshoot: 94, frames: 6, flash, flashOpacity: 0.85, star, shakeTarget, shakePx: 9, shakeF: 6 })` (B1, B13, B17 call this; el = an untimed wrapper of the logo) | `FX.logoSlam(tl, '#b13-logo', L(130), { from: 160, flash: '#b13-flash', star: '#b13-star', shakeTarget: '#b13-cam', shakePx: 12, shakeF: 8 })` | k visible at `from`; k..k+4 -> overshoot (power2.in); k+4..k+6 -> 100% (power2.out); impact k+4: 1-frame flash, flash-star, shake |
 | `fx.rgbSplit(tl, target, at, { px: 9, frames: 6, settle: 0, every: 2, until })` | `FX.rgbSplit(tl, '#b16-lk-2 .rc-lk__row--hero .rc-lw', W.bug, { px: 6, settle: 2 })` | k..k+frames-1 px narrowing to `settle` (hard steps); settle 0: clean on k+frames; settle > 0 = never settles: +/-1 px around it every 2f until `until` / the clip end. Text: red / cyan shadows; elements: SVG channel split |
-| `fx.rgbGrading(px)` (footage, static) | `media-treatment --selector "#b02-freeze" --grading '<JSON>' --apply` | `{ effects: { chromaticAberration: px x CA_PER_PX } }` |
+| `fx.rgbGrading(px)` (footage, static) | `media-treatment --selector "#b02-freeze" --grading '<JSON>' --apply` | `{ effects: { chromaticAberration: px x 0.025 } }` (`CA_PER_PX`, measured in `_demo-v05` f825: 0.1 = red -4 px / blue +4 px on a full-frame layer); e.g. 12 px -> 0.3 |
 | `fx.highlight(tl, el, at, { frames: 8 })`; el = `<div class="fx-hl fx-hl--dark">` (screen, dark pages) or `fx-hl` (multiply) laid over the line | `FX.highlight(tl, '#b04-hl', L(6))` | k..k+8 wipe left -> right (power2.out); #FF2E7E 55%; no page push (U3) |
 | `fx.annotate(tl, host, at, { type: 'arrow' \| 'circle' \| 'underline' \| 'strike', from, to, rect, label, labelAt, color, width, frames, jitter: 1.5, seed })` | `FX.annotate(tl, '#b03-ann', W.Lemmings, { type: 'circle', rect: [820, 600, 200, 180] })` | arrow: shaft k..k+6, head k+6..k+9; circle / underline k..k+9; strike (#E3262B) k..k+6 (stroke trim, power2.out); label hard-cuts in at the end; marker texture; +/-1.5 px jitter every 2f until the host ends |
 | `fx.cardInsertHTML({ id, src, img, start, dur, mediaStart, x, y, w: 1080, h: 810, tilt: 3, border: 15, bg: 'blur', bgScale: 1.3, blurPx: 60, darken: 0.5, z })` (Node or browser) | `html += FX.cardInsertHTML({ id: 'b03-card', src: 'assets/footage/R3.7.mp4', start: L(105), dur: 1.5, mediaStart: 2 })` | static: the clip in a white 15 px frame, tilted, shadow 0 27px 60px 50%, on the same clip at 130%, blurred 60 px and darkened 50% (media treatment); push with `C.push(tl, '#b03-card .fx-card__cam', at, { until, to: 1.06 })` |
@@ -148,7 +148,8 @@ aberration / wobble are media treatments; the CSS / SVG filters in this kit touc
 Pop blur runs 4 frames per starred word and is then removed; the RGB split only on its frames; the glitch is 16
 transformed divs; textures are a static PNG and a gradient. Expensive: media-treatment blur (multipass) on the card-insert
 and dark-card backgrounds (one full-frame layer each) and during zoom-throughs. In this container's software renderer the
-demo's 118 snapshots took about 10 minutes, mostly on those layers.
+demo's 118 snapshots took about 15 minutes, mostly on those layers, and one pass hit the CLI's 30 s video-injection
+timeout at a zoom-through (19.3 s): snapshot long beats in two or three `--at` batches.
 
 ## 5. Removed by the override (do not use)
 

@@ -7,7 +7,7 @@
   "R3.3",
   "R3.6"
  ],
- "note": "v05 (REVISION_v05 lane 5): every B3 shot is HF-owned, full frame. R3.1 = the [DEPTH] Dundee shot from one still frame (prep/dundee_depth.py -> assets/footage/R3.1_plate.jpg + R3.1_hill_cutout.png; R3.1.mp4 stays as the synced reference). R3.8 door plate + staffer, R3.7 map, R3.3 box, R3.6 Lemmings intro: as v04 (re-timed -57f). R3.7 has a second moment, the BBC team shot for the card insert, cut by hand to assets/footage/R3.7_team.mp4 (the tool cuts one window per R-ID; see 'extra'). v04's R3.8 year-card moment (media 14.2 s) is no longer used (the 'It's 1995' card is cut).",
+ "note": "v05 (REVISION_v05 lane 5 + client override U7): every B3 shot is HF-owned, full frame. R3.8: the 'It's 1995' section uses two office angles (media 8.45 = source 21.45 s, a staffer at his desk; media 14.9 = source 27.9 s, the developer in black at his CRT, with his cut-out assets/depth/R3.8_dev_cutout.webm for the [DEPTH] '1995'), then the door plate (13.4 s) and the staffer (43.35 s) as v04. R3.1 = the [DEPTH] Dundee shot from one still frame (prep/dundee_depth.py -> assets/depth/R3.1_plate.jpg + R3.1_hill_cutout.png; R3.1.mp4 stays as the synced reference). R3.7 map, R3.3 box, R3.6 Lemmings intro as v04 (+37f vs the first v05 cut, -20f vs v04). R3.7 has a second moment, the BBC team for the card insert, cut by hand to R3.7_team.mp4 (the tool cuts one window per R-ID; see 'extra').",
  "moments": {
   "R3.1": {
    "in": 21.0,
@@ -18,7 +18,7 @@
   "R3.8": {
    "in": 13.0,
    "out": 45.9,
-   "note": "DMA Design office tour (Mike Dailly), one window for two shots: 13.4-13.63 s the door plate '21 DMA Design' (shot 1 on 'DMA', media-start 0.4) and 43.35-44.18 s a young staffer at his desk with two CRT monitors (shot 2 on 'Design,', media-start 30.35). 384x288 4:3 source, upscaled (soft, archival)."
+   "note": "DMA Design office tour (Mike Dailly), one window, four moments: media 8.45 (source 21.45 s) a staffer in a purple sweater at his desk = 'It's' angle 1; media 14.9 (source 27.9 s) the developer in black at his CRT turning to camera = '1995' angle 2 ([DEPTH], cut-out R3.8_dev_cutout.webm); media 0.4 (13.4 s) the door plate '21 DMA Design' on 'DMA'; media 30.35 (43.35 s) a staffer at his desk with two CRTs on 'Design,'. 384x288 4:3 source, upscaled (soft, archival)."
   },
   "R3.7": {
    "in": 51.3,
@@ -45,15 +45,20 @@
    "in": 194.8,
    "out": 196.8,
    "crop": "1308:980:306:100",
-   "note": "BBC 1996: the presenter seated between two developers at their CRTs (v04's L2 band moment, source_in 195.0 = media-start 0.2). Crop = 4:3 below the BBC Archive channel bug (cropped out, not blurred). Cut by hand with sync_footage.py's settings: assets/footage/R3.7_team.SOURCE.txt"
+   "note": "BBC 1996: the presenter seated between two developers at their CRTs (v04's L2 band moment, source_in 195.0 = media-start 0.2). Crop = 4:3 below the BBC Archive channel bug (cropped out, not blurred). Cut by hand with sync_footage.py's settings: prep/R3.7_team.SOURCE.txt (a working copy like the synced ones: git-ignored, re-cut with that command)"
   },
   "R3.1_depth": {
    "files": [
-    "assets/footage/R3.1_plate.jpg",
-    "assets/footage/R3.1_hill_cutout.png"
+    "assets/depth/R3.1_plate.jpg",
+    "assets/depth/R3.1_hill_cutout.png"
    ],
    "recipe": "prep/dundee_depth.py",
-   "record": "assets/footage/R3.1_depth.SOURCE.json"
+   "record": "assets/depth/R3.1_depth.SOURCE.json"
+  },
+  "R3.8_dev_cutout": {
+   "file": "assets/depth/R3.8_dev_cutout.webm",
+   "of": "assets/footage/R3.8.mp4 media 14.9-16.0 (source 27.9-29.0 s)",
+   "recipe": "assets/depth/R3.8_dev_cutout.SOURCE.txt (hyperframes remove-background, local model)"
   }
  }
 }
