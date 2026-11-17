@@ -15,11 +15,10 @@
   35,
   77,
   131,
-  162,
-  166
+  162
  ],
  "sfx": [],
  "dropouts": [],
  "archival": [],
- "note": "v05 beat frames (f0 = 'It's' = local 6; beat 183f, REVISION_v05 U7). word_pops / key_words = RCK.type.lockupCues of the lockups (prep/gen_captions.cjs -> prep/cues_words.json): word_pops 'It's' 1, 'in' 31, 'Scotland.' 50, 'the' 109, 'studio' 113, 'behind' 122, 'starts' 149, 'a' 159; key_words '1995' 8 (hero, glow flicker; also the cut to office angle 2), 'Dundee,' 35, 'Lemmings,' 131, 'new' 162, 'game.' 166 (the kit counts every key-group word), plus 77 = the DMA logo pop on 'DMA' (the client's logo stands for 'DMA Design,'; U11). archival: none listed: B3 has no Tesseract shots; its HF-embedded 1990s / old footage (office angles, Dundee plate + cut-outs, door plate, staffer, map, the card's clip) carries the kit's archivalGrading (aberration + VHS wobble) in the composition. No SFX of its own (no pill, no type-on: U2, U11); the location tag and the yellow circle are silent in REVISION_v05 S."
+ "note": "v05 beat frames (f0 = 'It's' = local 6; beat 183f, REVISION_v05 U7). word_pops / key_words = RCK.type.lockupCues of the lockups (prep/gen_captions.cjs -> prep/cues_words.json): word_pops 'It's' 1, 'in' 31, 'Scotland.' 50, 'the' 109, 'studio' 113, 'behind' 122, 'starts' 149, 'a' 159; key_words '1995' 8 (hero, glow flicker; also the cut to office angle 2), 'Dundee,' 35, 'Lemmings,' 131, 'new' 162, 'game.' 166 (the kit counts every key-group word), plus 77 = the DMA logo pop on 'DMA' (the client's logo stands for 'DMA Design,'; U11). archival: none listed: B3 has no Tesseract shots; its HF-embedded 1990s / old footage (office angles, Dundee plate + cut-outs, door plate, staffer, map, the card's clip) carries the kit's archivalGrading (aberration + VHS wobble) in the composition. No SFX of its own (no pill, no type-on: U2, U11); the location tag and the yellow circle are silent in REVISION_v05 S. | v05: 'game.' (166) removed from key_words: one whoosh+thump on 'new' (162) for 'new game.'"
 }

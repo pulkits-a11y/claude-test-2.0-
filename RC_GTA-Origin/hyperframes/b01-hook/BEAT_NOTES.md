@@ -1,5 +1,22 @@
 # B1 Hook - `b01-hook` (v02: beat 134f = 4.467 s; composition 146f with 6f handles. v01: 143f / 155f)
 
+## v05 (REVISION_v05.md Lane 1 + the CLIENT OVERRIDE / section U, kit v05): read this first; v04 and older below are kept as reference
+
+Rebuilt shot by shot (doc section 3, beats 1-4). Timing unchanged (beat 134 f, comp 146 f, local = beat + 6). Generator:
+lane-1 scratch `gen/b01_gen.cjs` (writes index.html + cues.json from words.json with the kit's `T.lockups` / `T.lockupCues`).
+
+| Local | Shot / event | Notes |
+|---|---|---|
+| 0-26 | **Light bar, night, full bleed** (`assets/work/b01_lightbar.mp4`, static, U3: no punch-in); 70% white flash on beat f0 (`FX.flash`) | **f0 = `LOOP_FRAME.json`** (+ `assets/work/b01_f0.png`): GTA V R5.4 (LSPDFR night shift, B05 originals) 633.53 s, crop 1280:720:380:200 x1.5 (mod UI out). Drive2 has no night light-bar close-up (all 12 files scanned); this is a medium shot of the sheriff SUV with its blue bar + a red-lit wall, not a macro close-up |
+| 26-55 | Hard cut on "every": the full 2x3 grid, 6 px gutters, **complete on its first frame**; tiles slam on a 2-f stagger TL->BR (26-36: picture 108->100% / 4 f power3.out + a short tile flash); year labels `.fx-year` (Coolvetica 60) appear with their tile | GTA 1 R1.5 1997, III R14.1 2001, VC R1.7 2002, SA R1.6 2004, IV R14.4 2008, V R1.3 2013. "every [GTA,]" on a 60%-black pill (local `.b01-pill`), "GTA," 180 |
+| 55-96 | Cell 6 grows (6 f, v04) into the GTA VI shot = working clip A (`tools/make_work_clips.py`: 100% -> eased to 85% by 69, 85% to the cut); push 100->104% | **Logo slam** on "GTA" 69: `FX.logoSlam(tl, '#b01-logo-pop', L(69), { from: 150, flash: '#b01-flash', star: '#b01-star', shakeTarget: '#b01-cam', shakePx: 9, shakeF: 6 })` (the call B13 / B17 should mirror), impact 73 (85% flash, flash-star, 9 px shake + 1.2% overscan 73-79) |
+| 96-114 | Hard cut at 3.0 s to a **second GTA VI angle** (U3, instead of the doc's 150% crop): R1.2 night getaway (media 12.6 = source 20.8 s), 100% speed, static 112% framing about (400, 1080) that keeps the trailer's wanted-star HUD out | U13 lockup: "even" left (x <= 690) / logo centre / "have you [running]" right (from x 1225, key 186 so it ends inside title-safe); no [DEPTH] (no subject behind "running" in this angle; the phase-1 shooter cut-out `assets/work/b01_shotB_cutout.webm` is unused) |
+| 114-146 | Hard cut on "from": the SUV flip = working clip C (40% for the 8 source frames the truck leaves the ground, 125-145); push 100->104% 114->140, held (B2 continues it) | "from the [cops?]*" 240, centred-low (y 800), pops (U2: no siren colour flicker); X9 siren wash 125 and M1 stars from 93 kept from v04 |
+
+Captions (U1/U2): Coolvetica only; words appear on their frame, white + `--text-drop`; "Why" (hero 450) and "cops?" pop + blur in. Sound (cues.json v05): siren_whoop + sub_hit f0; six rising ticks on the tile slams (tick_3 x2, tick_1 x2, tick_2 x2: the library's three pitches); **impact_boom + sub_drop on the logo slam (beat 63, = B13 / B17)**; swipes on the cuts 20 / 90 / 108; siren_whoop 108; metal_crunch 119; word_pops / key_words from `T.lockupCues`. Seam: B1 134-140 = B2 0-6 (mean abs diff 0.4-0.5 / 255 above the caption). Snapshots: `review/v05/`. Check: 0 errors (warnings: nested lockup structure, container overflow of the grid grow, "running" 0.3 s on screen = the VO).
+
+Open: (1) frame 0 carries the doc's 70% white flash, so the still thumbnail is a washed frame (`b01_f0.png` = the un-flashed image); (2) a true night light-bar macro close-up needs footage the project does not have.
+
 ## v04 (REVISION_v04.md, review #5): read this first; v03 and older below are kept as reference
 
 Everything else as v03 (timing, footage, cues events). Kit refreshed to v04 (`python3 tools/new_beat.py B1 --refresh`, words.json identical).

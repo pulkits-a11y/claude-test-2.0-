@@ -47,5 +47,10 @@
    "out": 47.4,
    "note": "GTA 5: white supercar fleeing past POLICE cars (5 stars)."
   }
+ },
+ "work_clips": {
+  "b01_lightbar.mp4": "shot 1 (local 0-26) = the f0 image, see LOOP_FRAME.json: GTA V R5.4 (04_Broll/_originals/B05, LSPDFR night) 633.5333-634.5333 s, crop 1280:720:380:200 x1.5, 30 fps. Not an R-ID window (not in rids: sync_footage does not cut it).",
+  "R1.2_A_logo85.mp4 / R1.2_C_flip40.mp4": "speed ramps cut from assets/footage/R1.2.mp4 by tools/make_work_clips.py (map: assets/work/R1.2_ramps.json); clip C is copied to b02-bug/assets/work for the hand-off.",
+  "second GTA VI angle": "local 96-114 plays assets/footage/R1.2.mp4 itself at media 12.6 (source 20.8 s, the night getaway)."
  }
 }

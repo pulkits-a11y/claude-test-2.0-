@@ -1,5 +1,24 @@
 # B2 The bug - `b02-bug` (v02: beat 169f = 5.633 s; composition 181f with 6f handles. v01: 180f / 192f)
 
+## v05 (REVISION_v05.md Lane 1 + the CLIENT OVERRIDE / section U, kit v05): read this first; v04 and older below are kept as reference
+
+Rebuilt shot by shot (doc section 3, beats 5-8). Beat 169 f (U7: "It's 1995" is back, B3 starts on "It's"), comp 181 f
+(data-duration 6.0333333), boundary local 175. Generator: lane-1 scratch `gen/b02_gen.cjs` (index.html + cues.json).
+
+| Local | Shot / event | Notes |
+|---|---|---|
+| 0-7 | Hand-off: B1's SUV flip (`assets/work/R1.2_C_flip40.mp4`, copied from b01-hook, media 0.6667) + the tail of B1's push | identical to B1 134-140 |
+| 6-25 | X6 OUT into the CRT of the over-shoulder plate (R3.7, v04 geometry); camera 100->112% while it lands, then **112->116%** (14-25); the plate carries the kit `archivalGrading` (2 px aberration + light VHS wobble) | keyboard_clatter 1-19 |
+| 25-57 | Hard cut (5.1 s) to the **CRT screen close-up filling the frame**: GTA 1 (R9.1 media 0.37) with CRT treatment (scanlines .3 / count .689, curvature .16, fringe, vignette .35) + flicker; **VCR "PLAY ▶ MAR 22 1995"** (`FX.vcr`, Coolvetica) | "Because back in [[1995,]]": HERO 480 Coolvetica Italic + the client's glow flicker (30) |
+| 57-65 | `FX.zoomThrough` into the monitor 100->400% / 8 f (expo.in, media blur); cut 65 | |
+| 65-101 | Clean **full-screen GTA 1** (media 1.7033), landing 130->100% over 6 f; **yellow arrows** (`FX.annotate`): "you" -> the police car (66-75, label on "chasing"), "criminal" -> the red car (79-88, label on "criminals"); labels get a dark halo (pale pavement) | "a game about chasing [criminals]" at y 420 (above the cars) with a dark halo |
+| 101-156 | **"broke."**: freeze (`assets/work/b02_freeze.png`) + RGB split 12 px (rgbGrading, CA 0.3); pink pixel-glitch tear across 30% of the frame (101-107, `FX.glitch` 'cut' in a 324 px band); Win95 window `FX.errorWindow` 180% + `errorPop` 101; `errorCascade` 10 copies from 107 (2 f, +36/+27); `errorSnapShut` 151 (3 f, stepF 0.2, last-in first) | window centred on (960, 360) so the cascade ends above the lower-third captions; "[[broke.]]*" HERO 390 pops + `FX.jitter` 4.5 px; "And that [bug]" 225 + `FX.rgbSplit` px 6 settle 2 (never settles) |
+| 156-181 | 1-f white flash (156), the clean gameplay (media 4.1333: the police car closing in on the player's car); **pill "THAT BUG SAVED IT"** (`FX.pill` 156, text whole on 162 = "it."), `FX.pillOut` 168-175 + a full-frame pixel-glitch cut 170-175 into B3's year card | "saved it." are in the pill |
+
+Sound (cues.json v05): keyboard_clatter 1 (dur_f 18); **error_chord 95 (window slam) and glitch_impact 145 (snap-shut) = the B16 callback sounds**; glitch_stutter 101 (doc: chord, then a stutter; the cascade starts); a quieter glitch_stutter 162 on the pill's glitch exit; swipes on the cuts 19 / 59 / 150; dropouts 4 f before "Because" (f1) and "broke." (f95); word_pops / key_words from `T.lockupCues` + 156 (the pill text). No Tesseract archival range (the archival plate is HF-embedded and graded). Snapshots: `review/v05/`. Check: 0 errors (warnings: line_unread on the decorative error windows, "bug" 0.3 s).
+
+Open: (1) "1995," ink 982 px is a hero by design; (2) the CRT curvature leaves thin dark edges on the close-up (reads as the monitor); (3) B3 (lane 5) starts on its year card right after the 170-175 glitch: its f0-2 could continue the tear.
+
 ## v04 (REVISION_v04.md, review #6): read this first; v03 and older below are kept as reference
 
 Everything else as v03. Kit refreshed to v04 (`python3 tools/new_beat.py B2 --refresh`, words.json identical; lockup markup unchanged).

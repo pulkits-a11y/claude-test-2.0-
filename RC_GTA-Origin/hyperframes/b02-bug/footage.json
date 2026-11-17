@@ -9,7 +9,7 @@
   "R1.2": {
    "in": 8.2,
    "out": 12.4,
-   "note": "Official PS5 features trailer: B1's GTA 6 police-truck shot continued (same in-point 8.2 as b01-hook's window; v02 media-start 2.6334 here = 79/30 s = source 10.833 s, B1 local 134 = B2 local 0). SUBSTITUTE for R17.1/R17.3, see BEAT_NOTES."
+   "note": "v05: NOT USED any more (kept for reference): the hand-off now plays b01-hook's speed-ramped SUV flip, assets/work/R1.2_C_flip40.mp4 (media 0.6667 = B1 local 134). v02-v04: B1's GTA 6 police-truck shot continued (in-point 8.2, media-start 2.6334)."
   },
   "R3.7": {
    "in": 60.4,
