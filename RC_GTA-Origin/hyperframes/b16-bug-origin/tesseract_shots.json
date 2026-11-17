@@ -3,5 +3,6 @@
  "composition": "b16-bug-origin",
  "render": "05_GFX/renders/b16-bug-origin.mov",
  "shots": [],
- "notes": "v02 (VO 115%, beat 113f): B16 is fully HyperFrames-owned and opaque on every frame (f-6..28 HF VHS rewind, f28-40 HF X7, f40-51 black, f51-113 HF T5 glow line on black, word by word; the word 'bug', no chip: note 8). The rewound B14/B9/B4 footage is baked into the composition (assets/rewind/b16-rewind.mp4, tools/make_rewind.py), so Tesseract places only the render plus audio: S17 Spinback from f0 (cue rewind), MU7 music cut under f0-28 and resumed 6 dB lower from f28 (cue rewind_end), no SFX under the glow line (plan p.38)."
+ "notes": "v02 (VO 115%, beat 113f): B16 is fully HyperFrames-owned and opaque on every frame (f-6..28 HF VHS rewind, f28-40 HF X7, f40-51 black, f51-113 HF T5 glow line on black, word by word; the word 'bug', no chip: note 8). The rewound B14/B9/B4 footage is baked into the composition (assets/rewind/b16-rewind.mp4, tools/make_rewind.py), so Tesseract places only the render plus audio: S17 Spinback from f0 (cue rewind), MU7 music cut under f0-28 and resumed 6 dB lower from f28 (cue rewind_end), no SFX under the glow line (plan p.38).",
+ "timing": "v05"
 }

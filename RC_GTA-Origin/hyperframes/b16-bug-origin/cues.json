@@ -9,15 +9,15 @@
   12,
   14,
   22,
-  51,
+  50,
   55,
   64,
   74,
-  87,
+  86,
   94
  ],
  "key_words": [
-  30,
+  29,
   95
  ],
  "sfx": [
@@ -26,11 +26,15 @@
    "name": "error_chord"
   },
   {
+   "f": 47,
+   "name": "glitch_stutter"
+  },
+  {
    "f": 95,
    "name": "glitch_impact"
   }
  ],
  "dropouts": [],
  "archival": [],
- "note": "v05 (beat frames, f0 = 'So'). Legacy: rewind 0 (S17 spinback with the VHS rewind), rewind_end 28 (MU7). word_pops = So 1, that's 2, why 12, you're 14, always 22, The 51, whole 55, series 64, started 74, with 87, a 94; key_words = running. 30 (tier B), bug. 95 (hero). 69.0 (doc) = f41: the hook's Win95 window slams in over GTA 1 top-down footage (error_chord, = B2's) and cascades; 95 = 'bug.': the windows snap shut (glitch_impact; match B2's snap-shut sound when lane 1 sets it), then the hard cut to GTA VI (B17) at 113. The v02 'bug' event (no SFX) is dropped (key_words has it)."
+ "note": "v05 phase 2 (beat frames, f0 = 'So'; B16 = 113 f; local = beat + 6). Legacy events: rewind 0 (S17 spinback with the VHS rewind), rewind_end 28 (MU7). word_pops / key_words = T.lockupCues of the two kit lockups: So 1, that's 2, why 12, you're 14, always 22, running. 29 (key), The 50, whole 55, series 64, started 74, with 86, a 94, bug. 95 (hero pop). The Win95 callback sounds exactly like B2 (lane 1): error_chord 41 = the window slams in (B2 95), glitch_stutter 47 = the cascade starts 6 f later (B2 101), glitch_impact 95 = 'bug.': the windows snap shut (B2 145); the 1-frame white flash on 100 (B2 150) is silent; hard cut to B17 on 113. No dropouts, no archival full-frame footage."
 }

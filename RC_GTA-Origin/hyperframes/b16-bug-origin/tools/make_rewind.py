@@ -15,22 +15,27 @@ source time, with the shot's crop (the same `source`, `source_in_s` and `crop` t
 rewind shows exactly what B14 / B9 show (no working clips needed). Re-run after B14 or B9 change, then re-render. The source in-points
 MIRROR the Tesseract shots they rewind and are read live by load_inpoints(): B14 = hyperframes/b14-since/
 tesseract_shots.json, B9 = the R9.1 shot in hyperframes/b09-throughyou/tesseract_shots.json (lane E; the default
-0.0 / f0 until that file exists). B4 = the R4.5 framing and the 100 -> 118% push of hyperframes/b04-racenchase/
-index.html (lane B), copied into DOC below: keep it in sync by hand (BEAT_NOTES "Pending").
+0.0 / f0 until that file exists). B4 (v05, lane 5 FINAL): B4's OWN frames, rendered by the HyperFrames CLI (snapshot)
+from a throwaway copy of hyperframes/b04-racenchase in a temp folder (B4's folder is never written): the dark title page
+(05_GFX/shared/racenchase_title_page_dark_v05.jpg) at S 1.5 with page point (1093, 540) on the frame centre, tilted
+-4 deg, pushed 100 -> 115% over B4 local 6-46 (sine.inOut), the pink highlighter on "Race'n'Chase" (16), the yellow
+circle round "March 22, 1995" (28) and "It's called" printed above the title, so the rewind shows exactly B4's page.
+Re-run after B4 changes too.
 Usage: python3 tools/make_rewind.py [output_dir]   (default assets/rewind; another folder = dry run for comparisons)
 
 Output frame j = composition local frame j (local = beat + 6). An 8x rewind of an edit frame e steps e -> e - 8 per
 output frame; the B14 run is compressed (it jumps from shot to shot: 3 escape, 2 lights, 3 chase, then 1 frame per
-burst game, newest to oldest), then 9 frames of B9's GTA 1, then the R4.5 page zooming back out 118% -> 100%: B4's
-eased push (easeInOutSine over its frames) sampled backwards every 8 frames, so the zoom-out is eased too (v02 rule C),
-landing on B4's opening framing, held under the X7 dissolve.
+burst game, newest to oldest), then 9 frames of B9's GTA 1, then B4's page run backwards every 8 frames from its last
+page frame (B4 local 45, 115%, highlighted + circled) through 37, 29, 21, 13 (the circle and the highlighter unwind, the
+eased push runs back out), landing on B4's opening framing (local 5: 100%, before "It's" on 6), held under the X7
+dissolve.
 
 v02 (REVISION_v02.md, VO 115%): every beat is ~6% shorter. B16's rewind is beat f-6..28 (local 0..33, the tape stops on
 local 34 = beat 28; v01 beat 30) and the X7 dissolve local 34..46 (12f), so the clip is 48 frames (v01 52). The B14 shot
 boundaries (escape / lights / chase / burst clips) and B14's last frame are read from B14's v02 shots, B9's R9.1 shot end
 from B9's shots; the edit frames picked inside them are v02 frames (see plan()).
 """
-import json, os, shutil, subprocess, sys, tempfile
+import glob, json, os, shutil, subprocess, sys, tempfile
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -87,12 +92,14 @@ def load_inpoints():
             if s.get("source"): B9_R91_SOURCE = s["source"]
             src["B9"] = os.path.relpath(p9, HF)
     return src
-# B4 framing of the R4.5 title page (b04-racenchase): page drawn at 1.4 x page px, boxed-title centre (878, 307.5)
-# on screen (960, 400); L7 push 1.00 -> 1.18 about the spotlight-hole centre (959, 402). v02 (b04-racenchase v02:
-# S.spotPush(tl, '#b04-l7', L(6), { until: L(46), from: 1, to: 1.18 })): B4 f0 -> f40, easeInOutSine (the kit's v02
-# spotPush ease). Keep push_frames in sync with b04-racenchase by hand.
-DOC = {"page_scale": 1.4, "title_page": (878.0, 307.5), "title_screen": (960.0, 400.0), "push_origin": (959.0, 402.0),
-       "push_from": 1.0, "push_to": 1.18, "push_frames": 40, "push_ease": "easeInOutSine"}
+# B4 v05 (lane 5 FINAL, b04-racenchase): the page is B4 local 0-45 (hard cut to the grid on 46); push 100 -> 115% over
+# local 6-46 (sine.inOut, C.push); highlighter from 16 (8 f), circle from 28 (9 f), "It's" 6 / "called" 12. The rewind
+# shows B4's own frames 45, 37, 29, 21, 13 (8x backwards) and lands on 5 (100%, no text yet).
+B4_DIR = os.path.join(HF, "b04-racenchase")
+B4_PAGE_LAST_F, B4_LAND_F, STEP = 45, 5, 8
+DOC = {"b4": "hyperframes/b04-racenchase (snapshot of a temp copy)", "page": "05_GFX/shared/racenchase_title_page_dark_v05.jpg",
+       "page_scale": 1.5, "page_point_on_centre": (1093, 540), "tilt_deg": -4, "push_from": 1.0, "push_to": 1.15,
+       "push_f0": 6, "push_f1": 46, "push_ease": "sine.inOut", "page_last_f": B4_PAGE_LAST_F, "land_f": B4_LAND_F}
 
 
 def ease_in_out_sine(p):
@@ -101,9 +108,25 @@ def ease_in_out_sine(p):
 
 
 def b4_zoom_at(f):
-    """B4's eased push value on B4 frame f (0 .. push_frames)."""
-    p = min(1.0, max(0.0, f / DOC["push_frames"]))
+    """B4's eased push value on B4 local frame f (documentation only: the frames themselves are B4's own)."""
+    p = min(1.0, max(0.0, (f - DOC["push_f0"]) / (DOC["push_f1"] - DOC["push_f0"])))
     return DOC["push_from"] + (DOC["push_to"] - DOC["push_from"]) * ease_in_out_sine(p)
+
+
+def snap_b4(frames_local, tmp):
+    """B4's own frames at the given B4 local frames, rendered by the HyperFrames CLI from a throwaway copy of
+    hyperframes/b04-racenchase (B4's folder is only read). Returns {local frame: png path}."""
+    work = os.path.join(tmp, "b04-copy")
+    shutil.copytree(B4_DIR, work, ignore=shutil.ignore_patterns(".hyperframes", "review", "prep", "node_modules"))
+    out = os.path.join(tmp, "b04-snap")
+    fs = sorted(set(frames_local))
+    at = ",".join("%.5f" % (f / FPS + 0.00005) for f in fs)
+    subprocess.run(["npx", "--yes", "hyperframes@0.9.52", "snapshot", work, "--at", at, "--no-end", "-o", out],
+                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    pngs = sorted(glob.glob(os.path.join(out, "frame-*-at-*.png")), key=lambda p: int(os.path.basename(p).split("-")[1]))
+    if len(pngs) != len(fs):
+        sys.exit("make_rewind: B4 snapshot gave %d frames for %d times" % (len(pngs), len(fs)))
+    return dict(zip(fs, pngs))
 
 
 def b14_source(e):
@@ -140,15 +163,15 @@ def plan():
         e = B9_R91_END_F - 8 * i
         add("B9", rid="R9.1", edit_f=e, src_s=round(B9_R91_SRC_IN + (e - B9_R91_START_F) / FPS, 4),
             source=B9_R91_SOURCE, crop=B9_R91_CROP)
-    # beat 22..27: the 1995 design document, B4's eased push (1.00 -> 1.18 over push_frames, easeInOutSine) run backwards
-    # at 8x: B4 frames push_frames, -8, -16 ... down to 100%; beat 28.. (local 34 on): held at B4's opening framing (the
-    # tape has stopped) under the X7 light-leak dissolve
-    f4 = DOC["push_frames"]
-    while f4 > 0:
-        add("B4", rid="R4.5", b4_f=f4, zoom=round(b4_zoom_at(f4), 5))
-        f4 -= 8
+    # beat 22..26: the 1995 design document = B4's own page frames run backwards at 8x from its last page frame (45, 37,
+    # 29, 21, 13: 115% -> 101%, the circle and the highlighter unwind); beat 27.. (local 33 on): held at B4's opening
+    # framing (local 5: 100%, before "It's") - the tape has stopped - under the X7 light-leak dissolve
+    f4 = B4_PAGE_LAST_F
+    while f4 > B4_LAND_F:
+        add("B4", rid="R4.5", b4_local=f4, zoom=round(b4_zoom_at(f4), 5))
+        f4 -= STEP
     while len(frames) < N_FRAMES:
-        add("B4", rid="R4.5", b4_f=0, zoom=round(DOC["push_from"], 5))
+        add("B4", rid="R4.5", b4_local=B4_LAND_F, zoom=round(b4_zoom_at(B4_LAND_F), 5))
     return frames
 
 
@@ -174,13 +197,13 @@ def video_frame(source, t, crop, dst_png, tmp):
     cover_frame(raw, dst_png)
 
 
-def doc_frame(page, z, dst_png):
-    k = DOC["page_scale"]; (px, py) = DOC["title_page"]; (ax, ay) = DOC["title_screen"]; (cx, cy) = DOC["push_origin"]
-    # screen S = C + z * (A + k (P - Pt) - C)  =>  P = Pt + ((S - C) / z + C - A) / k
-    a = 1.0 / (k * z)
-    c0 = px + (-cx / z + cx - ax) / k
-    f0 = py + (-cy / z + cy - ay) / k
-    im = page.transform((W, H), Image.AFFINE, (a, 0, c0, 0, a, f0), resample=Image.BICUBIC, fillcolor=(255, 255, 255))
+def b4_frame(png, dst_png):
+    im = Image.open(png)
+    if im.mode == "RGBA":
+        bg = Image.new("RGBA", im.size, (14, 14, 16, 255)); bg.alpha_composite(im); im = bg
+    im = im.convert("RGB")
+    if im.size != (W, H):
+        sys.exit("make_rewind: B4 snapshot is %dx%d" % im.size)
     im.save(dst_png)
 
 
@@ -193,13 +216,13 @@ def main():
         sys.exit("make_rewind: hyperframes/b14-since/tesseract_shots.json is incomplete")
     frames = plan()
     os.makedirs(OUT_DIR, exist_ok=True)
-    page = Image.open(os.path.join(FOOT, "R4.5.png")).convert("RGB")
     tmp = tempfile.mkdtemp(prefix="b16rw-")
     try:
+        b4 = snap_b4([fr["b4_local"] for fr in frames if fr["kind"] == "B4"], tmp)
         for fr in frames:
             dst = os.path.join(tmp, "f%03d.png" % fr["local"])
             if fr["kind"] == "B4":
-                doc_frame(page, fr["zoom"], dst)
+                b4_frame(b4[fr["b4_local"]], dst)
             else:
                 video_frame(fr["source"], fr["src_s"], fr.get("crop"), dst, tmp)
         out = os.path.join(OUT_DIR, "b16-rewind.mp4")

@@ -21,26 +21,32 @@
     </style>
   </head>
   <body>
-    <!-- B16 b16-bug-origin (v03): beat 113f (3.767s) + 6f handle each end = 125f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.9667s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
-         v02: ../../REVISION_v02.md (note 8: the word "bug", no chip). v03: ../../REVISION_v03.md (notes 11, 12, 16, 17).
-
-         Plan p.27 (B16 build), STORYBOARD.md B16. Fully opaque (HF-owned). Local frame = beat frame + 6.
+    <!-- B16 b16-bug-origin (v05): beat 113f (3.767s) + 6f handle each end = 125f. Local time 0 = beat start - 6f (local
+         frame = beat frame + 6). Words: words.json (v05 VO). v05: ../../REVISION_v05.md (CLIENT OVERRIDE + U; lane 4) and
+         the client's doc 67.5-71.4 (00_Brief/refs_v05/): "keep the VHS-rewind transitions"; "replace the black: bring back
+         the hook's Win95 error-window cascade over GTA1 top-down footage, as a full callback. 'The whole series started
+         with a' in tier A, then 'bug.' as a hero word with RGB split. On 'bug.', the windows snap shut (like hook beat 8)
+         and the frame cuts straight to GTA VI."
          beat    local    what
-         -6..28  0..34    VHS rewind (~0.9 s): B14 clips -> B9's GTA 1 -> the 1995 design document, all reversed at 8x
-                          (assets/rewind/b16-rewind.mp4, 48 frames, built by tools/make_rewind.py from the originals), VHS look
-                          = media treatment on the <video> + the real RT1 VHS overlay (Screen) + tracking lines drawn here. Cue rewind = 0 (S17).
-         1       7        lockup 1 "So that's why you're always [running.]" (ink centre y 660, clear of the doc title): So 7, that's 8, why 18, you're 20, always 28,
-                          running. 36 (each a hard cut on its frame), out on "The" (local 57)
-         22..27  28..33   the design document zooms back out 118% -> 100% (B4's eased push run backwards at 8x: the plan's move,
-                          baked in the rewind clip), lands on B4's framing, shown with B4's L7 dim
-         28..40  34..46   X7 light-leak dissolve (12f, Screen blend) through the real RT6 leak (orange burst) to black #0A0A0A
-                          (picture fades easeInCubic, leak rises easeOutSine and falls easeInSine) = cue rewind_end (MU7 resumes)
-         51      57       lockup 2 on the dark (ink) background: "The whole series started with a [bug.]*": The 57, whole 61,
-                          series 70, started 80, with 93, a 100 (hard cuts), "bug." 101 big in Coolvetica Italic, pop + blur-in
-         95      101      "bug." = the word (v02 note 8: no bug chip) = cue bug (no SFX: silence under the line)
-         113..119 119..125 tail handle: the lockup held -->
+         -6..28  0..34    VHS rewind (~0.9 s): B14's clips -> B9's GTA 1 -> B4's design document, all reversed at 8x
+                          (assets/rewind/b16-rewind.mp4, 48 frames, tools/make_rewind.py: B14 / B9 frames from the originals,
+                          B4's page = B4's OWN final frames 45, 37, 29, 21, 13 (lane 5: dark page, -4 deg, 115% -> 100%, the
+                          circle and the pink highlighter unwinding), landing on B4's opening framing (local 5, 100%)); VHS
+                          look = media treatment on the <video> + the real RT1 VHS overlay (Screen) + tracking lines drawn
+                          here. Cue rewind = 0 (S17).
+         1..50   7..56    lockup 1 "So that's why you're always [running.]" (ink centre y 660: between B4's title and date
+                          during the landing, clear of the error window above it)
+         28..40  34..46   X7 light-leak dissolve (12f, Screen) through the real RT6 leak into the GTA 1 top-down footage
+                          (R9.1 @ 129.4 s, B2's chase continued, B2's crop, darkened) = cue rewind_end
+         41      47       the Win95 error window slams in (kit errorPop: B2's exact window, 180%, centred x 960 / y 360;
+                          error_chord)
+         47..65  53..71   ten copies cascade, +36 / +27 px every 2 f (kit errorCascade, as B2; glitch_stutter 47)
+         50..94  56..100  lockup 2 tier A "The whole series started with a" (ink centre y 310: above the window stack)
+         95      101      "bug." hero 450 px (Coolvetica Italic, pop + blur-in) with the kit RGB split (6 -> 2 px, never
+                          settles); the windows snap shut last-in first (kit errorSnapShut, 3 f, stepF 0.2 = B2; glitch_impact)
+         100     106      1-frame white flash (as B2 after its snap)
+         100..113 106..119 "bug." over the clean GTA 1 footage; hard cut to B17 (GTA VI) on beat 113
+         113..119 119..125 tail handle: held -->
     <div data-hf-id="hf-vp96" id="root" data-composition-id="b16-bug-origin" data-start="0" data-duration="4.1666667" data-width="1920" data-height="1080">
 
       <!-- ===== ink-black ground for the whole beat (B16 is a black screen: plan p.10) ===== -->
@@ -48,20 +54,13 @@
 
       <!-- ===== v05 (doc 69.0-71.4 "no black"): GTA 1 top-down footage (R9.1 @ 129.4 s, B2's chase continued, B2's crop and
            game grade) under the rewind from beat 28: the X7 leak dissolve now reveals it instead of black; the hook's Win95
-           cascade (TODO kit v05, shared with B2) and the lockups sit over it; "bug." snaps the windows shut (beat 95), then the
+           cascade (kit, B2's exact calls) and the lockups sit over it; "bug." snaps the windows shut (beat 95), then the
            hard cut to GTA VI (B17) at beat 113. ===== -->
       <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.9,&quot;contrast&quot;:0.15,&quot;highlights&quot;:-0.3,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-7enu" id="b16-g1" class="clip rc-full" src="assets/footage/R9.1.mp4" data-start="1.1333" data-duration="3.0333" data-media-start="0" data-track-index="1" muted playsinline style="z-index: 1; object-fit: cover"></video>
 
       <!-- ===== VHS rewind picture (untimed wrapper = the X7 "from" layer; the <video> is the clip) ===== -->
       <div data-hf-id="hf-zbfq" id="b16-rewind-wrap" class="rc-full" style="z-index: 2">
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:-0.04,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.08},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.12,&quot;grainRoughness&quot;:0.72},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0.5,&quot;tapeDamage&quot;:0.85,&quot;tapeTracking&quot;:0.9,&quot;tapeNoise&quot;:0.35,&quot;tapeSpeed&quot;:0.65,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0.35,&quot;scanlineCount&quot;:0.17,&quot;scanlineSoftness&quot;:1,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0.32,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0.08,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0.5,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-iz0k" id="b16-rewind" class="clip rc-full" src="assets/rewind/b16-rewind.mp4" data-start="0.0000" data-duration="1.5333" data-track-index="1" muted playsinline></video>
-        <!-- The design document as B4 showed it: kit L7 dim (#0A0A0A at 65%) with B4's rounded, feathered spotlight hole on
-             the title (b04-racenchase data-hole 715,296,488,212). The wrapper is scaled per frame to the zoom baked into the
-             rewind clip (assets/rewind/b16-rewind.map.json) about the hole centre (959, 402), like B4's push. A DOM overlay,
-             not a filter on the footage; it fades out with the picture in X7. -->
-        <div data-hf-id="hf-3f1n" id="b16-doc-l7" class="rc-l7">
-          <div data-hf-id="hf-osqm" id="b16-docdim" class="clip rc-l7__dim" data-hole="715,296,488,212" data-radius="16" data-feather="20" data-start="0.9333" data-duration="0.6000" data-track-index="6"></div>
-        </div>
       </div>
 
       <!-- ===== RT1 VHS overlay (real: the pack's transition 4 noise bands / glitch / tape crease, working clip from source 13.0 s,
@@ -171,15 +170,6 @@
       // ---- X7: the rewind picture dissolves to black through the light leak over 12f (beat 28..40; picture fades
       //      easeInCubic, leak sine). Silent.
       X.leakDissolve(tl, '#b16-x7', f(REWIND_END), { frames: 12, from: '#b16-rewind-wrap' });
-
-      // ---- the document's L7 dim follows the zoom baked into the rewind clip (local 28..33: 1.18 -> 1.00 = B4's v02 push,
-      //      f0-40 easeInOutSine, run backwards at 8x; values from assets/rewind/b16-rewind.map.json), then holds B4's
-      //      opening framing (1.00) under the dissolve. One value per frame, matching the baked frames.
-      (function docDimZoom() {
-        const Z = { 28: 1.18, 29: 1.16281, 30: 1.11781, 31: 1.06219, 32: 1.01719, 33: 1.0, 34: 1.0 };
-        gsap.set('#b16-doc-l7', { scale: Z[28], transformOrigin: '959px 402px' });
-        for (let n = 29; n <= 34; n++) tl.set('#b16-doc-l7', { scale: Z[n] }, (n - 0.5) / 30);
-      })();
 
       // ---- captions (v05): lockup words appear on their frames; the starred hero "bug." pops + blurs in (U2)
       T.lockupsWire(tl);

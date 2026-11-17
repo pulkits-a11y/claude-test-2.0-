@@ -10,12 +10,12 @@
   62,
   79,
   87,
-  102
+  102,
+  129
  ],
  "key_words": [
   106,
-  123,
-  129
+  123
  ],
  "sfx": [
   {
@@ -30,5 +30,5 @@
   }
  ],
  "archival": [],
- "note": "v05. word_pops / key_words = T.lockupCues: 'dull.' (beat 40) is the gag: no tick / whoosh / thump, only flatline_beep (doc 24.4) with a 6f dropout ending on it; the three starred quote words (106 / 123 / 129) are key words; the name pill has no sound (text appears whole, U2). Legacy 'dull' (S05) dropped (the music bed is off)."
+ "note": "v05. word_pops / key_words = T.lockupCues: 'dull.' (beat 40) is the gag: no tick / whoosh / thump, only flatline_beep (doc 24.4) with a 6f dropout ending on it; the three starred quote words (106 / 123 / 129) are key words; the name pill has no sound (text appears whole, U2). Legacy 'dull' (S05) dropped (the music bed is off). | v05 (main): f129 moved from key_words to word_pops: one whoosh+thump per phrase"
 }

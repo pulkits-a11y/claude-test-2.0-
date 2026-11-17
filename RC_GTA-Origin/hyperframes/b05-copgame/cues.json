@@ -6,15 +6,15 @@
   14,
   19,
   25,
+  36,
   47
  ],
  "key_words": [
   27,
-  36,
   58
  ],
  "sfx": [],
  "dropouts": [],
  "archival": [],
- "note": "v05 (REVISION_v05 lane 2 + client override U). word_pops / key_words = T.lockupCues (appear frames, beat f): key = 'police' + 'officer' (the starred key 'police officer') and 'criminals.'. No other sound (the X9 wash stays visual)."
+ "note": "v05 (REVISION_v05 lane 2 + client override U). word_pops / key_words = T.lockupCues (appear frames, beat f): key = 'police' + 'officer' (the starred key 'police officer') and 'criminals.'. No other sound (the X9 wash stays visual). | v05 (main): f36 moved from key_words to word_pops: one whoosh+thump per phrase"
 }
