@@ -15,6 +15,10 @@ FRAMES=(
   705:H_doc 711:H_hl-mid 720:H_hl-done_errbox 750:H_hold
   762:I_ink-tiles 766:I_centre-tile-1-cleared 775:I_both-cleared 795:I_hold
   813:J_Why-does_full 851:J_bug-pop-f0 857:J_bug-settled 866:J_saved-it_full 895:J_Dundee-Scotland_full
+  937:K1_before 938:K1_flick-f0 939:K1_flick-f1 940:K1_flick-f2 941:K1_flick-f3 942:K1_flick-f4 943:K1_flick-f5 944:K1_flick-f6 945:K1_flick-f7 946:K1_flick-f8 947:K1_flick-f9 949:K1_settle-f1 955:K1_steady
+  976:K2_before 977:K2_flick-f0 978:K2_flick-f1 979:K2_flick-f2 980:K2_flick-f3 981:K2_flick-f4 982:K2_flick-f5 984:K2_flick-f7 987:K2_flick-f10 995:K2_steady
+  1038:K3_flick-f0 1039:K3_flick-f1 1041:K3_flick-f3 1043:K3_flick-f5 1047:K3_flick-f9 1060:K3_steady
+  1095:K4_s1-pop-f0 1096:K4_s1-f1 1097:K4_s1-peak 1099:K4_s1-f4 1101:K4_s1-f6 1105:K4_s1-gone 1112:K4_s2-peak 1127:K4_s3-peak 1140:K4_all
 )
 OUT=review/snap
 mkdir -p "$OUT"

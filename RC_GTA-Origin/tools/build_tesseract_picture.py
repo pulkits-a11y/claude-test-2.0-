@@ -135,13 +135,15 @@ NEUTRALIZE = {"strength": 0.85, "target_rgb": (1.03, 1.0, 0.97), "bins": 10, "sa
 # ---- whole-edit finish (REVISION_v02.md rule F; v03 notes 14-15), top layers over everything ------------------
 # Calibrated on flat fields, test patterns and real frames in Tesseract 0.7.0 (PICTURE_NOTES.md "Whole-edit finish").
 FINISH_GRAIN = {"amount": 3.0, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0,   # on a 50% grey Rect plate,
-                "plate": 0.5, "blend": "linearLight", "opacity": 55.0,            # desaturated: monochrome film grain;
+                "plate": 0.5, "blend": "linearLight", "opacity": 28.0,            # desaturated: monochrome film grain;
                 "seed": 1.0}                                                      # linear light adds 2 x opacity x
-                # (plate - 0.5): p1-p99 about 12% of full scale on flat grey. v03 note 15: STATIC (one seed, no
-                # per-frame script): the same grain pattern on every frame
+                # (plate - 0.5). v03 note 15: STATIC (one seed, no per-frame script): the same grain on every frame.
+                # v04 note 2 ("reduce opacity of textures"): opacity 55 -> 28%, about half as visible (p1-p99 on flat
+                # grey about 6% of full scale, was 11.8%)
 FINISH_VIGNETTE = {"amount": 0.70, "radius": 0.74, "feather": 0.50}   # v03 note 14 (darker/harder): flat field
                 # corners -68%, edge centres -35% (v02: amount 0.57, radius 1.0, feather 0.8 = -38% / -17%)
-FINISH_SCANLINES = {"period_px": 9, "depth": 0.30, "shape": 1.5, "blend": "multiply"}   # v03 note 15: static CRT
+FINISH_SCANLINES = {"enabled": False,      # v04 note 7: no whole-edit CRT lines (the kit draws them inside dark cards)
+                    "period_px": 9, "depth": 0.30, "shape": 1.5, "blend": "multiply"}   # v03 note 15: static CRT
                 # scanlines (they replace the dust overlay): a raised-cosine dark band every 9 px at 1080p, the line
                 # centre 30% darker; 9 px = the line pitch of the client's references (2.77-2.79 px in the 576-586 px
                 # wide screenshots) and coarse enough not to alias when the video is shown smaller (4 px lines turn
@@ -931,10 +933,11 @@ def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str):
     (eased keys; the CA works on the picture only, the scanlines and grain sit on top of everything)."""
     layers, info = [], {}
     pg = lambda **k: primary_grade(k)
-    # CRT scanlines (v03 note 15): a static multiply plate
-    sid = ids.L()
+    # CRT scanlines (v03 note 15): a static multiply plate; off since v04 (note 7)
     sc = FINISH_SCANLINES
-    layers.append({"type": "Image", "id": sid, "name": "Finish: CRT scanlines (whole edit)", "blendMode": sc["blend"],
+    if sc.get("enabled") and scan_asset:
+        sid = ids.L()
+        layers.append({"type": "Image", "id": sid, "name": "Finish: CRT scanlines (whole edit)", "blendMode": sc["blend"],
                    "activeRange": {"start": 0, "duration": int(edit_ms)},
                    "transform": {"anchorPoint": [W / 2.0, H / 2.0], "position": [W / 2.0, H / 2.0], "scale": [100, 100],
                                  "rotation": 0, "opacity": 100},
@@ -943,7 +946,9 @@ def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str):
                    "description": "v03 note 15: static CRT scanlines across the whole edit (multiply): a dark band every "
                                   "%d px at 1080p, its centre %.0f%% darker; static (no animation)." % (
                                       sc["period_px"], sc["depth"] * 100)})
-    info["scanlines"] = {"layer": sid, **sc}
+        info["scanlines"] = {"layer": sid, **sc}
+    else:
+        info["scanlines"] = {"layer": None, **sc}
     # grain: a 50% grey plate with the engine's grain, desaturated (monochrome), linear light, ONE seed (static)
     gid, geff, gsat = ids.L(), ids.E(), ids.E()
     g = {k: v for k, v in FINISH_GRAIN.items() if k in ("amount", "size", "softness", "aspectRatio", "seed")}
@@ -1032,10 +1037,12 @@ def main():
         PROJECT.unlink()
     tsrct("project", "create", "--project", PROJECT)
     sc = FINISH_SCANLINES
-    scan_png = scanline_image(WORK / "derived" / ("scanlines_p%d_d%02d_s%.1f.png" % (
-        sc["period_px"], round(sc["depth"] * 100), sc["shape"])))
-    scan_asset = "pic-tex-scanlines"
-    tsrct("project", "import-asset", "--project", PROJECT, "--file", scan_png, "--asset-id", scan_asset, "--kind", "image")
+    scan_asset = None
+    if sc.get("enabled"):
+        scan_png = scanline_image(WORK / "derived" / ("scanlines_p%d_d%02d_s%.1f.png" % (
+            sc["period_px"], round(sc["depth"] * 100), sc["shape"])))
+        scan_asset = "pic-tex-scanlines"
+        tsrct("project", "import-asset", "--project", PROJECT, "--file", scan_png, "--asset-id", scan_asset, "--kind", "image")
     wc_used = set()
     shot_assets, imported = {}, {}
     for b in beats:

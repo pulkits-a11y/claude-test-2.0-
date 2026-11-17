@@ -16,8 +16,14 @@
          inside each half moves (v03: b05's slow eased 100 -> 104% push, continued to the cut to the card). */
       .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
       .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
-      /* untimed full-frame wrapper of the card content (v02: push / X2 drift; v03: at rest, the card is static) */
-      .lc-card-push { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      /* v04: Gary Penn full frame (16:9 working clip, never stretched) inside the camera wrapper */
+      .b06-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      /* v04 lower third: bottom left inside title-safe (96 px in, last baseline about 970 px), white + the kit's glow */
+      .b06-l3 { position: absolute; left: var(--safe-x); top: 864px; width: 900px; height: 130px; color: var(--white);
+                text-shadow: var(--text-glow); pointer-events: none; }
+      .b06-l3__name { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 52px; line-height: 60px; white-space: nowrap; }
+      .b06-l3__role { margin-top: 6px; font-family: var(--sans); font-weight: 400; font-size: 28px; line-height: 34px;
+                      letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; }
     </style>
   </head>
   <body>
@@ -61,47 +67,33 @@
         </div>
       </div>
 
-      <!-- v03 (notes 9, 12): the card behind Gary Penn is the kit's DARK card (.rc-l5__ground v03: near-black with the
-           subtle charcoal lift; was the L5 gray #E9E9E9), static. -->
-      <div data-hf-id="hf-inpv" id="b06-card" class="clip rc-l5__ground" data-start="2.1333" data-duration="3.4667" data-track-index="4" style="z-index: 2"></div>
-
-      <!-- v03 (note 9 "remove the sliding animation that the guy has"): the card content is static from the cut on "One"
-           (local 64): no X2 slide, no prop float, no push. #b06-x2 / #b06-push are kept as wrappers at rest. -->
-      <div data-hf-id="hf-3rrx" id="b06-x2" class="rc-x2" style="z-index: 3">
-        <div data-hf-id="hf-bptk" id="b06-push" class="lc-card-push">
-          <!-- Gary Penn moving clip from his BAFTA talk (R6.1), background removed, on the left. v03 (note 9): NO white
-               outline (kit .rc-l5__cutout--no-outline: the soft shadow only), no float; the static -4 deg tilt stays.
-               assets/footage/R6.1_cutout.webm = `hyperframes remove-background --quality best` of R6.1 @ 0:30.0-0:34.6
-               (10:9 window, 1200 x 1080, tools/make_cutout.sh). Box 960 x 864 = the clip's 10:9; its bottom sits 74 px below
-               the frame so the source's frame edges stay hidden. Look (plan p.10 archival: desaturate about 20%, slight warm
-               lift): media treatment saturation -0.2, shadows wheel hue 35 / amount 0.06 / level +0.03 (no grain/vignette:
-               the assembly adds the whole-edit finish). -->
-          <div data-hf-id="hf-onjo" id="b06-p1" class="rc-l5__prop" data-rot="-4" style="--x: 70px; --y: 290px; --w: 960px; --h: 864px; --rc-pos: 50% 100%;">
-            <div data-hf-id="hf-zmm5" class="rc-l5__cutout rc-l5__cutout--no-outline">
-              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.06,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-akms" id="b06-penn" class="clip" src="assets/footage/R6.1_cutout.webm" data-start="2.1333" data-duration="3.4667" data-media-start="0" data-track-index="5" muted playsinline></video>
-            </div>
-          </div>
-          <!-- T8 quote card at the right (plan p.12, B6 p.22), v03 on the dark card: .rc-on-card = white text with the ref 3
-               glow (kit v03). Quote, name and role exactly as written: curly quotes, the single ellipsis character, "sim-y";
-               role line "DMA DESIGN · GAMASUTRA, 2011".
-               The quote breaks after "awful…" (Coolvetica Italic 110 px is 911 px on one line, wider than the 816 px column).
-               v03 (note 9): no type-on: each word pops + blurs in on its spoken frame (data-rc-f, words.json): “awful… 112,
-               too 129, sim-y.” 135. Name + role: simply there from the cut on "One" (64), no fade. -->
-          <div data-hf-id="hf-cpjx" id="b06-t8" class="clip rc-t8 rc-t8--right rc-on-card" data-start="2.1333" data-duration="3.4667" data-track-index="6" style="z-index: 4">
-            <div data-hf-id="hf-x6mb" class="rc-t8__block">
-              <div data-hf-id="hf-e3q5" class="rc-t8__quote"><span class="rc-lw" data-rc-f="112">“awful…</span><br data-hf-id="hf-x5px"><span class="rc-lw" data-rc-f="129">too</span> <span class="rc-lw" data-rc-f="135">sim-y.”</span></div>
-              <div data-hf-id="hf-kenb" class="rc-t8__name">Gary Penn</div>
-              <div data-hf-id="hf-y8hi" class="rc-t8__role">DMA DESIGN · GAMASUTRA, 2011</div>
-            </div>
-          </div>
-        </div>
+      <!-- v04 (REVISION_v04 comments 8, 9 "this looks bad" / "take some inspirations from ... production houses"): the
+           Gary Penn card is gone (no cut-out, no card). From the cut on "One" (local 64) his real footage plays FULL FRAME,
+           like a documentary interview: R6.1 (BAFTA Games Mini Masterclass) @ 0:30.0-0:34.6, 16:9 window x 144-1280 of the
+           1280 x 720 source (the burned-in BAFTA mask logo top-left is cropped out), him left of centre, the empty cinema
+           right. Graded dark (dark aesthetic, media treatment on the video, see BEAT_NOTES v04); camera: one slow push
+           100 -> 104% (easeInOutSine) from the cut to the end, on the untimed wrapper #b06-cam. -->
+      <div data-hf-id="hf-40gc" id="b06-cam" class="rc-cam" style="z-index: 2">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.6,&quot;contrast&quot;:0.12,&quot;highlights&quot;:-0.25,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.3},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-3yz0" id="b06-penn" class="clip b06-fill" src="assets/footage/R6.1.mp4" data-start="2.1333" data-duration="3.4667" data-media-start="0" data-track-index="5" muted playsinline></video>
       </div>
+
+      <!-- Lower third (v04): name + role, small and clean, bottom left inside title-safe (x 96, ink above y 1026), simply
+           there from the cut on "One" (no animation). Texts exactly as before: "Gary Penn" / "DMA DESIGN · GAMASUTRA, 2011". -->
+      <div data-hf-id="hf-jiih" id="b06-l3" class="clip b06-l3" data-start="2.1333" data-duration="3.4667" data-track-index="6" style="z-index: 20">
+        <div data-hf-id="hf-i7vr" class="b06-l3__name">Gary Penn</div>
+        <div data-hf-id="hf-v4mu" class="b06-l3__role">DMA DESIGN · GAMASUTRA, 2011</div>
+      </div>
+
+      <!-- The quote (v04): a centred v03 lockup (kit RCK.type.lockups, ref 1 layout) over the darkened footage: the keyword
+           "“awful…" big in Coolvetica Italic, "too sim-y.”" small below-right; every word pops + blurs in on its spoken frame
+           (“awful… 112, too 129, sim-y.” 135; words.json), held to the end (the deliberate quote hold). -->
+      <div data-hf-id="hf-so5r" id="b06-quote-1" class="clip rc-lk" data-start="3.7333" data-duration="1.8667" data-track-index="11" style="--rc-lk-c: 129.55px; z-index: 30"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-pzzz" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span data-hf-id="hf-c99r" class="rc-lw rc-lw--pop" data-rc-f="112">“awful…</span></div><div data-hf-id="hf-ep2u" class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span data-hf-id="hf-pinw" class="rc-lw rc-lw--pop" data-rc-f="129">too</span> <span data-hf-id="hf-trqz" class="rc-lw rc-lw--pop" data-rc-f="135">sim-y.”</span></div></div></div>
 
       <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1), kit RCK.type.lockups from words.json, centred, on
            the split screen: "But there's a problem:" (6; one small line, each word appears on its frame) / "it's [dull.]*"
            (38; the keyword "dull." pops + blurs in on 46 with the B&W drain + slow-down). Hard cut out on the card cut (64). -->
-      <div id="b06-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.0666" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="6">But</span> <span class="rc-lw" data-rc-f="9">there's</span> <span class="rc-lw" data-rc-f="17">a</span> <span class="rc-lw" data-rc-f="19">problem:</span></div></div></div>
-      <div id="b06-lk-2" class="clip rc-lk" data-start="1.2666" data-duration="0.8667" data-track-index="10" style="--rc-lk-c: 104.2px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="38">it's</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="46">dull.</span></div></div></div>
+      <div data-hf-id="hf-ukqe" id="b06-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.0666" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 30"><div data-hf-id="hf-ze3e" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-tmst" class="rc-lw" data-rc-f="6">But</span> <span data-hf-id="hf-u6sj" class="rc-lw" data-rc-f="9">there's</span> <span data-hf-id="hf-bfgf" class="rc-lw" data-rc-f="17">a</span> <span data-hf-id="hf-kcvl" class="rc-lw" data-rc-f="19">problem:</span></div></div></div>
+      <div data-hf-id="hf-2eyk" id="b06-lk-2" class="clip rc-lk" data-start="1.2666" data-duration="0.8667" data-track-index="10" style="--rc-lk-c: 104.2px; z-index: 30"><div data-hf-id="hf-zsef" class="rc-lk__box"><div data-hf-id="hf-0xbm" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span data-hf-id="hf-4y2e" class="rc-lw" data-rc-f="38">it's</span></div><div data-hf-id="hf-og10" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span data-hf-id="hf-q3p1" class="rc-lw rc-lw--pop" data-rc-f="46">dull.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -133,18 +125,12 @@
       tl.fromTo(drainVids, { '--hf-color-grading-lut-intensity': 0 },
         { '--hf-color-grading-lut-intensity': 1, duration: 6 / 30, ease: 'power2.inOut', immediateRender: false }, f(46));
 
-      // ---- the quote card from the cut on "One" (64), v03 (note 9): static. No X2 slide, no prop float, no card push (the
-      //      wrappers #b06-x2 / #b06-push stay in the markup at rest). The cut-out keeps its -4 deg tilt (data-rot, a static
-      //      set, no animation). Name + role are simply there from the cut (no fade, no typing). ----
-      S.propInit('#b06-p1');
+      // ---- v04: Gary Penn full frame from the cut on "One" (64): one slow push 100 -> 104% (easeInOutSine) to the end of
+      //      the tail handle (168), the held-shot camera (no punch, no zoom-out). ----
+      C.push(tl, '#b06-cam', f(64), { until: f(168), from: 1, to: 1.04 });
 
-      // ---- the quote "awful… too sim-y." (T8, Coolvetica Italic): each word pops + blurs in on its spoken frame (kit v03
-      //      wordPops, POP3 = the lockup keywords' pop: full opacity on its frame, blur 20 -> 0 px + 92 -> 100% over 6f,
-      //      easeOutExpo): “awful… 112, too 129, sim-y.” 135 (words.json) ----
-      T.wordPops(tl, '#b06-t8 .rc-t8__quote', null);
-
-      // v03 caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame; the starred keyword "dull."
-      // pops + blurs in (kit POP3) on 46, with the drain.
+      // caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame; starred words pop + blur in
+      // (kit POP3): "dull." on 46 with the drain (v03), and the v04 quote lockup's three words on 112, 129, 135.
       T.lockupsWire(tl);
 
       window.__timelines["b06-dull"] = tl;

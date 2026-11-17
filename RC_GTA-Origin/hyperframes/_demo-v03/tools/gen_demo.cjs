@@ -150,7 +150,48 @@ const plan = (label, w, specs, o) => { const p = T.lockupPlan(w, specs, o); repo
   tag('j-tag', f0, f1, 'v03 fix · tail rows clear the keyword descenders (g j p q y, comma) by 8 px: [Why] does · And that [bug]* saved it. · [Dundee,] Scotland.');
 }
 
-const END = 910;
+/* ---------------- K: v04 additions: glow flicker (lockup word, T3 year, "Nov 1997"), card scanlines, B9 strip glow flash ---------------- */
+{
+  // K1 (B2): lockup "Because back in [1995,]" over footage, the keyword (not starred) glow-flickers on its frame
+  const W1 = words('B2', 908);  // Because@915 back@927 in@935 1995,@938
+  html.push(vid('k1-v', 'R1.2.mp4', 910, 965, ' data-media-start="3.0000"'));
+  html.push(`<div id="k1-dim" class="clip demo-fill demo-dim" data-start="${A(910)}" data-duration="${D(910, 965)}" style="z-index: 2"></div>`);
+  const p1 = plan('K1 (B2)', W1, ['Because back in [1995,]'], { from: 0, end: 965 / 30 });
+  html.push(T.lockups(p1, null, { idPrefix: 'k1-lk', z: 40, track: 20 }));
+  js.push(`// K1: glow flicker on the keyword span "1995," (seeded pattern, 10f, settles in 4f)
+      T.glowFlicker(tl, '#k1-lk-1 .rc-lk__row--key .rc-lw', ${W1[3].comp_t.toFixed(4)});`);
+  tag('k1-tag', 910, 965, 'v04 · B2 · T.glowFlicker on the lockup keyword "1995," (neon catching: stepped flare / on / half / off, then a steady glow)');
+
+  // K2 (B3): T3 "It's 1995" dark card with the built-in scanlines; the digits roll in AND the year glow-flickers
+  const W2 = words('B3', 943);  // It's@970 1995@977
+  html.push(`<div id="k2-t3" class="clip rc-t3" data-start="${A(965)}" data-duration="${D(965, 1030)}" style="z-index: 1"><div class="rc-t3__block"><div class="rc-t3__in">It's</div><div class="rc-t3__year"><span class="rc-t3__num">1995</span></div></div></div>`);
+  js.push(`// K2: year card: digits roll from "1995" + glow flicker on the year line (the "It's" line keeps its steady glow)
+      T.yearCard(tl, '#k2-t3', ${W2[3].comp_t.toFixed(4)}, { pushUntil: ${S(1030)} });
+      T.glowFlicker(tl, '#k2-t3 .rc-t3__year', ${W2[3].comp_t.toFixed(4)}, { frames: 11 });`);
+  tag('k2-tag', 965, 1030, 'v04 · B3 · T3 "It\'s 1995": built-in card scanlines (9 px, 20%) + glowFlicker on the year');
+
+  // K3 (B13): T3 "In / Nov 1997" with the flicker on "Nov 1997"
+  const W3 = words('B13', 1002);  // in@1035 November@1038 1997,@1053
+  html.push(`<div id="k3-t3" class="clip rc-t3" data-start="${A(1030)}" data-duration="${D(1030, 1090)}" style="z-index: 1"><div class="rc-t3__block"><div class="rc-t3__in">In</div><div class="rc-t3__year"><span class="rc-t3__num">Nov 1997</span></div></div></div>`);
+  js.push(`// K3: "Nov 1997" rolls in from "November" with the glow flicker
+      T.yearCard(tl, '#k3-t3', ${W3[3].comp_t.toFixed(4)}, { pushUntil: ${S(1090)} });
+      T.glowFlicker(tl, '#k3-t3 .rc-t3__year', ${W3[3].comp_t.toFixed(4)}, { frames: 10, seed: 15 });`);
+  tag('k3-tag', 1030, 1090, 'v04 · B13 · T3 "Nov 1997" with glowFlicker (seed 15)');
+
+  // K4 (B9): three L3 strips pop in (kit gridPop, punch 115%) each with a glow flash
+  const sv = (src, f0, ms) => `<video class="clip" src="assets/footage/${src}" muted playsinline data-start="${A(f0)}" data-duration="${D(f0, 1150)}" data-media-start="${ms}"></video>`;
+  html.push(`<div id="k4-grid" class="rc-l3 rc-l3--strips" style="z-index: 2">
+  <div id="k4-ground" class="clip rc-l3__ground" data-start="${A(1090)}" data-duration="${D(1090, 1150)}"></div>
+  <div id="k4-s1" class="rc-l3__cell"><div class="rc-l3__media">${sv('R1.2.mp4', 1095, '1.0000')}</div></div>
+  <div id="k4-s2" class="rc-l3__cell"><div class="rc-l3__media">${sv('R3.1.mp4', 1110, '0.5000')}</div></div>
+  <div id="k4-s3" class="rc-l3__cell"><div class="rc-l3__media">${sv('R13.1.mp4', 1125, '0.5000')}</div></div>
+</div>`);
+  js.push(`// K4: each strip pops (4f) with a glow flash (peak +2f, gone 6f later, eased out)
+      [1095, 1110, 1125].forEach((f, i) => { S.gridPop(tl, '#k4-s' + (i + 1), f / 30, { punch: 1.15 }); S.glowFlash(tl, '#k4-s' + (i + 1), f / 30); });`);
+  tag('k4-tag', 1090, 1150, 'v04 · B9 · L3 strips: S.gridPop + S.glowFlash (white bloom + edge glow, 2f in / 6f out, power2.out)');
+}
+
+const END = 1150;
 const out = `<!doctype html>
 <html lang="en">
   <head>

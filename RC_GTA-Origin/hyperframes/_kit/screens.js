@@ -174,6 +174,33 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return (f0 + inF + outF) * F;
   }
 
+  /* ================================ v04 glow flash (REVISION_v04 note 12) ================================ */
+  // A rectangle (an L3 strip / cell, a card, any positioned box) pops in with a short white glow flash: an overlay
+  // (.rc-flash: white bloom + inner edge glow) and the box's own outer glow (box-shadow) both peak `inF` frames after
+  // `at` (ramp power2.out) and fade over `outF` frames (eased out, power2.out). Put `at` on the pop (S.gridPop's `at`):
+  // the glow rises while the strip fades in (4f) and is gone ~8f later. opts: inF (2), outF (6), peak (1: overlay
+  // opacity), glow (outer glow radius px, 46), spread (px, 4), alpha (outer glow alpha, 0.85), ease / inEase.
+  // Deterministic, nothing linear. Returns the time the flash is gone.
+  function glowFlash(tl, target, at, opts) {
+    opts = opts || {};
+    var inF = opts.inF != null ? opts.inF : 2, outF = opts.outF != null ? opts.outF : 6, end = 0;
+    $$(target).forEach(function (el) {
+      if (window.getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      var fl = kids(el, ':scope > .rc-flash')[0];
+      if (!fl) { fl = document.createElement('div'); fl.className = 'rc-flash'; fl.setAttribute('data-layout-ignore', ''); el.appendChild(fl); }
+      var R = opts.glow != null ? opts.glow : 46, SP = opts.spread != null ? opts.spread : 4, A = opts.alpha != null ? opts.alpha : 0.85;
+      var bs = function (k) { return '0px 0px ' + (R * k).toFixed(2) + 'px ' + (SP * k).toFixed(2) + 'px rgba(255, 255, 255, ' + (A * k).toFixed(3) + ')'; };
+      var t0 = snap(at), pk = opts.peak != null ? opts.peak : 1;
+      G().set(fl, { opacity: 0 });
+      G().set(el, { boxShadow: bs(0) });
+      span(tl, fl, { opacity: 0 }, { opacity: pk }, t0, inF, easeOf(opts.inEase, 'power2.out'));
+      span(tl, el, { boxShadow: bs(0) }, { boxShadow: bs(1) }, t0, inF, easeOf(opts.inEase, 'power2.out'));
+      span(tl, fl, { opacity: pk }, { opacity: 0 }, t0 + inF / FPS, outF, easeOf(opts.ease, 'power2.out'));
+      end = Math.max(end, span(tl, el, { boxShadow: bs(1) }, { boxShadow: bs(0) }, t0 + inF / FPS, outF, easeOf(opts.ease, 'power2.out')));
+    });
+    return end;
+  }
+
   /* ================================ L3 Grid build ================================ */
   // Cell rects from the grid's resolved tracks (layout px, independent of any GSAP scale already set on the cells).
   function gridRects(grid) {
@@ -569,6 +596,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     gridRects: gridRects, gridPop: gridPop, gridBuild: gridBuild, gridGrow: gridGrow,
     // L4
     frostInit: frostInit, frostClearTile: frostClearTile, frostClear: frostClear,
+    glowFlash: glowFlash,   // v04
     // L5
     cutoutInit: cutoutInit, propInit: propInit, propFloat: propFloat, collage: collage,
     // L6

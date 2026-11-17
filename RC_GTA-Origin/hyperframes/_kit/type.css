@@ -141,11 +141,14 @@
   justify-content: center;
   align-items: flex-start;
   background: var(--card-bg);             /* v03: dark card + white year with the ref 3 glow (was #E9E9E9 / #111111) */
-  background-image: var(--card-surface);
+  background-image: var(--rc-scan, var(--card-scan)), var(--card-surface);   /* v04: + the built-in scanlines */
   color: var(--card-text);
-  text-shadow: none;                      /* the glow is a filter on the block: text-shadow would be cut by the digit masks */
+  text-shadow: none;                      /* the glow is a filter on each line: text-shadow would be cut by the digit masks */
 }
-.rc-t3__block { display: block; filter: var(--glow-filter); }         /* shrink-wraps the year, so "In" sits on the year's left edge */
+.rc-t3--clear { background: none; }       /* v04 (B3 note 4): no card, B-roll behind the year (the beat darkens it) */
+/* v04: the glow sits on "In" and on the year separately, so RCK.type.glowFlicker can drive the year's filter alone */
+.rc-t3__in, .rc-t3__year { filter: var(--glow-filter); }
+.rc-t3__block { display: block; }         /* shrink-wraps the year, so "In" sits on the year's left edge */
 .rc-t3__in {
   font-family: var(--serif);
   font-style: italic;
@@ -216,6 +219,7 @@
   height: 1080px;
   overflow: hidden;
   background: var(--ink-black);           /* "on black" */
+  background-image: var(--rc-scan, var(--card-scan));   /* v04: black text screen = the built-in scanlines */
   color: var(--warm-glow);
   text-shadow: none;
 }

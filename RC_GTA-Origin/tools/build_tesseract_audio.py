@@ -88,6 +88,11 @@ FPS = 30
 # meter the voice reads +3 dB (-13.3 LUFS) before the master gain; unity keeps the plan's peak
 # relationships (voice peaks about -3.8 dBFS > every SFX peak level of -6 dBFS or lower, except S19).
 VO_GAIN_DB = 0.0
+# v04 (REVISION_v04.md note 1, "remove Bg music we can change that"): no music bed in the mix. Everything music-related
+# (anchor, MU marks, bar edit, envelopes, MU6 excerpt) is still computed and reported, so a new track is dropped in by
+# setting MUSIC = True (and 02_Music/music_plan.json for that track); with MUSIC = False the A2 group stays empty, no
+# music asset is imported, and the master gain is solved on voice + SFX alone (every SFX keeps its level vs the voice).
+MUSIC = False
 # A2 bed: music_plan.json proposed -8 dB; measured Black Vertigo short-term loudness after the
 # drop is about -9 LUFS, so -7 dB puts the un-ducked bed at about -16 LUFS (plan: no-voice level)
 # and the ducked bed at about -22/-23 LUFS (plan: under the voice). See the report.
@@ -1117,7 +1122,9 @@ def commit_document(doc_base, groups, entries, edit_end, out_project, json_path)
     dur_ms = ms(edit_end)
     doc["composition"]["layers"] = [
         group_json(GID["A1"], GNAME["A1"], groups["A1"], dur_ms, "A1: voiceover (plan p.38 track layout)"),
-        group_json(GID["A2"], GNAME["A2"], groups["A2"], dur_ms, "A2: music MU1-MU8 (plan p.34-35)"),
+        group_json(GID["A2"], GNAME["A2"], groups["A2"], dur_ms, "A2: music MU1-MU8 (plan p.34-35)" if MUSIC else
+                   "A2: music, empty since v04 (client note 1: no background music; set MUSIC = True in "
+                   "tools/build_tesseract_audio.py to bring a track back)"),
         group_json(GID["A3"], GNAME["A3"], groups["A3"], dur_ms, "A3: SFX hits and impacts (plan p.35-38)"),
         group_json(GID["A4"], GNAME["A4"], groups["A4"], dur_ms, "A4: risers, whooshes and textures (plan p.35-38)"),
     ]
@@ -1142,6 +1149,9 @@ def export_stems(doc, prefix, only=None):
         if only and name not in only:
             continue
         d = json.loads(json.dumps(doc))
+        if not next((g.get("layers") for g in d["composition"]["layers"] if g["id"] == GID[keep]), None):
+            out[name] = None                               # an empty group (A2 with MUSIC off): silence
+            continue
         for g in d["composition"]["layers"]:
             g["isHidden"] = g["id"] != GID[keep]
         sj, sp = WORK / ("stem_%s.json" % name), WORK / ("stem_%s.tsrct" % name)
@@ -1154,8 +1164,8 @@ def export_stems(doc, prefix, only=None):
         sp.unlink()
         sj.unlink()
         out[name] = read_wav(wav)
-    n = min(len(v) for v in out.values())
-    return {k: v[:n] for k, v in out.items()}
+    n = min(len(v) for v in out.values() if v is not None)
+    return {k: (v[:n] if v is not None else np.zeros((n, 2))) for k, v in out.items()}
 
 
 # --------------------------------------------------------------------------------------------
@@ -1303,8 +1313,8 @@ def main():
         return asset_id
 
     a_vo = import_asset(VO_FILE, "aud-vo-processed-115")
-    a_mu = import_asset(music_file, "aud-mu-black-vertigo")
-    a_lp = import_asset(lp_file, "aud-mu-black-vertigo-mu6-lp%d" % MU6_LOWPASS_HZ)
+    a_mu = import_asset(music_file, "aud-mu-black-vertigo") if MUSIC else None
+    a_lp = import_asset(lp_file, "aud-mu-black-vertigo-mu6-lp%d" % MU6_LOWPASS_HZ) if MUSIC else None
     for c in clips:
         c.asset_id = import_asset(c.asset_file, "aud-" + re.sub(r"[^a-z0-9]+", "-", c.asset_file.stem.lower()).strip("-"))
     jpath = WORK / "audio.editable.json"
@@ -1387,6 +1397,8 @@ def main():
                                   "v02 by note 7) the main bed crossfades (%d ms) to this copy at -6 dB, then opens "
                                   "again." % (MU6_LOWPASS_HZ, lp_file.parent.relative_to(ROOT), marks["MU6_start"],
                                               marks["MU6_end"], EDGE_S * 1000)))
+    if not MUSIC:                                      # v04 note 1: the A2 group stays empty
+        specs = [sp for sp in specs if sp.group != "A2"]
     sub_index = {}
     for c in clips:
         k = sub_index.get(c.cue, 0)
@@ -1574,7 +1586,9 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
                  ("b17-ending", s18.edit_start - 0.8, edit_end, [s18.edit_start, marks["MU8"], s19.edit_start]),
                  ("mu2-breakdown-on-broke", an_["MU2"]["edit_s"] - 1.5, an_["MU2"]["edit_s"] + 1.5,
                   [an_["MU2"]["broke_s"][0], an_["MU2"]["edit_s"]])]
-        if an_["bar_edit"]["applied"]:
+        if not MUSIC:
+            views = [v_ for v_ in views if not v_[0].startswith("mu2")]
+        if MUSIC and an_["bar_edit"]["applied"]:
             x0_, x1_ = an_["bar_edit"]["xfade_s"]
             views.append(("mu2-bar-edit-seam", x0_ - 1.0, x1_ + 1.0, [x0_, x1_, an_["bar_edit"]["seam_bar_line_edit_s"]]))
         for tag, a_, b_, mk in views:
@@ -1595,128 +1609,139 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
     st = {"voice": {"integrated_lufs": integrated_lufs(v), "true_peak_dbtp": true_peak_dbtp(v),
                     "sample_peak_dbfs": db(float(np.max(np.abs(v))))},
           "stems_sum_vs_mix_max_abs_diff": float(np.max(np.abs(x[:n] - (v + mu + s3 + s4)[:n])))}
-    # ---- music bed loudness: under the voice vs without voice ------------------------------------
-    tc3, l3 = windowed_lufs(mu, 3.0)
-    _, v3 = windowed_lufs(v, 3.0)
-    tc04, l04 = windowed_lufs(mu, 0.4)
-    grid = np.arange(0, len(mu) / SR, 0.01)
-    act = voice_activity(grid, spans)
-    cs = np.concatenate([[0], np.cumsum(act)])
-    cov3 = np.array([(cs[min(len(grid), int((t + 1.5) * 100))] - cs[max(0, int((t - 1.5) * 100))]) / 300.0 for t in tc3])
-    ok = (tc3 - 1.5 >= 0.0) & (tc3 + 1.5 <= marks["MU8"])
-    for a_, b_ in ((marks["MU4_start"], marks["MU4_end"]), (marks["MU6_start"], marks["MU6_end"]),
-                   (marks["MU7_start"], marks["MU7_return"] + MU7_RETURN_S)):
-        ok &= ~((tc3 + 1.5 > a_) & (tc3 - 1.5 < b_))       # normal bed only; MU4/MU6/MU7 checked apart
-    under = ok & (cov3 >= 0.85)
-    an = report["music_anchor"]
-    m2, m3, m5, m8 = an["MU2"]["edit_s"], an["MU3"]["edit_s"], marks["MU5"], marks["MU8"]
-    sections = {"MU1 full beat 0-%.1f s" % m2: (0.0, m2), "breakdown %.1f-%.1f s" % (m2, m3): (m2, m3),
-                "near-silence + build %.1f-%.1f s" % (m3, m5): (m3, m5),
-                "post-drop %.1f-%.1f s" % (m5, m8): (m5, m8)}
-    bed = {"under_voice_short_term_median_lufs": float(np.median(l3[under])),
-           "voice_short_term_median_lufs": float(np.median(v3[under])), "by_section": {}}
-    for k, (a_, b_) in sections.items():
-        s_ = under & (tc3 - 1.5 >= a_) & (tc3 + 1.5 <= b_)
-        if np.any(s_):
-            bed["by_section"][k] = {"bed_lufs": float(np.median(l3[s_])), "voice_lufs": float(np.median(v3[s_])),
-                                   "windows": int(np.sum(s_))}
-    gaps = [(spans[i][1], spans[i + 1][0]) for i in range(len(spans) - 1)]
-    hold_a, hold_b = max(gaps, key=lambda g_: g_[1] - g_[0])     # the B13 title hold (longest VO gap)
-    selh = (tc04 - 0.2 >= hold_a + RELEASE_S) & (tc04 + 0.2 <= hold_b - ATTACK_S)
-    bed["title_hold_window_s"] = [hold_a, hold_b]
-    bed["title_hold_momentary_median_lufs"] = float(np.median(l04[selh]))
-    bed["title_hold_momentary_max_lufs"] = float(np.max(l04[selh]))
-    trk = decode(music_file)
-    be = report["music_anchor"].get("bar_edit") or {}
-    off_pre = be["offset_before_seam_s"] if be.get("applied") else offset_s
-    seam = be["seam_bar_line_edit_s"] if be.get("applied") else 0.0
-    mref = np.zeros_like(mu)
-    seg = trk[int(round(offset_s * SR)):][: len(mu)]
-    mref[: len(seg)] = seg
-    if be.get("applied"):                     # before the seam the track runs one bar earlier
-        i_s = int(round(seam * SR))
-        seg = trk[int(round(off_pre * SR)):][: i_s]
+    if MUSIC:
+        # ---- music bed loudness: under the voice vs without voice ------------------------------------
+        tc3, l3 = windowed_lufs(mu, 3.0)
+        _, v3 = windowed_lufs(v, 3.0)
+        tc04, l04 = windowed_lufs(mu, 0.4)
+        grid = np.arange(0, len(mu) / SR, 0.01)
+        act = voice_activity(grid, spans)
+        cs = np.concatenate([[0], np.cumsum(act)])
+        cov3 = np.array([(cs[min(len(grid), int((t + 1.5) * 100))] - cs[max(0, int((t - 1.5) * 100))]) / 300.0 for t in tc3])
+        ok = (tc3 - 1.5 >= 0.0) & (tc3 + 1.5 <= marks["MU8"])
+        for a_, b_ in ((marks["MU4_start"], marks["MU4_end"]), (marks["MU6_start"], marks["MU6_end"]),
+                       (marks["MU7_start"], marks["MU7_return"] + MU7_RETURN_S)):
+            ok &= ~((tc3 + 1.5 > a_) & (tc3 - 1.5 < b_))       # normal bed only; MU4/MU6/MU7 checked apart
+        under = ok & (cov3 >= 0.85)
+        an = report["music_anchor"]
+        m2, m3, m5, m8 = an["MU2"]["edit_s"], an["MU3"]["edit_s"], marks["MU5"], marks["MU8"]
+        sections = {"MU1 full beat 0-%.1f s" % m2: (0.0, m2), "breakdown %.1f-%.1f s" % (m2, m3): (m2, m3),
+                    "near-silence + build %.1f-%.1f s" % (m3, m5): (m3, m5),
+                    "post-drop %.1f-%.1f s" % (m5, m8): (m5, m8)}
+        bed = {"under_voice_short_term_median_lufs": float(np.median(l3[under])),
+               "voice_short_term_median_lufs": float(np.median(v3[under])), "by_section": {}}
+        for k, (a_, b_) in sections.items():
+            s_ = under & (tc3 - 1.5 >= a_) & (tc3 + 1.5 <= b_)
+            if np.any(s_):
+                bed["by_section"][k] = {"bed_lufs": float(np.median(l3[s_])), "voice_lufs": float(np.median(v3[s_])),
+                                       "windows": int(np.sum(s_))}
+        gaps = [(spans[i][1], spans[i + 1][0]) for i in range(len(spans) - 1)]
+        hold_a, hold_b = max(gaps, key=lambda g_: g_[1] - g_[0])     # the B13 title hold (longest VO gap)
+        selh = (tc04 - 0.2 >= hold_a + RELEASE_S) & (tc04 + 0.2 <= hold_b - ATTACK_S)
+        bed["title_hold_window_s"] = [hold_a, hold_b]
+        bed["title_hold_momentary_median_lufs"] = float(np.median(l04[selh]))
+        bed["title_hold_momentary_max_lufs"] = float(np.max(l04[selh]))
+        trk = decode(music_file)
+        be = report["music_anchor"].get("bar_edit") or {}
+        off_pre = be["offset_before_seam_s"] if be.get("applied") else offset_s
+        seam = be["seam_bar_line_edit_s"] if be.get("applied") else 0.0
+        mref = np.zeros_like(mu)
+        seg = trk[int(round(offset_s * SR)):][: len(mu)]
         mref[: len(seg)] = seg
+        if be.get("applied"):                     # before the seam the track runs one bar earlier
+            i_s = int(round(seam * SR))
+            seg = trk[int(round(off_pre * SR)):][: i_s]
+            mref[: len(seg)] = seg
 
-    def undecked_st(a_, b_):
-        o_ = off_pre if b_ <= seam else offset_s
-        y = trk[int((o_ + a_) * SR): int((o_ + b_) * SR)]
-        y = y * lin(MUSIC_BASE_DB) * master(a_ + np.arange(len(y)) / SR)[:, None]
-        tcr, lr = windowed_lufs(y, 3.0)
-        return tcr + a_, lr
-    hc = (hold_a + hold_b) / 2
-    tcr, lr = undecked_st(max(0.0, hc - 3.5), min(m8, hc + 3.5))
-    bed["undecked_bed_short_term_title_hold_lufs"] = float(lr[np.argmin(np.abs(tcr - hc))])
-    _, lr2 = undecked_st(m5 + MU5_HOLD_S + MU5_RETURN_S, m8 - 0.05)
-    bed["undecked_bed_short_term_post_drop_median_lufs"] = float(np.median(lr2))
-    _, lr3 = undecked_st(0.0, max(3.1, m2 - 0.1))
-    bed["undecked_bed_short_term_mu1_median_lufs"] = float(np.median(lr3))
-    st["music_bed"] = bed
-    # ---- music envelope checks (stem vs the FFmpeg-clock track; includes the master) ---------------
-    def mdb(t):
-        return db(float(master(np.array([t]))[0]))
-    p_ = max(spans, key=lambda s: s[1] - s[0])
-    mid = (p_[0] + p_[1]) / 2
+        def undecked_st(a_, b_):
+            o_ = off_pre if b_ <= seam else offset_s
+            y = trk[int((o_ + a_) * SR): int((o_ + b_) * SR)]
+            y = y * lin(MUSIC_BASE_DB) * master(a_ + np.arange(len(y)) / SR)[:, None]
+            tcr, lr = windowed_lufs(y, 3.0)
+            return tcr + a_, lr
+        hc = (hold_a + hold_b) / 2
+        tcr, lr = undecked_st(max(0.0, hc - 3.5), min(m8, hc + 3.5))
+        bed["undecked_bed_short_term_title_hold_lufs"] = float(lr[np.argmin(np.abs(tcr - hc))])
+        _, lr2 = undecked_st(m5 + MU5_HOLD_S + MU5_RETURN_S, m8 - 0.05)
+        bed["undecked_bed_short_term_post_drop_median_lufs"] = float(np.median(lr2))
+        _, lr3 = undecked_st(0.0, max(3.1, m2 - 0.1))
+        bed["undecked_bed_short_term_mu1_median_lufs"] = float(np.median(lr3))
+        st["music_bed"] = bed
+        # ---- music envelope checks (stem vs the FFmpeg-clock track; includes the master) ---------------
+        def mdb(t):
+            return db(float(master(np.array([t]))[0]))
+        p_ = max(spans, key=lambda s: s[1] - s[0])
+        mid = (p_[0] + p_[1]) / 2
 
-    def ducked(a_, b_, length=0.5, guard=0.05):
-        """A window inside one VO phrase (bed at full duck depth) and inside [a_, b_]: the longest such stretch,
-        centred, `length` s (shortened to fit, not under 0.2 s). Windows are derived, so they follow the timing."""
-        best = None
-        for s0_, e0_, _ in spans:
-            lo, hi = max(s0_ + guard, a_), min(e0_ - guard, b_)
-            if hi - lo >= 0.2 and (best is None or hi - lo > best[1] - best[0]):
-                best = (lo, hi)
-        if best is None:
-            raise SystemExit("no voice phrase of >= 0.2 s inside %.3f-%.3f s for a music check" % (a_, b_))
-        c_, L_ = (best[0] + best[1]) / 2, min(length, best[1] - best[0])
-        return c_ - L_ / 2, c_ + L_ / 2
+        def ducked(a_, b_, length=0.5, guard=0.05):
+            """A window inside one VO phrase (bed at full duck depth) and inside [a_, b_]: the longest such stretch,
+            centred, `length` s (shortened to fit, not under 0.2 s). Windows are derived, so they follow the timing."""
+            best = None
+            for s0_, e0_, _ in spans:
+                lo, hi = max(s0_ + guard, a_), min(e0_ - guard, b_)
+                if hi - lo >= 0.2 and (best is None or hi - lo > best[1] - best[0]):
+                    best = (lo, hi)
+            if best is None:
+                raise SystemExit("no voice phrase of >= 0.2 s inside %.3f-%.3f s for a music check" % (a_, b_))
+            c_, L_ = (best[0] + best[1]) / 2, min(length, best[1] - best[0])
+            return c_ - L_ / 2, c_ + L_ / 2
 
-    lp4, hp2 = butter(4, 400, "lowpass", fs=SR, output="sos"), butter(4, 2000, "highpass", fs=SR, output="sos")
-    th = (hold_a + RELEASE_S + 0.05, hold_b - ATTACK_S - 0.05)
-    th = ((th[0] + th[1]) / 2 - min(0.5, (th[1] - th[0]) / 2), (th[0] + th[1]) / 2 + min(0.5, (th[1] - th[0]) / 2))
-    b12 = report["beat_start_s"].get("B12") or m8
-    w5 = ducked(m5 + MU5_HOLD_S + MU5_RETURN_S + 0.1, b12)
-    w6 = ducked(marks["MU6_start"] + 0.1, marks["MU6_end"] - 0.1)
-    w6b = ducked(marks["MU6_end"] + 0.1, marks["MU7_start"] - 0.05, length=0.4)
-    w7 = ducked(marks["MU7_end"] + 0.1, marks["MU7_return"] - 0.05)
-    w17 = ducked(marks["MU7_return"] + MU7_RETURN_S + 0.1, m8 - 0.1)
-    cen = lambda w_: (w_[0] + w_[1]) / 2
-    chk = {
-        "title_hold_gain_db": [gain_db_between(mu, mref, *th), MUSIC_BASE_DB + mdb(cen(th))],
-        "mid_longest_phrase_gain_db": [gain_db_between(mu, mref, mid - 0.5, mid + 0.5), MUSIC_BASE_DB + DUCK_DB + mdb(mid)],
-        "MU5_on_fun_gain_db": [gain_db_between(mu, mref, marks["MU5"] + 0.05, marks["MU5"] + 0.35),
-                               MUSIC_BASE_DB + DUCK_DB + MU5_LIFT_DB + mdb(marks["MU5"] + 0.2)],
-        "after_MU5_ducked_gain_db": [gain_db_between(mu, mref, *w5), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w5))],
-        "MU6_lowband_gain_db": [gain_db_between(mu, mref, *w6, sos=lp4), MUSIC_BASE_DB + DUCK_DB + MU6_DB + mdb(cen(w6))],
-        "MU6_highband_gain_db": [gain_db_between(mu, mref, *w6, sos=hp2), "low-passed: far below the low band"],
-        "after_label_highband_gain_db": [gain_db_between(mu, mref, *w6b, sos=hp2), "open again: = full-band ducked gain"],
-        "MU7_glow_line_gain_db": [gain_db_between(mu, mref, *w7), MUSIC_BASE_DB + DUCK_DB + MU7_DB + mdb(cen(w7))],
-        "B17_back_to_normal_gain_db": [gain_db_between(mu, mref, *w17), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w17))],
-        "MU4_mute_peak_dbfs": region_peak(mu, marks["MU4_start"] + 0.01, marks["MU4_end"] - 0.01),
-        "MU7_rewind_cut_peak_dbfs": region_peak(mu, marks["MU7_start"] + 0.01, marks["MU7_end"] - 0.01),
-        "after_MU8_peak_dbfs": region_peak(mu, marks["MU8"] + 0.001, edit_end),
-        "drop_offset_vs_track_clock_ms": xcorr_lag(mu[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
-                                                   mref[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
-                                                   int(0.05 * SR)) / SR * 1000,
-    }
-    if be.get("applied"):
-        x0, x1 = be["xfade_s"]
-        lag = lambda a_, b_: xcorr_lag(mu[int(a_ * SR): int(b_ * SR), 0], mref[int(a_ * SR): int(b_ * SR), 0],
-                                       int(0.05 * SR)) / SR * 1000
-        rms = lambda a_, b_: 10 * np.log10(np.mean(mu[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
-        chk["bar_edit_track_lag_before_seam_ms"] = lag(max(0.0, x0 - 2.2), x0 - 0.05)
-        chk["bar_edit_track_lag_after_seam_ms"] = lag(x1 + 0.05, x1 + 2.2)
-        chk["bar_edit_seam_level_vs_neighbours_db"] = rms(x0 - 0.02, x1 + 0.02) - 0.5 * (
-            rms(x0 - 0.42, x0 - 0.02) + rms(x1 + 0.02, x1 + 0.42))
-        # the same windows at that bar line of the unedited track (the bed's own pre-downbeat dip, for reference)
-        tb = be["removed_track_s"][1] - (be["seam_bar_line_edit_s"] - x0)
-        tr_ = lambda a_, b_: 10 * np.log10(np.mean(trk[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
-        w_ = x1 - x0
-        chk["bar_edit_same_window_unedited_bar_line_db"] = tr_(tb - 0.02, tb + w_ + 0.02) - 0.5 * (
-            tr_(tb - 0.42, tb - 0.02) + tr_(tb + w_ + 0.02, tb + w_ + 0.42))
-    st["music_envelope_checks"] = chk
-    st["music_check_windows_s"] = {k: [round(v[0], 3), round(v[1], 3)] for k, v in (
-        ("title_hold", th), ("after_MU5", w5), ("MU6", w6), ("after_label", w6b), ("MU7_glow", w7), ("B17", w17))}
+        lp4, hp2 = butter(4, 400, "lowpass", fs=SR, output="sos"), butter(4, 2000, "highpass", fs=SR, output="sos")
+        th = (hold_a + RELEASE_S + 0.05, hold_b - ATTACK_S - 0.05)
+        th = ((th[0] + th[1]) / 2 - min(0.5, (th[1] - th[0]) / 2), (th[0] + th[1]) / 2 + min(0.5, (th[1] - th[0]) / 2))
+        b12 = report["beat_start_s"].get("B12") or m8
+        w5 = ducked(m5 + MU5_HOLD_S + MU5_RETURN_S + 0.1, b12)
+        w6 = ducked(marks["MU6_start"] + 0.1, marks["MU6_end"] - 0.1)
+        w6b = ducked(marks["MU6_end"] + 0.1, marks["MU7_start"] - 0.05, length=0.4)
+        w7 = ducked(marks["MU7_end"] + 0.1, marks["MU7_return"] - 0.05)
+        w17 = ducked(marks["MU7_return"] + MU7_RETURN_S + 0.1, m8 - 0.1)
+        cen = lambda w_: (w_[0] + w_[1]) / 2
+        chk = {
+            "title_hold_gain_db": [gain_db_between(mu, mref, *th), MUSIC_BASE_DB + mdb(cen(th))],
+            "mid_longest_phrase_gain_db": [gain_db_between(mu, mref, mid - 0.5, mid + 0.5), MUSIC_BASE_DB + DUCK_DB + mdb(mid)],
+            "MU5_on_fun_gain_db": [gain_db_between(mu, mref, marks["MU5"] + 0.05, marks["MU5"] + 0.35),
+                                   MUSIC_BASE_DB + DUCK_DB + MU5_LIFT_DB + mdb(marks["MU5"] + 0.2)],
+            "after_MU5_ducked_gain_db": [gain_db_between(mu, mref, *w5), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w5))],
+            "MU6_lowband_gain_db": [gain_db_between(mu, mref, *w6, sos=lp4), MUSIC_BASE_DB + DUCK_DB + MU6_DB + mdb(cen(w6))],
+            "MU6_highband_gain_db": [gain_db_between(mu, mref, *w6, sos=hp2), "low-passed: far below the low band"],
+            "after_label_highband_gain_db": [gain_db_between(mu, mref, *w6b, sos=hp2), "open again: = full-band ducked gain"],
+            "MU7_glow_line_gain_db": [gain_db_between(mu, mref, *w7), MUSIC_BASE_DB + DUCK_DB + MU7_DB + mdb(cen(w7))],
+            "B17_back_to_normal_gain_db": [gain_db_between(mu, mref, *w17), MUSIC_BASE_DB + DUCK_DB + mdb(cen(w17))],
+            "MU4_mute_peak_dbfs": region_peak(mu, marks["MU4_start"] + 0.01, marks["MU4_end"] - 0.01),
+            "MU7_rewind_cut_peak_dbfs": region_peak(mu, marks["MU7_start"] + 0.01, marks["MU7_end"] - 0.01),
+            "after_MU8_peak_dbfs": region_peak(mu, marks["MU8"] + 0.001, edit_end),
+            "drop_offset_vs_track_clock_ms": xcorr_lag(mu[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
+                                                       mref[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
+                                                       int(0.05 * SR)) / SR * 1000,
+        }
+        if be.get("applied"):
+            x0, x1 = be["xfade_s"]
+            lag = lambda a_, b_: xcorr_lag(mu[int(a_ * SR): int(b_ * SR), 0], mref[int(a_ * SR): int(b_ * SR), 0],
+                                           int(0.05 * SR)) / SR * 1000
+            rms = lambda a_, b_: 10 * np.log10(np.mean(mu[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
+            chk["bar_edit_track_lag_before_seam_ms"] = lag(max(0.0, x0 - 2.2), x0 - 0.05)
+            chk["bar_edit_track_lag_after_seam_ms"] = lag(x1 + 0.05, x1 + 2.2)
+            chk["bar_edit_seam_level_vs_neighbours_db"] = rms(x0 - 0.02, x1 + 0.02) - 0.5 * (
+                rms(x0 - 0.42, x0 - 0.02) + rms(x1 + 0.02, x1 + 0.42))
+            # the same windows at that bar line of the unedited track (the bed's own pre-downbeat dip, for reference)
+            tb = be["removed_track_s"][1] - (be["seam_bar_line_edit_s"] - x0)
+            tr_ = lambda a_, b_: 10 * np.log10(np.mean(trk[int(a_ * SR): int(b_ * SR)] ** 2) + 1e-20)
+            w_ = x1 - x0
+            chk["bar_edit_same_window_unedited_bar_line_db"] = tr_(tb - 0.02, tb + w_ + 0.02) - 0.5 * (
+                tr_(tb - 0.42, tb - 0.02) + tr_(tb + w_ + 0.02, tb + w_ + 0.42))
+        st["music_envelope_checks"] = chk
+        st["music_check_windows_s"] = {k: [round(v[0], 3), round(v[1], 3)] for k, v in (
+            ("title_hold", th), ("after_MU5", w5), ("MU6", w6), ("after_label", w6b), ("MU7_glow", w7), ("B17", w17))}
+    else:                                              # v04: no bed; the voice reference numbers only
+        tc3, v3 = windowed_lufs(v, 3.0)
+        grid = np.arange(0, len(v) / SR, 0.01)
+        cs = np.concatenate([[0], np.cumsum(voice_activity(grid, spans))])
+        cov3 = np.array([(cs[min(len(grid), int((t + 1.5) * 100))] - cs[max(0, int((t - 1.5) * 100))]) / 300.0 for t in tc3])
+        bed = {"voice_short_term_median_lufs": float(np.median(v3[cov3 >= 0.85]))}
+        chk = {}
+        st["music_bed"] = bed                          # the voice reference only (no bed)
+        st["music_envelope_checks"] = {}
+        st["music_stem_peak_dbfs"] = db(float(np.max(np.abs(mu))))
     # ---- SFX: each cue's rendered peak, isolated from overlapping cues of its group via the model ---
     stems_g = {"A3": s3, "A4": s4}
     model, own = sfx_model(clips, len(s3), master)
@@ -1745,13 +1770,18 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
                         "above_voice_window": bool(pk > vloc + 0.05), "above_voice_global": bool(pk > vglob + 0.05)})
     st["sfx_cues"] = per_cue
     report["stems"] = st
-    log("voice stem: I %.2f LUFS (stereo meter), TP %.2f dBTP | bed under voice %.1f LUFS ST (voice %.1f); %s | "
-        "title hold momentary %.1f, un-ducked bed ST %.1f (hold) / %.1f (post-drop) / %.1f (MU1)" % (
-            st["voice"]["integrated_lufs"], st["voice"]["true_peak_dbtp"], bed["under_voice_short_term_median_lufs"],
-            bed["voice_short_term_median_lufs"], {k: round(v_["bed_lufs"], 1) for k, v_ in bed["by_section"].items()},
-            bed["title_hold_momentary_median_lufs"], bed["undecked_bed_short_term_title_hold_lufs"],
-            bed["undecked_bed_short_term_post_drop_median_lufs"], bed["undecked_bed_short_term_mu1_median_lufs"]))
-    log("music checks [measured, expected]:", json.dumps(chk, default=lambda o: round(o, 2)))
+    if MUSIC:
+        log("voice stem: I %.2f LUFS (stereo meter), TP %.2f dBTP | bed under voice %.1f LUFS ST (voice %.1f); %s | "
+            "title hold momentary %.1f, un-ducked bed ST %.1f (hold) / %.1f (post-drop) / %.1f (MU1)" % (
+                st["voice"]["integrated_lufs"], st["voice"]["true_peak_dbtp"], bed["under_voice_short_term_median_lufs"],
+                bed["voice_short_term_median_lufs"], {k: round(v_["bed_lufs"], 1) for k, v_ in bed["by_section"].items()},
+                bed["title_hold_momentary_median_lufs"], bed["undecked_bed_short_term_title_hold_lufs"],
+                bed["undecked_bed_short_term_post_drop_median_lufs"], bed["undecked_bed_short_term_mu1_median_lufs"]))
+        log("music checks [measured, expected]:", json.dumps(chk, default=lambda o: round(o, 2)))
+    else:
+        log("voice stem: I %.2f LUFS (stereo meter), TP %.2f dBTP, short-term median %.1f LUFS | music OFF: A2 stem "
+            "peak %.1f dBFS" % (st["voice"]["integrated_lufs"], st["voice"]["true_peak_dbtp"],
+                                bed["voice_short_term_median_lufs"], st["music_stem_peak_dbfs"]))
     log("stems sum vs mix max diff %.1e; SFX stem-minus-model residual energy %s dB" % (
         st["stems_sum_vs_mix_max_abs_diff"], resid))
     log("\nSFX rendered peaks (isolated from overlapping cues) vs plan, and vs the voice:")
@@ -1791,6 +1821,12 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
           VO_FILE.relative_to(ROOT), probe(VO_FILE)["duration"], vo_fm.get("integrated_lufs", "?"),
           vo_fm.get("true_peak_dbfs", "?"), float(beat_map["edit_end_s"]), int(beat_map["edit_end_frame"]),
           float(beat_map["vo_end_s"])))
+    if not MUSIC:
+        w("* **v04: no background music** (client note 1, 'remove Bg music we can change that'): the A2 group is empty, "
+          "no music asset is packaged; voice and every SFX keep their pre-master levels and the master gain is solved on "
+          "voice + SFX alone (table below). The music code stays: `MUSIC = True` in the script (and "
+          "02_Music/music_plan.json for the new track) brings a bed back with the v02 rules (anchor on 'fun', MU1-MU8, "
+          "the MU2 bar edit, ducking); the marks it would use are still in audio_report.json.")
     w("* **Music re-anchored on MU5 first** (plan p.34): the measured drop downbeat (track %.2f s) on the new 'fun' "
       "onset %.3f s: track = edit + %.2f s (v01: + 139.68 s). Every other mark is re-derived from the beat map and the "
       "events exactly as in v01 (table below)." % (an["drop_track_s"], an["fun_onset_s"], off))
@@ -1849,95 +1885,102 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
           st.get("voice", {}).get("integrated_lufs", float("nan"))))
     w("| A2 music bed | base %.1f dB, duck %.0f dB | Calibrated on the measured track: the un-ducked bed reads about "
       "-16 LUFS short-term and the ducked full-energy bed about -22 LUFS (plan p.35). music_plan.json proposed -8 dB "
-      "(it measured about 1 dB under both targets). |" % (MUSIC_BASE_DB, DUCK_DB))
+      "(it measured about 1 dB under both targets). |" % (MUSIC_BASE_DB, DUCK_DB) if MUSIC else
+      "| A2 music bed | off (v04 note 1) | No background music; the group stays in the project, empty. |")
     w("| A3/A4 SFX | per cue (table) | Each cue's sample peak at the cue sheet's level, combined peak for layered "
       "cues (mixed in Python at their real offsets and relative gains). |")
     w("| Master | static %+.2f dB on every layer, plus %d short automated dip(s) | Solved so the mix reads %.1f LUFS "
       "integrated. A static gain alone cannot also keep true peak <= -1 dBTP: the pre-master mix peaks at %.2f dBTP "
-      "(at the 'fun' drop: S09 sub drop + MU5 lift + voice), so a static-only master would peak at %.2f dBTP, and the "
+      "(%s), so a static-only master would peak at %.2f dBTP, and the "
       "static gain that would meet the ceiling (%.2f dB) leaves the mix at %.2f LUFS, outside -14 +-1. The plan's "
       "master is a limiter with a -1.0 dBTP ceiling; Tesseract has none, so its gain reduction is emulated by "
       "master gain automation (applied equally to every layer, %d ms look-ahead attack, %d ms release, ceiling "
       "%.1f dBTP to keep 0.5 dB for AAC encoding). Every relative level stays as planned (CONFLICTS C20). |" % (
           mi["static_makeup_db"], len(mi["dips"]), MASTER_TARGET_LUFS, mi["premaster_true_peak_dbtp"],
+          "at the 'fun' drop: S09 sub drop + MU5 lift + voice" if MUSIC else "at its loudest transient",
           mi["static_only_true_peak_dbtp"], mi["static_gain_for_ceiling_only_db"],
           mi["static_gain_for_ceiling_only_integrated_lufs"], MASTER_ATTACK_S * 1000, MASTER_RELEASE_S * 1000,
           MASTER_CEILING_DBTP))
     if mi["dips"]:
         w("\nMaster dips (gain reduction on top of the static make-up): " + "; ".join(
             "%.3f-%.3f s, max %.2f dB at %.3f s" % (d["start_s"], d["end_s"], d["max_db"], d["at_s"]) for d in mi["dips"]) + ".\n")
-    w("## A2 music: MU1-MU8\n")
-    w("Black Vertigo (`%s`, licensed per the user). Track time (FFmpeg decode clock) = edit + %.2f s, anchored on the "
-      "measured drop downbeat %.2f s on the onset of 'fun' (%.3f s, `%s`; MU5's lift and S09 start on its frame, "
-      "%.3f s). Tesseract plays this MP3 %.2f ms later than FFmpeg (measured, encoder delay not skipped), so the "
-      "layer's source start is %d ms; the stem check below shows the drop at %+.2f ms from the track clock.\n" % (
-          music_plan["track"], off, an["drop_track_s"], an["fun_onset_s"], WORDS_JSON.name, marks["MU5"],
-          lag_mu * 1000, mu_s0, chk.get("drop_offset_vs_track_clock_ms", float("nan"))))
-    w("| Code | Edit time | Frame | Track time | Implementation |\n|---|---|---|---|---|")
-    m2, m3 = an["MU2"], an["MU3"]
-    w("| MU1 | 0.000 s | 0 | %.2f s | Bed starts at full energy, no fade-in (10 ms de-click ramp only). The voice starts at %.3f s, so the bed enters already ducked. |" % (
-        be["offset_before_seam_s"] if be.get("applied") else off, spans[0][0]))
-    if be.get("applied"):
-        w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives inside 'broke' (%.3f-%.3f s), %.3f s after its onset (%s the plan's half second; v01 was 0.636 s after it), through the whole-bar edit: the track starts one bar earlier and breakdown bar %d is removed at %.3f s (seam), so nothing after the seam moves. |" % (
-            m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], m2["broke_s"][0], m2["broke_s"][1], m2["delta_from_onset_s"],
-            "within" if m2["within_half_second"] else "just outside", be["removed_bar"], be["seam_bar_line_edit_s"]))
+    if MUSIC:
+        w("## A2 music: MU1-MU8\n")
+        w("Black Vertigo (`%s`, licensed per the user). Track time (FFmpeg decode clock) = edit + %.2f s, anchored on the "
+          "measured drop downbeat %.2f s on the onset of 'fun' (%.3f s, `%s`; MU5's lift and S09 start on its frame, "
+          "%.3f s). Tesseract plays this MP3 %.2f ms later than FFmpeg (measured, encoder delay not skipped), so the "
+          "layer's source start is %d ms; the stem check below shows the drop at %+.2f ms from the track clock.\n" % (
+              music_plan["track"], off, an["drop_track_s"], an["fun_onset_s"], WORDS_JSON.name, marks["MU5"],
+              lag_mu * 1000, mu_s0, chk.get("drop_offset_vs_track_clock_ms", float("nan"))))
+        w("| Code | Edit time | Frame | Track time | Implementation |\n|---|---|---|---|---|")
+        m2, m3 = an["MU2"], an["MU3"]
+        w("| MU1 | 0.000 s | 0 | %.2f s | Bed starts at full energy, no fade-in (10 ms de-click ramp only). The voice starts at %.3f s, so the bed enters already ducked. |" % (
+            be["offset_before_seam_s"] if be.get("applied") else off, spans[0][0]))
+        if be.get("applied"):
+            w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives inside 'broke' (%.3f-%.3f s), %.3f s after its onset (%s the plan's half second; v01 was 0.636 s after it), through the whole-bar edit: the track starts one bar earlier and breakdown bar %d is removed at %.3f s (seam), so nothing after the seam moves. |" % (
+                m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], m2["broke_s"][0], m2["broke_s"][1], m2["delta_from_onset_s"],
+                "within" if m2["within_half_second"] else "just outside", be["removed_bar"], be["seam_bar_line_edit_s"]))
+        else:
+            w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, %.3f s %s the onset of 'broke' (%.3f-%.3f s): %s. No edit (MU2_BAR_EDIT off or its conditions failed, see audio_report.json). |" % (
+                m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], abs(m2["delta_from_onset_s"]),
+                "before" if m2["delta_from_onset_s"] < 0 else "after", m2["broke_s"][0], m2["broke_s"][1],
+                "within half a second" if m2["within_half_second"] else "outside the plan's half second"))
+        w("| MU3 | %.3f s | %.1f | %.2f s | Near-silent section starts %.3f s %s 'dull' (%.3f s): %s 1 s (the plan's test), %s. |" % (
+            m3["edit_s"], m3["edit_s"] * FPS, m3["track_s"], abs(m3["delta_from_onset_s"]),
+            "before" if m3["delta_from_onset_s"] < 0 else "after", m3["dull_s"][0],
+            "within" if m3["within_1s"] else "NOT within",
+            "on or after it as the table asks" if m3["on_or_after"] else
+            "but before it, not 'on or just after' (a bar edit inside the breakdown cannot move MU3 with the drop "
+            "anchored and the build uncut)"))
+        w("| MU4 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Hard mute for 15f from B8's first black frame (10 ms ramp into it), then un-mute in place (the track keeps running). |" % (
+            marks["MU4_start"], marks["MU4_end"], round(marks["MU4_start"] * FPS), round(marks["MU4_end"] * FPS),
+            marks["MU4_start"] + off, marks["MU4_end"] + off))
+        w("| MU5 | %.3f s | %d | %.2f s | The drop lands on 'fun' (onset %.3f s) with S09 and the X3 flash; +3 dB from the 'fun' frame for 2 s (to %.3f s), back over 0.3 s. |" % (
+            marks["MU5"], round(marks["MU5"] * FPS), an["drop_track_s"], an["fun_onset_s"], marks["MU5"] + MU5_HOLD_S))
+        w("| MU6 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | From 'Don't believe me?' the main bed crossfades (10 ms) to layer 9202, the same excerpt low-passed at %d Hz, at -6 dB; it opens again (10 ms) on B15's `label` moment ('Race', where the v01 RACE AND CHASE label landed; the label itself is removed in v02, note 7). |" % (
+            marks["MU6_start"], marks["MU6_end"], round(marks["MU6_start"] * FPS), round(marks["MU6_end"] * FPS),
+            marks["MU6_start"] + off, marks["MU6_end"] + off, MU6_LOWPASS_HZ))
+        w("| MU7 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Music cut under the 1 s rewind (S17 alone), resumes in place 6 dB lower under the glow line, back to the normal bed at the B17 cut %.3f s (30 ms). |" % (
+            marks["MU7_start"], marks["MU7_end"], round(marks["MU7_start"] * FPS), round(marks["MU7_end"] * FPS),
+            marks["MU7_start"] + off, marks["MU7_end"] + off, marks["MU7_return"]))
+        w("| MU8 | %.3f s | %.1f | %.2f s | Hard stop at the end of 'now?' (beat_map vo_end_s), 10 ms ramp, the layer ends there. No music in the logo tail; S18 and S19 carry it. |\n" % (
+            marks["MU8"], marks["MU8"] * FPS, marks["MU8"] + off))
+        if be.get("applied"):
+            w("**MU2 bar edit.** Candidates (breakdown bars 2-%d; the arrival bar and the bar into MU3 are excluded), scored "
+              "by the octave-band level difference of the two sides of the seam (0.5 s before the removed bar vs before the "
+              "bar after it, and 0.5 s after both bar lines): %s. Chosen: bar %d, seam on its bar line at %.3f s (under the "
+              "voice, the bed ducked). Two layers: %d plays the track one bar early up to the crossfade, %d the rest at the "
+              "anchor's offset; the equal-power crossfade runs %.3f-%.3f s, ending %d ms before the bar line, so the next "
+              "bar's downbeat comes through whole and the removed bar's downbeat (up to ~20 ms early on this track) is not "
+              "heard. Checks on the music stem: track lag %s ms before the seam and %s ms after it (vs the FFmpeg-decoded "
+              "track at each offset), level across the crossfade %s dB vs the 0.4 s either side (the same windows at that bar "
+              "line of the unedited track: %s dB, the bed's own dip before a downbeat); MU3 stays %.3f s from "
+              "'dull' (within 1 s), the drop stays at %+.2f ms from the track clock (MU5 frame-exact, frame %d).\n" % (
+                  len(be["candidates"]) + 1, ", ".join("bar %d %.2f dB" % (c["bar"], c["score"]) for c in be["candidates"]),
+                  be["removed_bar"], be["seam_bar_line_edit_s"], MUSIC_LAYER_ID, MUSIC_B_LAYER_ID, be["xfade_s"][0],
+                  be["xfade_s"][1], BAR_EDIT_LEAD_S * 1000,
+                  ("%.2f" % chk["bar_edit_track_lag_before_seam_ms"]) if "bar_edit_track_lag_before_seam_ms" in chk else "?",
+                  ("%.2f" % chk["bar_edit_track_lag_after_seam_ms"]) if "bar_edit_track_lag_after_seam_ms" in chk else "?",
+                  ("%+.2f" % chk["bar_edit_seam_level_vs_neighbours_db"]) if "bar_edit_seam_level_vs_neighbours_db" in chk else "?",
+                  ("%+.2f" % chk["bar_edit_same_window_unedited_bar_line_db"]) if "bar_edit_same_window_unedited_bar_line_db" in chk else "?",
+                  m3["delta_from_onset_s"], chk.get("drop_offset_vs_track_clock_ms", float("nan")), round(marks["MU5"] * FPS)))
+        gaps = [b_[0] - a_[1] for a_, b_ in zip(spans, spans[1:])]
+        short = sum(1 for g_ in gaps if g_ < ATTACK_S + RELEASE_S)
+        th_ = bed.get("title_hold_window_s", [0, 0])
+        longer = ["%.3f s after '%s'" % (b_[0] - a_[1], a_[2].split()[-1]) for a_, b_ in zip(spans, spans[1:])
+                  if b_[0] - a_[1] >= ATTACK_S + RELEASE_S and abs(a_[1] - th_[0]) > 1e-6]
+        w("**Ducking.** %d phrase spans from `%s` (word gaps shorter than %.2f s merged). Each phrase ducks the "
+          "bed by %.0f dB with a 50 ms look-ahead attack (full depth when the phrase starts) and a 300 ms release; the "
+          "curve is the minimum of the per-phrase trapezoids (amplitude-linear ramps), i.e. what a 50/300 ms ducker "
+          "does. %d of the %d pauses are shorter than attack + release (0.35 s), so the bed swells a few dB in those "
+          "pauses without fully recovering. It comes fully up in the B13 title hold (%.3f-%.3f s)%s. To hold the duck "
+          "through sentence pauses instead, set MERGE_GAP_S = 0.30 and re-run.\n" % (
+              len(spans), WORDS_JSON.name, MERGE_GAP_S, DUCK_DB, short, len(gaps), th_[0], th_[1],
+              (" and the other pauses of 0.35 s or more (" + ", ".join(longer) + ")") if longer else ""))
     else:
-        w("| MU2 | %.3f s | %.1f | %.2f s | The breakdown arrives by itself, %.3f s %s the onset of 'broke' (%.3f-%.3f s): %s. No edit (MU2_BAR_EDIT off or its conditions failed, see audio_report.json). |" % (
-            m2["edit_s"], m2["edit_s"] * FPS, m2["track_s"], abs(m2["delta_from_onset_s"]),
-            "before" if m2["delta_from_onset_s"] < 0 else "after", m2["broke_s"][0], m2["broke_s"][1],
-            "within half a second" if m2["within_half_second"] else "outside the plan's half second"))
-    w("| MU3 | %.3f s | %.1f | %.2f s | Near-silent section starts %.3f s %s 'dull' (%.3f s): %s 1 s (the plan's test), %s. |" % (
-        m3["edit_s"], m3["edit_s"] * FPS, m3["track_s"], abs(m3["delta_from_onset_s"]),
-        "before" if m3["delta_from_onset_s"] < 0 else "after", m3["dull_s"][0],
-        "within" if m3["within_1s"] else "NOT within",
-        "on or after it as the table asks" if m3["on_or_after"] else
-        "but before it, not 'on or just after' (a bar edit inside the breakdown cannot move MU3 with the drop "
-        "anchored and the build uncut)"))
-    w("| MU4 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Hard mute for 15f from B8's first black frame (10 ms ramp into it), then un-mute in place (the track keeps running). |" % (
-        marks["MU4_start"], marks["MU4_end"], round(marks["MU4_start"] * FPS), round(marks["MU4_end"] * FPS),
-        marks["MU4_start"] + off, marks["MU4_end"] + off))
-    w("| MU5 | %.3f s | %d | %.2f s | The drop lands on 'fun' (onset %.3f s) with S09 and the X3 flash; +3 dB from the 'fun' frame for 2 s (to %.3f s), back over 0.3 s. |" % (
-        marks["MU5"], round(marks["MU5"] * FPS), an["drop_track_s"], an["fun_onset_s"], marks["MU5"] + MU5_HOLD_S))
-    w("| MU6 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | From 'Don't believe me?' the main bed crossfades (10 ms) to layer 9202, the same excerpt low-passed at %d Hz, at -6 dB; it opens again (10 ms) on B15's `label` moment ('Race', where the v01 RACE AND CHASE label landed; the label itself is removed in v02, note 7). |" % (
-        marks["MU6_start"], marks["MU6_end"], round(marks["MU6_start"] * FPS), round(marks["MU6_end"] * FPS),
-        marks["MU6_start"] + off, marks["MU6_end"] + off, MU6_LOWPASS_HZ))
-    w("| MU7 | %.3f-%.3f s | %d-%d | %.2f-%.2f s | Music cut under the 1 s rewind (S17 alone), resumes in place 6 dB lower under the glow line, back to the normal bed at the B17 cut %.3f s (30 ms). |" % (
-        marks["MU7_start"], marks["MU7_end"], round(marks["MU7_start"] * FPS), round(marks["MU7_end"] * FPS),
-        marks["MU7_start"] + off, marks["MU7_end"] + off, marks["MU7_return"]))
-    w("| MU8 | %.3f s | %.1f | %.2f s | Hard stop at the end of 'now?' (beat_map vo_end_s), 10 ms ramp, the layer ends there. No music in the logo tail; S18 and S19 carry it. |\n" % (
-        marks["MU8"], marks["MU8"] * FPS, marks["MU8"] + off))
-    if be.get("applied"):
-        w("**MU2 bar edit.** Candidates (breakdown bars 2-%d; the arrival bar and the bar into MU3 are excluded), scored "
-          "by the octave-band level difference of the two sides of the seam (0.5 s before the removed bar vs before the "
-          "bar after it, and 0.5 s after both bar lines): %s. Chosen: bar %d, seam on its bar line at %.3f s (under the "
-          "voice, the bed ducked). Two layers: %d plays the track one bar early up to the crossfade, %d the rest at the "
-          "anchor's offset; the equal-power crossfade runs %.3f-%.3f s, ending %d ms before the bar line, so the next "
-          "bar's downbeat comes through whole and the removed bar's downbeat (up to ~20 ms early on this track) is not "
-          "heard. Checks on the music stem: track lag %s ms before the seam and %s ms after it (vs the FFmpeg-decoded "
-          "track at each offset), level across the crossfade %s dB vs the 0.4 s either side (the same windows at that bar "
-          "line of the unedited track: %s dB, the bed's own dip before a downbeat); MU3 stays %.3f s from "
-          "'dull' (within 1 s), the drop stays at %+.2f ms from the track clock (MU5 frame-exact, frame %d).\n" % (
-              len(be["candidates"]) + 1, ", ".join("bar %d %.2f dB" % (c["bar"], c["score"]) for c in be["candidates"]),
-              be["removed_bar"], be["seam_bar_line_edit_s"], MUSIC_LAYER_ID, MUSIC_B_LAYER_ID, be["xfade_s"][0],
-              be["xfade_s"][1], BAR_EDIT_LEAD_S * 1000,
-              ("%.2f" % chk["bar_edit_track_lag_before_seam_ms"]) if "bar_edit_track_lag_before_seam_ms" in chk else "?",
-              ("%.2f" % chk["bar_edit_track_lag_after_seam_ms"]) if "bar_edit_track_lag_after_seam_ms" in chk else "?",
-              ("%+.2f" % chk["bar_edit_seam_level_vs_neighbours_db"]) if "bar_edit_seam_level_vs_neighbours_db" in chk else "?",
-              ("%+.2f" % chk["bar_edit_same_window_unedited_bar_line_db"]) if "bar_edit_same_window_unedited_bar_line_db" in chk else "?",
-              m3["delta_from_onset_s"], chk.get("drop_offset_vs_track_clock_ms", float("nan")), round(marks["MU5"] * FPS)))
-    gaps = [b_[0] - a_[1] for a_, b_ in zip(spans, spans[1:])]
-    short = sum(1 for g_ in gaps if g_ < ATTACK_S + RELEASE_S)
-    th_ = bed.get("title_hold_window_s", [0, 0])
-    longer = ["%.3f s after '%s'" % (b_[0] - a_[1], a_[2].split()[-1]) for a_, b_ in zip(spans, spans[1:])
-              if b_[0] - a_[1] >= ATTACK_S + RELEASE_S and abs(a_[1] - th_[0]) > 1e-6]
-    w("**Ducking.** %d phrase spans from `%s` (word gaps shorter than %.2f s merged). Each phrase ducks the "
-      "bed by %.0f dB with a 50 ms look-ahead attack (full depth when the phrase starts) and a 300 ms release; the "
-      "curve is the minimum of the per-phrase trapezoids (amplitude-linear ramps), i.e. what a 50/300 ms ducker "
-      "does. %d of the %d pauses are shorter than attack + release (0.35 s), so the bed swells a few dB in those "
-      "pauses without fully recovering. It comes fully up in the B13 title hold (%.3f-%.3f s)%s. To hold the duck "
-      "through sentence pauses instead, set MERGE_GAP_S = 0.30 and re-run.\n" % (
-          len(spans), WORDS_JSON.name, MERGE_GAP_S, DUCK_DB, short, len(gaps), th_[0], th_[1],
-          (" and the other pauses of 0.35 s or more (" + ", ".join(longer) + ")") if longer else ""))
+        w("## A2 music: off (v04)\n")
+        w("No music bed (client note 1). The bed's v02 timing (offset %.2f s, MU1-MU8 marks, the MU2 bar edit) is still "
+          "computed and recorded in `checks/audio_report.json` for a replacement track.\n" % off)
     w("## A3/A4 SFX cues\n")
     w("Edit frame = beat start frame + the event's beat frame. Gain = pre-master layer gain (dB); final = with the "
       "master at the cue's peak. Plan = the cue sheet's peak level; measured = the cue's rendered sample peak, "
@@ -1991,7 +2034,8 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
           "short-term median %.1f LUFS where the voice covers >= 85%% of the 3 s window." % (
               v_["integrated_lufs"], v_["true_peak_dbtp"], v_["sample_peak_dbfs"], bed["voice_short_term_median_lufs"]))
         m0_ = mi["static_makeup_db"]
-        full = [(k, v2) for k, v2 in bed["by_section"].items() if k.startswith(("MU1", "post"))]
+        full = [(k, v2) for k, v2 in (bed.get("by_section") or {}).items() if k.startswith(("MU1", "post"))]
+    if st and MUSIC:
         w("* **Music bed under the voice** (A2 stem, same windows, normal bed only; final-mix values, the pre-master "
           "track level is %.2f dB higher): median %.1f LUFS short-term. By section: %s. The plan's ~-22 LUFS is the "
           "full-energy bed's track level: %s LUFS pre-master. The breakdown and the near-silent section are quieter by "
@@ -2016,6 +2060,7 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
                 w("  * %s: %s" % (k, ", ".join(("%.2f" % x) if isinstance(x, float) else str(x) for x in v2)))
             else:
                 w("  * %s: %.2f" % (k, v2))
+    if st:
         w("* The four stems sum to the mix within %.1e (sample value). The SFX model (each cue at its gain and "
           "placement) leaves a residual of %s dB relative to the A3/A4 stems (resampling of the 44.1/96 kHz files)." % (
             st["stems_sum_vs_mix_max_abs_diff"], ", ".join("%s %.1f" % (k, v2) for k, v2 in st["sfx_model_vs_stem_residual_db"].items())))
@@ -2074,21 +2119,25 @@ def deviation_notes(clips, ev, marks, beat_map):
                 c.dur, c.dur * FPS, span * FPS, (c.edit_start - ev.t("B7.stamp2")) * FPS,
                 (c.edit_start - ev.t("B7.stamp3")) * FPS) if c.dur < span - 1e-6 else
             "head-trimmed so it starts on the second stamp (%.3f s)." % ev.t("B7.stamp2")))
+    if MUSIC:
+        out += [
+            "C18 music level wording: plan p.35 puts the bed at -22 LUFS 'roughly 14-18 dB below the voice', but -22 is "
+            "6 dB below the -16 LUFS voice spec. The absolute levels and the 6-8 dB duck are used, and the measured gaps "
+            "are reported above.",
+            "C19 no-voice list: no music in the logo tail (MU8), the B14 burst is under the voice in the processed VO, "
+            "and the B8 hold is MU4's mute. The bed comes fully up in the B13 title hold.",
+            "Music base is -7 dB, not music_plan.json's -8 dB. Measured on the track, -7 dB puts the un-ducked bed at "
+            "about -16 LUFS and the ducked full-energy bed at about -22 LUFS (pre-master), as plan p.35 asks."]
+    else:
+        out.append("v04 note 1: no background music (MU1-MU8 off). Without the bed the master make-up gain is higher; "
+                   "every SFX keeps its pre-master level relative to the voice, as calibrated against the plan's peaks.")
     out += [
-        "C18 music level wording: plan p.35 puts the bed at -22 LUFS 'roughly 14-18 dB below the voice', but -22 is 6 dB "
-        "below the -16 LUFS voice spec. The absolute levels and the 6-8 dB duck are used, and the measured gaps are "
-        "reported above.",
-        "C19 no-voice list: no music in the logo tail (MU8), the B14 burst is under the voice in the processed VO, and "
-        "the B8 hold is MU4's mute. The bed comes fully up in the B13 title hold.",
         "C20 master: there is no limiter. One static make-up gain on every layer, plus limiter-style master gain "
         "automation only where the true peak would pass the ceiling.",
         "C21 voice level: A1 is at unity. The VO is about -16.4 LUFS as a mono track, but Tesseract sends mono at full "
         "level to both channels, so it reads about 3 dB louder on the stereo meter. Track levels are set before the "
         "master stage, as in a DAW.",
-        "C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice. By "
-        "loudness, though, the loudest moment of the mix is the drop on 'fun'.",
-        "Music base is -7 dB, not music_plan.json's -8 dB. Measured on the track, -7 dB puts the un-ducked bed at about "
-        "-16 LUFS and the ducked full-energy bed at about -22 LUFS (pre-master), as plan p.35 asks.",
+        "C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice.",
         "S03 keeps sfx_plan.json's reading: the error SOUND (0.11 s into the file) starts 3f before the tear, so the file "
         "starts 0.21 s before it; the glitch starts on the tear at +12 dB. Plan p.35 can also be read as 'file 3f before "
         "the tear, sound on it' (0.11 s later). Changing that means one field in sfx_plan.json.",

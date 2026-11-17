@@ -51,6 +51,13 @@
                0 2px 12px rgba(0, 0, 0, 0.50);
   /* the same glow as a filter, for text inside clipping masks (T3 digits) or non-text marks */
   --glow-filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.40)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.22));
+  /* v04 (REVISION_v04 note 7: no whole-edit CRT lines; "scanlines only inside the dark text cards", ref 3): a static
+     CRT line texture built into the dark text surfaces (.rc-card, .rc-t3, .rc-l5__ground, full-frame .rc-ink, .rc-t5):
+     9 px period (ref 3 measures 2.7 px of 275 = 9 px at 1080p), 3 px dark line at 20% black with 1.5 px soft edges.
+     Opt out per element (a card with B-roll behind it): class "rc-noscan". Over the text too (the ref 3 look): a timed
+     full-frame "clip rc-scan" element above the card's text. */
+  --card-scan: repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0.2) 4.5px,
+                 rgba(0, 0, 0, 0.2) 7.5px, rgba(0, 0, 0, 0) 9px);
   --card-gray: var(--card-bg);   /* v01/v02 name: the card background (was #E9E9E9), now dark */
   --card-ink: var(--card-text);  /* v01/v02 name: text on a card (was #111111), now white */
 
@@ -71,7 +78,13 @@
 .rc-full { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 .rc-transparent { background: transparent; }
 .rc-ink { background: var(--ink-black); }
-.rc-card { background: var(--card-bg); background-image: var(--card-surface); }   /* v03: dark card (was #E9E9E9) */
+.rc-ink.rc-full { background-image: var(--rc-scan, var(--card-scan)); }            /* v04: black text screens get the lines */
+.rc-card { background: var(--card-bg); background-image: var(--rc-scan, var(--card-scan)), var(--card-surface); }   /* v03 dark, v04 lines */
+.rc-noscan { --rc-scan: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)); }      /* v04: no scanlines on this surface */
+.rc-scan {                                                                         /* v04: the lines over a card's text */
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  background-image: var(--card-scan); pointer-events: none;
+}
 
 /* Text on footage / on black: white with the soft shadow. On cards (v03: dark): white with the ref 3 glow. */
 .rc-on-footage { color: var(--white); text-shadow: var(--text-shadow); }
