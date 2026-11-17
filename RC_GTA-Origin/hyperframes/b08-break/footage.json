@@ -1,3 +1,16 @@
-{"beat": "B8", "rids": ["R7.GD"],
- "moments": {},
- "note": "v02: B8 continues b07-shutdown's last shot (the Game Developer article R7.GD, the sentence highlighted) until 'breaks'. R7.GD is a still (04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png), copied as is by tools/sync_footage.py."}
+{
+ "beat": "B8",
+ "rids": [
+  "R7.GD",
+  "R9.1"
+ ],
+ "moments": {
+  "R9.1": {
+   "in": 128.5,
+   "out": 130.5,
+   "crop": "536:302:260:153",
+   "note": "v05: the faint footage loop of the dark card behind 'breaks.' (REVISION_v05 G7: dark cards = #0E0E10 + grain + a blurred, darkened loop of relevant footage at 15-25%). GTA 1 (PlayStation) top-down, the hook's bug shot (b02-bug: same R9.1 window start and the same 16:9 crop 536:302:260:153, which leaves the uploader's 'Sakura240' watermark out): a callback under the Win95 window flash."
+  }
+ },
+ "note": "v02-v05: B8 continues b07-shutdown's last shot (the Game Developer article R7.GD, the sentence highlighted) until 'breaks'. R7.GD is a still (04_Broll/B07/R7.GD__gamedeveloper-2011_penn-gta-almost-canned.png), copied as is by tools/sync_footage.py. v05: R9.1 for the dark card after the break."
+}

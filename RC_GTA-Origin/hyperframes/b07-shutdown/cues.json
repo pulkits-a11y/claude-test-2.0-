@@ -23,11 +23,6 @@
   }
  ],
  "dropouts": [],
- "archival": [
-  [
-   0,
-   35
-  ]
- ],
- "note": "v05: whip = the whip-pan headline -> body copy (local 57-61; beat 51 = its first frame). No stamp and no stamp sound (client override U5). archival = the 1990s office B-roll (R7.1, R7.3), beat 0-35. Legacy stamp1-3 (S06 hits) dropped: the whip and the key-word thumps replace them."
+ "archival": [],
+ "note": "v05. word_pops / key_words = T.lockupCues (key: 'above' 16, 'shut' 56). whip = the whip-pan headline -> body copy (local 57-61). No stamp, no stamp sound (U5). The office shots are HF card inserts with the archival grading, so no 'archival' range (that is for Tesseract shots). Legacy stamp1-3 dropped."
 }

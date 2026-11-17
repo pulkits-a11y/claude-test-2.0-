@@ -1,34 +1,28 @@
 # B4 Race'n'Chase — `b04-racenchase` (v05: beat 100f = 3.333 s; composition 112f with 6f handles, unchanged)
 
-## v05 (REVISION_v05.md "Lane 5" + CLIENT OVERRIDE U1-U4; doc section 4 0:17.0-0:20.0, dead zone 2): read this first; v04 and older below are kept as reference
+## v05 (REVISION_v05.md "Lane 5" + CLIENT OVERRIDE U1-U4; doc section 4 0:17.0-0:20.0, dead zone 2; kit v05): read this first; v04 and older below are kept as reference
 
-**Status: phase 1** (no kit v05 components yet; placeholders marked `TODO kit v05`). Not rendered. Words (local, unchanged):
-It's 6, called 12, Race 22, and 29, Chase, 35, and 49, it's 52, planned 59, to 70, take 76, eighteen 81, months. 88.
+**Status: complete** (kit v05 components in). Not rendered. Beat 100f, composition 112f (`data-duration` 3.7333333), local
+frames unchanged. Words (local): It's 6, called 12, Race 22, and 29, Chase, 35, and 49, it's 52, planned 59, to 70, take 76,
+eighteen 81, months. 88.
 
 | What changed | Why |
 |---|---|
-| **The page (0-46) is the DARK inverted page on a dark textured ground** (U4, client v03 #12; the doc's off-white paper is not followed): rebuilt from the plan's scan (`prep/race_page.py`: native 699 x 1024 JPEG, Lanczos x3, levels, light type #ECE8E1 on a charcoal #17171A paper with seeded mottling / tooth / fibres + the scan's own folds and a faint ghost of the show-through, as the v03 inverted page shows). **Shared still: `05_GFX/shared/racenchase_title_page_dark_v05.jpg`** (2097 x 3072, untilted; `_ink.png` = the type alone; `.json` = title / date / copyright boxes in page px) for B15's 10-frame flash; copied to `assets/page/` | U4; doc 17.0-18.0 + B15 66.8 |
-| Full frame, tilted -4 deg, page scale 1.5 with page (1093, 540) on the frame centre (title ~527 px wide), push 100 -> 115% (6 -> 46, sine.inOut); the sheet covers the frame at every scale | doc 17.0-18.0 |
-| "It's called" (6 / 12): tier A, Coolvetica Regular, white + soft shadow (54 px on screen), printed above the title box, left-aligned to "Race'n'Chase"; the printed title (with the pink sweep) is the line's key word | G10 sound-off; G3; U1 |
-| **Grid (46-112)** over the 1990s DMA office (blurred, 25 %, on #0E0E10): kit M3 calendar, 18 cells 72 px / 9 px gaps, 6 x 3 at (894, 379); one cell every 2f from 47 (18th on "eighteen" 81), a tick per cell (cues) | doc 18.0-20.0 |
-| "and it's planned to take" (tier A, Coolvetica 60 px) above, left-aligned; **"18" Coolvetica Italic 330 px** left of the grid (81, pops + blurs in: the beat's hero), "months." tier B 190 px under the grid's right edge (88). Block ink x 549-1371, centred | doc; U1 ("18" Coolvetica Italic); U2 |
-| **Hard cut at 70** (v04 19.0, no punch-in, U3): the office behind the grid cuts from angle A (R3.8 47.6 s, a developer at his desk) to angle B (R3.7 99.8 s, a developer and the presenter at a desk, BBC 1996); grid and captions continue | doc "a hard cut or 110% punch-in at 19.0"; U3 |
-| `cues.json` v05: word_pops, key_words ("18", "months."), 18 cell ticks | REVISION_v05 S, G8 |
+| **The page (0-46) is the DARK inverted page on a dark textured ground** (U4, client v03 #12; the doc's off-white paper is not followed): rebuilt from the plan's scan (`prep/race_page.py`: native 699 x 1024 JPEG, Lanczos x3, levels, light type #ECE8E1 on a charcoal #17171A paper with seeded mottling / tooth / fibres + the scan's own folds and a faint ghost of the show-through, as the v03 inverted page shows). **Shared still for B15: `05_GFX/shared/racenchase_title_page_dark_v05.jpg`** (2097 x 3072, untilted; `_ink.png` = the type alone; `.json` = title / date / copyright boxes in page px); copied to `assets/page/` | U4; doc 17.0-18.0 + B15 66.8 |
+| **Page framing (final)**: full frame, tilted -4 deg about the frame centre, page scale 1.5 with page point (1093, 540) on the frame centre (title ~527 px wide), push 100 -> 115% (6 -> 46, sine.inOut, centre origin); the sheet covers the frame at every scale | doc 17.0-18.0 |
+| "It's called" (6 / 12): tier A, Coolvetica Regular, white + soft shadow (54 px on screen), printed above the title box, left-aligned to "Race'n'Chase"; the printed title is the line's key word | G10; G3; U1 |
+| **Pink highlighter sweep** (`RCK.fx.highlight`, `fx-hl fx-hl--dark` = screen on the dark page) across "Race'n'Chase" from local 16 (v04 17.2), 8f, no push under it (U3) | doc 17.2 |
+| **Yellow hand-drawn circle** (`RCK.fx.annotate`) round "March 22, 1995" from local 28 (v04 17.6), drawn over 9f; both in page px, so they tilt and push with the page | doc 17.6 |
+| **Grid (46-112)**: kit M3 calendar, 18 cells 72 px / 9 px gaps, 6 x 3 at (894, 379); one cell every 2f from 47 (18th on "eighteen" 81), a tick per cell (cues). Background = two **kit dark cards** (`RCK.fx.darkCardHTML` via `prep/gen_b04.cjs`: #0E0E10 + the office blurred ~45 px at 25 % + grain + scanlines): angle A R3.8 (47.6 s, a developer at his desk) 46-70, **hard cut at 70** (v04 19.0; no punch-in, U3) to angle B R3.7 (99.8 s, a developer and the presenter at a desk, BBC 1996) 70-112 | doc 18.0-20.0; U3 |
+| "and it's planned to take" (setup 54) above, left-aligned to "18"; **"18" Coolvetica Italic 330 px** left of the grid (81, pops + blurs in: the beat's chosen hero); "months." tier B 190 under the grid's right edge (88). Hand-placed lockup words (`data-rc-v="5"`, kit word wiring) | U1; U2; G3 |
+| `cues.json` v05: word_pops, key_words ("18", "months."), 18 cell ticks; `archival` none; `tesseract_shots.json` `"timing": "v05"` | REVISION_v05 S, G8 |
 
-**TODO kit v05 (phase 2)**: pink highlighter sweep (`#b04-hl`, page px 900-1288 x 360-426 over "Race'n'Chase", SCREEN blend
-on the dark page, 8f from local 16 = v04 17.2, no extra push under it, U3); yellow hand-drawn circle (`#b04-circ`, page px
-925-1262 x 648-754 round "March 22, 1995", 8-10f from local 28 = v04 17.6); the dark card v05 for the grid background
-(grain + blurred footage; today: #0E0E10 + the office at 25 % with the media-treatment blur at its maximum, 1.0); the U2 doc pop for
-"18" (kit POP3 today).
+**Known / weighed**: lint `nested_structure_needs_subcomposition` (custom lockup markup) and craft `line_unread` (beat segment)
+by design; the page `<img>` carries `data-layout-allow-occlusion` (a 4 % bbox false positive on the rotated page); the "18"
+line box is tightened to the glyph (a 330 px box overlapped the setup line's box).
 
-**Known / weighed**: the media-treatment blur is in source pixels (the 384 x 288 office is upscaled to 1440 x 1080 by the
-sync tool): at the control's maximum (used) it reads ~30 px on screen, not the doc's ~45 px; the kit dark card may use a
-low-res copy. Lint `nested_structure_needs_subcomposition` (custom lockup markup) and craft `line_unread` (beat segment) by
-design. The page `<img>` carries `data-layout-allow-occlusion` (a 4 % bbox overlap false positive on the rotated page).
-
-**Verification v05**: `check --json` 0 errors. Snapshots `review/v05/` (12 frames + `sheet.jpg`) read: dark page tilted and
-pushing, "It's called" on its frames, the cut at 46, cells filling, the background cut at 70, "18" popping on 81, "months."
-on 88, the tail. Not rendered.
+**Verification v05**: `check --json` 0 errors. Snapshots `review/v05/a` (0-45: page, sweep 16-24, circle 28-37) and
+`review/v05/b` (46-111: grid, the cut at 70, "18" pop, "months."), each with `sheet.jpg`, read. Not rendered.
 
 ---
 

@@ -19,35 +19,24 @@
       #b08-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5 */
       .b08-art, .b08-dim, .b08-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
       .b08-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
-      /* v03: the dark-page highlighter, exactly as b07-shutdown (opaque strokes in one group; the group: screen, 50%) */
-      .b08-hlgroup { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; mix-blend-mode: screen; opacity: 0.5; }
-      .b08-hlgroup > .rc-t9-hl { mix-blend-mode: normal; opacity: 1; }
+      /* v05: the kit's dark-page highlighter exactly as b07-shutdown (opaque strokes in one group; the group: screen, 55%) */
+      .b08-hlgroup { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; mix-blend-mode: screen; opacity: 0.55; }
+      .b08-hlgroup > .fx-hl { mix-blend-mode: normal; opacity: 1; }
     </style>
   </head>
   <body>
-    <!-- B8 b08-break (v05 phase 1; timing v02): beat 59f (1.967s) + 6f handle each end = 71f.
-         v05 (REVISION_v05.md lane 2): b07's single article shot continued (push to 118% on "breaks"); on "Then,
-         something" (7-37) the article dims to 30% and blurs to 30 px; on "breaks" the kit v05 pink pixel glitch is the
-         frame transition and the hero word "breaks." simply appears (client override U2), the Win95 window flashed 2f
-         behind it, on the dark card v05 (phase 2). No stamp anywhere (U5). The lines below describe v02-v04.
+    <!-- B8 b08-break (v05; timing v02): beat 59f (1.967s) + 6f handle each end = 71f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.1667s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B8 p.23).
-
-         Plan B8 (p.23): T1 "Then, something" -> T10 "breaks.". On "breaks" the picture shatters with X4 and cuts to black
-         (#0A0A0A). T10 "breaks." glitches for 6f, settles clean and holds 12f, then hard cut. The only fully silent moment
-         besides the very end (MU4 mutes the music 15f from the first black frame): add nothing to it.
-         v02: B7 now ends on the Game Developer article (the highlighted sentence, client note 3), so the X4 breaks THAT:
-         local  0-39  b07-shutdown's last shot continued: the same page, framing, spotlight and highlights, and the same
-                      eased push (one easeInOutSine move on the edit clock from B7's cut on "to" to "breaks", 100 -> 118% +
-                      drift; this composition plays its last 39 frames) + the caption lockup "Then, something"
-                      v03: the page is the DARK-mode capture (as b07), the highlight is the dark-page one (screen, 50%)
-         local 39-47  X4 tear on "breaks" (8f: the kit default inside the plan's 6-10f, so the plan's 12f clean hold of T10
-                      still fits the shorter v02 beat), still = this composition's own frame at local 39 (x4_still.sh)
-         local 47     first black (S07 riser end, MU4 mute start)
-         local 47-52  T10 glitch (6f, hard per-frame cuts), clean from 53, holds 12f to the hard cut at local 65 (beat end);
-                      the tail handle 65-71 holds the clean word.
-         Layer stack (top -> bottom): z40 caption lockup (y 840) | z30 T10 | z20 X4 tear canvas | z10 ink black |
-         z3 the v05 dim (black 0 -> 70%) | z2 #b08-artCam > the page (R7.GD + highlights + spotlight dim). -->
+         Word timings: words.json (comp_t). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v05.md (lane 2 + client override U).
+         local  0-42  b07-shutdown's article shot continued (the same page, framing, spotlight and pink highlights, the push
+                      to 118% on "breaks"); on "Then, something" (7-37) the article dims to 30% and blurs to 30 px (doc 31.0)
+         local 39     "breaks." (hero, Coolvetica Italic 450) appears; the pink pixel glitch is the frame transition (39-45);
+                      the Win95 window flashes 2f behind the word (39-40)
+         local 42     the cut to the v05 dark card (#0E0E10 + grain + scanlines + GTA 1 at 20%, blurred), held to the end
+         Layer stack (top -> bottom): z40 caption lockups | z30 glitch | z20 Win95 window | z5 dark card | z3 the dim |
+         z2 #b08-artCam > the page (R7.GD + pink highlights + spotlight dim). No stamp anywhere (U5).
+         Before v05: an X4 still-mode tear into black and a T10 glitch word (assets/x4/b08-old.png and x4_still.sh are no
+         longer used). -->
     <div data-hf-id="hf-k79d" id="root" data-composition-id="b08-break" data-start="0" data-duration="2.3666667" data-width="1920" data-height="1080">
 
       <!-- ===== local 0-47: b07-shutdown's shot E continued (Game Developer, Jan 31 2011, the sentence "It was almost canned.
@@ -55,15 +44,15 @@
            https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- , never edited) ===== -->
       <div data-hf-id="hf-tanh" id="b08-artCam" class="rc-cam" style="z-index: 2">
           <div data-hf-id="hf-7vyw" id="b08-pageE" class="b08-page" data-layout-allow-overflow="">
-            <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-mbgo" id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.5666" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
-            <!-- the two T9 highlighter strokes, landed (b07 swipes them on "shut" and "down."); v03: dark-page group -->
-            <div data-hf-id="hf-rcz0" id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.5666" data-track-index="2" data-layout-ignore="">
+            <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-mbgo" id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.4000" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
+            <!-- the two pink highlighter strokes, landed (b07 sweeps them on 61 and 82), kit .fx-hl fx-hl--dark in b07's group -->
+            <div data-hf-id="hf-rcz0" id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.4000" data-track-index="2" data-layout-ignore="">
               <div data-hf-id="hf-u5ya" id="b08-hlgroup" class="b08-hlgroup">
-                <div data-hf-id="hf-6jch" id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
-                <div data-hf-id="hf-3cc4" id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+                <div data-hf-id="hf-6jch" id="b08-hl1" class="fx-hl fx-hl--dark" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
+                <div data-hf-id="hf-3cc4" id="b08-hl2" class="fx-hl fx-hl--dark" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
               </div>
             </div>
-            <div data-hf-id="hf-a249" id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.5666" data-track-index="3" data-layout-ignore="">
+            <div data-hf-id="hf-a249" id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.4000" data-track-index="3" data-layout-ignore="">
               <svg data-hf-id="hf-buxh" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-mh0t">
                 <filter data-hf-id="hf-aj0m" id="b08-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-ajt9" stdDeviation="3.6" /></filter>
                 <mask data-hf-id="hf-kd0g" id="b08-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-g9ea" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-p0r5" x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b08-dimE-f)" /></mask>
@@ -73,22 +62,21 @@
       </div>
       <!-- v05 (doc 31.0-32.0 "Then, something": the article dims to 30% and blurs): black over the page, 0 -> 70% (below the
            caption lockup, above the page), with the page blur in the script -->
-      <div data-hf-id="hf-64dc" id="b08-dimall" class="clip b08-dimall" data-start="0.0000" data-duration="1.5666" data-track-index="4" style="z-index: 3"></div>
+      <div data-hf-id="hf-64dc" id="b08-dimall" class="clip b08-dimall" data-start="0.0000" data-duration="1.4000" data-track-index="4" style="z-index: 3"></div>
 
-      <!-- ===== X4 pixel-block tear on "breaks" (local 39 = beat f33), 8f, then the hard cut to black ===== -->
-      <!-- still mode: assets/x4/b08-old.png = this composition at local 39 WITHOUT the tear (made by x4_still.sh) -->
-      <div data-hf-id="hf-o4zi" id="b08-x4" class="rc-x4" style="z-index: 20">
-        <img data-hf-id="hf-ha5p" class="rc-x4__still" src="assets/x4/b08-old.png" alt="">
-      </div>
+      <!-- ===== v05 the break on "breaks" (local 39 = beat 33; REVISION_v05 lane 2 with the client override U2) =====
+           39-45 the kit's pink pixel glitch is the FRAME transition (RCK.fx.glitch 'cut', 7f, RGB split on 41-44, the picture
+           shaking 18 px); the hard cut from the article to the dark card is on its middle frame (42). The hero word
+           "breaks." (Coolvetica Italic 450) simply appears on 39 above it all; the Win95 window (the hook's dialog, same
+           scale and place as b02-bug) flashes for 2 frames behind it (39-40, RCK.fx.errorFlash). -->
+      <div id="b08-dark" class="fx-dark" style="z-index: 5"><div id="b08-dark-base" class="clip fx-fill fx-dark__base" data-start="1.4000" data-duration="0.9666"></div><div class="fx-dark__loop" style="opacity: 0.2"><div class="fx-card__bgscale" data-layout-allow-overflow style="width: 1258.56px; height: 707.94px; transform: translate(-144px, -81px) scale(1.7543900000000001)"><video id="b08-dark-loop" class="clip " src="assets/footage/R9.1.mp4" data-start="1.4000" data-duration="0.9666" data-media-start="0.0000" muted playsinline data-color-grading='{"preset":null,"intensity":1,"adjust":{"exposure":-1,"contrast":0,"highlights":0,"shadows":0,"whites":0,"blacks":0,"temperature":0,"tint":0,"vibrance":0,"saturation":0},"effects":{"blur":1}}'></video></div></div><div id="b08-dark-tex" class="clip fx-fill fx-dark__tex" data-start="1.4000" data-duration="0.9666"></div></div>
+      <div id="b08-err" class="clip fx-host" data-start="1.3000" data-duration="0.0667" data-track-index="7" style="--x: 960px; --y: 420px; z-index: 20"></div>
+      <div id="b08-gl" class="clip fx-host" data-start="1.3000" data-duration="0.2333" data-track-index="8" style="z-index: 30"></div>
 
-      <!-- ===== local 47-71 (beat 41-59 + tail handle): black, T10 "breaks." ===== -->
-      <div data-hf-id="hf-p09q" id="b08-black" class="clip rc-ink rc-full" data-start="1.5666" data-duration="0.8000" data-track-index="7" style="z-index: 10"></div>
-      <div data-hf-id="hf-08q9" id="b08-t10" class="clip rc-t10" data-start="1.5666" data-duration="0.8000" data-track-index="8" style="z-index: 30"><span data-hf-id="hf-iiag" class="rc-t10__word">breaks.</span></div>
-
-      <!-- v03 caption lockup (REVISION_v03 notes 11, 16, 17), kit RCK.type.lockups from words.json: "Then, something" (one
-           small line; "Then," on 7, "something" on 25, hard cuts), below the spotlit sentence (ink centre y 840, as b07's
-           last lockup); it leaves at the tear (39). -->
-      <div data-hf-id="hf-00mr" id="b08-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.0667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 33.98px; z-index: 40"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-ut3s" class="rc-lw" data-rc-f="7">Then,</span> <span data-hf-id="hf-6hql" class="rc-lw" data-rc-f="25">something</span></div></div></div>
+      <!-- v05 caption lockups (kit v05): "Then, something" (7, 25; words appear; ink centre y 840 under the dimming article)
+           and the hero "[[breaks.]]" (39, Coolvetica Italic 450, appears, centred), held through the tail handle. -->
+      <div id="b08-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2333" data-duration="1.0667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 28.67px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="7">Then,</span> <span class="rc-lw" data-rc-f="25">something</span></div></div></div>
+      <div id="b08-lk-2" class="clip rc-lk" data-rc-v="5" data-start="1.3000" data-duration="1.0666" data-track-index="10" style="--rc-lk-c: 238.95px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key rc-lk__row--hero" style="font-size: 450px; line-height: 450px; height: 450px"><span class="rc-lw rc-lw--key rc-lw--hero" data-rc-f="39">breaks.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -97,19 +85,17 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, X = RCK.transitions, C = RCK.cam;
+      const T = RCK.type, X = RCK.transitions, C = RCK.cam, FX = RCK.fx;
       const f = (n) => n / 30;
-      // x4_still.sh renders a copy of this page with data-x4-capture on <html>: same picture, no tear (the X4 still).
-      const CAPTURE = document.documentElement.hasAttribute("data-x4-capture");
 
       // Word frames (local) from words.json: Then, 7, something 25, breaks. 39.
-      const kBreaks = 39;                 // beat 33: the X4 tear's first frame (cues.json "breaks")
-      const kBlack = kBreaks + 8;         // beat 41: first black frame (cues.json "first_black")
+      const kBreaks = 39;                 // beat 33: "breaks." appears, the glitch transition starts (cues.json key_words / sfx)
+      const kCut = kBreaks + 3;           // beat 36: the cut from the article to the dark card, the glitch's middle frame
 
       // ---- b07-shutdown's article shot, continued (v05): b07's push about the frame centre, ONE easeInOutSine move from b07's
       //      cut on "keep" (b07 local 41) to "breaks" (this local 39 = b07 local 129), 88f, 100 -> 118%. This composition (local
       //      L = b07 local 90 + L) plays curve frames 49..88 (segment of the same ease), so b07's last frame and this first frame
-      //      match. From the tear on, the page is covered (X4 still mode) and holds the end state. ----
+      //      match. It holds 118% from "breaks" (39) to the cut (42). ----
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
       const ART_LEN = 88, ART_S = 1.18, k0 = 49 / ART_LEN;
@@ -128,16 +114,17 @@
       tl.fromTo(art, { '--hf-color-grading-blur': 0 }, { '--hf-color-grading-blur': vEnd, duration: 30 / 30, ease: pxEase, immediateRender: false }, f(7));
       tl.fromTo('#b08-hlgroup, #b08-dimE svg', { filter: 'blur(0px)' }, { filter: 'blur(' + BLUR_PX + 'px)', duration: 30 / 30, ease: 'sine.inOut', immediateRender: false }, f(7));
 
-      // ---- X4 on "breaks": 8f tear as the X library defines it (16 x 9 blocks jumping +/-30 px, some freezing on the old
-      //      frame, 6 px RGB split; per-frame cuts), then the hard cut to black on local 47. Seed 8 (as v01 and b17-loop). ----
-      if (CAPTURE) document.getElementById("b08-x4").remove();
-      else X.tear(tl, "#b08-x4", f(kBreaks), { frames: 8, seed: 8 });
+      // ---- v05 the break on "breaks" (39): the kit's pink pixel glitch as the frame transition (RCK.fx.glitch 'cut', 7f:
+      //      39-45, a new seeded layout of pink / white blocks + pixel-sort streaks each frame, RGB split 9 px on 41-44), the
+      //      picture under it shaking 18 px (the article on 39-41, the dark card on 42-45); the cut to the dark card on 42
+      //      (clip boundaries). The Win95 window (the hook's dialog: same scale 1.8 and place as b02-bug) flashes for 2 frames
+      //      behind the word (39-40). The hero word itself simply appears (U2). The kit's v05 dark card (#0E0E10 + grain +
+      //      scanlines + GTA 1 at 20%, blurred 40 px) holds to the end. ----
+      FX.errorWindow('#b08-err', { scale: 1.8 });
+      FX.errorFlash(tl, '#b08-err', f(kBreaks), { frames: 2 });
+      FX.glitch(tl, '#b08-gl', f(kBreaks), { mode: 'cut', frames: 7, shake: '#b08-artCam, #b08-dark', shakePx: 18 });
 
-      // ---- T10 "breaks." on black: 6f glitch (local 47-52, hard per-frame cuts), clean from 53, holds 12f to the hard cut
-      //      (local 65); the tail handle 65-70 holds the clean word (closing state continued) ----
-      T.glitch(tl, "#b08-t10", f(kBlack), { seed: 8 });
-
-      // ---- v03 caption lockup: each word hard-cuts in on its spoken frame (no animation) ----
+      // ---- v05 caption lockups: "Then," / "something" appear on their frames; the hero "breaks." appears on 39 (no star) ----
       T.lockupsWire(tl);
 
       window.__timelines["b08-break"] = tl;

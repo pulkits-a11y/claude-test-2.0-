@@ -16,39 +16,17 @@
          inside each half moves (b05's slow eased push, v05 100 -> 108%, continued to the cut on "One"). */
       .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
       .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
-      /* v05 (doc 24.4 anti-style gag; client override U1: all text Coolvetica): "dull." in Coolvetica REGULAR (upright, not the
-         italic display face), grey #8A8A8A, 180 px, no animation: it just appears on its frame; the only style it keeps is
-         G1's soft drop shadow (the grey word crosses the bright B&W road). Block = "it's" over "dull.", left-aligned, centred
-         in frame ("dull." 284 px wide: x 818-1102; baseline y 633 = line top 477 + 90 + 0.367 em). */
-      .b06-dull { position: absolute; left: 818px; top: 477px; height: 180px; font-family: var(--sans); font-weight: 400; font-style: normal;
-                  font-size: 180px; line-height: 180px; color: #8A8A8A; white-space: nowrap; pointer-events: none;
-                  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45); }
-      /* phase-1 placeholder for the setup word "it's" (left-aligned over "dull.", baseline y 488); kit v05 tier A + entry next */
-      .b06-its { position: absolute; left: 818px; top: 436px; height: 60px; font-family: var(--sans); font-size: 60px; line-height: 60px;
-                 color: var(--white); text-shadow: var(--text-glow); white-space: nowrap; pointer-events: none; }
       /* v05: b05's white centre divider (6 px over the 4 px gap, x 957-963), fully drawn on the whole split part */
       .b06-divider { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: var(--white); pointer-events: none; }
       /* v05 [DEPTH] quote mark: Coolvetica Italic “ (client override U1: no Playfair), #FF2E7E at 25% (the opacity tween takes
          it from 0 to 0.25). 810 px: Coolvetica's quote glyph is smaller in its em than the doc's serif, so 1.5 x the doc's
          540 px keeps it "giant" (glyph ~270 x 195 px, x ~810-1080, y ~670-870); its lower-left sits behind his right
          shoulder (the cut-out of him covers it) */
-      /* the quote lockup: both rows in Coolvetica Italic (the kit's small rows are upright Regular) */
-      .b06-quote .rc-lk__row--tail, .b06-quote .rc-lk__row--lead { font-family: var(--serif); font-style: italic; }
       .b06-qmark { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
       .b06-qmark__g { position: absolute; left: 690px; top: 560px; font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 810px;
                       line-height: 810px; color: #FF2E7E; opacity: 0; white-space: nowrap; }
       /* v04: Gary Penn full frame (16:9 working clip, never stretched) inside the camera wrapper */
       .b06-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
-      /* v04 lower third: bottom left inside title-safe (96 px in, last baseline about 970 px), white + the kit's glow, on a
-         soft dark plate (a feathered gradient from the bottom-left corner, part of the lower third graphic) so the small
-         role line reads on the bright shirt */
-      .b06-l3plate { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none;
-                     background: radial-gradient(ellipse 980px 360px at 0px 1080px, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0) 100%); }
-      .b06-l3 { position: absolute; left: var(--safe-x); top: 864px; width: 900px; height: 130px; color: var(--white);
-                text-shadow: var(--text-glow); pointer-events: none; }
-      .b06-l3__name { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 52px; line-height: 60px; white-space: nowrap; }
-      .b06-l3__role { margin-top: 6px; font-family: var(--sans); font-weight: 400; font-size: 28px; line-height: 34px;
-                      letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; }
     </style>
   </head>
   <body>
@@ -68,7 +46,6 @@
          local 64-168: hard cut on "One" to Gary Penn (R6.1) full frame, dark, push 100 -> 112% (one shot, no crop cut);
                        [DEPTH] giant pink quote mark behind his shoulder from 73; the quote (Coolvetica Italic 135 / 90 px)
                        pops + blurs in word by word from 112, held to the end. -->
-    <div data-hf-id="hf-ebcd" id="root" data-composition-id="b06-dull" data-start="0" data-duration="5.6000000" data-width="1920" data-height="1080">
 
       <!-- L11 split screen = the B5 frame, continued (R5.2 @ 3:50.5 left, R5.1 @ 0:41.2 right, same crops). v05: the clips
            are B6 working clips baked from b05's (tools/make_slow.py): frame n = B6 local n = b05 working-clip frame 83 + n
@@ -117,28 +94,23 @@
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.8,&quot;contrast&quot;:0.12,&quot;highlights&quot;:-0.35,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b06-penn-cut" class="clip b06-fill" src="assets/footage/v05/R6.1_cut.webm" data-start="2.1333" data-duration="3.4667" data-media-start="0" data-track-index="9" muted playsinline></video>
       </div>
 
-      <!-- Lower third (v04): name + role, small and clean, bottom left inside title-safe (x 96, ink above y 1026), simply
-           there from the cut on "One" (no animation). Texts exactly as before: "Gary Penn" / "DMA DESIGN · GAMASUTRA, 2011". -->
-      <div id="b06-l3plate" class="clip b06-l3plate" data-start="2.1333" data-duration="3.4667" data-track-index="7" style="z-index: 19"></div>
-      <div data-hf-id="hf-jiih" id="b06-l3" class="clip b06-l3" data-start="2.1333" data-duration="3.4667" data-track-index="6" style="z-index: 20">
-        <div data-hf-id="hf-i7vr" class="b06-l3__name">Gary Penn</div>
-        <div data-hf-id="hf-v4mu" class="b06-l3__role">DMA DESIGN · GAMASUTRA, 2011</div>
-      </div>
+      <!-- v05 name pill (doc 25.1; kit RCK.fx.pill, fx-pill--name): lower-left, Coolvetica (client override U1), "GARY PENN"
+           over "DMA Design · Gamasutra, 2011"; the pink box wipes in from the left over 6f from the cut on "One" (64) and
+           both lines appear whole as it lands (70; no type-on, U2). Replaces the v04 lower third. -->
+      <div id="b06-name" class="clip fx-host fx-pill fx-pill--name" data-start="2.1333" data-duration="3.4667" data-track-index="7" data-line2="DMA Design · Gamasutra, 2011" style="z-index: 45">GARY PENN</div>
 
-      <!-- The quote: a centred lockup (kit RCK.type.lockups, ref 1 layout) over the darkened footage. v05 (doc 25.0 sizes, client
-           override U1 / v03 #9): "“awful…" Coolvetica Italic 135 px, "too sim-y.”" Coolvetica Italic 90 px below-right (the
-           .b06-quote class sets the small row italic too); every word pops + blurs in on its spoken frame
-           (“awful… 112, too 129, sim-y.” 135; words.json), held to the end (the deliberate quote hold). The lockup is centred
-           in the empty cinema, 100 px right of the frame centre (left: 100px), so the opening quote mark never touches his
-           face as the handheld shot drifts (his face reaches x 730 around local 120-135). -->
-      <div id="b06-quote-1" class="clip rc-lk b06-quote" data-start="3.7333" data-duration="1.8667" data-track-index="11" style="--rc-lk-c: 110.43px; z-index: 30; left: 100px"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 135px; line-height: 135px; height: 135px"><span class="rc-lw rc-lw--pop" data-rc-f="112">“awful…</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 90px; line-height: 90px; height: 90px; margin-top: -18.5px"><span class="rc-lw rc-lw--pop" data-rc-f="129">too</span> <span class="rc-lw rc-lw--pop" data-rc-f="135">sim-y.”</span></div></div></div>
-
-      <!-- Captions on the split screen. "But there's a problem:" (6): v03 lockup (kit v05 tier A + entry in phase 2). Then
-           "it's" (38, phase-1 placeholder) over "dull." (46): v05 doc 24.4 anti-style gag, Coolvetica Regular grey, no entry, appears
-           on its frame with the B&W drain + slow-down. Both hard-cut out on the cut on "One" (64). -->
-      <div data-hf-id="hf-ukqe" id="b06-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.0666" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 30"><div data-hf-id="hf-ze3e" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-tmst" class="rc-lw" data-rc-f="6">But</span> <span data-hf-id="hf-u6sj" class="rc-lw" data-rc-f="9">there's</span> <span data-hf-id="hf-bfgf" class="rc-lw" data-rc-f="17">a</span> <span data-hf-id="hf-kcvl" class="rc-lw" data-rc-f="19">problem:</span></div></div></div>
-      <div id="b06-its" class="clip b06-its" data-start="1.2666" data-duration="0.8667" data-track-index="11" style="z-index: 30">it's</div>
-      <div id="b06-dull" class="clip b06-dull" data-start="1.5333" data-duration="0.6000" data-track-index="12" style="z-index: 31">dull.</div>
+      <!-- v05 caption lockups (kit v05 RCK.type.lockups from words.json; REVISION_v05 G2/G3 + client override U1/U2), every
+           spoken word on screen, words appear on their frames:
+           "But there's a problem:" (6, Coolvetica Regular 54) / "it's [dull.]#" (38 / 46: the doc 24.4 gag = Coolvetica
+           Regular #8A8A8A 180, no shadow, no animation, over the B&W drain + slow-down) / "One developer later calls it"
+           (64, tier A) / the quote "[“awful…]* too* sim-y.”*" (tier quote:
+           Coolvetica Italic 135 / 90, each word pops + blurs in on its spoken frame 112 / 129 / 135, client v03 #9), held to
+           the end. Those two sit in the empty cinema right of him (left: 220px = centred on x 1180): centred at x 960 the
+           setup line's first word touched his cheek before the push grows. Hard cuts between lockups. -->
+      <div id="b06-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2000" data-duration="1.0666" data-track-index="10" style="--rc-lk-c: 28.67px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="6">But</span> <span class="rc-lw" data-rc-f="9">there's</span> <span class="rc-lw" data-rc-f="17">a</span> <span class="rc-lw" data-rc-f="19">problem:</span></div></div></div>
+      <div id="b06-lk-2" class="clip rc-lk" data-rc-v="5" data-start="1.2666" data-duration="0.8667" data-track-index="10" style="--rc-lk-c: 97.65px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="38">it's</span></div><div class="rc-lk__row rc-lk__row--key rc-lk__row--dull" style="font-size: 180px; line-height: 180px; height: 180px; margin-top: -25.28px"><span class="rc-lw rc-lw--key rc-lw--dull" data-rc-f="46">dull.</span></div></div></div>
+      <div id="b06-lk-3" class="clip rc-lk" data-rc-v="5" data-start="2.1333" data-duration="1.6000" data-track-index="10" style="--rc-lk-c: 28.67px; z-index: 30; left: 220px"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="64">One</span> <span class="rc-lw" data-rc-f="68">developer</span> <span class="rc-lw" data-rc-f="85">later</span> <span class="rc-lw" data-rc-f="93">calls</span> <span class="rc-lw" data-rc-f="108">it</span></div></div></div>
+      <div id="b06-lk-4" class="clip rc-lk" data-rc-v="5" data-start="3.7333" data-duration="1.8667" data-track-index="11" style="--rc-lk-c: 110.43px; z-index: 30; left: 220px"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key rc-lk__row--quote" style="font-size: 135px; line-height: 135px; height: 135px"><span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="112">“awful…</span></div><div class="rc-lk__row rc-lk__row--tail rc-lk__row--quote" style="font-size: 90px; line-height: 90px; height: 90px; margin-top: -18.5px"><span class="rc-lw rc-lw--pop" data-rc-f="129">too</span> <span class="rc-lw rc-lw--pop" data-rc-f="135">sim-y.”</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -147,7 +119,7 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, S = RCK.screens, X = RCK.transitions, C = RCK.cam;
+      const T = RCK.type, S = RCK.screens, X = RCK.transitions, C = RCK.cam, FX = RCK.fx;
       const f = (n) => n / 30;                         // composition-local frame -> seconds (local = beat frame + 6)
 
       // Word frames (local) from words.json: But 6, there's 9, a 17, problem: 19, it's 38, dull. 46, One 64,
@@ -179,8 +151,12 @@
       //      from local 73; the cut-out of him (on top, same frames and grade) hides its left half. ----
       tl.fromTo('#b06-qmark-g', { opacity: 0 }, { opacity: 0.25, duration: 8 / 30, ease: 'power2.out', immediateRender: false }, f(73));
 
-      // caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame; starred words pop + blur in
-      // (kit POP3): the v04 quote lockup's three words on 112, 129, 135. ("dull." has no animation: its clip just starts.)
+      // ---- v05 name pill (doc 25.1): the box wipes in from the left over 6f from the cut on "One" (64), both lines appear
+      //      whole on 70 (kit RCK.fx.pill; no type-on, U2) ----
+      FX.pill(tl, '#b06-name', f(64));
+
+      // ---- v05 caption lockups (every .rc-lk above): plain words appear on their spoken frame; the quote words pop + blur in
+      //      (kit v05 pop, white) on 112, 129, 135; "dull." has no animation (the gag) ----
       T.lockupsWire(tl);
 
       window.__timelines["b06-dull"] = tl;

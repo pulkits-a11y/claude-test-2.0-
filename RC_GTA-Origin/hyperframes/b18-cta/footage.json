@@ -1,5 +1,17 @@
 {
  "beat": "B18",
  "rids": [],
- "note": "v05: no footage yet. TODO when hyperframes/b01-hook/LOOP_FRAME.json exists (lane 1): B1's police lightbar clip (a) as the faint blurred footage of the dark card (15-25 %) and (b) for the last-6-frame cross to B1's frame 0 (in-point - 6/30 s, B1's f0 scale), cut with the same settings as B1's working copy."
+ "note": "v05: one hand-cut working copy (git-ignored; re-create with prep/cut_lightbar.sh): B1's police-lightbar footage (hyperframes/b01-hook/LOOP_FRAME.json recipe, started 2.5 s earlier) = the dark card's faint blurred footage (20 %) and the last-6-frame cross into B1's frame 0 (media time = local / 30: local 81 = B1's clip frame 6 = B1's f0).",
+ "extra": {
+  "b18_lightbar": {
+   "file": "assets/footage/b18_lightbar.mp4",
+   "rid": "R5.4",
+   "source": "04_Broll/_originals/B05/R5.4__GTA 5 LSPDFR ｜ Sheriff Gang Unit Takes Over the Night Shift 🚔 ｜ DLSS 5 [PV1NfLjkbWg].mp4",
+   "in": 631.0333,
+   "out": 634.0333,
+   "crop": "1280:720:380:200",
+   "recipe": "prep/cut_lightbar.sh",
+   "cut_by_hand": true
+  }
+ }
 }

@@ -1,5 +1,35 @@
 # B9 Straight through you - `b09-throughyou` (v02: beat 202f = 6.733 s; composition 214f with 6f handles)
 
+## v05 (REVISION_v05.md lane 3 + CLIENT OVERRIDE U9). Read this first
+
+Beat 202 f, composition 214 f (root `data-duration="7.1333333"`), local = beat + 6: unchanged. Everything not listed is
+v04 below (the three police cut-ins f0-69, the R9.1 shot f69-120 with its 100 -> 104% push, the grade, the strip footage).
+
+| Change | Doc / override |
+|---|---|
+| **No arrow, no freeze / red glow on "stop", no whip-zoom on "straight"**. Phase 1 had built the freeze + whip; both are removed, with their stills (`assets/v05/`) and the HF copy of R9.4 | U9 |
+| **Each sentence its own full-frame shot, no black half** (Tesseract L1: 105%, soft edges, b9-sat60, static framing). "They ram." = beat 120-143 `B9-gta1-4k-ram2-They-ram` (R9.4 565.3 s, crop 1440:810:0:180): a police car swerves into the player's van and spins, and the impact lands on "ram." (beat 128). "They chase." = 143-176 `B9-gta2-chase-lightning` (R9.3 55.6 s, crop 640:360:0:10): the lightning gun arcs into the swarming cops (the doc's lightning). "They don't let go." = the L3 strips (HF) from beat 168 | doc 37.0-38.0, U9 |
+| **Strips only on "They don't let go."**: all three land 2 f apart (local 174 / 176 / 178 = beat 168 / 170 / 172). Each gets the kit `gridPop` (4 f pop + 4 f punch-in to 115%) + the client's v04 glow flash (`S.glowFlash`). Source times from local 174 are as v04, so b10-fun's continuation is unchanged. Ink ground from local 182. The held push after the punch is x 1.08 (was 1.04; pacing rule 3, the grid holds 2.3 s into B10): one easeInOutSine curve to B10's "fun" cut, equal to b10-fun's `PUSH` | doc, pacing rule 3 |
+| **Captions = kit v05 lockups**: Coolvetica Regular 54 setup over Coolvetica Italic 190 key, white + drop shadow, centred; words appear on their frames. "The police cars [stop] following you" / "and [start] trying" / "to drive [straight]* through you." / "They [ram.]" / "They [chase.]" / "They don't [let go.]" (`maxWidth` 580). Only "straight" pops + blurs in. "don't" is on local 180 (words.json v05; was 181) | U1, U2, G3 |
+
+**cues.json v05**: `word_pops` / `key_words` come from `T.lockupCues(plan, 6)` in beat frames.
+* word_pops: the 15 plain words (1 ... 174).
+* key_words: 21 stop / 53 start / 80 straight / 128 ram. / 149 chase. / 185 let / 191 go.
+* sfx `hit` on 128 ("ram." = the on-screen impact), 149 ("chase.") and 185 ("let go.").
+* events {}, no dropouts, no archival (all game footage).
+
+`tesseract_shots.json` has `"timing": "v05"` and six shots: the four v04 shots unchanged (f0-120) + the two new ones
+(f120-176). Cross-beat: B16's `make_rewind.py` reads `B9-gta1-chase-L1` (R9.1, f69-120, 316.4 s), which is unchanged, so the
+rewind is unchanged.
+
+**Verification (v05)**: `check --json` 0 errors. Warnings: kit lockup nesting, `first_frame_empty` (the transparent head
+handle), `line_unread` on voice-timed words. Snapshots in `review/v05/` (read):
+* `sheet_a.jpg`: local 7-125, the cut-ins and the T1 lockups, with the "straight" pop 86 / 88.
+* `sheet_b.jpg`: 126-213, the two new shots, the strip pops + glow flashes 174 / 176 / 178, the ground 182, "let" 191, "go." 197, 202, 207, and the tail 213.
+* `sheet_v05-lockups_over-footage.jpg` + `comp/`: the overlay composited over each shot's source frame (a look check, not the finish).
+
+B9 local 202 = b10-fun local 0, pixel-identical; at 207 / 5 they differ by at most 6 levels on 29 px. Not rendered.
+
 ## v04 (REVISION_v04.md #10, #11, #12). Read this first
 
 Everything else as v03 below (lockups, strips, timing, cues).

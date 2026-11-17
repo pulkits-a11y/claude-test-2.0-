@@ -3,5 +3,6 @@
  "composition": "b03-dundee",
  "render": "05_GFX/renders/b03-dundee.mov",
  "shots": [],
- "note": "v05: no Tesseract shots. The v04 bands moved into HyperFrames: the Dundee band (R3.1) is a [DEPTH] shot (plate -> 'Dundee,' -> hill cut-out, local 41-83) and the BBC team band (R3.7 195.0 s) is a card insert on a blurred copy of itself (local 155-195); the 'It's 1995' section (local 0-41) is two full-frame R3.8 angles with a [DEPTH] '1995'. Opaque on every frame."
+ "note": "v05: no Tesseract shots. The v04 bands moved into HyperFrames: the Dundee band (R3.1) is a [DEPTH] shot (plate -> 'Dundee,' -> hill cut-out, local 41-83) and the BBC team band (R3.7 195.0 s) is a card insert on a blurred copy of itself (local 155-195); the 'It's 1995' section (local 0-41) is two full-frame R3.8 angles with a [DEPTH] '1995'. Opaque on every frame.",
+ "timing": "v05"
 }

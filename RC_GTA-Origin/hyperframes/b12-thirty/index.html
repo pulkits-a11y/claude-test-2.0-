@@ -17,10 +17,10 @@
     </style>
   </head>
   <body>
-    <!-- B12 b12-thirty v05 phase 1 (REVISION_v05 lane 3 + client override; doc 46.5-49.5): beat 78f (2.600 s) + 6f handle
+    <!-- B12 b12-thirty v05 (REVISION_v05 lane 3 + client override; doc 46.5-49.5): beat 78f (2.600 s) + 6f handle
          each end = 90f. Local frame = beat frame + 6. Words: words.json (v05; local frames unchanged, "course," on 9).
          The B4 L9 / M3 calendar returns (same kit component), now CENTRED and LARGER (doc): 88 px cells, 11 px gaps,
-         6 x 5 = 583 x 484 px, grid x 876-1459 / y 425-909 (its left edge leaves the room the 330 px counter needs so that
+         6 x 5 = 583 x 484 px, grid x 860-1443 / y 425-909 (its left edge leaves the room the 330 px counter needs so that
          counter + grid are centred as a group; the lockups sit above it, ink centred on y 250). Kept from v02 (client
          liked it): the opening animation (kit calendarIn from local 5).
          Behind: the dark card + the DMA office (R3.7, BBC 1996 making-of) full frame at 25%, blurred and darkened, the
@@ -30,8 +30,8 @@
          local 26-55   "the eighteen months" (every spoken word on screen, REVISION_v05 G10)
          local 56      "turn into" + "thirty." (tier B, pops + blurs in on 71, white; U2)
          local 65-70   the 12 extra cells fill #E3262B ROW BY ROW, one row every 3 f (2 cells a frame): 65-67 / 68-70
-         local 71      the counter lands on 30 (PHASE 1: the kit v04 odometer, Coolvetica 120 px; PHASE 2: kit v05
-                       slot-machine counter, Coolvetica Italic 330 px, digits blur-roll 14 f from 57, thump on 71)
+         local 57-71   the slot-machine counter (kit v05 fx.slotCounter, Coolvetica Italic 330 px) blur-rolls 18 -> 30 and
+                       lands on "thirty" (71) with the thump
          camera: the calendar pushes 100 -> 108% across the composition (easeInOutSine; doc pacing rule 3: a 3 s card).
          cues.json: ticks per word, whoosh + thump on "thirty.", accelerating ticks into the red rows, thump_low on 71. -->
     <div id="root" data-composition-id="b12-thirty" data-start="0" data-duration="3.0000000" data-width="1920" data-height="1080">
@@ -52,10 +52,15 @@
       <!-- untimed camera wrapper (kit .rc-cam): #b12-cam = the slow held-shot push (v05: 100 -> 108%, eased; no punches).
            Only the calendar is inside; the captions and the background are not. -->
       <div id="b12-cam" class="rc-cam" style="z-index: 3">
-        <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3"></div>
+        <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3">
+          <!-- v05 (doc): the slot-machine counter "18" -> "30" (kit fx.slotCounter, Coolvetica Italic 330 px, U1) left of
+               the grid; inside the calendar so it comes in with it (kit calendarIn); centre (640, 531) = (-220, +106)
+               from the grid's top-left (860, 425), so the digits' top sits on the grid top -->
+          <div id="b12-slot" class="fx-host" style="--x: -220px; --y: 106px"></div>
+        </div>
       </div>
 
-      <!-- caption lockups (kit RCK.type.lockups, white + glow on the dark card; phase 2 regenerates them with kit v05),
+      <!-- caption lockups (kit v05 RCK.type.lockups, white + drop shadow on the dark card; "thirty." = tier B 190 px),
            centred on x 960, ink centred on y 250 above the grid: "Of course," (ONE unit on "course,", local 9) /
            "the eighteen months" (26 / 32 / 44) / "turn into [thirty.]*" (56 / 67; "thirty." pops + blurs in on 71 with
            the counter landing). Generated with T.lockups(w, ['Of course,', 'the eighteen months', 'turn into
@@ -78,8 +83,8 @@
       const TURN = 56, THIRTY = 71, END = 90;
 
       // ---- M3 / L9: the B4 calendar, 18 filled + counter 18 (same kit component), v05: centred and larger (doc): 88 px
-      //      cells, 11 px gaps, grid x 876 / y 425 (583 x 484 at 30 cells) ----
-      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left', sq: 88, gap: 11, x: 876, y: 425 });
+      //      cells, 11 px gaps, grid x 860 / y 425 (583 x 484 at 30 cells); the slot counter at its left (centred group) ----
+      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, sq: 88, gap: 11, x: 860, y: 425 });   // no M3 counter: fx.slotCounter
 
       // ---- opening animation (note 6): the calendar comes into the screen (kit calendarIn: +90 px -> 0, 90 -> 100%,
       //      12f expo.out, opacity 0 -> 1 over 6f power2.out) from local 5: the beat's first frame (local 6) shows it
@@ -88,9 +93,6 @@
 
       // ---- the 18 -> 30 overrun: v05 (doc) the 12 extra cells fill #E3262B ROW BY ROW, one row every 3 f (2 cells a
       //      frame: row 4 on 65-67, row 5 on 68-70), right before the counter lands on "thirty" (71) ----
-      // PHASE 1 counter = the kit's odometer (each digit strip slides up 1 em over 2f, easeInOutQuad), 12 rolls from "turn"
-      // (56), the last one landing on 71. PHASE 2: kit v05 slot-machine counter (Coolvetica Italic 330 px, blur-roll 14 f).
-      const counter = cal.counter;
       const ROW4 = 65, EPS = 1e-4;
       for (let i = 18; i < 30; i++) {                      // cells 19-30 appear filled red, 2 a frame: local 65, 65, 66, 66 ... 70, 70
         const k = ROW4 + Math.floor((i - 18) / 2);
@@ -98,17 +100,10 @@
         tl.set(cal.fills[i], { opacity: 1 }, L(k) - EPS);
       }
       cal.filled = cal.slots = 30;
-      const rollStarts = [56, 57, 58, 60, 61, 62, 63, 64, 65, 67, 68, 69];                   // local frames; +2f = 30 on 71
-      let v = 18;
-      rollStarts.forEach((s) => {
-        const nv = v + 1;
-        counter.strips.forEach((strip) => {
-          const a = Math.floor(v / strip.place), b = Math.floor(nv / strip.place);
-          if (a !== b) tl.fromTo(strip.el, { y: -a * counter.fs }, { y: -b * counter.fs, duration: L(2), ease: 'power1.inOut', immediateRender: false }, L(s));
-        });
-        v = nv;
-      });
-      cal.value = v;   // 30
+
+      // ---- the slot-machine counter (doc 46.5-49.5): "18" -> "30", the digit strips blur-roll 14 f from 57 and land on
+      //      "thirty" (71; the tens column 3 f earlier), Coolvetica Italic 330 px (kit fx.slotCounter); thump_low on 71 ----
+      RCK.fx.slotCounter(tl, '#b12-slot', L(THIRTY - 14), { from: '18', to: '30', frames: 14, size: 330 });
 
       // ---- caption lockups: plain words appear on their frames, "thirty." pops + blurs in, white (kit lockupsWire; U2) ----
       T.lockupsWire(tl);

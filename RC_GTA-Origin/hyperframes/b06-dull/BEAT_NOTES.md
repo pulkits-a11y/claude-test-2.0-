@@ -1,31 +1,29 @@
-# B6 It's dull - `b06-dull` (v04; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+# B6 It's dull - `b06-dull` (v05; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
 
-## v05 phase 1 (REVISION_v05.md lane 2; doc 23.0-27.6) - in progress, phase 2 = kit v05 captions + name pill
-* **70% slow-down** (doc 24.4): baked into new working clips `assets/footage/v05/R5.2_slow.mp4` / `R5.1_slow.mp4`
-  (`tools/make_slow.py`, from the b05 working clips): frame n = B6 local n; rate 1.0 to "dull." (46), eased to 0.70 at 52
-  (easeInOutCubic, the drain's curve and frames), nearest source frame, no blending; continuous source time across the
-  B5/B6 cut. The HyperFrames rate lanes are gone.
-* **"dull."** (doc 24.4 gag; client override U1): Coolvetica **Regular** (upright, not the italic display face), #8A8A8A,
-  180 px, no animation: its clip just starts on 46; only G1's soft drop shadow (for the bright B&W road). Block "it's" over
-  "dull.", left-aligned, centred (x 818-1102, baseline y 633). "it's" = placeholder until the kit v05 tier A. (The Arimo /
-  Playfair copies of the first phase-1 pass are removed: no other fonts than Coolvetica.)
-* **Divider**: b05's white centre divider, static on the split part (local 0-64). Split push 8% (shared with b05).
-* **Gary Penn** (doc 25.0): ONE shot, push 100 -> 112% (easeInOutSine) across the whole hold (64 -> 168). No 140% crop cut
-  (client override U3: no zoom moves); the name pill, the quote mark and the quote words keep it eventful.
-* **Quote** (v03 #9, U1): the lockup "[“awful…]* too* sim-y.”*" regenerated at 135 / 90 px (doc sizes), both rows Coolvetica
-  Italic (`.b06-quote`), each word pops + blurs in on 112 / 129 / 135 (the kit v05 pop replaces the v03 one in phase 2),
-  centred in the empty cinema (`left: 100px`, clear of his face).
-* **[DEPTH] quote mark** (doc 25.2, U1): Coolvetica Italic “, 810 px (Coolvetica's quote glyph is smaller in its em than the
-  doc's serif: 1.5 x the doc's 540 px keeps it giant), #FF2E7E at 25%, fades in 0 -> 25% over 8f from 73;
-  stack inside the camera = plate video -> mark -> cut-out of him (`assets/footage/v05/R6.1_cut.webm`,
-  `tools/make_cutout_v05.sh`: `remove-background` of the same working-clip frames, same grade), so his shoulder hides the
-  mark's lower-left half (edge checked at 200%). `data-layout-allow-occlusion` on the mark (intended).
-* `cues.json` v05: flatline_beep on "dull." (beat 40) with a 6f dropout ending on it, no tick / thump for "dull.";
-  key_words [106 “awful…]; no type_on (U2: pill text appears whole); legacy `dull` (S05) dropped. Stills:
-  `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2 (kit v05): the caption words appear on their frames (U2), "One developer later calls it" (tier A, Coolvetica
-  Regular), "it's" tier A; the kit name pill "GARY PENN" / "DMA Design · Gamasutra, 2011" (Coolvetica, text whole, 70)
-  replaces the v04 lower third and its plate; the kit's pop + blur (white) on the quote words.
+## v05 (REVISION_v05.md lane 2, the 16-page doc with the CLIENT OVERRIDE U; kit v05)
+168 frames, root `data-duration` 5.6000000. Split screen local 0-64, Gary Penn 64-168.
+* **Split screen** (doc 20.0-25.0): b05's white centre divider (static), the shared push to 108%. **70% slow-down** (doc 24.4)
+  baked into new working clips `assets/footage/v05/R5.2_slow.mp4` / `R5.1_slow.mp4` (`tools/make_slow.py`, from the b05
+  working clips): frame n = local n; rate 1.0 to "dull." (46), eased to 0.70 at 52 (easeInOutCubic, the drain's curve and
+  frames), nearest source frame; continuous source time across the B5/B6 cut; the rate lanes are gone. B&W drain as v02.
+* **"dull." gag** (doc 24.4, U1): the kit lockup "it's [dull.]#": "it's" (Coolvetica Regular 54, appears on 38) over "dull."
+  = Coolvetica Regular #8A8A8A 180, no shadow, no animation (appears on 46). The phase-1 Arimo / Playfair copies are gone.
+* **Gary Penn** (doc 25.0-26.3, U3): ONE shot (R6.1 full frame, the v04 dark grade), push 100 -> 112% (easeInOutSine) across
+  the whole hold; no crop cut. Events: name pill 64-70, quote mark 73, "One developer later calls it" 64 / 68 / 85 / 93 /
+  108, the quote 112 / 129 / 135.
+* **Name pill** (doc 25.1, kit `fx.pill`, `fx-pill--name`): lower-left, Coolvetica, "GARY PENN" over "DMA Design ·
+  Gamasutra, 2011"; the pink box wipes in from the left 64-70, both lines appear whole on 70 (U2: no type-on). Replaces the
+  v04 lower third and its plate.
+* **[DEPTH] quote mark** (doc 25.2, U1): Coolvetica Italic “, 810 px, #FF2E7E at 25%, fades in 0 -> 25% over 8f from 73;
+  stack = plate video -> mark -> cut-out of him (`assets/footage/v05/R6.1_cut.webm`, `tools/make_cutout_v05.sh` =
+  `remove-background` of the same frames, same grade), so his shoulder hides its lower-left (edge checked at 200%).
+* **Captions** (kit v05 lockups): "But there's a problem:" (6) / "it's [dull.]#" (38) / "One developer later calls it"
+  (64, tier A) / the quote "[“awful…]* too* sim-y.”*" (tier quote: Coolvetica Italic 135 / 90; each word pops + blurs in
+  on 112 / 129 / 135, client v03 #9), held to the end. The last two sit in the empty cinema right of him (`left: 220px` =
+  centred on x 1180): at x 960 the setup line's first word touched his cheek before the push grows.
+* `cues.json` v05 (`T.lockupCues`): word_pops [0, 3, 11, 13, 32, 58, 62, 79, 87, 102], key_words [106, 123, 129] (the three
+  quote words); flatline_beep on "dull." (40) with a 6f dropout ending on it; "dull." has no tick / thump.
+* Stills: `review/v05/` (`sheet_v05a.jpg` split, `sheet_v05b.jpg` Gary Penn). check: 0 errors.
 
 ## v04 (REVISION_v04.md comments 8, 9) - the Gary Penn quote redesigned like a documentary interview
 Comments 8/9 (0:26-0:27): "this looks bad." / "take some inspirations from scenes of diff production houses". Only the card

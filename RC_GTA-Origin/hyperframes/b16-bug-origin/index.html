@@ -106,14 +106,24 @@
         <video data-hf-id="hf-rt6v" id="b16-rt6" class="clip rc-x7__footage" src="assets/footage/RT6.mp4" data-start="1.1333" data-duration="0.4000" data-media-start="0.0800" data-track-index="8" muted playsinline></video>
       </div>
 
-      <!-- ===== v03 captions (notes 11, 12, 16, 17): lockups like ref 1, centred, every word a hard cut on its frame.
-           1: "So that's why you're always [running.]" over the rewind / document / X7 / black (So 7 .. running. 36), out on "The" (57);
-           ink centre y 660 (not 540) so it clears the document's spotlit title box (y 296-508) during the rewind's landing.
-           2: the T5 line becomes a lockup on the dark (ink) background: "The whole series started with a [bug.]*", the word "bug."
-           (v02 note 8: the word, no chip) big in Coolvetica Italic, starred = pop + blur-in on its frame (local 101 = cue bug);
-           held through the tail handle. No T5 glow copies / leak any more (kit: lockups replace the T5 style). ===== -->
-      <div data-hf-id="hf-bbzh" id="b16-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.6667" data-track-index="3" style="--rc-y: 660px; --rc-lk-c: 106.69px; z-index: 20"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-0xbm" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span data-hf-id="hf-6rrd" class="rc-lw" data-rc-f="7">So</span> <span data-hf-id="hf-qj5n" class="rc-lw" data-rc-f="8">that's</span> <span data-hf-id="hf-191b" class="rc-lw" data-rc-f="18">why</span> <span data-hf-id="hf-6wmv" class="rc-lw" data-rc-f="20">you're</span> <span data-hf-id="hf-4p57" class="rc-lw" data-rc-f="28">always</span></div><div data-hf-id="hf-emsr" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span data-hf-id="hf-7fhk" class="rc-lw" data-rc-f="36">running.</span></div></div></div>
-      <div data-hf-id="hf-7tt2" id="b16-lk-2" class="clip rc-lk" data-start="1.9000" data-duration="2.2666" data-track-index="3" style="--rc-lk-c: 137.8px; z-index: 20"><div data-hf-id="hf-ze3e" class="rc-lk__box"><div data-hf-id="hf-ool2" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span data-hf-id="hf-5hfn" class="rc-lw" data-rc-f="57">The</span> <span data-hf-id="hf-75m6" class="rc-lw" data-rc-f="61">whole</span> <span data-hf-id="hf-1r3c" class="rc-lw" data-rc-f="70">series</span></div><div data-hf-id="hf-9q8w" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span data-hf-id="hf-p51h" class="rc-lw" data-rc-f="80">started</span> <span data-hf-id="hf-bh0w" class="rc-lw" data-rc-f="93">with</span> <span data-hf-id="hf-pebs" class="rc-lw" data-rc-f="100">a</span></div><div data-hf-id="hf-og10" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span data-hf-id="hf-9m8g" class="rc-lw rc-lw--pop" data-rc-f="101">bug.</span></div></div></div>
+      <!-- ===== v05 Win95 error windows (doc 69.0-71.4 "bring back the hook's Win95 error-window cascade over GTA1 top-down
+           footage, as a full callback"): the kit dialog exactly as B2 (lane 1) shows it: 180%, centred on x 960, y 360,
+           errorPop on beat 41 (local 47, error_chord) as the X7 dissolve has revealed the footage, ten copies cascading
+           +36 / +27 px every 2 f from beat 47 (local 53, glitch_stutter); on "bug." (beat 95, local 101, glitch_impact)
+           they snap shut last-in first (3 f, stepF 0.2, gone at local 106 = B2's timing), then a 1-frame white flash
+           (local 106 = beat 100, like B2's 156). ===== -->
+      <div id="b16-err" class="clip fx-host" data-start="1.5666" data-duration="1.9667" data-track-index="9" style="--x: 960px; --y: 360px; z-index: 6"></div>
+      <div id="b16-flash" class="clip fx-host" data-start="3.5000" data-duration="0.1000" data-track-index="10" style="z-index: 60"></div>
+
+      <!-- ===== v05 captions (kit lockups, U1 Coolvetica, U2: every word appears on its frame; only "bug." pops + blurs in):
+           1: "So that's why you're always [running.]" (So 7 .. running. 35), ink centre y 660 (clear of the document's
+           spotlit title during the rewind's landing and of the error window above it), out on "The" (local 56).
+           2: "The whole series started with a" tier A (56-100), then "bug." hero 450 px (Coolvetica Italic, pop + blur-in on
+           local 101) with the kit RGB split (6 px -> 2 px, never settles); ink centre y 310: the tier A line sits above the
+           window stack (clear of it) and "bug." lands where the first window was as the windows snap shut. Held through
+           the tail handle. ===== -->
+      <div id="b16-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2333" data-duration="1.6333" data-track-index="3" style="--rc-y: 660px; --rc-lk-c: 102.81px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="7">So</span> <span class="rc-lw" data-rc-f="8">that's</span> <span class="rc-lw" data-rc-f="18">why</span> <span class="rc-lw" data-rc-f="20">you're</span> <span class="rc-lw" data-rc-f="28">always</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.65px"><span class="rc-lw rc-lw--key" data-rc-f="35">running.</span></div></div></div>
+      <div id="b16-bug-1" class="clip rc-lk" data-rc-v="5" data-start="1.8666" data-duration="2.3000" data-track-index="3" style="--rc-y: 310px; --rc-lk-c: 188.37px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="56">The</span> <span class="rc-lw" data-rc-f="61">whole</span> <span class="rc-lw" data-rc-f="70">series</span> <span class="rc-lw" data-rc-f="80">started</span> <span class="rc-lw" data-rc-f="92">with</span> <span class="rc-lw" data-rc-f="100">a</span></div><div class="rc-lk__row rc-lk__row--key rc-lk__row--hero" style="font-size: 450px; line-height: 450px; height: 450px; margin-top: -77.93px"><span class="rc-lw rc-lw--key rc-lw--hero rc-lw--pop" data-rc-f="101">bug.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -122,13 +132,15 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, X = RCK.transitions;
+      const T = RCK.type, X = RCK.transitions, FX = RCK.fx;
       const f = (n) => n / 30;   // local frame -> seconds (local frame = beat frame + 6)
 
-      // Word onsets from words.json (v02, comp_t snapped to the nearest frame, local):
-      // So 7, that's 8, why 18, you're 20, always 28, running 36, The 57, whole 61, series 70, started 80, with 93,
+      // Word onsets from words.json (v05 VO, comp_t snapped to the nearest frame, local):
+      // So 7, that's 8, why 18, you're 20, always 28, running 35, The 56, whole 61, series 70, started 80, with 92,
       // a 100, bug 101 (voice ends 112).
-      const W = { The: 57 };
+      const W = { The: 56, bug: 101 };
+      const ERR_POP = 47;        // beat 41: the error window slams in (the X7 dissolve has revealed the footage on 46)
+      const ERR_CASCADE = 53;    // beat 47: ten copies cascade (B2: 6 f after the pop)
       const REWIND_END = 34;     // beat 28: the tape stops; X7 runs beat 28..40
 
       // ---- tracking lines: a new noise pattern, position and strength on every frame of the rewind (seeded, so every
@@ -169,8 +181,17 @@
         for (let n = 29; n <= 34; n++) tl.set('#b16-doc-l7', { scale: Z[n] }, (n - 0.5) / 30);
       })();
 
-      // ---- captions (v03): lockup words hard-cut in on their frames; the starred keyword "bug." pops + blurs in (6f expo.out)
+      // ---- captions (v05): lockup words appear on their frames; the starred hero "bug." pops + blurs in (U2)
       T.lockupsWire(tl);
+      // "bug.": the kit RGB split, 6 px narrowing to 2 px over 6 f, then never settles (+/- 1 px every 2 f) to the clip end
+      FX.rgbSplit(tl, '#b16-bug-1 .rc-lk__row--hero .rc-lw', f(W.bug), { px: 6, settle: 2 });
+
+      // ---- the Win95 error windows: the same calls and values as B2 (callback): pop, cascade, snap shut on "bug.", flash
+      FX.errorWindow('#b16-err', { scale: 1.8 });
+      FX.errorPop(tl, '#b16-err', f(ERR_POP));
+      FX.errorCascade(tl, '#b16-err', f(ERR_CASCADE), { count: 10, dx: 36, dy: 27, stepF: 2 });
+      const shut = FX.errorSnapShut(tl, '#b16-err', f(W.bug), { frames: 3, stepF: 0.2 });   // gone on local 106
+      FX.flash(tl, '#b16-flash', shut, { opacity: 1 });                                       // 1 frame, local 106
 
       tl.set({}, {}, f(125));
       window.__timelines["b16-bug-origin"] = tl;

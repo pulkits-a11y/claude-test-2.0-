@@ -1,7 +1,7 @@
 {
  "tool": "tools/make_x4_stills.py",
  "cli": "hyperframes@0.9.52",
- "captured_utc": "2026-11-17T21:37:48Z",
+ "captured_utc": "2026-11-17T22:15:11Z",
  "stills": {
   "assets/x4/b11-old.png": {
    "frame": 23,
@@ -16,22 +16,23 @@
   }
  },
  "inputs": {
-  "index.html": "9fcecba5a8ab145b63500df8147c23350eb4afb7be18c516ec74cf88f64837b4",
+  "index.html": "8d2e201372001520ffc67496ef55a551b65db2df94bddb69c68655346157081c",
   "x4_stills.json": "8ebc1b905e9f0d1b7358273776e61a6c8c7ff009f2755d79ed92f450bd1c8b16",
   "assets/footage/R11.L1.mp4": "02582361afef79d2f94e35e16725fbb9ed0b89da5b262d888c9b0dc250c87908",
   "assets/footage/R5.1.mp4": "20e140153bc71adbc4380fbc00334fdb616d1e654f730da93b9ed05996ccdee9",
   "assets/footage/R5.2.mp4": "daa7dc47c24fe9b2412fb7c8a40d6abfaaa4d12c163a6c6a98b3b6112710af7f",
   "assets/footage/R5.4.mp4": "52f0131dc96a3fd80b91781cdc9dd2a556e705c2f05d6bac6606a76aa86c28ee",
   "assets/footage/R9.1.mp4": "ccbf76ca22a4a3f105f49a23c0cd4aaa8a855f328e42471dbfef95ddc7575b12",
-  "assets/kit/base.css": "a08350cfb22983b9bb4c08fb2cd748cb29e52eea4310a02a98e4a5858f589925",
-  "assets/kit/motifs.css": "78c1eaa0906e445669389a9e6a7cfc1caa07135915fb0f0cf9292c90d188e6a1",
-  "assets/kit/motifs.js": "1a828426b1a54ccaa456a613ba01b0cb78b22d1a3b3096ff1c6063369d11a307",
+  "assets/kit/base.css": "379b57bce6ab3c389ffaef90d0239287a4490852f4b636b70aba5cca4c02824b",
+  "assets/kit/motifs.css": "e393bf70465dfa8a13cc7e1dd0b3363613b8fff7e1e9bfb31a36aaa03152b40e",
+  "assets/kit/motifs.js": "a80d756569fc4107591420d47a4ab67698cbcbfdff1a794a5f0940e8b8df0dc2",
   "assets/kit/screens.css": "f8a8d8ace1d076144a69aa942728f6763b4fb27840bd38905fa08f72f9f48042",
   "assets/kit/screens.js": "73656830d5df441662aa0df7082c50e60a891cd919d808a0027748586158aca2",
   "assets/kit/transitions.css": "1ed6a0ad32e5bf644fe9b4af74b33d9409151ce1dc717e79817bf053f61d1b0d",
   "assets/kit/transitions.js": "25d4369307be9a594a677a730c7d646f25a611b3ff6ac046f970a2e2dc292642",
-  "assets/kit/type.css": "064d538c1453947a639a9c411f1f877ec60b4a96d053066ed1d7600f8834aa2a",
-  "assets/kit/type.js": "bfc09577d67b85eb4d99318cd124d3939e47dd1651de7ca995ba3549a7341418",
+  "assets/kit/type.css": "43d606fe9571f979c3b1a35c5f5a06869a45a799a6b6733c98f7b878bac880a8",
+  "assets/kit/type.js": "06ea2ed2e7d2505ce9a0b8106eebccd4f703813f43db4d8cb439373a207351cf",
+  "assets/kit/fonts/Arimo-LICENSE.txt": "ee316340ba281306a746941edde09288dda2438879b2f30ed8ef914ec0b9079e",
   "assets/kit/fonts/Coolvetica-Italic.otf": "c0c69a732b4728ffd8a4b993b2155eb345066f0849d4316e322e23bb1ffd7cff",
   "assets/kit/fonts/Coolvetica-Regular.otf": "a7a9b31bc65d442ca97aa33dd588de36a4bb1f6105492a55bfb055ed86398546",
   "assets/kit/fonts/InstrumentSerif-Italic.ttf": "08939b8bdf534afec24ae0ef5e03f948940cd9a8fe08e7fecbad040e62327385",
@@ -43,8 +44,20 @@
   "assets/kit/fonts/Inter-OFL-LICENSE.txt": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
   "assets/kit/fonts/Inter-Regular.ttf": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
   "assets/kit/fonts/Inter-SemiBold.ttf": "78a843fade9d4612a5567302fb595b56976eb5fcebf4fea5a5912d638bafcde3",
+  "assets/kit/fonts/Montserrat-OFL.txt": "f429f739351287574c0c3175a9222bb3e49c7cad3f568a04f2c08d74c107724e",
+  "assets/kit/fonts/PlayfairDisplay-OFL.txt": "c052aafd2a71e90bcee6e69f475029d430a10d548c08ffcae350171f0e9668b1",
+  "assets/kit/fonts/VT323-OFL.txt": "27d9af34210253e7ca1251fbace86c6f65b40031d6ce1a75493a1b2093631298",
+  "assets/kit/fonts/arimo-latin-400-normal.woff2": "c1f056f51c99a65aca53a0a80e71e67916dd7a8ed2423cd11f52193241440b20",
+  "assets/kit/fonts/montserrat-latin-700-normal.woff2": "f9d9e65b15372cebcafc3acd1e664a564c5c4b23278de4d5760de9a13c530371",
+  "assets/kit/fonts/montserrat-latin-800-normal.woff2": "ba826fb84c2e961578adf3a08b5778b87905d4443445d1d56d84f9f157d5ea4b",
+  "assets/kit/fonts/playfair-display-latin-400-italic.woff2": "eabce94d4a69e439cd050755c31f9894ac8a78f93e58b063c6c01f370474e1de",
+  "assets/kit/fonts/playfair-display-latin-700-italic.woff2": "de2f4041e7ef84f418bd0144484e521e8df849aff47762230c981704b9661877",
+  "assets/kit/fonts/playfair-display-latin-900-italic.woff2": "35e6e930a56da13dfeea438ee1f0434c7338ad003cb3b5cdb5f0dee6e15cdaa2",
+  "assets/kit/fonts/playfair-display-latin-900-normal.woff2": "2772c56b28bec10f310634732b0554dd6cced8ad0f723bbdf73f6abc53829ad0",
+  "assets/kit/fonts/vt323-latin-400-normal.woff2": "8ddbebcc1048154132e1d78eb9b1f7850bca1b7d857035ccf1cb4318ebc615b6",
   "assets/kit/svg/motifs-bug-chip.svg": "7f43c8c4d8df265b992d74c40c87e9747a7e3229076b0d709fad1cf8ea464a2e",
   "assets/kit/svg/motifs-bug.svg": "e6974aeae7dd300d34a6cf3326a69cb9b3e7ca884c379ee623e191ac149999be",
-  "assets/kit/svg/motifs-star.svg": "9bbc41f576f06055b1fc5fd50b977b16be166645e7de39b45ab1cf2d900b3449"
+  "assets/kit/svg/motifs-star.svg": "9bbc41f576f06055b1fc5fd50b977b16be166645e7de39b45ab1cf2d900b3449",
+  "assets/kit/tex/grain.png": "8d751b775843f9abb040782c13c37bd35786c6b393f4229c4a8ff966dc7e7b31"
  }
 }

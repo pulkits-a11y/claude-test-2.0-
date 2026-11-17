@@ -1,5 +1,38 @@
 # B12 Eighteen becomes thirty — `b12-thirty` (v02: beat 78f = 2.600 s; composition 90f with 6f handles)
 
+## v05 (REVISION_v05.md lane 3). Read this first
+
+Beat 78 f, composition 90 f (root `data-duration="3.0000000"`): unchanged. Kept from v02-v04: the dark card (`.rc-card`)
+and the kit `calendarIn` opening from local 5.
+
+| Change | Doc |
+|---|---|
+| **Office footage behind** (doc 46.5: "blurred, darkened office footage (25%) behind the whole stretch"): R3.7 (BBC 1996 making-of at DMA), full frame, crop 1440:1080:240:0. It matches b13-gta's ground exactly: media-treatment exposure -1, saturation -30%, blur 1, at 25% on the UNTIMED wrapper `#b12-bg-dim` (the runtime drives a clip's own opacity). Source 173.4-176.4 s, so both sides of the B12 -> B13 cut show 176.2 s (continuous). R3.8 removed | doc, lane 4 |
+| **Grid centred and larger**: 88 px cells / 11 px gaps (was 64 / 8), 6 x 5 = 583 x 484 px at x 860 / y 425. Counter + grid are centred as a group | doc |
+| **Slot counter "18" -> "30"**: kit `fx.slotCounter`, Coolvetica Italic 330 px, a 14 f blur-roll over local 57-71 that lands on "thirty." (71) with `thump_low`. Host `#b12-slot` sits inside the calendar (it comes in with it), at (-220, +106) from the grid's top-left. The old M3 counter is not built | doc |
+| **12 red cells** (#E3262B) fill row by row, one row every 3 f at 2 cells a frame: row 4 on local 65-67, row 5 on 68-70 (hard cuts). Accelerating ticks run under them | doc |
+| **Captions = kit v05 lockups** (white + drop shadow, ink centred on y 250, `card: true`): "Of course," as ONE unit on "course," (local 9; "Of" moved from 6 by hand), "the eighteen months" (26 / 32 / 44), "turn into [thirty.]*" (56 / 67). "thirty." is tier B 190 px and pops + blurs in on 71 | doc, U1, U2 |
+| Push 100 -> 108% across the composition (was 104%) | pacing rule 3 |
+
+**cues.json v05**:
+* events {}: v04's S11 count-up is replaced by the ticks + thump.
+* word_pops 3 / 20 / 26 / 38 / 50 / 61, key_words 65.
+* sfx `tick` (gain_db -22) on 51, 54, 56, 58, 59, 60, 61, 62, 63, 64: accelerating, the roll from 51 and the red rows 59-64. `thump_low` on 65.
+* No dropouts. Archival none: the office footage is a 25% background, not full frame.
+
+`tesseract_shots.json` has `"timing": "v05"` (no shots).
+
+**Verification (v05)**: `check --json` 0 errors. Warnings:
+* `escaped_container`: the slot host is anchored outside the calendar's box on purpose.
+* `content_overlap`: the slot strip's clipped next digit.
+* kit lockup nesting, `line_unread` on voice-timed words.
+
+Snapshots in `review/v05/` (read, `sheet_a.jpg`):
+* The head 0, calendarIn 6 / 17, "Of course," 9, the 26, months 44, turn 56.
+* The roll 57 / 60 / 64, row 4 at 65 / 67, row 5 at 68 / 70, the counter landing with "thirty." 71, then 74 / 77, 83, and the tail 89.
+
+Not rendered.
+
 ## v04 (REVISION_v04.md #7). Read this first
 
 No change asked for B12. Kit refreshed (v04): the dark card now carries the kit's static scanline texture (#7: scanlines

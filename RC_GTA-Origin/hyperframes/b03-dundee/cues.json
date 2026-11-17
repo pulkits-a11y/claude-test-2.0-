@@ -8,23 +8,18 @@
   113,
   122,
   149,
-  159,
-  166
+  159
  ],
  "key_words": [
   8,
   35,
   77,
   131,
-  162
+  162,
+  166
  ],
  "sfx": [],
  "dropouts": [],
- "archival": [
-  [
-   0,
-   122
-  ]
- ],
- "note": "v05 beat frames (f0 = 'It's' = local 6; beat 183f, REVISION_v05 U7). word_pops (caption words that simply appear): 'It's' 1, 'in' 31, 'Scotland.' 50, 'the' 109, 'studio' 113, 'behind' 122, 'starts' 149, 'a' 159, 'game.' 166. key_words: '1995' 8 (hero, [DEPTH] behind the developer, enters with the client's glow flicker; also the hard cut from office angle 1 to angle 2), 'Dundee,' 35 ([DEPTH] behind the Law, pops), the DMA logo pop on 'DMA' 77 (the client's logo stands for 'DMA Design,'; U11), 'Lemmings,' 131 (pops), 'new' 162 ('new game.' is one tier-B key phrase: whoosh + thump on 'new', a tick on 'game.' 166 so two thumps do not land 4f apart). archival 0-122 = full-frame 1990s / old camera pictures: the R3.8 DMA office, two angles 0-35, the old Dundee photograph 35-77 (the finish wobbles the whole frame, depth words included), the R3.8 door plate + staffer 77-109, the R3.7 BBC map 109-122. Not archival: the R3.3 Lemmings box 122-131 (modern /noclip footage), the R3.6 Amiga intro 131-149 (game), the R3.7 team card insert 149-183 (a card on a blurred copy, not full frame; the kit card insert decides its archival look). No SFX of its own (no pill, no type-on: U2, U11)."
+ "archival": [],
+ "note": "v05 beat frames (f0 = 'It's' = local 6; beat 183f, REVISION_v05 U7). word_pops / key_words = RCK.type.lockupCues of the lockups (prep/gen_captions.cjs -> prep/cues_words.json): word_pops 'It's' 1, 'in' 31, 'Scotland.' 50, 'the' 109, 'studio' 113, 'behind' 122, 'starts' 149, 'a' 159; key_words '1995' 8 (hero, glow flicker; also the cut to office angle 2), 'Dundee,' 35, 'Lemmings,' 131, 'new' 162, 'game.' 166 (the kit counts every key-group word), plus 77 = the DMA logo pop on 'DMA' (the client's logo stands for 'DMA Design,'; U11). archival: none listed: B3 has no Tesseract shots; its HF-embedded 1990s / old footage (office angles, Dundee plate + cut-outs, door plate, staffer, map, the card's clip) carries the kit's archivalGrading (aberration + VHS wobble) in the composition. No SFX of its own (no pill, no type-on: U2, U11); the location tag and the yellow circle are silent in REVISION_v05 S."
 }

@@ -23,9 +23,9 @@
     </style>
   </head>
   <body>
-    <!-- B11 b11-flip v05 phase 1 (REVISION_v05 lane 3 + client override U6: the v04 glitch on "flips" stays; front = B5 v05's 8% push + white divider; back push 108%; "cop" strike-through waits for kit v05): beat 152f (5.067s) + 6f handle each end = 164f.
+    <!-- B11 b11-flip v05 (REVISION_v05 lane 3 + client override U6: the v04 glitch on "flips" stays, no 3D flip; front = B5 v05's 8% push + white divider; back push 108%; "cop" struck through in #E3262B over 6 f; the yellow "you" arrow kept): beat 152f (5.067s) + 6f handle each end = 164f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.2667s (local frames 6 .. 158).
-         Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B11 p.24-25).
+         Word timings: words.json (v05; local frames unchanged). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v05.md. Plan: ../../00_Brief/ (B11 p.24-25).
          Owner: HF for the whole beat (opaque). Into the beat: X1. T1 only (rotation p.13).
          v02 note 5 ("instead of a flip animation, add a glitch animation there. for what you used when the voice over said
          'it breaks'"): the 180 deg L11 flip is replaced by B8's X4 pixel-block tear (same settings as b08-break v02: still mode, 8f, seed 8,
@@ -39,8 +39,9 @@
                        police SUV chasing (R5.4); held-shot push 100 -> 108% (sine.inOut; v05 pacing rule) from the cut to the
                        end; no punches.
          local 103   : on "Now" the M2 arrow redraws over 8f and points at the getaway car (same arrow as B5 and v01).
-         v03 captions: three centred lockups (kit RCK.type.lockups): "So the team [flips] the whole game." / "You're not
-         the [cop] anymore." / "Now you're the one being [chased.]*" (words hard-cut in; "chased." pops + blurs in). -->
+         v05 captions: three centred lockups (kit v05 RCK.type.lockups, y 500): "So the team [flips] the whole game." /
+         "You're not the [cop] anymore." / "Now you're the one being [chased.]*" (words appear; "chased." pops + blurs in,
+         white); local 83: "cop" struck through in red (kit annotate strike, 6 f). -->
     <div data-hf-id="hf-sf56" id="root" data-composition-id="b11-flip" data-start="0" data-duration="5.4666667" data-width="1920" data-height="1080">
 
       <!-- L11 split screen (plan p.15). Look: the B5 game grade {"adjust":{"contrast":0.15}} (plan p.10 "Game footage: punchy
@@ -114,9 +115,13 @@
            hard cuts in). Above the tear and the arrow (z 30), steady. No X9 on "cop" (motif discipline, as v01/v02).
            Generated with T.lockups(w, ['So the team [flips] the whole game.', "You're not the [cop] anymore.", "Now you're the
            one being [chased.]*"], { from: 0, end: 164/30, y: 500 }). -->
-      <div id="b11-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.9666" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 150.5px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="6">So</span> <span class="rc-lw" data-rc-f="9">the</span> <span class="rc-lw" data-rc-f="15">team</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="23">flips</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 15.3px"><span class="rc-lw" data-rc-f="33">the</span> <span class="rc-lw" data-rc-f="42">whole</span> <span class="rc-lw" data-rc-f="52">game.</span></div></div></div>
-      <div id="b11-lk-2" class="clip rc-lk" data-start="2.1666" data-duration="1.2667" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 145.48px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="65">You're</span> <span class="rc-lw" data-rc-f="72">not</span> <span class="rc-lw" data-rc-f="76">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="79">cop</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 5.28px"><span class="rc-lw" data-rc-f="83">anymore.</span></div></div></div>
-      <div id="b11-lk-3" class="clip rc-lk" data-start="3.4333" data-duration="2.0333" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 106.69px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="103">Now</span> <span class="rc-lw" data-rc-f="107">you're</span> <span class="rc-lw" data-rc-f="117">the</span> <span class="rc-lw" data-rc-f="122">one</span> <span class="rc-lw" data-rc-f="128">being</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span class="rc-lw rc-lw--pop" data-rc-f="135">chased.</span></div></div></div>
+      <div id="b11-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2000" data-duration="1.9666" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 145.29px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="6">So</span> <span class="rc-lw" data-rc-f="9">the</span> <span class="rc-lw" data-rc-f="15">team</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key" data-rc-f="23">flips</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 54px; line-height: 54px; height: 54px; margin-top: 16.47px"><span class="rc-lw" data-rc-f="33">the</span> <span class="rc-lw" data-rc-f="42">whole</span> <span class="rc-lw" data-rc-f="52">game.</span></div></div></div>
+      <div id="b11-lk-2" class="clip rc-lk" data-rc-v="5" data-start="2.1666" data-duration="1.2667" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 140.78px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="65">You're</span> <span class="rc-lw" data-rc-f="72">not</span> <span class="rc-lw" data-rc-f="76">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key" data-rc-f="79">cop</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 54px; line-height: 54px; height: 54px; margin-top: 7.45px"><span class="rc-lw" data-rc-f="83">anymore.</span></div></div></div>
+      <div id="b11-lk-3" class="clip rc-lk" data-rc-v="5" data-start="3.4333" data-duration="2.0333" data-track-index="10" style="--rc-y: 500px; --rc-lk-c: 102.81px; z-index: 30"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="103">Now</span> <span class="rc-lw" data-rc-f="107">you're</span> <span class="rc-lw" data-rc-f="117">the</span> <span class="rc-lw" data-rc-f="122">one</span> <span class="rc-lw" data-rc-f="128">being</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.65px"><span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="135">chased.</span></div></div></div>
+      <!-- v05 (doc 44.2 / REVISION_v05 lane 3): "cop" struck through with the kit's red #E3262B marker (fx.annotate type
+           'strike', 6 f, marker texture + jitter) on "anymore." (local 83), held until the lockup cuts on "Now" (103). The line
+           crosses the middle of the x-height of "cop" (measured at local 83: x 824-1111, y 450-552) with ~14 px overshoot. -->
+      <div id="b11-strike" class="clip fx-host" data-start="2.7666" data-duration="0.6667" data-track-index="8" style="z-index: 31"></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -156,8 +161,12 @@
       //      geometry as b05-copgame (the same arrow), now on the getaway car ----
       M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [850, 862], to: [712, 762], bend: 0.16, seed: 7, label: 'you', labelAt: [880, 898] });
 
-      // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their frames, "chased." pops + blurs in ----
+      // ---- v05 caption lockups (kit v05: Coolvetica Regular 54 setup / Italic 190 keys, white + drop shadow): plain words
+      //      appear on their frames, "chased." pops + blurs in (U2: no siren colour flicker) ----
       T.lockupsWire(tl);
+
+      // ---- "cop" struck through: red #E3262B marker, drawn over 6 f from "anymore." (doc 44.2), kit v05 annotate ----
+      RCK.fx.annotate(tl, '#b11-strike', f(83), { type: 'strike', from: [810, 504], to: [1125, 496] });
 
       window.__timelines["b11-flip"] = tl;
     </script>

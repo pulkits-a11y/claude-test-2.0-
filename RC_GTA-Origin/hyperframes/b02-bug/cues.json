@@ -1,2 +1,63 @@
-{"events": {"tear": 95, "bug": 141},
- "note": "v03 = v02 beat frames (f0 = 'Because'; the words did not move). tear = 'broke.' onset = the X4 tear's first frame (S03: start the error file 3f earlier, f92). bug = the spoken word 'bug' (v03: the caption lockup's starred keyword, pop + blur-in; v02's key punch on it is gone; no SFX uses this key). The B2 -> B3 zoom-through (local 169-175 = beat f163-169) is silent (no new sound). v04: events unchanged; '1995,' glow-flickers from its onset (beat f24 = local 30, steady from f38), no SFX of its own."}
+{
+ "timing": "v05",
+ "events": {},
+ "word_pops": [
+  1,
+  13,
+  21,
+  55,
+  56,
+  63,
+  69,
+  125,
+  136,
+  156
+ ],
+ "key_words": [
+  24,
+  82,
+  95,
+  141
+ ],
+ "hook_cuts": [
+  19,
+  59,
+  150
+ ],
+ "sfx": [
+  {
+   "f": 1,
+   "name": "keyboard_clatter",
+   "dur_f": 18
+  },
+  {
+   "f": 95,
+   "name": "error_chord"
+  },
+  {
+   "f": 101,
+   "name": "glitch_stutter"
+  },
+  {
+   "f": 145,
+   "name": "glitch_impact"
+  },
+  {
+   "f": 162,
+   "name": "glitch_stutter",
+   "gain_db": -16
+  }
+ ],
+ "dropouts": [
+  {
+   "f": 1,
+   "frames": 4
+  },
+  {
+   "f": 95,
+   "frames": 4
+  }
+ ],
+ "archival": [],
+ "note": "v05 (beat frames, f0 = beat start = edit 4.4667 s; B2 = 169 f; local = beat + 6). word_pops / key_words = T.lockupCues (Because 1, back 13, in 21, 1995, 24 hero; a 55, game 56, about 63, chasing 69, criminals 82 key; broke. 95 hero pop; And 125, that 136, bug 141 key) + 156 = the pill text landing (\"saved it.\" 148 / 156 are in the pill). sfx: keyboard_clatter 1-19 (doc 4.5-5.1 s, the over-shoulder CRT); error_chord 95 = the Win95 window slams in on \"broke.\" (= B16 f41, lane 4); glitch_stutter 101 = the cascade starts (doc: \"critical stop chord, then a hard glitch stutter\"); glitch_impact 145 = the windows snap shut (= B16 f95, lane 4); a quieter glitch_stutter 162 = the pill leaves through the pink pixel glitch into B3. dropouts: 4 f before \"Because\" (f1, doc beat 4) and before \"broke.\" (f95, doc 2.7). hook_cuts: 19 the CRT close-up (5.1 s), 59 full-screen GTA 1 after the zoom-through, 150 the clean ram shot after the snap-shut + white flash. The R3.7 plate (local 0-25, BBC 1996 archival) is HF-embedded and carries the kit archivalGrading itself (no Tesseract archival range). Legacy events (tear, bug) dropped."
+}

@@ -1,15 +1,24 @@
-# B8 The break - `b08-break` (v04 kit; v03 content; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+# B8 The break - `b08-break` (v05; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
 
-## v05 phase 1 (REVISION_v05.md lane 2; doc 31.0-33.0) - in progress, phase 2 = kit v05 components
-* b07's single article shot continued: `#b08-artCam` plays the push curve 49..88 of 88 (118% on "breaks").
-* **Dim + blur** (doc 31.0-32.0, "Then, something"): black over the page 0 -> 70% (= the article at 30%) and blur 0 -> 30 px
-  on screen (18.5 layout px at the ~1.6x page scale; page image through its media-treatment blur control with a custom ease
-  that follows the px curve, DOM layers by CSS), 7 -> 37, easeInOutSine. X4 still rebuilt (`x4_still.sh`).
-* `cues.json` v05: reverse_cymbal ending on "breaks." (33) + glitch_stutter 33 + a 4f dropout ending on it, key_words [33];
-  legacy breaks / first_black dropped. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2 (kit v05): on "breaks" the pink pixel glitch is the FRAME transition and the hero word "breaks." (450 px,
-  Coolvetica Italic) simply appears (client override U2), the Win95 window flashed 2f behind it, the dark card v05 (grain
-  + faint footage) instead of flat black; the "Then, something" lockup (words appear). No stamp anywhere (U5).
+## v05 (REVISION_v05.md lane 2, the 16-page doc with the CLIENT OVERRIDE U; kit v05)
+71 frames, root `data-duration` 2.3666667.
+* **0-42**: b07's article shot continued (push to 118% on "breaks", the landed pink strokes, the spotlight). On "Then,
+  something" (doc 31.0) the article dims to 30% (black 0 -> 70%) and blurs to 30 px on screen (18.5 layout px: the page
+  image through its media-treatment blur control, the DOM layers by CSS), 7-37, easeInOutSine.
+* **The break on "breaks" (39)** (doc 32.0, U2): the kit's pink pixel glitch is the FRAME transition (`fx.glitch` 'cut', 7f,
+  39-45, RGB split 9 px on 41-44, the picture shaking 18 px); the cut to the dark card is on its middle frame (42). The hero
+  "breaks." (Coolvetica Italic 450, `[[breaks.]]`) simply appears on 39 above it all (no glitch-in on the word). The Win95
+  window (the hook's dialog: `fx.errorWindow`, scale 1.8, at b02-bug's place x 960 / y 420) flashes 2 frames behind the word
+  (39-40, `fx.errorFlash`).
+* **42-71: the v05 dark card** (`fx.darkCardHTML`: #0E0E10 + grain + scanlines + GTA 1 at 20%, blurred 40 px, darkened)
+  instead of flat black (0.77 s to the beat end, cards 0.8 s max). The footage = R9.1 (GTA 1, the hook's bug shot: b02-bug's
+  window start and 16:9 crop 536:302:260:153), added to `footage.json` and synced.
+* Removed: the X4 still-mode tear, the black, the T10 glitch word (`assets/x4/b08-old.png` and `x4_still.sh` are no longer
+  used). No stamp anywhere (U5).
+* **Captions**: "Then, something" (7 / 25, appear, ink centre y 840 under the dimming article) and the hero "breaks." (39).
+* `cues.json` v05 (`T.lockupCues`): word_pops [1, 19], key_words [33]; reverse_cymbal ENDS at 29 (= 33 minus the 4f dropout,
+  so it is heard), glitch_stutter 33, a 4f dropout ending on 33. Legacy breaks / first_black dropped.
+* Stills: `review/v05/sheet_v05.jpg`. check: 0 errors.
 
 ## v04 (kit refresh only)
 `python3 tools/new_beat.py B8 --refresh` (kit v04): the full-frame black screen behind T10 "breaks." (`.rc-ink.rc-full`,

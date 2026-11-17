@@ -26,23 +26,16 @@
       #b04-lk-called { position: absolute; left: 918px; top: 306.8px; width: 700px; height: 36px; color: #FFFFFF;
         text-shadow: 0 4px 12px rgba(0, 0, 0, 0.45); }
       #b04-lk-called .rc-lk__row { font-size: 36px; line-height: 36px; height: 36px; }
-      /* TODO kit v05 placeholders, page px (they push and tilt with the page) */
+      /* kit v05 highlighter sweep / circle hosts, page px (they push and tilt with the page) */
       #b04-hl { position: absolute; left: 900px; top: 360px; width: 388px; height: 66px; }       /* "Race'n'Chase" 918-1269 x 369-417 */
       #b04-circ { position: absolute; left: 925px; top: 648px; width: 337px; height: 106px; }   /* "March 22, 1995" 975-1212 x 687-714 */
 
-      /* ---- the grid (local 46-112): near-black + the 1990s DMA office blurred ~45 px at 25% behind the 18 cells; two
-         office angles with a hard cut at 70 (doc 19.0). Each office video is laid out at 1/4 size (480 x 270) and scaled
-         x 4.2 by its static wrapper (media-treatment blur at max: it works in source px, ~30 px on screen). Provisional for the kit
-         v05 dark card (#0E0E10 + grain + blurred footage). */
-      #b04-bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #0E0E10; }
-      .b04-off-wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; opacity: 0.25; }
-      .b04-off-scale { position: absolute; left: 720px; top: 405px; width: 480px; height: 270px; transform: scale(4.2); transform-origin: 50% 50%; }
-      .b04-off { position: absolute; left: 0; top: 0; width: 480px; height: 270px; object-fit: cover; }
+      /* ---- the grid (local 46-112): two kit dark cards (#0E0E10 + the office blurred ~45 px at 25 % + grain + scanlines) */
       /* the caption block around the grid (Coolvetica, U1): setup line above, "18" (Coolvetica Italic 330 px) left of the
          grid, "months." (tier B 190 px) under the grid's right edge; block ink x 549-1371, centred. */
       .b04-free { display: block; }
-      #b04-setup { position: absolute; left: 549px; top: 297px; height: 60px; }
-      #b04-setup.rc-lk__row { font-size: 60px; line-height: 60px; }
+      #b04-setup { position: absolute; left: 549px; top: 302.2px; height: 54px; }   /* tier A 54 px (kit v05), baseline 349 */
+      #b04-setup.rc-lk__row { font-size: 54px; line-height: 54px; }
       /* line box tightened to the glyph (236 px, baseline still at 609 = the grid bottom - 4): the 330 px box overlapped the
          setup line's box (check content_overlap); Coolvetica: baseline = top + (lh - 1.2 em) / 2 + 0.967 em */
       #b04-18 { position: absolute; left: 549px; top: 369.9px; height: 236px; }
@@ -59,9 +52,9 @@
                    05_GFX/shared/racenchase_title_page_dark_v05.jpg), full frame, tilted -4 deg, push 100 -> 115% (6 -> 46,
                    sine.inOut; head handle at 100%). "It's called" (6, 12) printed above the title box. 16-24 (v04 17.2)
                    pink highlighter sweep across "Race'n'Chase" (screen blend on the dark page) and 28-37 (v04 17.6) yellow
-                   hand-drawn circle round "March 22, 1995": TODO kit v05 (placeholders #b04-hl, #b04-circ, page px).
+                   hand-drawn circle round "March 22, 1995" (kit RCK.fx.highlight / annotate, page px).
            46-112  hard cut (pause after "Chase,") to the 18-cell grid (72 px cells, 9 px gaps, 6 x 3) over the 1990s DMA
-                   office (blurred ~45 px, 25%) on near-black: angle A R3.8 (46-70), hard cut at 70 (v04 19.0; no punch-in,
+                   office (two kit dark cards, blurred ~45 px at 25%): angle A R3.8 (46-70), hard cut at 70 (v04 19.0; no punch-in,
                    U3) to angle B R3.7 (70-112); a cell fills every 2f from 47 (18th on "eighteen" 81), a tick per cell
                    (cues.json); "and it's planned to take" (49/52/59/70/76) above, "18" Coolvetica Italic 330 px left of
                    the grid (81, pop + blur in: the beat's chosen hero), "months." tier B under it (88). -->
@@ -72,33 +65,32 @@
         <div data-hf-id="hf-tl21" id="b04-page-tilt">
           <div data-hf-id="hf-bquq" id="b04-page" data-layout-allow-overflow="">
             <img data-hf-id="hf-blr7" id="b04-page-img" class="clip" data-layout-allow-occlusion="" src="assets/page/racenchase_title_page_dark_v05.jpg" data-start="0" data-duration="1.5333" data-track-index="1" alt="Race'n'Chase Game Design, Version 1.05, March 22, 1995, (c) 1995 DMA Design Ltd">
-            <!-- TODO kit v05 (highlighter sweep): #FF2E7E 55 %, SCREEN blend (dark page), wipes left -> right over 8f from
-                 local 16 (v04 17.2), over "Race'n'Chase" (page px 918-1269 x 369-417); held to the cut (46). No push under
-                 it (the page's own 115% push continues; U3). -->
-            <div data-hf-id="hf-39zi" id="b04-hl" class="clip" data-start="0.5333" data-duration="1.0000" data-track-index="2"></div>
-            <!-- TODO kit v05 (hand-drawn annotation): yellow #FFD23F circle round "March 22, 1995" (page px 975-1212 x 687-714),
-                 drawn on over 8-10f from local 28 (v04 17.6), slight jitter; held to the cut (46). -->
-            <div data-hf-id="hf-d6cx" id="b04-circ" class="clip" data-start="0.9333" data-duration="0.6000" data-track-index="3"></div>
+            <!-- pink highlighter sweep (RCK.fx.highlight, fx-hl--dark = screen on the dark page) across "Race'n'Chase" (page px
+                 918-1269 x 369-417 + padding), wiping left -> right over 8f from local 16 (v04 17.2); held to the cut (46); no
+                 push under it (U3: the page's own 115% push continues) -->
+            <div id="b04-hl-clip" class="clip" data-start="0.5333" data-duration="1.0000" data-track-index="2" style="position: absolute; left: 0; top: 0; width: 2097px; height: 1080px">
+              <div id="b04-hl" class="fx-hl fx-hl--dark" style="left: 902px; top: 362px; width: 384px; height: 62px"></div>
+            </div>
+            <!-- yellow hand-drawn circle (RCK.fx.annotate) round "March 22, 1995" (page px 975-1212 x 687-714), drawn on over
+                 9f from local 28 (v04 17.6); page px, so it pushes and tilts with the page (stroke 6 page px = 9 px on screen) -->
+            <div id="b04-ann" class="clip fx-host" data-start="0.9333" data-duration="0.6000" data-track-index="3"></div>
             <!-- tier A setup line "It's called" (6 / 12): the printed, highlighted title is the line's key word -->
-            <div data-hf-id="hf-ii1r" id="b04-lk-called" class="clip" data-start="0.2000" data-duration="1.3333" data-track-index="4"><div data-hf-id="hf-aaqu" class="rc-lk__row rc-lk__row--lead"><span data-hf-id="hf-c66d" class="rc-lw" data-rc-f="6">It's</span> <span data-hf-id="hf-07ys" class="rc-lw" data-rc-f="12">called</span></div></div>
+            <div data-hf-id="hf-ii1r" id="b04-lk-called" class="clip" data-rc-v="5" data-start="0.2000" data-duration="1.3333" data-track-index="4"><div data-hf-id="hf-aaqu" class="rc-lk__row rc-lk__row--lead"><span data-hf-id="hf-c66d" class="rc-lw" data-rc-f="6">It's</span> <span data-hf-id="hf-07ys" class="rc-lw" data-rc-f="12">called</span></div></div>
           </div>
         </div>
       </div>
 
       <!-- ============ the grid (local 46..112) ============ -->
       <div data-hf-id="hf-3ruo" id="b04-grid" style="position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 2">
-        <div data-hf-id="hf-a9ps" id="b04-bg" class="clip" data-start="1.5333" data-duration="2.2000" data-track-index="5"></div>
-        <!-- angle A: R3.8 developer at his desk (46-70) -->
-        <div data-hf-id="hf-3j7y" class="b04-off-wrap" data-layout-allow-overflow=""><div data-hf-id="hf-r5wz" class="b04-off-scale">
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-90ek" id="b04-offA" class="clip b04-off" src="assets/footage/R3.8.mp4" data-start="1.5333" data-duration="0.8000" data-media-start="0.1" data-track-index="6" muted playsinline></video>
-        </div></div>
-        <!-- angle B after the hard cut at 70: R3.7 BBC 1996, a developer and the presenter at a desk (70-112) -->
-        <div data-hf-id="hf-436a" class="b04-off-wrap" data-layout-allow-overflow=""><div data-hf-id="hf-axar" class="b04-off-scale">
-          <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-f0kv" id="b04-offB" class="clip b04-off" src="assets/footage/R3.7.mp4" data-start="2.3333" data-duration="1.4000" data-media-start="0.1" data-track-index="7" muted playsinline></video>
-        </div></div>
+        <!-- the 1990s DMA office behind the grid: two kit dark cards (prep/gen_b04.cjs), angle A R3.8 46-70, hard cut at 70
+             (v04 19.0) to angle B R3.7 70-112 -->
+        <!-- @dark -->
+<div id="b04-darkA" class="fx-dark" style="z-index: 1"><div id="b04-darkA-base" class="clip fx-fill fx-dark__base" data-start="1.5333" data-duration="0.8000"></div><div class="fx-dark__loop" style="opacity: 0.25"><div class="fx-card__bgscale" data-layout-allow-overflow style="width: 1118.72px; height: 629.28px; transform: translate(-144px, -81px) scale(1.97368)"><video id="b04-darkA-loop" class="clip " src="assets/footage/R3.8.mp4" data-start="1.5333" data-duration="0.8000" data-media-start="0.1000" muted playsinline data-color-grading='{"preset":null,"intensity":1,"adjust":{"exposure":0,"contrast":0,"highlights":0,"shadows":0,"whites":0,"blacks":0,"temperature":0,"tint":0,"vibrance":0,"saturation":0},"effects":{"blur":1}}'></video></div></div><div id="b04-darkA-tex" class="clip fx-fill fx-dark__tex" data-start="1.5333" data-duration="0.8000"></div></div>
+<div id="b04-darkB" class="fx-dark" style="z-index: 1"><div id="b04-darkB-base" class="clip fx-fill fx-dark__base" data-start="2.3333" data-duration="1.4000"></div><div class="fx-dark__loop" style="opacity: 0.25"><div class="fx-card__bgscale" data-layout-allow-overflow style="width: 1118.72px; height: 629.28px; transform: translate(-144px, -81px) scale(1.97368)"><video id="b04-darkB-loop" class="clip " src="assets/footage/R3.7.mp4" data-start="2.3333" data-duration="1.4000" data-media-start="0.1000" muted playsinline data-color-grading='{"preset":null,"intensity":1,"adjust":{"exposure":0,"contrast":0,"highlights":0,"shadows":0,"whites":0,"blacks":0,"temperature":0,"tint":0,"vibrance":0,"saturation":0},"effects":{"blur":1}}'></video></div></div><div id="b04-darkB-tex" class="clip fx-fill fx-dark__tex" data-start="2.3333" data-duration="1.4000"></div></div>
+<!-- /@dark -->
         <!-- the M3 calendar (kit): 18 slots, 72 px cells, 9 px gaps, 6 columns = 477 x 234 at (894, 379) -->
-        <div data-hf-id="hf-oe7l" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="8"></div>
-        <div data-hf-id="hf-3os1" id="b04-lk-grid" class="clip rc-lk b04-free" data-start="1.6333" data-duration="2.1000" data-track-index="9">
+        <div data-hf-id="hf-oe7l" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="8" style="z-index: 3"></div>
+        <div data-hf-id="hf-3os1" id="b04-lk-grid" class="clip rc-lk b04-free" data-rc-v="5" data-start="1.6333" data-duration="2.1000" data-track-index="9" style="z-index: 4">
           <div data-hf-id="hf-tvji" id="b04-setup" class="rc-lk__row rc-lk__row--lead"><span data-hf-id="hf-mfe6" class="rc-lw" data-rc-f="49">and</span> <span data-hf-id="hf-qxj6" class="rc-lw" data-rc-f="52">it's</span> <span data-hf-id="hf-o4t4" class="rc-lw" data-rc-f="59">planned</span> <span data-hf-id="hf-djh8" class="rc-lw" data-rc-f="70">to</span> <span data-hf-id="hf-9pu0" class="rc-lw" data-rc-f="76">take</span></div>
           <div data-hf-id="hf-szv7" id="b04-18" class="rc-lk__row rc-lk__row--key"><span data-hf-id="hf-k9h8" class="rc-lw rc-lw--pop" data-rc-f="81">18</span></div>
           <div data-hf-id="hf-3yr1" id="b04-months" class="rc-lk__row rc-lk__row--key"><span data-hf-id="hf-c0aj" class="rc-lw" data-rc-f="88">months.</span></div>
@@ -113,7 +105,7 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, M = RCK.motifs, C = RCK.cam;
+      const T = RCK.type, M = RCK.motifs, C = RCK.cam, FX = RCK.fx;
       const L = (n) => n / 30;                       // local frame -> seconds (local frame = beat frame + 6)
 
       // ---- captions (U2): every word appears on its own frame (hard cut, white); "18" (rc-lw--pop) pops + blurs in
@@ -121,10 +113,14 @@
 
       // ---- the page: push 100 -> 115% (doc 17.0-18.0), sine.inOut, from the beat start to the cut; head handle at 100%.
       C.push(tl, '#b04-page-cam', L(6), { until: L(46), from: 1.0, to: 1.15 });
+      // ---- the pink highlighter (screen) across "Race'n'Chase" at v04 17.2 = local 16, 8f, no push under it (U3)
+      FX.highlight(tl, '#b04-hl', L(16));
+      // ---- the yellow hand-drawn circle round "March 22, 1995" at v04 17.6 = local 28 (page px; 6 = 9 px on screen)
+      FX.annotate(tl, '#b04-ann', L(28), { type: 'circle', rect: [975, 687, 237, 27], pad: 14, width: 6 });
 
       // ---- the grid: 18 cells, one every 2f from 47 -> the 18th on 81 ("eighteen"), hard fills (kit M3 calendar)
       M.calendarFill(tl, '#b04-cal', L(47), { slots: 18, filled: 0, max: 18, cols: 6, sq: 72, gap: 9, x: 894, y: 379 });
-      // (the hard cut at 70 is the clip boundary between #b04-offA and #b04-offB; no camera move, U3)
+      // (the hard cut at 70 is the clip boundary between the dark cards #b04-darkA and #b04-darkB; no camera move, U3)
 
       tl.set({}, {}, L(112));
       window.__timelines["b04-racenchase"] = tl;

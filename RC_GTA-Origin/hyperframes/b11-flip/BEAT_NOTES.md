@@ -1,5 +1,35 @@
 # B11 The flip (v02: the glitch) - `b11-flip` (v02: beat 152f = 5.067 s; composition 164f with 6f handles)
 
+## v05 (REVISION_v05.md lane 3 + CLIENT OVERRIDE U6, U2). Read this first
+
+Beat 152 f, composition 164 f (root `data-duration="5.4666667"`): unchanged. Everything not listed is v04 below: the GTA 6
+back-left half (R11.L1), R5.4 on the right, the X4 still mode.
+
+| Change | Doc / override |
+|---|---|
+| **No 3D flip**: the v04 X4 glitch on "flips" stays (local 23-30, 8 f, seed 8; `events.glitch` 17) | U6 |
+| **Front = B5 v05's camera + divider** (lane 2): scale = 1 + 0.08 x sine.inOut(L / 147) up to the cut at 31 (`B5_PUSH` 0.08, was 0.04). B5's 6 px white centre divider (x 957-963, `#b11-divider`, z 2 under the captions) runs the whole beat, because the back is a split too | lane 2, pacing rule 3 |
+| **Back push** 100 -> 108% (sine.inOut) from the cut to the end (was 104%) | pacing rule 3 |
+| **Captions = kit v05 lockups**, ink centred on y 500 (as v03): "So the team [flips] the whole game." / "You're not the [cop] anymore." / "Now you're the one being [chased.]*". Words appear; "chased." pops + blurs in, white | U1, U2 |
+| **"cop" struck through**: kit `fx.annotate` type `'strike'` (#E3262B marker, stroke trim over 6 f, power2.out, +/-1.5 px jitter) on "anymore." (local 83 = beat 77), drawn from (810, 504) to (1125, 496) across the word. Host `#b11-strike` runs local 83-103 and ends with the lockup | doc |
+| The yellow "you" arrow (M2 `arrowDraw` on "Now", local 103) is kept as v04 | doc |
+| X4 still re-captured (`python3 tools/make_x4_stills.py hyperframes/b11-flip`); `--check` reports it current | |
+
+**cues.json v05**:
+* events `glitch` 17 (the assembly maps it to the glitch impact, as B8's "breaks").
+* word_pops: the 15 plain words (0 ... 122).
+* key_words: 17 flips / 73 cop / 129 chased.
+* No sfx (the strike is silent), no dropouts, no archival.
+
+`tesseract_shots.json`: no shots, so no `timing` key is needed (B11 is not a trimmed beat).
+
+**Verification (v05)**: `check --json` 0 errors. Warnings: kit lockup nesting, `line_unread` "chased.". Snapshots in
+`review/v05/` (read; `sheet_a.jpg`, `sheet_b.jpg`):
+* The head 0, So 6, the last front frame 22, the glitch 23 / 27 / 30, the cut 31, game 52, You're 65, cop 79.
+* The strike 83 / 85 / 89 / 100, the arrow 103 / 111, "chased." 135 / 139, 157, and the tail 163.
+
+Front local 12 / 22 = b05-copgame local 12 / 22. Local 0 differs only by B5's divider wipe-in. Not rendered.
+
 ## v04 (REVISION_v04.md #13, #14). Read this first
 
 Everything else as v03 below (front = B5's camera, the X4 glitch, lockups, right half R5.4, cues).

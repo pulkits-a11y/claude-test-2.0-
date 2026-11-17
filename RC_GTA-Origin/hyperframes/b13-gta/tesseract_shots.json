@@ -3,5 +3,6 @@
  "composition": "b13-gta",
  "render": "05_GFX/renders/b13-gta.mov",
  "shots": [],
- "notes": "v05: no Tesseract shots. The v04 L2 unboxing (R13.2 @ 101.6 s, beat f181-205) is gone: B13 is 166 f (the title hold after 'Auto.' is 0.386 s) and the box art is now a card insert inside this composition (beat f155-166 + tail handle). b13-gta is opaque from beat -6 to the end."
+ "notes": "v05: no Tesseract shots. B13 is 166 f (the hold after 'Auto.' is 0.386 s); the box art is a kit card insert inside this composition (beat f155-166 + tail handle). b13-gta is opaque from beat -6 to the end (dark card 0-86 local, R9.4 full frame 86-161, card insert 161-178).",
+ "timing": "v05"
 }

@@ -2,5 +2,6 @@
  "beat": "B12",
  "composition": "b12-thirty",
  "render": "05_GFX/renders/b12-thirty.mov",
+ "timing": "v05",
  "shots": []
 }

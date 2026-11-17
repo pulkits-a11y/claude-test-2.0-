@@ -2,6 +2,7 @@
  "beat": "B10",
  "composition": "b10-fun",
  "render": "05_GFX/renders/b10-fun.mov",
+ "timing": "v05",
  "shots": [
   {
    "id": "B10-killfrenzy-L1",

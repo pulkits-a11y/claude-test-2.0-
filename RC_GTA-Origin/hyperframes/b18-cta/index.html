@@ -1,22 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-    <link rel="stylesheet" href="assets/kit/base.css" />
-    <link rel="stylesheet" href="assets/kit/type.css" />
-    <link rel="stylesheet" href="assets/kit/motifs.css" />
-    <link rel="stylesheet" href="assets/kit/transitions.css" />
-    <link rel="stylesheet" href="assets/kit/screens.css" />
+    <link rel="stylesheet" href="assets/kit/base.css">
+    <link rel="stylesheet" href="assets/kit/type.css">
+    <link rel="stylesheet" href="assets/kit/motifs.css">
+    <link rel="stylesheet" href="assets/kit/transitions.css">
+    <link rel="stylesheet" href="assets/kit/screens.css">
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0E0E10; }
-      /* U4 (client v03 #12): a DARK card, not off-white. TODO kit v05 (dark card: #0E0E10 + grain + a faint blurred footage
-         loop at 15-25 %). The faint footage should be B1's lightbar clip (LOOP_FRAME.json), so the last-6-frame cross to
-         B1's frame 0 reads as that footage coming up to full. Phase 1: the flat #0E0E10 card. */
-      #b18-card { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #0E0E10; }
-      #b18-faint { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      /* U4 (client v03 #12): a DARK card, not off-white: the kit dark card (prep/gen_b18.cjs, RCK.fx.darkCardHTML) =
+         #0E0E10 + grain + scanlines + B1's lightbar footage blurred 40 px at 20 % behind the header. */
 
       /* ---- profile header (slides up from the bottom over 8f): a dark panel, the avatar, name / handle / followers,
          the Follow button. All Coolvetica (U1). Fixed geometry so the cursor's target is known: panel 1130 x 260 at
@@ -51,12 +48,11 @@
       #b18-cursor { position: absolute; left: 0; top: 0; width: 60px; height: 84px; }
       #b18-cursor-svg { position: absolute; left: 0; top: 0; width: 60px; height: 84px; overflow: visible; }
 
-      /* ---- loop: the last 6 frames cross to B1's frame 0. TODO (B1 lane): hyperframes/b01-hook/LOOP_FRAME.json does not
-         exist yet; PLACEHOLDER = a red / blue lightbar-coloured gradient. Replace with B1's clip at its recorded in-point
-         and scale (a <video> whose data-media-start = in-point - 6/30 s, so it reaches B1's frame 0 on local 81). */
-      #b18-loop { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-      #b18-loop-fade { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; opacity: 0;
-        background: linear-gradient(90deg, #7A0E12 0%, #E3262B 30%, #1A1A2E 50%, #2E6BFF 70%, #0B1F5C 100%); }
+      /* ---- loop: the last 6 frames cross to B1's frame 0 (hyperframes/b01-hook/LOOP_FRAME.json): the same lightbar footage
+         (assets/footage/b18_lightbar.mp4 = B1's recipe from source 631.0333 s), media time = local / 30, so local 81 = B1's
+         clip frame 6 = B1's frame 0 (measured: mean diff 0.9 / 255); static, full frame, contrast 0.15 as B1. */
+      #b18-loop-fade { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; opacity: 0; }
+      #b18-loop-v { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
     </style>
   </head>
   <body>
@@ -67,43 +63,43 @@
            12-21  the cursor glides in (power3.out) to the Follow button; 24 (CTA +18 = v04 1:17.6) click: the button turns
                   grey, "Following" (cues: click on CTA frame 18); 30-42 the cursor leaves
            30     Comment "BUG" for the full story (Coolvetica Italic 81 px, "BUG" pink) appears whole (no type-on, U2)
-           75-81  the last 6 frames cross to B1's frame 0 (the police lightbar) so the video loops; 81-87 tail = that frame.
-                  PLACEHOLDER until hyperframes/b01-hook/LOOP_FRAME.json exists.
+           75-81  the last 6 frames cross (sine.inOut) to B1's frame 0 (LOOP_FRAME.json: the GTA V night police lightbar),
+                  the footage playing into it, so the video loops seamlessly; 81-87 tail = B1's frames 0-5 (unflashed)
          Profile data: ONE config object (PROFILE) at the top of the script. Avatar, @handle and follower count are not
          known (REVISION_v05 N3): empty = a neutral monogram and the handle / followers lines hidden. -->
-    <div id="root" data-composition-id="b18-cta" data-start="0" data-duration="2.9000000" data-width="1920" data-height="1080">
-      <div id="b18-card" class="clip" data-start="0" data-duration="2.9000" data-track-index="1" style="z-index: 1"></div>
-      <!-- TODO kit v05 dark card: the faint, blurred footage loop (B1's lightbar clip once LOOP_FRAME.json exists) -->
-      <div id="b18-faint" class="clip" data-start="0" data-duration="2.9000" data-track-index="2" style="z-index: 1"></div>
+    <div data-hf-id="hf-bsl6" id="root" data-composition-id="b18-cta" data-start="0" data-duration="2.9000000" data-width="1920" data-height="1080">
+      <!-- @dark -->
+<div id="b18-dark" class="fx-dark" style="z-index: 1"><div id="b18-dark-base" class="clip fx-fill fx-dark__base" data-start="0.0000" data-duration="2.9000"></div><div class="fx-dark__loop" style="opacity: 0.2"><div class="fx-card__bgscale" data-layout-allow-overflow style="width: 1258.56px; height: 707.94px; transform: translate(-144px, -81px) scale(1.7543900000000001)"><video id="b18-dark-loop" class="clip " src="assets/footage/b18_lightbar.mp4" data-start="0.0000" data-duration="2.9000" data-media-start="0.0000" muted playsinline data-color-grading='{"preset":null,"intensity":1,"adjust":{"exposure":-1,"contrast":0,"highlights":0,"shadows":0,"whites":0,"blacks":0,"temperature":0,"tint":0,"vibrance":0,"saturation":0},"effects":{"blur":1}}'></video></div></div><div id="b18-dark-tex" class="clip fx-fill fx-dark__tex" data-start="0.0000" data-duration="2.9000"></div></div>
+<!-- /@dark -->
 
-      <div id="b18-head" style="z-index: 2">
-        <div id="b18-panel" class="clip" data-start="0" data-duration="2.9000" data-track-index="3"></div>
-        <div id="b18-avatar" class="clip" data-start="0" data-duration="2.9000" data-track-index="4">
-          <div id="b18-avatar-mono">RC</div>
-          <img id="b18-avatar-img" alt="">
+      <div data-hf-id="hf-k2e4" id="b18-head" style="z-index: 2">
+        <div data-hf-id="hf-9srw" id="b18-panel" class="clip" data-start="0" data-duration="2.9000" data-track-index="3"></div>
+        <div data-hf-id="hf-bs06" id="b18-avatar" class="clip" data-start="0" data-duration="2.9000" data-track-index="4">
+          <div data-hf-id="hf-uprj" id="b18-avatar-mono">RC</div>
+          <img data-hf-id="hf-vsee" id="b18-avatar-img" alt="">
         </div>
-        <div id="b18-text" class="clip" data-start="0" data-duration="2.9000" data-track-index="5">
-          <div id="b18-name">Raw Canvas</div>
-          <div id="b18-handle"></div>
-          <div id="b18-followers"></div>
+        <div data-hf-id="hf-bcj9" id="b18-text" class="clip" data-start="0" data-duration="2.9000" data-track-index="5">
+          <div data-hf-id="hf-maas" id="b18-name">Raw Canvas</div>
+          <div data-hf-id="hf-dt7x" id="b18-handle"></div>
+          <div data-hf-id="hf-7i6o" id="b18-followers"></div>
         </div>
-        <div id="b18-btn" class="clip" data-start="0" data-duration="2.9000" data-track-index="6">
-          <div id="b18-btn-follow" class="b18-btn-face">Follow</div>
-          <div id="b18-btn-following" class="b18-btn-face">Following</div>
+        <div data-hf-id="hf-xozh" id="b18-btn" class="clip" data-start="0" data-duration="2.9000" data-track-index="6">
+          <div data-hf-id="hf-gamr" id="b18-btn-follow" class="b18-btn-face">Follow</div>
+          <div data-hf-id="hf-46e9" id="b18-btn-following" class="b18-btn-face">Following</div>
         </div>
       </div>
 
       <!-- the CTA line appears whole on local 30 (6f after the click) -->
-      <div id="b18-line" class="clip" data-start="1.0000" data-duration="1.9000" data-track-index="7" style="z-index: 3">Comment <span class="b18-kw">“BUG”</span> for the full story</div>
+      <div data-hf-id="hf-lbht" id="b18-line" class="clip" data-start="1.0000" data-duration="1.9000" data-track-index="7" style="z-index: 3">Comment <span data-hf-id="hf-mmi2" class="b18-kw">“BUG”</span> for the full story</div>
 
-      <div id="b18-cursor" style="z-index: 4">
-        <svg id="b18-cursor-svg" class="clip" data-start="0.4000" data-duration="1.0000" data-track-index="8" viewBox="0 0 60 84" aria-hidden="true">
-          <path d="M3 3 L3 66 L18 52 L29 78 L40 73 L29 48 L50 48 Z" fill="#111111" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
+      <div data-hf-id="hf-8yqu" id="b18-cursor" style="z-index: 4">
+        <svg data-hf-id="hf-dnbx" id="b18-cursor-svg" class="clip" data-start="0.4000" data-duration="1.0000" data-track-index="8" viewBox="0 0 60 84" aria-hidden="true">
+          <path data-hf-id="hf-k639" d="M3 3 L3 66 L18 52 L29 78 L40 73 L29 48 L50 48 Z" fill="#111111" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" />
         </svg>
       </div>
 
-      <div id="b18-loop" class="clip" data-start="2.5000" data-duration="0.4000" data-track-index="9" style="z-index: 10">
-        <div id="b18-loop-fade"></div>
+      <div data-hf-id="hf-xhsw" id="b18-loop-fade" style="z-index: 10">
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-thkd" id="b18-loop-v" class="clip" src="assets/footage/b18_lightbar.mp4" data-start="2.5000" data-duration="0.4000" data-media-start="2.5000" data-track-index="9" muted playsinline></video>
       </div>
     </div>
     <script src="assets/kit/type.js"></script>
@@ -159,7 +155,7 @@
       tl.fromTo("#b18-btn-following", { opacity: 0 }, { opacity: 1, duration: L(0.5), ease: "steps(1)", immediateRender: false }, at(24) - L(0.5));
       tl.fromTo("#b18-btn", { scale: 0.96 }, { scale: 1, duration: L(5), ease: "expo.out", immediateRender: false }, L(24));
 
-      // ---- 75-81: cross to B1's frame 0 (placeholder), sine.inOut; the tail holds it
+      // ---- 75-81: cross to B1's frame 0 (the lightbar footage arrives on B1's f0 at local 81), sine.inOut
       tl.fromTo("#b18-loop-fade", { opacity: 0 }, { opacity: 1, duration: L(6), ease: "sine.inOut", immediateRender: false }, L(75));
 
       tl.set({}, {}, L(87));

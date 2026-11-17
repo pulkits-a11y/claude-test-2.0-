@@ -1,22 +1,27 @@
-# B7 Shut it down - `b07-shutdown` (v03; v02 redesign; beat 90f = 3.000 s; composition 102f with 6f handles)
+# B7 Shut it down - `b07-shutdown` (v05; v02 redesign; beat 90f = 3.000 s; composition 102f with 6f handles)
 
-## v05 phase 1 (REVISION_v05.md lane 2; doc 28.0-31.0) - in progress, phase 2 = kit v05 components
-* **The article is ONE shot** from the cut on "keep" (41) to b08's "breaks" (b08 39 = this 129, 88f): one page element
-  (`#b07-page`) under `#b07-artCam`. Push 100 -> 118% about the frame centre, easeInOutSine (doc 29.5), shared with b08.
-* **Whip-pan** to the body copy (doc ~30.0): 57 -> 61, easeInOutQuart, from the headline framing (page x 23.5-1723.5,
-  y 0-956) to the article column (x 50-1450, y 1564-2351.5); motion blur as per-frame values 0 / 9 / 21 / 9 / 0 layout px
-  (page image via its media-treatment blur control, DOM layers by CSS). Spotlight hole: headline until 59, then the
-  sentence. b07 f96 = b08 f6 (mean difference 0.2 / 255, sub-pixel text rendering inside the highlight).
-* **Sweeps** (timing final, look = yellow T9 placeholders until the kit's pink sweep): the headline "First Grand Theft Auto
-  Was 'Almost Canned'" on 49 (doc 29.6), "It was almost canned." on 61 (doc ~30.0), "The publisher, BMG Interactive,
-  wanted to can it" on 82 (after "down.": the event before b08's "Then," 97).
-* A-C (office): one slow push 100 -> 104% over 0-41 (the A-D push is gone with D).
-* **No stamp** (client override U5: v02 "I don't really like the cancelled stamp"): B7 is the article with the pink
-  highlighter sweeps only; no stamp, no red, no stamp sound.
-* `cues.json` v05: whip 51 (the whip-pan's first frame), key_words [16 above, 56 shut], archival [[0, 35]] (the office
-  B-roll); legacy stamp1-3 dropped. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2 (kit v05): card insert for the office shots (doc 28.0), yellow annotation arrow up at the managers on "above"
-  (22), the pink sweeps (screen on the dark page), the lockups (words appear; chosen key words pop + blur in, white).
+## v05 (REVISION_v05.md lane 2, the 16-page doc with the CLIENT OVERRIDE U; kit v05)
+102 frames, root `data-duration` 3.4000000.
+* **Office = card inserts** (doc 28.0, kit `fx.cardInsertHTML`): the three shots are one card geometry whose picture cuts:
+  1280 x 720 (16:9 working clips), white 15 px border, 3 deg tilt, shadow, on the same clip at 130%, blurred 60 px,
+  darkened 50%. A 0-22 "So the people" (R7.1 @ 0:00.4), B 22-35 "above the" (R7.1 @ 0:08.0), C 35-41 "team" (R7.3, the DMA
+  office 1990). **B -> C moved from 31 to 35** (on "team") so the arrow holds after it is drawn. Slow push 100 -> 104%
+  (one curve over 0-41) on each card's `.fx-card__cam`. Foreground grading = the v02 archival look (temperature +0.06,
+  saturation -0.2, warm shadows wheel) + the kit's archival grading (chromatic aberration 0.05, tape tracking / damage =
+  the light VHS line wobble).
+* **Arrow on "above"** (doc 28.0, kit `fx.annotate` arrow, #FFD23F marker): drawn 22-30 (shaft 22-28, head 28-30), from the
+  desk area up to the man at the back of the office (the people above), left of the caption, held to the cut (35).
+* **Article = ONE shot** from "keep" (41) to b08's "breaks": push 100 -> 118% about the frame centre (doc 29.5), shared with
+  b08; whip-pan headline -> body copy 57-61 (easeInOutQuart, motion blur 0 / 9 / 21 / 9 / 0 px). **Pink highlighter sweeps**
+  (kit `fx.highlight`, `.fx-hl fx-hl--dark` in one group blending once, screen 55%, so abutting strokes leave no seam): the
+  headline "First Grand Theft Auto Was 'Almost Canned'" 49 (doc 29.6), "It was almost canned." 61 (doc ~30.0), "The
+  publisher, BMG Interactive, wanted to can it" 82. Spotlight (65% black, feathered hole) as v03/v04.
+* **No stamp** (U5: v02 "I don't really like the cancelled stamp"): no stamp, no red, no stamp sound.
+* **Captions** (kit v05 lockups): "So the people [above]* the team" (6; "above" pops on 22) / "keep trying" (41) / "to
+  [shut]* it down." (58, ink centre y 840 below the spotlit sentence; "shut" pops on 62), held through the tail.
+* `cues.json` v05 (`T.lockupCues`): word_pops [0, 3, 7, 25, 29, 35, 42, 52, 62, 66], key_words [16, 56]; whip 51. No
+  `archival` range (the office footage is HF-embedded with the archival grading). Legacy stamp1-3 dropped.
+* Stills: `review/v05/` (`sheet_v05a.jpg` office cards + arrow, `sheet_v05b.jpg` article + sweeps). check: 0 errors.
 
 ## v04 (kit refresh only)
 Kit refreshed to v04 (`python3 tools/new_beat.py B7 --refresh`); no element of this beat uses the new scanline surfaces:

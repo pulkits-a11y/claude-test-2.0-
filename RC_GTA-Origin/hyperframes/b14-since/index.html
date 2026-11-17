@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <!-- B14 b14-since (v03): beat 177f (5.900s) + 6f handle each end = 189f.
+    <!-- B14 b14-since (v05): beat 177f (5.900s) + 6f handle each end = 189f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.1000s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
          v02: ../../REVISION_v02.md. v03: ../../REVISION_v03.md (notes 5, 6, 11-13, 16, 17).
@@ -50,22 +50,24 @@
       <!-- ===== M1: six wanted stars, 120 px, centred (960, 540), beat 91..126 (v03: they glitch in) ===== -->
       <div id="b14-stars" class="clip m1-stars" data-preset="hero" data-start="3.2333" data-duration="1.1667" data-track-index="2" style="z-index: 4"></div>
 
-      <!-- ===== L10 year tags: Coolvetica 22 px, top-left (96, 54), hard cut with the burst clips ===== -->
-      <div id="b14-tag-2001" class="clip rc-l10-tag" data-start="0.0000" data-duration="0.6000" data-track-index="4" style="z-index: 6">2001</div>
-      <div id="b14-tag-2002" class="clip rc-l10-tag" data-start="0.6000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2002</div>
-      <div id="b14-tag-2004" class="clip rc-l10-tag" data-start="1.0000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2004</div>
-      <div id="b14-tag-2008" class="clip rc-l10-tag" data-start="1.4000" data-duration="0.4000" data-track-index="4" style="z-index: 6">2008</div>
-      <div id="b14-tag-2013" class="clip rc-l10-tag" data-start="1.8000" data-duration="0.3666" data-track-index="4" style="z-index: 6">2013</div>
+      <!-- ===== v05 year labels (doc 56.0 "release-year label ... in each shot's bottom-left (2001, 2002, 2004, 2008), matching hook beat 2"; 2013 kept on the GTA V clips): kit .fx-year, Coolvetica 60 px, bottom-left (96, 64 px from the edges), hard cut with the burst clips ===== -->
+      <div id="b14-year-2001" class="clip fx-host" data-start="0.0000" data-duration="0.6000" data-track-index="4" style="z-index: 6; --x: 96px; --b: 64px"><div class="fx-year">2001</div></div>
+      <div id="b14-year-2002" class="clip fx-host" data-start="0.6000" data-duration="0.4000" data-track-index="4" style="z-index: 6; --x: 96px; --b: 64px"><div class="fx-year">2002</div></div>
+      <div id="b14-year-2004" class="clip fx-host" data-start="1.0000" data-duration="0.4000" data-track-index="4" style="z-index: 6; --x: 96px; --b: 64px"><div class="fx-year">2004</div></div>
+      <div id="b14-year-2008" class="clip fx-host" data-start="1.4000" data-duration="0.4000" data-track-index="4" style="z-index: 6; --x: 96px; --b: 64px"><div class="fx-year">2008</div></div>
+      <div id="b14-year-2013" class="clip fx-host" data-start="1.8000" data-duration="0.3666" data-track-index="4" style="z-index: 6; --x: 96px; --b: 64px"><div class="fx-year">2013</div></div>
 
-      <!-- ===== v03 captions (notes 11, 16, 17): lockups like ref 1, centred, every word a hard cut on its frame. No captions
-           during the burst (C15). "that chase." over the GTA 5 chase; "The wanted stars." sits UNDER the six hero stars
-           (ink centre y 800, the stars are y 480-600) with the keyword starred (pop + blur-in: the beat's reveal, with the stars'
-           glitch); "The sirens." / "The running." centred (no stars there); the last one holds to the end of the tail handle
-           (v03 note 6: no slats any more). ===== -->
-      <div id="b14-lk-a-1" class="clip rc-lk" data-start="2.1666" data-duration="1.0667" data-track-index="3" style="--rc-lk-c: 104.2px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="65">that</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="72">chase.</span></div></div></div>
-      <div id="b14-lk-b-1" class="clip rc-lk" data-start="3.2333" data-duration="1.1667" data-track-index="3" style="--rc-y: 800px; --rc-lk-c: 104.2px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="97">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="102">wanted</span> <span class="rc-lw rc-lw--pop" data-rc-f="114">stars.</span></div></div></div>
-      <div id="b14-lk-c-1" class="clip rc-lk" data-start="4.4000" data-duration="0.9000" data-track-index="3" style="--rc-lk-c: 104.2px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="132">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="138">sirens.</span></div></div></div>
-      <div id="b14-lk-c-2" class="clip rc-lk" data-start="5.3000" data-duration="1.0000" data-track-index="3" style="--rc-lk-c: 104.2px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="159">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="163">running.</span></div></div></div>
+      <!-- ===== v05 captions (REVISION_v05 G10 "every spoken word is on screen", so the burst is captioned now; U1/U2:
+           Coolvetica Regular 54 setup over Coolvetica Italic 190 key, white + drop shadow, words appear on their frame; only
+           "wanted stars." pops + blurs in): "And every [GTA] since" / "is built around" over the montage, then each phrase on its
+           own cut: "that [chase.]" (59), "The [wanted stars.]*" under the stars (ink centre y 800, 91), "The [sirens.]" (126),
+           "The [running.]" (153, holds to the end). ===== -->
+      <div id="b14-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2333" data-duration="1.0667" data-track-index="3" style="--rc-lk-c: 130.78px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="15">every</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -20.99px"><span class="rc-lw rc-lw--key" data-rc-f="24">GTA</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 54px; line-height: 54px; height: 54px; margin-top: -18.8px"><span class="rc-lw" data-rc-f="32">since</span></div></div></div>
+      <div id="b14-lk-2" class="clip rc-lk" data-rc-v="5" data-start="1.3000" data-duration="0.8666" data-track-index="3" style="--rc-lk-c: 28.67px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="39">is</span> <span class="rc-lw" data-rc-f="43">built</span> <span class="rc-lw" data-rc-f="53">around</span></div></div></div>
+      <div id="b14-lk-3" class="clip rc-lk" data-rc-v="5" data-start="2.1666" data-duration="1.0667" data-track-index="3" style="--rc-lk-c: 101.01px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="65">that</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key" data-rc-f="72">chase.</span></div></div></div>
+      <div id="b14-lk-4" class="clip rc-lk" data-rc-v="5" data-start="3.2333" data-duration="1.1667" data-track-index="3" style="--rc-y: 800px; --rc-lk-c: 101.01px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="97">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="102">wanted</span> <span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="114">stars.</span></div></div></div>
+      <div id="b14-lk-5" class="clip rc-lk" data-rc-v="5" data-start="4.4000" data-duration="0.9000" data-track-index="3" style="--rc-lk-c: 101.01px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="132">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key" data-rc-f="138">sirens.</span></div></div></div>
+      <div id="b14-lk-6" class="clip rc-lk" data-rc-v="5" data-start="5.3000" data-duration="1.0000" data-track-index="3" style="--rc-lk-c: 101.01px; z-index: 21"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="159">The</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -27.23px"><span class="rc-lw rc-lw--key" data-rc-f="163">running.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -83,7 +85,7 @@
       const W = { that: 65, The1: 97, The2: 132, sirens: 138, The3: 159 };
       const BOUNDARY_B15 = 183;   // beat 177 = B15's first frame
 
-      // ---- captions (v03): lockup words hard-cut in on their frames; the starred keyword (wanted stars.) pops + blurs in
+      // ---- captions (v05): words appear on their frames; the starred key "wanted stars." pops + blurs in (kit v05 timing)
       T.lockupsWire(tl);
 
       // ---- M1 (v03 note 5): the six hero stars GLITCH IN (kit starsGlitchIn: RGB split, slice jitter, 2 flicker frames;

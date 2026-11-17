@@ -1,18 +1,24 @@
-# B5 The cop game - `b05-copgame` (v03; timing v02: beat 83f = 2.767 s; composition 95f with 6f handles)
+# B5 The cop game - `b05-copgame` (v05; timing v02: beat 83f = 2.767 s; composition 95f with 6f handles)
 
-## v05 phase 1 (REVISION_v05.md lane 2; doc 20.0-25.0) - in progress, phase 2 = kit v05 captions
+## v05 (REVISION_v05.md lane 2, the 16-page doc with the CLIENT OVERRIDE U; kit v05)
+Only what the doc asks (and the override allows); everything else as v04. 95 frames, root `data-duration` 3.1666667.
 * **Divider** (doc 20.0): `#b05-divider` = a 6 px WHITE line (doc 4 px @720) over the 4 px gap (x 957-963), wiped
   top -> bottom over 6f from the cut (local 6 -> 12, easeOutQuart; measured 0 / 80% / 99% / full on 6 / 8 / 10 / 12).
   b06-dull keeps it, fully drawn, on its split part.
-* **Camera**: the shared split push is now 100 -> 108% (was 104%): the split is one 4.7 s shot and doc pacing rule 3 asks
-  a hold over 2.0 s for >= 8%. scale(B5 local L) = 1 + 0.08 x sine.inOut(L / 147) (B5 0-95, B6 83-147, 108% on "One").
-  **B11 (lane 3) copies this front camera: its front must use 0.08 too.**
-* **Arrow erase** (kit `arrowErase`, 76 -> 82, easeInQuart): the event between "criminals." (64) and B6's "But" (89)
-  (doc: a new event every <= 0.7 s on a long hold), and the arrow is gone before the cut instead of vanishing on it.
-* `cues.json` v05: word_pops [1, 3, 14, 19, 25, 36, 47], key_words [27 police, 58 criminals.] (one whoosh + thump per key
-  phrase), no sfx, no legacy events. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Client override (U1-U3): divider wipe and the 8% split push stay; phase 2 = the lockups in kit v05 tiers, all Coolvetica,
-  words appear on their frames, the chosen key words ("police officer", "criminals.") pop + blur in, white.
+* **Camera**: the shared split push is 100 -> 108% (was 104%): the split is one 4.7 s shot and doc pacing rule 3 asks a hold
+  over 2.0 s for >= 8%. scale(B5 local L) = 1 + 0.08 x sine.inOut(L / 147) (B5 0-95, B6 83-147, 108% on "One"). **B11's
+  front (lane 3) copies this camera: it must use 0.08 too.**
+* **Arrow erase** (kit `arrowErase`, 76 -> 82, easeInQuart): the event between "criminals." (64) and B6's "But" (89), and the
+  arrow is gone before the cut. The M2 "you" arrow itself stays as built (the doc names "the 'you' arrows at 21-24s and 45s"
+  as the model for its annotation yellow).
+* **Captions** (kit v05 lockups, U1/U2): Coolvetica Regular 54 setup over the Coolvetica Italic 190 key (setup line
+  left-aligned above the key), white + the soft drop shadow; every word appears on its spoken frame; only the key "police
+  officer" pops + blurs in (white, the doc timing: opacity 0 -> 1 by k+2, 112 -> 100% and blur 9 -> 0 px by k+4).
+  "In it, you play" (7) / "a [police officer]*" (31) / "chasing [criminals.]" (53; ink centre y 600: the small "chasing" on
+  the dark road / taxi shadow, not on the bright yellow taxi).
+* `cues.json` v05 (word frames from the kit's `T.lockupCues`, beat frames): word_pops [1, 3, 14, 19, 25, 47], key_words
+  [27, 36, 58] (police, officer, criminals.); no sfx, no legacy events.
+* Stills: `review/v05/` (`sheet_p1.jpg` divider / arrow erase; `sheet_v05.jpg` captions). check: 0 errors.
 
 ## v04 (kit refresh only)
 Kit refreshed to v04 (`python3 tools/new_beat.py B5 --refresh`); no element of this beat uses the new scanline surfaces:

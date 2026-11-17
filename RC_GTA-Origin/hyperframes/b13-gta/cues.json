@@ -11,20 +11,19 @@
   105
  ],
  "key_words": [
-  10,
-  30
+  9
  ],
  "sfx": [
   {
-   "f": 30,
+   "f": 29,
    "name": "paper_rip"
   },
   {
-   "f": 124,
+   "f": 128,
    "name": "impact_boom"
   },
   {
-   "f": 124,
+   "f": 128,
    "name": "sub_drop"
   },
   {
@@ -34,10 +33,10 @@
  ],
  "dropouts": [
   {
-   "f": 124,
+   "f": 128,
    "frames": 6
   }
  ],
  "archival": [],
- "note": "v05 (beat frames, f0 = 'Until'; B13 is 166 f). word_pops = Until 1, in 27, it 80, ships 82, with 91, a 98, new 101, name: 105 (tier A). key_words = finally, 10 (tier B) and the calendar's NOV 1997 landing on 'November' 30 (Playfair, 'big but not counted'). paper_rip 30 = the tear-off calendar page MAR 1995 -> NOV 1997 (TODO kit timing may move it to the 'in'/'November' frames). The GTA logo slams on 'Grand' (124): impact_boom + sub_drop, music dropout 6 f before it (118-124); the 0.386 s silence after 'Auto.' (voice ends 155) is the boom's tail; reverse_cymbal ENDS at 155 = the box-art card insert's first frame. Legacy events dropped: year_digits (S12, the digit roll is replaced by the calendar rip) and type_on (S13: nothing types any more). X3 flash at 80 stays silent. No archival full-frame footage (the R3.7 office loop is 25%, blurred)."
+ "note": "v05 phase 2 (beat frames, f0 = 'Until'; B13 = 166 f; local = beat + 6). word_pops / key_words = T.lockupCues of the three kit lockups: Until 1, finally, 9 (key, Coolvetica Italic 190), in 27, it 80, ships 82, with 91, a 98, new 101, name: 105 (tier A 57 px). Calendar (kit calendarTear on 'in' 27): the page lifts 27-29 and rips 29-39 -> paper_rip 29; NOV 1997 glow-flickers from 'November' 30 (no SFX of its own). Logo slam (kit logoSlam on 'Grand' 124, from 160): the logo appears at 124 and hits at 128 (= slam start + 4: 1-frame white flash, flash-star, 12 px shake 8 f) -> impact_boom + sub_drop 128, music/ambience dropout 122-128 (6 f ending on the hit; the logo rushes in during the silence). Same offsets as B1 (slam 63 -> hit 67) and B17 (slam 144 -> hit 148). reverse_cymbal ENDS at 155 = the first frame of the box-art card insert (the 0.386 s tail after 'Auto.'). X3 flash at 80 stays silent. No archival full-frame footage (the R3.7 office loop is 25%, blurred, behind the dark card)."
 }

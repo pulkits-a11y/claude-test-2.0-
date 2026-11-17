@@ -2,6 +2,7 @@
  "beat": "B9",
  "composition": "b09-throughyou",
  "render": "05_GFX/renders/b09-throughyou.mov",
+ "timing": "v05",
  "shots": [
   {
    "id": "B9-gta2-police-A",

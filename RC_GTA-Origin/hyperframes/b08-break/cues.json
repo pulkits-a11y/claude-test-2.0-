@@ -9,7 +9,7 @@
  ],
  "sfx": [
   {
-   "f": 33,
+   "f": 29,
    "name": "reverse_cymbal"
   },
   {
@@ -24,5 +24,5 @@
   }
  ],
  "archival": [],
- "note": "v05: 'breaks.' (beat 33) = hero word: whoosh-in + thump, reverse_cymbal ENDING on it (it rises under 'Then, something' while the article dims and blurs), glitch_stutter on it, a 4f dropout ending on it (doc: 2-6 f). Legacy 'breaks' (S08) and 'first_black' (S07 riser end / MU4) dropped: the reverse cymbal replaces the riser, the music bed is off."
+ "note": "v05. word_pops / key_words = T.lockupCues (hero 'breaks.' 33). reverse_cymbal ENDS at 29 (= 33 - the 4f dropout, so its peak is heard: it rises under 'Then, something' while the article dims and blurs), then 29-33 silence, then 'breaks.' hits with glitch_stutter + the key-word whoosh / thump on the pink glitch transition (local 39-45; cut to the dark card on local 42 = beat 36). Legacy breaks / first_black dropped."
 }

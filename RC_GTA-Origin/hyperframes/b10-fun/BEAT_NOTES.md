@@ -1,5 +1,26 @@
 # B10 It's fun - `b10-fun` (v02: beat 54f = 1.800 s; composition 66f with 6f handles)
 
+## v05 (REVISION_v05.md lane 3, doc 41.0). Read this first
+
+Beat 54 f, composition 66 f (root `data-duration="2.2000000"`): unchanged. Everything not listed is v04 / v03 below.
+
+| Change | Doc |
+|---|---|
+| **"fun." = HERO**: Coolvetica Italic 450 px (`[[fun.]]*`, hero 450; the doc asks 300 px @720) under "And suddenly," / "it's" (Coolvetica Regular 54), kit v05 lockup, centred. And 7, suddenly, 11 and it's 34 appear on their frames; "fun." pops + blurs in from local 41 | doc 41.0, U1, U2 |
+| **1-frame white flash + flash-star** on the cut to the explosion (local 41 = beat 35): kit `fx.flash` (`#b10-flash`, local 41 only, z 50, over everything) + `fx.flashStar` (`#b10-star`, 1000 px at (960, 600), 41-46, z 34 behind the hero). They replace the 7-frame X3 flash of v02-v04 | doc 41.0 |
+| Head handle follows B9 v05: the strips land on 178 / 180 / 182 on B9's clock (`LAND_B9`), the push is x 1.08 (`PUSH` = b09's), and B9's v05 lockup "They don't [let go.]" is held over local 0-6 | B9 v05 |
+
+**cues.json v05**: events `fun` 35 (the legacy S09 sub drop, same frame), word_pops 1 / 5 / 28, key_words 35, sfx
+`impact_boom` 35. `tesseract_shots.json` has `"timing": "v05"` (R10.1 static 100%, frames as written). Its `"enter": "X3"`
+is only a label: the picture builder acts on X2 / X8 only.
+
+**Verification (v05)**: `check --json` 0 errors. Warnings: kit lockup nesting, `line_unread` on the 6 f head handle and
+the voice-timed words. Snapshots in `review/v05/` (read):
+* `sheet_a.jpg`: the head 0 / 5, And 7, suddenly, 11, it's 34, the frame before the cut 40, then 41 (white flash + star 0), 42-46 (the pop and the star), "fun." held 50, 59, and the tail 60.
+* `comp/`: the hero + star over the R10.1 source frame.
+
+Local 0 = b09 local 202, pixel-identical. Not rendered.
+
 ## v04 (REVISION_v04.md). Read this first
 
 No change asked for B10. Kit refreshed (v04); nothing it changed is used here. B9's glow flashes end 8f after each pop, so

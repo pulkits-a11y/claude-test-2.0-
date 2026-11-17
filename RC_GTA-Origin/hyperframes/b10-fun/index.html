@@ -15,25 +15,25 @@
     </style>
   </head>
   <body>
-    <!-- B10 b10-fun v05 phase 1 (REVISION_v05 lane 3: hero "fun." 450 px; B9's strip grid now pops 174/176/178 with an 8% push; flash-star + 1-frame white flash wait for kit v05): beat 54f (1.800s) + 6f handle each end = 66f.
+    <!-- B10 b10-fun v05 (REVISION_v05 lane 3, doc 41.0: hero "fun." 450 px + flash-star + 1-frame white flash on the explosion; B9's strip grid now pops 174/176/178 with an 8% push): beat 54f (1.800s) + 6f handle each end = 66f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.0000s (local frames 6 .. 60).
-         Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/.
+         Word timings: words.json (v05; local frames unchanged). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v05.md. Plan: ../../00_Brief/.
 
          Plan p.24 (B10 build), STORYBOARD.md B10. Local frame = beat frame + 6.
          beat     local    what
          -6..0    0..6     head handle: B9's three L3 strips (R9.1 ram = SUBSTITUTE for R9.2 / R9.3 / R9.5) continue
                            (continuous source time and the same eased push as b09-throughyou); B9's last caption lockup
                            "They don't [let go.]" held as b09 shows it, hard cut out on local 6
-         1        7        v03 caption lockup "And suddenly, | it's [fun.]*" (kit RCK.type.lockups, ref 1, centred): And 7,
-         28       34       suddenly, 11, it's 34 hard-cut in; "fun." 41 pops + blurs in (full opacity on its frame, blur
-                           20 -> 0 px + 92 -> 100%, 6f expo.out)
-         32-40    38-46    X3 white flash centred on "fun" (kit X.flash, eased): 0 local 38, ramp easeInQuad, 100% local 41,
-                           fade easeOutQuad 64/36/16/4%, 0 on 46 (silent)
+         1        7        v05 caption lockup "And suddenly, | it's [[fun.]]*" (kit v05 RCK.type.lockups, centred; Coolvetica
+         28       34       Regular 54 setup, "fun." HERO Coolvetica Italic 450): And 7, suddenly, 11, it's 34 appear on their
+                           frames; "fun." pops + blurs in from 41 (kit v05 pop: 112% / blur 9 px -> 100% / 0 over 4 f, white)
+         35       41       v05: 1-frame white flash (kit fx.flash) + flash-star burst behind "fun." (kit fx.flashStar,
+                           1000 px, 41-46); replaces the 7-frame X3 flash (doc 41.0)
          35       41       "fun" (edit frame 1231, 41.040 s) = the flash's 100% frame = S09 + the MU5 music drop
                            (cues.json fun = 35). Hard cut under the white: the strips end; from here this composition is
                            transparent except the caption lockup and the fading flash: Tesseract L1 R10.1 (GTA 1 kill frenzy, full
                            colour +10% sat, v03 framing = v01's static 100%: no punch out of the flash, note 13) shows under it.
-         54       60       the lockup hard-cuts out on the beat end (local 60; v03: no exit animation)
+         54       60       the lockup hard-cuts out on the beat end (local 60; no exit animation)
          54..60   60..66   tail handle: transparent (Tesseract footage only) -->
     <div data-hf-id="hf-sral" id="root" data-composition-id="b10-fun" data-start="0" data-duration="2.2000000" data-width="1920" data-height="1080">
 
@@ -57,20 +57,21 @@
            b09-throughyou shows it (v03: same kit lockup, same layout, centred; all words already on), hard cut out on beat
            f0 (local 6). Generated with T.lockups(['They','don't','let','go.' at t 0], ["They don't [let go.]"],
            { end: 6/30, maxWidth: 580 }) = b09-t4-3's rows. ===== -->
-      <div id="b10-b09lk-1" class="clip rc-lk" data-start="0.0000" data-duration="0.2000" data-track-index="9" style="--rc-lk-c: 106.69px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="0">They</span> <span class="rc-lw" data-rc-f="0">don't</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span class="rc-lw" data-rc-f="0">let</span> <span class="rc-lw" data-rc-f="0">go.</span></div></div></div>
+      <div id="b10-b09lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.0000" data-duration="0.2000" data-track-index="9" style="--rc-lk-c: 102.81px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="0">They</span> <span class="rc-lw" data-rc-f="0">don't</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.65px"><span class="rc-lw rc-lw--key" data-rc-f="0">let</span> <span class="rc-lw rc-lw--key" data-rc-f="0">go.</span></div></div></div>
 
-      <!-- ===== v03 T2 sentence as ONE caption lockup (REVISION_v03 notes 11, 16, 17; ref 1), centred on the frame:
-           "And suddenly," / "it's" small above-left, "fun." the big Coolvetica Italic keyword, starred: And 7, suddenly,
-           11, it's 34 hard-cut in on their frames (no animation); "fun." pops + blurs in on its frame (local 41 = the X3
-           flash's 100% frame = S09 + the MU5 drop; kit POP3 6f expo.out, settling under the fading flash). Under the
-           flash, as v02. Holds to the beat end (local 60), hard cut (B11 opens with X1). Generated with
-           T.lockups(w, ["And suddenly, | it's [fun.]*"], { from: 0, end: 60/30 }). v05 (doc 41.0): "fun." is a HERO
-           word, 450 px (keySize 450; doc 300 px @720); phase 2 regenerates with kit v05 (tiers, pink -> white entry) and
-           adds the flash-star burst + the 1-frame white flash on the explosion (kit v05), replacing the X3 flash below. ===== -->
-      <div id="b10-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.7667" data-track-index="10" style="--rc-lk-c: 225.16px; z-index: 35"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="11">suddenly,</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span class="rc-lw" data-rc-f="34">it's</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 450px; line-height: 450px; height: 450px; margin-top: -78.73px"><span class="rc-lw rc-lw--pop" data-rc-f="41">fun.</span></div></div></div>
+      <!-- ===== T2 sentence as ONE caption lockup (kit v05, G3 layout), centred on the frame: "And suddenly," / "it's"
+           (Coolvetica Regular 54) above-left of the HERO "fun." (Coolvetica Italic 450, doc 41.0: 300 px @720), starred:
+           And 7, suddenly, 11, it's 34 appear on their frames (hard cut, white); "fun." pops + blurs in from its frame
+           (local 41 = the cut to the explosion = S09, under the 1-frame white flash; kit v05 pop, 4 f). Holds to the
+           beat end (local 60), hard cut (B11 opens with X1). Generated with kit v05
+           T.lockupPlan(w, [{ s: "And suddenly, | it's [[fun.]]*", hero: 450 }], { from: 0, end: 60/30 }) + T.lockups. ===== -->
+      <div id="b10-lk-1" class="clip rc-lk" data-rc-v="5" data-start="0.2333" data-duration="1.7667" data-track-index="10" style="--rc-lk-c: 218.61px; z-index: 35"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="11">suddenly,</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px; margin-top: 6.48px"><span class="rc-lw" data-rc-f="34">it's</span></div><div class="rc-lk__row rc-lk__row--key rc-lk__row--hero" style="font-size: 450px; line-height: 450px; height: 450px; margin-top: -77.93px"><span class="rc-lw rc-lw--key rc-lw--hero rc-lw--pop" data-rc-f="41">fun.</span></div></div></div>
 
-      <!-- ===== X3 white flash centred on "fun" (kit RCK.transitions.flash, C = local 41) ===== -->
-      <div data-hf-id="hf-a3g5" id="b10-x3" class="clip rc-x3" data-start="1.2666" data-duration="0.3000" data-track-index="11" style="z-index: 50"></div>
+      <!-- ===== v05 (doc 41.0): on "fun." (local 41 = the cut to the explosion, S09) the kit v05 flash-star burst behind
+           the hero word (white 4-point star, 5 f) and a 1-frame white flash over everything (it hides the cut). Replaces
+           v02-v04's 7-frame X3 flash. ===== -->
+      <div id="b10-star" class="clip fx-host" data-start="1.3666" data-duration="0.2000" data-track-index="11" style="--x: 960px; --y: 600px; z-index: 34"></div>
+      <div id="b10-flash" class="clip fx-host" data-start="1.3666" data-duration="0.0334" data-track-index="12" style="z-index: 50"></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -107,8 +108,10 @@
       //                  in on their frames, the starred "fun." pops + blurs in on local 41 (kit RCK.type.lockupsWire) ----
       T.lockupsWire(tl);
 
-      // ---------------- X3 white flash centred on "fun": 100% on local 41 (beat f35) ----------------
-      X.flash(tl, '#b10-x3', f(FUN));
+      // ---------------- v05 (doc 41.0): on "fun." (local 41): 1-frame white flash + flash-star burst behind the hero ----
+      const FX = RCK.fx;
+      FX.flash(tl, '#b10-flash', f(FUN));
+      FX.flashStar(tl, '#b10-star', f(FUN), { size: 1000 });
 
       // keep the timeline as long as the composition (the tail handle is transparent)
       tl.set({}, {}, f(END));
