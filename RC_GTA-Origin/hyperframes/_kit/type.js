@@ -1430,19 +1430,20 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   var ENTRY_EASE = cubicBezier(0.2, 0.8, 0.2, 1);
   // v05 tiers (px @1080 = doc @720 x 1.5) and the word entry (doc 2.3).
   var T5 = {
-    setup: { font: 'inter600', size: 54, card: 57 },          // A: Inter SemiBold 51-57, sentence case, tracking 0
+    setup: { font: 'cvr', size: 54, card: 57 },               // A: Coolvetica Regular 51-57 (U1), sentence case, tracking 0
     key: { font: 'cvi', size: 190 },                          // B: Coolvetica Italic 165-210 (3.5 x setup)
-    hero: { size: 450 },                                      // C: tier B font, or Playfair Display Black for numbers / dates
-    quote: { font: 'pf400i', size: 105, key: 135 },           // Q: Playfair Display Italic 90-120 (key words 135)
-    dull: { font: 'arimo', size: 180 },                       // the B6 "dull." gag: Arimo (Arial metrics) grey, no entry
+    hero: { size: 450 },                                      // C: Coolvetica Italic 330-600, numbers and dates too (U1)
+    quote: { font: 'cvi', size: 105, key: 135 },              // Q: Coolvetica Italic (U1), key words 135
+    dull: { font: 'cvr', size: 180 },                         // the B6 "dull." gag: Coolvetica Regular grey, no animation (U1)
     gap: 17, clear: 8, pitch: 1.12, wrap: 1.15, safeW: 1728,
     pink: '#FF2E7E', white: '#FFFFFF', red: '#E3262B', blue: '#2E6BFF', grey: '#8A8A8A',
     entry: { frames: 4, fadeF: 2, scale: 1.12, blur: 9, colorAt: 2, colorF: 4, keyColorAt: 4, keyColorF: 4 },
     drift: 1.04, exitF: 3, exitBlur: 12
   };
-  // Spec grammar (v03 + v05): [key] tier B; [[hero]] tier C; | line break; word suffix flags (also after ] / ]] for the
-  // whole group): * emphasis (the key-word colour timing), ! plain (no entry: hard cut), ~ siren entry (red / blue every
-  // 2f for 8f), # dull (no entry, Arimo grey; in a key group the row becomes the "dull." gag), ^ stays pink.
+  // Spec grammar (v03 + v05, client override U2): [key] tier B; [[hero]] tier C; | line break; word suffix flags (also
+  // after ] / ]] for the whole group): * pop + blur in (the opt-in entry; every other word simply appears on its frame),
+  // ^ static pink #FF2E7E ("caught."), # the "dull." gag (Coolvetica Regular grey 180, no animation), ! plain (the
+  // default; kept for v03 specs), ~ ignored (the siren entry is not used, U2).
   var FLAG = { '*': 'emph', '!': 'plain', '~': 'siren', '#': 'dull', '^': 'hold' };
   function splitFlags(t) {
     var f = {};
@@ -1509,14 +1510,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     });
     return out;
   }
-  function heroFontOf(text, o) {
-    var hf = String(o.heroFont || '').toLowerCase();
-    if (/play|serif|pf/.test(hf)) return 'pf900';
-    if (/cool|cvi|italic/.test(hf)) return 'cvi';
-    var t = String(text).trim();
-    if (/^[^A-Za-z]*\d[\d\s,.'’:\/-]*$/.test(t) || /^[A-Za-z]{3,9}\.?\s+\d{2,4}[,.]?$/.test(t)) return 'pf900';
-    return 'cvi';
-  }
+  function heroFontOf() { return 'cvi'; }   // U1: heroes, years and numbers are Coolvetica Italic
   // Tiers -> rows (font, size, class) for one lockup. o: the merged options of the lockup.
   function tierRows5(lk, o, warnings) {
     var txt = function (ts) { return ts.map(function (t) { return t.text; }).join(' '); };
@@ -1532,7 +1526,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       return rows;
     }
     var key = by('key'), kt = txt(key), kr;
-    if (lk.big === 'hero') { var hf = heroFontOf(kt, o); kr = { font: hf, size: o.hero || o.heroSize || T5.hero.size, cls: hf === 'pf900' ? 'num' : 'hero' }; }
+    if (lk.big === 'hero') kr = { font: heroFontOf(), size: o.hero || o.heroSize || T5.hero.size, cls: 'hero' };
     else if (key.some(function (t) { return t.flags && t.flags.dull; })) kr = { font: T5.dull.font, size: o.dullSize || T5.dull.size, cls: 'dull' };
     else if (quote) kr = { font: T5.quote.font, size: o.quoteKeySize || T5.quote.key, cls: 'quote' };
     else kr = { font: T5.key.font, size: o.keySize || T5.key.size, cls: '' };
@@ -1620,10 +1614,11 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       var rows = tierRows5(lk, lk.opts, warnings);
       var box = geometry5(rows, lk.opts, lk.spec, warnings);
       lk.layout = { rows: rows, box: box, sizes: { setup: rows.filter(function (r) { return r.kind !== 'key'; }).map(function (r) { return r.size; })[0] || null, key: (rows.filter(function (r) { return r.kind === 'key'; })[0] || {}).size || null } };
+      if (lk.toks.some(function (t) { return t.flags && t.flags.siren; })) warnings.push('lockup "' + lk.spec + '": ~ (siren entry) is not used in v05 (client override U2); the word appears (add * to pop it)');
     });
     return { lockups: lks, next: wi, endFrame: endFrame, warnings: warnings, v: 5 };
   }
-  var FONT_NAME = { inter600: 'Inter SemiBold', cvi: 'Coolvetica Italic', pf900: 'Playfair Black', pf400i: 'Playfair Italic', arimo: 'Arimo' };
+  var FONT_NAME = { cvr: 'Coolvetica', cvi: 'Coolvetica Italic', inter600: 'Inter SemiBold', pf900: 'Playfair Black', pf400i: 'Playfair Italic', arimo: 'Arimo' };
   function lockupReport5(plan) {
     return plan.lockups.map(function (lk) {
       var L = lk.layout;
@@ -1694,32 +1689,23 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     w.appendChild(inn);
     return inn;
   }
-  // The doc 2.3 entry on one word, f0 = frame k (the word's words.json frame): f0 opacity 0, scale 112%, blur 9 px,
-  // #FF2E7E; f0-2 opacity -> 1; f0-4 scale -> 100% + blur -> 0 (cubic-bezier 0.2, 0.8, 0.2, 1; the blur filter is
-  // dropped from f5 on); colour pink -> white f2-6 (key / hero / starred words: f4-8; o.keepPink: stays pink; o.siren:
-  // red / blue every 2f for 8f, white from f8). Returns the time the word is settled.
-  function wordEntry(tl, w, k, o) {
-    o = o || {};
+  // The opt-in pop + blur in (U2: chosen words only, white; the doc's timing), f0 = frame k (the word's words.json frame):
+  // f0 opacity 0, scale 112%, blur 9 px; f0-2 opacity -> 1; f0-4 scale -> 100% + blur -> 0 (cubic-bezier 0.2, 0.8, 0.2,
+  // 1); the blur filter is dropped from f5 on. Returns the time the word has landed (f4).
+  function wordEntry(tl, w, k) {
     var g = G(), E = T5.entry, t0 = k / FPS;
-    g.set(w, { opacity: 0, scale: E.scale, filter: 'blur(' + E.blur + 'px)', color: o.siren ? T5.red : T5.pink, transformOrigin: '50% 60%' });
+    g.set(w, { opacity: 0, scale: E.scale, filter: 'blur(' + E.blur + 'px)', transformOrigin: '50% 60%' });
     tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: E.fadeF * F, ease: ENTRY_EASE, immediateRender: false }, t0);
     tl.fromTo(w, { scale: E.scale, filter: 'blur(' + E.blur + 'px)' }, { scale: 1, filter: 'blur(0px)', duration: E.frames * F, ease: ENTRY_EASE, immediateRender: false }, t0);
     tl.set(w, { filter: 'none' }, (k + E.frames + 0.5) / FPS);
-    if (o.siren) {
-      var seq = [T5.red, T5.blue, T5.red, T5.blue, T5.white];
-      for (var i = 1; i < seq.length; i++) hard(tl, w, { color: seq[i - 1] }, { color: seq[i] }, (k + 2 * i) / FPS);
-      return (k + 8) / FPS;
-    }
-    if (o.keepPink) return (k + E.frames) / FPS;
-    var c0 = k + (o.hold ? E.keyColorAt : E.colorAt), cf = o.hold ? E.keyColorF : E.colorF;
-    tl.fromTo(w, { color: T5.pink }, { color: T5.white, duration: cf * F, ease: 'sine.inOut', immediateRender: false }, c0 / FPS);
-    return (c0 + cf) / FPS;
+    return (k + E.frames) / FPS;
   }
-  // Wires every lockup (default all .rc-lk; scope = selector / element(s)): each word gets the v05 entry on its frame
-  // (plain / dull words: a hard cut), key / hero / starred words hold pink to f4, siren words flicker red / blue; the
-  // block drifts 100 -> 104% (sine.inOut) over the lockup's life; data-rc-exit="blur" (or opts.exit 'blur') = 3f blur-out
-  // (0 -> 12 px + opacity 0, power2.in) ending on the clip's last frame. opts.drift false = no drift. v03 markup is
-  // re-laid out first (relayout5). Call once after the lockup markup. Returns the time the last word has settled.
+  // Wires every lockup (default all .rc-lk; scope = selector / element(s)). v05 with the client override (U2): every word
+  // simply appears on its frame, white (a hard cut, as v03); starred words (.rc-lw--pop, spec *) pop + blur in with the
+  // doc timing (wordEntry); ^ words are static pink, # words the grey "dull." (CSS). No colour flash, no drift.
+  // data-rc-exit="blur" (or opts.exit 'blur') = 3f blur-out (0 -> 12 px + opacity 0, power2.in) ending on the clip's last
+  // frame. opts.pop = false: starred words also just appear. v03 markup is re-laid out first (relayout5). Call once
+  // after the lockup markup. Returns the time the last word has landed.
   function lockupsWire5(tl, scope, opts) {
     opts = opts || {};
     var roots = scope == null ? list('.rc-lk') : list(scope), end = 0;
@@ -1727,23 +1713,14 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       if (root.__rckLk) return;
       root.__rckLk = true;
       if (root.getAttribute('data-rc-v') !== '5') relayout5(root, opts);
-      var box = root.querySelector('.rc-lk__box'), ws = $$('.rc-lw[data-rc-f]', root), anim = 0;
+      var box = root.querySelector('.rc-lk__box'), ws = $$('.rc-lw[data-rc-f]', root);
       if (!ws.length && window.console) console.warn('RCK.type.lockupsWire: no .rc-lw[data-rc-f] words in ' + (root.id || root.className));
       ws.forEach(function (w) {
         var k = parseInt(w.getAttribute('data-rc-f'), 10), c = w.classList;
-        if (c.contains('rc-lw--plain') || c.contains('rc-lw--dull') || opts.entry === false) {
-          G().set(w, { opacity: 0 }); hard(tl, w, { opacity: 0 }, { opacity: 1 }, k / FPS); end = Math.max(end, k / FPS);
-          return;
-        }
-        anim++;
-        end = Math.max(end, wordEntry(tl, w, k, { hold: c.contains('rc-lw--key') || c.contains('rc-lw--pop'), siren: c.contains('rc-lw--siren'), keepPink: c.contains('rc-lw--hold') }));
+        if (c.contains('rc-lw--pop') && !c.contains('rc-lw--dull') && opts.pop !== false) { end = Math.max(end, wordEntry(tl, w, k)); return; }
+        G().set(w, { opacity: 0 }); hard(tl, w, { opacity: 0 }, { opacity: 1 }, k / FPS); end = Math.max(end, k / FPS);
       });
       var s0 = clipStart(root), e0 = clipEnd(root), sF = s0 != null ? frame(s0) : null, eF = e0 != null ? frame(e0) : null;
-      if (box && anim && opts.drift !== false && sF != null && eF != null && eF > sF) {
-        var cy = parseFloat(root.style.getPropertyValue('--rc-lk-c')) || 0;
-        G().set(box, { scale: 1, transformOrigin: '50% ' + cy + 'px' });
-        tl.fromTo(box, { scale: 1 }, { scale: opts.drift || T5.drift, duration: (eF - sF) * F, ease: 'sine.inOut', immediateRender: false }, sF / FPS);
-      }
       var ex = root.getAttribute('data-rc-exit') || opts.exit;
       if (box && ex === 'blur' && eF != null && sF != null && eF - T5.exitF > sF)
         tl.fromTo(box, { filter: 'blur(0px)', opacity: 1 }, { filter: 'blur(' + T5.exitBlur + 'px)', opacity: 0, duration: T5.exitF * F, ease: 'power2.in', immediateRender: false }, (eF - T5.exitF) / FPS);
@@ -1802,7 +1779,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     nameIn: nameIn, quoteType: quoteType, walk: walk,
     highlight: highlight, label: label,
     glitch: glitch,
-    // captions: v05 lockups (three tiers, word entry, drift; same names and calls as v03) + the v03 versions kept
+    // captions: v05 lockups (three Coolvetica tiers; words appear, * pops; same names and calls as v03) + the v03 versions
     lockupPlan: lockupPlan5, lockups: lockups5, lockupsWire: lockupsWire5, lockupReport: lockupReport5, parseLockup: parseLockup5,
     lockupPlanV3: lockupPlan, lockupsV3: lockups, lockupsWireV3: lockupsWire, lockupReportV3: lockupReport,
     wordEntry: wordEntry, sirenFlicker: sirenFlicker, fxInner: fxInner, relayout5: relayout5, lockupCues: lockupCues, T5: T5, ENTRY_EASE: ENTRY_EASE,

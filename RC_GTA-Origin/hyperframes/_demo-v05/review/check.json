@@ -246,21 +246,21 @@
     "ok": true,
     "errorCount": 0,
     "warningCount": 0,
-    "infoCount": 38,
+    "infoCount": 34,
     "findings": [
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 783.94,
-          "top": -3640,
-          "right": 913.31,
-          "bottom": -3200,
-          "width": 129.37,
-          "height": 440
+          "left": 829.47,
+          "top": -3618,
+          "right": 927.16,
+          "bottom": -3222,
+          "width": 97.69,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "1",
@@ -274,37 +274,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 3640
+          "top": 3618
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 783.94,
-          "y": -3640,
-          "width": 129.37,
-          "height": 440
+          "x": 829.47,
+          "y": -3618,
+          "width": 97.69,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(2)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 757.38,
-          "top": -3310,
-          "right": 939.88,
-          "bottom": -2870,
-          "width": 182.5,
-          "height": 440
+          "left": 801.59,
+          "top": -3288,
+          "right": 955.05,
+          "bottom": -2892,
+          "width": 153.46,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "2",
@@ -318,37 +318,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 3310
+          "top": 3288
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 757.38,
-          "y": -3310,
-          "width": 182.5,
-          "height": 440
+          "x": 801.59,
+          "y": -3288,
+          "width": 153.46,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(3)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 764.14,
-          "top": -2980,
-          "right": 933.11,
-          "bottom": -2540,
-          "width": 168.97,
-          "height": 440
+          "left": 799.28,
+          "top": -2958,
+          "right": 957.36,
+          "bottom": -2562,
+          "width": 158.08,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "3",
@@ -362,37 +362,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2980
+          "top": 2958
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 764.14,
-          "y": -2980,
-          "width": 168.97,
-          "height": 440
+          "x": 799.28,
+          "y": -2958,
+          "width": 158.08,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(4)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 757.88,
-          "top": -2650,
-          "right": 939.38,
-          "bottom": -2210,
-          "width": 181.5,
-          "height": 440
+          "left": 799.77,
+          "top": -2628,
+          "right": 956.86,
+          "bottom": -2232,
+          "width": 157.09,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "4",
@@ -406,37 +406,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2650
+          "top": 2628
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 757.88,
-          "y": -2650,
-          "width": 181.5,
-          "height": 440
+          "x": 799.77,
+          "y": -2628,
+          "width": 157.09,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(5)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 767.94,
-          "top": -2320,
-          "right": 929.31,
-          "bottom": -1880,
-          "width": 161.37,
-          "height": 440
+          "left": 797.47,
+          "top": -2298,
+          "right": 959.17,
+          "bottom": -1902,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "5",
@@ -450,37 +450,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2320
+          "top": 2298
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 767.94,
-          "y": -2320,
-          "width": 161.37,
-          "height": 440
+          "x": 797.47,
+          "y": -2298,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(6)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 751.11,
-          "top": -1990,
-          "right": 946.14,
-          "bottom": -1550,
-          "width": 195.03,
-          "height": 440
+          "left": 797.95,
+          "top": -1968,
+          "right": 958.67,
+          "bottom": -1572,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "6",
@@ -494,37 +494,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1990
+          "top": 1968
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 751.11,
-          "y": -1990,
-          "width": 195.03,
-          "height": 440
+          "x": 797.95,
+          "y": -1968,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(7)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 768.09,
-          "top": -1660,
-          "right": 929.14,
-          "bottom": -1220,
-          "width": 161.05,
-          "height": 440
+          "left": 799.44,
+          "top": -1638,
+          "right": 957.19,
+          "bottom": -1242,
+          "width": 157.75,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "7",
@@ -538,37 +538,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1660
+          "top": 1638
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 768.09,
-          "y": -1660,
-          "width": 161.05,
-          "height": 440
+          "x": 799.44,
+          "y": -1638,
+          "width": 157.75,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(8)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 751.59,
-          "top": -1330,
-          "right": 945.64,
-          "bottom": -890,
-          "width": 194.05,
-          "height": 440
+          "left": 796.64,
+          "top": -1308,
+          "right": 960,
+          "bottom": -912,
+          "width": 163.36,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "8",
@@ -582,37 +582,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1330
+          "top": 1308
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 751.59,
-          "y": -1330,
-          "width": 194.05,
-          "height": 440
+          "x": 796.64,
+          "y": -1308,
+          "width": 163.36,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(9)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 752.59,
-          "top": -1000,
-          "right": 944.66,
-          "bottom": -560,
-          "width": 192.07,
-          "height": 440
+          "left": 797.95,
+          "top": -978,
+          "right": 958.67,
+          "bottom": -582,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "9",
@@ -626,37 +626,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1000
+          "top": 978
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 752.59,
-          "y": -1000,
-          "width": 192.07,
-          "height": 440
+          "x": 797.95,
+          "y": -978,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(10)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 737.25,
-          "top": -670,
-          "right": 960,
-          "bottom": -230,
-          "width": 222.75,
-          "height": 440
+          "left": 797.47,
+          "top": -648,
+          "right": 959.17,
+          "bottom": -252,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "0",
@@ -670,37 +670,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 670
+          "top": 648
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 737.25,
-          "y": -670,
-          "width": 222.75,
-          "height": 440
+          "x": 797.47,
+          "y": -648,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(11)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 783.94,
-          "top": -340,
-          "right": 913.31,
-          "bottom": 100,
-          "width": 129.37,
-          "height": 440
+          "left": 829.47,
+          "top": -318,
+          "right": 927.16,
+          "bottom": 78,
+          "width": 97.69,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "1",
@@ -714,125 +714,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 340
+          "top": 318
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 783.94,
-          "y": -340,
-          "width": 129.37,
-          "height": 440
+          "x": 829.47,
+          "y": -318,
+          "width": 97.69,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
-        "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(12)",
-        "message": "Text extends outside the composition canvas.",
-        "rect": {
-          "left": 757.38,
-          "top": -10,
-          "right": 939.88,
-          "bottom": 430,
-          "width": 182.5,
-          "height": 440
-        },
-        "containerSelector": "#root",
-        "text": "2",
-        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
-        "containerRect": {
-          "left": 0,
-          "top": 0,
-          "right": 1920,
-          "bottom": 1080,
-          "width": 1920,
-          "height": 1080
-        },
-        "overflow": {
-          "top": 10
-        },
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 757.38,
-          "y": -10,
-          "width": 182.5,
-          "height": 440
-        },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
-        "occurrences": 1,
-        "heldMs": 0,
-        "times": [
-          23.889
-        ]
-      },
-      {
-        "code": "text_box_overflow",
-        "severity": "info",
-        "time": 23.889,
-        "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(13)",
-        "message": "Text extends outside its nearest visual/container box.",
-        "rect": {
-          "left": 764.14,
-          "top": 496.53,
-          "right": 933.11,
-          "bottom": 728.56,
-          "width": 168.97,
-          "height": 232.03
-        },
-        "containerSelector": "div.fx-slot__row > div:nth-of-type(1)",
-        "text": "3",
-        "fixHint": "Text is 169px x 232px inside 223px x 330px and overflows by up to 24px; increase the container height to at least ~354px, or allow wrapping with max-width/fitTextFontSize.",
-        "containerRect": {
-          "left": 737.25,
-          "top": 375,
-          "right": 960,
-          "bottom": 705,
-          "width": 222.75,
-          "height": 330
-        },
-        "overflow": {
-          "bottom": 23.56
-        },
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 764.14,
-          "y": 496.53,
-          "width": 168.97,
-          "height": 232.03
-        },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
-        "occurrences": 1,
-        "heldMs": 0,
-        "times": [
-          23.889
-        ]
-      },
-      {
-        "code": "canvas_overflow",
-        "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 974.34,
-          "top": -6940,
-          "right": 1168.39,
-          "bottom": -6500,
-          "width": 194.05,
-          "height": 440
+          "left": 960,
+          "top": -6918,
+          "right": 1123.36,
+          "bottom": -6522,
+          "width": 163.36,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "8",
@@ -846,37 +758,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 6940
+          "top": 6918
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 974.34,
-          "y": -6940,
-          "width": 194.05,
-          "height": 440
+          "x": 960,
+          "y": -6918,
+          "width": 163.36,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 975.34,
-          "top": -6610,
-          "right": 1167.41,
-          "bottom": -6170,
-          "width": 192.07,
-          "height": 440
+          "left": 961.31,
+          "top": -6588,
+          "right": 1122.03,
+          "bottom": -6192,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "9",
@@ -890,37 +802,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 6610
+          "top": 6588
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 975.34,
-          "y": -6610,
-          "width": 192.07,
-          "height": 440
+          "x": 961.31,
+          "y": -6588,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(3)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 960,
-          "top": -6280,
-          "right": 1182.75,
-          "bottom": -5840,
-          "width": 222.75,
-          "height": 440
+          "left": 960.83,
+          "top": -6258,
+          "right": 1122.53,
+          "bottom": -5862,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "0",
@@ -934,37 +846,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 6280
+          "top": 6258
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 960,
-          "y": -6280,
-          "width": 222.75,
-          "height": 440
+          "x": 960.83,
+          "y": -6258,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(4)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 1006.69,
-          "top": -5950,
-          "right": 1136.06,
-          "bottom": -5510,
-          "width": 129.37,
-          "height": 440
+          "left": 992.83,
+          "top": -5928,
+          "right": 1090.52,
+          "bottom": -5532,
+          "width": 97.69,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "1",
@@ -978,37 +890,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 5950
+          "top": 5928
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 1006.69,
-          "y": -5950,
-          "width": 129.37,
-          "height": 440
+          "x": 992.83,
+          "y": -5928,
+          "width": 97.69,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(5)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 980.13,
-          "top": -5620,
-          "right": 1162.63,
-          "bottom": -5180,
-          "width": 182.5,
-          "height": 440
+          "left": 964.95,
+          "top": -5598,
+          "right": 1118.41,
+          "bottom": -5202,
+          "width": 153.46,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "2",
@@ -1022,37 +934,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 5620
+          "top": 5598
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 980.13,
-          "y": -5620,
-          "width": 182.5,
-          "height": 440
+          "x": 964.95,
+          "y": -5598,
+          "width": 153.46,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(6)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 986.89,
-          "top": -5290,
-          "right": 1155.86,
-          "bottom": -4850,
-          "width": 168.97,
-          "height": 440
+          "left": 962.64,
+          "top": -5268,
+          "right": 1120.72,
+          "bottom": -4872,
+          "width": 158.08,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "3",
@@ -1066,37 +978,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 5290
+          "top": 5268
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 986.89,
-          "y": -5290,
-          "width": 168.97,
-          "height": 440
+          "x": 962.64,
+          "y": -5268,
+          "width": 158.08,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(7)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 980.63,
-          "top": -4960,
-          "right": 1162.13,
-          "bottom": -4520,
-          "width": 181.5,
-          "height": 440
+          "left": 963.13,
+          "top": -4938,
+          "right": 1120.22,
+          "bottom": -4542,
+          "width": 157.09,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "4",
@@ -1110,37 +1022,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 4960
+          "top": 4938
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 980.63,
-          "y": -4960,
-          "width": 181.5,
-          "height": 440
+          "x": 963.13,
+          "y": -4938,
+          "width": 157.09,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(8)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 990.69,
-          "top": -4630,
-          "right": 1152.06,
-          "bottom": -4190,
-          "width": 161.37,
-          "height": 440
+          "left": 960.83,
+          "top": -4608,
+          "right": 1122.53,
+          "bottom": -4212,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "5",
@@ -1154,37 +1066,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 4630
+          "top": 4608
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 990.69,
-          "y": -4630,
-          "width": 161.37,
-          "height": 440
+          "x": 960.83,
+          "y": -4608,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(9)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 973.86,
-          "top": -4300,
-          "right": 1168.89,
-          "bottom": -3860,
-          "width": 195.03,
-          "height": 440
+          "left": 961.31,
+          "top": -4278,
+          "right": 1122.03,
+          "bottom": -3882,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "6",
@@ -1198,37 +1110,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 4300
+          "top": 4278
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 973.86,
-          "y": -4300,
-          "width": 195.03,
-          "height": 440
+          "x": 961.31,
+          "y": -4278,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(10)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 990.84,
-          "top": -3970,
-          "right": 1151.89,
-          "bottom": -3530,
-          "width": 161.05,
-          "height": 440
+          "left": 962.8,
+          "top": -3948,
+          "right": 1120.55,
+          "bottom": -3552,
+          "width": 157.75,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "7",
@@ -1242,37 +1154,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 3970
+          "top": 3948
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 990.84,
-          "y": -3970,
-          "width": 161.05,
-          "height": 440
+          "x": 962.8,
+          "y": -3948,
+          "width": 157.75,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(11)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 974.34,
-          "top": -3640,
-          "right": 1168.39,
-          "bottom": -3200,
-          "width": 194.05,
-          "height": 440
+          "left": 960,
+          "top": -3618,
+          "right": 1123.36,
+          "bottom": -3222,
+          "width": 163.36,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "8",
@@ -1286,37 +1198,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 3640
+          "top": 3618
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 974.34,
-          "y": -3640,
-          "width": 194.05,
-          "height": 440
+          "x": 960,
+          "y": -3618,
+          "width": 163.36,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(12)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 975.34,
-          "top": -3310,
-          "right": 1167.41,
-          "bottom": -2870,
-          "width": 192.07,
-          "height": 440
+          "left": 961.31,
+          "top": -3288,
+          "right": 1122.03,
+          "bottom": -2892,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "9",
@@ -1330,37 +1242,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 3310
+          "top": 3288
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 975.34,
-          "y": -3310,
-          "width": 192.07,
-          "height": 440
+          "x": 961.31,
+          "y": -3288,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(13)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 960,
-          "top": -2980,
-          "right": 1182.75,
-          "bottom": -2540,
-          "width": 222.75,
-          "height": 440
+          "left": 960.83,
+          "top": -2958,
+          "right": 1122.53,
+          "bottom": -2562,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "0",
@@ -1374,37 +1286,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2980
+          "top": 2958
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 960,
-          "y": -2980,
-          "width": 222.75,
-          "height": 440
+          "x": 960.83,
+          "y": -2958,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(14)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 1006.69,
-          "top": -2650,
-          "right": 1136.06,
-          "bottom": -2210,
-          "width": 129.37,
-          "height": 440
+          "left": 992.83,
+          "top": -2628,
+          "right": 1090.52,
+          "bottom": -2232,
+          "width": 97.69,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "1",
@@ -1418,37 +1330,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2650
+          "top": 2628
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 1006.69,
-          "y": -2650,
-          "width": 129.37,
-          "height": 440
+          "x": 992.83,
+          "y": -2628,
+          "width": 97.69,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(15)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 980.13,
-          "top": -2320,
-          "right": 1162.63,
-          "bottom": -1880,
-          "width": 182.5,
-          "height": 440
+          "left": 964.95,
+          "top": -2298,
+          "right": 1118.41,
+          "bottom": -1902,
+          "width": 153.46,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "2",
@@ -1462,37 +1374,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 2320
+          "top": 2298
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 980.13,
-          "y": -2320,
-          "width": 182.5,
-          "height": 440
+          "x": 964.95,
+          "y": -2298,
+          "width": 153.46,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(16)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 986.89,
-          "top": -1990,
-          "right": 1155.86,
-          "bottom": -1550,
-          "width": 168.97,
-          "height": 440
+          "left": 962.64,
+          "top": -1968,
+          "right": 1120.72,
+          "bottom": -1572,
+          "width": 158.08,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "3",
@@ -1506,37 +1418,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1990
+          "top": 1968
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 986.89,
-          "y": -1990,
-          "width": 168.97,
-          "height": 440
+          "x": 962.64,
+          "y": -1968,
+          "width": 158.08,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(17)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 980.63,
-          "top": -1660,
-          "right": 1162.13,
-          "bottom": -1220,
-          "width": 181.5,
-          "height": 440
+          "left": 963.13,
+          "top": -1638,
+          "right": 1120.22,
+          "bottom": -1242,
+          "width": 157.09,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "4",
@@ -1550,37 +1462,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1660
+          "top": 1638
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 980.63,
-          "y": -1660,
-          "width": 181.5,
-          "height": 440
+          "x": 963.13,
+          "y": -1638,
+          "width": 157.09,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(18)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 990.69,
-          "top": -1330,
-          "right": 1152.06,
-          "bottom": -890,
-          "width": 161.37,
-          "height": 440
+          "left": 960.83,
+          "top": -1308,
+          "right": 1122.53,
+          "bottom": -912,
+          "width": 161.7,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "5",
@@ -1594,37 +1506,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1330
+          "top": 1308
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 990.69,
-          "y": -1330,
-          "width": 161.37,
-          "height": 440
+          "x": 960.83,
+          "y": -1308,
+          "width": 161.7,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(19)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 973.86,
-          "top": -1000,
-          "right": 1168.89,
-          "bottom": -560,
-          "width": 195.03,
-          "height": 440
+          "left": 961.31,
+          "top": -978,
+          "right": 1122.03,
+          "bottom": -582,
+          "width": 160.72,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "6",
@@ -1638,37 +1550,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 1000
+          "top": 978
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 973.86,
-          "y": -1000,
-          "width": 195.03,
-          "height": 440
+          "x": 961.31,
+          "y": -978,
+          "width": 160.72,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(20)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 990.84,
-          "top": -670,
-          "right": 1151.89,
-          "bottom": -230,
-          "width": 161.05,
-          "height": 440
+          "left": 962.8,
+          "top": -648,
+          "right": 1120.55,
+          "bottom": -252,
+          "width": 157.75,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "7",
@@ -1682,37 +1594,37 @@
           "height": 1080
         },
         "overflow": {
-          "top": 670
+          "top": 648
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 990.84,
-          "y": -670,
-          "width": 161.05,
-          "height": 440
+          "x": 962.8,
+          "y": -648,
+          "width": 157.75,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "canvas_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__strip > span:nth-of-type(21)",
         "message": "Text extends outside the composition canvas.",
         "rect": {
-          "left": 974.34,
-          "top": -340,
-          "right": 1168.39,
-          "bottom": 100,
-          "width": 194.05,
-          "height": 440
+          "left": 960,
+          "top": -318,
+          "right": 1123.36,
+          "bottom": 78,
+          "width": 163.36,
+          "height": 396
         },
         "containerSelector": "#root",
         "text": "8",
@@ -1726,134 +1638,46 @@
           "height": 1080
         },
         "overflow": {
-          "top": 340
+          "top": 318
         },
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 974.34,
-          "y": -340,
-          "width": 194.05,
-          "height": 440
+          "x": 960,
+          "y": -318,
+          "width": 163.36,
+          "height": 396
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
-        ]
-      },
-      {
-        "code": "text_box_overflow",
-        "severity": "info",
-        "time": 23.889,
-        "selector": "div.fx-slot__strip > span:nth-of-type(22)",
-        "message": "Text extends outside its nearest visual/container box.",
-        "rect": {
-          "left": 975.34,
-          "top": 166.53,
-          "right": 1167.41,
-          "bottom": 398.56,
-          "width": 192.07,
-          "height": 232.03
-        },
-        "containerSelector": "div.fx-slot__row > div:nth-of-type(2)",
-        "text": "9",
-        "fixHint": "Text is 192px x 232px inside 223px x 330px and overflows by up to 208px; increase the container height to at least ~538px, or allow wrapping with max-width/fitTextFontSize.",
-        "containerRect": {
-          "left": 960,
-          "top": 375,
-          "right": 1182.75,
-          "bottom": 705,
-          "width": 222.75,
-          "height": 330
-        },
-        "overflow": {
-          "top": 208.47
-        },
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 975.34,
-          "y": 166.53,
-          "width": 192.07,
-          "height": 232.03
-        },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
-        "occurrences": 1,
-        "heldMs": 0,
-        "times": [
-          23.889
-        ]
-      },
-      {
-        "code": "canvas_overflow",
-        "severity": "info",
-        "time": 23.889,
-        "selector": "div.fx-slot__strip > span:nth-of-type(22)",
-        "message": "Text extends outside the composition canvas.",
-        "rect": {
-          "left": 975.34,
-          "top": -10,
-          "right": 1167.41,
-          "bottom": 430,
-          "width": 192.07,
-          "height": 440
-        },
-        "containerSelector": "#root",
-        "text": "9",
-        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
-        "containerRect": {
-          "left": 0,
-          "top": 0,
-          "right": 1920,
-          "bottom": 1080,
-          "width": 1920,
-          "height": 1080
-        },
-        "overflow": {
-          "top": 10
-        },
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 975.34,
-          "y": -10,
-          "width": 192.07,
-          "height": 440
-        },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
-        "occurrences": 1,
-        "heldMs": 0,
-        "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "container_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1)",
         "message": "Element extends outside a clipping layout container.",
         "rect": {
-          "left": 737.25,
+          "left": 796.64,
           "top": -3585,
           "right": 960,
           "bottom": 705,
-          "width": 222.75,
+          "width": 163.36,
           "height": 4290
         },
         "containerSelector": "div.fx-slot__row > div:nth-of-type(1)",
         "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
         "containerRect": {
-          "left": 737.25,
+          "left": 796.64,
           "top": 375,
           "right": 960,
           "bottom": 705,
-          "width": 222.75,
+          "width": 163.36,
           "height": 330
         },
         "overflow": {
@@ -1862,31 +1686,31 @@
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 737.25,
+          "x": 796.64,
           "y": -3585,
-          "width": 222.75,
+          "width": 163.36,
           "height": 4290
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       },
       {
         "code": "container_overflow",
         "severity": "info",
-        "time": 23.889,
+        "time": 23.056,
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1)",
         "message": "Element extends outside a clipping layout container.",
         "rect": {
           "left": 960,
           "top": -6885,
-          "right": 1182.75,
+          "right": 1123.36,
           "bottom": 705,
-          "width": 222.75,
+          "width": 163.36,
           "height": 7590
         },
         "containerSelector": "div.fx-slot__row > div:nth-of-type(2)",
@@ -1894,9 +1718,9 @@
         "containerRect": {
           "left": 960,
           "top": 375,
-          "right": 1182.75,
+          "right": 1123.36,
           "bottom": 705,
-          "width": 222.75,
+          "width": 163.36,
           "height": 330
         },
         "overflow": {
@@ -1907,34 +1731,34 @@
         "bbox": {
           "x": 960,
           "y": -6885,
-          "width": 222.75,
+          "width": 163.36,
           "height": 7590
         },
-        "firstSeen": 23.889,
-        "lastSeen": 23.889,
+        "firstSeen": 23.056,
+        "lastSeen": 23.056,
         "occurrences": 1,
         "heldMs": 0,
         "times": [
-          23.889
+          23.056
         ]
       }
     ],
-    "duration": 28.6666667,
+    "duration": 27.6666667,
     "samples": [
-      1.593,
-      4.778,
-      7.963,
-      11.148,
-      14.333,
-      17.519,
-      20.704,
-      23.889,
-      27.074
+      1.537,
+      4.611,
+      7.685,
+      10.759,
+      13.833,
+      16.907,
+      19.981,
+      23.056,
+      26.13
     ],
     "transitionSamples": [],
     "transitionSamplesDropped": 0,
     "tolerance": 2,
-    "totalIssueCount": 38,
+    "totalIssueCount": 34,
     "truncated": false
   },
   "motion": {
@@ -1949,112 +1773,53 @@
   "contrast": {
     "ok": true,
     "errorCount": 0,
-    "warningCount": 2,
+    "warningCount": 0,
     "infoCount": 0,
-    "findings": [
-      {
-        "code": "contrast_aa_failure",
-        "severity": "warning",
-        "message": "Contrast is 3.69:1; WCAG AA requires 4.5:1.",
-        "text": "v05 · B6 · name pill (Montserrat 45 / 30, typed) ·",
-        "fg": "rgb(255,255,255)",
-        "bg": "rgb(133,134,123)",
-        "ratio": 3.69,
-        "requiredRatio": 4.5,
-        "suggestedColor": "rgb(30,30,30)",
-        "large": false,
-        "selector": "#f-tag",
-        "dataAttributes": {
-          "data-start": "14.0000",
-          "data-duration": "2.6666",
-          "data-track-index": "30"
-        },
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 96,
-          "y": 20,
-          "width": 819.5625,
-          "height": 26
-        },
-        "time": 14.333,
-        "times": [
-          14.333
-        ]
-      },
-      {
-        "code": "contrast_aa_failure",
-        "severity": "warning",
-        "message": "Contrast is 1.47:1; WCAG AA requires 4.5:1.",
-        "text": "v05 · logoSlam 150→94→100 / 6f + flash + flash-sta",
-        "fg": "rgb(255,255,255)",
-        "bg": "rgb(213,213,213)",
-        "ratio": 1.47,
-        "requiredRatio": 4.5,
-        "suggestedColor": "rgb(92,92,92)",
-        "large": false,
-        "selector": "#h-tag",
-        "dataAttributes": {
-          "data-start": "18.6666",
-          "data-duration": "3.0000",
-          "data-track-index": "30"
-        },
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 96,
-          "y": 20,
-          "width": 1146.625,
-          "height": 26
-        },
-        "time": 20.704,
-        "times": [
-          20.704
-        ]
-      }
-    ],
+    "findings": [],
     "enabled": true,
     "samples": [
-      1.593,
-      7.963,
-      14.333,
-      20.704,
-      27.074
+      1.537,
+      7.685,
+      13.833,
+      19.981,
+      26.13
     ],
-    "checked": 7,
-    "passed": 5
+    "checked": 9,
+    "passed": 9
   },
   "craft": {
     "ok": true,
     "errorCount": 0,
-    "warningCount": 26,
+    "warningCount": 23,
     "infoCount": 0,
     "findings": [
       {
         "code": "text_below_floor",
         "severity": "warning",
-        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 11 text elements stay under it for 0.5 s or more, the smallest \"v05 · B1 · hero [[Why]] 450 + tier A ...\" at 19 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
-        "text": "v05 · B1 · hero [[Why]] 450 + tier A \"does\" · \"every [GTA,]\" setup over key · every word: pink, 112%, blur 9 → white",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 11 text elements stay under it for 0.5 s or more, the smallest \"v05 · B1 · f0 flash 70% · [[Why]]* he...\" at 19 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "v05 · B1 · f0 flash 70% · [[Why]]* hero 450 pops + blurs in (white) · \"does\" / \"every GTA,\" just appear · Coolvetica Regular 54 over Italic 190",
         "selector": "#a-tag",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
           "x": 96,
-          "y": 21,
-          "width": 1043.56,
-          "height": 23
+          "y": 22,
+          "width": 1050.88,
+          "height": 22
         },
         "time": 0,
         "times": [
           0,
-          1.87,
+          1.869,
           4.362,
-          8.351,
-          11.093,
-          14.084,
-          16.701,
-          18.696,
-          21.687,
-          24.429,
-          27.046
+          8.35,
+          11.092,
+          14.083,
+          16.7,
+          18.694,
+          21.685,
+          23.429,
+          26.047
         ],
         "fontPx": 19,
         "floorPx": 28,
@@ -2062,87 +1827,87 @@
         "elements": [
           {
             "selector": "#a-tag",
-            "text": "v05 · B1 · hero [[Why]] 450 + tier A \"does\" · \"every [GTA,]\" setup over key · every word: pink, 112%, blur 9 → white",
+            "text": "v05 · B1 · f0 flash 70% · [[Why]]* hero 450 pops + blurs in (white) · \"does\" / \"every GTA,\" just appear · Coolvetica Regular 54 over Italic 190",
             "fontPx": 19,
             "time": 0,
             "seconds": 1.87
           },
           {
             "selector": "#b-tag",
-            "text": "v05 · B2 · hero number [[1995,]] Playfair Black 480 + glowFlicker layered on the entry · VCR timestamp (VT323 42)",
+            "text": "v05 · B2 · [[1995,]] Coolvetica Italic 480 + glowFlicker (opacity steps + glow) · VCR timestamp (Coolvetica 42)",
             "fontPx": 19,
-            "time": 1.87,
+            "time": 1.869,
             "seconds": 2.493
           },
           {
             "selector": "#c-tag",
-            "text": "v05 · B2 · errorPop + errorCascade (10, +36/+27, 2f) · [[broke.]] · [bug] RGB split never settles · snapShut · flash · pill → pixel-glitch out",
+            "text": "v05 · B2 · errorPop + errorCascade (10, +36/+27, 2f), v04 look · [[broke.]] jitter · [bug] RGB split never settles · snapShut · flash · pill → glitch out",
             "fontPx": 19,
             "time": 4.362,
-            "seconds": 3.989
+            "seconds": 3.988
           },
           {
             "selector": "#d-tag",
-            "text": "v05 · B4/B7 · paper page (fx-paper) + highlight sweep (multiply, 8f) + annotate circle + stamp CANNED (180→95→100 / 5f, flash, shake 6 px)",
+            "text": "v05 · B4 · dark inverted page (U4) tilted 4°, push 100→115% · highlight sweep (screen, 8f, no page push) · yellow circle (9f)",
             "fontPx": 19,
-            "time": 8.351,
+            "time": 8.35,
             "seconds": 2.742
           },
           {
             "selector": "#e-tag",
-            "text": "v05 · card insert (white 15 px border, 3° tilt, bg = same clip 130% blur 60 px −50%) + arrow · then the v05 dark card (#0E0E10 + loop 20% + grain + lines)",
+            "text": "v05 · card insert (white 15 px border, 3° tilt, bg = same clip 130% blur 60 px −50%, push 106%) + arrow · dark card v05 (#0E0E10 + loop 22% + grain + lines)",
             "fontPx": 19,
-            "time": 11.093,
+            "time": 11.092,
             "seconds": 2.991
           },
           {
             "selector": "#f-tag",
-            "text": "v05 · B6 · name pill (Montserrat 45 / 30, typed) · quote tier: Playfair Display Italic 135 / 105",
+            "text": "v05 · B6 · name pill (Coolvetica, both lines land with the box) · quote tier Coolvetica Italic 135 / 105, every word * pops",
             "fontPx": 19,
-            "time": 14.084,
-            "seconds": 2.618
+            "time": 14.083,
+            "seconds": 2.617
           },
           {
             "selector": "#g-tag",
-            "text": "v05 · \"dull.\" = no entry, Arimo grey #8A8A8A 180 · \"cops?\" siren entry (#E3262B / #2E6BFF every 2f for 8f)",
+            "text": "v05 · \"dull.\" = Coolvetica Regular #8A8A8A 180, no animation · \"cops?\" * = the opt-in pop + blur in (white)",
             "fontPx": 19,
-            "time": 16.701,
-            "seconds": 1.995
+            "time": 16.7,
+            "seconds": 1.994
           },
           {
             "selector": "#h-tag",
-            "text": "v05 · logoSlam 150→94→100 / 6f + flash + flash-star + shake 9 px · whipZoom 100→400% / 8f (media blur) into the next shot",
+            "text": "v05 · logoSlam 150→94→100 / 6f + flash + flash-star + shake 9 px · zoomThrough 100→400% / 8f (media blur) into the next shot",
             "fontPx": 19,
-            "time": 18.696,
+            "time": 18.694,
             "seconds": 2.991
           },
           {
             "selector": "#i-tag",
-            "text": "v05 · flipY 180° / 10f (perspective 2250, media blur) · slotCounter \"18\" → \"30\" Playfair 330, 14f blur-roll",
+            "text": "v05 · slotCounter \"18\" → \"30\" Coolvetica Italic 330, 14f blur-roll, landing expo.out",
             "fontPx": 19,
-            "time": 21.687,
-            "seconds": 2.742
+            "time": 21.685,
+            "seconds": 1.745
           },
           {
             "selector": "#j-tag",
             "text": "v05 · calendarTear MAR 1995 → NOV 1997 (12f, + glowFlicker) · locationTag: UK outline zooms to the pink Dundee pin (12f)",
             "fontPx": 19,
-            "time": 24.429,
+            "time": 23.429,
             "seconds": 2.618
           },
           {
             "selector": "#k-tag",
-            "text": "v05 · pink pixel glitch (cut mode, 7f, RGB split 9 px f2-5) across a hard cut at f822",
+            "text": "v05 · pink pixel glitch (cut mode, 7f, RGB split 9 px on f2-5) across a hard cut at f792",
             "fontPx": 19,
-            "time": 27.046,
-            "seconds": 1.372
+            "time": 26.047,
+            "seconds": 1.371
           }
         ]
       },
       {
         "code": "film_silent",
         "severity": "warning",
-        "message": "This 29 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
+        "message": "This 28 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
         "selector": "[data-composition-id]",
         "dataAttributes": {},
         "sourceFile": "index.html",
@@ -2157,20 +1922,20 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"does\" (1 word) is on screen 0.33 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"does\" (1 word) is on screen 0.37 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "does",
         "selector": "#a-lk-1 > div:nth-of-type(1) > div:nth-of-type(2)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 1257.71,
-          "y": 719.09,
-          "width": 131.51,
-          "height": 66.68999999999994
+          "x": 1268.72,
+          "y": 712.94,
+          "width": 110,
+          "height": 65
         },
-        "time": 0.538,
+        "time": 0.506,
         "words": 1,
-        "seconds": 0.334,
+        "seconds": 0.366,
         "floorSeconds": 0.4,
         "measured": [
           {
@@ -2184,19 +1949,19 @@
             "heightPx": null
           },
           {
-            "time": 0.499,
+            "time": 0.498,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 0.623,
             "opacity": 1,
-            "heightPx": 67
+            "heightPx": 65
           },
           {
             "time": 0.748,
             "opacity": 1,
-            "heightPx": 67
+            "heightPx": 65
           },
           {
             "time": 0.872,
@@ -2218,20 +1983,20 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.46 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.47 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 534.59,
-          "y": 314.18,
-          "width": 814.63,
-          "height": 119.07
+          "x": 375.34,
+          "y": 389.71,
+          "width": 950.5,
+          "height": 140.05
         },
         "time": 4.339,
         "words": 12,
-        "seconds": 2.462,
+        "seconds": 2.469,
         "floorSeconds": 3.075,
         "measured": [
           {
@@ -2245,57 +2010,57 @@
             "heightPx": null
           },
           {
-            "time": 4.238,
+            "time": 4.237,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 4.362,
             "opacity": 1,
-            "heightPx": 119
+            "heightPx": 140
           },
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 4.736,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2311,22 +2076,22 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.27 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(2) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 616.17,
-          "y": 348.98,
-          "width": 727.35,
-          "height": 106.32
+          "x": 473.98,
+          "y": 419.95,
+          "width": 848.6599999999999,
+          "height": 125.05000000000001
         },
-        "time": 4.534,
+        "time": 4.541,
         "words": 12,
-        "seconds": 2.266,
+        "seconds": 2.267,
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.238,
+            "time": 4.237,
             "opacity": null,
             "heightPx": null
           },
@@ -2336,57 +2101,57 @@
             "heightPx": null
           },
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 4.736,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2400,24 +2165,24 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.16 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.17 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(3) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 652.17,
-          "y": 375.98,
-          "width": 727.35,
-          "height": 106.32
+          "x": 509.98,
+          "y": 446.95,
+          "width": 848.6599999999999,
+          "height": 125.05000000000001
         },
-        "time": 4.604,
+        "time": 4.603,
         "words": 12,
-        "seconds": 2.165,
+        "seconds": 2.166,
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.238,
+            "time": 4.237,
             "opacity": null,
             "heightPx": null
           },
@@ -2427,57 +2192,57 @@
             "heightPx": null
           },
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 4.736,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 102
+            "heightPx": 120
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2493,14 +2258,14 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.10 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(4) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(4) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 688.17,
-          "y": 402.98,
-          "width": 727.35,
-          "height": 106.32
+          "x": 545.98,
+          "y": 473.95,
+          "width": 848.6599999999999,
+          "height": 125.05000000000001
         },
         "time": 4.674,
         "words": 12,
@@ -2513,62 +2278,62 @@
             "heightPx": null
           },
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 4.736,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 102
+            "heightPx": 120
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2584,14 +2349,14 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 2.00 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(5) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(5) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 724.17,
-          "y": 429.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 581.98,
+          "y": 500.95,
+          "width": 848.6599999999999,
+          "height": 125.05000000000001
         },
         "time": 4.736,
         "words": 12,
@@ -2604,62 +2369,62 @@
             "heightPx": null
           },
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 4.736,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 75
+            "heightPx": 88
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2675,14 +2440,14 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.93 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(6) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(6) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 760.17,
-          "y": 456.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 617.98,
+          "y": 527.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
         "time": 4.806,
         "words": 12,
@@ -2690,12 +2455,12 @@
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.487,
+            "time": 4.486,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": null,
             "heightPx": null
           },
@@ -2705,52 +2470,52 @@
             "heightPx": null
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
             "opacity": 1,
-            "heightPx": 75
+            "heightPx": 88
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           },
@@ -2766,22 +2531,22 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.84 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(7) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(7) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 796.17,
-          "y": 483.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 653.98,
+          "y": 554.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
-        "time": 4.869,
+        "time": 4.868,
         "words": 12,
-        "seconds": 1.838,
+        "seconds": 1.839,
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": null,
             "heightPx": null
           },
@@ -2791,49 +2556,49 @@
             "heightPx": null
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.359,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.232,
+            "time": 6.231,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
@@ -2841,12 +2606,12 @@
             "heightPx": null
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           }
@@ -2857,22 +2622,22 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.77 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(8) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(8) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 832.17,
-          "y": 510.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 689.98,
+          "y": 581.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
-        "time": 4.939,
+        "time": 4.938,
         "words": 12,
         "seconds": 1.768,
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.612,
+            "time": 4.611,
             "opacity": null,
             "heightPx": null
           },
@@ -2882,49 +2647,49 @@
             "heightPx": null
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.359,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.232,
+            "time": 6.231,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 6.73,
@@ -2932,12 +2697,12 @@
             "heightPx": null
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           }
@@ -2948,16 +2713,16 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.67 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(9) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(9) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 868.17,
-          "y": 537.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 725.98,
+          "y": 608.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
-        "time": 5.002,
+        "time": 5.001,
         "words": 12,
         "seconds": 1.667,
         "floorSeconds": 3.075,
@@ -2968,54 +2733,54 @@
             "heightPx": null
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.359,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.484,
+            "time": 5.483,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.232,
+            "time": 6.231,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 102
+            "heightPx": 120
           },
           {
             "time": 6.73,
@@ -3023,12 +2788,12 @@
             "heightPx": null
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           }
@@ -3039,14 +2804,14 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.60 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(10) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(10) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 904.17,
-          "y": 564.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 761.98,
+          "y": 635.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
         "time": 5.071,
         "words": 12,
@@ -3059,54 +2824,54 @@
             "heightPx": null
           },
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": null,
             "heightPx": null
           },
           {
             "time": 5.11,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.359,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.484,
+            "time": 5.483,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.232,
+            "time": 6.231,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 102
+            "heightPx": 120
           },
           {
             "time": 6.73,
@@ -3114,12 +2879,12 @@
             "heightPx": null
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           }
@@ -3130,27 +2895,27 @@
         "severity": "warning",
         "message": "\"This program has performed an illegal operation and will ...\" (12 words) is on screen 1.50 s (±0.01 s), under its 3.07 s floor: hold it about 0.5 s + 0.3 s a word (4.10 s here) before it leaves or changes; see references/motion.md.",
         "text": "This program has performed an illegal operation and will be shut down.",
-        "selector": "#c-err > div:nth-of-type(11) > div:nth-of-type(2) > p:nth-of-type(1)",
+        "selector": "#c-err > div:nth-of-type(11) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(2) > p:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 940.17,
-          "y": 591.98,
-          "width": 727.35,
-          "height": 106.31999999999994
+          "x": 797.98,
+          "y": 662.95,
+          "width": 848.6599999999999,
+          "height": 125.04999999999995
         },
-        "time": 5.133,
+        "time": 5.141,
         "words": 12,
-        "seconds": 1.504,
+        "seconds": 1.495,
         "floorSeconds": 3.075,
         "measured": [
           {
-            "time": 4.861,
+            "time": 4.86,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 4.986,
+            "time": 4.985,
             "opacity": null,
             "heightPx": null
           },
@@ -3160,44 +2925,44 @@
             "heightPx": null
           },
           {
-            "time": 5.235,
+            "time": 5.234,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
             "time": 5.359,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.484,
+            "time": 5.483,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 5.609,
+            "time": 5.608,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.232,
+            "time": 6.231,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.357,
+            "time": 6.356,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.481,
+            "time": 6.48,
             "opacity": 1,
-            "heightPx": 106
+            "heightPx": 125
           },
           {
-            "time": 6.606,
+            "time": 6.605,
             "opacity": 1,
-            "heightPx": 75
+            "heightPx": 88
           },
           {
             "time": 6.73,
@@ -3205,12 +2970,12 @@
             "heightPx": null
           },
           {
-            "time": 6.855,
+            "time": 6.854,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 6.98,
+            "time": 6.979,
             "opacity": null,
             "heightPx": null
           }
@@ -3225,18 +2990,18 @@
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 386.16,
-          "y": 715,
-          "width": 1099.63,
-          "height": 180.58000000000004
+          "x": 386.3,
+          "y": 712.01,
+          "width": 1170.57,
+          "height": 180.56999999999994
         },
-        "time": 8.335,
+        "time": 8.334,
         "words": 14,
         "seconds": 2.672,
         "floorSeconds": 3.525,
         "measured": [
           {
-            "time": 7.977,
+            "time": 7.976,
             "opacity": null,
             "heightPx": null
           },
@@ -3246,128 +3011,62 @@
             "heightPx": null
           },
           {
-            "time": 8.226,
+            "time": 8.225,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 8.351,
+            "time": 8.35,
             "opacity": 1,
             "heightPx": 181
           },
           {
-            "time": 8.475,
+            "time": 8.474,
             "opacity": 1,
             "heightPx": 181
           },
           {
-            "time": 8.6,
+            "time": 8.599,
             "opacity": 1,
             "heightPx": 181
           },
           {
-            "time": 8.725,
+            "time": 8.724,
             "opacity": 1,
             "heightPx": 182
           },
           {
-            "time": 10.594,
+            "time": 10.593,
             "opacity": 1,
             "heightPx": 206
           },
           {
-            "time": 10.719,
+            "time": 10.718,
             "opacity": 1,
             "heightPx": 207
           },
           {
-            "time": 10.843,
+            "time": 10.842,
             "opacity": 1,
             "heightPx": 207
           },
           {
-            "time": 10.968,
+            "time": 10.967,
             "opacity": 1,
             "heightPx": 208
           },
           {
-            "time": 11.093,
+            "time": 11.092,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 11.217,
+            "time": 11.216,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 11.342,
-            "opacity": null,
-            "heightPx": null
-          }
-        ]
-      },
-      {
-        "code": "line_unread",
-        "severity": "warning",
-        "message": "\"dull.\" (1 word) is on screen 0.37 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
-        "text": "dull.",
-        "selector": "#g-lk-1 > div:nth-of-type(1) > div:nth-of-type(2)",
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 792.4,
-          "y": 467.36,
-          "width": 335.19999999999993,
-          "height": 204.02999999999997
-        },
-        "time": 16.935,
-        "words": 1,
-        "seconds": 0.366,
-        "floorSeconds": 0.4,
-        "measured": [
-          {
-            "time": 16.577,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 16.701,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 16.826,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 16.951,
-            "opacity": 1,
-            "heightPx": 204
-          },
-          {
-            "time": 17.075,
-            "opacity": 1,
-            "heightPx": 207
-          },
-          {
-            "time": 17.2,
-            "opacity": 1,
-            "heightPx": 209
-          },
-          {
-            "time": 17.325,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 17.449,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 17.574,
+            "time": 11.341,
             "opacity": null,
             "heightPx": null
           }
@@ -3376,54 +3075,59 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"1\" (1 word) is on screen 0.16 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"1\" (1 word) is on screen 0.17 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "1",
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 783.94,
+          "x": 829.47,
           "y": 375,
-          "width": 129.37,
+          "width": 97.69000000000005,
           "height": 330
         },
-        "time": 23.003,
+        "time": 21.669,
         "words": 1,
-        "seconds": 0.164,
+        "seconds": 0.171,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.684,
+            "time": 21.311,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.809,
+            "time": 21.435,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.685,
             "opacity": 1,
             "heightPx": 330
           },
           {
-            "time": 23.183,
+            "time": 21.809,
+            "opacity": 1,
+            "heightPx": 330
+          },
+          {
+            "time": 21.934,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           }
@@ -3432,54 +3136,59 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"2\" (1 word) is on screen 0.16 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"2\" (1 word) is on screen 0.17 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "2",
         "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(2)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 757.38,
-          "y": 650,
-          "width": 182.5,
-          "height": 55
+          "x": 801.59,
+          "y": 672,
+          "width": 153.46000000000004,
+          "height": 33
         },
-        "time": 23.003,
+        "time": 21.669,
         "words": 1,
-        "seconds": 0.164,
+        "seconds": 0.171,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.684,
+            "time": 21.311,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.809,
+            "time": 21.435,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.685,
             "opacity": 1,
-            "heightPx": 55
+            "heightPx": 33
           },
           {
-            "time": 23.183,
+            "time": 21.809,
+            "opacity": 1,
+            "heightPx": 33
+          },
+          {
+            "time": 21.934,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           }
@@ -3488,54 +3197,59 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"8\" (1 word) is on screen 0.16 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"8\" (1 word) is on screen 0.17 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "8",
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 974.34,
+          "x": 960,
           "y": 375,
-          "width": 194.05000000000007,
+          "width": 163.36000000000013,
           "height": 330
         },
-        "time": 23.003,
+        "time": 21.669,
         "words": 1,
-        "seconds": 0.164,
+        "seconds": 0.171,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.684,
+            "time": 21.311,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.809,
+            "time": 21.435,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.685,
             "opacity": 1,
             "heightPx": 330
           },
           {
-            "time": 23.183,
+            "time": 21.809,
+            "opacity": 1,
+            "heightPx": 330
+          },
+          {
+            "time": 21.934,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           }
@@ -3544,54 +3258,59 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"9\" (1 word) is on screen 0.16 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"9\" (1 word) is on screen 0.17 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "9",
         "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 975.34,
-          "y": 650,
-          "width": 192.07000000000005,
-          "height": 55
+          "x": 961.31,
+          "y": 672,
+          "width": 160.72000000000003,
+          "height": 33
         },
-        "time": 23.003,
+        "time": 21.669,
         "words": 1,
-        "seconds": 0.164,
+        "seconds": 0.171,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.684,
+            "time": 21.311,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.809,
+            "time": 21.435,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.685,
             "opacity": 1,
-            "heightPx": 55
+            "heightPx": 33
           },
           {
-            "time": 23.183,
+            "time": 21.809,
+            "opacity": 1,
+            "heightPx": 33
+          },
+          {
+            "time": 21.934,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           }
@@ -3602,52 +3321,52 @@
         "severity": "warning",
         "message": "\"6\" (1 word) is on screen 0.04 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "6",
-        "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(6)",
+        "selector": "div.fx-slot__strip > span:nth-of-type(19)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 751.11,
+          "x": 961.31,
           "y": 375,
-          "width": 195.02999999999997,
-          "height": 195.27999999999997
+          "width": 160.72000000000003,
+          "height": 34.170000000000016
         },
-        "time": 23.167,
+        "time": 21.934,
         "words": 1,
         "seconds": 0.039,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.809,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.685,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.809,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.183,
+            "time": 21.934,
             "opacity": 1,
-            "heightPx": 195
+            "heightPx": 34
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.557,
+            "time": 22.308,
             "opacity": null,
             "heightPx": null
           }
@@ -3658,108 +3377,52 @@
         "severity": "warning",
         "message": "\"7\" (1 word) is on screen 0.04 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "7",
-        "selector": "div.fx-slot__row > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(7)",
+        "selector": "div.fx-slot__strip > span:nth-of-type(20)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 768.09,
-          "y": 460.28,
-          "width": 161.05000000000007,
-          "height": 244.72000000000003
-        },
-        "time": 23.167,
-        "words": 1,
-        "seconds": 0.039,
-        "floorSeconds": 0.4,
-        "measured": [
-          {
-            "time": 22.809,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 22.933,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.058,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.183,
-            "opacity": 1,
-            "heightPx": 245
-          },
-          {
-            "time": 23.307,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.432,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.557,
-            "opacity": null,
-            "heightPx": null
-          }
-        ]
-      },
-      {
-        "code": "line_unread",
-        "severity": "warning",
-        "message": "\"6\" (1 word) is on screen 0.04 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
-        "text": "6",
-        "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(9)",
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 973.86,
+          "x": 962.8,
           "y": 375,
-          "width": 195.0300000000001,
-          "height": 206.37
+          "width": 157.75,
+          "height": 330
         },
-        "time": 23.167,
+        "time": 21.934,
         "words": 1,
         "seconds": 0.039,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.809,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 22.933,
+            "time": 21.685,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.809,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.183,
+            "time": 21.934,
             "opacity": 1,
-            "heightPx": 206
+            "heightPx": 330
           },
           {
-            "time": 23.307,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.432,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.557,
+            "time": 22.308,
             "opacity": null,
             "heightPx": null
           }
@@ -3768,110 +3431,54 @@
       {
         "code": "line_unread",
         "severity": "warning",
-        "message": "\"7\" (1 word) is on screen 0.04 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
-        "text": "7",
-        "selector": "div.fx-slot__row > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(10)",
-        "dataAttributes": {},
-        "sourceFile": "index.html",
-        "bbox": {
-          "x": 990.84,
-          "y": 471.37,
-          "width": 161.05000000000007,
-          "height": 233.63
-        },
-        "time": 23.167,
-        "words": 1,
-        "seconds": 0.039,
-        "floorSeconds": 0.4,
-        "measured": [
-          {
-            "time": 22.809,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 22.933,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.058,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.183,
-            "opacity": 1,
-            "heightPx": 234
-          },
-          {
-            "time": 23.307,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.432,
-            "opacity": null,
-            "heightPx": null
-          },
-          {
-            "time": 23.557,
-            "opacity": null,
-            "heightPx": null
-          }
-        ]
-      },
-      {
-        "code": "line_unread",
-        "severity": "warning",
-        "message": "\"8\" (1 word) is on screen 0.12 s (±0.06 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "message": "\"8\" (1 word) is on screen 0.07 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
         "text": "8",
         "selector": "div.fx-slot__strip > span:nth-of-type(21)",
         "dataAttributes": {},
         "sourceFile": "index.html",
         "bbox": {
-          "x": 974.34,
-          "y": 375,
-          "width": 194.05000000000007,
-          "height": 300.6
+          "x": 960,
+          "y": 673.17,
+          "width": 163.36000000000013,
+          "height": 31.83000000000004
         },
-        "time": 23.307,
+        "time": 21.934,
         "words": 1,
-        "seconds": 0.125,
+        "seconds": 0.07,
         "floorSeconds": 0.4,
         "measured": [
           {
-            "time": 22.933,
+            "time": 21.56,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.058,
+            "time": 21.685,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.183,
+            "time": 21.809,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.307,
+            "time": 21.934,
             "opacity": 1,
-            "heightPx": 301
+            "heightPx": 32
           },
           {
-            "time": 23.432,
+            "time": 22.059,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.557,
+            "time": 22.183,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 23.681,
+            "time": 22.308,
             "opacity": null,
             "heightPx": null
           }
@@ -3888,81 +3495,81 @@
         "bbox": {
           "x": 100,
           "y": 950,
-          "width": 307.8,
-          "height": 36
+          "width": 308.03,
+          "height": 43
         },
-        "time": 26.049,
+        "time": 25.05,
         "words": 2,
         "seconds": 0.997,
         "floorSeconds": 2,
         "measured": [
           {
-            "time": 25.675,
+            "time": 24.676,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 25.8,
+            "time": 24.8,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 25.925,
+            "time": 24.925,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 26.049,
+            "time": 25.05,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.174,
+            "time": 25.174,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.299,
+            "time": 25.299,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.423,
+            "time": 25.423,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.548,
+            "time": 25.548,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.672,
+            "time": 25.673,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.797,
+            "time": 25.797,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 26.922,
+            "time": 25.922,
             "opacity": 1,
-            "heightPx": 36
+            "heightPx": 43
           },
           {
-            "time": 27.046,
+            "time": 26.047,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 27.171,
+            "time": 26.171,
             "opacity": null,
             "heightPx": null
           },
           {
-            "time": 27.296,
+            "time": 26.296,
             "opacity": null,
             "heightPx": null
           }
@@ -3971,7 +3578,7 @@
     ],
     "enabled": true,
     "step": 0.125,
-    "samples": 230
+    "samples": 222
   },
   "audio": {
     "ok": true,
@@ -4007,15 +3614,15 @@
     "findingFiles": []
   },
   "saved": {
-    "id": "f2b70cba-a435-4e4e-acd9-42df53d45a41",
+    "id": "c1339f1b-9ab1-4b05-bae6-8d0ac3ea2103",
     "revision": null,
-    "report": "/home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v05/.hyperframes/artifacts/checks/f2b70cba-a435-4e4e-acd9-42df53d45a41.json",
+    "report": "/home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v05/.hyperframes/artifacts/checks/c1339f1b-9ab1-4b05-bae6-8d0ac3ea2103.json",
     "attribution": "inputs-changed"
   },
   "_meta": {
     "version": "0.9.52",
-    "latestVersion": "0.9.63",
+    "latestVersion": "0.9.64",
     "updateAvailable": true,
-    "checkedAt": "2026-11-17T16:49:16.359Z"
+    "checkedAt": "2026-11-17T21:33:14.349Z"
   }
 }

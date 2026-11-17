@@ -2,14 +2,21 @@
  "beat": "B4",
  "rids": [
   "R4.5",
-  "R3.8"
+  "R3.8",
+  "R3.7"
  ],
- "note": "v05 (REVISION_v05 lane 5): R4.5 = the Race'n'Chase title page; v05 uses the LIGHT original restyled on off-white paper (prep/race_page.py -> 05_GFX/shared/racenchase_title_page_v05.jpg, copied to assets/page/); assets/footage/R4.5.png (the v03 dark page the sync tool copies from 04_Broll/B04) is kept for the credits trail only. R3.8 = the 1995 DMA office behind the 18-cell grid (blurred ~45 px, 25 %).",
+ "note": "v05 (REVISION_v05 lane 5 + client override U4): R4.5 = the Race'n'Chase title page, shown as the DARK (inverted) page on a dark textured ground, rebuilt from the plan's scan by prep/race_page.py -> 05_GFX/shared/racenchase_title_page_dark_v05.jpg (copied to assets/page/); assets/footage/R4.5.png (the v03 dark page the sync tool copies from 04_Broll/B04) is kept for the credits trail only. R3.8 and R3.7 = the 1990s DMA office behind the 18-cell grid (blurred ~45 px, 25 %), two angles with a hard cut at local 70 (doc 19.0; no punch-in, U3).",
  "moments": {
   "R3.8": {
-   "in": 27.0,
-   "out": 29.4,
-   "note": "DMA Design office tour (Mike Dailly): the wide DMA office, CRT monitors at the desks, two staff (inside one shot 26.53-31.73 s; v04's 'It's 1995' card B-roll, free since cut A). B4 v05 grid background, media-start 0.2 = source 27.2 s at local 46. 384x288 4:3, upscaled (soft; blurred anyway)."
+   "in": 47.6,
+   "out": 49.0,
+   "note": "DMA Design office tour (Mike Dailly): a developer in a dark shirt at his desk with a CRT (stable shot 47.5-52.5 s). Grid background angle A, local 46-70 (media-start 0.1). 384x288 4:3, upscaled (blurred anyway)."
+  },
+  "R3.7": {
+   "in": 99.8,
+   "out": 101.6,
+   "crop": "1440:1080:240:0",
+   "note": "BBC 1996 making-of: a DMA developer (patterned shirt) and the presenter at a desk covered in printouts, bright office (shot 88-156 s). Grid background angle B after the hard cut, local 70-112 (media-start 0.1). Pillarbox cropped; the cover fit also cuts the BBC channel bug (top 12.5 %)."
   }
  }
 }

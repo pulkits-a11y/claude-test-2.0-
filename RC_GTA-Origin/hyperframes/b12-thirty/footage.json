@@ -1,4 +1,14 @@
 {
  "beat": "B12",
- "rids": []
+ "rids": [
+  "R3.8"
+ ],
+ "moments": {
+  "R3.8": {
+   "in": 61.5,
+   "out": 64.6,
+   "note": "v05 (doc 46.5-52.0 'blurred, darkened office or GTA1 footage (25% opacity) behind the whole stretch'): DMA Design office tour (Mike Dailly), 1990s camcorder, 384x288: a developer at his desk playtesting on a CRT (one shot, steady 61.5-64.0, the cameraman's hand crosses 64.0-64.6). Shown full frame at 25% opacity behind the calendar, media-treatment blur at its maximum (~22 px), local 0-90 = 61.5-64.5 s. Not the R3.8 moments B3 uses (13.4, 27.2-29.2, 43.35-44.18 s). The stretch continues into b13-gta ('Until finally, in Nov 1997'): lane 4 can carry on from 64.3 s (= this beat's last frame, local 84) or use its own footage."
+  }
+ },
+ "note": "v05: the calendar card gets a faint office background (R3.8). Everything else in B12 is a built graphic (kit M3 calendar)."
 }

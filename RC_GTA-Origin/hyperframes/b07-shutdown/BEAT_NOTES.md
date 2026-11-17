@@ -9,13 +9,14 @@
   sentence. b07 f96 = b08 f6 (mean difference 0.2 / 255, sub-pixel text rendering inside the highlight).
 * **Sweeps** (timing final, look = yellow T9 placeholders until the kit's pink sweep): the headline "First Grand Theft Auto
   Was 'Almost Canned'" on 49 (doc 29.6), "It was almost canned." on 61 (doc ~30.0), "The publisher, BMG Interactive,
-  wanted to can it" on 82 (after the stamp: the event before b08's "Then," 97).
+  wanted to can it" on 82 (after "down.": the event before b08's "Then," 97).
 * A-C (office): one slow push 100 -> 104% over 0-41 (the A-D push is gone with D).
-* `cues.json` v05: whip 51 (the whip-pan's first frame), stamp_thud 66 ("down." = local 72, the stamp, doc 30.3),
-  key_words [16 above, 56 shut], archival [[0, 35]] (the office B-roll); legacy stamp1-3 dropped.
-  Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2: card insert for the office shots (doc 28.0), yellow annotation arrow on "above" (22), the pink sweeps, the
-  CANNED rubber stamp on "down." (72, -12 deg, ~45% width, 1-f flash, 6 px shake), the lockups in kit v05 tiers.
+* **No stamp** (client override U5: v02 "I don't really like the cancelled stamp"): B7 is the article with the pink
+  highlighter sweeps only; no stamp, no red, no stamp sound.
+* `cues.json` v05: whip 51 (the whip-pan's first frame), key_words [16 above, 56 shut], archival [[0, 35]] (the office
+  B-roll); legacy stamp1-3 dropped. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
+* Phase 2 (kit v05): card insert for the office shots (doc 28.0), yellow annotation arrow up at the managers on "above"
+  (22), the pink sweeps (screen on the dark page), the lockups (words appear; chosen key words pop + blur in, white).
 
 ## v04 (kit refresh only)
 Kit refreshed to v04 (`python3 tools/new_beat.py B7 --refresh`); no element of this beat uses the new scanline surfaces:

@@ -4,6 +4,7 @@
   "zoom_mid": 154
  },
  "word_pops": [
+  0,
   25,
   51,
   57,
@@ -22,27 +23,11 @@
  ],
  "sfx": [
   {
-   "f": 0,
-   "name": "whoosh_in"
-  },
-  {
-   "f": 0,
-   "name": "type_on"
-  },
-  {
-   "f": 130,
-   "name": "whoosh_in"
-  },
-  {
-   "f": 139,
-   "name": "type_on"
-  },
-  {
    "f": 140,
    "name": "hit"
   }
  ],
  "dropouts": [],
  "archival": [],
- "note": "v05 (beat frames, f0 = \"Don't\"). f0: hard cut from B14 + the 115% punch-in on the character (whoosh_in) and the highlight pill typing \"DON'T BELIEVE ME?\" (type_on; the pill carries those three words, so no ticks). word_pops = Open 25, and 51, buy 57, an 63, arcade. 69, One 94, of 98, the 102, is 121, called 124; key_words = GTA 33, Online 39, machines 107. Payoff: 124 cut to the catalogue + yellow circle drawn on (no sfx), 130 zoom 100 -> 170% into the listing (whoosh_in), 139 pill types \"RACE AND CHASE\" on 'Race' (type_on; it carries 'Race and Chase.'), 140-150 the 10 f split-screen with the 1995 design-document title page (hit). Legacy: label 139 (MU6 low-pass ends on 'Race'), zoom_mid 154 (S16, X6 into the cabinet screen)."
+ "note": "v05 with the CLIENT OVERRIDE (beat frames, f0 = \"Don't\"). f0: hard cut from B14 (no punch-in, U3); \"Don't believe me?\" in a highlight pill whose text appears whole as the box lands (no type-on, U2): one tick at f0. word_pops = the pill (0), Open 25, and 51, buy 57, an 63, arcade. 69, One 94, of 98, the 102, is 121, called 124; key_words = GTA 33, Online 39, machines 107. Payoff: 124 cut to the catalogue + the yellow circle drawn on (no sfx); the plan's L7 push 100 -> 118% to 150 (no 170% zoom, U3); 139 the v04 highlighter swipe on 'Race' (pink); 140-150 the 10 f split with the dark design-doc title page (hit). No RACE AND CHASE pill (U10). Legacy: label 139 (MU6 low-pass ends on 'Race'), zoom_mid 154 (S16, X6 into the cabinet screen)."
 }

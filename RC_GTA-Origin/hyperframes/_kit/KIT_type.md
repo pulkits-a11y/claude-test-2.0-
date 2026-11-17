@@ -7,6 +7,13 @@ value) or **conflict** (see "Conflicts and decisions" at the end).
 
 Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`index.html`, proof frames in `review/`).
 
+## v05: read KIT_v05.md first
+
+REVISION_v05 (with the client override U) changes the captions in place: Coolvetica Regular 54 setup words, Coolvetica
+Italic keys / heroes / quotes, words appear on their frame and `*` words pop + blur in with the doc's timing (white), new
+markers `[[hero]]`, `^` (static pink), `#` (the "dull." gag); the `.rc-card` texture; and the motion-graphics kit
+`RCK.fx`. Everything below still documents the v01-v04 helpers.
+
 ## v04 (REVISION_v04.md notes 3, 6, 7, 15): glow flicker, scanlines inside the dark text cards. Read this first
 
 Additions on top of v03 (everything in the v03 section below still applies). Proof: `hyperframes/_demo-v03/` section K

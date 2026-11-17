@@ -1021,6 +1021,23 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return (k0 + n) / FPS;
   }
 
+  /* ---------------- per-frame jitter (persistent look: "broke." +/-4.5 px every frame) ---------------- */
+  // fx.jitter(tl, el, at, { px: 4.5, every: 1, until, frames, seed }): a new seeded x / y offset (|offset| <= px) on every
+  // `every`-th frame from `at` until `until` (s; default the element's clip end, or `frames`), hard steps, back to 0 at
+  // the end. Works on a lockup word span (it layers with a pop: different transform properties). Returns the end time.
+  function jitter(tl, target, at, opts) {
+    opts = opts || {};
+    var k = frame(at), px = num(opts.px, 4.5), ev = Math.max(1, num(opts.every, 1)), end = k;
+    $$(target).forEach(function (el) {
+      var stop = opts.until != null ? frame(opts.until) : (opts.frames != null ? k + opts.frames : (clipEndF(el) || k + 30));
+      var R = rng(num(opts.seed, seedOf((el.id || el.textContent) + k))), prev = { x: 0, y: 0 };
+      for (var f = k; f < stop; f += ev) { var o = { x: r2((R() * 2 - 1) * px), y: r2((R() * 2 - 1) * px) }; hard(tl, el, prev, o, f); prev = o; }
+      hard(tl, el, prev, { x: 0, y: 0 }, stop);
+      end = Math.max(end, stop);
+    });
+    return end / FPS;
+  }
+
   /* ---------------- flash-star burst (white 4-point star flare at a cut) ---------------- */
   // fx.flashStar(tl, host, at, { x, y (or the host's --x/--y), size: 560, frames: 5, rotate: 18 }): f0 the flare at 40%,
   // f0-2 grows to 100% (expo.out) while turning, f2-end fades (power2.out) as it keeps growing to 125%.
@@ -1066,32 +1083,6 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     if (opts.star) flashStar(tl, opts.star, imp / FPS, { size: opts.starSize, frames: opts.starF });
     if (opts.shakeTarget) shake(tl, opts.shakeTarget, imp / FPS, { px: num(opts.shakePx, 9), frames: num(opts.shakeF, 6), seed: num(opts.seed, 1997) });
     return (k + n) / FPS;
-  }
-
-  /* ---------------- rubber stamp ---------------- */
-  // fx.stamp(tl, host, at, { text: "CANNED", rotate: -12, size: 180, flash: host, flashOpacity: 1, shakeTarget, shakePx: 6,
-  // shakeF: 4, seed }): the stamp appears on f0 at 180%, slams to 95% by f3 (power2.in), settles 100% by f5 (power2.out);
-  // impact = f3: 1-frame white flash + 6 px shake for 4f. Rough #E3262B grunge (filter #rcm-stamp-rough). Anchor: --x/--y.
-  function stamp(tl, target, at, opts) {
-    opts = opts || {};
-    var host = $(target), k = frame(at), a = hostAnchor(host);
-    if (RCK.motifs && RCK.motifs.ensureDefs) RCK.motifs.ensureDefs();
-    var slam = a.querySelector(".fx-stamp__slam");
-    if (!slam) {
-      slam = mk("div", "fx-stamp__slam");
-      var ink = mk("span", "fx-stamp__ink", opts.text || host.getAttribute("data-text") || "CANNED");
-      ink.setAttribute("data-layout-allow-overlap", ""); ink.setAttribute("data-layout-allow-occlusion", "");   // stamped over a page on purpose
-      if (opts.size) ink.style.setProperty("--stamp-size", opts.size + "px");
-      slam.appendChild(ink); a.appendChild(slam);
-    }
-    var rot = num(opts.rotate, -12);
-    G().set(slam, { opacity: 0, scale: 1.8, rotation: rot, transformOrigin: "50% 50%" });
-    hard(tl, slam, { opacity: 0 }, { opacity: 1 }, k);
-    span(tl, slam, { scale: 1.8 }, { scale: 0.95 }, k, 3, "power2.in");
-    span(tl, slam, { scale: 0.95 }, { scale: 1 }, k + 3, 2, "power2.out");
-    if (opts.flash) flash(tl, opts.flash, (k + 3) / FPS, { opacity: num(opts.flashOpacity, 1) });
-    if (opts.shakeTarget) shake(tl, opts.shakeTarget, (k + 3) / FPS, { px: num(opts.shakePx, 6), frames: num(opts.shakeF, 4), seed: num(opts.seed, 31) });
-    return (k + 5) / FPS;
   }
 
   /* ---------------- pink pixel glitch ---------------- */
@@ -1167,71 +1158,58 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
 
   /* ---------------- highlight pill + name pill ---------------- */
   // Host: <div class="clip fx-host fx-pill" style="--x; --y">THAT BUG SAVED IT</div>  (name pill: class "fx-pill--name",
-  // text "GARY PENN" + data-line2="DMA Design · Gamasutra, 2011"; lower-left at --x / --b). fx.pill(tl, host, at,
-  // { cps: 30, wipeF: 6, size }): f0-6 the box wipes 0 -> 100% from the left (power2.out); the text types on from f6 at
-  // 30 chars/s (1 char a frame; line 2 after line 1). Returns the time the last character is in.
+  // text "GARY PENN" + data-line2="DMA Design · Gamasutra, 2011"; lower-left at --x / --b). Coolvetica Regular, uppercase.
+  // fx.pill(tl, host, at, { wipeF: 6, size }): f0-6 the box wipes 0 -> 100% from the left (power2.out); the text appears
+  // whole on f6 as the box lands (U2: no type-on). Returns the time the text is in.
   function pillInit(host, opts) {
     if (host.__fxPill) return host.__fxPill;
     var line1 = (opts.text != null ? opts.text : host.textContent).replace(/\s+/g, " ").trim(), line2 = opts.line2 || host.getAttribute("data-line2");
     host.textContent = "";
-    var a = hostAnchor(host), box = mk("div", "fx-pill__box"), t1 = mk("span", "fx-pill__text");
+    var a = hostAnchor(host), box = mk("div", "fx-pill__box"), t1 = mk("span", "fx-pill__text", line1), texts = [t1];
     if (opts.size) host.style.setProperty("--pill-size", opts.size + "px");
-    var chars = [];
-    Array.from(line1).forEach(function (ch) { var s = mk("span", "fx-pill__ch", ch); t1.appendChild(s); chars.push(s); });
     box.appendChild(t1);
-    if (line2) {
-      var t2 = mk("span", "fx-pill__l2");
-      Array.from(line2).forEach(function (ch) { var s = mk("span", "fx-pill__ch", ch); t2.appendChild(s); chars.push(s); });
-      box.appendChild(t2);
-    }
+    if (line2) { var t2 = mk("span", "fx-pill__l2", line2); box.appendChild(t2); texts.push(t2); }
     a.appendChild(box);
-    host.__fxPill = { box: box, chars: chars };
+    host.__fxPill = { box: box, texts: texts };
     return host.__fxPill;
   }
   function pill(tl, target, at, opts) {
     opts = opts || {};
-    var host = $(target), st = pillInit(host, opts), k = frame(at), wf = num(opts.wipeF, 6), cps = num(opts.cps, 30);
+    var host = $(target), st = pillInit(host, opts), k = frame(at), wf = num(opts.wipeF, 6);
     G().set(st.box, { "--w": 0 });
     span(tl, st.box, { "--w": 0 }, { "--w": 1 }, k, wf, "power2.out");
-    var t0 = k + wf + num(opts.typeDelayF, 0), last = t0;
-    G().set(st.chars, { opacity: 0 });
-    st.chars.forEach(function (c, i) { var f = t0 + Math.floor(i * FPS / cps); hard(tl, c, { opacity: 0 }, { opacity: 1 }, f); last = f; });
-    return (last + 1) / FPS;
+    G().set(st.texts, { opacity: 0 });
+    hard(tl, st.texts, { opacity: 0 }, { opacity: 1 }, k + wf);
+    return (k + wf) / FPS;
   }
   // fx.pillOut(tl, host, at, opts): the pill leaves through the pink pixel glitch (mode 'out', 7f).
   function pillOut(tl, target, at, opts) { var host = $(target); return glitch(tl, pillInit(host, opts || {}).box, at, Object.assign({ mode: "out", seed: seedOf(host.id || "pill") }, opts)); }
 
   /* ---------------- Win95-style error window, cascade, snap shut, 2-frame flash ---------------- */
   var ERR_TEXT = "This program has performed an illegal operation and will be shut down.";
-  function errIcon() {
-    return '<svg class="fx-err__icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#E3262B" stroke="#7A0E12" stroke-width="1.5"/>' +
-      '<path d="M10.5 10.5 L21.5 21.5 M21.5 10.5 L10.5 21.5" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="square"/></svg>';
-  }
-  // fx.errorWindow(host, { title: "Race'n'Chase", text, scale: 1.8, x, y, buttons: ['Close', 'Details >>'], theme: 'classic' | 'dark' })
-  // builds the window (classic 1990s grey dialog, navy title bar, red stop icon; no OS logos) centred on --x / --y.
-  // Base width 640 px x scale (doc B2: ~60% of the frame = scale 1.8). Returns the window element.
+  var CLOSE_D = "M0 0h2v1h-2zM6 0h2v1h-2zM1 1h2v1h-2zM5 1h2v1h-2zM2 2h4v1h-4zM3 3h2v1h-2zM2 4h4v1h-4zM1 5h2v1h-2zM5 5h2v1h-2zM0 6h2v1h-2zM6 6h2v1h-2z";
+  // fx.errorWindow(host, { title: "Race'n'Chase", text, scale: 1.8, x, y }): the B2 dialog in its v04 look (the kit's
+  // .m-errbox: charcoal face, near-black title bar with a pixel close box, white system-sans text; no icon, no buttons,
+  // no OS marks), centred on --x / --y; 640 px wide x scale (B2: ~60% of the frame = 1.8). Returns the window element.
+  function errAnchor(host, x, y) { var a = mk("div", "fx-anchor"); a.style.left = r2(x) + "px"; a.style.top = r2(y) + "px"; host.appendChild(a); return a; }
   function errorWindow(target, opts) {
     opts = opts || {};
     var host = $(target);
     if (host.__fxErr) return host.__fxErr.win;
+    host.classList.add("fx-err");
     var s = num(opts.scale, num(host.getAttribute("data-scale"), 1.8));
-    if (opts.theme === "dark") host.classList.add("fx-err--dark");
-    var win = mk("div", "fx-err__win");
-    win.style.setProperty("--s", s);
+    var win = mk("div", "m-errbox");
+    win.style.setProperty("--m-eb-u", r2(2 * s) + "px"); win.style.setProperty("--m-eb-fs", r2(28 * s) + "px"); win.style.setProperty("--m-eb-w", r2(640 * s) + "px");
     win.setAttribute("data-layout-allow-overlap", "");     // the cascade piles windows on purpose
     win.setAttribute("data-layout-allow-occlusion", "");
-    var btns = opts.buttons || ["Close", "Details >>"];
-    win.innerHTML = '<div class="fx-err__title"><span></span><span class="fx-err__x">&#x2715;</span></div>' +
-      '<div class="fx-err__body">' + errIcon() + '<p class="fx-err__msg"></p></div>' +
-      '<div class="fx-err__btns">' + btns.map(function (b, i) { return '<span class="fx-err__btn' + (i === 0 ? " fx-err__btn--def" : "") + '"></span>'; }).join("") + "</div>";
-    win.querySelector(".fx-err__title span").textContent = opts.title || host.getAttribute("data-title") || "Race'n'Chase";
-    win.querySelector(".fx-err__msg").textContent = opts.text || host.getAttribute("data-text") || ERR_TEXT;
-    Array.prototype.slice.call(win.querySelectorAll(".fx-err__btn")).forEach(function (b, i) { b.textContent = btns[i]; });
-    var W = 640 * s, H = num(opts.height, 300) * s;          // layout estimate for centring (height: the 3-line message)
-    var x = num(opts.x, parseFloat(getComputedStyle(host).getPropertyValue("--x")) || 960), y = num(opts.y, parseFloat(getComputedStyle(host).getPropertyValue("--y")) || 540);
-    win.style.left = r2(x - W / 2) + "px"; win.style.top = r2(y - H / 2) + "px";
-    host.appendChild(win);
-    host.__fxErr = { win: win, copies: [], x: x - W / 2, y: y - H / 2 };
+    win.innerHTML = '<div class="m-errbox__win"><div class="m-errbox__title"><span class="m-errbox__title-text"></span><span class="m-errbox__close" aria-hidden="true">' +
+      '<svg viewBox="0 0 8 7" shape-rendering="crispEdges"><path d="' + CLOSE_D + '"/></svg></span></div><div class="m-errbox__body"><p class="m-errbox__msg"></p></div></div>';
+    win.querySelector(".m-errbox__title-text").textContent = opts.title || host.getAttribute("data-title") || "Race'n'Chase";
+    win.querySelector(".m-errbox__msg").textContent = opts.text || host.getAttribute("data-text") || ERR_TEXT;
+    var cs = getComputedStyle(host);
+    var x = num(opts.x, parseFloat(cs.getPropertyValue("--x")) || 960), y = num(opts.y, parseFloat(cs.getPropertyValue("--y")) || 540);
+    errAnchor(host, x, y).appendChild(win);
+    host.__fxErr = { win: win, copies: [], x: x, y: y };
     return win;
   }
   // fx.errorPop(tl, host, at, opts): the window slams in: f0 visible at 112%, 100% by f3 (expo.out).
@@ -1251,8 +1229,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     var n = num(opts.count, 10), dx = num(opts.dx, 36), dy = num(opts.dy, 27), step = num(opts.stepF, 2);
     for (var i = st.copies.length + 1; i <= n; i++) {
       var c = win.cloneNode(true);
-      c.style.left = r2(st.x + i * dx) + "px"; c.style.top = r2(st.y + i * dy) + "px";
-      host.appendChild(c); st.copies.push(c);
+      errAnchor(host, st.x + i * dx, st.y + i * dy).appendChild(c); st.copies.push(c);
     }
     st.copies.slice(0, n).forEach(function (c, i) { G().set(c, { opacity: 0, scale: 1 }); hard(tl, c, { opacity: 0 }, { opacity: 1 }, k + i * step); });
     return (k + (n - 1) * step + 1) / FPS;
@@ -1318,19 +1295,12 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   function rgbGrading(px) { return { effects: { chromaticAberration: r2(Math.min(1, num(px, 9) * CA_PER_PX) * 1000) / 1000, chromaticAngle: 0 } }; }
 
   /* ---------------- highlighter sweep ---------------- */
-  // fx.highlight(tl, el, at, { frames: 8, page: wrapper, pushTo: 1.10, pushF: 45, origin }): el = a .fx-hl box laid over
-  // the line (class fx-hl--dark on a dark page = screen; default multiply for paper). Wipes left -> right over 8f
-  // (power2.out); the page wrapper pushes 100 -> 110% from f0 over pushF frames (sine.inOut). Returns the wipe end.
+  // fx.highlight(tl, el, at, { frames: 8 }): el = a .fx-hl box laid over the line (#FF2E7E 55%; add class fx-hl--dark on a
+  // dark page = screen blend, else multiply). Wipes left -> right over 8f (power2.out). No push on the page (U3).
   function highlight(tl, target, at, opts) {
     opts = opts || {};
     var els = $$(target), k = frame(at), d = num(opts.frames, 8);
     els.forEach(function (el) { G().set(el, { "--w": 0 }); span(tl, el, { "--w": 0 }, { "--w": 1 }, k, d, "power2.out"); });
-    if (opts.page) {
-      $$(opts.page).forEach(function (p) {
-        G().set(p, { scale: 1, transformOrigin: opts.origin || "50% 50%", force3D: false });
-        span(tl, p, { scale: 1 }, { scale: num(opts.pushTo, 1.1) }, k, num(opts.pushF, 45), "sine.inOut");
-      });
-    }
     return (k + d) / FPS;
   }
 
@@ -1498,8 +1468,8 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
 
   /* ---------------- tear-off calendar page ---------------- */
-  // fx.calendarTear(tl, host, at, { from: 'MAR 1995', to: 'NOV 1997', frames: 12, size: 300, theme: 'dark' | 'paper', seed }):
-  // a pad (binding + rings) shows `from`; f0-2 the page lifts (rotation -3 deg, power2.out), f2-frames it rips off the
+  // fx.calendarTear(tl, host, at, { from: 'MAR 1995', to: 'NOV 1997', frames: 12, size: 300, seed }): a dark pad
+  // (charcoal pages + grain, binding + rings; Coolvetica Italic, U1 / U4) shows `from`; f0-2 the page lifts (rotation -3 deg, power2.out), f2-frames it rips off the
   // binding along a torn edge and falls out of frame turning around its top-right corner (power2.in), revealing `to`
   // (the beat may glowFlicker '#host .fx-cal__text--to'). Returns the end time.
   function tornEdge(R, n, depth) {
@@ -1511,9 +1481,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     opts = opts || {};
     var host = $(target), a = hostAnchor(host), k = frame(at), n = num(opts.frames, 12), size = num(opts.size, 300);
     var from = opts.from || "MAR 1995", to = opts.to || "NOV 1997", R = rng(num(opts.seed, 1997));
-    var tw = RCK.type && RCK.type.fontWidth ? Math.max(RCK.type.fontWidth("pf900", from, size), RCK.type.fontWidth("pf900", to, size)) : size * 4.6;
+    var tw = RCK.type && RCK.type.fontWidth ? Math.max(RCK.type.fontWidth("cvi", from, size), RCK.type.fontWidth("cvi", to, size)) + 0.12 * size : size * 4.2;
     var W = Math.round(tw + size * 0.55), H = Math.round(size * 1.45);
-    host.classList.add(opts.theme === "paper" ? "fx-cal--paper" : "fx-cal--dark");
+    host.classList.add("fx-cal--dark");
     var pad = mk("div", "fx-cal__pad"); pad.style.width = W + "px"; pad.style.height = H + "px";
     var under = mk("div", "fx-cal__page fx-cal__page--to"), over = mk("div", "fx-cal__page fx-cal__page--from");
     var tTo = mk("span", "fx-cal__text fx-cal__text--to", to), tFrom = mk("span", "fx-cal__text fx-cal__text--from", from);
@@ -1593,38 +1563,12 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return o;
   }
 
-  /* ---------------- 3D Y-flip of a whole frame ---------------- */
-  // fx.flipY(tl, root, at, { frames: 10, perspective: 2250, front: '.fx-flip__face--front', back: '.fx-flip__face--back',
-  // blur: 0.6, ease: 'power2.inOut' }): root = an untimed wrapper holding two full-frame faces (class fx-flip__face);
-  // front 0 -> 180 deg, back -180 -> 0 deg on Y (fastest at f5); motion blur = the faces' media-treatment blur ramp
-  // (0 -> blur on f0-5 power2.in, back to 0 on f5-10 power2.out) on every <video>/<img> that carries
-  // style="--hf-color-grading-blur: 0" and a data-color-grading with effects.blur. Returns the landing time.
-  function flipY(tl, target, at, opts) {
-    opts = opts || {};
-    var root = $(target), k = frame(at), n = num(opts.frames, 10), e = easeOf(opts.ease, "power2.inOut");
-    root.style.perspective = num(opts.perspective, 2250) + "px";
-    var fr = root.querySelector(opts.front || ".fx-flip__face--front"), bk = root.querySelector(opts.back || ".fx-flip__face--back");
-    if (fr) { G().set(fr, { rotationY: 0, transformOrigin: "50% 50%" }); span(tl, fr, { rotationY: 0 }, { rotationY: 180 }, k, n, e); }
-    if (bk) { G().set(bk, { rotationY: -180, transformOrigin: "50% 50%" }); span(tl, bk, { rotationY: -180 }, { rotationY: 0 }, k, n, e); }
-    mediaBlurRamp(tl, [fr, bk], k, n, num(opts.blur, 0.6));
-    return (k + n) / FPS;
-  }
-  function mediaBlurRamp(tl, hosts, k, n, peak) {
-    if (!(peak > 0)) return;
-    var vids = [];
-    hosts.forEach(function (h) { if (h) $$("video, img", h).forEach(function (v) { if (v.style.getPropertyValue("--hf-color-grading-blur") !== "") vids.push(v); }); });
-    if (!vids.length) return;
-    var h1 = Math.floor(n / 2);
-    span(tl, vids, { "--hf-color-grading-blur": 0 }, { "--hf-color-grading-blur": peak }, k, h1, "power2.in");
-    span(tl, vids, { "--hf-color-grading-blur": peak }, { "--hf-color-grading-blur": 0 }, k + h1, n - h1, "power2.out");
-  }
-
-  /* ---------------- whip-zoom / zoom-through with motion blur ---------------- */
-  // fx.whipZoom(tl, outWrapper, at, { to: 4, frames: 8, origin: '960px 540px', blur: 0.8, in: wrapper, inFrom: 1.3, inF: 6 }):
+  /* ---------------- zoom-through with motion blur (the transition kept since v03; not a punch-in, U3) ---------------- */
+  // fx.zoomThrough(tl, outWrapper, at, { to: 4, frames: 8, origin: '960px 540px', blur: 0.8, in: wrapper, inFrom: 1.3, inF: 6 }):
   // the outgoing shot's wrapper scales 100 -> 400% over 8f centred on `origin` (expo.in) with its media blur ramping up;
   // the cut is on f8 (time the outgoing <video> to end there, the next to start there); the incoming wrapper lands from
   // inFrom to 100% over inF (expo.out) with its media blur ramping down. Returns the landing time.
-  function whipZoom(tl, target, at, opts) {
+  function zoomThrough(tl, target, at, opts) {
     opts = opts || {};
     var out = $$(target), k = frame(at), n = num(opts.frames, 8), cut = k + n, peak = num(opts.blur, 0.8);
     out.forEach(function (o) {
@@ -1647,14 +1591,13 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   }
 
   RCK.fx = {
-    flash: flash, shake: shake, flashStar: flashStar, logoSlam: logoSlam, stamp: stamp,
+    flash: flash, shake: shake, jitter: jitter, flashStar: flashStar, logoSlam: logoSlam,
     glitch: glitch, pill: pill, pillOut: pillOut, pillInit: pillInit,
     errorWindow: errorWindow, errorPop: errorPop, errorCascade: errorCascade, errorSnapShut: errorSnapShut, errorFlash: errorFlash, ERR_TEXT: ERR_TEXT,
     rgbSplit: rgbSplit, rgbGrading: rgbGrading, rgbFilter: rgbFilter,
     highlight: highlight, annotate: annotate,
     cardInsertHTML: cardInsertHTML, darkCardHTML: darkCardHTML, archivalGrading: archivalGrading, archivalCmd: archivalCmd,
-    slotCounter: slotCounter, calendarTear: calendarTear, locationTag: locationTag, vcr: vcr, flipY: flipY, whipZoom: whipZoom,
-    siren: function (tl, target, at, opts) { return RCK.type.sirenFlicker(tl, target, at, opts); },
+    slotCounter: slotCounter, calendarTear: calendarTear, locationTag: locationTag, vcr: vcr, zoomThrough: zoomThrough, whipZoom: zoomThrough,
     glowFlicker: function (tl, target, at, opts) { return RCK.type.glowFlicker(tl, target, at, opts); },
     PINK: PINK, YELLOW: YEL, RED: RED, BLUE: BLUE, CA_PER_PX: CA_PER_PX
   };

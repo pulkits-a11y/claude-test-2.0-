@@ -7,8 +7,9 @@
   that follows the px curve, DOM layers by CSS), 7 -> 37, easeInOutSine. X4 still rebuilt (`x4_still.sh`).
 * `cues.json` v05: reverse_cymbal ending on "breaks." (33) + glitch_stutter 33 + a 4f dropout ending on it, key_words [33];
   legacy breaks / first_black dropped. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2: "breaks." hero 450 px with the kit's pink pixel-glitch entry, the Win95 window flashed 2f behind it, the dark
-  card v05 (grain + faint footage) instead of flat black, the landed CANNED stamp on the page, the lockup in kit v05 tiers.
+* Phase 2 (kit v05): on "breaks" the pink pixel glitch is the FRAME transition and the hero word "breaks." (450 px,
+  Coolvetica Italic) simply appears (client override U2), the Win95 window flashed 2f behind it, the dark card v05 (grain
+  + faint footage) instead of flat black; the "Then, something" lockup (words appear). No stamp anywhere (U5).
 
 ## v04 (kit refresh only)
 `python3 tools/new_beat.py B8 --refresh` (kit v04): the full-frame black screen behind T10 "breaks." (`.rc-ink.rc-full`,

@@ -26,10 +26,6 @@
    "name": "swipe"
   },
   {
-   "f": 129,
-   "name": "siren_whoop"
-  },
-  {
    "f": 141,
    "name": "reverse_cymbal"
   },
@@ -44,5 +40,5 @@
  ],
  "dropouts": [],
  "archival": [],
- "note": "v05 (beat frames, f0 = 'And'; B17 is 168 f, hard cut to B18 at 168). word_pops = And 1, It 36, opens 39, with 48, already 62, So 97, who's 100, chasing 109, who 123; key_words = GTA 7 ('GTA 6?' [DEPTH]), Lucia 54 ([DEPTH]), caught. 74 (held pink), now? 129 (hero, siren flicker entry: siren_whoop like the other siren-flicker callbacks). swipe 109 = the whoosh between the two 'So who's chasing' shots. The GTA VI logo slams in at 141 (end of 'now?'; identical to B1's slam): reverse_cymbal ENDS at 141, impact_boom + sub_drop on it (same as B13's slam: align with lane 1's B1 slam sound), then it holds 27 f to the cut. Legacy kept: now 129, music_stop 141 (MU8). Dropped: logo_in (S18 riser -> reverse_cymbal) and final_hit 161 (S19: the X4 tear + T10 break at the end are gone, no room before the B18 cut)."
+ "note": "v05 (beat frames, f0 = 'And'; B17 is 168 f, hard cut to B18 at 168). word_pops = And 1, It 36, opens 39, with 48, already 62, So 97, who's 100, chasing 109, who 123; key_words = GTA 7 ('GTA 6?' [DEPTH]), Lucia 54 ([DEPTH]), caught. 74 (held pink), now? 129 (hero, appears / pops + blurs in, white: no siren flicker, U2). swipe 109 = the whoosh between the two 'So who's chasing' shots. The GTA VI logo slams in at 141 (end of 'now?'; identical to B1's slam): reverse_cymbal ENDS at 141, impact_boom + sub_drop on it (same as B13's slam: align with lane 1's B1 slam sound), then it holds 27 f to the cut. Legacy kept: now 129, music_stop 141 (MU8). Dropped: logo_in (S18 riser -> reverse_cymbal) and final_hit 161 (S19: the X4 tear + T10 break at the end are gone, no room before the B18 cut)."
 }

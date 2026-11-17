@@ -23,6 +23,15 @@
         position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
         transform-origin: 241px 1080px; transform: scale(1.4);
       }
+      /* v05 payoff split (doc 66.8 "flash a split-screen of the 1995 Race'n'Chase design doc title beside it for 10 frames"):
+         right half = the dark design-document page (R4.5, as B4 shows it: tilted 4 deg), its title centred in the half;
+         "Race'n'Chase" carries B4's pink highlighter band (static, the end state of B4's sweep); 6 px white divider. The
+         page transform is static CSS (GSAP never touches it): page point (878, 420) -> half centre (480, 540), 1.6x, 4 deg. */
+      #b15-split { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      .b15-split__half { position: absolute; left: 963px; top: 0; width: 957px; height: 1080px; overflow: hidden; background: var(--ink-black); }
+      #b15-split-pagebox { position: absolute; left: 0; top: 0; width: 1700px; height: 2200px; transform-origin: 878px 420px; transform: translate(-398px, 120px) rotate(4deg) scale(1.6); }
+      #b15-split-page { position: absolute; left: 0; top: 0; width: 1700px; height: 2200px; }
+      .b15-split__divider { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: #FFFFFF; }
     </style>
   </head>
   <body>
@@ -54,12 +63,8 @@
            one 4.3 s take, same total length (local 0-130), cut on the voice (Open 31, an 69, One 100); working clip 0 s =
            source 155.9 s. Hard cut out on "called" (f124) as before ===== -->
       <div data-hf-id="hf-i7wr" id="b15-int-wrap" class="rc-cam" style="z-index: 1">
-        <!-- b15-int-1: local 0-31, source 229.40 s: the player walks down the stairs onto the arcade floor (v03 opening).
-             v05 (doc 61.5 "a 115% punch-in on the character ... a fourth-wall moment"): #b15-punch snaps 100 -> 115% on "me?"
-             (beat 12) about the character (840, 700) and holds to the cut on "Open" (beat 25) -->
-        <div id="b15-punch" class="rc-cam">
+        <!-- b15-int-1: local 0-31, source 229.40 s: the player walks down the stairs onto the arcade floor (v03 opening). -->
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b15-int-1" class="clip" src="assets/footage/R15.3.mp4" data-start="0.0000" data-duration="1.0333" data-media-start="73.5000" data-track-index="0" muted playsinline></video>
-        </div>
         <!-- b15-int-2: local 31-69, source 156.00 s: running past the PENETRATOR cabinet, rows of cabinets behind -->
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b15-int-2" class="clip" src="assets/footage/R15.3.mp4" data-start="1.0333" data-duration="1.2667" data-media-start="0.1000" data-track-index="0" muted playsinline></video>
         <!-- b15-int-3: local 69-100, source 232.00 s: the row of Street Crimes cabinets -->
@@ -76,10 +81,13 @@
                the static 1.4x reframe. Game grade (contrast) + blur control for the X6 motion blur via media-treatment -->
           <div data-hf-id="hf-c4fr" id="b15-catframe" data-layout-allow-overflow="">
             <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-ql5o" id="b15-plate" class="clip rc-l7__media" src="assets/footage/R15.3.mp4" data-start="4.3333" data-duration="1.1333" data-media-start="35.1333" data-track-index="1" muted playsinline style="--hf-color-grading-blur: 0"></video>
-            <!-- v05: the v04 yellow highlighter sweep on "RACE AND CHASE:" is gone (G1: old yellow accents go): the doc's
-                 yellow hand-drawn circle around the listing (beat 124) + the pink "RACE AND CHASE" highlight pill (beat 139) take
-                 this moment. TODO(kit v05): annotation circle on the listing card (source-px rect of the card, inside this reframe
-                 so it zooms with the page) -->
+            <!-- v04 note 19 ("highligh race and chase"), kept in v05 (REVISION_v05 U10) and pink (G1, kit v05 highlighter):
+                 the highlighter swipe over the game's own "RACE AND CHASE:" heading, in source px (text x 408-537, y 806-824
+                 measured on the frame); wipes in left -> right on "Race" (local 145, 8f). Inside the reframe, so it pushes and
+                 zooms with the page. TODO(kit v05): the yellow hand-drawn circle round the STREET LEGAL listing (beat 124) -->
+            <div id="b15-hl-clip" class="clip" data-start="4.3333" data-duration="1.1333" data-track-index="4" data-layout-ignore="">
+              <div id="b15-hl" class="rc-t9-hl" style="left: 402px; top: 801px; width: 141px; height: 28px"></div>
+            </div>
           </div>
           <!-- the cabinet screen picture (R15.L1, the proof shot; working clip 0 s = source 14.10 s on beat f150), laid out at
                1920 px wide and mapped onto the screen rect by X.zoomFit:
@@ -93,6 +101,17 @@
                (heading + cabinets; source x 330-722, y 795-1080 through the 1.4x reframe; the bottom runs off-frame) -->
           <div data-hf-id="hf-w7fl" id="b15-dim" class="clip rc-l7__dim" data-hole="366,681,548,430" data-radius="16" data-feather="20" data-start="4.3333" data-duration="1.1333" data-track-index="3"></div>
         </div>
+      </div>
+
+      <!-- ===== v05 the 10 f split (beat 140-150 = local 146-156), above the zoom world, gone before the X6 zoom ===== -->
+      <div id="b15-split" class="clip" data-start="4.8666" data-duration="0.3334" data-track-index="7" style="z-index: 4">
+        <div class="b15-split__half">
+          <div id="b15-split-pagebox">
+            <img id="b15-split-page" src="assets/footage/R4.5.png" alt="Race'n'Chase Game Design, Version 1.05, March 22, 1995">
+            <div id="b15-split-hl" class="rc-t9-hl" style="left: 745px; top: 262px; width: 265px; height: 40px"></div>
+          </div>
+        </div>
+        <div class="b15-split__divider"></div>
       </div>
 
       <!-- ===== X6 handoff: the plain full-frame R15.L1 = the landing frame. Hidden (X.zoom opts.handoff) until f158, then
@@ -124,13 +143,13 @@
       const CUT = 124, ZOOM = 150, LAND = 158;       // beat frames: cut on "called", X6 start (3f after "Chase."), landing
 
       // Geometry measured on the real R15.3 catalogue frame (source px -> frame px through the 1.4x reframe about 241, 1080)
-      const PUSH = 1.7, CAT_K = 1.4, HOLE_C = [366 + 548 / 2, 681 + 430 / 2];   // v05: 170% (doc 66.4); hole centre (640, 896)
+      const PUSH = 1.18, CAT_K = 1.4, HOLE_C = [366 + 548 / 2, 681 + 430 / 2];  // hole 366,681,548,430 -> centre (640, 896)
       const SCREEN_100 = [737, 874, 118, 66.375];                                // 16:9 screen picture rect at push 100%
       const SCREEN_ZOOM = [HOLE_C[0] + PUSH * (SCREEN_100[0] - HOLE_C[0]),      // the same rect on the zoom's first
-                           HOLE_C[1] + PUSH * (SCREEN_100[1] - HOLE_C[1]),      // frame (f150, at 170%):
-                           PUSH * SCREEN_100[2], PUSH * SCREEN_100[3]];         // [804.9, 858.6, 200.6, 112.84]
-      const ZG = X.zoomGeometry({ rect: SCREEN_ZOOM }, { scale: 'fill' });       // fill = 9.57 (957%)
-      const PAYOFF_ZOOM = 130, PAYOFF_LAND = 142;    // beat frames: doc 66.4 "zoom 100% -> 170% into that label" (12 f)
+                           HOLE_C[1] + PUSH * (SCREEN_100[1] - HOLE_C[1]),      // frame (f150, push 118%):
+                           PUSH * SCREEN_100[2], PUSH * SCREEN_100[3]];         // [754.46, 870.04, 139.24, 78.32]
+      const ZG = X.zoomGeometry({ rect: SCREEN_ZOOM }, { scale: 'fill' });       // fill = 13.79 (1379%)
+      const SPLIT = 140;                             // beat 140-150: the 10 f split with the dark design-doc title page
 
       // ---- captions (v03): lockup words hard-cut in on their frames; the starred keyword (GTA Online) pops + blurs in;
       //      lockups replace each other with hard cuts (the last one out on "Race")
@@ -140,20 +159,17 @@
       // interior is back to v01's held-shot push, 100% (f0) -> 104% (f124, the cut), eased (easeInOutSine); the head
       // handle holds 100%.
       C.push(tl, '#b15-int-wrap', B(0), { until: B(CUT), from: 1, to: 1.04 });
-      // v05: the fourth-wall punch-in, 100 -> 115% in 3 f (easeOutExpo) on "me?" (beat 12 = local 18), held to the cut (beat 25)
-      gsap.set('#b15-punch', { scale: 1, transformOrigin: '840px 700px' });
-      tl.fromTo('#b15-punch', { scale: 1 }, { scale: 1.15, duration: 3 / 30, ease: 'expo.out', immediateRender: false }, B(12));
 
       // L7: the screen picture box laid out 1920 px wide (res = 1920 / 118) so it is 1:1 at the end of push + zoom;
       // hidden while the real cabinet screen shows, faded in over the zoom's first 3 frames (f150 -> f153, easeOutCubic)
       X.zoomFit('#b15-screen', { rect: SCREEN_100 }, { res: 1920 / SCREEN_100[2] });
       gsap.set('#b15-screen', { opacity: 0 });
       tl.fromTo('#b15-screen', { opacity: 0 }, { opacity: 1, duration: 3 / 30, ease: 'power2.out', immediateRender: false }, B(ZOOM));
-      // v05 payoff (doc 66.2-66.8): the catalogue holds 100% while the yellow circle draws on round the listing (beat 124-130,
-      // TODO kit annotation), then zooms 100% -> 170% into the listing about the spotlight-hole centre (beat 130 -> 142,
-      // easeInOutCubic: a move between two rests), holds 170% under the pill (139) and the 10 f split-screen (140-150, TODO:
-      // the 1995 design-document title page as lane 5 restyles it for B4), then the X6 zoom through the cabinet screen (150).
-      S.spotPush(tl, '#b15-l7', B(PAYOFF_ZOOM), { until: B(PAYOFF_LAND), from: 1, to: PUSH, ease: 'easeInOutCubic' });
+      // the plan's L7 spotlight push 100% (f124, the cut) -> 118% (f150) about the hole centre, easeInOutSine (kept since v03;
+      // REVISION_v05 U3: no 170% zoom). v05 payoff on top: yellow circle round the listing (beat 124, TODO kit annotation),
+      // the v04 highlighter swipe on "Race" (139, pink from kit v05), the 10 f split with the dark design-doc page (140-150).
+      S.spotPush(tl, '#b15-l7', B(CUT), { until: B(ZOOM), from: 1, to: PUSH });
+      T.highlight(tl, '#b15-hl', B(139));            // v04 swipe on "Race" (beat 139 = local 145)
 
       // X6 IN f150-158: 100% -> 1379% about the origin that brings the screen centre to the frame centre (log-space
       // easeInQuad); per-frame media-treatment blur on the screen picture, CSS blur on the dim (non-media DOM), all as
@@ -162,7 +178,7 @@
       X.zoom(tl, '#b15-world', B(ZOOM), {
         screen: { rect: SCREEN_ZOOM }, dir: 'in', scale: 'fill', blurRef: 540 / PUSH, blurMax: 24 / PUSH,
         blurMedia: '#b15-pic',       // the plate gets its own values below (it is also inside the 1.4x reframe)
-        blurDom: ['#b15-dim > svg'],
+        blurDom: ['#b15-dim > svg', '#b15-hl-clip'],
         handoff: '#b15-full-wrap',   // kit: the plain full-frame next shot shows from the landing frame (f158) on
       });
       // the plate's blur control, same plan as the kit, divided by its extra 1.4x on-screen scale: one value per frame,

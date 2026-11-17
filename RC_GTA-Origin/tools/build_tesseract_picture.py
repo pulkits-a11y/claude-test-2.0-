@@ -8,20 +8,26 @@ measurements behind the numbers and the deviations: .tesseract-work/PICTURE_NOTE
 Inputs (read at run time, whatever exists then):
   timing/beat_map.json                          beat clock (start/end frames, composition ids, edit_end_s)
   05_GFX/renders/<composition>.mov              HyperFrames beat renders (ProRes 4444 + alpha, beat + 12f)
-  hyperframes/<composition>/tesseract_shots.json Tesseract-owned footage shots (PRODUCTION_SPEC.md schema)
+  hyperframes/<composition>/tesseract_shots.json Tesseract-owned footage shots (PRODUCTION_SPEC.md schema); v05: a
+                                                file written before v05 on a shorter beat moves to v05 frames
+                                                (timing/v04_to_v05.json) unless it says "timing": "v05"
+  hyperframes/<composition>/cues.json           v05: `archival` ranges (beat frames) -> archival look on shots
   04_Broll/_originals/*/<RID>__*, 04_Broll/_placeholders/<RID>.mp4   footage (fallback chain for old entries)
 
 Every run deletes and recreates .tesseract-work/picture.tsrct: one composition `main`, 1920x1080, duration
 = beat_map edit_end_s, background #0A0A0A, layer ids 1..8999, asset ids "pic-*". Top to bottom:
   1. "Finish ..."                the whole-edit finish (REVISION_v02.md rule F; v03 notes 14-15), over everything:
-                                 static CRT scanlines (multiply), a static monochrome grain plate (linear light),
-                                 a dark hard vignette and an animated chromatic aberration (easeInOutSine keys).
-                                 v03 removed the dust overlay and stopped the grain from changing per frame
+                                 a static monochrome grain plate (linear light; v05: size 1.2, p1-p99 3.9%), a dark
+                                 hard vignette (the whole edit, the B18 dark CTA card included) and the animated
+                                 chromatic aberration (easeInOutSine keys; kept in v05, client override U8). v03
+                                 removed the dust overlay and froze the grain, v04 the CRT scanlines
   2. "HyperFrames beat renders"  Group, one Video per existing MOV: MOV local frame 6 on the beat's start
                                  frame, visible over [beat start, beat end) only
   3. "Bxx footage"               one Group per beat with Tesseract shots; per shot a Group holding the L2 bars,
-                                 the shot's look/whip Adjustments and a framing Group (zoom keys, X2 drift)
-                                 around the Video (+ the L1 mask guide)
+                                 the shot's look/whip Adjustments, v05's archival look (+1 px chromatic aberration
+                                 and a VHS line wobble, two waveWarps with jsScript phases) over the part of the
+                                 shot inside its beat's cues.json `archival` ranges, and a framing Group (zoom keys,
+                                 X2 drift) around the Video (+ the L1 mask guide)
 Nothing is linear (client note 14, rule C): every keyframe carries an easings.net curve as a cubic-bezier
 (EASINGS below); shots may give zoom/drift keys as `framing.keys` (framing v2, rule D).
 Footage is never imported raw: each shot's window (+ margins) is cut with FFmpeg from the original to an
@@ -149,27 +155,27 @@ FINISH_SCANLINES = {"enabled": False,      # v04 note 7: no whole-edit CRT lines
                 # centre 30% darker; 9 px = the line pitch of the client's references (2.77-2.79 px in the 576-586 px
                 # wide screenshots) and coarse enough not to alias when the video is shown smaller (4 px lines turn
                 # into moire beats or vanish at the references' scale, measured)
-FINISH_CHROMA = {"enabled": False,   # v05 (doc 2.6 / REVISION_v05 G8): NO global CA, modern GTA V/VI stays clean
+FINISH_CHROMA = {"enabled": True,    # v05 U8 (client override: v02 "a subtle chromatic animation throughout"): kept
                  "direction": 90.0, "px": (0.6, 2.0), "half_period_s": 1.2,   # R and B each shifted 0.6 <-> 2.0 px
                  "px_per_amount": 19.1}                                       # (horizontal; 2.4 s period, sine)
                  # measured: amount 1.0 = R -19.06 px, B +19.06 px along `direction` (0 = vertical), uniform
-# v05 B18 (the off-white CTA card): a light vignette (VIGNETTE_LIGHT) instead of the dark one, eased back to the full
-# FINISH_VIGNETTE over the card's last CTA_RETURN_F frames, which cross to B1 frame 0: the loop seam matches
 GRAIN_P1P99_AT_100 = 21.96         # measured: the plate's p1-p99 on flat grey at 100% opacity (% of full scale)
-CTA_RETURN_F = 6
-CTA_EASE = "easeInOutSine"
-# v05 archival look (doc 2.6 "1-2 px chromatic aberration and a light VHS line wobble"; REVISION_v05 G8 1.5-3 px) on
-# Tesseract-placed shots inside a beat's cues.json `archival` ranges (or a shot with "archival": true). HF-embedded
-# archival footage gets the kit's filter inside its composition instead. waveWarp (measured, Tesseract 0.7):
+# v05 archival look (REVISION_v05 U8/G7: "archival 1990s footage additionally gets the light VHS line wobble (and may
+# get a little more aberration)") on Tesseract-placed shots inside a beat's cues.json `archival` ranges (or a shot
+# with "archival": true): +1.0 px chromatic aberration on top of the global 0.6-2.0 px (so 1.6-3.0 px there) and the
+# wobble. HF-embedded archival footage gets the kit's filter inside its composition instead. waveWarp (measured):
 # direction 90 = horizontal displacement varying down the frame (a line wobble), waveHeight = amplitude as a
 # fraction of the frame WIDTH (1.2/1920 -> +-1.25 px measured), waveWidth = cycles per frame HEIGHT (4 -> 270 px
 # period), phase in radians. Two waves: a slow roll (1.0 px, 270 px rows) and a fine jitter (0.5 px, 35 px rows);
 # their phases are jsScripts (a drift + a per-frame jump, like a worn tape's timebase), not keyframes.
-ARCHIVAL_FX = {"ca_px": 2.0, "ca_direction": 90.0,
-               "waves": [{"px": 1.0, "cycles": 4.0, "phase": "return 2.4 * input.time.seconds + 0.35 * Math.sin("
-                                                             "Math.round(input.time.seconds * 30) * 12.9898) + {SEED};"},
-                         {"px": 0.5, "cycles": 31.0, "phase": "return 6.2832 * ((Math.sin(Math.round("
-                                                              "input.time.seconds * 30) * 78.233 + {SEED}) * 43758.5453) % 1);"}]}
+ARCHIVAL_FX = {"ca_px": 1.0, "ca_direction": 90.0,
+               "waves": [{"px": 1.0, "cycles": 4.0, "phase": "return 2.4 * input.time.seconds + 0.6 * Math.sin(4.4 * "
+                                                             "input.time.seconds) + {SEED};"},
+                         {"px": 0.5, "cycles": 31.0, "phase": "return 6.2832 * Math.abs((Math.sin(Math.floor("
+                                                              "input.time.seconds * 30 + 0.25) * 78.233 + {SEED}) * "
+                                                              "43758.5453) % 1);"}]}
+# (the frame number is floor(t x 30 + 0.25): stable whether the engine samples a frame at its start or its centre;
+# measured: a preview at a frame centre falls on Math.round's .5 boundary once the time is rounded to whole ms)
 
 
 def log(*a):
@@ -539,34 +545,30 @@ def working_copy(shot: dict, src: Path, sp: dict, beat_id: str, use_cache: bool,
 # Shots -> layers
 # --------------------------------------------------------------------------------------------
 def v05_frame_maps(bm: dict) -> dict:
-    """v05 (REVISION_v05.md section 0): beat id -> f(v04 beat frame) -> v05 beat frame, or None when the frame was
-    cut, for the beats the doc cuts trimmed (B2's last frame and B3's first 57 f with cut A, B13's 39 f with cut B,
-    B17's logo tail). From timing/v04_to_v05.json + the v04 start frames in the beat map; {} when missing. Same rule
-    as tools/build_tesseract_audio.py (CutMap)."""
+    """v05 (REVISION_v05.md section 0, client override): beat id -> f(v04 beat frame) -> v05 beat frame, or None when
+    the frame was cut, for the beats that are shorter in v05. Each lost one block of (v04 - v05) frames where a `removed`
+    span of timing/v04_to_v05.json overlaps it, else at its end: B3 its first 20 f ("Here's how."; it now starts at
+    "It's"), B13 39 f at local 161-199, B17 its last 18 f. Same rule as tools/build_tesseract_audio.py (CutMap)."""
     try:
-        cut = json.loads((ROOT / "timing/v04_to_v05.json").read_text())
+        removed = [tuple(map(float, r)) for r in json.loads((ROOT / "timing/v04_to_v05.json").read_text()).get("removed", [])]
     except (OSError, ValueError):
-        return {}
-    removed = [tuple(map(float, r)) for r in cut.get("removed", [])]
-    segs = sorted(cut.get("segments", []), key=lambda g: float(g["v04_from"]))
+        removed = []
     out = {}
     for b in bm["beats"]:
         s4, d4 = b.get("v04_start_frame"), b.get("v04_dur_frames")
-        if s4 is None or d4 is None:
+        if s4 is None or d4 is None or int(d4) <= int(b["dur_frames"]):
             continue
+        d5, n = int(b["dur_frames"]), int(d4) - int(b["dur_frames"])
+        st = next((max(0, int(round(ra * FPS - int(s4)))) for ra, rz in removed
+                   if rz * FPS - int(s4) > 0 and ra * FPS - int(s4) < int(d4)), d5)
+        st = min(st, d5)
 
-        def mp(f, s4=int(s4), b=b):
-            t = (s4 + f) / FPS
-            if any(a - 1e-6 <= t < z - 1e-6 for a, z in removed):
+        def mp(f, st=st, n=n, d5=d5):
+            if st <= f < st + n:
                 return None
-            sh = 0
-            for g in segs:
-                if float(g["v04_from"]) - 1e-6 <= t:
-                    sh = int(g["shift_f"])
-            f5 = s4 + f - sh - int(b["start_frame"])
-            return None if f5 > int(b["dur_frames"]) else f5
-        if any(mp(f) != f for f in range(int(d4) + 1)):
-            out[b["id"]] = mp
+            f5 = f if f < st else f - n
+            return f5 if 0 <= f5 <= d5 else None
+        out[b["id"]] = mp
     return out
 
 
@@ -1092,11 +1094,10 @@ def scanline_image(path: Path):
     return path
 
 
-def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str, cta=None):
+def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str):
     """Top-of-stack finishing layers over the whole edit (footage + HyperFrames renders), all editable in the
-    .tsrct. Top to bottom: CRT scanlines (static, multiply; off since v04), grain plate (static), vignette (v05: the
-    dark one up to the CTA card, a light one on it that eases back to full over its last frames), chromatic
-    aberration (off since v05). `cta` = {"beat", "start_frame", "dur_frames"} of the CTA beat (B18) or None."""
+    .tsrct. Top to bottom: CRT scanlines (static, multiply; off since v04), grain plate (static; v05 size 1.2, 3.9%),
+    vignette, chromatic aberration (eased keys; kept in v05 by the client override U8)."""
     layers, info = [], {}
     pg = lambda **k: primary_grade(k)
     # CRT scanlines (v03 note 15): a static multiply plate; off since v04 (note 7)
@@ -1131,36 +1132,14 @@ def finish_layers(ids: Ids, dyn: Dyn, edit_ms: int, scan_asset: str, cta=None):
                                   "(v04 6.3%%; PICTURE_NOTES.md)." % (FINISH_GRAIN["opacity"], FINISH_GRAIN["size"],
                                                                      GRAIN_P1P99_AT_100 * FINISH_GRAIN["opacity"] / 100.0)})
     info["grain"] = {"layer": gid, **FINISH_GRAIN}
-    # vignette: the dark hard one over the story; v05: a light one on the off-white CTA card (B18) that eases back to
-    # the full vignette over the card's last CTA_RETURN_F frames (they cross to B1 frame 0: the loop seam matches)
+    # vignette (v05 U4: B18 is a dark card, so the same vignette covers the whole edit, the loop seam included)
     vid = ids.L()
-    v_end = ms_floor(int(cta["start_frame"])) if cta else edit_ms
-    layers.append(adjustment_json(vid, "Finish: vignette (story%s)" % (", until the CTA card" if cta else ", whole edit"),
-                                  0, v_end, [fx(ids.E(), dict({"type": "vignette"}, **FINISH_VIGNETTE))],
+    layers.append(adjustment_json(vid, "Finish: vignette (whole edit)", 0, edit_ms,
+                                  [fx(ids.E(), dict({"type": "vignette"}, **FINISH_VIGNETTE))],
                                   desc="v03 note 14 'even darker / harder': on a flat field the corners are about 68% "
                                        "darker than the centre, the edge centres about 35%, and the darkening starts "
-                                       "well inside the frame (about 12% at three quarters of the way to the edge). "
-                                       "v05 (doc 2.6): kept."))
-    info["vignette"] = {"layer": vid, "window_ms": [0, v_end], **FINISH_VIGNETTE}
-    if cta:
-        cvid, cveff = ids.L(), ids.E()
-        f0, n = int(cta["start_frame"]), int(cta["dur_frames"])
-        a_ms = v_end
-        k0 = ms_floor(f0 + n - 1 - CTA_RETURN_F) - a_ms        # last light frame (local ms; Adjustment keys are local)
-        k1 = ms_floor(f0 + n - 1) - a_ms                       # the card's last frame: full vignette
-        layers.append(adjustment_json(cvid, "Finish: vignette (CTA card %s, light -> full for the loop)" % cta["beat"],
-                                      a_ms, edit_ms - a_ms, [fx(cveff, dict({"type": "vignette"}, **VIGNETTE_LIGHT))],
-                                      desc="v05 B18: the off-white CTA card gets a light vignette (amount %.2f, radius "
-                                           "%.2f, feather %.2f) until its frame %d, then %s to the full dark vignette "
-                                           "by its last frame %d, which crosses to B1 frame 0: the loop seam has the "
-                                           "same vignette on both sides." % (
-                                               VIGNETTE_LIGHT["amount"], VIGNETTE_LIGHT["radius"], VIGNETTE_LIGHT["feather"],
-                                               n - 1 - CTA_RETURN_F, CTA_EASE, n - 1)))
-        for prm in ("amount", "radius", "feather"):
-            dyn.effect(cveff, prm, [(k0, VIGNETTE_LIGHT[prm], None), (k1, FINISH_VIGNETTE[prm], CTA_EASE)])
-        info["vignette_cta"] = {"layer": cvid, "beat": cta["beat"], "window_ms": [a_ms, edit_ms],
-                                "light": VIGNETTE_LIGHT, "full": FINISH_VIGNETTE, "ease": CTA_EASE,
-                                "keys_local_ms": [k0, k1], "keys_beat_frames": [n - 1 - CTA_RETURN_F, n - 1]}
+                                       "well inside the frame (about 12% at three quarters of the way to the edge)."))
+    info["vignette"] = {"layer": vid, **FINISH_VIGNETTE}
     if not FINISH_CHROMA.get("enabled", True):
         info["chroma"] = {"layer": None, **FINISH_CHROMA}
         return layers, info
@@ -1311,11 +1290,7 @@ def main():
     ids, dyn = Ids(), Dyn()
     root = []
 
-    story_end = int(bm.get("story_end_frame") or bm.get("edit_end_frame") or 0)
-    cta_b = next((b for b in beats if story_end and int(b["start_frame"]) >= story_end), None)   # v05: B18 CTA card
-    cta = {"beat": cta_b["id"], "start_frame": int(cta_b["start_frame"]), "dur_frames": int(cta_b["dur_frames"])} \
-        if cta_b else None
-    finish, finish_info = finish_layers(ids, dyn, edit_ms, scan_asset, cta)
+    finish, finish_info = finish_layers(ids, dyn, edit_ms, scan_asset)
     root += finish
 
     hf_group_id = ids.L()
@@ -1374,7 +1349,7 @@ def main():
               "archival_ranges": {b["id"]: b["_archival"] for b in beats if b.get("_archival")},
               "constants": {"FINISH_GRAIN": FINISH_GRAIN, "FINISH_VIGNETTE": FINISH_VIGNETTE, "FINISH_SCANLINES": FINISH_SCANLINES,
                             "FINISH_CHROMA": FINISH_CHROMA, "NEUTRALIZE": NEUTRALIZE, "PUSH_DEFAULT": PUSH_DEFAULT,
-                            "ARCHIVAL_FX": ARCHIVAL_FX, "CTA_RETURN_F": CTA_RETURN_F, "CTA_EASE": CTA_EASE,
+                            "ARCHIVAL_FX": ARCHIVAL_FX,
                             "EASES": {"push": EASE_PUSH, "x2": EASE_X2, "bars": EASE_BARS, "whip": [EASE_WHIP_OUT, EASE_WHIP_IN],
                                       "b10_pop_return": EASE_POP_RETURN},
                             "GRAIN_ARCHIVAL": GRAIN_ARCHIVAL, "VIGNETTE_LIGHT": VIGNETTE_LIGHT,
@@ -1388,7 +1363,8 @@ def main():
         log("  tesseract warning: %s" % (w if isinstance(w, str) else json.dumps(w)))
     for w in warnings + EASE_WARNINGS:
         log("  WARN %s" % w)
-    log("  keyframes: %(total)d, all cubic-bezier (linear/hold: %(linear_or_hold)d), %(scripts)d seed scripts" % report["keyframes"])
+    log("  keyframes: %(total)d, all cubic-bezier (linear/hold: %(linear_or_hold)d), %(scripts)d scripts (archival "
+        "wobble phases)" % report["keyframes"])
     for n in notes:
         log("  note %s" % n)
     log("  report: %s" % rel(REPORT))

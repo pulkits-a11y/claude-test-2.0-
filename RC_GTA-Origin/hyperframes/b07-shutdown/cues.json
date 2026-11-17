@@ -20,10 +20,6 @@
   {
    "f": 51,
    "name": "whip"
-  },
-  {
-   "f": 66,
-   "name": "stamp_thud"
   }
  ],
  "dropouts": [],
@@ -33,5 +29,5 @@
    35
   ]
  ],
- "note": "v05: whip = the whip-pan headline -> body copy (local 57-61; beat 51 = its first frame); stamp_thud = the red CANNED stamp on 'down.' (local 72 = beat 66, doc 30.3 'on shut it down'). archival = the 1990s office B-roll (R7.1, R7.3), beat 0-35. Legacy stamp1-3 (S06 hits) dropped: v05's stamp thud, whip and key-word thumps replace them."
+ "note": "v05: whip = the whip-pan headline -> body copy (local 57-61; beat 51 = its first frame). No stamp and no stamp sound (client override U5). archival = the 1990s office B-roll (R7.1, R7.3), beat 0-35. Legacy stamp1-3 (S06 hits) dropped: the whip and the key-word thumps replace them."
 }

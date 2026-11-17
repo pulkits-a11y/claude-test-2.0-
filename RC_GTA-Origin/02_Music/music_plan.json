@@ -38,32 +38,32 @@
  "anchor": {
   "cue": "MU5",
   "track_s": 183.38,
-  "edit_s": 41.04,
-  "word": "fun. (B10) onset 41.040 s = frame 1231 (v02 beat map)"
+  "edit_s": 40.373,
+  "word": "fun. (B10) onset 40.373 s = frame 1211 (v05 beat map)"
  },
- "offset_s": 142.34,
- "track_time_at_edit_0": "2:20.16 (one bar before the anchor's 2:22.34: MU2 whole-bar edit; plan estimate 2:22.4)",
+ "offset_s": 143.007,
+ "track_time_at_edit_0": "2:20.82 (one bar before the anchor's 2:23.01: MU2 whole-bar edit)",
  "checks": {
   "MU3_vs_dull": {
-   "mu3_edit_s": 23.58,
-   "dull_onset_s": 24.309,
+   "mu3_edit_s": 22.913,
+   "dull_onset_s": 23.642,
    "delta_s": -0.729,
    "rule": "plan p.34: within 1 s of 'dull' (the table: on or just after it)",
    "pass": true,
-   "note": "Lands 0.729 s before 'dull': inside the plan's 1 s test, so no bar edit; not 'on or just after'. A whole-bar edit inside the breakdown cannot move MU3 while the drop is anchored and the build stays uncut."
+   "note": "Lands 0.729 s before 'dull' (same as v02: 'dull' and 'fun' moved together)."
   },
   "MU2_vs_broke": {
-   "mu2_edit_s": 8.3028,
+   "mu2_edit_s": 7.636,
    "broke_word_s": [
     7.648,
     8.372
    ],
-   "delta_from_onset_s": 0.655,
+   "delta_from_onset_s": -0.012,
    "rule": "within half a second of 'broke'",
-   "pass": false,
-   "inside_word": true,
-   "without_bar_edit_s": 6.12,
-   "note": "Whole-bar edit applied (plan p.34, coordinator's v02 instruction): lands inside the spoken 'broke', 0.655 s after its onset (v01: 0.636 s); without the edit it came 1.528 s before it."
+   "pass": true,
+   "inside_word": false,
+   "without_bar_edit_s": 5.453,
+   "note": "Whole-bar edit applied: 0.012 s before the onset of 'broke' (within half a second); without the edit it came 2.195 s before it."
   },
   "bar_edits": {
    "applied": true,
@@ -72,42 +72,33 @@
     155.0084,
     157.1912
    ],
-   "seam_bar_line_edit_s": 14.8512,
+   "seam_bar_line_edit_s": 14.1842,
    "crossfade_edit_s": [
-    14.7962,
-    14.8262
+    14.1292,
+    14.1592
    ],
    "crossfade": "equal power (cos/sin), 30 ms, ending 25 ms before the bar line",
-   "chosen_by": "lowest octave-band difference across the seam among breakdown bars 2-7: bar 2 7.14 dB, bar 3 8.05 dB, bar 4 6.74 dB, bar 5 11.98 dB, bar 6 10.86 dB, bar 7 12.12 dB",
    "conditions": {
     "MU2_closer_to_broke": true,
     "MU3_within_1s": true,
     "seam_between_MU2_and_MU3": true,
     "MU5_after_seam": true
-   },
-   "measured": {
-    "track_lag_before_seam_ms": 0.27,
-    "track_lag_after_seam_ms": 0.06,
-    "drop_vs_track_clock_ms": 0.06,
-    "seam_level_vs_neighbours_db": -2.66,
-    "same_window_on_the_unedited_bar_line_db": -2.14
-   },
-   "unchanged": "MU3 23.580 s (0.729 s before 'dull', within 1 s), MU5 drop on 'fun' (frame 1231), MU6-MU8: all after the seam, at the anchor's offset"
+   }
   }
  },
  "cues": {
   "MU1": {
    "edit_s": 0.0,
-   "track_s": 140.1572,
+   "track_s": 140.8242,
    "what": "Start at full energy, no fade-in (one bar earlier than the anchor: MU2 bar edit)."
   },
   "MU2": {
-   "edit_s": 8.3028,
+   "edit_s": 7.6358,
    "track_s": 148.46,
-   "what": "First breakdown begins inside 'broke' (0.655 s after its onset)."
+   "what": "First breakdown begins 0.012 s before 'broke' (bar edit)."
   },
   "MU3": {
-   "edit_s": 23.58,
+   "edit_s": 22.913,
    "track_s": 165.92,
    "what": "Near-silent section starts 0.73 s before 'dull'."
   },
@@ -116,9 +107,9 @@
    "what": "Hard-mute 15f from the first black frame, then un-mute in place (track keeps running)."
   },
   "MU5": {
-   "edit_s": 41.04,
+   "edit_s": 40.373,
    "track_s": 183.38,
-   "what": "The drop on 'fun'. Lift the music +3 dB for 2 s after it."
+   "what": "The drop on 'fun.' (doc 2.7: music returns at full level here). Lift +3 dB for 2 s."
   },
   "MU6": {
    "edit_s": "B15 start ('Don't believe me?') until B15's `label` event ('Race', where the v01 label landed; the label itself is removed in v02, note 7)",
@@ -129,8 +120,8 @@
    "what": "Cut the music under the ~1 s rewind, then resume 6 dB lower under the glow line (in place)."
   },
   "MU8": {
-   "edit_s": 76.095,
-   "track_s": 218.435,
+   "edit_s": 74.128,
+   "track_s": 217.135,
    "what": "Hard stop at the end of 'now?'. No music after; S18/S19 carry the logo."
   }
  },
@@ -144,7 +135,7 @@
  },
  "backup": "ES Conundrums plan (plan p.34) only if Black Vertigo is not licensed.",
  "title_hold": "B13 title hold (the longest VO gap, before B14) has no voice: let the music come up to about -16 LUFS there (plan: levels).",
- "version": "v02 (VO 115%, timing/beat_map.json v02); v01 values under 'v01'",
+ "version": "v05 (VO_processed_v05.wav, timing/beat_map.json v05 after the client override: only 'Here's how.' cut, 2326 f); v02 values under 'v02', v01 under 'v01'. MUSIC is OFF (client v04 note 1); these are the marks a bed would use.",
  "v01": {
   "offset_s": 139.68,
   "anchor_edit_s": 43.7,
@@ -173,6 +164,127 @@
    "bar_edits": "none (MU3 passes, so the plan's procedure needs no breakdown edit; the build 2:50-3:03 is untouched)"
   }
  },
- "offset_note": "offset_s = drop downbeat 183.38 - 'fun' onset 41.040 (the anchor), valid from the bar edit's seam on; before the seam the track runs one bar earlier (offset_before_seam_s).",
- "offset_before_seam_s": 140.1572
+ "offset_note": "offset_s = drop downbeat 183.38 - 'fun' onset 40.373 (the anchor), valid from the bar edit's seam on; before the seam the track runs one bar earlier (offset_before_seam_s).",
+ "offset_before_seam_s": 140.8242,
+ "v02": {
+  "anchor": {
+   "cue": "MU5",
+   "track_s": 183.38,
+   "edit_s": 41.04,
+   "word": "fun. (B10) onset 41.040 s = frame 1231 (v02 beat map)"
+  },
+  "offset_s": 142.34,
+  "offset_before_seam_s": 140.1572,
+  "track_time_at_edit_0": "2:20.16 (one bar before the anchor's 2:22.34: MU2 whole-bar edit; plan estimate 2:22.4)",
+  "checks": {
+   "MU3_vs_dull": {
+    "mu3_edit_s": 23.58,
+    "dull_onset_s": 24.309,
+    "delta_s": -0.729,
+    "rule": "plan p.34: within 1 s of 'dull' (the table: on or just after it)",
+    "pass": true,
+    "note": "Lands 0.729 s before 'dull': inside the plan's 1 s test, so no bar edit; not 'on or just after'. A whole-bar edit inside the breakdown cannot move MU3 while the drop is anchored and the build stays uncut."
+   },
+   "MU2_vs_broke": {
+    "mu2_edit_s": 8.3028,
+    "broke_word_s": [
+     7.648,
+     8.372
+    ],
+    "delta_from_onset_s": 0.655,
+    "rule": "within half a second of 'broke'",
+    "pass": false,
+    "inside_word": true,
+    "without_bar_edit_s": 6.12,
+    "note": "Whole-bar edit applied (plan p.34, coordinator's v02 instruction): lands inside the spoken 'broke', 0.655 s after its onset (v01: 0.636 s); without the edit it came 1.528 s before it."
+   },
+   "bar_edits": {
+    "applied": true,
+    "removed_breakdown_bar": 4,
+    "removed_track_s": [
+     155.0084,
+     157.1912
+    ],
+    "seam_bar_line_edit_s": 14.8512,
+    "crossfade_edit_s": [
+     14.7962,
+     14.8262
+    ],
+    "crossfade": "equal power (cos/sin), 30 ms, ending 25 ms before the bar line",
+    "chosen_by": "lowest octave-band difference across the seam among breakdown bars 2-7: bar 2 7.14 dB, bar 3 8.05 dB, bar 4 6.74 dB, bar 5 11.98 dB, bar 6 10.86 dB, bar 7 12.12 dB",
+    "conditions": {
+     "MU2_closer_to_broke": true,
+     "MU3_within_1s": true,
+     "seam_between_MU2_and_MU3": true,
+     "MU5_after_seam": true
+    },
+    "measured": {
+     "track_lag_before_seam_ms": 0.27,
+     "track_lag_after_seam_ms": 0.06,
+     "drop_vs_track_clock_ms": 0.06,
+     "seam_level_vs_neighbours_db": -2.66,
+     "same_window_on_the_unedited_bar_line_db": -2.14
+    },
+    "unchanged": "MU3 23.580 s (0.729 s before 'dull', within 1 s), MU5 drop on 'fun' (frame 1231), MU6-MU8: all after the seam, at the anchor's offset"
+   }
+  },
+  "cues": {
+   "MU1": {
+    "edit_s": 0.0,
+    "track_s": 140.1572,
+    "what": "Start at full energy, no fade-in (one bar earlier than the anchor: MU2 bar edit)."
+   },
+   "MU2": {
+    "edit_s": 8.3028,
+    "track_s": 148.46,
+    "what": "First breakdown begins inside 'broke' (0.655 s after its onset)."
+   },
+   "MU3": {
+    "edit_s": 23.58,
+    "track_s": 165.92,
+    "what": "Near-silent section starts 0.73 s before 'dull'."
+   },
+   "MU4": {
+    "edit_s": "B8 first black frame (from hyperframes/b08-break/cues.json)",
+    "what": "Hard-mute 15f from the first black frame, then un-mute in place (track keeps running)."
+   },
+   "MU5": {
+    "edit_s": 41.04,
+    "track_s": 183.38,
+    "what": "The drop on 'fun'. Lift the music +3 dB for 2 s after it."
+   },
+   "MU6": {
+    "edit_s": "B15 start ('Don't believe me?') until B15's `label` event ('Race', where the v01 label landed; the label itself is removed in v02, note 7)",
+    "what": "Low-pass ~800 Hz and -6 dB, then open it again."
+   },
+   "MU7": {
+    "edit_s": "B16 rewind window (b16 cues.json)",
+    "what": "Cut the music under the ~1 s rewind, then resume 6 dB lower under the glow line (in place)."
+   },
+   "MU8": {
+    "edit_s": 76.095,
+    "track_s": 218.435,
+    "what": "Hard stop at the end of 'now?'. No music after; S18/S19 carry the logo."
+   }
+  },
+  "version": "v02 (VO 115%, timing/beat_map.json v02); v01 values under 'v01'",
+  "offset_note": "offset_s = drop downbeat 183.38 - 'fun' onset 41.040 (the anchor), valid from the bar edit's seam on; before the seam the track runs one bar earlier (offset_before_seam_s)."
+ },
+ "dropouts_v05": {
+  "what": "doc 2.7 / REVISION_v05 G8: 2-6 f micro-silences before big words, from the beats' cues.json `dropouts`; the audio build silences the bed (when on) and riser/ambience SFX there",
+  "this_build_s": [
+   [
+    23.433,
+    23.633
+   ],
+   [
+    31.467,
+    31.6
+   ],
+   [
+    52.6,
+    52.8
+   ]
+  ]
+ }
 }

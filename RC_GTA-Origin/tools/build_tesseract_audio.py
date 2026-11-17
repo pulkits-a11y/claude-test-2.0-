@@ -399,51 +399,46 @@ def parse_storyboard_durations(text: str) -> dict:
 
 
 class CutMap:
-    """v04 -> v05 beat frames (REVISION_v05.md section 0: doc cut A = 58 f at v04 10.06-11.99 s, the end of B2 and the
-    head of B3; cut B = 39 f at v04 54.7-56.0 s inside B13; B17's last 18 f went with the logo tail). A v04 beat frame
-    -> the same beat's v05 frame, or None when that frame was cut (or now lies past the beat's end). Identity for a
-    beat without v04 timing (B18) or when timing/v04_to_v05.json / beat_map_v04.json are missing."""
+    """v04 -> v05 beat frames (REVISION_v05.md section 0). A beat that is shorter in v05 (v04_dur_frames - dur_frames
+    = n > 0) lost one block of n frames: where a `removed` span of timing/v04_to_v05.json overlaps its v04 window
+    (clamped to the beat), else at its end. With the client override: B3 loses its first 20 f (v04 local 0-19, "Here's
+    how."; B3 now starts at "It's"), B13 39 f at local 161-199 (the title-hold silence), B17 its last 18 f (logo tail);
+    every other beat keeps its local frames. map() -> the v05 frame, or None for a frame that was cut (or now lies past
+    the beat). Identity for a beat without v04 timing (B18) or when the map files are missing."""
 
     def __init__(self, beat_map: dict):
-        self.ok = False
-        self.b5 = {b["id"]: b for b in beat_map["beats"]}
+        self.blocks = {}                                  # beat -> (v04 local start, n frames, v05 dur)
         try:
-            cut = load_json(CUTS_V04_V05)
-            self.b4 = {b["id"]: b for b in load_json(BEAT_MAP_V04)["beats"]}
-        except (OSError, ValueError, KeyError):
-            return
-        self.removed = [tuple(map(float, r)) for r in cut.get("removed", [])]
-        self.segments = sorted(cut.get("segments", []), key=lambda g: float(g["v04_from"]))
-        self.ok = bool(self.segments)
-
-    def v04_start(self, bid):
-        b = self.b5.get(bid, {})
-        if b.get("v04_start_frame") is not None:
-            return int(b["v04_start_frame"])
-        return int(self.b4[bid]["start_frame"]) if self.ok and bid in self.b4 and "v04_start_frame" not in b else None
+            removed = [tuple(map(float, r)) for r in load_json(CUTS_V04_V05).get("removed", [])]
+        except (OSError, ValueError):
+            removed = []
+        for bt in beat_map["beats"]:
+            s4, d4 = bt.get("v04_start_frame"), bt.get("v04_dur_frames")
+            if s4 is None or d4 is None:
+                continue
+            d5 = int(bt["dur_frames"])
+            n = int(d4) - d5
+            if n <= 0:
+                continue
+            st = None
+            for ra, rz in removed:
+                fa, fz = ra * FPS - int(s4), rz * FPS - int(s4)
+                if fz > 0 and fa < int(d4):
+                    st = max(0, int(round(fa)))
+                    break
+            self.blocks[bt["id"]] = (min(d5, d5 if st is None else st), n, d5)
 
     def identity(self, bid) -> bool:
-        """True when every v04 beat frame keeps its number in v05 (the beat was not trimmed)."""
-        if not self.ok or self.v04_start(bid) is None:
-            return True
-        d4 = int((self.b4.get(bid) or self.b5[bid])["dur_frames"])
-        return all(self.map(bid, f) == f for f in range(d4 + 1))
+        return bid not in self.blocks
 
     def map(self, bid: str, f: int):
-        if not self.ok:
+        if bid not in self.blocks:
             return f
-        s4 = self.v04_start(bid)
-        if s4 is None:
-            return f
-        t = (s4 + f) / FPS
-        if any(a - 1e-6 <= t < b - 1e-6 for a, b in self.removed):
+        st, n, d5 = self.blocks[bid]
+        if st <= f < st + n:
             return None
-        shift = 0
-        for g in self.segments:
-            if float(g["v04_from"]) - 1e-6 <= t:
-                shift = int(g["shift_f"])
-        f5 = s4 + f - shift - int(self.b5[bid]["start_frame"])
-        return None if f5 > int(self.b5[bid]["dur_frames"]) else f5
+        f5 = f if f < st else f - n
+        return None if not 0 <= f5 <= d5 else f5
 
 
 def parse_v05_lists(doc: dict, bid: str, notes: list) -> dict:
@@ -505,8 +500,9 @@ class Events:
 
     * v05 cues.json (REVISION_v05 S): `events` exactly as written (v05 frames), no STORYBOARD fallback (a legacy
       event a lane leaves out has no sound), plus the v05 lists (self.v05[beat]).
-    * legacy cues.json (only `events`; v02/v04 frames): moved to v05 by the cut map (B3 -57 f, B13 after the cut
-      -39 f; an event inside a cut is dropped and not refilled from the STORYBOARD). One that still equals the v01
+    * legacy cues.json (only `events`; v02/v04 frames): moved to v05 by the cut map (CutMap: B3 -20 f, its first 20 f
+      cut; B13 -39 f after local 161; B17's tail; an event inside a cut is dropped and not refilled from the
+      STORYBOARD). One that still equals the v01
       snapshot is scaled from the v01 to the v04 beat length first. Events it lacks come from the STORYBOARD.md cues
       (v01 frames, scaled to the v04 beat, then mapped).
     * no cues.json: the STORYBOARD.md cues (scaled + mapped).
@@ -1204,6 +1200,12 @@ def load_library():
     return load_json(SFX_LIB)["sounds"]
 
 
+def library_not_used() -> set:
+    """Library names the v05 client override retired (REVISION_v05.md S: stamp_thud, whoosh_flip, type_on): kept in the
+    library, never placed (a lane file that still lists one gets a warning)."""
+    return set(load_json(SFX_LIB).get("not_used_v05", [])) if SFX_LIB.exists() else set()
+
+
 def library_pick(lib: dict, name: str, counters: dict):
     """'tick' / 'hit' rotate their variants in call order (edit order); 'tick_2' / 'hit_3' pick one.
     -> (canonical name, entry, file) or (None, None, None)."""
@@ -1254,11 +1256,36 @@ def build_v05_clips(ev: Events, lib, edit_end: float):
         for it in L["sfx"]:
             reqs.append((b0 + it["f"], 4, "sfx", str(it["name"]).strip(), bid, it["f"], it))
     reqs.sort(key=lambda r: (r[0], r[1]))
+    # QA: caption frames vs the beat's VO word onsets (beat map words): a lane's file written for another timing
+    # shows up as frames that sit on no word (G4/U2: a word appears on its spoken frame, 0-2 f late is fine)
+    info["caption_alignment"] = {}
+    for bid, L in ev.v05.items():
+        b0 = ev.beat_start_frame(bid)
+        ons = [int(w_["start_frame"]) - b0 for w_ in ev.beats[bid].get("words", [])]
+        fr = [it["f"] for it in L["word_pops"] + L["key_words"]]
+        if not fr or not ons:
+            continue
+        off = [min((f_ - o for o in ons), key=abs) for f_ in fr]
+        ok = sum(1 for d_ in off if -1 <= d_ <= 3)
+        info["caption_alignment"][bid] = {"caption_frames": len(fr), "on_a_word_onset": ok,
+                                          "median_offset_f": float(np.median(off)), "stale_timing_suspected": ok < 0.8 * len(fr)}
+        if ok < 0.8 * len(fr):
+            msg = ("%s cues.json: only %d of %d word_pops/key_words frames sit on a VO word onset (-1..+3 f; median offset "
+                   "%+.0f f): written for another timing? re-time it to the beat map's words" % (bid, ok, len(fr), np.median(off)))
+            ev.notes.append(msg)
+            log("WARNING: " + msg)
     counters, clips = {}, []
+    retired = library_not_used()
     for n_, (ef, _, kind, name, bid, f, it) in enumerate(reqs):
         canon, e, fname = library_pick(lib, name, counters)
         if e is None:
             info["skipped"].append("%s f%d %s: no library sound named %r" % (bid, f, kind, name))
+            log("WARNING: " + info["skipped"][-1])
+            continue
+        if canon in retired:
+            why = (e.get("notes") or "").split("NOT USED in v05 ")[-1].strip(" .()")
+            info["skipped"].append("%s f%d %s: %r is retired by the client override (%s): not placed, remove it from "
+                                   "the cue file" % (bid, f, kind, name, why))
             log("WARNING: " + info["skipped"][-1])
             continue
         path = SFX_LIB_DIR / fname
@@ -2350,9 +2377,10 @@ def v05_notes(R, clips, ev, beat_map, marks):
           ", ".join("%s %d f" % (b["id"], b["dur_frames"]) for b in beat_map["beats"] if b.get("v04_dur_frames") not in (
               b["dur_frames"],)), float(beat_map["vo_end_s"]), beat_map.get("story_end_frame", "?")))
     sch = v5.get("cues_schema", {})
+    blocks = "; ".join("%s loses v04 local %d-%d (%d f)" % (b, st, st + n - 1, n) for b, (st, n, _) in ev.cut.blocks.items())
     w("* **Cue files** (beat frames, f0 = beat start). v05 schema: %s. Legacy (only `events`, moved from v04 to v05 "
-      "frames by `timing/v04_to_v05.json`: B3 -57 f, B13 -39 f after its cut, B2/B17 tails): %s. None: %s.%s%s" % (
-          ", ".join(b for b, v in sch.items() if v == "v05") or "none",
+      "frames by `timing/v04_to_v05.json`: %s; every other beat keeps its local frames): %s. None: %s.%s%s" % (
+          ", ".join(b for b, v in sch.items() if v == "v05") or "none", blocks or "no beat changed length",
           ", ".join(b for b, v in sch.items() if v == "legacy") or "none",
           ", ".join(b for b, v in sch.items() if v == "none") or "none",
           (" Moved: " + "; ".join(v5.get("legacy_remapped_v04_to_v05", {}).values()) + ".") if v5.get(
@@ -2405,6 +2433,11 @@ def v05_notes(R, clips, ev, beat_map, marks):
     w("* **Music automation** (built, bed off: MUSIC = False, client v04 note 1): duck %.0f dB under every VO phrase "
       "(50/300 ms), silent inside every dropout window (10 ms ramps), full level again from 'fun.' (MU5: the drop on "
       "its frame, +3 dB for 2 s), MU4/MU6/MU7/MU8 as in v02. `MUSIC = True` brings a bed back with all of it.\n" % DUCK_DB)
+    ca = v5.get("caption_alignment") or {}
+    if ca:
+        w("* **Caption frames vs the VO** (word_pops + key_words within -1..+3 f of a word onset of the beat map): " +
+          ", ".join("%s %d/%d%s" % (b, d["on_a_word_onset"], d["caption_frames"], " STALE?" if d["stale_timing_suspected"]
+                                     else "") for b, d in ca.items()) + ".")
     if ev.notes or v5.get("cap_hits"):
         w("* Cue-file notes: " + "; ".join(ev.notes + v5.get("cap_hits", [])) + ".\n")
     return L
@@ -2459,7 +2492,11 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
               be["MU2_without_edit_s"], be["broke_s"][0] - be["MU2_without_edit_s"], be["removed_bar"],
               be["removed_track_s"][0], be["removed_track_s"][1], be["seam_bar_line_edit_s"], BAR_EDIT_XFADE_S * 1000))
     s10 = next((c for c in clips if c.cue == "S10"), None)
-    if s10:
+    if s10 and any("not in this edit" in n for n in s10.notes):
+        w("* **S10 = the glitch** (note 5): B8's glitch impact (`%s`) on `%s`; v05: S08 is no longer in the edit (B8's "
+          "cue file dropped `breaks`), so S10 is calibrated on its own at S08's plan level (%.1f dBFS)." % (
+              s10.file, s10.event, s10.target_dbfs))
+    elif s10:
         w("* **S10 = the glitch** (note 5): B11's flip became the X4 glitch of B8, so its sound changed from S10 Flip "
           "to B8's glitch impact (`%s`) at S08's pre-master gain (%+.2f dB, following S08's calibration; not "
           "calibrated on its own, so its 'error' below is Tesseract's resampler on the bare transient), in S10's "

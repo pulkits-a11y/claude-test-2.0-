@@ -1,16 +1,23 @@
 == A (B1)
-1 f7-26 (19f)  [key:hero Coolvetica Italic 450] Why@7 | [tail Inter SemiBold 54 +96px] does@15  | 891 x 455 px ink
-2 f26-55 (29f)  [lead Inter SemiBold 54] every@26 | [key Coolvetica Italic 190 +5px] GTA,@40  | 371 x 190 px ink
+1 f7-26 (19f)  [key:hero Coolvetica Italic 450] Why@7* | [tail Coolvetica 54 +96px] does@15  | 891 x 452 px ink
+2 f26-55 (29f)  [lead Coolvetica 54] every@26 | [key Coolvetica Italic 190 +6px] GTA,@40  | 371 x 187 px ink
+cues {"word_pops":[15,26],"key_words":[7,40]}
 == B (B2)
-1 f62-130 (68f)  [lead Inter SemiBold 54] Because@62 back@74 in@82 | [key:num Playfair Black 480] 1995,@85  | 1115 x 409 px ink
+1 f62-130 (68f)  [lead Coolvetica 54] Because@62 back@74 in@82 | [key:hero Coolvetica Italic 480] 1995,@85  | 982 x 384 px ink
+cues {"word_pops":[62,74,82],"key_words":[85]}
 == C (B2)
 1 f130-160 (30f)  [key:hero Coolvetica Italic 390] broke.@130  | 1003 x 262 px ink
-2 f160-205 (45f)  [lead Inter SemiBold 54] And@160 that@171 | [key Coolvetica Italic 190] bug@176 | [tail Inter SemiBold 54 +37px] saved@183 it.@191  | 318 x 278 px ink
+2 f160-205 (45f)  [lead Coolvetica 54] And@160 that@171 | [key Coolvetica Italic 190] bug@176 | [tail Coolvetica 54 +35px] saved@183 it.@191  | 318 x 270 px ink
+cues {"word_pops":[160,171,183,191],"key_words":[130,176]}
 == E (B13)
-1 f380-420 (40f)  [solo Inter SemiBold 57] Until@382 finally,@391  | 327 x 42 px ink
+1 f380-420 (40f)  [solo Coolvetica 57] Until@382 finally,@390  | 268 x 38 px ink
+cues {"word_pops":[382,390],"key_words":[]}
 == F (B6)
-1 f430-500 (70f)  [key:quote Playfair Italic 135] “awful…@430 | [tail:quote Playfair Italic 105 +23px] too@447 sim-y.”@453  | 501 x 213 px ink
+1 f430-500 (70f)  [key:quote Coolvetica Italic 135] “awful…@430* | [tail:quote Coolvetica Italic 105] too@447* sim-y.”@453*  | 486 x 178 px ink
+cues {"word_pops":[],"key_words":[430,447,453]}
 == G1 (B6)
-1 f500-519 (19f)  [lead Inter SemiBold 54] it's@500 | [key:dull Arimo 180] dull.@508#  | 330 x 183 px ink
+1 f500-519 (19f)  [lead Coolvetica 54] it's@500 | [key:dull Coolvetica 180] dull.@508#  | 284 x 174 px ink
+cues {"word_pops":[500],"key_words":[]}
 == G2 (B1)
-1 f519-560 (41f)  [lead Inter SemiBold 54] from@519 the@525 | [key Coolvetica Italic 240] cops?@530~  | 618 x 218 px ink
+1 f519-560 (41f)  [lead Coolvetica 54] from@519 the@525 | [key Coolvetica Italic 240] cops?@530*  | 618 x 215 px ink
+cues {"word_pops":[519,525],"key_words":[530]}

@@ -43,6 +43,12 @@ SR = 48000
 FPS = 30
 
 
+# v05 client override (REVISION_v05.md U2/U5/U6, G5): these stay in the library (harmless) but are not used
+NOT_USED_V05 = {"stamp_thud": "NOT USED in v05 (U5: no rubber stamp, no stamp sound).",
+                "whoosh_flip": "NOT USED in v05 (U6: no 3D flip; B11 keeps the v04 glitch).",
+                "type_on": "NOT USED in v05 (U2: no type-on; pills and the CTA line show their text whole)."}
+
+
 def log(*a):
     print(*a, flush=True)
 
@@ -440,6 +446,8 @@ def build():
             entries.append({"file": fn, "duration_s": round(len(back) / SR, 4), "channels": back.shape[1],
                             "sample_peak_dbfs": round(db(a.max()), 2), "peak_s": round(int(np.argmax(a)) / SR, 4),
                             "max_momentary_100ms_db": round(max_momentary(back), 2)})
+        if name in NOT_USED_V05:
+            notes = (notes + " " if notes else "") + NOT_USED_V05[name]
         lib[name] = {"files": [e["file"] for e in entries], "variants": "rotate" if variants else None,
                      "align": align, "default_peak_dbfs": peak_db, "group": group, "class": cls,
                      "dropout_mute": cls in ("riser", "ambience"), "source": source, "recipe": recipe,
@@ -569,6 +577,7 @@ def build():
         "made_by": "tools/build_tesseract_sfx_v05.py (deterministic; re-run to rebuild)",
         "format": "48 kHz, 24-bit PCM WAV; mono unless the sound moves in the stereo field (Tesseract plays a mono "
                   "file at full level on both channels)",
+        "not_used_v05": sorted(NOT_USED_V05),
         "levels": "Each file is written at its default level: its sample peak = default_peak_dbfs (pre-master; the "
                   "assembly's master gain, about -1 dB, comes on top). The audio build plays a cue at "
                   "default_peak_dbfs, or at the cue's gain_db (an absolute sample-peak level in dBFS, capped at "

@@ -27,35 +27,21 @@
     </style>
   </head>
   <body>
-    <!-- B17 b17-loop (v04): beat 186f (6.200s, incl. the 45f logo tail after "now?") + 6f handle each end = 198f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.4000s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B17 p.27-28).
-         v03: ../../REVISION_v03.md (notes 11-13, 16, 17: lockups, no random zooms: the Tesseract shots are back to v01's framing).
-         v02: ../../REVISION_v02.md (rules A-E). v04: ../../REVISION_v04.md note 20: the Trailer 1 opening is now the official
-         GTA VI Trailer 1 from the client's Drive library (Lucia in custody), replacing the madebyajit fan edit; Tesseract-owned.
-
-         Plan B17 (p.27-28): T1: And GTA 6? / It opens with / Lucia already caught. / So who's -> T2: chasing who now?
-         At the final hit "now?" breaks apart with T10. L2 letterbox on the opening seconds of Trailer 1 (Lucia in
-         custody), M1 five stars blink at the top-right; on "So who's chasing who" three fast GTA 6 chase shots (R17.3, R17.4),
-         8-10f each; on "now?" hard cut to black with the T2 text, then the GTA 6 logo (end card of R17.4) pushes in
-         100% -> 115% over 20f with motion blur; final X4 tear on the logo, T10 on "now?", then black (logo tail).
-
-         Owners (beat frames): f0-100 TS+HF (Tesseract, v04 note 20: Rockstar's official GTA VI Trailer 1 opening in the L2
-         band, three shots of Lucia in custody: at the prison window f0-40 (the bars slide in over it), with the parole
-         officer f40-61, facing camera in the orange jumpsuit f61-100; HF: transparent + M1 stars + lockups), f100-129 TS+HF (Tesseract: R17.2 @ 7.2 / R17.4 @ 47.2 /
-         R17.2 @ 11.9, 9-10f each, R17.2 substituting for the missing R17.3; HF: transparent + T1 "So who's" + T2 "chasing who"),
-         f129-186 HF opaque (black, T2 "now?", the R17.4 logo push-in, X4 (8f) + T10 at f161, black tail from f169). tesseract_shots.json.
-
-         Layer stack (top -> bottom):
-           z40  v03 lockups: "And [GTA 6?]" / "It opens with [Lucia] already caught." (ink centre y 820: Lucia's face fills
-                the upper band), "So who's chasing who" (centred, over the chase cuts), "[now?]*" (170 px, ink centre y 960 on
-                black, clear of the logo's bottom tips at 115%); the T10 glitch lives inside the keyword (#b17-key)
-           z30  #b17-x4  X4 tear canvas (8f, seed 8, still mode = B8's v02 break; still = this composition at local 167
-                         without text)                                                                    local 167-174
-           z20  #b17-stars  M1 five stars, 40 px, row centred on (1700, 80) (plan), pop in on "GTA", blink to the first chase cut
-           z3   #b17-world  R17.4 end card (logo), push 100 -> 115% over 20f, accelerating, motion blur  local 147-174
-           z1   #b17-black  ink black #0A0A0A                                                            local 135-197
-           (transparent elsewhere: Tesseract footage shows through) -->
+    <!-- B17 b17-loop (v05): beat 168f (5.600s; the GTA VI logo holds 27 f after "now?", then a hard cut to B18) + 6f
+         handles = 180f. Local frame = beat frame + 6. Words: words.json (v05 VO). v05: ../../REVISION_v05.md (CLIENT
+         OVERRIDE + U; lane 4) and the client's doc 1:11.5-1:17.0 (00_Brief/refs_v05/).
+         beat    local   what
+         -6..36  0..42   HF: Trailer 1 window shot (Lucia's silhouette in the window light), L2 bars slide in over 8 f; "And GTA 6?"
+                         with "GTA 6?" [DEPTH] behind her (plate -> word -> cut-out; TODO kit v05 lockup copies); push 100 -> 104%
+         36-54   42-60   HF: the parole officer (Lucia's INMATE back), "It opens with"
+         54-92   60-98   HF: Lucia facing camera, "Lucia" [DEPTH] partly behind her shoulder, "already caught." ("caught." pink);
+                         the doc's slow push 100 -> 110% across beat 36-92 (plates and cut-outs together)
+         92-129  98-135  Tesseract: two chase shots (R17.2 @ 7.2 to 109, R17.4 @ 47.2 to 129; swipe between), HF transparent +
+                         "So who's chasing who"; M1 HUD stars (pop on "GTA", blink to beat 92)
+         129-141 135-147 black + "now?" hero (TODO kit v05: 330 px, appears / pops + blurs in, white; no siren flicker, U2)
+         141-168 147-174 the GTA VI logo (R17.4 end card) — TODO(kit v05): logoSlam identical to B1; reverse_cymbal ends on it
+         168     174     hard cut to B18 (CTA); tail handle 174-180 = the logo continued. (v04's push, X4 tear and T10 break:
+                         gone.) -->
     <div data-hf-id="hf-y7mb" id="root" data-composition-id="b17-loop" data-start="0" data-duration="6.0000000" data-width="1920" data-height="1080">
 
       <!-- ===== v05 beat f0-92 (local 0-98): the official GTA VI Trailer 1 custody shots (client Drive library, R17.1), moved

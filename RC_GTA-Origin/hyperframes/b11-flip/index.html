@@ -18,10 +18,12 @@
          (nested: both drive scale). The video is not a direct child of .rc-l11__half, so the kit's fill rule is repeated. */
       .lc-push, .lc-key { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
       .lc-key > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
+      /* v05: the centre divider = b05-copgame v05's 6 px WHITE line over the 4 px gap (x 957-963); static here (B5 wipes it in) */
+      .b11-divider { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: var(--white); pointer-events: none; }
     </style>
   </head>
   <body>
-    <!-- B11 b11-flip v04 (REVISION_v04 #13/#14: GTA 6 getaway on the back-left half; v03 lockups, B5 camera, glitch as v02): beat 152f (5.067s) + 6f handle each end = 164f.
+    <!-- B11 b11-flip v05 phase 1 (REVISION_v05 lane 3 + client override U6: the v04 glitch on "flips" stays; front = B5 v05's 8% push + white divider; back push 108%; "cop" strike-through waits for kit v05): beat 152f (5.067s) + 6f handle each end = 164f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.2667s (local frames 6 .. 158).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B11 p.24-25).
          Owner: HF for the whole beat (opaque). Into the beat: X1. T1 only (rotation p.13).
@@ -29,13 +31,13 @@
          'it breaks'"): the 180 deg L11 flip is replaced by B8's X4 pixel-block tear (same settings as b08-break v02: still mode, 8f, seed 8,
          16 x 9 blocks jumping +/-30 px, some freezing, 6 px RGB split), from the front split screen to the back one.
          local 0-23  : the B5 split screen returns in full colour: same clips, same in-points, same L11 frame and the same
-                       camera curve as b05-copgame v03 (v01's slow push, eased: scale = 1 + 0.04 x sine.inOut(L / 147), B5
-                       local 0 -> B6's cut on "One"), so local 0-22 repeat B5 local 0-22 frame for frame.
+                       camera curve as b05-copgame v05 (scale = 1 + 0.08 x sine.inOut(L / 147), B5 local 0 -> B6's cut on
+                       "One") and its white centre divider, so local 0-22 repeat B5 local 0-22 frame for frame.
          local 23-30 : on "flips" (beat f17 = cues.json "glitch"): X4 tears the front frame (still = this composition's own
                        frame at local 23 without captions, assets/x4/b11-old.png via tools/make_x4_stills.py, x4_stills.json)
          local 31    : the cut (hard): back side = the chased roles: left the player's getaway car fleeing (v04: GTA 6, R11.L1), right the
-                       police SUV chasing (R5.4); v03 (note 13): v01's held-shot push 100 -> 104% (now sine.inOut) from the
-                       cut to the end; v02's punch-in on the cut and keyword punch on "chased." are removed.
+                       police SUV chasing (R5.4); held-shot push 100 -> 108% (sine.inOut; v05 pacing rule) from the cut to the
+                       end; no punches.
          local 103   : on "Now" the M2 arrow redraws over 8f and points at the getaway car (same arrow as B5 and v01).
          v03 captions: three centred lockups (kit RCK.type.lockups): "So the team [flips] the whole game." / "You're not
          the [cop] anymore." / "Now you're the one being [chased.]*" (words hard-cut in; "chased." pops + blurs in). -->
@@ -81,6 +83,10 @@
           </div>
         </div>
       </div>
+
+      <!-- v05: the white centre divider (b05-copgame v05: "a 4px white line" @720 = 6 px), static on both sides of the glitch,
+           above the split and under the X4 tear (the tear's still includes it) -->
+      <div id="b11-divider" class="clip b11-divider" data-start="0.0000" data-duration="5.4666" data-track-index="7" style="z-index: 2"></div>
 
       <!-- X4 pixel-block tear on "flips" (note 5: the B8 "breaks" glitch), still mode, full frame, above the split and below
            the arrow and the captions (they stay steady). Still = this composition at local 23 without the tear and the
@@ -128,23 +134,23 @@
       const CUT = GLITCH + 8;                          // 31: X4 is 8f (b08-break v02), then the hard cut to the back side
       const NOW = 103, CHASED = 135, END = 164;
 
-      // ---- front: the B5 split screen returns with B5's own camera (b05-copgame v03, REVISION_v03 note 13: v01's slow
-      //      push, eased: scale(B5 local L) = 1 + 0.04 x sine.inOut(L / 147), one curve from B5 local 0 to b06-dull's cut on
-      //      "One"; no keyword punch). Same curve from this local 0; the front leaves at the glitch's cut, so this tween
+      // ---- front: the B5 split screen returns with B5's own camera (b05-copgame v05: one slow eased push,
+      //      scale(B5 local L) = 1 + 0.08 x sine.inOut(L / 147), one curve from B5 local 0 to b06-dull's cut on "One";
+      //      no keyword punch). Same curve from this local 0; the front leaves at the glitch's cut, so this tween
       //      covers 0..31 with exactly that part of the ease: local 0-22 = B5 local 0-22 frame for frame. If b05-copgame's
       //      SPAN / PUSH change, change B5_SPAN / B5_PUSH here and re-run tools/make_x4_stills.py. ----
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
-      const B5_SPAN = 147, B5_PUSH = 0.04;             // = b05-copgame's SPAN, PUSH (v03)
+      const B5_SPAN = 147, B5_PUSH = 0.08;             // = b05-copgame's SPAN, PUSH (v05: 8%, doc pacing rule 3)
       C.push(tl, '#b11-split .b11-front .lc-push', 0, { until: f(CUT), from: 1, to: 1 + B5_PUSH * SIN(CUT / B5_SPAN), ease: seg(0, CUT / B5_SPAN) });
 
       // ---- X4 glitch on "flips" (note 5), B8's break exactly (b08-break v02): still mode, 8f, seed 8, kit defaults (16 x 9 blocks,
       //      jump +/-30 px, 25% freezing, 6 px RGB split); torn local 23-30, nothing of it from 31 (the cut) ----
       X.tear(tl, '#b11-x4', f(GLITCH), { frames: 8, seed: 8 });
 
-      // ---- back side (v03, REVISION_v03 note 13 "remove the random zooms"): v01's camera = the held-shot push 100 -> 104%
-      //      from the cut to the end, now easeInOutSine (v02's punch-in on the cut and keyword punch on "chased." removed) ----
-      C.push(tl, '#b11-split .b11-back .lc-push', f(CUT), { until: f(END), from: 1, to: 1.04 });
+      // ---- back side: the held-shot push from the cut to the end, easeInOutSine, 100 -> 108% (v05: the back holds 4.4 s,
+      //      doc pacing rule 3 wants >= 8%; REVISION_v05 U3 keeps the split-screen push at 108%; v03-v04 104%) ----
+      C.push(tl, '#b11-split .b11-back .lc-push', f(CUT), { until: f(END), from: 1, to: 1.08 });
 
       // ---- M2 on "Now" (local 103): "you" hard-cuts in, shaft + head drawn by 111 (8f, kit ease out). Same seed and
       //      geometry as b05-copgame (the same arrow), now on the getaway car ----

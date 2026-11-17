@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """v05 working clips for the hook (REVISION_v05 Lane 1): speed ramps on the GTA VI shot (R1.2), eased.
 
-  python3 tools/make_work_clips.py            (run from hyperframes/b01-hook; ~3-6 min on 4 CPU cores)
+  python3 tools/make_work_clips.py [A] [C]    (run from hyperframes/b01-hook; ~3-6 min on 4 CPU cores; default both)
 
 Source: assets/footage/R1.2.mp4 (tools/sync_footage.py window: media 0 = source 8.2 s, 1920x1080, 30 fps).
 Method: the needed source span is motion-interpolated to 150 fps (ffmpeg minterpolate, mci), then every output frame
 (30 fps) takes the 150 fps frame nearest to its remapped source time media(j) = media(0) + (1/30) * sum of v over the
 frames before j, where v = speed (1 = real time). Speed changes are eased (easeInOutSine) over the frames named below.
 
-  assets/work/R1.2_A_logo85.mp4  B1 local 55-93 (+2f): cell 6 -> full frame and the logo shot. v 1.0 (55-63), eased
-                                 1.0 -> 0.85 (63-69, the logo slams on 69), 0.85 to the cut on "have" (93). media 0 at 55.
+  assets/work/R1.2_A_logo85.mp4  B1 local 55-96 (+3f): cell 6 -> full frame and the logo shot. v 1.0 (55-63), eased
+                                 1.0 -> 0.85 (63-69, the logo slams on 69), 0.85 to the cut at 3.0 s (local 96). media 0
+                                 at 55. (v05 phase 1 had 40 frames to a 150% crop cut on 93; the client override, U3,
+                                 replaced that crop by a second GTA VI angle at 3.0.)
   assets/work/R1.2_C_flip40.mp4  B1 local 114 -> 170 (B2 uses it to its local 36): the SUV flip. v 1.0 (114-121), eased
                                  1.0 -> 0.4 (121-125), 0.4 for 20 frames (125-145 = the 8 source frames 2.4667-2.7333 s
                                  where the truck leaves the ground, lift-off on "cops?" 125), eased 0.4 -> 1.0
                                  (145-149), 1.0 after. media(125) = 2.4667.
-Shot B (the 150% crop, local 93-114) plays R1.2.mp4 itself at 100% (media-start = the end of clip A, see MAP below).
+Shot B (the second GTA VI angle, local 96-114) plays R1.2.mp4 itself at 100%: the night getaway, media 12.6 (source
+20.8 s), framed statically (no move).
 Writes assets/work/R1.2_ramps.json (frame -> source media map) for the beat and for b02-bug (it copies clip C).
 """
 import json, math, os, shutil, subprocess, sys, tempfile
@@ -62,23 +65,24 @@ def build(name, times, t0, t1, tmp):
 def main():
     os.makedirs(OUT, exist_ok=True)
     tmp = tempfile.mkdtemp(prefix='ramps_')
-    # A: local 55 -> 95 (40 frames incl. 2 spare), media 0 at 55
+    which = set(a.upper() for a in sys.argv[1:]) or {'A', 'C'}
+    # A: local 55 -> 98 (44 frames: 55-95 on screen, cut at 96, 3 spare), media 0 at 55
     vA = speed_fn([(0, 8, 1, 1), (8, 14, 1, 0.85), (14, 99, 0.85, 0.85)])
-    tA = remap(40, vA, 0.0)
+    tA = remap(44, vA, 0.0)
     # C: local 114 -> 170 (56 frames); lift-off media 2.4667 on local 125 (j 11)
     vC = speed_fn([(0, 7, 1, 1), (7, 11, 1, 0.4), (11, 31, 0.4, 0.4), (31, 35, 0.4, 1), (35, 99, 1, 1)])
     pre = remap(12, vC, 0.0)[11]
     tC = remap(56, vC, 2.4667 - pre)
-    a = build('R1.2_A_logo85.mp4', tA, 0.0, tA[-1] + 0.1, tmp)
-    c = build('R1.2_C_flip40.mp4', tC, round(tC[0] - 0.02, 3), tC[-1] + 0.1, tmp)
+    a = build('R1.2_A_logo85.mp4', tA, 0.0, tA[-1] + 0.1, tmp) if 'A' in which else os.path.join(OUT, 'R1.2_A_logo85.mp4')
+    c = build('R1.2_C_flip40.mp4', tC, round(tC[0] - 0.02, 3), tC[-1] + 0.1, tmp) if 'C' in which else os.path.join(OUT, 'R1.2_C_flip40.mp4')
     m = {'src': SRC, 'source_offset_s': 8.2, 'fps': FPS,
          'A': {'file': a, 'local0': 55, 'media': [round(t, 4) for t in tA]},
-         'B': {'note': 'shot B (150% crop, local 93-114) plays R1.2.mp4 at 100%: media-start = A media at local 93 + its 85% step',
-               'media_start': round(tA[38], 4)},
+         'B': {'note': 'shot B = the second GTA VI angle (U3), local 96-114: R1.2.mp4 itself at 100%, the night getaway',
+               'media_start': 12.6},
          'C': {'file': c, 'local0': 114, 'media': [round(t, 4) for t in tC]}}
     json.dump(m, open(os.path.join(OUT, 'R1.2_ramps.json'), 'w'), indent=1)
     shutil.rmtree(tmp, ignore_errors=True)
-    print('A media 55..95:', tA[0], '->', round(tA[-1], 4), '| B media-start', round(tA[38], 4), '| C media 114..170:', round(tC[0], 4), '->', round(tC[-1], 4))
+    print('A media 55..98:', tA[0], '->', round(tA[-1], 4), '| C media 114..170:', round(tC[0], 4), '->', round(tC[-1], 4))
 
 if __name__ == '__main__':
     main()

@@ -11,7 +11,8 @@
   (doc: a new event every <= 0.7 s on a long hold), and the arrow is gone before the cut instead of vanishing on it.
 * `cues.json` v05: word_pops [1, 3, 14, 19, 25, 36, 47], key_words [27 police, 58 criminals.] (one whoosh + thump per key
   phrase), no sfx, no legacy events. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
-* Phase 2: the lockups in kit v05 tiers with the pink -> white entry (and the kit's annotation arrow if it replaces M2).
+* Client override (U1-U3): divider wipe and the 8% split push stay; phase 2 = the lockups in kit v05 tiers, all Coolvetica,
+  words appear on their frames, the chosen key words ("police officer", "criminals.") pop + blur in, white.
 
 ## v04 (kit refresh only)
 Kit refreshed to v04 (`python3 tools/new_beat.py B5 --refresh`); no element of this beat uses the new scanline surfaces:

@@ -37,10 +37,11 @@ CRF pass) and muxed with the same mix -> 07_Exports/RC_GTA-Origin_<version>_prev
 RC_GTA-Origin.tsrct is left as it is (the last full build).
 
 v05 (REVISION_v05.md): the voiceover comes from the beat map's `vo_file` (01_VO/VO_processed_v05.wav, doc cuts A/B),
-18 beats (B18 = the CTA end card, 05_GFX/renders/b18-cta.mov), edit 2288 f; the audio half reads the cues.json v05
+18 beats (B18 = the CTA end card, 05_GFX/renders/b18-cta.mov), edit length from the beat map (2326 f after the client
+override); the audio half reads the cues.json v05
 schema and the 03_SFX/v05 library (both are audio inputs below); the picture finish has the v05 grain (size 1.2, 3.9%),
-no global chromatic aberration, a light vignette on the CTA card that returns to full over its last 6 frames, and
-CA + VHS wobble on Tesseract shots inside cues.json `archival` ranges.
+the v04 vignette and global chromatic aberration (client override U4/U8), and +1 px CA + a VHS line wobble on Tesseract
+shots inside cues.json `archival` ranges.
 
 Usage:  python3 tools/build_tesseract.py [--version v05] [--force-audio] [--skip-export] [--master-crf 14]
         python3 tools/build_tesseract.py --version v05 --preview [--preview-resolution 720p|1080p]

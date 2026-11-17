@@ -3,7 +3,7 @@
  "word_pops": [
   0,
   3,
-  12,
+  11,
   13,
   32,
   58,
@@ -21,10 +21,6 @@
   {
    "f": 40,
    "name": "flatline_beep"
-  },
-  {
-   "f": 64,
-   "name": "type_on"
   }
  ],
  "dropouts": [
@@ -34,5 +30,5 @@
   }
  ],
  "archival": [],
- "note": "v05: 'dull.' (beat 40) is the anti-style gag: NO tick / whoosh / thump, only flatline_beep (doc 24.4) with a 6f dropout ending on it; key word = the quote's big '“awful…' (106); type_on = the name pill typing on (doc 25.1, local 70; the kit pill's exact burst frames come with phase 2). Gary Penn's footage is 2012 HD, not 1990s archival. Legacy 'dull' (S05) dropped: the music bed is off and the flatline replaces it."
+ "note": "v05: 'dull.' (beat 40) is the anti-style gag: NO tick / whoosh / thump, only flatline_beep (doc 24.4) with a 6f dropout ending on it; key word = the quote's big '“awful…' (106; its three words pop + blur in, v03 #9). No type_on: the name pill's text appears whole (client override U2). Gary Penn's footage is 2012 HD, not 1990s archival. Legacy 'dull' (S05) dropped: the music bed is off and the flatline replaces it."
 }

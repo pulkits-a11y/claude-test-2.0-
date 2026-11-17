@@ -22,10 +22,18 @@
     "source": "04_Broll/_originals/B01/R1.6__The Biggest Police Chase in GTA San Andreas History! (100 Cops vs. 1 S [flgIZbQHwN8].mp4",
     "crop": "1264:711:300:289"
    },
+   "roadblock": {
+    "rid": "R1.3",
+    "start_f": 91,
+    "end_f": 126,
+    "src_in": 142.0,
+    "source": "04_Broll/_originals/B01/R1.3__GTA V - \uff025 Stars\uff02 Police Chase [NcTdBgA3Bkg].mp4",
+    "crop": null
+   },
    "chase": {
     "rid": "R1.3",
     "start_f": 59,
-    "end_f": 126,
+    "end_f": 91,
     "src_in": 107.0,
     "source": "04_Broll/_originals/B01/R1.3__GTA V - \uff025 Stars\uff02 Police Chase [NcTdBgA3Bkg].mp4",
     "crop": null
@@ -113,8 +121,8 @@
     ]
    ]
   },
-  "B9_R9.1_src_in": 314.1,
-  "B9_R9.1_start_f": 0,
+  "B9_R9.1_src_in": 316.4,
+  "B9_R9.1_start_f": 69,
   "B4_doc": {
    "page_scale": 1.4,
    "title_page": [
@@ -252,7 +260,7 @@
    "kind": "B14",
    "rid": "R1.3",
    "edit_f": 118,
-   "src_s": 108.9667,
+   "src_s": 142.9,
    "source": "04_Broll/_originals/B01/R1.3__GTA V - \uff025 Stars\uff02 Police Chase [NcTdBgA3Bkg].mp4",
    "crop": null
   },
@@ -262,7 +270,7 @@
    "kind": "B14",
    "rid": "R1.3",
    "edit_f": 110,
-   "src_s": 108.7,
+   "src_s": 142.6333,
    "source": "04_Broll/_originals/B01/R1.3__GTA V - \uff025 Stars\uff02 Police Chase [NcTdBgA3Bkg].mp4",
    "crop": null
   },
@@ -272,7 +280,7 @@
    "kind": "B14",
    "rid": "R1.3",
    "edit_f": 102,
-   "src_s": 108.4333,
+   "src_s": 142.3667,
    "source": "04_Broll/_originals/B01/R1.3__GTA V - \uff025 Stars\uff02 Police Chase [NcTdBgA3Bkg].mp4",
    "crop": null
   },

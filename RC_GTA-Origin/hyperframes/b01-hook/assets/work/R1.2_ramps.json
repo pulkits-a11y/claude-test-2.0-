@@ -45,12 +45,16 @@
    1.075,
    1.1033,
    1.1317,
-   1.16
+   1.16,
+   1.1883,
+   1.2167,
+   1.245,
+   1.2733
   ]
  },
  "B": {
-  "note": "shot B (150% crop, local 93-114) plays R1.2.mp4 at 100%: media-start = A media at local 93 + its 85% step",
-  "media_start": 1.1317
+  "note": "shot B = the second GTA VI angle (U3), local 96-114: R1.2.mp4 itself at 100%, the night getaway",
+  "media_start": 12.6
  },
  "C": {
   "file": "assets/work/R1.2_C_flip40.mp4",

@@ -2,6 +2,11 @@
  "_what": "v05 SFX library (REVISION_v05.md G9 + S, client doc 2.7). Lanes name these in hyperframes/<composition>/cues.json; tools/build_tesseract_audio.py places them.",
  "made_by": "tools/build_tesseract_sfx_v05.py (deterministic; re-run to rebuild)",
  "format": "48 kHz, 24-bit PCM WAV; mono unless the sound moves in the stereo field (Tesseract plays a mono file at full level on both channels)",
+ "not_used_v05": [
+  "stamp_thud",
+  "type_on",
+  "whoosh_flip"
+ ],
  "levels": "Each file is written at its default level: its sample peak = default_peak_dbfs (pre-master; the assembly's master gain, about -1 dB, comes on top). The audio build plays a cue at default_peak_dbfs, or at the cue's gain_db (an absolute sample-peak level in dBFS, capped at -4 dBFS) when the cue gives one. Variant sets are loudness-matched, the loudest at the default.",
  "align": "start = the file's first sound on the cue frame (leading silence trimmed to 1 ms); peak = the file's sample peak (peak_s) on the frame; end = the file's last sample at the frame's start.",
  "groups": {
@@ -161,7 +166,7 @@
    "dropout_mute": false,
    "source": "03_SFX/S10_Flip.wav",
    "recipe": "S10_Flip.wav at 48 kHz, leading silence trimmed (1 ms pre-roll)",
-   "notes": "3D flip / spin whoosh; its peak (about 0.36 s in) on the flip's midpoint.",
+   "notes": "3D flip / spin whoosh; its peak (about 0.36 s in) on the flip's midpoint. NOT USED in v05 (U6: no 3D flip; B11 keeps the v04 glitch).",
    "file_info": [
     {
      "file": "whoosh_flip.wav",
@@ -305,7 +310,7 @@
    "dropout_mute": false,
    "source": "03_SFX/S13_v3) Type (A B C ).wav",
    "recipe": "4 keystrokes of S13 (file order) at 0/68/131/205 ms, 0/-2/-1/-3 dB; 0.32 s",
-   "notes": "One typed burst (place one per burst of typed text).",
+   "notes": "One typed burst (place one per burst of typed text). NOT USED in v05 (U2: no type-on; pills and the CTA line show their text whole).",
    "file_info": [
     {
      "file": "type_on.wav",
@@ -473,7 +478,7 @@
    "dropout_mute": false,
    "source": "synthesized",
    "recipe": "synthesized (numpy): rubber stamp on paper on a desk: 85 -> 55 Hz thud (70 ms), a 10 ms band-passed (0.6-2.5 kHz) slap, a 180 Hz desk resonance (60 ms) and a 6 ms paper tick (3-8 kHz), tanh drive 1.4; 0.6 s; align start",
-   "notes": "Rubber stamp landing (doc: 30.4 s).",
+   "notes": "Rubber stamp landing (doc: 30.4 s). NOT USED in v05 (U5: no rubber stamp, no stamp sound).",
    "file_info": [
     {
      "file": "stamp_thud.wav",

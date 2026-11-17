@@ -22,28 +22,22 @@
     </style>
   </head>
   <body>
-    <!-- B13 b13-gta (v04): beat 205f (6.833s) + 6f handle each end = 217f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.0333s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
-         v02: ../../REVISION_v02.md. v03: ../../REVISION_v03.md (note 4, 11-13, 16, 17). v04: ../../REVISION_v04.md (notes 15, 16, 17).
-
-         Plan p.25 (B13 build), STORYBOARD.md B13. Local frame = beat frame + 6.
-         beat  local  what
-         -6..0  0..6   head handle: the (v03: dark) year card (opening state continued backward), push already running
-         1      7      lockup "Until finally," on the dark card (solo 76 px, words hard-cut in: Until 7, finally, 16)
-         27     33     "In" hard cut in on "in"; the lockup out (hard cut, next text)
-         30     36     "Nov" hard cut in on "November"
-         45     51     year digits 1-9-9-7 roll up (odometer, 8f each, 2f stagger, easeOutQuart), landed beat 59 (local 65) = cue year_digits (S12);
-                       card push 100 -> 104% (v01 value, easeInOutSine) to the cut; v04: "Nov 1997" glow-flickers 10f from "1997," then holds
-         77-84  83-90  X3 white flash centred on the cut at beat 80 (local 86; ramp easeInQuad, fade easeOutQuad), silent
-         80     86     cut to R9.4 FULL FRAME (v04: GTA 1 gameplay, a car chased by a police car down a highway; darkened), held-shot push
-                       100 -> 104% (easeInOutSine) to the cut at beat 181. Lockup "it ships with | a new name:" (hard cuts: it 86,
-                       ships 88, with 97, a 104, new 107, name: 111)
-         124    130    v04: the original 1997 GRAND THEFT AUTO logo (cut out of the R13.2 box spine), centred, 960 px: pops + blurs
-                       in on "Grand" (130 = cue type_on); no type-on (S13 typing: see BEAT_NOTES v03)
-         124-181 130-187 the logo holds through the title hold (41f after "Auto.") ... hard cut at beat 181 (local 187)
-         181-205 187-211  TS only: GTA 1 big-box unboxing R13.2 in the L2 band (tesseract_shots.json); this composition is transparent
-         205-211 211-217  tail handle: transparent (closing state = Tesseract footage) -->
+    <!-- B13 b13-gta (v05): beat 166f (5.533s) + 6f handle each end = 178f (v05: the silence after "Auto." is 0.386 s).
+         Local time 0 = beat start - 6f; local frame = beat frame + 6. Words: words.json (v05 VO). Plan: ../../00_Brief/.
+         v05: ../../REVISION_v05.md (CLIENT OVERRIDE + U; lane 4) and the client's doc 0:46.5-0:56.0 (00_Brief/refs_v05/).
+         beat   local   what
+         -6..80 0..86   dark card ground + R3.7 (BBC 1996 making-of at DMA, the office) blurred + darkened at 25% behind
+                        (doc dead zone 4); "Until finally," over it (1, 10); "in" 27; TODO(kit v05): tear-off calendar page
+                        MAR 1995 -> NOV 1997 (Coolvetica Italic 300 px, paper_rip) with the client's glow flicker on NOV 1997
+                        (v04 #15; the T3 year card with the glow flicker stands in until then)
+         77-84  83-90   X3 white flash centred on the cut at beat 80 (silent)
+         80-155 86-161  R9.4 GTA 1 gameplay full frame (darkened), push 100 -> 104% eased; "it ships with | a new name:"
+                        (TODO kit v05: tier A Coolvetica 57 px)
+         118-124        music dropout (cues); 124 "Grand": the 1997 logo (R13.2 spine cut-out) — TODO(kit v05): logoSlam,
+                        identical to B1 / B17 (160 -> 94 -> 100% over 6 f, flash-star, 1 f white flash, 12 px shake 8 f;
+                        impact_boom + sub_drop); holds through "Theft Auto." (voice ends 155)
+         155-166 161-178 the 0.386 s tail + tail handle: the GTA 1 PC big-box front (R13.2 @ 16.65-17.45) as a card insert,
+                        3 deg tilt, entering on the reverse cymbal — TODO(kit v05): card insert -->
     <div data-hf-id="hf-iwki" id="root" data-composition-id="b13-gta" data-start="0" data-duration="5.9333333" data-width="1920" data-height="1080">
 
       <!-- ===== T3 year card (M6: same kit component and geometry as B3), beat -6..80 ===== -->
