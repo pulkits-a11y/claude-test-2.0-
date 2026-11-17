@@ -1,5 +1,10 @@
 # B12 Eighteen becomes thirty — `b12-thirty` (v02: beat 78f = 2.600 s; composition 90f with 6f handles)
 
+## v04 (REVISION_v04.md #7). Read this first
+
+No change asked for B12. Kit refreshed (v04): the dark card now carries the kit's static scanline texture (#7: scanlines
+only inside the dark text cards), automatically through `.rc-card`. `check --json` 0 errors; `review/v04/` (17, 56, 71, 77).
+
 ## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
 
 Change only what the notes ask; everything else is the v02 section below (the calendar's opening animation and higher

@@ -91,9 +91,11 @@
 
       <!-- M2 the "you" arrow (plan p.17, p.24-25): the same arrow as B5 (same seed, same hand) redraws on "Now" over 8f and
            points at the player's car (back side, left half). Screen space (outside the camera wrappers). v04: re-aimed on the
-           GTA 6 getaway (R11.L1): from local 103 to 164 the sedan's rear sits at screen x ~240-760, y ~590-1000, so the tail
-           starts on the open road at the lower left (150, 950) and the tip ends at the car's rear-left corner (285, 730);
-           v03's aim (175, 800) -> (335, 520) would now land on the police SUV ahead of it. "you" at the tail. -->
+           GTA 6 getaway (R11.L1): from local 103 to 164 the sedan's rear sits at screen x ~240-760, y ~590-1000, so the arrow
+           comes in from the shadowed road on its right: tail (850, 862), tip at the car's rear-right corner (712, 762), "you"
+           at the tail (labelAt 880, 898: the yellow label measured >= 4.9:1 against that patch on local 103-163; on the sunlit
+           road at the lower left it fell to 1.5:1). v03's aim (175, 800) -> (335, 520) would now land on the police SUV
+           ahead of the car. -->
       <div data-hf-id="hf-wrpo" id="b11-arrow" class="clip m2-arrow" data-start="3.4333" data-duration="2.0333" data-track-index="6" style="z-index: 20"></div>
 
       <!-- v03 T1 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), centred on x 960 with the
@@ -146,7 +148,7 @@
 
       // ---- M2 on "Now" (local 103): "you" hard-cuts in, shaft + head drawn by 111 (8f, kit ease out). Same seed and
       //      geometry as b05-copgame (the same arrow), now on the getaway car ----
-      M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [150, 950], to: [285, 730], bend: 0.16, seed: 7, label: 'you' });
+      M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [850, 862], to: [712, 762], bend: 0.16, seed: 7, label: 'you', labelAt: [880, 898] });
 
       // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their frames, "chased." pops + blurs in ----
       T.lockupsWire(tl);

@@ -1,5 +1,10 @@
 # B10 It's fun - `b10-fun` (v02: beat 54f = 1.800 s; composition 66f with 6f handles)
 
+## v04 (REVISION_v04.md). Read this first
+
+No change asked for B10. Kit refreshed (v04); nothing it changed is used here. B9's glow flashes end 8f after each pop, so
+the head handle (= b09 local 202-208) is unchanged. `check --json` 0 errors; `review/v04/sheet_a.jpg` (0, 34, 47).
+
 ## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
 
 Change only what the notes ask; everything else is the v02 section below (timing, flash, cues `fun` 35, footage).

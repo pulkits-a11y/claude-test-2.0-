@@ -1,5 +1,23 @@
 # B11 The flip (v02: the glitch) - `b11-flip` (v02: beat 152f = 5.067 s; composition 164f with 6f handles)
 
+## v04 (REVISION_v04.md #13, #14). Read this first
+
+Everything else as v03 below (front = B5's camera, the X4 glitch, lockups, right half R5.4, cues).
+
+| Change | Note |
+|---|---|
+| **Back-left half: GTA 6 instead of GTA 1** (#13 "same clip": the GTA 1 half repeated B9; #14 "use B rolls of chase scenes from gta 6 or 5 check my drive link"): **R11.L1** = the client's Drive clip "GTA 6 4K Gameplay Trailer FULL NETFLIX EXTENDED" (Rockstar gameplay, 3840x2160, downloaded with gdown to `04_Broll/_originals/Drive2/`), 936.4-941.6 s, used 936.9-941.33 s (media-start 0.5 s, local 31-164): one continuous third-person shot of the getaway after the robbery, the dark sedan from behind, the accomplice leaning out shooting back, cars swerving round it, a police SUV ahead at the junction. Portrait crop 1916:2160:900:0 = the 958 x 1080 half (wanted stars and minimap fall outside). Not the moments B1/B2, B15 or B17 use. MANIFEST-FREE R-ID (as b15-proof's R15.L1): in `footage.json` moments, not in `rids`; working clip cut by hand with sync_footage's recipe (command in footage.json) | #13, #14 |
+| **Arrow on "Now" re-aimed at the player's car**: from (850, 862) to (712, 762) = the sedan's rear-right corner, "you" at (880, 898) on the shadowed road (yellow label >= 4.9:1 there on local 103-163; at the lower left it fell to 1.5:1 on sunlit road = a check error). v03's aim would now hit the police SUV ahead | #14 |
+| X4 still re-captured (`make_x4_stills.py`, `--check` current); the still is the front, unchanged in look | |
+
+The official "An Extended Look" (26 s) has only a ~1 s car-chase shot (7.0-7.9 s, B17 uses 7.2 s), and Trailers 1/2 and
+the Launch / Features / Pre-Load trailers have no chase shot near 4.4 s; the extended gameplay video has a continuous one.
+Cross-beat: `hyperframes/cover` still mirrors B11's v01/v02 back side (R9.1); not this lane.
+
+**Verification (v04)**: `check --json` 0 errors (warnings: kit lockup nesting, contrast 2.98:1 on "the" over the new clip's
+sunlit building for a few frames around local 45, `line_unread` "chased."). Snapshots `review/v04/` (read, `sheet_a.jpg`):
+22, the glitch 23/30, the cut 31, 45, 65, 83, the arrow 103/107/111, 125, the "chased." pop 135/141, 150, 163. Not rendered.
+
 ## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
 
 Change only what the notes ask; everything else is the v02 section below (the X4 glitch the client liked, timing,

@@ -1,7 +1,7 @@
 {
  "tool": "tools/make_x4_stills.py",
  "cli": "hyperframes@0.9.52",
- "captured_utc": "2026-11-17T09:45:59Z",
+ "captured_utc": "2026-11-17T09:48:26Z",
  "stills": {
   "assets/x4/b11-old.png": {
    "frame": 23,
@@ -16,7 +16,7 @@
   }
  },
  "inputs": {
-  "index.html": "c6c7e2c1006d3ed8bd23f56464a79d176bccbaa61d16b6d4e161978cd0cf3a28",
+  "index.html": "06a5b1e4f25b92957ccc41255658eaaeab1461e283f29896bdf97fd21f71eafa",
   "x4_stills.json": "8ebc1b905e9f0d1b7358273776e61a6c8c7ff009f2755d79ed92f450bd1c8b16",
   "assets/footage/R11.L1.mp4": "02582361afef79d2f94e35e16725fbb9ed0b89da5b262d888c9b0dc250c87908",
   "assets/footage/R5.1.mp4": "20e140153bc71adbc4380fbc00334fdb616d1e654f730da93b9ed05996ccdee9",

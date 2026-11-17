@@ -1,5 +1,24 @@
 # B9 Straight through you - `b09-throughyou` (v02: beat 202f = 6.733 s; composition 214f with 6f handles)
 
+## v04 (REVISION_v04.md #10, #11, #12). Read this first
+
+Everything else as v03 below (lockups, strips, timing, cues).
+
+| Change | Note |
+|---|---|
+| **More B-roll under "The police cars / stop following you / and start trying"**: three quick Tesseract L1 cut-ins (`tesseract_shots.json`, 105%, soft edges, grade b9-sat60 like the GTA 1 shot, static framing: 0.7-0.9 s cuts are not held shots), cut on the voice: **f0-21** GTA 2 police cars swinging into a junction (`B9-gta2-police-A`, R9.3 42.0 s, crop 480:270:160:150) / **f21-49** "stop": GTA 1 4K, a police car tailing the player's van (`B9-gta1-4k-follow-B`, R9.4 540.55 s, crop 1440:810:0:90) / **f49-69** "and": GTA 1 4K, a police car ramming the van's side (`B9-gta1-4k-ram-C`, R9.4 573.2 s, crop 1440:810:0:135). No watermarks in R9.3 / R9.4 (game HUD as is) | #10 |
+| **The GTA 1 shot kept for "to drive straight through you."**: `B9-gta1-chase-L1` now f69-120 (was f0-120), source_in 314.1 -> 316.4 s, so every frame f69-120 shows the same source frame as v03 and it still ends at 318.1 s = strip 1's first frame; push 100 -> 104% across its 51 frames (easeInOutSine) | #11 |
+| **Glow flash on each strip pop**: kit `S.glowFlash(tl, '#b09-sN', t)` on the `gridPop` frame (kit defaults: 2f in / 6f out, power2.out; white bloom + inner edge glow + outer glow on the gutter) | #12 |
+
+Cross-beat: `b16-bug-origin/tools/make_rewind.py` reads B9's earliest R9.1 shot (still `B9-gta1-chase-L1`; the cut-ins are
+R9.3 / R9.4) and samples source_in + (f - start_f)/30 for f56-120: identical source times, so B16's rewind is unchanged.
+R9.4 is used for the first time (Tesseract only; not synced into this folder).
+
+**Verification (v04)**: `check --json` 0 errors (warnings as v03). Snapshots `review/v04/` (read): `sheet_a.jpg` the cut-in
+frames 6-125 (overlay only), `sheet_cutins_over-footage.jpg` + `comp/` = those frames composited over each shot's source
+frame read from tesseract_shots.json (look check, not the finish), `sheet_b.jpg` the three glow flashes (126-134, 149-153,
+174-182) and 197. B9 local 202 still = b10-fun local 0 (flashes end 8f after each pop). Not rendered.
+
 ## v03 (REVISION_v03.md notes 11, 12, 13, 16, 17). Read this first
 
 Change only what the notes ask; everything else is the v02 section below (timing, footage, strips, cues unchanged).
