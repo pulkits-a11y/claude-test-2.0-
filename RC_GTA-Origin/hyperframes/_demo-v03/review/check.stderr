@@ -1,3 +1,9 @@
 [hyperframes] check: the report is saved to /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/.hyperframes/artifacts/checks/014d7f82-1840-436e-8c47-2e958ca4841b.json when the check ends, unless a warning says it could not be saved
 Chrome is still starting...
 [hyperframes] check: starting Chrome
+[hyperframes] browserGpuMode probe → software (WebGL unavailable)
+[hyperframes] check: loading the page
+[hyperframes] check: waiting for the page to be ready
+[hyperframes] check: checking samples
+[hyperframes] check: samples 1/9
+[hyperframes] check: samples 2/9
