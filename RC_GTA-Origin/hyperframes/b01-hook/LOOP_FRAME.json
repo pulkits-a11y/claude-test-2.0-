@@ -12,7 +12,7 @@
  "origin": "50% 50%",
  "composition_framing": "static, full frame (U3: no 120 -> 100% punch-in); object-fit cover 1920 x 1080",
  "grading": "the beat's gameplay grade: contrast 0.15 (data-color-grading on #b01-s1-v)",
- "white_flash": "1-frame 70% white flash ON f0 (local 6) in B1; the loop target is the un-flashed image (f0_still)",
+ "white_flash": "1-frame 70% white flash on beat f1 (local 7) in B1; f0 (local 6) is the clean image = the loop target (f0_still)",
  "source": "04_Broll/_originals/B05/R5.4__GTA 5 LSPDFR ｜ Sheriff Gang Unit Takes Over the Night Shift 🚔 ｜ DLSS 5 [PV1NfLjkbWg].mp4",
  "source_fps": "60000/1001 (resampled to 30 fps)",
  "source_in_s": 633.5333,

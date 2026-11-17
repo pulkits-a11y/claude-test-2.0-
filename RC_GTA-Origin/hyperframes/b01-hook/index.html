@@ -40,7 +40,7 @@
          beat 134f + 6f handles = 146f; local frame = beat frame + 6 (edit t = (local - 6) / 30). Words: words.json.
          Shots (local frames), every frame full-bleed (no black, no inset, no half-built grid):
            0-26    shot 1: police lights at night, GTA V (R5.4 633.53 s, assets/work/b01_lightbar.mp4; LOOP_FRAME.json): static, full frame
-                   (U3: no punch-in); 1-frame 70% white flash on beat f0 (local 6)
+                   (U3: no punch-in); frame 0 is the clean image; 1-frame 70% white flash on beat f1 (local 7)
            26-55   hard cut on "every": the full 2x3 grid edge to edge (6 px gutters), all six tiles on screen from its first
                    frame; the tiles slam on a 2f stagger TL->BR (26 28 30 32 34 36: media 108 -> 100% / 4f + a short tile
                    flash) and each year label appears with its tile (1997 2001 2002 2004 2008 2013 = R1.5 R14.1 R1.7 R1.6
@@ -121,7 +121,7 @@
 <div id="b01-lk-run-1" class="clip rc-lk" data-rc-v="5" data-start="3.1000" data-duration="0.7000" data-track-index="20" style="--rc-lk-c: 101.46px; z-index: 40; justify-content: flex-start; padding-left: 1225px; box-sizing: border-box"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="93">have</span> <span class="rc-lw" data-rc-f="98">you</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 186px; line-height: 186px; height: 186px; margin-top: -22.87px"><span class="rc-lw rc-lw--key" data-rc-f="105">running</span></div></div></div>
 <div id="b01-lk-cops-1" class="clip rc-lk b01-halo" data-rc-v="5" data-start="3.8000" data-duration="0.8666" data-track-index="20" style="--rc-y: 800px; --rc-lk-c: 117.81px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 54px; line-height: 54px; height: 54px"><span class="rc-lw" data-rc-f="114">from</span> <span class="rc-lw" data-rc-f="120">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 240px; line-height: 240px; height: 240px; margin-top: -36.98px"><span class="rc-lw rc-lw--key rc-lw--pop" data-rc-f="125">cops?</span></div></div></div>
 
-      <!-- 1-frame white flashes (RCK.fx.flash): beat f0 at 70%; the logo slam's impact at 85% -->
+      <!-- 1-frame white flashes (RCK.fx.flash): beat f1 at 70% (f0 stays the clean thumbnail / loop image); the logo slam's impact at 85% -->
       <div id="b01-flash" class="clip fx-host" data-start="0.0000" data-duration="4.8666" data-track-index="24" style="z-index: 30"></div>
     </div>
 
@@ -141,8 +141,9 @@
       // ---- captions (kit v05, U2): words appear on their frame, white; "Why" and "cops?" pop + blur in
       T.lockupsWire(tl);
 
-      // ---- 1-frame 70% white flash on beat f0 (local 6)
-      FX.flash(tl, '#b01-flash', L(6), { opacity: 0.7 });
+      // ---- 1-frame 70% white flash on beat f1 (local 7): frame 0 stays the clean, bright light-bar image (the doc's QA
+      // "frame 0 ... readable as a still thumbnail"; B18's loop cross lands on it); siren_whoop + sub_hit stay on f0
+      FX.flash(tl, '#b01-flash', L(7), { opacity: 0.7 });
 
       // ---- grid (cut on "every", local 26): complete on its first frame; tiles slam TL->BR on a 2f stagger: each tile's
       // picture 108 -> 100% over 4f (power3.out) + a short tile flash (kit glow flash, no outer glow: 6 px gutters)
