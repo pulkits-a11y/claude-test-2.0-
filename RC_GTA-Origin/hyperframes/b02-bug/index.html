@@ -103,7 +103,8 @@
            Coolvetica words + one big Coolvetica Italic keyword, ink centred on y 540 and, here only, on x 1200 instead of
            960 (padding-left 480 px): the CRT picture and the error box fill the centre-left (x 230-905), so a lockup on
            x 960 covered the error box text and the CRT's right edge; at x 1200 it clears them by ~50 px. Every word appears on its own
-           spoken frame (a hard cut, no animation); only the starred keyword "bug" pops + blurs in (6f expo.out); lockups
+           spoken frame (a hard cut, no animation); v04: "1995," glow-flickers in (T.glowFlicker, review #6); only the
+           starred keyword "bug" pops + blurs in (6f expo.out); lockups
            replace each other with hard cuts; the last one cuts out on the boundary (local 175), where the picture zooms
            through into B3. Outside the camera: the captions never zoom. ===== -->
       <div id="b02-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.8000" data-track-index="20" style="--rc-lk-c: 104.2px; z-index: 40; padding-left: 480px; box-sizing: border-box"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">Because</span> <span class="rc-lw" data-rc-f="19">back</span> <span class="rc-lw" data-rc-f="27">in</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="30">1995,</span></div></div></div>
@@ -130,6 +131,10 @@
 
       // ---- v03 captions: every .rc-lk; plain words hard-cut on their data-rc-f frame, the starred "bug" pops + blurs in
       T.lockupsWire(tl);
+      // ---- v04 (review #6): glow flicker on "1995," (the unstarred keyword of lockup 1): it hard-cuts in on its frame
+      // (local 30, with the cut to GTA 1), flickers like a neon tube catching for 10f (kit seeded pattern, one hard step
+      // per frame), settles in 4f (power2.out) to the steady soft glow.
+      T.glowFlicker(tl, '#b02-lk-1 .rc-lk__row--key .rc-lw', L(30));
 
       // ---- X6 OUT (local 6-14): world 'fill' -> 100% about the screen, log-space ease out, motion blur on media
       X.zoomFit('#b02-screen', { corners: SCREENQ }, { res: RES });

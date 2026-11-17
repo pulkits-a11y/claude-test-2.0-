@@ -1,5 +1,11 @@
 # B5 The cop game - `b05-copgame` (v03; timing v02: beat 83f = 2.767 s; composition 95f with 6f handles)
 
+## v04 (kit refresh only)
+Kit refreshed to v04 (`python3 tools/new_beat.py B5 --refresh`); no element of this beat uses the new scanline surfaces:
+sample frames are pixel-identical to the v03 stills (mean difference 0.000). `check`: 0 errors. Everything below is current.
+
+---
+
 ## v03 (REVISION_v03.md; client notes 11, 13, 16, 17) - what changed
 Only what the notes ask; everything else is v02: the same L11 split (same footage windows / crops / positions; B11 copies
 this front framing), the same M2 arrow (seed 7, same geometry, "you" on 20) and X9 wash (33-36), no SFX, 95f.

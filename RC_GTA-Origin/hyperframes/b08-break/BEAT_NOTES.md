@@ -1,4 +1,12 @@
-# B8 The break - `b08-break` (v03; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+# B8 The break - `b08-break` (v04 kit; v03 content; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
+
+## v04 (kit refresh only)
+`python3 tools/new_beat.py B8 --refresh` (kit v04): the full-frame black screen behind T10 "breaks." (`.rc-ink.rc-full`,
+local 47-71) now carries the kit's static scanlines (REVISION_v04 note 7: scanlines only inside the dark text cards; 9 px
+period, measured 8-10 / 255 on the black). Nothing else changed; the X4 still (frame 39, before the black) is unaffected.
+Stills: `review/v04/` (pre-tear, first black, clean T10, last hold frame). `check`: 0 errors.
+
+---
 
 ## v03 (REVISION_v03.md; client notes 3, 11, 12, 13, 16, 17) - what changed
 Only what the notes ask; everything else is v02 (b07's article shot E continued with the same framing and the same eased

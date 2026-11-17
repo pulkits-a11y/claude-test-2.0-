@@ -1,5 +1,11 @@
 # B7 Shut it down - `b07-shutdown` (v03; v02 redesign; beat 90f = 3.000 s; composition 102f with 6f handles)
 
+## v04 (kit refresh only)
+Kit refreshed to v04 (`python3 tools/new_beat.py B7 --refresh`); no element of this beat uses the new scanline surfaces:
+sample frames are pixel-identical to the v03 stills (mean difference 0.000). `check`: 0 errors. Everything below is current.
+
+---
+
 ## v03 (REVISION_v03.md; client notes 3, 11, 12, 13, 16, 17) - what changed
 Only what the notes ask; everything else is v02 (the same five shots and cuts, the article headline / sentence framings,
 the spotlight, both highlighter swipes landing on "shut" and "down.", the E push shared with b08-break, 102f).

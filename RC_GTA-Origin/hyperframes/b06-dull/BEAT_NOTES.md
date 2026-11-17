@@ -1,4 +1,38 @@
-# B6 It's dull - `b06-dull` (v03; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+# B6 It's dull - `b06-dull` (v04; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
+
+## v04 (REVISION_v04.md comments 8, 9) - the Gary Penn quote redesigned like a documentary interview
+Comments 8/9 (0:26-0:27): "this looks bad." / "take some inspirations from scenes of diff production houses". Only the card
+part changed (local 64-168, from the cut on "One"); the split screen, its push, the B&W drain + slow-down, "But there's a
+problem:" / "it's [dull.]*" and `cues.json` are exactly v03.
+* **Gone**: the dark card ground, the background-removed cut-out (`assets/footage/R6.1_cutout.webm` is no longer referenced;
+  `tools/make_cutout.sh` is obsolete), the T8 quote card and its `wordPops`.
+* **Footage, full frame**: R6.1 (Gary Penn, BAFTA Games Mini Masterclass, talking to camera) @ 0:30.0-0:34.6, the same clean
+  moment as before (from 35.2 s a lamp flares behind him). `footage.json` crop `1024:576:256:0` = a 16:9 window x 256-1280 of
+  the 1280 x 720 source: the burned-in BAFTA mask logo (x 66-135, y 38-132) is out, him on the left third, the empty cinema
+  right. Re-synced (`python3 tools/sync_footage.py hyperframes/b06-dull`; the R5.1 / R5.2 clips came out byte-identical).
+  `#b06-penn` (z2) inside the untimed camera wrapper `#b06-cam`.
+* **Grade (dark aesthetic)**: media treatment on `#b06-penn` (CLI): adjust exposure -0.8, contrast 0.12, highlights -0.35,
+  saturation -0.4 (the floral shirt calmed down, face still readable). No grain / vignette (the assembly's finish).
+* **Camera**: one slow push 100 -> 104% (easeInOutSine) on `#b06-cam` from the cut (64) to the end (168). Nothing else moves.
+* **Lower third** (`#b06-l3`, z20, local 64-168, simply there, no animation): "Gary Penn" (Coolvetica Italic 52 px) over
+  "DMA DESIGN · GAMASUTRA, 2011" (Coolvetica 28 px caps, +15% tracking, 75%), white with the kit's glow, at x 96 (title-safe),
+  last baseline about y 970; texts exactly as before. Behind it a soft dark plate `#b06-l3plate` (radial gradient from the
+  bottom-left corner, 72% -> 0, part of the lower-third graphic, not a footage filter) so the role line reads on the bright
+  shirt.
+* **Quote**: a v03 lockup (kit `lockups` + `lockupsWire`), spec `[“awful…]* too* sim-y.”*` (words.json from index 11): the
+  keyword "“awful…" big Coolvetica Italic, "too sim-y.”" small below-right; all three words pop + blur in on their spoken
+  frames (“awful… 112, too 129, sim-y.” 135), held to the end (168). It sits centred in the empty cinema, 100 px right of the
+  frame centre (`left: 100px` on the clip), because the handheld shot drifts and his face reaches x ~730 around 120-135: at
+  x 960 the opening quote mark touched his cheek.
+
+Review stills: `review/v04/` (`sheet_v04.jpg`; the unchanged drain frames, the cut on "One", the hold, each quote word's pop
+frame, the end). Kit refreshed to v04 (no B6 element uses the new scanline surfaces). No render. `check`: 0 errors;
+warnings = nested markup (lockups, lower third), `line_unread` on voice-timed lines (the quote holds 1.86 s, the plan's hold),
+v03's single-sample contrast note on "it's" over the split screen.
+
+(The v03 section below still applies to the split-screen part, local 0-64.)
+
+---
 
 ## v03 (REVISION_v03.md; client notes 9, 11, 12, 13, 16, 17) - what changed
 Only what the notes ask; everything else is v02 (split screen continuing B5 with continuous source time, the B&W drain +
