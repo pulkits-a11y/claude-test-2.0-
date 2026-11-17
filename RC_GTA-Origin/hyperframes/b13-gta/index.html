@@ -35,8 +35,9 @@
          80-155 86-161  R9.4 GTA 1 gameplay full frame (darkened), push 100 -> 104% eased; "it ships with | a new name:"
                         (tier A Coolvetica 57 px, every word on its frame)
          118-124        music dropout (cues); 124 "Grand": the 1997 logo (R13.2 spine cut-out) — kit logoSlam, the same
-                        function as B1 / B17 (160 -> 94 -> 100% over 6 f, impact beat 128: 1 f white flash, flash-star,
-                        12 px shake 8 f on the footage; impact_boom + sub_drop 128); holds through "Theft Auto." (voice ends 155)
+                        call as B1 / B17 (160 -> 94 -> 100% over 6 f, impact beat 128: 1 f white flash, flash-star,
+                        12 px shake 8 f on the footage; impact_boom + sub_drop on the slam frame 124 after a 6-f music
+                        dropout 118-124, as B1 / B17); holds through "Theft Auto." (voice ends 155)
          155-166 161-178 the 0.386 s tail + tail handle: the GTA 1 PC big-box front (R13.2 @ 16.65-17.45) as the kit card
                         insert (white 15 px border, 3 deg, shadow, over the same clip blurred), push 100 -> 104%, entering on
                         the end of the reverse cymbal (155) -->
@@ -74,7 +75,8 @@
       <div data-hf-id="hf-a37f" id="b13-title-1" class="clip rc-lk" data-rc-v="5" data-start="2.8666" data-duration="1.4667" data-track-index="3" style="--rc-lk-c: 62.19px; z-index: 20"><div data-hf-id="hf-zsef" class="rc-lk__box"><div data-hf-id="hf-ymht" class="rc-lk__row rc-lk__row--solo" style="font-size: 57px; line-height: 57px; height: 57px"><span data-hf-id="hf-5g17" class="rc-lw" data-rc-f="86">it</span> <span data-hf-id="hf-mnq3" class="rc-lw" data-rc-f="88">ships</span> <span data-hf-id="hf-uvpw" class="rc-lw" data-rc-f="97">with</span></div><div data-hf-id="hf-tcku" class="rc-lk__row rc-lk__row--solo" style="font-size: 57px; line-height: 57px; height: 57px; margin-top: 6.84px"><span data-hf-id="hf-l0s4" class="rc-lw" data-rc-f="104">a</span> <span data-hf-id="hf-773s" class="rc-lw" data-rc-f="107">new</span> <span data-hf-id="hf-xu5e" class="rc-lw" data-rc-f="111">name:</span></div></div></div>
       <!-- v04 #17 / v05: the ORIGINAL 1997 GRAND THEFT AUTO logo (cut out of R13.2 @ 52.1 s, the box spine; never redrawn),
            960 px wide, centred; v05: kit logoSlam on "Grand" (beat 124): 160 -> 94% (power2.in, 4 f) -> 100% (2 f), impact on
-           beat 128 = 1-frame white flash + flash-star behind + 12 px camera shake on the footage for 8 f (doc 53.5); holds through
+           beat 128 = 1-frame white flash + flash-star behind + 12 px camera shake on the footage for 8 f (doc 53.5); impact_boom +
+           sub_drop on the slam frame 124 (as B1 / B17); holds through
            "Theft Auto." to the box art (beat 155). B1 and B17 call the same function. -->
       <div data-hf-id="hf-c6ek" id="b13-star" class="clip fx-host" data-start="4.3333" data-duration="1.0334" data-track-index="5" style="z-index: 19; --x: 960px; --y: 540px"></div>
       <div data-hf-id="hf-v1v8" id="b13-logo" class="clip" data-start="4.3333" data-duration="1.0333" data-track-index="3" style="z-index: 20">
@@ -126,10 +128,12 @@
       // ---- the full-frame R9.4 gameplay: the held-shot push 100 -> 104% from the cut to the box art, eased (easeInOutSine)
       C.push(tl, '#b13-cam', f(CUT_L6), { until: f(CUT_BOX), from: 1.0, to: 1.04 });
 
-      // ---- v05: the logo slam on "Grand" (local 130 = beat 124), identical function and timing to B1 / B17 (kit logoSlam);
-      //      B13's doc values: from 160%, 12 px shake for 8 f
-      FX.logoSlam(tl, '#b13-logo-slam', f(W.Grand), { from: 160, overshoot: 94, frames: 6, flash: '#b13-flash', star: '#b13-star',
-        shakeTarget: '#b13-cam', shakePx: 12, shakeF: 8 });
+      // ---- v05: the logo slam on "Grand" (local 130 = beat 124; impact local 134), the same kit call as B1 / B17:
+      //      B1's exact call (lane 1), with the doc's B13 values from: 160, shakePx 12, shakeF 8. B1 adds a 1.2% overscan on
+      //      its camera while it shakes; here the camera's own push is already at ~102.9% on the hit (local 134-142: >= 27 px
+      //      each side, >= 15 px top / bottom, > the 12 px shake), so no frame edge shows and no extra scale is set (a set on
+      //      the pushed wrapper would fight the push tween).
+      FX.logoSlam(tl, '#b13-logo-slam', f(W.Grand), { from: 160, flash: '#b13-flash', star: '#b13-star', shakeTarget: '#b13-cam', shakePx: 12, shakeF: 8 });
 
       // ---- the box-art card insert (beat 155 -> the tail-handle end): push 100 -> 104%, eased
       C.push(tl, '#b13-card .fx-card__cam', f(CUT_BOX), { until: f(178), from: 1.0, to: 1.04 });

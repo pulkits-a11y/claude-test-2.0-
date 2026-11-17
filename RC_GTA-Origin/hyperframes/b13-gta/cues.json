@@ -19,11 +19,11 @@
    "name": "paper_rip"
   },
   {
-   "f": 128,
+   "f": 124,
    "name": "impact_boom"
   },
   {
-   "f": 128,
+   "f": 124,
    "name": "sub_drop"
   },
   {
@@ -33,10 +33,10 @@
  ],
  "dropouts": [
   {
-   "f": 128,
+   "f": 124,
    "frames": 6
   }
  ],
  "archival": [],
- "note": "v05 phase 2 (beat frames, f0 = 'Until'; B13 = 166 f; local = beat + 6). word_pops / key_words = T.lockupCues of the three kit lockups: Until 1, finally, 9 (key, Coolvetica Italic 190), in 27, it 80, ships 82, with 91, a 98, new 101, name: 105 (tier A 57 px). Calendar (kit calendarTear on 'in' 27): the page lifts 27-29 and rips 29-39 -> paper_rip 29; NOV 1997 glow-flickers from 'November' 30 (no SFX of its own). Logo slam (kit logoSlam on 'Grand' 124, from 160): the logo appears at 124 and hits at 128 (= slam start + 4: 1-frame white flash, flash-star, 12 px shake 8 f) -> impact_boom + sub_drop 128, music/ambience dropout 122-128 (6 f ending on the hit; the logo rushes in during the silence). Same offsets as B1 (slam 63 -> hit 67) and B17 (slam 144 -> hit 148). reverse_cymbal ENDS at 155 = the first frame of the box-art card insert (the 0.386 s tail after 'Auto.'). X3 flash at 80 stays silent. No archival full-frame footage (the R3.7 office loop is 25%, blurred, behind the dark card)."
+ "note": "v05 phase 2 (beat frames, f0 = 'Until'; B13 = 166 f; local = beat + 6). word_pops / key_words = T.lockupCues of the three kit lockups: Until 1, finally, 9 (key, Coolvetica Italic 190), in 27, it 80, ships 82, with 91, a 98, new 101, name: 105 (tier A 57 px). Calendar (kit calendarTear on 'in' 27): the page lifts 27-29 and rips 29-39 -> paper_rip 29; NOV 1997 glow-flickers from 'November' 30 (no SFX of its own). Logo slam (kit logoSlam on 'Grand' 124, from 160; B1's exact call): impact_boom + sub_drop on the slam frame 124 (the logo appears at 160%; it hits on 128 = 1-frame white flash, flash-star, 12 px shake 8 f), after a 6-f music/ambience dropout 118-124 (doc: '6-f dropout before the logo'). Same convention as B1 (slam 63) and B17. reverse_cymbal ENDS at 155 = the first frame of the box-art card insert (the 0.386 s tail after 'Auto.'). X3 flash at 80 stays silent. No archival full-frame footage (the R3.7 office loop is 25%, blurred, behind the dark card; it continues b12-thirty's)."
 }

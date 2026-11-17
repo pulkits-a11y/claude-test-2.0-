@@ -22,6 +22,11 @@ Design, 90, the 115, studio 119, behind 128, Lemmings, 137, starts 155, a 165, n
 | **Archival look** (`RCK.fx.archivalGrading`: ~2 px aberration + light VHS wobble) on every HF-embedded 1990s / old picture: both office angles + the developer cut-out, the Dundee plate + hill cut-out, door plate, staffer, map, the card's clip (the v04 archival colour stays: temperature +0.06, saturation -0.2, shadows +0.04). Depth edges re-checked at 200 % with it (`review/v05/zoom/`): no halo, no visible misalignment | G7; brief |
 | Captions (U2, kit v05 lockups via `prep/gen_captions.cjs`): words appear on their frame, white, setup 54 / key 190; "Dundee," and "Lemmings," pop + blur in (the doc pop); "1995" appears + glow flicker. `cues.json` word_pops / key_words = `T.lockupCues` (+ the logo pop) | U2; G10 |
 
+**B2 -> B3 glitch (coordinator, after acceptance)**: B2's full-frame pink pixel-glitch cut (B2 local 170-174) continues over B3's
+first two beat frames: `FX.glitch(tl, '#b03-gl', L(1), { mode: 'cut', frames: 7, split: 9 })` (host z 50), so its frames 1-5
+sit in the unused head handle and the edit shows local 6 dense + 9 px RGB split, local 7 sparse, clean from 8
+(`review/v05/glitch/`). check 0 errors.
+
 **Frames (local)**: 0-14 office angle 1, "It's" 7 | 14 cut, "1995" + glow flicker | 37 "in" | 41 cut to Dundee, "Dundee,"
 pops, push + location tag start | 53 tag landed | 56 "Scotland." | 83 cut, door plate, logo 140% | 86 95% | 88 100% |
 90 staffer | 115 map, "the" | 128 box | 137 Lemmings intro, "Lemmings," pops, circle draws (to 146) and tracks |
