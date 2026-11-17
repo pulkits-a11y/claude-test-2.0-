@@ -3,105 +3,129 @@
  "composition": "b03-dundee",
  "fps": 30,
  "handle_frames": 6,
- "beat_frames": 146,
- "composition_frames": 158,
- "edit_start_s": 10.0667,
- "voiceover": "Dundee, Scotland. DMA Design, the studio behind Lemmings, starts a new game.",
+ "beat_frames": 183,
+ "composition_frames": 195,
+ "edit_start_s": 10.1,
+ "voiceover": "It's 1995 in Dundee, Scotland. DMA Design, the studio behind Lemmings, starts a new game.",
  "words": [
   {
+   "text": "It's",
+   "comp_t": 0.218,
+   "comp_end_t": 0.46,
+   "beat_t": 0.018,
+   "start_frame_local": 7,
+   "punct": ""
+  },
+  {
+   "text": "1995",
+   "comp_t": 0.46,
+   "comp_end_t": 1.224,
+   "beat_t": 0.26,
+   "start_frame_local": 14,
+   "punct": ""
+  },
+  {
+   "text": "in",
+   "comp_t": 1.224,
+   "comp_end_t": 1.352,
+   "beat_t": 1.024,
+   "start_frame_local": 37,
+   "punct": ""
+  },
+  {
    "text": "Dundee,",
-   "comp_t": 0.205,
-   "comp_end_t": 0.628,
-   "beat_t": 0.005,
-   "start_frame_local": 6,
+   "comp_t": 1.352,
+   "comp_end_t": 1.861,
+   "beat_t": 1.152,
+   "start_frame_local": 41,
    "punct": ","
   },
   {
    "text": "Scotland.",
-   "comp_t": 0.628,
-   "comp_end_t": 1.291,
-   "beat_t": 0.428,
-   "start_frame_local": 19,
+   "comp_t": 1.861,
+   "comp_end_t": 2.524,
+   "beat_t": 1.661,
+   "start_frame_local": 56,
    "punct": "."
   },
   {
    "text": "DMA",
-   "comp_t": 1.54,
-   "comp_end_t": 1.771,
-   "beat_t": 1.34,
-   "start_frame_local": 46,
+   "comp_t": 2.773,
+   "comp_end_t": 3.004,
+   "beat_t": 2.573,
+   "start_frame_local": 83,
    "punct": ""
   },
   {
    "text": "Design,",
-   "comp_t": 1.771,
-   "comp_end_t": 2.489,
-   "beat_t": 1.571,
-   "start_frame_local": 53,
+   "comp_t": 3.004,
+   "comp_end_t": 3.722,
+   "beat_t": 2.804,
+   "start_frame_local": 90,
    "punct": ","
   },
   {
    "text": "the",
-   "comp_t": 2.597,
-   "comp_end_t": 2.744,
-   "beat_t": 2.397,
-   "start_frame_local": 78,
+   "comp_t": 3.83,
+   "comp_end_t": 3.977,
+   "beat_t": 3.63,
+   "start_frame_local": 115,
    "punct": ""
   },
   {
    "text": "studio",
-   "comp_t": 2.744,
-   "comp_end_t": 3.039,
-   "beat_t": 2.544,
-   "start_frame_local": 82,
+   "comp_t": 3.977,
+   "comp_end_t": 4.272,
+   "beat_t": 3.777,
+   "start_frame_local": 119,
    "punct": ""
   },
   {
    "text": "behind",
-   "comp_t": 3.039,
-   "comp_end_t": 3.334,
-   "beat_t": 2.839,
-   "start_frame_local": 91,
-   "punct": ""
-  },
-  {
-   "text": "Lemmings,",
-   "comp_t": 3.334,
-   "comp_end_t": 3.846,
-   "beat_t": 3.134,
-   "start_frame_local": 100,
-   "punct": ","
-  },
-  {
-   "text": "starts",
-   "comp_t": 3.935,
-   "comp_end_t": 4.259,
-   "beat_t": 3.735,
-   "start_frame_local": 118,
-   "punct": ""
-  },
-  {
-   "text": "a",
-   "comp_t": 4.259,
-   "comp_end_t": 4.304,
-   "beat_t": 4.059,
+   "comp_t": 4.272,
+   "comp_end_t": 4.567,
+   "beat_t": 4.072,
    "start_frame_local": 128,
    "punct": ""
   },
   {
+   "text": "Lemmings,",
+   "comp_t": 4.567,
+   "comp_end_t": 5.079,
+   "beat_t": 4.367,
+   "start_frame_local": 137,
+   "punct": ","
+  },
+  {
+   "text": "starts",
+   "comp_t": 5.168,
+   "comp_end_t": 5.492,
+   "beat_t": 4.968,
+   "start_frame_local": 155,
+   "punct": ""
+  },
+  {
+   "text": "a",
+   "comp_t": 5.492,
+   "comp_end_t": 5.537,
+   "beat_t": 5.292,
+   "start_frame_local": 165,
+   "punct": ""
+  },
+  {
    "text": "new",
-   "comp_t": 4.357,
-   "comp_end_t": 4.463,
-   "beat_t": 4.157,
-   "start_frame_local": 131,
+   "comp_t": 5.59,
+   "comp_end_t": 5.696,
+   "beat_t": 5.39,
+   "start_frame_local": 168,
    "punct": ""
   },
   {
    "text": "game.",
-   "comp_t": 4.493,
-   "comp_end_t": 4.832,
-   "beat_t": 4.293,
-   "start_frame_local": 135,
+   "comp_t": 5.726,
+   "comp_end_t": 6.065,
+   "beat_t": 5.526,
+   "start_frame_local": 172,
    "punct": "."
   }
  ]

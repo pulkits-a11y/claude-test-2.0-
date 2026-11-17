@@ -36,8 +36,14 @@ filmstrips, no 2-pass: the picture project and the audio project are exported se
 CRF pass) and muxed with the same mix -> 07_Exports/RC_GTA-Origin_<version>_preview.mp4 (+ checks/preview_report.json).
 RC_GTA-Origin.tsrct is left as it is (the last full build).
 
-Usage:  python3 tools/build_tesseract.py [--version v03] [--force-audio] [--skip-export] [--master-crf 14]
-        python3 tools/build_tesseract.py --version v03 --preview [--preview-resolution 720p|1080p]
+v05 (REVISION_v05.md): the voiceover comes from the beat map's `vo_file` (01_VO/VO_processed_v05.wav, doc cuts A/B),
+18 beats (B18 = the CTA end card, 05_GFX/renders/b18-cta.mov), edit 2288 f; the audio half reads the cues.json v05
+schema and the 03_SFX/v05 library (both are audio inputs below); the picture finish has the v05 grain (size 1.2, 3.9%),
+no global chromatic aberration, a light vignette on the CTA card that returns to full over its last 6 frames, and
+CA + VHS wobble on Tesseract shots inside cues.json `archival` ranges.
+
+Usage:  python3 tools/build_tesseract.py [--version v05] [--force-audio] [--skip-export] [--master-crf 14]
+        python3 tools/build_tesseract.py --version v05 --preview [--preview-resolution 720p|1080p]
 """
 from __future__ import annotations
 
@@ -103,12 +109,24 @@ def rel(p) -> str:
 # --------------------------------------------------------------------------------------------
 # 1. audio freshness
 # --------------------------------------------------------------------------------------------
+def vo_inputs():
+    """v05: the voiceover is the beat map's `vo_file` (+ VO_words_<tag>.json, VO_processing_<tag>.json beside it),
+    the same rule as tools/build_tesseract_audio.py."""
+    try:
+        bm = json.loads((ROOT / "timing/beat_map.json").read_text())
+    except (OSError, ValueError):
+        bm = {}
+    vo = ROOT / (bm.get("vo_file") or "01_VO/VO_processed_115.wav")
+    tag = vo.stem[len("VO_processed_"):] if vo.stem.startswith("VO_processed_") else vo.stem
+    words = ROOT / bm["words_file"] if bm.get("words_file") else vo.with_name("VO_words_%s.json" % tag)
+    return [vo, words, vo.with_name("VO_processing_%s.json" % tag)]
+
+
 def audio_inputs():
     pats = ["hyperframes/*/cues.json", "timing/*.json", "02_Music/music_plan.json", "03_SFX/sfx_plan.json",
-            "03_SFX/sfx_analysis.json", "01_VO/VO_processed_115.wav", "01_VO/VO_words_115.json",
-            "01_VO/VO_processing_115.json", "STORYBOARD.md", ".tesseract-work/cues_v01_snapshot.json",
+            "03_SFX/sfx_analysis.json", "03_SFX/v05/*", "STORYBOARD.md", ".tesseract-work/cues_v01_snapshot.json",
             "tools/build_tesseract_audio.py"]
-    out = []
+    out = [p for p in vo_inputs() if p.exists()]
     for p in pats:
         out += [Path(x) for x in glob.glob(str(ROOT / p))]
     return out
@@ -432,7 +450,7 @@ def preview(args, report: dict, edit_end_s: float):
 # --------------------------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--version", default="v03", help="version tag in the export names (default v03)")
+    ap.add_argument("--version", default="v05", help="version tag in the export names (default v05)")
     ap.add_argument("--preview", action="store_true",
                     help="fast client preview: renders as proxies, no merge, no filmstrips, no 2-pass, same mix -> "
                          "07_Exports/RC_GTA-Origin_<version>_preview.mp4")

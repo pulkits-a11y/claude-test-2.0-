@@ -1,5 +1,23 @@
 {
  "events": {
   "fun": 35
- }
+ },
+ "word_pops": [
+  1,
+  5,
+  28
+ ],
+ "key_words": [
+  35
+ ],
+ "sfx": [
+  {
+   "f": 35,
+   "name": "impact_boom",
+   "note": "'fun.' hero lands on the explosion (with the 1-frame white flash + flash-star, kit v05)"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (REVISION_v05 S; beat frames, f0 = local 6). word_pops: And / suddenly, / it's; key_words: the hero 'fun.' (whoosh-in + thump). events.fun = 35 keeps the legacy S09 sub drop on the same frame (doc: the music would return at full level here; the bed is off). Head handle = B9's held lockup, no new words."
 }

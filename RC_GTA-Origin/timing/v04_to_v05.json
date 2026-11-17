@@ -2,8 +2,8 @@
  "note": "map a v04 preview timestamp (the doc's timestamps) to v05: subtract shift_s; spans in 'removed' are gone",
  "removed": [
   [
-   10.0597,
-   11.993
+   10.03,
+   10.696666666666665
   ],
   [
    54.7,
@@ -13,27 +13,27 @@
  "segments": [
   {
    "v04_from": 0.0,
-   "v04_to": 10.0597,
+   "v04_to": 10.03,
    "shift_s": 0.0,
    "shift_f": 0
   },
   {
-   "v04_from": 11.993,
+   "v04_from": 10.696666666666665,
    "v04_to": 54.7,
-   "shift_s": 1.9333,
-   "shift_f": 58
+   "shift_s": 0.6667,
+   "shift_f": 20
   },
   {
    "v04_from": 56.0,
    "v04_to": 77.6,
-   "shift_s": 3.2333,
-   "shift_f": 97
+   "shift_s": 1.9667,
+   "shift_f": 59
   }
  ],
  "v04_logo_tail_end_s": 77.6,
- "v05_story_end_s": 73.7667,
+ "v05_story_end_s": 75.0333,
  "v05_cta": [
-  73.7667,
-  76.2667
+  75.0333,
+  77.5333
  ]
 }

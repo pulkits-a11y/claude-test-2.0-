@@ -5,38 +5,38 @@
  "handle_frames": 6,
  "beat_frames": 54,
  "composition_frames": 66,
- "edit_start_s": 37.9333,
+ "edit_start_s": 39.2,
  "voiceover": "And suddenly, it's fun.",
  "words": [
   {
    "text": "And",
-   "comp_t": 0.219,
-   "comp_end_t": 0.345,
-   "beat_t": 0.019,
+   "comp_t": 0.218,
+   "comp_end_t": 0.344,
+   "beat_t": 0.018,
    "start_frame_local": 7,
    "punct": ""
   },
   {
    "text": "suddenly,",
-   "comp_t": 0.358,
-   "comp_end_t": 0.9,
-   "beat_t": 0.158,
+   "comp_t": 0.357,
+   "comp_end_t": 0.899,
+   "beat_t": 0.157,
    "start_frame_local": 11,
    "punct": ","
   },
   {
    "text": "it's",
-   "comp_t": 1.135,
-   "comp_end_t": 1.374,
-   "beat_t": 0.935,
+   "comp_t": 1.134,
+   "comp_end_t": 1.373,
+   "beat_t": 0.934,
    "start_frame_local": 34,
    "punct": ""
   },
   {
    "text": "fun.",
-   "comp_t": 1.374,
-   "comp_end_t": 1.764,
-   "beat_t": 1.174,
+   "comp_t": 1.373,
+   "comp_end_t": 1.763,
+   "beat_t": 1.173,
    "start_frame_local": 41,
    "punct": "."
   }

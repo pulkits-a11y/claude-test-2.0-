@@ -1252,9 +1252,10 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   // steps (flare / on / half / off) for ~10 frames, then settles (eased) to a steady soft glow that stays. It drives one
   // CSS `filter` on the element: brightness() (dims the text AND its text-shadow) + two white drop-shadows (the glow;
   // drawn after any clipping inside the element, so it also works on the T3 year whose digits sit in masks).
+  // v05: the dim levels are opacity (v04 used brightness(), which turned a light word dark on bright footage).
   var GF = {
-    off:    { b: 0.18, r1: 2, a1: 0, r2: 8, a2: 0 },
-    half:   { b: 0.6, r1: 3, a1: 0.3, r2: 14, a2: 0.18 },
+    off:    { b: 0.15, r1: 2, a1: 0, r2: 8, a2: 0 },
+    half:   { b: 0.55, r1: 3, a1: 0.3, r2: 14, a2: 0.18 },
     on:     { b: 1, r1: 4, a1: 0.65, r2: 20, a2: 0.4 },
     flare:  { b: 1, r1: 6, a1: 0.95, r2: 34, a2: 0.7 },
     steady: { b: 1, r1: 2, a1: 0.4, r2: 10, a2: 0.22 }   // = --glow-filter (base.css): the look after the flicker
@@ -1262,8 +1263,9 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
   var GF_CODE = { F: 'flare', o: 'on', h: 'half', '-': 'off' };
   function gfFilter(st, c) {
     var rgba = function (a) { return 'rgba(' + c + ', ' + Math.round(a * 1000) / 1000 + ')'; };
-    return 'brightness(' + st.b + ') drop-shadow(0px 0px ' + st.r1 + 'px ' + rgba(st.a1) + ') drop-shadow(0px 0px ' + st.r2 + 'px ' + rgba(st.a2) + ')';
+    return 'drop-shadow(0px 0px ' + st.r1 + 'px ' + rgba(st.a1) + ') drop-shadow(0px 0px ' + st.r2 + 'px ' + rgba(st.a2) + ')';
   }
+  function gfState(st, c) { return { filter: gfFilter(st, c), opacity: st.b }; }
   // The seeded flicker pattern, one letter per frame: F flare, o on, h half, - off. Frame 0 is visible (h or F, the word
   // appears on its own frame), the last is o, at least 2 offs, never 2 offs in a row, offs thin out towards the end.
   function glowPattern(n, seed) {
@@ -1299,14 +1301,14 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
       var pat = opts.pattern || glowPattern(n, opts.seed != null ? opts.seed + ei : seedOf((el.id || '') + el.textContent + ei));
       var states = Array.from(pat).map(function (ch) { var nm = GF_CODE[ch]; if (!nm) throw new Error('RCK.type.glowFlicker: pattern letters are F o h -'); return GF[nm]; });
       var before = opts.before === undefined ? 'off' : opts.before, prev = before ? GF[before] : GF.off;
-      if (before) G().set(el, { filter: gfFilter(GF[before], c) });
+      if (before) G().set(el, gfState(GF[before], c));
       states.forEach(function (st, j) {
-        hard(tl, el, { filter: gfFilter(prev, c) }, { filter: gfFilter(st, c) }, (k + j) / FPS);
+        hard(tl, el, gfState(prev, c), gfState(st, c), (k + j) / FPS);
         prev = st;
       });
       var t1 = (k + states.length) / FPS;
-      if (sF > 0) tl.fromTo(el, { filter: gfFilter(prev, c) }, { filter: gfFilter(GF.steady, c), duration: sF * F, ease: easeOf(opts.settleEase, 'power2.out'), immediateRender: false }, t1);
-      else hard(tl, el, { filter: gfFilter(prev, c) }, { filter: gfFilter(GF.steady, c) }, t1);
+      if (sF > 0) tl.fromTo(el, gfState(prev, c), Object.assign({ duration: sF * F, ease: easeOf(opts.settleEase, 'power2.out'), immediateRender: false }, gfState(GF.steady, c)), t1);
+      else hard(tl, el, gfState(prev, c), gfState(GF.steady, c), t1);
       el.__rckGlowPattern = pat;
     });
     return (k + (opts.pattern ? opts.pattern.length : n) + sF) / FPS;

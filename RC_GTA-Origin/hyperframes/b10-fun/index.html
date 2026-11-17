@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <!-- B10 b10-fun v03 (REVISION_v03: caption lockup, no v02 zooms; else as v02): beat 54f (1.800s) + 6f handle each end = 66f.
+    <!-- B10 b10-fun v05 phase 1 (REVISION_v05 lane 3: hero "fun." 450 px; B9's strip grid now pops 174/176/178 with an 8% push; flash-star + 1-frame white flash wait for kit v05): beat 54f (1.800s) + 6f handle each end = 66f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.0000s (local frames 6 .. 60).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/.
 
@@ -64,8 +64,10 @@
            11, it's 34 hard-cut in on their frames (no animation); "fun." pops + blurs in on its frame (local 41 = the X3
            flash's 100% frame = S09 + the MU5 drop; kit POP3 6f expo.out, settling under the fading flash). Under the
            flash, as v02. Holds to the beat end (local 60), hard cut (B11 opens with X1). Generated with
-           T.lockups(w, ["And suddenly, | it's [fun.]*"], { from: 0, end: 60/30 }). ===== -->
-      <div id="b10-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.7667" data-track-index="10" style="--rc-lk-c: 137.8px; z-index: 35"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="11">suddenly,</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span class="rc-lw" data-rc-f="34">it's</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="41">fun.</span></div></div></div>
+           T.lockups(w, ["And suddenly, | it's [fun.]*"], { from: 0, end: 60/30 }). v05 (doc 41.0): "fun." is a HERO
+           word, 450 px (keySize 450; doc 300 px @720); phase 2 regenerates with kit v05 (tiers, pink -> white entry) and
+           adds the flash-star burst + the 1-frame white flash on the explosion (kit v05), replacing the X3 flash below. ===== -->
+      <div id="b10-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.7667" data-track-index="10" style="--rc-lk-c: 225.16px; z-index: 35"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span> <span class="rc-lw" data-rc-f="11">suddenly,</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span class="rc-lw" data-rc-f="34">it's</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 450px; line-height: 450px; height: 450px; margin-top: -78.73px"><span class="rc-lw rc-lw--pop" data-rc-f="41">fun.</span></div></div></div>
 
       <!-- ===== X3 white flash centred on "fun" (kit RCK.transitions.flash, C = local 41) ===== -->
       <div data-hf-id="hf-a3g5" id="b10-x3" class="clip rc-x3" data-start="1.2666" data-duration="0.3000" data-track-index="11" style="z-index: 50"></div>
@@ -85,15 +87,14 @@
       const END = 66;                     // composition end
 
       // ---------------- B9's strips, continued ----------------
-      // b09-throughyou pushes each strip's footage 115% -> 115% x 1.04 (v03 = v01's held-shot push, eased; REVISION_v03
-      // note 13 removed v02's x 1.06) along ONE easeInOutSine curve from its punch
-      // landing (b09 local 130 / 153 / 178) to the "fun" cut (b09 local 243 = this local 41). This composition plays the
-      // rest of that curve from its local 0 (= b09 local 202): same function of the edit frame, so B9's last frame and
-      // B10's first frame match.
-      const B9 = 202, FUN_B9 = 243, LAND_B9 = [130, 153, 178];
+      // b09-throughyou pushes each strip's footage 115% -> 115% x 1.08 (v05: the grid shot runs b09 local 174 -> this 41,
+      // 2.3 s, so the doc's pacing rule 3 wants >= 8%) along ONE easeInOutSine curve from its punch landing (b09 local
+      // 178 / 180 / 182) to the "fun" cut (b09 local 243 = this local 41). This composition plays the rest of that curve
+      // from its local 0 (= b09 local 202): same function of the edit frame, so B9's last frame and B10's first frame match.
+      const B9 = 202, FUN_B9 = 243, LAND_B9 = [178, 180, 182];   // v05: b09 strips pop 174 / 176 / 178 (+4 f punch)
       const IO = RCK.ease.fn('easeInOutSine');
       const part = (u0, u1) => (p) => (IO(u0 + (u1 - u0) * p) - IO(u0)) / (IO(u1) - IO(u0));
-      const PUSH = 0.04;                  // = b09-throughyou's PUSH (v01 held-shot push x 1.04)
+      const PUSH = 0.08;                  // = b09-throughyou's PUSH (v05: the grid holds 2.3 s across B9/B10 -> >= 8%)
       const pushAt = (land, x) => 1.15 * (1 + PUSH * IO((x - land) / (FUN_B9 - land)));
       LAND_B9.forEach((land, i) => {
         const m = '#b10-s' + (i + 1) + ' .rc-l3__media', u0 = (B9 - land) / (FUN_B9 - land);

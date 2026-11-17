@@ -4,10 +4,11 @@
 Cuts are whole frames, so every beat that is not cut keeps its local timing exactly (its words.json, cues.json
 and composition frames stay valid; only its place on the edit timeline moves).
 
-  Cut A  58 f (1.9333 s)  "Here's how. It's 1995 in" removed: "...saved it." goes straight to "Dundee, Scotland."
-                          (doc beat 9 'Recommended'). Removed span [10.0597, 11.9930) of the v04 VO: it starts in the
-                          room tone after "it." (9.915-10.085 s) and ends on the closure of the D in "Dundee" (its burst
-                          is at 12.005 s), so no part of "in" survives. 4 ms equal-power crossfade.
+  Cut A  20 f (0.6667 s)  "Here's how." removed (your v02 note "Remove the Here's How"; the doc's cut of the whole
+                          "It's 1995" line is NOT applied: you asked us not to follow doc items that reverse your notes,
+                          and v03/v04 notes kept and fixed the "It's 1995" card). Removed span [10.030, 10.6967) of the
+                          v04 VO: room tone after "it." (9.915-10.085 s) to room tone after "how." (10.650-10.785 s);
+                          the pause "it." -> "It's" is now 0.20 s. 4 ms equal-power crossfade. "It's" onset 10.785 s.
   Cut B  39 f (1.3000 s)  the silence after "Grand Theft Auto." goes from 1.686 s to 0.386 s (doc: 0.4 s maximum).
                           Removed span [54.70, 56.00) of the v04 VO: inserted room tone only. 10 ms crossfade.
   Tail   27 f (0.9 s)     the GTA VI logo after "now?" holds 0.9 s (doc 75.5-77.0), then a hard cut to
@@ -27,15 +28,15 @@ import numpy as np, soundfile as sf
 
 ROOT = "/home/user/claude-test-2.0-/RC_GTA-Origin"
 FPS, HANDLE_F = 30, 6
-CUT_A_END = 11.993            # D closure in "Dundee" (v04 VO seconds)
-CUT_A_F = 58
-CUT_A_START = CUT_A_END - CUT_A_F / FPS          # 10.0597, room tone after "it."
-DUNDEE_BURST = 12.005         # audible onset of "Dundee," (v04 VO seconds)
+CUT_A_START = 10.030          # room tone after "it." (v04 VO seconds)
+CUT_A_F = 20
+CUT_A_END = CUT_A_START + CUT_A_F / FPS          # 10.6967, room tone after "how."
+ITS_ONSET = 10.785            # audible onset of "It's" (v04 VO seconds; the aligner said 10.800)
 CUT_B_START, CUT_B_F = 54.70, 39
 CUT_B_END = CUT_B_START + CUT_B_F / FPS          # 56.00
 LOGO_TAIL_F = 27
 CTA_F = 75
-DROP_B3 = ["Here's", "how.", "It's", "1995", "in"]
+DROP_B3 = ["Here's", "how."]
 
 BEAT_NAMES = {"B1": "hook", "B2": "bug", "B3": "dundee", "B4": "racenchase", "B5": "copgame", "B6": "dull", "B7": "shutdown",
               "B8": "break", "B9": "throughyou", "B10": "fun", "B11": "flip", "B12": "thirty", "B13": "gta", "B14": "since",
@@ -80,8 +81,8 @@ def main():
         if w["beat"] == "B3" and w["text"] in DROP_B3 and w["start"] < CUT_A_END:
             continue
         nw = dict(w)
-        if w["beat"] == "B3" and w["text"] == "Dundee,":
-            nw["start"] = DUNDEE_BURST
+        if w["beat"] == "B3" and w["text"] == "It's":
+            nw["start"] = ITS_ONSET
             nw["whisper_start"] = max(w["whisper_start"], CUT_A_END)
         for k in ("start", "end", "whisper_start", "whisper_end"):
             t = v05(max(nw[k], CUT_A_END) if CUT_A_START <= nw[k] < CUT_A_END else nw[k])
@@ -101,14 +102,14 @@ def main():
     rep = json.load(open(f"{ROOT}/01_VO/VO_processing_115.json"))
     rep["v05_cuts"] = [
         {"name": "A", "v04_span_s": [round(CUT_A_START, 4), CUT_A_END], "frames": CUT_A_F, "removed": "Here's how. It's 1995 in",
-         "why": "doc beat 9 (Recommended): go straight from 'saved it.' to 'Dundee, Scotland.'", "crossfade_ms": 4},
+         "why": "client v02 'Remove the Here's How' (the doc's full 'It's 1995' cut reverses v03/v04 notes, not applied)", "crossfade_ms": 4},
         {"name": "B", "v04_span_s": [CUT_B_START, round(CUT_B_END, 4)], "frames": CUT_B_F, "removed": "room tone after 'Auto.'",
          "why": "doc 54.5-56.2 silence: 1.65 s -> 0.4 s maximum (now %.3f s)" % auto["pause_after"], "crossfade_ms": 10}]
     rep["final_file"] = "01_VO/VO_processed_v05.wav"
     rep["final_duration_s"] = round(len(y) / sr, 4)
     json.dump(rep, open(f"{ROOT}/01_VO/VO_processing_v05.json", "w"), indent=1)
     json.dump({"source": "01_VO/VO_processed_v05.wav", "fps": FPS, "duration_s": round(len(y) / sr, 3),
-               "method": "VO_words_115.json mapped through the two v05 cuts (whole frames); 'Dundee,' starts at its burst",
+               "method": "VO_words_115.json mapped through the two v05 cuts (whole frames); 'It's' starts at its measured onset",
                "words": words}, open(f"{ROOT}/01_VO/VO_words_v05.json", "w"), indent=1)
 
     old_path = f"{ROOT}/timing/beat_map.json"
@@ -116,7 +117,7 @@ def main():
         shutil.copy2(old_path, f"{ROOT}/timing/beat_map_v04.json")
     old = json.load(open(f"{ROOT}/timing/beat_map_v04.json"))
     script = {bt["id"]: bt["voiceover"] for bt in old["beats"]}
-    script["B3"] = "Dundee, Scotland. DMA Design, the studio behind Lemmings, starts a new game."
+    script["B3"] = "It's 1995 in Dundee, Scotland. DMA Design, the studio behind Lemmings, starts a new game."
     beats = []
     for bi, bid in enumerate(list(script.keys())):
         ws = [w for w in words if w["beat"] == bid]

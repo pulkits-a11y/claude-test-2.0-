@@ -753,18 +753,18 @@
   "room_tone_rms_dbfs": -69.4
  },
  "final_file": "01_VO/VO_processed_v05.wav",
- "final_duration_s": 72.9967,
+ "final_duration_s": 74.2634,
  "word_times": "mapped from VO_words_108.json: identical pause edits, t115 = t108(no gap) * 1.08/1.15, then the 115 gap",
  "v05_cuts": [
   {
    "name": "A",
    "v04_span_s": [
-    10.0597,
-    11.993
+    10.03,
+    10.696666666666665
    ],
-   "frames": 58,
+   "frames": 20,
    "removed": "Here's how. It's 1995 in",
-   "why": "doc beat 9 (Recommended): go straight from 'saved it.' to 'Dundee, Scotland.'",
+   "why": "client v02 'Remove the Here's How' (the doc's full 'It's 1995' cut reverses v03/v04 notes, not applied)",
    "crossfade_ms": 4
   },
   {

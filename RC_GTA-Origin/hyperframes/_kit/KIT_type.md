@@ -16,8 +16,9 @@ Additions on top of v03 (everything in the v03 section below still applies). Pro
 ### `RCK.type.glowFlicker(tl, target, at, opts)`: "glow flicker on 1995" (B2, B3), "Nov 1997" (B13)
 
 The text shows on its frame with a soft white glow that flickers like a neon tube catching: one hard step per frame
-between four levels (`F` flare: glow 6 / 34 px at 95 / 70%; `o` on: 4 / 20 px at 65 / 40%; `h` half: text at 60%
-brightness, faint glow; `-` off: text at 18% brightness, no glow) for `frames` (10) frames, then an eased settle
+between four levels (`F` flare: glow 6 / 34 px at 95 / 70%; `o` on: 4 / 20 px at 65 / 40%; `h` half: text at 55%
+opacity, faint glow; `-` off: text at 15% opacity, no glow; v05: opacity, not brightness, so a light word never turns
+dark on bright footage; on a lockup word it drives the inner `.rc-lw__fx` span, layered on the v05 entry) for `frames` (10) frames, then an eased settle
 (4f power2.out) to the steady soft glow (= `--glow-filter`, 2 / 10 px at 40 / 22%) that stays. It drives one CSS
 `filter` on the element (brightness() dims the text and its text-shadow; two white drop-shadows = the glow, drawn after
 the digit masks, so it works on the T3 year). Seeded per element (id + text), deterministic.

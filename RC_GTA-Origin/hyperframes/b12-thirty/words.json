@@ -5,70 +5,70 @@
  "handle_frames": 6,
  "beat_frames": 78,
  "composition_frames": 90,
- "edit_start_s": 44.8,
+ "edit_start_s": 46.0667,
  "voiceover": "Of course, the eighteen months turn into thirty.",
  "words": [
   {
    "text": "Of",
-   "comp_t": 0.212,
-   "comp_end_t": 0.317,
-   "beat_t": 0.012,
+   "comp_t": 0.211,
+   "comp_end_t": 0.316,
+   "beat_t": 0.011,
    "start_frame_local": 6,
    "punct": ""
   },
   {
    "text": "course,",
-   "comp_t": 0.317,
-   "comp_end_t": 0.851,
-   "beat_t": 0.117,
-   "start_frame_local": 10,
+   "comp_t": 0.316,
+   "comp_end_t": 0.85,
+   "beat_t": 0.116,
+   "start_frame_local": 9,
    "punct": ","
   },
   {
    "text": "the",
-   "comp_t": 0.851,
-   "comp_end_t": 1.051,
-   "beat_t": 0.651,
+   "comp_t": 0.85,
+   "comp_end_t": 1.05,
+   "beat_t": 0.65,
    "start_frame_local": 26,
    "punct": ""
   },
   {
    "text": "eighteen",
-   "comp_t": 1.051,
-   "comp_end_t": 1.451,
-   "beat_t": 0.851,
+   "comp_t": 1.05,
+   "comp_end_t": 1.45,
+   "beat_t": 0.85,
    "start_frame_local": 32,
    "punct": ""
   },
   {
    "text": "months",
-   "comp_t": 1.451,
-   "comp_end_t": 1.852,
-   "beat_t": 1.251,
+   "comp_t": 1.45,
+   "comp_end_t": 1.851,
+   "beat_t": 1.25,
    "start_frame_local": 44,
    "punct": ""
   },
   {
    "text": "turn",
-   "comp_t": 1.852,
-   "comp_end_t": 2.119,
-   "beat_t": 1.652,
+   "comp_t": 1.851,
+   "comp_end_t": 2.118,
+   "beat_t": 1.651,
    "start_frame_local": 56,
    "punct": ""
   },
   {
    "text": "into",
-   "comp_t": 2.231,
-   "comp_end_t": 2.359,
-   "beat_t": 2.031,
+   "comp_t": 2.23,
+   "comp_end_t": 2.358,
+   "beat_t": 2.03,
    "start_frame_local": 67,
    "punct": ""
   },
   {
    "text": "thirty.",
-   "comp_t": 2.359,
-   "comp_end_t": 2.565,
-   "beat_t": 2.159,
+   "comp_t": 2.358,
+   "comp_end_t": 2.564,
+   "beat_t": 2.158,
    "start_frame_local": 71,
    "punct": "."
   }
