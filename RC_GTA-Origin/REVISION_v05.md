@@ -216,3 +216,21 @@ ding, click, whip, hit, riser, rewind (= S17), glitch_impact (= S08a). (stamp_th
 
 Kit first (lanes prep meanwhile), lanes build on kit v05 (snapshots only), renders (`tools/render_all.sh`),
 `tools/build_tesseract.py --version v05 --preview`, the doc's QA checklist (as applicable with U), delivery.
+
+## As delivered (preview `07_Exports/RC_GTA-Origin_v05_preview.mp4`, 1280x720, 2326 f = 77.53 s, 51 MB)
+
+Doc section 5 checklist, measured by `tools/qa_v05.py` (results in `07_Exports/checks/qa_v05.json`) and on contact sheets:
+* Frame 0: the full-bleed night police shot, red/blue lights (saturation 0.65); the doc's 70% white flash is on f1 so frame 0
+  stays a clean thumbnail and the loop target. The Drive library has no true light-bar close-up (all 12 files scanned):
+  this is a medium night shot (GTA V); swap in a closer clip if you have one.
+* 0-4.5 s: no black frame, no half-built grid (the 2x3 grid is complete on its first frame).
+* No black half-frames ("They ram." is full frame); no flat black over 0.8 s anywhere (dark cards carry faint footage).
+* Every caption word appears on its spoken frame (no word early); chosen key words pop + blur in (U2, not the pink entry).
+* Setup words 54 px at 1080p (= 36 px at 720p, doc >= 34).
+* [DEPTH] edges checked at 200%: "1995" (B3), "Dundee," (B3), the quote mark (B6), "GTA 6?" and "Lucia" (B17).
+* Error-window cascade (B2, flash in B8, callback in B16), 18 -> 30 counter, highlighter sweeps, pills: in. Stamp and 3D
+  flip: not in (U5, U6).
+* Silence after "Grand Theft Auto." 0.386 s; mix -14.0 LUFS, -1.6 dBTP; music off (U14), its ducking/dropouts built in.
+* CTA card in; the last frames cross back to frame 0 (mean difference 3.1 / 255).
+* B16: on "bug." the windows snap shut, 1-frame flash, and the cut goes straight to GTA VI (Trailer 1's fence at sunset,
+  which flows into B17's window shot).
