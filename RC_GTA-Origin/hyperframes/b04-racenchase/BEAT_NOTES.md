@@ -1,5 +1,12 @@
 # B4 Race'n'Chase — `b04-racenchase` (v02: beat 100f = 3.333 s; composition 112f with 6f handles. v01: 108f / 120f)
 
+## v04 (REVISION_v04.md): no B4 note
+
+Kit refreshed to v04 (`python3 tools/new_beat.py B4 --refresh`, words.json identical, lockup markup unchanged): the dark calendar card now
+carries the kit's built-in card scanlines (note 7: lines only inside dark text cards). `check --json` 0 errors; `review/v04/` (4 frames). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes 10, 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
 
 Timing, word frames and cues unchanged (beat 100f, composition 112f, local frame = beat frame + 6). Kit refreshed to v03

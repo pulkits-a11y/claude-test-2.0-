@@ -1,5 +1,22 @@
 # B1 Hook - `b01-hook` (v02: beat 134f = 4.467 s; composition 146f with 6f handles. v01: 143f / 155f)
 
+## v04 (REVISION_v04.md, review #5): read this first; v03 and older below are kept as reference
+
+Everything else as v03 (timing, footage, cues events). Kit refreshed to v04 (`python3 tools/new_beat.py B1 --refresh`, words.json identical).
+
+| What changed | Why |
+|---|---|
+| The v03 lockup `every GTA, even [GTA 6,]` + the "have you running" half of lockup 3 are replaced by ONE composition (local 26-114, the reviewer's drawing): the official **GTA VI logo** in the middle (462.5 x 360 px, centred on 960, 540, soft drop shadow) standing in for "GTA 6,", popping + blurring in on "GTA" (69, the kit's starred-word pop via `T.wordPops`), small words left "every GTA, even" (26 / 40 / 55, right-aligned to x 690) and right "have you running" (93 / 98 / 105, from x 1230), each on its spoken frame (hard cuts, `T.lockupsWire`), cap centre on y 540; hard cut on "from" (114) to the lockup `from the [cops?]*` (114-140, "cops?" still starred). The side words carry the kit glow plus a wider dark halo (0 0 16 px 60 %, 0 0 38 px 45 %): over the bright L3 cells / sunlit street they measured 1.9-2.5:1 with the glow alone (a held contrast error) | #5 |
+| **Logo file**: `04_Broll/B01/GTA6-logo__cutout.png` (848 x 660 RGBA; B17 may reuse it), copy in `assets/logo/`. Keyed from Rockstar's end card in R17.4 (`04_Broll/_originals/B17/R17.4__Grand Theft Auto VI Launch Trailer`): the last 6 frames before the city fades in (77.47-77.63 s, the logo has finished its settle), averaged to remove compression noise; flat background measured (30, 30, 42); the logo's outermost layer is a dark purple stroke (29, 0, 44) all round, so the matte = opaque core (colour distance > 20 from the background, holes filled, eroded 1 px) + a 1-3 px edge band whose alpha is the projection of each pixel on the background -> stroke line (anti-aliased edge, no fringe), band colour set to the stroke colour (decontaminated). Checked on black, light grey and mid blue, and in the B1 snapshots over the bright street: no halo, no background tint | #5 |
+
+**v04 frames** (local): 26 "every" (cut to L3) | 40 "GTA," | 55 "even" + grow | 69 logo pops (blur 20 px / 92 %), sharp 75 | 93 "have"
+| 98 "you" | 105 "running" | 114 cut to "from" | 120 "the" | 125 "cops?" pop + X9 | 140 out.
+
+**Verification v04**: `check --json` 0 errors (warnings: lockup markup nesting; contrast 2.4-3.0:1 on the side words at single samples;
+craft "last line"). Snapshots `review/v04/` (13 frames + `sheet.jpg`), read against the reviewer's drawing (comments_sheet #5). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes 8, 11, 13, 16, 17): read this first; v02 and v01 below are kept as reference
 
 Timing, footage, word frames and cues unchanged (beat 134f, composition 146f, local frame = beat frame + 6). Kit refreshed

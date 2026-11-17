@@ -1,5 +1,20 @@
 # B3 1995, Dundee - `b03-dundee` (v02: beat 203f = 6.767 s; composition 215f with 6f handles. v01: 215f / 227f)
 
+## v04 (REVISION_v04.md, review #4, #3): read this first; v03 and older below are kept as reference
+
+Everything else as v03. Kit refreshed to v04 (`python3 tools/new_beat.py B3 --refresh`, words.json identical; lockup markup unchanged).
+
+| What changed | Why |
+|---|---|
+| **1990s B-roll behind "It's 1995"** (no blank card any more): R3.8 DMA Design office tour, the wide office with CRT monitors at the desks and two staff (media 14.2 s = source 27.2 s, inside one shot; already in the synced R3.8 window, footage.json note updated), cover-fitted, archival grade as the section's other R3.8 shots + a media-treatment blur control; darkened by an ink overlay (`#b03-yr-dim`: 58 % in the middle to 86 % at the edges). The card has no background and no scanlines (kit `rc-t3--clear rc-noscan`). B-roll, dim and card sit inside the zoom-through wrapper: the zoom-through IN (130 % + 16 px blur -> 100 % sharp, 6-15) now blurs the B-roll through its blur control (`blurMedia`) and the card text through CSS (`blurDom`) | #4, #3 |
+| **Glow flicker on "1995"**: `T.glowFlicker(tl, '#b03-t3 .rc-t3__year', L(34), { frames: 11 })`: the digits still roll in from the boundary (6-20, cue `year_digits` unchanged) but dim (the kit's "off" state), and the year catches like a neon tube on the spoken "1995" (34), 11 one-frame steps, settles to the steady glow from 49; "It's" keeps its steady glow | #3 |
+
+**Verification v04**: `check --json` 0 errors (warnings: markup nesting; the known 1.3:1 on "the studio behind" over the Lemmings box
+window light; craft "last line"). Snapshots `review/v04/` (0-61: the blurred B-roll in the head handle, the dim year during the roll,
+every flicker step, steady, the cut to Dundee; `sheet.jpg`). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes 1, 2, 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
 
 Timing, word frames and cues unchanged (beat 203f, composition 215f, local frame = beat frame + 6). Kit refreshed to v03

@@ -1,5 +1,18 @@
 # B2 The bug - `b02-bug` (v02: beat 169f = 5.633 s; composition 181f with 6f handles. v01: 180f / 192f)
 
+## v04 (REVISION_v04.md, review #6): read this first; v03 and older below are kept as reference
+
+Everything else as v03. Kit refreshed to v04 (`python3 tools/new_beat.py B2 --refresh`, words.json identical; lockup markup unchanged).
+
+| What changed | Why |
+|---|---|
+| **Glow flicker on "1995,"** (the unstarred keyword of lockup 1): `T.glowFlicker(tl, '#b02-lk-1 .rc-lk__row--key .rc-lw', L(30))`: the word hard-cuts in on its frame (30, with the cut to GTA 1), flickers like a neon tube catching for 10 frames (kit seeded pattern, one hard step per frame: 30 flare, 31 off, 32-33 half, 34 off, 35-39 on / flare), settles 40-43 (power2.out) to the steady soft glow from 44 | #6 |
+
+**Verification v04**: `check --json` 0 errors (warnings: lockup markup nesting; craft "last line" on the error box text). Snapshots
+`review/v04/` (29-44 every flicker frame, the dark error box, the last lockup; `sheet.jpg`). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes 11, 12, 13, 16, 17): read this first; v02 and v01 below are kept as reference
 
 Timing, footage, word frames and cues unchanged (beat 169f, composition 181f, local frame = beat frame + 6). Kit refreshed
