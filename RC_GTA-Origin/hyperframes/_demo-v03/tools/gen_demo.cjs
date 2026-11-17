@@ -179,7 +179,7 @@ const plan = (label, w, specs, o) => { const p = T.lockupPlan(w, specs, o); repo
   tag('k3-tag', 1030, 1090, 'v04 · B13 · T3 "Nov 1997" with glowFlicker (seed 15)');
 
   // K4 (B9): three L3 strips pop in (kit gridPop, punch 115%) each with a glow flash
-  const sv = (src, f0, ms) => `<video class="clip" src="assets/footage/${src}" muted playsinline data-start="${A(f0)}" data-duration="${D(f0, 1150)}" data-media-start="${ms}"></video>`;
+  const sv = (src, f0, ms) => `<video id="k4-v${f0}" class="clip" src="assets/footage/${src}" muted playsinline data-start="${A(f0)}" data-duration="${D(f0, 1150)}" data-media-start="${ms}"></video>`;
   html.push(`<div id="k4-grid" class="rc-l3 rc-l3--strips" style="z-index: 2">
   <div id="k4-ground" class="clip rc-l3__ground" data-start="${A(1090)}" data-duration="${D(1090, 1150)}"></div>
   <div id="k4-s1" class="rc-l3__cell"><div class="rc-l3__media">${sv('R1.2.mp4', 1095, '1.0000')}</div></div>

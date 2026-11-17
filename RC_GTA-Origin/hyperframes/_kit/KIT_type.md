@@ -7,6 +7,54 @@ value) or **conflict** (see "Conflicts and decisions" at the end).
 
 Demo of every item, built exactly as a beat would: `hyperframes/_demo-type/` (`index.html`, proof frames in `review/`).
 
+## v04 (REVISION_v04.md notes 3, 6, 7, 15): glow flicker, scanlines inside the dark text cards. Read this first
+
+Additions on top of v03 (everything in the v03 section below still applies). Proof: `hyperframes/_demo-v03/` section K
+(f910-1150): `review/snap/f0938_K1_flick-f0.png` .. `f0955_K1_steady.png` (lockup keyword), `f0977_K2_*` .. `f0995_K2_steady.png`
+(T3 "It's 1995"), `f1038_K3_*` .. `f1060_K3_steady.png` (T3 "Nov 1997"); `review/check.json` 0 errors.
+
+### `RCK.type.glowFlicker(tl, target, at, opts)`: "glow flicker on 1995" (B2, B3), "Nov 1997" (B13)
+
+The text shows on its frame with a soft white glow that flickers like a neon tube catching: one hard step per frame
+between four levels (`F` flare: glow 6 / 34 px at 95 / 70%; `o` on: 4 / 20 px at 65 / 40%; `h` half: text at 60%
+brightness, faint glow; `-` off: text at 18% brightness, no glow) for `frames` (10) frames, then an eased settle
+(4f power2.out) to the steady soft glow (= `--glow-filter`, 2 / 10 px at 40 / 22%) that stays. It drives one CSS
+`filter` on the element (brightness() dims the text and its text-shadow; two white drop-shadows = the glow, drawn after
+the digit masks, so it works on the T3 year). Seeded per element (id + text), deterministic.
+```js
+// a lockup keyword (do NOT star it: the pop + blur also drives filter); markup from T.lockups(w, ['Because back in [1995,]'], ...)
+T.lockupsWire(tl);
+T.glowFlicker(tl, '#b02-lk-2 .rc-lk__row--key .rc-lw', W[3].comp_t);     // the word hard-cuts in on its frame, then flickers
+// the T3 year line (digits roll in AND flicker; "It's" / "In" keep their steady glow)
+T.yearCard(tl, '#b03-t3', W.y1995, { pushUntil: L(60) });
+T.glowFlicker(tl, '#b03-t3 .rc-t3__year', W.y1995, { frames: 11 });
+// B13 "Nov 1997": write <span class="rc-t3__num">Nov 1997</span>, flicker from "November"
+T.glowFlicker(tl, '#b13-t3 .rc-t3__year', W.November, { seed: 15 });
+// exact pattern instead of the seeded one (one letter per frame: F o h -)
+T.glowFlicker(tl, el, at, { pattern: 'F-hh-oFo-o' });
+```
+`opts`: `frames` (10; 8-12), `pattern`, `seed`, `settleF` (4), `settleEase` (power2.out), `before` (`'off'` default = the
+dim off state before `at`; `'steady'`; `null` = untouched), `color` (`'255, 255, 255'`). Returns the time the glow is
+steady. `T.glowPattern(n, seed)` previews a pattern; `T.GLOW_STATES` holds the four levels + steady. Seeded patterns: frame
+0 is visible (F or h), the last flicker frame is o, at least 2 offs, never two offs in a row, offs thin out towards the
+end. Measured (`_demo-v03` K1, "1995," onset f938): f938 flare, f939 off, f940-941 half, f942 off, f943-947 on/flare,
+settle f948-951, steady from f952; K2 the year rolls (2f per digit) while it flickers; "It's" unchanged. T3 change: the steady glow moved
+from `.rc-t3__block` to `.rc-t3__in` and `.rc-t3__year` (same look) so the year can flicker alone.
+
+### Scanlines only inside the dark text cards (note 7: no whole-edit CRT lines)
+
+Built into the dark text surfaces, static, nothing to add in a beat: `.rc-card`, `.rc-t3`, `.rc-l5__ground`, a full-frame
+`.rc-ink.rc-full` black screen (B8, B16, B17 grounds) and `.rc-t5`. Texture `--card-scan` (base.css): 9 px period (ref 3:
+2.7 px of 275 = 9 px at 1080p), a 3 px line at 20% black with 1.5 px soft edges. Measured on the K2 card (x 960):
+23 / 18 brightness, period 9 px. Not on letterbox bars (`.rc-ink` without `rc-full`), L12, footage or lockups on footage.
+```html
+<div id="b03-t3" class="clip rc-t3 rc-noscan" ...>                 <!-- opt out: a card with B-roll behind it -->
+<div id="b03-t3" class="clip rc-t3 rc-t3--clear rc-noscan" ...>    <!-- B3 note 4: no card at all, the 1990s B-roll behind the year -->
+<div id="b13-scan" class="clip rc-scan" data-start="..." data-duration="..." style="z-index: 60"></div>   <!-- optional: the lines OVER the card's text too (ref 3) -->
+```
+
+---
+
 ## v03 (REVISION_v03.md notes 11, 12, 16, 17): caption lockups, dark cards. Read this first
 
 v03 overrides v02 where they conflict; everything else in the v02 / v01 sections below still applies. Proof:

@@ -18,7 +18,11 @@
       .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
       /* v04: Gary Penn full frame (16:9 working clip, never stretched) inside the camera wrapper */
       .b06-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
-      /* v04 lower third: bottom left inside title-safe (96 px in, last baseline about 970 px), white + the kit's glow */
+      /* v04 lower third: bottom left inside title-safe (96 px in, last baseline about 970 px), white + the kit's glow, on a
+         soft dark plate (a feathered gradient from the bottom-left corner, part of the lower third graphic) so the small
+         role line reads on the bright shirt */
+      .b06-l3plate { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none;
+                     background: radial-gradient(ellipse 980px 360px at 0px 1080px, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.5) 45%, rgba(0, 0, 0, 0) 100%); }
       .b06-l3 { position: absolute; left: var(--safe-x); top: 864px; width: 900px; height: 130px; color: var(--white);
                 text-shadow: var(--text-glow); pointer-events: none; }
       .b06-l3__name { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 52px; line-height: 60px; white-space: nowrap; }
@@ -27,17 +31,20 @@
     </style>
   </head>
   <body>
-    <!-- B6 b06-dull (v03; timing v02): beat 156f (5.200s) + 6f handle each end = 168f.
+    <!-- B6 b06-dull (v04; timing v02): beat 156f (5.200s) + 6f handle each end = 168f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.4000s (local frames 6 .. 162).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B6 p.22).
          v03 notes (REVISION_v03.md): 9 (the Penn card: no slide / float, no white outline, dark card, the quote words pop +
          blur in on their spoken frames), 11/16/17 caption lockups, 12 dark, 13 no random zooms (back to v01's camera).
-         Owner: HF for the whole beat (opaque). Into the beat: X1; on "One" a hard cut to the quote card (v03: static, the
-         X2 drift is gone with the slide). Deliberate hold on the quote (2-second-rule exception, p.3).
+         v04 (REVISION_v04.md comments 8, 9): the Gary Penn card is redesigned like a documentary interview: his real
+         footage full frame (graded dark, slow eased push), the quote as a centred lockup, name + role as a lower third.
+         Owner: HF for the whole beat (opaque). Into the beat: X1; on "One" a hard cut to Gary Penn full frame. Deliberate
+         hold on the quote (2-second-rule exception, p.3).
          local 0-64  : the B5 split screen continues (same clips, continuous source time), arrow gone; the camera continues
                        B5's slow push to 104% on the cut to the card; on "dull." (local 46) it drains to black and white
                        over 6f and slows to 50% (both easeInOutCubic).
-         local 64-168: hard cut on "One" to the dark card: Gary Penn cut-out (R6.1) left, T8 quote card right, static. -->
+         local 64-168: hard cut on "One" to Gary Penn (R6.1) full frame, dark, push 100 -> 104%; lower third from 64; the
+                       quote lockup "“awful… / too sim-y.”" word by word from 112 (pop + blur in), held to the end. -->
     <div data-hf-id="hf-ebcd" id="root" data-composition-id="b06-dull" data-start="0" data-duration="5.6000000" data-width="1920" data-height="1080">
 
       <!-- L11 split screen = the B5 frame, continued: the same working clips as b05-copgame (R5.2 @ 3:50.5 left, R5.1 @ 0:41.2
@@ -74,11 +81,12 @@
            right. Graded dark (dark aesthetic, media treatment on the video, see BEAT_NOTES v04); camera: one slow push
            100 -> 104% (easeInOutSine) from the cut to the end, on the untimed wrapper #b06-cam. -->
       <div data-hf-id="hf-40gc" id="b06-cam" class="rc-cam" style="z-index: 2">
-        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.6,&quot;contrast&quot;:0.12,&quot;highlights&quot;:-0.25,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.3},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-3yz0" id="b06-penn" class="clip b06-fill" src="assets/footage/R6.1.mp4" data-start="2.1333" data-duration="3.4667" data-media-start="0" data-track-index="5" muted playsinline></video>
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.8,&quot;contrast&quot;:0.12,&quot;highlights&quot;:-0.35,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.4},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-3yz0" id="b06-penn" class="clip b06-fill" src="assets/footage/R6.1.mp4" data-start="2.1333" data-duration="3.4667" data-media-start="0" data-track-index="5" muted playsinline></video>
       </div>
 
       <!-- Lower third (v04): name + role, small and clean, bottom left inside title-safe (x 96, ink above y 1026), simply
            there from the cut on "One" (no animation). Texts exactly as before: "Gary Penn" / "DMA DESIGN · GAMASUTRA, 2011". -->
+      <div id="b06-l3plate" class="clip b06-l3plate" data-start="2.1333" data-duration="3.4667" data-track-index="7" style="z-index: 19"></div>
       <div data-hf-id="hf-jiih" id="b06-l3" class="clip b06-l3" data-start="2.1333" data-duration="3.4667" data-track-index="6" style="z-index: 20">
         <div data-hf-id="hf-i7vr" class="b06-l3__name">Gary Penn</div>
         <div data-hf-id="hf-v4mu" class="b06-l3__role">DMA DESIGN · GAMASUTRA, 2011</div>
@@ -86,8 +94,10 @@
 
       <!-- The quote (v04): a centred v03 lockup (kit RCK.type.lockups, ref 1 layout) over the darkened footage: the keyword
            "“awful…" big in Coolvetica Italic, "too sim-y.”" small below-right; every word pops + blurs in on its spoken frame
-           (“awful… 112, too 129, sim-y.” 135; words.json), held to the end (the deliberate quote hold). -->
-      <div data-hf-id="hf-so5r" id="b06-quote-1" class="clip rc-lk" data-start="3.7333" data-duration="1.8667" data-track-index="11" style="--rc-lk-c: 129.55px; z-index: 30"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-pzzz" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span data-hf-id="hf-c99r" class="rc-lw rc-lw--pop" data-rc-f="112">“awful…</span></div><div data-hf-id="hf-ep2u" class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span data-hf-id="hf-pinw" class="rc-lw rc-lw--pop" data-rc-f="129">too</span> <span data-hf-id="hf-trqz" class="rc-lw rc-lw--pop" data-rc-f="135">sim-y.”</span></div></div></div>
+           (“awful… 112, too 129, sim-y.” 135; words.json), held to the end (the deliberate quote hold). The lockup is centred
+           in the empty cinema, 100 px right of the frame centre (left: 100px), so the opening quote mark never touches his
+           face as the handheld shot drifts (his face reaches x 730 around local 120-135). -->
+      <div id="b06-quote-1" class="clip rc-lk" data-start="3.7333" data-duration="1.8667" data-track-index="11" style="--rc-lk-c: 129.55px; z-index: 30; left: 100px"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span class="rc-lw rc-lw--pop" data-rc-f="112">“awful…</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw rc-lw--pop" data-rc-f="129">too</span> <span class="rc-lw rc-lw--pop" data-rc-f="135">sim-y.”</span></div></div></div>
 
       <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; refs_v03/1), kit RCK.type.lockups from words.json, centred, on
            the split screen: "But there's a problem:" (6; one small line, each word appears on its frame) / "it's [dull.]*"

@@ -1,85 +1,123 @@
-◆  Capturing 74 frames at [0.2s, 0.6s, 1.033s, 1.3s, 1.333s, 1.367s, 1.5s, 1.7s, 1.9s, 2.1s, 2.3s, 2.5s, 3.3s, 3.333s, 3.767s, 4.333s, 4.833s, 4.9s, 5.1s, 5.5s, 5.833s, 6.067s, 6.667s, 7.6s, 8.167s, 8.733s, 8.9s, 9.133s, 10.333s, 11.1s, 11.5s, 12.667s, 13.167s, 13.233s, 13.367s, 14s, 14.333s, 14.667s, 14.733s, 15.233s, 15.433s, 15.667s, 16.5s, 17.6s, 17.633s, 17.667s, 17.7s, 17.767s, 17.867s, 18s, 18.167s, 18.4s, 18.667s, 20.167s, 20.467s, 21s, 21.5s, 21.567s, 21.7s, 22.033s, 22.5s, 23.5s, 23.7s, 24s, 25s, 25.4s, 25.533s, 25.833s, 26.5s, 27.1s, 28.367s, 28.567s, 28.867s, 29.833s] from _demo-v03
+◆  Capturing 112 frames at [0.2s, 0.6s, 1.033s, 1.3s, 1.333s, 1.367s, 1.5s, 1.7s, 1.9s, 2.1s, 2.3s, 2.5s, 3.3s, 3.333s, 3.767s, 4.333s, 4.833s, 4.9s, 5.1s, 5.5s, 5.833s, 6.067s, 6.667s, 7.6s, 8.167s, 8.733s, 8.9s, 9.133s, 10.333s, 11.1s, 11.5s, 12.667s, 13.167s, 13.233s, 13.367s, 14s, 14.333s, 14.667s, 14.733s, 15.233s, 15.433s, 15.667s, 16.5s, 17.6s, 17.633s, 17.667s, 17.7s, 17.767s, 17.867s, 18s, 18.167s, 18.4s, 18.667s, 20.167s, 20.467s, 21s, 21.5s, 21.567s, 21.7s, 22.033s, 22.5s, 23.5s, 23.7s, 24s, 25s, 25.4s, 25.533s, 25.833s, 26.5s, 27.1s, 28.367s, 28.567s, 28.867s, 29.833s, 31.233s, 31.267s, 31.3s, 31.333s, 31.367s, 31.4s, 31.433s, 31.467s, 31.5s, 31.533s, 31.567s, 31.633s, 31.833s, 32.533s, 32.567s, 32.6s, 32.633s, 32.667s, 32.7s, 32.733s, 32.8s, 32.9s, 33.167s, 34.6s, 34.633s, 34.7s, 34.767s, 34.9s, 35.333s, 36.5s, 36.533s, 36.567s, 36.633s, 36.7s, 36.833s, 37.067s, 37.567s, 38s] from _demo-v03
 [hyperframes] browserGpuMode probe → software (WebGL unavailable)
 
    Fonts: 4 loaded
-[hyperframes] snapshot: frame 1/74 at 0.20002s
-[hyperframes] snapshot: frame 2/74 at 0.60002s
-[hyperframes] snapshot: frame 3/74 at 1.03335s
-[hyperframes] snapshot: frame 4/74 at 1.30002s
-[hyperframes] snapshot: frame 5/74 at 1.33335s
-[hyperframes] snapshot: frame 6/74 at 1.36669s
-[hyperframes] snapshot: frame 7/74 at 1.50002s
-[hyperframes] snapshot: frame 8/74 at 1.70002s
-[hyperframes] snapshot: frame 9/74 at 1.90002s
-[hyperframes] snapshot: frame 10/74 at 2.10002s
-[hyperframes] snapshot: frame 11/74 at 2.30002s
-[hyperframes] snapshot: frame 12/74 at 2.50002s
-[hyperframes] snapshot: frame 13/74 at 3.30002s
-[hyperframes] snapshot: frame 14/74 at 3.33335s
-[hyperframes] snapshot: frame 15/74 at 3.76669s
-[hyperframes] snapshot: frame 16/74 at 4.33335s
-[hyperframes] snapshot: frame 17/74 at 4.83335s
-[hyperframes] snapshot: frame 18/74 at 4.90002s
-[hyperframes] snapshot: frame 19/74 at 5.10002s
-[hyperframes] snapshot: frame 20/74 at 5.50002s
-[hyperframes] snapshot: frame 21/74 at 5.83335s
-[hyperframes] snapshot: frame 22/74 at 6.06669s
-[hyperframes] snapshot: frame 23/74 at 6.66669s
-[hyperframes] snapshot: frame 24/74 at 7.60002s
-[hyperframes] snapshot: frame 25/74 at 8.16669s
-[hyperframes] snapshot: frame 26/74 at 8.73335s
-[hyperframes] snapshot: frame 27/74 at 8.90002s
-[hyperframes] snapshot: frame 28/74 at 9.13335s
-[hyperframes] snapshot: frame 29/74 at 10.33335s
-[hyperframes] snapshot: frame 30/74 at 11.10002s
-[hyperframes] snapshot: frame 31/74 at 11.50002s
-[hyperframes] snapshot: frame 32/74 at 12.66669s
-[hyperframes] snapshot: frame 33/74 at 13.16669s
-[hyperframes] snapshot: frame 34/74 at 13.23335s
-[hyperframes] snapshot: frame 35/74 at 13.36669s
-[hyperframes] snapshot: frame 36/74 at 14.00002s
-[hyperframes] snapshot: frame 37/74 at 14.33335s
-[hyperframes] snapshot: frame 38/74 at 14.66669s
-[hyperframes] snapshot: frame 39/74 at 14.73335s
-[hyperframes] snapshot: frame 40/74 at 15.23335s
-[hyperframes] snapshot: frame 41/74 at 15.43335s
-[hyperframes] snapshot: frame 42/74 at 15.66669s
-[hyperframes] snapshot: frame 43/74 at 16.50002s
-[hyperframes] snapshot: frame 44/74 at 17.60002s
-[hyperframes] snapshot: frame 45/74 at 17.63335s
-[hyperframes] snapshot: frame 46/74 at 17.66669s
-[hyperframes] snapshot: frame 47/74 at 17.70002s
-[hyperframes] snapshot: frame 48/74 at 17.76669s
-[hyperframes] snapshot: frame 49/74 at 17.86669s
-[hyperframes] snapshot: frame 50/74 at 18.00002s
-[hyperframes] snapshot: frame 51/74 at 18.16669s
-[hyperframes] snapshot: frame 52/74 at 18.40002s
-[hyperframes] snapshot: frame 53/74 at 18.66669s
-[hyperframes] snapshot: frame 54/74 at 20.16669s
-[hyperframes] snapshot: frame 55/74 at 20.46669s
-[hyperframes] snapshot: frame 56/74 at 21.00002s
-[hyperframes] snapshot: frame 57/74 at 21.50002s
-[hyperframes] snapshot: frame 58/74 at 21.56669s
-[hyperframes] snapshot: frame 59/74 at 21.70002s
-[hyperframes] snapshot: frame 60/74 at 22.03335s
-[hyperframes] snapshot: frame 61/74 at 22.50002s
-[hyperframes] snapshot: frame 62/74 at 23.50002s
-[hyperframes] snapshot: frame 63/74 at 23.70002s
-[hyperframes] snapshot: frame 64/74 at 24.00002s
-[hyperframes] snapshot: frame 65/74 at 25.00002s
-[hyperframes] snapshot: frame 66/74 at 25.40002s
-[hyperframes] snapshot: frame 67/74 at 25.53335s
-[hyperframes] snapshot: frame 68/74 at 25.83335s
-[hyperframes] snapshot: frame 69/74 at 26.50002s
-[hyperframes] snapshot: frame 70/74 at 27.10002s
-[hyperframes] snapshot: frame 71/74 at 28.36669s
-[hyperframes] snapshot: frame 72/74 at 28.56669s
-[hyperframes] snapshot: frame 73/74 at 28.86669s
-[hyperframes] snapshot: frame 74/74 at 29.83335s
+[hyperframes] snapshot: frame 1/112 at 0.20002s
+[hyperframes] snapshot: frame 2/112 at 0.60002s
+[hyperframes] snapshot: frame 3/112 at 1.03335s
+[hyperframes] snapshot: frame 4/112 at 1.30002s
+[hyperframes] snapshot: frame 5/112 at 1.33335s
+[hyperframes] snapshot: frame 6/112 at 1.36669s
+[hyperframes] snapshot: frame 7/112 at 1.50002s
+[hyperframes] snapshot: frame 8/112 at 1.70002s
+[hyperframes] snapshot: frame 9/112 at 1.90002s
+[hyperframes] snapshot: frame 10/112 at 2.10002s
+[hyperframes] snapshot: frame 11/112 at 2.30002s
+[hyperframes] snapshot: frame 12/112 at 2.50002s
+[hyperframes] snapshot: frame 13/112 at 3.30002s
+[hyperframes] snapshot: frame 14/112 at 3.33335s
+[hyperframes] snapshot: frame 15/112 at 3.76669s
+[hyperframes] snapshot: frame 16/112 at 4.33335s
+[hyperframes] snapshot: frame 17/112 at 4.83335s
+[hyperframes] snapshot: frame 18/112 at 4.90002s
+[hyperframes] snapshot: frame 19/112 at 5.10002s
+[hyperframes] snapshot: frame 20/112 at 5.50002s
+[hyperframes] snapshot: frame 21/112 at 5.83335s
+[hyperframes] snapshot: frame 22/112 at 6.06669s
+[hyperframes] snapshot: frame 23/112 at 6.66669s
+[hyperframes] snapshot: frame 24/112 at 7.60002s
+[hyperframes] snapshot: frame 25/112 at 8.16669s
+[hyperframes] snapshot: frame 26/112 at 8.73335s
+[hyperframes] snapshot: frame 27/112 at 8.90002s
+[hyperframes] snapshot: frame 28/112 at 9.13335s
+[hyperframes] snapshot: frame 29/112 at 10.33335s
+[hyperframes] snapshot: frame 30/112 at 11.10002s
+[hyperframes] snapshot: frame 31/112 at 11.50002s
+[hyperframes] snapshot: frame 32/112 at 12.66669s
+[hyperframes] snapshot: frame 33/112 at 13.16669s
+[hyperframes] snapshot: frame 34/112 at 13.23335s
+[hyperframes] snapshot: frame 35/112 at 13.36669s
+[hyperframes] snapshot: frame 36/112 at 14.00002s
+[hyperframes] snapshot: frame 37/112 at 14.33335s
+[hyperframes] snapshot: frame 38/112 at 14.66669s
+[hyperframes] snapshot: frame 39/112 at 14.73335s
+[hyperframes] snapshot: frame 40/112 at 15.23335s
+[hyperframes] snapshot: frame 41/112 at 15.43335s
+[hyperframes] snapshot: frame 42/112 at 15.66669s
+[hyperframes] snapshot: frame 43/112 at 16.50002s
+[hyperframes] snapshot: frame 44/112 at 17.60002s
+[hyperframes] snapshot: frame 45/112 at 17.63335s
+[hyperframes] snapshot: frame 46/112 at 17.66669s
+[hyperframes] snapshot: frame 47/112 at 17.70002s
+[hyperframes] snapshot: frame 48/112 at 17.76669s
+[hyperframes] snapshot: frame 49/112 at 17.86669s
+[hyperframes] snapshot: frame 50/112 at 18.00002s
+[hyperframes] snapshot: frame 51/112 at 18.16669s
+[hyperframes] snapshot: frame 52/112 at 18.40002s
+[hyperframes] snapshot: frame 53/112 at 18.66669s
+[hyperframes] snapshot: frame 54/112 at 20.16669s
+[hyperframes] snapshot: frame 55/112 at 20.46669s
+[hyperframes] snapshot: frame 56/112 at 21.00002s
+[hyperframes] snapshot: frame 57/112 at 21.50002s
+[hyperframes] snapshot: frame 58/112 at 21.56669s
+[hyperframes] snapshot: frame 59/112 at 21.70002s
+[hyperframes] snapshot: frame 60/112 at 22.03335s
+[hyperframes] snapshot: frame 61/112 at 22.50002s
+[hyperframes] snapshot: frame 62/112 at 23.50002s
+[hyperframes] snapshot: frame 63/112 at 23.70002s
+[hyperframes] snapshot: frame 64/112 at 24.00002s
+[hyperframes] snapshot: frame 65/112 at 25.00002s
+[hyperframes] snapshot: frame 66/112 at 25.40002s
+[hyperframes] snapshot: frame 67/112 at 25.53335s
+[hyperframes] snapshot: frame 68/112 at 25.83335s
+[hyperframes] snapshot: frame 69/112 at 26.50002s
+[hyperframes] snapshot: frame 70/112 at 27.10002s
+[hyperframes] snapshot: frame 71/112 at 28.36669s
+[hyperframes] snapshot: frame 72/112 at 28.56669s
+[hyperframes] snapshot: frame 73/112 at 28.86669s
+[hyperframes] snapshot: frame 74/112 at 29.83335s
+[hyperframes] snapshot: frame 75/112 at 31.23335s
+[hyperframes] snapshot: frame 76/112 at 31.26669s
+[hyperframes] snapshot: frame 77/112 at 31.30002s
+[hyperframes] snapshot: frame 78/112 at 31.33335s
+[hyperframes] snapshot: frame 79/112 at 31.36669s
+[hyperframes] snapshot: frame 80/112 at 31.40002s
+[hyperframes] snapshot: frame 81/112 at 31.43335s
+[hyperframes] snapshot: frame 82/112 at 31.46669s
+[hyperframes] snapshot: frame 83/112 at 31.50002s
+[hyperframes] snapshot: frame 84/112 at 31.53335s
+[hyperframes] snapshot: frame 85/112 at 31.56669s
+[hyperframes] snapshot: frame 86/112 at 31.63335s
+[hyperframes] snapshot: frame 87/112 at 31.83335s
+[hyperframes] snapshot: frame 88/112 at 32.53335s
+[hyperframes] snapshot: frame 89/112 at 32.56669s
+[hyperframes] snapshot: frame 90/112 at 32.60002s
+[hyperframes] snapshot: frame 91/112 at 32.63335s
+[hyperframes] snapshot: frame 92/112 at 32.66669s
+[hyperframes] snapshot: frame 93/112 at 32.70002s
+[hyperframes] snapshot: frame 94/112 at 32.73335s
+[hyperframes] snapshot: frame 95/112 at 32.80002s
+[hyperframes] snapshot: frame 96/112 at 32.90002s
+[hyperframes] snapshot: frame 97/112 at 33.16669s
+[hyperframes] snapshot: frame 98/112 at 34.60002s
+[hyperframes] snapshot: frame 99/112 at 34.63335s
+[hyperframes] snapshot: frame 100/112 at 34.70002s
+[hyperframes] snapshot: frame 101/112 at 34.76669s
+[hyperframes] snapshot: frame 102/112 at 34.90002s
+[hyperframes] snapshot: frame 103/112 at 35.33335s
+[hyperframes] snapshot: frame 104/112 at 36.50002s
+[hyperframes] snapshot: frame 105/112 at 36.53335s
+[hyperframes] snapshot: frame 106/112 at 36.56669s
+[hyperframes] snapshot: frame 107/112 at 36.63335s
+[hyperframes] snapshot: frame 108/112 at 36.70002s
+[hyperframes] snapshot: frame 109/112 at 36.83335s
+[hyperframes] snapshot: frame 110/112 at 37.06669s
+[hyperframes] snapshot: frame 111/112 at 37.56669s
+[hyperframes] snapshot: frame 112/112 at 38.00002s
    Revision: none (inputs-changed)
    State: /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/.hyperframes/video-state.json
 
-◇  74 snapshots saved to /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap
+◇  112 snapshots saved to /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-0.2s.png
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-0.6s.png
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-1.033s.png
@@ -154,3 +192,41 @@
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-28.567s.png
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-28.867s.png
    /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-29.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.233s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.267s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.3s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.367s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.4s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.433s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.467s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.533s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.567s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.633s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-31.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.533s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.567s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.6s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.633s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.667s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.733s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.8s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-32.9s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-33.167s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-34.6s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-34.633s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-34.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-34.767s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-34.9s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-35.333s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.5s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.533s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.567s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.633s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.7s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-36.833s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-37.067s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-37.567s.png
+   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v03/review/snap/at-38s.png

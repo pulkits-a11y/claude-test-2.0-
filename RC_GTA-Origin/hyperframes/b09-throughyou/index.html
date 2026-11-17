@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    <!-- B9 b09-throughyou v03 (REVISION_v03: caption lockups, no v02 zooms; else as v02): beat 202f (6.733s) + 6f handle each end = 214f.
+    <!-- B9 b09-throughyou v04 (REVISION_v04 #10-#12: B-roll cut-ins, strip glow flashes; v03 lockups): beat 202f (6.733s) + 6f handle each end = 214f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.9333s (local frames 6 .. 208).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/.
 
@@ -23,10 +23,13 @@
          animations, the broll is perfect": the v01 path diagram = dot, dotted path, red arrow and its TRACK are gone).
          Local frame = beat frame + 6.
          beat     local    what
-         -6..0    0..6     head handle: transparent (Tesseract L1 R9.1 under it), no caption yet
-         0        6        X1 hard cut from B8's black. Tesseract L1 R9.1 314.1 s+ (crop 536:302:260:108, ~60% sat, 105%,
-                           soft edges; v03 framing = v01's held-shot push 100 -> 104%, sine.inOut, no punches (REVISION_v03
-                           note 13); tesseract_shots.json). HF overlay = T1 captions only.
+         -6..0    0..6     head handle: transparent (Tesseract footage under it), no caption yet
+         0..69    6..75    v04 (REVISION_v04 #10): three quick police-chase cut-ins, Tesseract L1 shots (tesseract_shots.json,
+                           105%, soft edges, grade b9-sat60, static framing), X1 cuts on the voice: f0 GTA 2 police cars at a
+                           junction (R9.3 42.0 s) / f21 "stop": GTA 1 4K police car tailing the van (R9.4 540.55 s) / f49 "and":
+                           GTA 1 4K police car ramming the van (R9.4 573.2 s)
+         69..120  75..126  X1 on "to": the GTA 1 L1 shot R9.1 316.4-318.1 s (crop 536:302:260:108; #11 "you an keep this"), push
+                           100 -> 104% sine.inOut, ending where strip 1 starts. HF overlay over all of it = the caption lockups.
          1..95    7..101   v03 T1 caption lockups (kit RCK.type.lockups, ref 1, centred): "The police cars [stop] following
                            you" / "and [start] trying" / "to drive [straight]* through you." (words hard-cut in on
                            their frames; "straight" pops + blurs in)

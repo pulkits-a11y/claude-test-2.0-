@@ -5,7 +5,7 @@
   "R9.3",
   "R9.5"
  ],
- "note": "The three L3 strips (this composition, beat f120-202, continuing into b10-fun until 'fun'): R9.1 = strip 1 'They ram.' (SUBSTITUTE for the missing R9.2: the GTA 1 ram that ends the L1 shot, continued in the strip), R9.3 = strip 2 GTA 2 chase, R9.5 = strip 3 London 1969. The L1 GTA 1 chase under the T1 captions (beat f0-120) is Tesseract-owned (tesseract_shots.json, R9.1 314.1-318.1 s). v02: windows unchanged (the strips start on the new 'They' frames, media 0 = these in-points). R9.4 (GTA 1 in 4K, listed in the plan's B9 B-roll) is not placed.",
+ "note": "The three L3 strips (this composition, beat f120-202, continuing into b10-fun until 'fun'): R9.1 = strip 1 'They ram.' (SUBSTITUTE for the missing R9.2: the GTA 1 ram that ends the L1 shot, continued in the strip), R9.3 = strip 2 GTA 2 chase, R9.5 = strip 3 London 1969. Under the T1 captions everything is Tesseract-owned (tesseract_shots.json): v04 cut-ins R9.3 42.0-42.7 s (f0-21), R9.4 540.55-541.48 s (f21-49) and R9.4 573.2-573.87 s (f49-69), then the GTA 1 L1 shot R9.1 316.4-318.1 s (f69-120). v02: windows unchanged (the strips start on the new 'They' frames, media 0 = these in-points). R9.4 (GTA 1 in 4K) is used by two Tesseract cut-ins (v04), not synced here.",
  "moments": {
   "R9.1": {
    "in": 318.1,

@@ -15,6 +15,20 @@
       /* v03 L4 (note 8): the kit's ink variant (.rc-l4--ink, screens.css v03): the frosted (gaussian-blur) tiles are DARK
          tiles in the dark-card ink (--card-bg #0A0A0A, not pure black) with the faint 1 px grid line; a cleared tile
          (opacity 1 -> 0) shows the sharp footage. No frosted copy any more. */
+      /* v04 (review #5): the GTA VI logo lockup. Logo 462.5 x 360 px (the 848 x 660 cut-out downscaled), centred on (960, 540);
+         small words (Coolvetica 60 px, the kit's lockup size) on one line each side, 40 px from the logo's ink, their cap
+         centre on y 540 (row top = 540 - 0.195 em - 0.336 em). Left row right-aligned (ends x 690), right row from x 1230. */
+      .b01-vi { display: block; }
+      .b01-vi__left, .b01-vi__right { position: absolute; top: 508.1px; font-size: 60px; line-height: 60px; height: 60px;
+        /* the kit glow + a wider dark halo underneath: these words sit left / right of centre, over the bright L3 cells
+           and the sunlit street of the GTA 6 shot (check measured 1.9-2.5:1 with the kit glow alone) */
+        text-shadow: var(--text-glow), 0 0 16px rgba(0, 0, 0, 0.6), 0 0 38px rgba(0, 0, 0, 0.45); }
+      .b01-vi__left { right: 1230px; text-align: right; }
+      .b01-vi__right { left: 1230px; }
+      .b01-vi__logo { position: absolute; left: 728.7px; top: 360px; width: 462.5px; height: 360px; }
+      #b01-vi-pop { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      #b01-vi-img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain;
+        filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.55)); }
     </style>
   </head>
   <body>
@@ -30,8 +44,9 @@
                    frame over 6f (full on 61 = S01), held full frame with a push 100 -> 104% (61 -> 140, sine.inOut),
                    held at 104% through the tail handle; M1 stars pop from "have"@93; on "cops?"@125: X9 wash and the
                    keyword's pop + blur-in (no picture key punch any more)
-           captions: v03 centred lockups (RCK.type.lockups): [Why] does / every GTA, even [GTA 6,] / have you running |
-           from the [cops?]*  (words appear on their spoken frames, only "cops?" pops + blurs in; hard cut out on 140)
+           captions: v03 centred lockups (RCK.type.lockups); v04 (review #5): [Why] does / "every GTA, even" + the GTA VI LOGO
+           (pops + blurs in on "GTA" 69) + "have you running" / from the [cops?]*  (words appear on their spoken frames;
+           only the logo and "cops?" pop + blur in; hard cut out on 140)
          Footage: assets/footage/R1.2.mp4 = one cut window of the original, 8.2-32.8 s (footage.json). L4 plate uses
          media-start 23.4 (= 31.6 s, two marked police cars); #b01-gta6 uses media-start 0 (= 8.2 s).
          Handoff: B2 opens with X6 OUT on this same R1.2 shot: B2 local 0 = this local 134, so B2's media-start is
@@ -88,10 +103,20 @@
       <!-- ===== v03 captions (REVISION_v03 notes 11, 16, 17): centred lockups like ref 1 (RCK.type.lockups, kit v03): small
            Coolvetica words + one big Coolvetica Italic keyword, ink centred on (960, 540); every word appears on its own
            spoken frame (a hard cut, no animation); only the starred keyword "cops?" pops + blurs in (6f expo.out); lockups
-           replace each other with hard cuts; the last one cuts out on the boundary (local 140). Outside any camera. ===== -->
+           replace each other with hard cuts; the last one cuts out on the boundary (local 140). Outside any camera.
+           v04: [Why] does (7-26) / every GTA, even + GTA VI LOGO + have you running (26-114) / from the [cops?]* (114-140) ===== -->
       <div id="b01-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="0.6333" data-track-index="20" style="--rc-lk-c: 147.19px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span class="rc-lw" data-rc-f="7">Why</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 15.3px"><span class="rc-lw" data-rc-f="15">does</span></div></div></div>
-      <div id="b01-lk-2" class="clip rc-lk" data-start="0.8666" data-duration="2.2334" data-track-index="20" style="--rc-lk-c: 108.02px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="26">every</span> <span class="rc-lw" data-rc-f="40">GTA,</span> <span class="rc-lw" data-rc-f="55">even</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -20.39px"><span class="rc-lw" data-rc-f="69">GTA</span> <span class="rc-lw" data-rc-f="80">6,</span></div></div></div>
-      <div id="b01-lk-3" class="clip rc-lk" data-start="3.1000" data-duration="1.5666" data-track-index="20" style="--rc-lk-c: 137.8px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="93">have</span> <span class="rc-lw" data-rc-f="98">you</span> <span class="rc-lw" data-rc-f="105">running</span></div><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: 7.2px"><span class="rc-lw" data-rc-f="114">from</span> <span class="rc-lw" data-rc-f="120">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="125">cops?</span></div></div></div>
+      <!-- v04 (review #5): on "every GTA, even GTA 6, have you running" the official GTA VI logo (cut out of Rockstar's end
+           card, R17.4 77.5 s: 04_Broll/B01/GTA6-logo__cutout.png) stands in the middle for the words "GTA 6,", popping +
+           blurring in on "GTA" (69, the kit's starred-word pop); small words on its left "every GTA, even" (26 / 40 / 55)
+           and on its right "have you running" (93 / 98 / 105), each appearing on its spoken frame (hard cuts); hard cut to
+           the "from the cops?" lockup on 114. Words are .rc-lw (wired by T.lockupsWire); white + the kit glow. -->
+      <div id="b01-vi" class="clip rc-lk b01-vi" data-start="0.8666" data-duration="2.9334" data-track-index="20" style="z-index: 40">
+        <div class="rc-lk__row b01-vi__left"><span class="rc-lw" data-rc-f="26">every</span> <span class="rc-lw" data-rc-f="40">GTA,</span> <span class="rc-lw" data-rc-f="55">even</span></div>
+        <div id="b01-vi-logo" class="b01-vi__logo"><div id="b01-vi-pop" data-rc-f="69"><img id="b01-vi-img" src="assets/logo/GTA6-logo__cutout.png" alt="Grand Theft Auto VI logo"></div></div>
+        <div class="rc-lk__row b01-vi__right"><span class="rc-lw" data-rc-f="93">have</span> <span class="rc-lw" data-rc-f="98">you</span> <span class="rc-lw" data-rc-f="105">running</span></div>
+      </div>
+      <div id="b01-lk-cops-1" class="clip rc-lk" data-start="3.8000" data-duration="0.8666" data-track-index="20" style="--rc-lk-c: 104.2px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="114">from</span> <span class="rc-lw" data-rc-f="120">the</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="125">cops?</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -108,6 +133,9 @@
 
       // v03 captions: every .rc-lk above; plain words hard-cut on their data-rc-f frame, the starred "cops?" pops + blurs in.
       T.lockupsWire(tl);
+      // v04 (review #5): the GTA VI logo pops + blurs in on "GTA" (local 69) with the kit's starred-word pop (POP3: full
+      // opacity on its frame, blur 20 px -> 0, 92 -> 100%, 6f expo.out); it holds to the hard cut on "from" (114).
+      T.wordPops(tl, '#b01-vi-logo', null);
 
       // L4 (local 0-26), v03 (note 8): all 12 tiles are dark (dark-card ink); the two centre tiles clear from dark to the
       // footage, one per spoken word, 3f each (power2.out), seeded order ("Why" 7, "does" 15): seed 2 = tiles 5 then 6

@@ -10,6 +10,38 @@ Proof: `hyperframes/_demo-screens/` plays every item in sequence, built exactly 
 `assets/kit/`, footage via `tools/sync_footage.py`); named stills + zoom crops in `_demo-screens/review/`.
 L1, L2, L10 footage framings are Tesseract-owned; L8 (CRT) and L9 (calendar) are in `KIT_motifs.md`.
 
+## v04 (REVISION_v04.md notes 7, 12): strip glow flash, card scanlines. Read this first
+
+Additions on top of v03. Proof: `hyperframes/_demo-v03/` section K4 (f1090-1150): `review/snap/f1095_K4_s1-pop-f0.png`,
+`f1096_K4_s1-f1.png`, `f1097_K4_s1-peak.png`, `f1099_K4_s1-f4.png`, `f1101_K4_s1-f6.png`, `f1105_K4_s1-gone.png`,
+`f1112_K4_s2-peak.png`, `f1127_K4_s3-peak.png`; `review/check.json` 0 errors.
+
+### `RCK.screens.glowFlash(tl, target, at, opts)`: B9 "glow flash for each rectangle"
+
+A rectangle pops in with a short white glow flash: an overlay (`.rc-flash`, added inside the target: white bloom + a
+40 px inner edge glow) and the target's own outer glow (box-shadow 46 px, spread 4 px, white 85%) rise over `inF` (2f,
+power2.out) and fade over `outF` (6f, power2.out): 8f in all, nothing linear, deterministic. Put `at` on the pop:
+```js
+const S = RCK.screens;
+POP.forEach((t, i) => {
+  S.gridPop(tl, '#b09-s' + (i + 1), f(t), { punch: 1.15 });   // unchanged
+  S.glowFlash(tl, '#b09-s' + (i + 1), f(t));                   // v04: the flash on the same frame
+});
+S.glowFlash(tl, '#b09-s2', f(t), { outF: 8, alpha: 0.6, peak: 0.8 });   // softer / longer
+```
+`opts`: `inF` (2), `outF` (6), `peak` (overlay opacity, 1), `glow` (outer radius px, 46), `spread` (4), `alpha` (0.85),
+`inEase`, `ease`. Works on any positioned box (a static one is made `position: relative`); the overlay is clipped by
+the cell's `overflow: hidden`, the outer glow spills over the 8 px gutter. Measured (K4 strip 1, pop f1095): f1095
+cell invisible (gridPop frame k), f1096 bright white bloom, f1097 peak (strip washed white at the edges, glow on the
+gutter), f1099 / f1101 fading, f1105 gone.
+
+### Scanlines in the dark grounds (note 7)
+
+`.rc-l5__ground` (and `.rc-card`, `.rc-t3`, full-frame `.rc-ink`, `.rc-t5`; KIT_type.md v04) carry the static 9 px CRT
+line texture (`--card-scan`); `rc-noscan` removes it on one element. L12 grounds, L3 grounds and footage have none.
+
+---
+
 ## v03 (REVISION_v03.md notes 8, 12, 13): camera back to v01, dark grounds, ink tiles. Read this first
 
 v03 overrides v02 where they conflict; the v02 / v01 sections below still apply otherwise. Proof: `hyperframes/_demo-v03/`
