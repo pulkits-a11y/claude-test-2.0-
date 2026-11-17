@@ -84,3 +84,8 @@
 [hyperframes] snapshot: frame 80/118 at 19.13335s
 [hyperframes] snapshot: frame 81/118 at 19.20002s
 [hyperframes] snapshot: frame 82/118 at 19.26669s
+   ⚠ video frame injection failed at 19.3s — <video> elements will appear black/stale in this snapshot
+   Revision: none (inputs-changed)
+   State: /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/_demo-v05/.hyperframes/video-state.json
+
+✗ Snapshot failed: Timed out after waiting 30000ms

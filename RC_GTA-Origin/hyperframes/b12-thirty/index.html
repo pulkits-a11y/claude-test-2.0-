@@ -12,30 +12,29 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      /* v05: the 12 overrun cells in the doc's danger red #E3262B (kit: siren red #E3262E) */
+      #b12-cal .m3-sq.m3-over .m3-fill { background: #E3262B; }
+      .b12-bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; opacity: 0.25; }
     </style>
   </head>
   <body>
-    <!-- B12 b12-thirty v03 (REVISION_v03: dark card, caption lockups, no v02 zooms; calendar entrance + position as v02): beat 78f (2.600s) + 6f handle each end = 90f.
-         Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.8000s (local frames 6 .. 84).
-         Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B12 p.25).
-
-         The B4 L9 / M3 calendar returns: SAME kit component and geometry as b04-racenchase (64 px squares, 8 px gaps,
-         6 columns, grid centred on x 960; v03: the dark card + light squares, kit), extended 18 -> 30. v02 (note 6: "add a opening animation where
-         it comes into the screen ... and move it a bit more above to the center"): the calendar sits higher (grid top y 400,
-         was 520) and comes into the screen with the kit's calendarIn (rises 90 px + scales 90 -> 100% + fades in, 12f
-         expo.out) from local 5, so the beat's first frame already shows it arriving.
-         beat f0     18 squares filled (light, v03 dark card) + the counter "18" (Coolvetica 120 px) at the grid's
-                     top-left (kit counterPos "left": right edge 32 px left of the grid, digit top on the grid top);
-                     v03 lockup "Of course," (Of 6, course, 10; above the calendar, ink centred on y 230) until "turn".
-         beat f50    "turn": 12 more squares appear and fill siren red #E3262E, 2f apart (local 56 ... 78) while the counter
-                     rolls 18 -> 30 (12 odometer rolls, 2f each, easeInOutQuad), landing on 30 on "thirty" (local 71);
-                     v03 lockup "turn into [thirty.]*": turn 56, into 67 hard-cut in, above the grid (ink centre y 230).
-         beat f65    "thirty": counter lands + the starred keyword "thirty." pops + blurs in; S11's hit lands here
-                     (Tesseract, cues.json). The lockup hard-cuts out on the beat end (local 84; no exit animation).
-         Camera (v03, REVISION_v03 note 13: v01's camera, eased): the calendar pushes 100 -> 104% across the composition
-         (sine.inOut), no keyword punch; captions stay outside it.
-         No dates on the calendar (plan p.21/p.40). Optional R12.1 clock time-lapse: skipped while it is a stand-in
-         (STORYBOARD B12); see BEAT_NOTES.md. Tesseract owns all audio. -->
+    <!-- B12 b12-thirty v05 phase 1 (REVISION_v05 lane 3 + client override; doc 46.5-49.5): beat 78f (2.600 s) + 6f handle
+         each end = 90f. Local frame = beat frame + 6. Words: words.json (v05; local frames unchanged, "course," on 9).
+         The B4 L9 / M3 calendar returns (same kit component), now CENTRED and LARGER (doc): 88 px cells, 11 px gaps,
+         6 x 5 = 583 x 484 px, grid x 876-1459 / y 413-897 (its left edge leaves the room the 330 px counter needs so that
+         counter + grid are centred as a group; the lockups sit above it, ink centred on y 276). Kept from v02 (client
+         liked it): the opening animation (kit calendarIn from local 5).
+         Behind: the dark card + the DMA office (R3.8, a developer playtesting at a CRT) full frame at 25%, blurred
+         (media-treatment blur at its maximum), the doc's "blurred, darkened office footage (25%) behind the whole stretch".
+         local  6-17   the calendar comes in (18 cells filled, light grey) + counter 18
+         local  9      "Of course," appears as ONE unit on "course," (doc: no lone "Of")
+         local 26-55   "the eighteen months" (every spoken word on screen, REVISION_v05 G10)
+         local 56      "turn into" + "thirty." (tier B, pops + blurs in on 71, white; U2)
+         local 65-70   the 12 extra cells fill #E3262B ROW BY ROW, one row every 3 f (2 cells a frame): 65-67 / 68-70
+         local 71      the counter lands on 30 (PHASE 1: the kit v04 odometer, Coolvetica 120 px; PHASE 2: kit v05
+                       slot-machine counter, Coolvetica Italic 330 px, digits blur-roll 14 f from 57, thump on 71)
+         camera: the calendar pushes 100 -> 108% across the composition (easeInOutSine; doc pacing rule 3: a 3 s card).
+         cues.json: ticks per word, whoosh + thump on "thirty.", accelerating ticks into the red rows, thump_low on 71. -->
     <div id="root" data-composition-id="b12-thirty" data-start="0" data-duration="3.0000000" data-width="1920" data-height="1080">
 
       <!-- the card (history and facts), whole composition: v03 dark card (REVISION_v03 note 12, ref 3; kit .rc-card =
@@ -43,28 +42,24 @@
            (light squares and counter with the glow, the 12 overrun squares stay siren red) -->
       <div id="b12-card" class="clip rc-card rc-full" data-start="0.0000" data-duration="3.0000" data-track-index="1" style="z-index: 1"></div>
 
-      <!-- OPTIONAL R12.1 clock time-lapse "faint behind the card at 10%" (plan p.25): skipped while R12.1 is a stand-in
-           (STORYBOARD B12). To use the real clip: add "R12.1" to footage.json, run tools/sync_footage.py, uncomment the
-           line below (clip at 10% opacity over the card, under the calendar), re-check, re-render.
-      <video id="b12-clock" class="clip rc-full" src="assets/footage/R12.1.mp4" data-start="0.0000" data-duration="3.0000" data-track-index="2" muted playsinline style="z-index: 2; opacity: 0.1; object-fit: cover"></video>
-      -->
+      <!-- v05: blurred, darkened office footage behind the stretch (doc 46.5): R3.8 61.5-64.5 s, full frame (cover), 25%
+           opacity over the dark card, media-treatment blur 1 (the maximum, ~22 px), saturation -30% -->
+      <video id="b12-bg" class="clip b12-bg" src="assets/footage/R3.8.mp4" data-start="0.0000" data-duration="3.0000" data-media-start="0" data-track-index="2" muted playsinline data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.3},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" style="z-index: 2; --hf-color-grading-blur: 1"></video>
 
-      <!-- untimed camera wrapper (kit .rc-cam): #b12-cam = v01's slow held-shot push (100 -> 104%, eased; v03 note 13
-           removed v02's keyword punch on "thirty" and its nested wrapper). Only the calendar is inside; the captions are not. -->
+      <!-- untimed camera wrapper (kit .rc-cam): #b12-cam = the slow held-shot push (v05: 100 -> 108%, eased; no punches).
+           Only the calendar is inside; the captions and the background are not. -->
       <div id="b12-cam" class="rc-cam" style="z-index: 3">
         <div id="b12-cal" class="clip m3-cal" data-start="0.0000" data-duration="3.0000" data-track-index="3"></div>
       </div>
 
-      <!-- v03 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), white + glow on the dark
-           card, centred on x 960. The calendar holds the frame centre (its v02 place, kept), so both lockups sit above it
-           with their ink centred on y 230 (lowest ink, the "y" of "thirty.", ~365 px, clears the grid top: 400 -> ~394.5
-           at the 104% push, by ~29 px). "Of course," = one centred line at the dark-card size (76 px, kit card: true), Of 6, course,
-           10, held until "turn" (local 56) as v02; then "turn into" small above-left + "thirty." the big Coolvetica Italic
-           keyword, starred: turn 56 / into 67 hard-cut in, "thirty." pops + blurs in on local 71 (= the counter landing on
-           30 + S11's hit), held to the beat end (local 84). Generated with T.lockups(w, ['Of course,'], { from: 0, end:
-           56/30, y: 230, card: true }) and T.lockups(w, ['turn into [thirty.]*'], { from: 5, end: 84/30, y: 230 }). -->
-      <div id="b12-lk-of-1" class="clip rc-lk" data-start="0.2000" data-duration="1.6666" data-track-index="9" style="--rc-y: 230px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="6">Of</span> <span class="rc-lw" data-rc-f="10">course,</span></div></div></div>
-      <div id="b12-lk-1" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="4" style="--rc-y: 230px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
+      <!-- caption lockups (kit RCK.type.lockups, white + glow on the dark card; phase 2 regenerates them with kit v05),
+           centred on x 960, ink centred on y 276 above the grid: "Of course," (ONE unit on "course,", local 9) /
+           "the eighteen months" (26 / 32 / 44) / "turn into [thirty.]*" (56 / 67; "thirty." pops + blurs in on 71 with
+           the counter landing). Generated with T.lockups(w, ['Of course,', 'the eighteen months', 'turn into
+           [thirty.]*'], { from: 0, end: 84/30, y: 276, card: true }); "Of" moved from 6 to 9 by hand (one unit). -->
+      <div id="b12-lk-1" class="clip rc-lk" data-start="0.3000" data-duration="0.5666" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="9">Of</span> <span class="rc-lw" data-rc-f="9">course,</span></div></div></div>
+      <div id="b12-lk-2" class="clip rc-lk" data-start="0.8666" data-duration="1.0000" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="26">the</span> <span class="rc-lw" data-rc-f="32">eighteen</span> <span class="rc-lw" data-rc-f="44">months</span></div></div></div>
+      <div id="b12-lk-3" class="clip rc-lk" data-start="1.8666" data-duration="0.9334" data-track-index="9" style="--rc-y: 276px; --rc-lk-c: 104.2px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="56">turn</span> <span class="rc-lw" data-rc-f="67">into</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="71">thirty.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -76,28 +71,30 @@
       const tl = gsap.timeline({ paused: true });
       const T = RCK.type, M = RCK.motifs, C = RCK.cam;
       const L = (n) => n / 30;                       // local frame -> composition seconds (local = beat frame + 6)
-      // v02 word onsets (words.json comp_t -> nearest frame, local): Of 6, course, 10, the 26, eighteen 32, months 44,
-      // turn 56, into 67, thirty. 71.
+      // word onsets (words.json v05, local): Of 6, course, 9, the 26, eighteen 32, months 44, turn 56, into 67, thirty. 71.
       const TURN = 56, THIRTY = 71, END = 90;
 
-      // ---- M3 / L9: the B4 calendar, 18 filled + counter 18 (same component and default geometry as B4), placed
-      //      higher (note 6): grid top y 400 (v01 520) ----
-      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left', y: 400 });
+      // ---- M3 / L9: the B4 calendar, 18 filled + counter 18 (same kit component), v05: centred and larger (doc): 88 px
+      //      cells, 11 px gaps, grid x 876 / y 413 (583 x 484 at 30 cells) ----
+      const cal = M.calendarInit('#b12-cal', { slots: 18, filled: 18, counter: 18, counterPos: 'left', sq: 88, gap: 11, x: 876, y: 413 });
 
       // ---- opening animation (note 6): the calendar comes into the screen (kit calendarIn: +90 px -> 0, 90 -> 100%,
       //      12f expo.out, opacity 0 -> 1 over 6f power2.out) from local 5: the beat's first frame (local 6) shows it
       //      arriving (42%, 94.4%, +51 px), landed by local 17 ----
       M.calendarIn(tl, '#b12-cal', L(5));
 
-      // ---- the 18 -> 30 overrun, as v01: squares from "turn" 2f apart, the counter landing on "thirty" ----
-      // RCK.motifs.calendarExtend ties one counter roll to each square (2f apart), which would land 30 on local 80, not on
-      // "thirty" (71). So the counter is detached while the kit adds the squares, then rolled on its own schedule with the
-      // kit's own roll (each digit strip slides up 1 em over 2f, easeInOutQuad = the v02 kit's counter ease): 12 rolls
-      // spread evenly from "turn" (56) to local 69, the last one landing on 71.
+      // ---- the 18 -> 30 overrun: v05 (doc) the 12 extra cells fill #E3262B ROW BY ROW, one row every 3 f (2 cells a
+      //      frame: row 4 on 65-67, row 5 on 68-70), right before the counter lands on "thirty" (71) ----
+      // PHASE 1 counter = the kit's odometer (each digit strip slides up 1 em over 2f, easeInOutQuad), 12 rolls from "turn"
+      // (56), the last one landing on 71. PHASE 2: kit v05 slot-machine counter (Coolvetica Italic 330 px, blur-roll 14 f).
       const counter = cal.counter;
-      cal.counter = null;
-      M.calendarExtend(tl, '#b12-cal', L(TURN), { to: 30, stepF: 2, grow: 'with-fill' });   // red squares 19-30: local 56, 58 ... 78
-      cal.counter = counter;
+      const ROW4 = 65, EPS = 1e-4;
+      for (let i = 18; i < 30; i++) {                      // cells 19-30 appear filled red, 2 a frame: local 65, 65, 66, 66 ... 70, 70
+        const k = ROW4 + Math.floor((i - 18) / 2);
+        tl.set(cal.squares[i], { opacity: 1 }, L(k) - EPS);
+        tl.set(cal.fills[i], { opacity: 1 }, L(k) - EPS);
+      }
+      cal.filled = cal.slots = 30;
       const rollStarts = [56, 57, 58, 60, 61, 62, 63, 64, 65, 67, 68, 69];                   // local frames; +2f = 30 on 71
       let v = 18;
       rollStarts.forEach((s) => {
@@ -110,12 +107,12 @@
       });
       cal.value = v;   // 30
 
-      // ---- v03 caption lockups: plain words hard-cut in on their frames, "thirty." pops + blurs in (kit lockupsWire) ----
+      // ---- caption lockups: plain words appear on their frames, "thirty." pops + blurs in, white (kit lockupsWire; U2) ----
       T.lockupsWire(tl);
 
-      // ---- camera (v03, note 13 "remove the random zooms": back to v01's camera = the held-card push 100 -> 104% across
-      //      the composition, as B4's calendar, now easeInOutSine about the frame centre; no keyword punch) ----
-      C.push(tl, '#b12-cam', 0, { until: L(END), from: 1, to: 1.04 });
+      // ---- camera: the held-card push 100 -> 108% across the composition (doc pacing rule 3: this card holds 3 s; U3
+      //      keeps slow eased pushes), easeInOutSine about the frame centre; no punches ----
+      C.push(tl, '#b12-cam', 0, { until: L(END), from: 1, to: 1.08 });
 
       window.__timelines["b12-thirty"] = tl;
     </script>

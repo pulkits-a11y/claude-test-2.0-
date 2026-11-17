@@ -1,5 +1,84 @@
 {
- "events": {
-  "thirty": 65
- }
+ "events": {},
+ "word_pops": [
+  3,
+  20,
+  26,
+  38,
+  50,
+  61
+ ],
+ "key_words": [
+  65
+ ],
+ "sfx": [
+  {
+   "f": 51,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 54,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 56,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 58,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 59,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 60,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 61,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 62,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 63,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 64,
+   "name": "tick",
+   "gain_db": -22,
+   "note": "accelerating ticks: counter roll from 'turn' + the red rows (local 65-70 = beat 59-64, 2 cells a frame)"
+  },
+  {
+   "f": 65,
+   "name": "thump_low",
+   "note": "the counter lands on 30 (= 'thirty.', which also gets its key-word whoosh + thump)"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (REVISION_v05 S; beat frames, f0 = local 6). word_pops: 'Of course,' (one unit on 'course,', beat 3), the / eighteen / months, turn / into. key_words: 'thirty.' (65). The v04 S11 count-up event is dropped: the accelerating ticks + thump replace it. The office footage behind is a 25% blurred background, not full-frame archival."
 }
