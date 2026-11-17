@@ -1,5 +1,28 @@
 # B17 The loop - `b17-loop` (beat 196f = 6.533 s incl. the 46f logo tail; composition 208f with 6f handles)
 
+## v05 (REVISION_v05.md lane 4 with the CLIENT OVERRIDE / section U; doc 1:11.5-1:17.0): what changed
+
+Beat **168f** (5.600 s; the logo holds 27 f after "now?", then a hard cut to B18), composition 180f = **data-duration
+6.0**. Frames = beat frames (local = beat + 6). Kit v05, HyperFrames 0.9.52.
+
+| What | v04 | v05 | Why |
+|---|---|---|---|
+| Custody shots, beat -6..92 | Tesseract (Trailer 1 a/b/c) | inside this composition (R17.1 Trailer 1, client Drive library): window (-6..36), officer (36-54), facing (54-92); L2 bars slide in over 8 f; push 100 -> 104 % then the doc's slow push 100 -> 110 % (36-92) on plates and cut-outs together | [DEPTH] needs the plates here |
+| [DEPTH] "GTA 6?" | lockup low | "And [GTA 6?]": key "GTA 6?" (Coolvetica Italic 240) in the window light, its "G" ~60 % behind her head / neck (plate -> key copy -> remove-background cut-out); "And" in front | doc 71.5 |
+| [DEPTH] "Lucia" | lockup low | "It opens with [Lucia] already caught.^" right of her (box centre x 1505): "Lucia" (190) partly behind her screen-right shoulder, "already caught." on the green wall, "caught." static pink | doc 72.5 |
+| Depth method | | each depth lockup = two copies of the same kit lockup: the KEY copy (other rows hidden + unwired) between plates (z 1) and cut-outs (z 3), the FRONT copy (key row hidden) at z 40; a dark halo (`.b17-halo`, as B2) over the bright window light | G6 |
+| Stars | M1 pop-in, under the new bars | **glitch in** 3 f apart from "GTA" (7-19) + a `ding` each, on the top letterbox bar (z 35), blink to 92 | U12 |
+| Chase | three shots | two Tesseract shots (R17.2 @ 7.2 to 109, R17.4 @ 47.2 to 129; swipe 109), "So who's chasing who" tier A low (y 880, halo: the police cars fill the middle) | doc 74.5 |
+| "now?" | black, 170 px, T10 break | hard cut to the kit **dark card** (R17.4's police-car shot 46.73-48.23 s, blurred 40 px, darkened, 25 %); **"now?" hero 330 px** low (ink centre y 890), pop + blur-in (no siren flicker, U2) | REVISION / U2 |
+| Logo | R17.4 end card video, push | **B1's cut-out at B1's box** (462.5 x 360 centred) with **B1's exact logoSlam call** (from 150 -> 94 -> 100 % / 6 f on the end of "now?" 141, impact 145: 85 % flash under the logo, flash-star, 9 px shake 6 f with B1's 1.2 % overscan); X4 tear / T10 break gone | doc 75.5 "identical to hook beat 3 (bookend)" |
+
+`cues.json` (final): events {now 129, music_stop 141}; word_pops [1, 36, 39, 48, 62, 74, 97, 100, 109, 123]; key_words [7,
+14, 54, 129]; dings 7/10/13/16/19, swipe 109, reverse_cymbal (ends) + impact_boom + sub_drop 141. `footage.json`: R17.1,
+R17.4 (the loop). `tesseract_shots.json`: chase-1 / chase-2, `"timing": "v05"`. Check: 0 errors. Snapshots + chase mock-ups:
+`review/v05/`. Not rendered.
+
+---
+
 ## v04 (REVISION_v04.md, Frame.io review of v03): what changed
 
 Same beat, composition, words, lockups and cues as v03. The overlay (lockups, stars, "now?", logo, X4) is unchanged; the

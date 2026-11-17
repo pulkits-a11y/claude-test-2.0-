@@ -1,5 +1,23 @@
 # B14 Every GTA since: beat notes (b14-since)
 
+## v05 (REVISION_v05.md lane 4 with the CLIENT OVERRIDE / section U; doc 0:56.0-1:02.0): what changed
+
+Same beat (177f) and composition (189f = **data-duration 6.3**). Still a transparent overlay over Tesseract's footage
+(except the four X9 embed frames). Kit v05, HyperFrames 0.9.52.
+
+| What | v04 | v05 | Why |
+|---|---|---|---|
+| Captions | lockups ("that [chase.]" ...) only after the burst | six kit lockups, every spoken word on screen and on its frame (U2): "And every [GTA] since" (1-26), "is built around" (33-47), "that [chase.]" (59 / 66), "The [wanted stars.]*" (91, y 800; "stars." pops), "The [sirens.]" (126 / 132), "The [running.]" (153 / 157) | G10, U1 / U2 |
+| Burst labels | L10 year tags | kit `.fx-year` labels 2001 / 2002 / 2004 / 2008 / 2013 (Coolvetica 60 px, bottom-left, B1's tiles); 2013 stays on the GTA V clips (accepted) | doc, "same as B1's tiles" |
+| Stars | M1 pop-in | **glitch in** one by one 3 f apart (91-112, clean by 118) + a `ding` each | U12 |
+| Footage (Tesseract) | one GTA V chase shot | the chase split at f91: B14-gta5-chase-stars f59-91 (R1.3 @ 107.0) + **B14-gta5-roadblock-stars** f91-126 (R1.3 @ 142.0), both pushed 100 -> 104 % eased; burst and police lights static; the escape exits X1 | "every phrase on its own cut" |
+| Sound | | a whip per burst cut (0, 12, 24, 36, 48, 59) | "a whoosh per cut" |
+
+`cues.json` (final): events {sirens 132, whip_mid 154}; word_pops [1, 9, 26, 33, 37, 47, 59, 91, 126, 153]; key_words
+[18, 66, 96, 108, 132, 157]; whips 0-59, dings 91-106. Check: 0 errors. Snapshots: `review/v05/`. Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes on v02): what changed
 
 Same beat (177f), composition (189f), words and cues (`{"sirens": 132, "whip_mid": 154}`) as v02; only what the notes ask

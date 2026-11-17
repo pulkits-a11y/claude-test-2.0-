@@ -1,5 +1,22 @@
 # B16 Started with a bug: beat notes (b16-bug-origin)
 
+## v05 (REVISION_v05.md lane 4 with the CLIENT OVERRIDE / section U; doc 1:07.5-1:11.4): what changed
+
+Beat (113f) and composition (125f = **data-duration 4.1666667**) unchanged. Kit v05, HyperFrames 0.9.52.
+
+| What | v03 / v04 | v05 | Why |
+|---|---|---|---|
+| VHS rewind | B14 -> B9 -> B4's page (R4.5 white page, L7 dim drawn here) | kept; `tools/make_rewind.py` now takes B4's page frames from **B4 itself** (lane 5's FINAL: dark page, S 1.5, -4 deg, 115 % -> 100 %, pink highlighter, yellow circle, "It's called"), rendered by the HyperFrames CLI from a throwaway temp copy of b04-racenchase: B4 local 45, 37, 29, 21, 13 run backwards, landing on B4 local 5 (100 %, no text) under the X7 dissolve. The L7 dim overlay and its zoom script are gone. B14 includes the roadblock shot | doc "keep the VHS-rewind transitions"; coordinator: re-run from B4's final framing |
+| After the rewind | black | GTA 1 top-down (R9.1 @ 129.4 s, B2's chase continued, B2's crop, darkened) revealed by the X7 leak | doc 69.0 "replace the black" |
+| Win95 callback | | B2's exact window (kit errorWindow 180 %, centred x 960 / y 360): **errorPop** beat 41 (error_chord), **errorCascade** 10 copies +36 / +27 px every 2 f from 47 (glitch_stutter), **errorSnapShut** on "bug." 95 (3 f, stepF 0.2, gone on 100; glitch_impact), **1-frame white flash** on 100 (as B2's 150) | doc "a full callback ... like hook beat 8"; lane 1: identical sounds |
+| Captions | v03 lockups | kit lockups: "So that's why you're always [running.]" (y 660, between B4's title and date during the landing), "The whole series started with a" tier A above the window stack (ink centre y 310), then **"bug." hero 450 px** (pop + blur-in on 95) with the kit **RGB split** (6 -> 2 px, never settles) where the first window was | U1 / U2, doc |
+
+`cues.json` (final): events {rewind 0, rewind_end 28}; word_pops [1, 2, 12, 14, 22, 50, 55, 64, 74, 86, 94]; key_words [29,
+95]; error_chord 41, glitch_stutter 47, glitch_impact 95. `footage.json`: R4.5 (source record), RT1, RT6, R9.1.
+`tesseract_shots.json`: no shots, `"timing": "v05"`. Check: 0 errors. Snapshots: `review/v05/`. Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes on v02): what changed
 
 Same beat (113f), composition (125f), words and cues (`{"rewind": 0, "rewind_end": 28, "bug": 95}`) as v02; the rewind and
@@ -200,6 +217,8 @@ lists every output frame's source and `inpoints_from`. Working clips: only R4.5,
   local 19, 22, 24, 25, 28 (`review/footage-pass/r91-recrop-L19-28.jpg`, `f024_b018_R9.1.png` re-shot): new crop, no
   watermark.
 * Re-run `tools/make_rewind.py` and re-render after any change to B9's L1 shot, B14's shots (e.g. if RT3 arrives) or B4's
-  R4.5 framing.
+  page. v05: B4's frames are no longer copied by hand (the old DOC constants and the L7 dim overlay are gone): the tool
+  snapshots a temp copy of `../b04-racenchase` itself (needs the HyperFrames CLI; B4's folder is only read). Last run:
+  v05 phase 2, after lane 5's FINAL B4 (dark page, S 1.5, -4 deg, push 115 %, highlighter, circle).
 
 Render: `npx --yes hyperframes@0.9.52 render . --format mov --workers 1 -o ../../05_GFX/renders/b16-bug-origin.mov`

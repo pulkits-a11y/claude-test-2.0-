@@ -1,5 +1,23 @@
 # B15 The proof — `b15-proof` (lane B)
 
+## v05 (REVISION_v05.md lane 4 with the CLIENT OVERRIDE / section U; doc 1:02.0-1:07.0): what changed
+
+Beat / composition unchanged (**data-duration 5.9666667**, 179f). Kit v05, HyperFrames 0.9.52.
+
+| What | v04 | v05 | Why |
+|---|---|---|---|
+| "Don't believe me?" | T1 line | kit **pill** (text whole on f6, box wipe), out through the pink pixel glitch (pillOut, beat 18) | doc "in a highlight pill"; U3: no punch-in |
+| Captions | T1 lines | kit lockups: "Open [GTA Online]* and buy an arcade." (pop on "GTA Online"), "One of the [machines] is called" | U1 / U2 |
+| Payoff | 115 % punch-in, 170 % zoom, RACE AND CHASE pill | **removed** (CLIENT OVERRIDE, U3 / U10); the plan's spotlight push 100 -> 118 % kept; the v04 highlighter swipe on "Race" (kit `fx-hl fx-hl--dark`, pink, screen) at 139; **yellow hand-drawn circle** round "RACE AND CHASE: STREET LEGAL" (kit annotate, 124, 9 f) | v04 #18-20, U3, U10 |
+| 10-f split (beat 140-150) | | right half = lane 5's shared dark title page (`05_GFX/shared/racenchase_title_page_dark_v05.jpg`, copied to `assets/page/`) framed exactly as B4 shows it (S 1.5, page point (1093, 540) on the half's centre, -4 deg) with B4's pink band on "Race'n'Chase"; 6 px white divider | doc 66.8 "split-screen of the 1995 design doc title" |
+| Interior B-roll | | the 4 interior cuts kept (R15.3 @ 229.4 / 156.0 / 232.0 / 160.6 s) | |
+
+`cues.json` (final): events {label 139, zoom_mid 154}; word_pops [0, 25, 51, 57, 63, 69, 94, 98, 102, 121, 124]; key_words
+[33, 39, 107]; hit 140. `footage.json`: R15.3, R4.5 (the shared still; `assets/footage/R4.5.png` kept for the credits trail
+only), R15.L1 (manifest-free). Check: 0 errors. Snapshots: `review/v05/`. Not rendered.
+
+---
+
 ## v04 (REVISION_v04.md, Frame.io review of v03): what changed
 
 Same beat (167f), composition (179f), words, lockups and cues as v03. Frames = beat frames (local = beat + 6).

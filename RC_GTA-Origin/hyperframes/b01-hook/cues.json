@@ -61,11 +61,11 @@
    "gain_db": -20
   },
   {
-   "f": 63,
+   "f": 67,
    "name": "impact_boom"
   },
   {
-   "f": 63,
+   "f": 67,
    "name": "sub_drop"
   },
   {
@@ -79,5 +79,5 @@
  ],
  "dropouts": [],
  "archival": [],
- "note": "v05 (beat frames, f0 = beat start = edit 0.0 s; B1 = 134 f; local = beat + 6). word_pops / key_words = T.lockupCues of the five lockups (Why 1 hero pop, does 9, every 20 -> its tick is the first tile tick, GTA, 34 key, even 49, have 87, you 92, running 99 key, from 108, the 114, cops? 119 key pop). The logo stands for the spoken \"GTA 6,\" (63 / 74): it gets the logo-slam pair impact_boom + sub_drop at the slam frame 63 (default levels, = B13 124 / B17 141, lane 4), no key-word whoosh. sfx: siren_whoop + sub_hit on f0 (doc beat 1); six ticks on the tile slams 20-30 rising in pitch (the library has 3 pitches: tick_3 1.2 kHz, tick_1 1.85 kHz, tick_2 2.65 kHz, two each, slightly louder up the run); siren_whoop 108 (doc 3.6 s, the cut to the SUV flip); metal_crunch 119 (the truck leaves the ground, with \"cops?\"). hook_cuts = the hard cuts: 20 grid, 90 the second GTA VI angle (3.0 s), 108 the SUV flip (the grid grow on 49 is a 6-frame move, not a cut). The 4-f dropout before \"Because\" is in b02-bug (f1). No archival footage. Legacy events dropped (gta6_cell_full / cops: superseded by the v05 lists)."
+ "note": "v05 (beat frames, f0 = beat start = edit 0.0 s; B1 = 134 f; local = beat + 6). word_pops / key_words = T.lockupCues of the five lockups (Why 1 hero pop, does 9, every 20 -> its tick is the first tile tick, GTA, 34 key, even 49, have 87, you 92, running 99 key, from 108, the 114, cops? 119 key pop). The logo stands for the spoken \"GTA 6,\" (63 / 74): it gets the logo-slam pair impact_boom + sub_drop at the slam frame 63 (default levels, = B13 124 / B17 141, lane 4), no key-word whoosh. sfx: siren_whoop + sub_hit on f0 (doc beat 1); six ticks on the tile slams 20-30 rising in pitch (the library has 3 pitches: tick_3 1.2 kHz, tick_1 1.85 kHz, tick_2 2.65 kHz, two each, slightly louder up the run); siren_whoop 108 (doc 3.6 s, the cut to the SUV flip); metal_crunch 119 (the truck leaves the ground, with \"cops?\"). hook_cuts = the hard cuts: 20 grid, 90 the second GTA VI angle (3.0 s), 108 the SUV flip (the grid grow on 49 is a 6-frame move, not a cut). The 4-f dropout before \"Because\" is in b02-bug (f1). No archival footage. Legacy events dropped (gta6_cell_full / cops: superseded by the v05 lists). | v05 (main): logo-slam impact_boom + sub_drop moved +4 f onto the visible hit (flash + shake), same in B1/B13/B17"
 }

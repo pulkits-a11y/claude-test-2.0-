@@ -17,18 +17,20 @@
   <body>
     <!-- B14 b14-since (v05): beat 177f (5.900s) + 6f handle each end = 189f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.1000s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
+         Word timings: words.json (v05 VO). v05: ../../REVISION_v05.md (CLIENT OVERRIDE + U; lane 4). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
          v02: ../../REVISION_v02.md. v03: ../../REVISION_v03.md (notes 5, 6, 11-13, 16, 17).
 
          Plan p.26 (B14 build), STORYBOARD.md B14, CONFLICTS.md C15. TRANSPARENT OVERLAY: all footage is Tesseract's
          (tesseract_shots.json, v03: v01 framing, eased): L10 burst (9 x 6f + 1 x 5f, static), GTA 5 chase R1.3 (push 100 -> 104%),
          police lights R1.6 (for RT3, static 100%), X8 whip, escape R14.5 (push 100 -> 104%).
          beat     local    what this overlay draws
-         -6..12   0..18    L10 year tag "2001" (R14.1 x2)  - the year tags are the ONLY text during the burst (C15)
+         -6..12   0..18    v05: year label "2001" (kit .fx-year, Coolvetica 60 px bottom-left, as B1's tiles) (R14.1 x2)
          12..24   18..30   "2002" (R14.2 x2)
          24..36   30..42   "2004" (R14.3 x2)
          36..48   42..54   "2008" (R14.4 x2)
-         48..59   54..65   "2013" (R14.5 6f + 5f)
+         48..59   54..65   "2013" (R14.5 6f + 5f; stays on the GTA V clips, accepted)
+         1..59    7..65    v05 (G10: every spoken word on screen): lockups "And every [GTA] since" (And 7, every 15, GTA 24 key,
+                           since 32) and "is built around" (is 39, built 43, around 53), centred, words appear on their frames
          59       65       lockup "that [chase.]" (centred; that 65, chase. 72) .. out on "The" (97)
          91       97       lockup "The [wanted stars.]*" under the stars (ink centre y 800): The 97, wanted 102 + stars. 114 pop + blur in;
                            M1 six hero stars (120 px, centred) GLITCH IN one every 3f (97 .. 112, 6f each, clean by 118)

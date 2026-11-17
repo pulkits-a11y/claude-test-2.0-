@@ -1,5 +1,25 @@
 # B13 Grand Theft Auto: beat notes (b13-gta)
 
+## v05 (REVISION_v05.md lane 4 with the CLIENT OVERRIDE / section U; doc 0:46.5-0:56.0): what changed
+
+Beat 205f -> **166f** (v05 VO; the hold after "Auto." is 0.386 s), composition **178f = data-duration 5.9333333**. Frames =
+beat frames (local = beat + 6). Kit v05, HyperFrames 0.9.52.
+
+| What | v04 | v05 | Why |
+|---|---|---|---|
+| Ground, beat -6..80 | T3 year card (dark) | the dark card (`.rc-card`) + R3.7 (BBC 1996 making-of at DMA, from 176.0 s, crop 1440:1080:240:0) full frame, exposure -1, saturation -30 %, blur, at 25 % on an untimed wrapper. Kept hand-built (not `fx.darkCardHTML`): b12-thirty copies it so the B12 -> B13 cut matches (both show 176.2 s) | doc "blurred, darkened office footage (25 %)"; coordinator: lane 3 matches this ground |
+| Year | T3 "Nov 1997" (digit roll) | kit **calendarTear**: MAR 1995 (Coolvetica Italic 300 px, dark pad) tears on "in" (27: lift 27-29, rip 29-39, paper_rip 29) to NOV 1997; the client's **glow flicker** on NOV 1997 from "November" (30), steady by 44. The kit does not mark the MAR page as an intended cover: the script sets `data-layout-allow-occlusion` on it | doc 0:50.0, U1, v04 #15 |
+| Captions | T-style lockups | kit lockups, words appear on their frames (U2): "Until [finally,]" (1 / 9, y 215), "in" (27, 54 px, left-aligned to the calendar text x 372), "it ships with \| a new name:" (80-105, tier A 57 px, centred) | U1 / U2 / G10 |
+| Logo | pop + blur-in on "Grand" | kit **logoSlam**, B1's exact call (lane 1) with the doc's B13 values: from 160 -> 94 -> 100 % over 6 f on "Grand" (124), impact 128: 1-frame 85 % white flash (under the logo, as B1), flash-star behind, 12 px shake 8 f on the footage camera (its own push is ~103 % at the hit, so no edge shows; B1's 1.2 % overscan set is not added because it would fight the push) | doc 53.5, bookend with B1 / B17 |
+| Tail | Tesseract L2 unboxing (beat 181-205) | beat 155-166 + tail handle: the GTA 1 PC big-box front (R13.2 @ 16.65-17.45 s, crop 900:1050:600:30) as a kit **card insert** (white 15 px border, 3 deg, shadow, over the same clip blurred and darkened), push 100 -> 104 %, entering on the end of the reverse cymbal | doc 54.5-55.5; accepted: the box art stays inside B13's tail |
+| B-roll | R9.4 GTA 1 gameplay | unchanged (full frame, darkened, push 100 -> 104 % from the cut to the box art) | |
+
+`cues.json` (final): word_pops [1, 27, 80, 82, 91, 98, 101, 105], key_words [9]; paper_rip 29, impact_boom + sub_drop 124
+(on the slam frame, lane 1's convention), reverse_cymbal 155 (ends there), dropout {f 124, 6 f} = 118-124. `footage.json`:
+R9.4, R13.2, R3.7. `tesseract_shots.json`: no shots, `"timing": "v05"`. Check: 0 errors. Snapshots: `review/v05/`. Not rendered.
+
+---
+
 ## v04 (REVISION_v04.md, Frame.io review of v03): what changed
 
 Same beat (205f), composition (217f), words and cues (`{"year_digits": 45, "type_on": 124}`) as v03. Frames = beat frames.
