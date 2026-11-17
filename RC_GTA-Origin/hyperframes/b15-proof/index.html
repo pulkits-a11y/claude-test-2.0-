@@ -24,13 +24,14 @@
         transform-origin: 241px 1080px; transform: scale(1.4);
       }
       /* v05 payoff split (doc 66.8 "flash a split-screen of the 1995 Race'n'Chase design doc title beside it for 10 frames"):
-         right half = the dark design-document page (R4.5, as B4 shows it: tilted 4 deg), its title centred in the half;
-         "Race'n'Chase" carries B4's pink highlighter band (static, the end state of B4's sweep); 6 px white divider. The
-         page transform is static CSS (GSAP never touches it): page point (878, 420) -> half centre (480, 540), 1.6x, 4 deg. */
+         right half = lane 5's shared dark title page (05_GFX/shared/racenchase_title_page_dark_v05.jpg, 2097 x 3072 page px,
+         copied to assets/page/) exactly as B4 frames it: S 1.5, page point (1093, 540) (between the title and the date) on
+         the half's centre (478.5, 540), tilted -4 deg; "Race'n'Chase" carries B4's pink highlighter band (static: the end
+         state of B4's sweep, B4's page box 902, 362, 384 x 62); 6 px white divider. Static CSS (GSAP never touches it). */
       #b15-split { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-      .b15-split__half { position: absolute; left: 963px; top: 0; width: 957px; height: 1080px; overflow: hidden; background: var(--ink-black); }
-      #b15-split-pagebox { position: absolute; left: 0; top: 0; width: 1700px; height: 2200px; transform-origin: 878px 420px; transform: translate(-398px, 120px) rotate(4deg) scale(1.6); }
-      #b15-split-page { position: absolute; left: 0; top: 0; width: 1700px; height: 2200px; }
+      .b15-split__half { position: absolute; left: 963px; top: 0; width: 957px; height: 1080px; overflow: hidden; background: #0E0E10; }
+      #b15-split-pagebox { position: absolute; left: 0; top: 0; width: 2097px; height: 3072px; transform-origin: 0 0; transform: translate(478.5px, 540px) rotate(-4deg) scale(1.5) translate(-1093px, -540px); }
+      #b15-split-page { position: absolute; left: 0; top: 0; width: 2097px; height: 3072px; }
       .b15-split__divider { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; background: #FFFFFF; }
     </style>
   </head>
@@ -111,8 +112,8 @@
       <div id="b15-split" class="clip" data-start="4.8666" data-duration="0.3334" data-track-index="7" style="z-index: 4">
         <div class="b15-split__half">
           <div id="b15-split-pagebox">
-            <img id="b15-split-page" src="assets/footage/R4.5.png" alt="Race'n'Chase Game Design, Version 1.05, March 22, 1995">
-            <div id="b15-split-hl" class="fx-hl fx-hl--dark" style="left: 745px; top: 262px; width: 265px; height: 40px"></div>
+            <img id="b15-split-page" src="assets/page/racenchase_title_page_dark_v05.jpg" alt="Race'n'Chase Game Design, Version 1.05, March 22, 1995">
+            <div id="b15-split-hl" class="fx-hl fx-hl--dark" style="left: 902px; top: 362px; width: 384px; height: 62px"></div>
           </div>
         </div>
         <div class="b15-split__divider"></div>
