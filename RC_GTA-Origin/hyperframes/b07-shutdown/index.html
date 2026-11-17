@@ -14,16 +14,14 @@
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
       /* full-frame footage inside its camera wrapper (16:9 working clips, never stretched) */
       .b07-fill { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
-      /* The article page in its own pixels (R7.GD = 2232 x 2352 PNG, DPR 2). A static base framing (page px -> frame px,
-         origin 0 0) per shot; GSAP only moves the .rc-cam wrappers around it. */
+      /* The article page in its own pixels (R7.GD = 2232 x 2352 PNG, DPR 2). v05: ONE page element; its framing (page px ->
+         frame px, origin 0 0) is set and moved by GSAP (headline -> whip-pan -> body), never by CSS. */
       .b07-page { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; transform-origin: 0 0; }
-      #b07-pageD { transform: translate(-26.5412px, 0px) scale(1.1294118); }       /* page x 23.5-1723.5, y 0-956: the headline centred, 1700 page px wide */
-      #b07-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5: the article column only */
       .b07-art, .b07-paper, .b07-dim, .b07-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
       .b07-paper { background: #000000; }          /* v03: the dark-mode page's own black (R7.GD background = #000) */
       /* the site's unrelated right sidebar ("Latest News", x >= 1504 from y 405 down) is cropped out of the headline shot;
          the page's own black shows there. The article itself is untouched. */
-      #b07-d { clip-path: polygon(0 0, 2232px 0, 2232px 395px, 1495px 395px, 1495px 2352px, 0 2352px); }
+      #b07-art { clip-path: polygon(0 0, 2232px 0, 2232px 395px, 1495px 395px, 1495px 2352px, 0 2352px); }
       .b07-dim > svg { position: absolute; left: 0; top: 0; overflow: visible; }
       /* v03: T9 highlighter on the DARK page. The kit's light-page stroke (#FFE14D 85%, multiply) vanishes on black, so the
          same yellow is laid over the page with screen blend at 50%: the black under the line becomes a muted yellow band, the
@@ -34,7 +32,10 @@
     </style>
   </head>
   <body>
-    <!-- B7 b07-shutdown (v03; v02 redesign, client note 3): beat 90f (3.000s) + 6f handle each end = 102f.
+    <!-- B7 b07-shutdown (v05 phase 1; v02 redesign, client note 3): beat 90f (3.000s) + 6f handle each end = 102f.
+         v05 (REVISION_v05.md lane 2): the article is ONE shot from "keep" (41) to b08's "breaks": push 100 -> 118%, a
+         whip-pan headline -> body copy at 57-61, sweeps on the headline (49), "It was almost canned." (61) and "The
+         publisher..." (82), the CANNED stamp on "down." (72, kit v05, phase 2). The lines below describe v03/v04.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.2000s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B7 p.23).
          Note 3: "the motion graphic is really bad ... I don't really like the cancelled stamp ... just make it turn red or
@@ -77,42 +78,40 @@
         <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.08,&quot;level&quot;:0.03},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-ktdl" id="b07-c" class="clip b07-fill" src="assets/footage/R7.3.mp4" data-start="1.0333" data-duration="0.3333" data-media-start="0.4" data-track-index="3" muted playsinline></video>
       </div>
 
-      <!-- D: the article headline (R7.GD = live screenshot of https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned-
-           captured 2026-11-16, never edited). Headline "Penn: First Grand Theft Auto Was 'Almost Canned'" spotlit. -->
-      <div data-hf-id="hf-70st" id="b07-camD" class="rc-cam" style="z-index: 4">
-        <div data-hf-id="hf-d82l" id="b07-pageD" class="b07-page" data-layout-allow-overflow="">
-          <div data-hf-id="hf-m9mw" id="b07-paperD" class="clip b07-paper" data-start="1.3666" data-duration="0.5667" data-track-index="4"></div>
-          <img data-hf-id="hf-bp6j" id="b07-d" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.3666" data-duration="0.5667" data-track-index="5" alt="Game Developer, January 31 2011: Penn: First Grand Theft Auto Was 'Almost Canned'">
-          <div data-hf-id="hf-9pig" id="b07-dimD" class="clip b07-dim" data-start="1.3666" data-duration="0.5667" data-track-index="7" data-layout-ignore="">
+      <!-- v05 (REVISION_v05 lane 2, doc 29.5-32.0): the article is ONE shot from the cut on "keep" (41) to b08-break's
+           "breaks": the headline, a whip-pan (57-61) down to the body copy, the sentence. R7.GD = live dark-mode screenshot
+           of https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- (captured 2026-11-16, never
+           edited). #b07-artCam = the push 100 -> 118% about the frame centre (easeInOutSine) across the whole shot (41 -> b08
+           local 39 = this local 129, 88f; this composition plays 41-102); #b07-page = the framing (page px -> frame px,
+           origin 0 0): the headline (page x 23.5-1723.5, y 0-956) until 57, the whip-pan (4f, easeInOutQuart, blur 0 / 9 / 21
+           / 9 / 0 layout px per frame) to the article column (page x 50-1450, y 1564-2351.5) on 61. Spotlight (L7 look,
+           pure black 65%): hole on the headline until the whip's middle frame (59), then on the sentence. -->
+      <div data-hf-id="hf-95k4" id="b07-artCam" class="rc-cam" style="z-index: 4">
+        <div data-hf-id="hf-6k4b" id="b07-page" class="b07-page" data-layout-allow-overflow="">
+          <div data-hf-id="hf-s9bg" id="b07-paper" class="clip b07-paper" data-start="1.3666" data-duration="2.0334" data-track-index="4"></div>
+          <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-svzh" id="b07-art" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.3666" data-duration="2.0334" data-track-index="5" alt="Game Developer, January 31 2011: Penn: First Grand Theft Auto Was 'Almost Canned'. It was almost canned. The publisher, BMG Interactive, wanted to can it">
+          <!-- highlighter strokes in page px: hl0 the headline "First Grand Theft Auto Was 'Almost Canned'" (49, doc 29.6), hl1
+               "It was almost canned." (61, doc ~30.0), hl2 "The publisher, BMG Interactive, wanted to can it" (82, after the
+               stamp). Phase 1: the v03 dark-page strokes (screen 50%), retimed; the kit v05 pink sweep replaces them. -->
+          <div data-hf-id="hf-kj3m" id="b07-hlclip" class="clip b07-hls" data-start="1.3666" data-duration="2.0334" data-track-index="8" data-layout-ignore="">
+            <div data-hf-id="hf-nisg" id="b07-hlgroup" class="b07-hlgroup">
+              <div data-hf-id="hf-2924" id="b07-hl0" class="rc-t9-hl" style="left: 272px; top: 120px; width: 1395px; height: 99px"></div>
+              <div data-hf-id="hf-m2q8" id="b07-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
+              <div data-hf-id="hf-d1id" id="b07-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+            </div>
+          </div>
+          <div data-hf-id="hf-7bje" id="b07-dimD" class="clip b07-dim" data-start="1.3666" data-duration="0.6000" data-track-index="7" data-layout-ignore="">
               <svg data-hf-id="hf-buxh" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-mh0t">
                 <filter data-hf-id="hf-hvdu" id="b07-dimD-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-1v6c" stdDeviation="4.4" /></filter>
                 <mask data-hf-id="hf-yn3c" id="b07-dimD-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-g9ea" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-dgee" x="68" y="124" width="1611" height="89" rx="14" ry="14" fill="#000000" filter="url(#b07-dimD-f)" /></mask>
               </defs><rect data-hf-id="hf-qsy4" x="0" y="0" width="2232" height="2352" fill="#000000" fill-opacity="0.65" mask="url(#b07-dimD-m)" /></svg>
             </div>
-        </div>
-      </div>
-
-      <!-- E: the same page, the article column (sidebar outside the frame): the sentence "It was almost canned." + "The
-           publisher, BMG Interactive, wanted to can it" (rects from R7.GD__*.json) spotlit and highlighted. Camera: #b07-driftE
-           (translate) > #b07-camE (scale about the sentence centre) > the page. -->
-      <div data-hf-id="hf-81lr" id="b07-driftE" class="rc-cam" style="z-index: 5">
-        <div data-hf-id="hf-e7vd" id="b07-camE" class="rc-cam">
-          <div data-hf-id="hf-cges" id="b07-pageE" class="b07-page" data-layout-allow-overflow="">
-            <img data-hf-id="hf-a0xs" id="b07-e" class="clip b07-art" src="assets/footage/R7.GD.png" data-start="1.9333" data-duration="1.4667" data-track-index="6" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
-            <!-- T9 highlighter in page px, two swipes (hl1 overlaps hl2 by 2 px). v03 dark page: .b07-hlgroup (screen, 50%) -->
-            <div data-hf-id="hf-zm9l" id="b07-hlclip" class="clip b07-hls" data-start="1.9333" data-duration="1.4667" data-track-index="8" data-layout-ignore="">
-              <div class="b07-hlgroup">
-                <div data-hf-id="hf-xzcl" id="b07-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
-                <div data-hf-id="hf-d1id" id="b07-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
-              </div>
-            </div>
-            <div data-hf-id="hf-kj5u" id="b07-dimE" class="clip b07-dim" data-start="1.9333" data-duration="1.4667" data-track-index="7" data-layout-ignore="">
+          <div data-hf-id="hf-wo3e" id="b07-dimE" class="clip b07-dim" data-start="1.9666" data-duration="1.4334" data-track-index="9" data-layout-ignore="">
               <svg data-hf-id="hf-l1ft" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-vl9d">
                 <filter data-hf-id="hf-4zit" id="b07-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-ajt9" stdDeviation="3.6" /></filter>
                 <mask data-hf-id="hf-2bd5" id="b07-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-pt5i" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-teeq" x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b07-dimE-f)" /></mask>
               </defs><rect data-hf-id="hf-3hc9" x="0" y="0" width="2232" height="2352" fill="#000000" fill-opacity="0.65" mask="url(#b07-dimE-m)" /></svg>
             </div>
-          </div>
         </div>
       </div>
 
@@ -121,9 +120,9 @@
            and the headline: "So the people [above]* the team" (6; "above" pops on 22) / "keep trying" (41). On the article
            sentence (shot E) the frame centre is the spotlit sentence, so the last lockup sits below it (ink centre y 840):
            "to [shut]* it down." (58; "shut" pops on 62 with the first highlighter landing), held through the tail handle. -->
-      <div id="b07-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.1666" data-track-index="10" style="--rc-lk-c: 135.35px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="6">So</span> <span class="rc-lw" data-rc-f="9">the</span> <span class="rc-lw" data-rc-f="13">people</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span class="rc-lw rc-lw--pop" data-rc-f="22">above</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="31">the</span> <span class="rc-lw" data-rc-f="35">team</span></div></div></div>
-      <div id="b07-lk-2" class="clip rc-lk" data-start="1.3666" data-duration="0.5667" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="41">keep</span> <span class="rc-lw" data-rc-f="48">trying</span></div></div></div>
-      <div id="b07-lk-3" class="clip rc-lk" data-start="1.9333" data-duration="1.4667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 132.86px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="58">to</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw rc-lw--pop" data-rc-f="62">shut</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="68">it</span> <span class="rc-lw" data-rc-f="72">down.</span></div></div></div>
+      <div data-hf-id="hf-hmit" id="b07-lk-1" class="clip rc-lk" data-start="0.2000" data-duration="1.1666" data-track-index="10" style="--rc-lk-c: 135.35px; z-index: 40"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-0xbm" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span data-hf-id="hf-5b5c" class="rc-lw" data-rc-f="6">So</span> <span data-hf-id="hf-3q20" class="rc-lw" data-rc-f="9">the</span> <span data-hf-id="hf-29sz" class="rc-lw" data-rc-f="13">people</span></div><div data-hf-id="hf-emsr" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span data-hf-id="hf-rz55" class="rc-lw rc-lw--pop" data-rc-f="22">above</span></div><div data-hf-id="hf-ep2u" class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span data-hf-id="hf-star" class="rc-lw" data-rc-f="31">the</span> <span data-hf-id="hf-1xcd" class="rc-lw" data-rc-f="35">team</span></div></div></div>
+      <div data-hf-id="hf-2y6s" id="b07-lk-2" class="clip rc-lk" data-start="1.3666" data-duration="0.5667" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 40"><div data-hf-id="hf-ze3e" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-luug" class="rc-lw" data-rc-f="41">keep</span> <span data-hf-id="hf-mwyb" class="rc-lw" data-rc-f="48">trying</span></div></div></div>
+      <div data-hf-id="hf-62ll" id="b07-lk-3" class="clip rc-lk" data-start="1.9333" data-duration="1.4667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 132.86px; z-index: 40"><div data-hf-id="hf-zsef" class="rc-lk__box"><div data-hf-id="hf-ool2" class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span data-hf-id="hf-dkje" class="rc-lw" data-rc-f="58">to</span></div><div data-hf-id="hf-og10" class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span data-hf-id="hf-w31y" class="rc-lw rc-lw--pop" data-rc-f="62">shut</span></div><div data-hf-id="hf-iztm" class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span data-hf-id="hf-m62v" class="rc-lw" data-rc-f="68">it</span> <span data-hf-id="hf-ss33" class="rc-lw" data-rc-f="72">down.</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -141,31 +140,45 @@
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
 
-      // ---- A-D, v03 (note 13: the v02 pushes / zoom-out / punch-in are gone, back to v01's camera): ONE slow push
-      //      100 -> 104%, easeInOutSine, from local 0 to the cut to the sentence (local 58), shared by the four shots: each
-      //      wrapper plays its own segment of the same curve, scale(L) = 1 + 0.04 * sine.inOut(L / 58). A (0-22) and B
-      //      (22-31) and C (31-41) about the frame centre, D (the headline, 41-58) about the headline centre. ----
-      const ABCD = 58, P0 = 0.04, sc = (n) => 1 + P0 * SIN(n / ABCD);
-      const segPush = (el, a, b, origin) => C.push(tl, el, f(a), { until: f(b), from: sc(a), to: sc(b), ease: seg(a / ABCD, b / ABCD), origin });
+      // ---- A-C (the office B-roll, 0-41): one slow push 100 -> 104%, easeInOutSine, shared by the three shots (each wrapper
+      //      plays its segment of the same curve: scale(L) = 1 + 0.04 * sine.inOut(L / 41)). Phase 1: the kit v05 card insert
+      //      (doc 28.0) takes these shots over next. ----
+      const ABC = 41, P0 = 0.04, sc = (n) => 1 + P0 * SIN(n / ABC);
+      const segPush = (el, a, b, origin) => C.push(tl, el, f(a), { until: f(b), from: sc(a), to: sc(b), ease: seg(a / ABC, b / ABC), origin });
       segPush('#b07-camA', 0, 22);
       segPush('#b07-camB', 22, 31);
       segPush('#b07-camC', 31, 41);
-      segPush('#b07-camD', 41, 58, '960px 190.3px');
 
-      // ---- E: the article push, ONE eased move on the EDIT clock shared with b08-break: from the cut on "to" (B7 local 58 =
-      //      edit 897) to "breaks" (B8 local 39 = edit 968), 71f, easeInOutSine: scale 100 -> 118% about the sentence centre
-      //      (frame px 1053.3, 613.0 in the base framing) + drift (-93.3, -53.0) px, so the sentence ends centred at (960, 560).
-      //      This composition plays its first 44 frames (to local 102) on the same curve (segment of the ease, not restarted);
-      //      b08-break plays the rest. The page never leaves the article column (checked: page x 50-1450, y 1564-2351.5). ----
-      const E_LEN = 71, E_S = 1.18, E_DX = -93.257, E_DY = -53.029, pEnd = SIN(44 / E_LEN);
-      C.push(tl, '#b07-camE', f(58), { until: f(102), from: 1, to: 1 + (E_S - 1) * pEnd, ease: seg(0, 44 / E_LEN), origin: '1053.257px 613.029px' });
-      gsap.set('#b07-driftE', { x: 0, y: 0, force3D: false });
-      tl.fromTo('#b07-driftE', { x: 0, y: 0 }, { x: E_DX * pEnd, y: E_DY * pEnd, duration: 44 / 30, ease: seg(0, 44 / E_LEN), force3D: false, immediateRender: false }, f(58));
+      // ---- the article, ONE shot (v05, doc 29.5 "Push in 100%->118% across the shot"): push about the frame centre on the
+      //      EDIT clock shared with b08-break, from the cut on "keep" (41) to "breaks" (b08 local 39 = this local 129), 88f,
+      //      easeInOutSine; this composition plays 41-102 (segment of the curve), b08 plays the rest. ----
+      const ART0 = 41, ART_LEN = 88, ART_S = 1.18, pEnd = (102 - ART0) / ART_LEN;
+      C.push(tl, '#b07-artCam', f(ART0), { until: f(102), from: 1, to: 1 + (ART_S - 1) * SIN(pEnd), ease: seg(0, pEnd) });
 
-      // ---- highlighter (kit T9: left -> right swipe over 8f, easeOutQuart), each one starting on the word before the hit, so
-      //      it is 94% across on the hit frame: swipe 1 on "to" (58) lands on "shut" (62); swipe 2 on "it" (68) on "down." (72) ----
-      T.highlight(tl, '#b07-hl1', f(58));
-      T.highlight(tl, '#b07-hl2', f(68));
+      // ---- the framing: the headline until 57, then the whip-pan (doc ~30.0 "cut or whip-pan to the body copy") over 4f,
+      //      easeInOutQuart (57 headline, 58 3%, 59 halfway, 60 97%, 61 the body), to the article column. Motion blur =
+      //      per-frame values (hard steps, like the kit's X6): 0 / 9 / 21 / 9 / 0 layout px, on the page image through its
+      //      media-treatment blur control (footage is never CSS-filtered) and on the DOM layers (strokes, spotlight) by CSS. ----
+      const FD = { x: -26.5412, y: 0, scale: 1.1294118 }, FE = { x: -68.5714, y: -2144.9143, scale: 1.3714286 };
+      gsap.set('#b07-page', Object.assign({ transformOrigin: '0 0', force3D: false }, FD));
+      tl.fromTo('#b07-page', FD, Object.assign({ duration: 4 / 30, ease: 'power3.inOut', force3D: false, immediateRender: false }, FE), f(57));
+      const step = (el, from, to, k) => tl.fromTo(el, from, Object.assign({ duration: 0.5 / 30, ease: 'steps(1)', immediateRender: false }, to), (k - 0.75) / 30);
+      const WHIP = [[58, 9], [59, 21], [60, 9], [61, 0]], domBlur = '#b07-hlgroup, #b07-dimD svg, #b07-dimE svg';
+      const art = document.getElementById('b07-art');
+      art.style.setProperty('--hf-color-grading-blur', '0');
+      let prevPx = 0;
+      WHIP.forEach(([k, px]) => {
+        step(art, { '--hf-color-grading-blur': X.blurValue(prevPx) }, { '--hf-color-grading-blur': X.blurValue(px) }, k);
+        step(domBlur, { filter: prevPx ? 'blur(' + prevPx + 'px)' : 'none' }, { filter: px ? 'blur(' + px + 'px)' : 'none' }, k);   // 0 px = no filter at all
+        prevPx = px;
+      });
+
+      // ---- highlighter strokes (phase 1: kit T9 wipe, 8f easeOutQuart; the kit v05 pink sweep replaces them): the headline
+      //      on 49 (doc 29.6), "It was almost canned." on 61 (doc ~30.0, on the body's first frame), "The publisher, BMG
+      //      Interactive, wanted to can it" on 82 (after the stamp on "down." 72: the event before b08's "Then," 97) ----
+      T.highlight(tl, '#b07-hl0', f(49));
+      T.highlight(tl, '#b07-hl1', f(61));
+      T.highlight(tl, '#b07-hl2', f(82));
 
       // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their spoken frame; the starred keywords
       //      "above" (22) and "shut" (62) pop + blur in (kit POP3) ----

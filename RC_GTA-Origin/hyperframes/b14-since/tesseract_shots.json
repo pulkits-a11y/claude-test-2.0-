@@ -262,7 +262,7 @@
    "rid": "R1.3",
    "screen": "full",
    "start_f": 59,
-   "end_f": 126,
+   "end_f": 91,
    "source_in_s": 107.0,
    "speed": 1.0,
    "reverse": false,
@@ -274,7 +274,7 @@
       "scale": 100
      },
      {
-      "f": 67,
+      "f": 32,
       "scale": 104,
       "ease": "easeInOutSine"
      }
@@ -284,7 +284,37 @@
    "exit": "X1",
    "letterbox": null,
    "grade": "game",
-   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); held shot push 100 -> 104% over the shot (f0-67), easeInOutSine (v01 100 -> 104% linear; v02 punch-in 112 -> 101% + push to 107% removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (177f). Cut on 'that' (beat 59; 'that chase.' pops on the same frame): punch-in 112 -> 101% over 10f (easeOutExpo), then the held shot pushes 101 -> 107% (easeInOutSine) to the cut on 'The' (beat 126). MOMENT R1.3 @ 107.0 s (https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=107): GTA 5 five-star chase: the supercar flat out on the coast highway, passing an LSPD cruiser with its lights on at ~108.5-109.2; the frame centre (road and horizon) stays clear under the six M1 stars. B1 uses R1.3 @46.0-47.4 (different moment). || Plan p.26 step 2: GTA 5 five-star chase (R1.3) under T1 'that chase.' (f59-91) and the M1 six stars (120 px, centred, pop 3f apart from f91, all in by f109 'stars.' f108) + T4 'The' / 'wanted stars.' top-left (all HF overlay).",
+   "notes": "v05 (REVISION_v05.md lane 4 / doc 0:58.0 'make sure each phrase lands on its own cut'): the v04 shot f59-126 is split at 'The' (beat 91) so 'that chase.' and 'The wanted stars.' each land on their own cut. Shot 1/2 'that chase.' (beat f59-91, 32 f): R1.3 @ 107.0-108.07 s as before (the supercar flat out on the coast highway passing police), held-shot push 100 -> 104% eased. || v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); held shot push 100 -> 104% over the shot (f0-67), easeInOutSine (v01 100 -> 104% linear; v02 punch-in 112 -> 101% + push to 107% removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (177f). Cut on 'that' (beat 59; 'that chase.' pops on the same frame): punch-in 112 -> 101% over 10f (easeOutExpo), then the held shot pushes 101 -> 107% (easeInOutSine) to the cut on 'The' (beat 126). MOMENT R1.3 @ 107.0 s (https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=107): GTA 5 five-star chase: the supercar flat out on the coast highway, passing an LSPD cruiser with its lights on at ~108.5-109.2; the frame centre (road and horizon) stays clear under the six M1 stars. B1 uses R1.3 @46.0-47.4 (different moment). || Plan p.26 step 2: GTA 5 five-star chase (R1.3) under T1 'that chase.' (f59-91) and the M1 six stars (120 px, centred, pop 3f apart from f91, all in by f109 'stars.' f108) + T4 'The' / 'wanted stars.' top-left (all HF overlay).",
+   "source": "04_Broll/_originals/B01/R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4"
+  },
+  {
+   "id": "B14-gta5-roadblock-stars",
+   "rid": "R1.3",
+   "screen": "full",
+   "start_f": 91,
+   "end_f": 126,
+   "source_in_s": 142.0,
+   "speed": 1.0,
+   "reverse": false,
+   "framing": {
+    "anchor": "center",
+    "keys": [
+     {
+      "f": 0,
+      "scale": 100
+     },
+     {
+      "f": 35,
+      "scale": 104,
+      "ease": "easeInOutSine"
+     }
+    ]
+   },
+   "enter": "X1",
+   "exit": "X1",
+   "letterbox": null,
+   "grade": "game",
+   "notes": "v05 (REVISION_v05.md lane 4 / doc 0:58.0 'make sure each phrase lands on its own cut'): the v04 shot f59-126 is split at 'The' (beat 91) so 'that chase.' and 'The wanted stars.' each land on their own cut. Shot 2/2 'The wanted stars.' (beat f91-126, 35 f): R1.3 @ 142.0-143.17 s (https://www.youtube.com/watch?v=NcTdBgA3Bkg&t=142), the supercar reaching and squeezing through a five-star police roadblock (sheriff cruiser with lights, two armoured NOOSE trucks, officers on foot; the game HUD shows the wanted stars top right); one continuous take (no cut 138-146 s). The six M1 hero stars glitch in over it (b14-since overlay, beat 91-112, a ding each). Held-shot push 100 -> 104% eased. Exit: hard cut on 'The' (beat 126) to the police lights as before.",
    "source": "04_Broll/_originals/B01/R1.3__GTA V - ＂5 Stars＂ Police Chase [NcTdBgA3Bkg].mp4"
   },
   {

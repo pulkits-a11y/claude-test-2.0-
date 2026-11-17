@@ -18,10 +18,10 @@
    "note": "SUBSTITUTE (Rule 5) CRT plate for R3.9: BBC 1996 making-of, static over-the-shoulder shot of a DMA developer at a beige 1990s CRT. 4:3 picture cut out of the 16:9 pillarbox; the BBC corner logo is framed out by the plate transform."
   },
   "R9.1": {
-   "in": 126.0,
-   "out": 131.6,
-   "crop": "536:402:260:53",
-   "note": "GTA 1 (PlayStation) top-down: white police car with lights right on the player's red car's tail along the road (126.0-129.5 s, on screen 126.0-128.5 before the tear freezes the picture; the rest of the window only pads the clip under the frozen X4 frame). Crop 536:402:260:53 = x 260-796, y 53-455 (4:3, fills the 537x406 CRT screen): excludes the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame), because plan Rule 5 treats a watermarked clip as unusable; re-cropped, never blurred or stretched. y 53 keeps the white police car whole down to the picture's last full row (it reaches y ~453 at 127.2 s) and drops the score row of the HUD; the red car stays mostly left of the crop (its nose shows at the left edge on the frozen frame). v02: the clip starts at media 0.1334 (source 126.133 s) on the cut to GTA 1 (local 30) so the frozen tear frame (local 101) is still source 128.5 s, i.e. the v01 X4 still (re-captured: pixel-identical)."
+   "in": 128.5,
+   "out": 134.5,
+   "crop": "536:302:260:153",
+   "note": "v05 (REVISION_v05 Lane 1, doc beats 5-8): GTA 1 (PlayStation) top-down, full frame 16:9 now (no CRT insert): crop 536:302:260:153 = picture x 260-796 (the right black border starts at x 798) and y 153-455, so the uploader's 'Sakura240' watermark (x 100-258, y 352-385, every frame) stays out (plan Rule 5) and the road with both cars is in the lower half. Uses: media 0.37-1.70 (source 128.87-130.20) the CRT-screen close-up (local 25-65, white police car chasing the red car into frame); media 1.7033-2.9033 (130.20-131.40) the full-screen chase after the zoom-through (local 65-101: the red car fleeing left, the police car right on its tail); the freeze still at media 2.9033 (local 101, assets/work/b02_freeze.png); media 4.10-5.07 (132.60-133.57) the clean shot after the windows snap shut (local 151-180: the police car closing in on the red car under fire). v02-v04 used 126.0-131.6 with a 4:3 crop for the CRT insert."
   }
  }
 }

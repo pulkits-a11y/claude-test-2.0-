@@ -10,76 +10,97 @@
     <link rel="stylesheet" href="assets/kit/transitions.css">
     <link rel="stylesheet" href="assets/kit/screens.css">
     <style>
+      /* v05 phase 1: Playfair Display Black for the "18" (G2 hero/number face; 06_Fonts, OFL). Remove when the kit v05
+         defines the face. Lining figures: Playfair's default figures are old-style. */
+      @font-face { font-family: "Playfair Display"; src: url("assets/fonts/playfair-display-latin-900-normal.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: block; }
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
-      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
-      /* B4 framing of the R4.5 title page (1700 x 2200 scan render).
-         The <img> is a frame-sized element (object-fit: cover = page width 1920 px, scale 1.1294, top of the page) so the
-         media treatment's vignette sits on the frame; this static wrapper zooms it to 1.4 x page px so the scanned paper
-         fills the frame with no white PDF margin, and puts the boxed title centre (page 878, 307.5) on screen (960, 400).
-         scale = 1.4 / (1920 / 1700) = 1.2395833, origin from (960, 400) = O + k (e - O). Static: GSAP never touches it;
-         the L7 push (100% -> 118%) is on the parent .rc-l7. */
-      #b04-docframe {
-        position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
-        transform-origin: 1123.58px 127.27px; transform: scale(1.2395833);
-      }
-      #b04-hl-clip { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-      /* v03 (note 12): the design document is now a DARK (inverted) scan (white letters on near-black paper); the kit's
-         v03 .rc-t9-hl is the dark-surface highlight (highlighter yellow, 50% Screen blend): the paper under it turns a
-         translucent yellow band and the white letters stay white. Same box, same 8f swipe on "Race". */
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #F1ECE2; }
+
+      /* ---- the page (local 0-46): 05_GFX/shared/racenchase_title_page_v05.jpg (2097 x 3072 page px), shown at S = 1.5
+         with page point (1093, 540) (between the title and the date) on the frame centre, tilted -4 deg about the frame
+         centre (static), pushed 100 -> 115% by #b04-page-cam (GSAP). The page covers the frame at every scale (corners
+         checked: the top-left frame corner is page (480, 136), inside the sheet; the pencil "7" at page x < 200 stays out).
+         On screen at 100%: title cap ~45 px / 527 px wide, the date ~40 px, the copyright line at the bottom edge. */
+      #b04-page-tilt { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: rotate(-4deg); transform-origin: 960px 540px; }
+      #b04-page { position: absolute; left: 0; top: 0; width: 2097px; height: 3072px; transform-origin: 0 0; transform: translate(-679.5px, -270px) scale(1.5); }
+      #b04-page-img { position: absolute; left: 0; top: 0; width: 2097px; height: 3072px; }
+      /* "It's called" (tier A setup line) printed above the title box, left-aligned to "Race'n'Chase" (page x 918), baseline
+         10 page px above the box line (y 348). Page px: 36 px = 54 px on screen at 100% (tier A). Ink, not white: the page
+         is light (kit v05: needs an ink end state for the pink entry; see BEAT_NOTES). */
+      #b04-lk-called { position: absolute; left: 918px; top: 306.8px; width: 700px; height: 36px; color: #111111; text-shadow: none; }
+      #b04-lk-called .rc-lk__row { font-size: 36px; line-height: 36px; height: 36px; }
+      /* TODO kit v05 placeholders, page px (they push and tilt with the page) */
+      #b04-hl { position: absolute; left: 900px; top: 360px; width: 388px; height: 66px; }       /* "Race'n'Chase" 918-1269 x 369-417 */
+      #b04-circ { position: absolute; left: 925px; top: 648px; width: 337px; height: 106px; }   /* "March 22, 1995" 975-1212 x 687-714 */
+
+      /* ---- the grid (local 46-112): near-black + the 1995 DMA office (R3.8) blurred ~45 px at 25% behind the 18 cells.
+         The office video is laid out at 1/4 size (480 x 270) and scaled x 4 by its static wrapper, so the media-treatment
+         blur (max ~22 px) reads as ~45 px on screen. Provisional for the kit v05 dark card. */
+      #b04-bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #0E0E10; }
+      #b04-off-wrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; opacity: 0.25; }
+      #b04-off-scale { position: absolute; left: 720px; top: 405px; width: 480px; height: 270px; transform: scale(4.2); transform-origin: 50% 50%; }
+      #b04-off { position: absolute; left: 0; top: 0; width: 480px; height: 270px; object-fit: cover; }
+      /* the caption block around the grid: free layout (not a centred kit lockup): setup line above, "18" (Playfair
+         Display Black 330 px, lining) left of the grid, "months." (tier B) under the grid's right edge. Block centred. */
+      .b04-free { display: block; }
+      #b04-setup { position: absolute; left: 542px; top: 297px; height: 60px; }
+      #b04-setup.rc-lk__row { font-size: 60px; line-height: 60px; }
+      #b04-18 { position: absolute; right: 1050.7px; top: 311px; height: 330px; font: 900 330px/330px "Playfair Display", serif;
+        font-variant-numeric: lining-nums; letter-spacing: 0; white-space: nowrap; }
+      #b04-months { position: absolute; right: 541.8px; top: 606px; height: 190px; }
+      #b04-months.rc-lk__row { font-size: 190px; line-height: 190px; }
     </style>
   </head>
   <body>
-    <!-- B4 b04-racenchase v03 (REVISION_v03 notes 10, 11, 12, 13, 16, 17; otherwise as v02): beat 100f (3.333s) + 6f handle
-         each end = 112f. Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 3.5333s (local frame = beat frame + 6).
-         Word timings: words.json (comp_t, unchanged). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B4 p.21).
+    <!-- B4 b04-racenchase v05 (REVISION_v05 "Lane 5", doc section 4 0:17.0-0:20.0, dead zone 2): beat 100f (3.333 s) +
+         6f handle each end = 112f; local time 0 = beat start - 6f (local frame = beat frame + 6). Words: words.json.
+         Doc times -> local: v04 t -> local = 30 t - 500 (B4 is unchanged locally).
+           0-46    the Race'n'Chase Game Design title page, the LIGHT original restyled on off-white paper (shared still
+                   05_GFX/shared/racenchase_title_page_v05.jpg), full frame, tilted -4 deg, push 100 -> 115% (6 -> 46,
+                   sine.inOut; head handle at 100%). "It's called" (6, 12) printed above the title box. 16-24 (v04 17.2)
+                   pink highlighter sweep across "Race'n'Chase" (multiply) and 28-37 (v04 17.6) yellow hand-drawn circle
+                   round "March 22, 1995": TODO kit v05 (placeholders #b04-hl, #b04-circ in page px).
+           46-112  hard cut (pause after "Chase,") to the 18-cell grid (72 px cells, 9 px gaps, 6 x 3) over the 1995 DMA
+                   office (R3.8, blurred ~45 px, 25%) on near-black; a cell fills every 2f from 47 (18th on "eighteen" 81),
+                   a tick per cell (cues.json); "and it's planned to take" (49/52/59/70/76) above, "18" Playfair Display
+                   Black 330 px left of the grid (81), "months." tier B under it (88); 110% punch-in (hard) at 70 (v04 19.0)
+                   so the grid never holds 2 s. -->
+    <div data-hf-id="hf-o3gd" id="root" data-composition-id="b04-racenchase" data-start="0" data-duration="3.7333333" data-width="1920" data-height="1080">
 
-         Local 0-46   (incl. head handle): L7 spotlight on the REAL R4.5 design-document title page, now the DARK (inverted)
-                      scan (note 12; still, beat f0-40 on screen = 1.33 s < 1.5 s, CONFLICTS C16), dimmed to 35% except a
-                      rounded spotlight on the title, the plan's push 100% -> 118% toward it (local 6 -> 46, easeInOutSine);
-                      T9 highlight (kit v03: 50% screen, visible on the dark page) swipes across "Race'n'Chase" on "Race"
-                      (local 23, 8f power3.out).
-         Local 46-112 (incl. tail handle): hard cut (X1) in the pause after "Chase," to the L9 / M3 calendar on the kit's DARK
-                      card (light-gray squares): v01's slow push 100 -> 104% (sine.inOut, 46 -> 106, held through the tail; no
-                      punch-in, no key punch); 18 empty slots, 18 squares fill left to right 2f apart from local 47 (18th on
-                      81 = "eighteen"), no dates. One caption lockup above the grid (note 10), steady (outside the camera):
-                      "planned to take" (59 / 70 / 76, small, stays) over the big italic "18 months." (81 / 88, pop + blur-in),
-                      hard cut out on the beat end (106).
-         No SFX in B4 (plan p.38: silence by design). Tesseract owns all audio. -->
-    <div data-hf-id="hf-yp6j" id="root" data-composition-id="b04-racenchase" data-start="0" data-duration="3.7333333" data-width="1920" data-height="1080">
-
-      <!-- ============ L7 spotlight on the 1995 design-document title page (R4.5, real still) ============ -->
-      <div data-hf-id="hf-bbw1" id="b04-l7" class="rc-l7" style="z-index: 1">
-        <div data-hf-id="hf-1rj7" id="b04-docframe">
-          <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.2,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;,&quot;wheels&quot;:{&quot;shadows&quot;:{&quot;hue&quot;:35,&quot;amount&quot;:0.1,&quot;level&quot;:0.04},&quot;midtones&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0},&quot;highlights&quot;:{&quot;hue&quot;:0,&quot;amount&quot;:0,&quot;level&quot;:0}}}" data-hf-id="hf-o9g5" id="b04-doc" class="clip rc-l7__media" src="assets/footage/R4.5.png" data-start="0.0000" data-duration="1.5333" data-track-index="1" alt="Race'n'Chase Game Design, 1995 design document title page" style="--rc-pos: 50% 0%">
-          <!-- T9 highlight over "Race'n'Chase" (page px 753-1004 x 263-296 + padding), in the page layer so it pushes with
-               the page; v03: the kit's dark-surface highlight (50% screen): the dark paper turns a yellow band, the white
-               printed letters stay white -->
-          <div data-hf-id="hf-hjze" id="b04-hl-clip" class="clip" data-start="0.0000" data-duration="1.5333" data-track-index="2" data-layout-ignore="">
-            <div data-hf-id="hf-9jci" id="b04-hl" class="rc-t9-hl" style="left: 842.4px; top: 290.8px; width: 299.3px; height: 50px"></div>
+      <!-- ============ the page (local 0..46) ============ -->
+      <div data-hf-id="hf-pqz3" id="b04-page-cam" class="rc-cam" style="z-index: 1">
+        <div data-hf-id="hf-tl21" id="b04-page-tilt">
+          <div data-hf-id="hf-7o23" id="b04-page" data-layout-allow-overflow>
+            <img data-hf-id="hf-sb8o" id="b04-page-img" class="clip" data-layout-allow-occlusion src="assets/page/racenchase_title_page_v05.jpg" data-start="0" data-duration="1.5333" data-track-index="1" alt="Race'n'Chase Game Design, Version 1.05, March 22, 1995, (c) 1995 DMA Design Ltd">
+            <!-- TODO kit v05 (highlighter sweep): #FF2E7E 55 %, multiply (light page), wipes left -> right over 8f from local 16
+                 (v04 17.2), over "Race'n'Chase" (page px 918-1269 x 369-417); held to the cut (46). -->
+            <div data-hf-id="hf-39zi" id="b04-hl" class="clip" data-start="0.5333" data-duration="1.0000" data-track-index="2"></div>
+            <!-- TODO kit v05 (hand-drawn annotation): yellow #FFD23F circle round "March 22, 1995" (page px 975-1212 x 687-714),
+                 drawn on over 8-10f from local 28 (v04 17.6), slight jitter; held to the cut (46). -->
+            <div data-hf-id="hf-d6cx" id="b04-circ" class="clip" data-start="0.9333" data-duration="0.6000" data-track-index="3"></div>
+            <!-- tier A setup line "It's called" (6 / 12): the printed, highlighted title is the line's key word -->
+            <div data-hf-id="hf-ii1r" id="b04-lk-called" class="clip" data-start="0.2000" data-duration="1.3333" data-track-index="4"><div data-hf-id="hf-aaqu" class="rc-lk__row rc-lk__row--lead"><span data-hf-id="hf-c66d" class="rc-lw" data-rc-f="6">It's</span> <span data-hf-id="hf-07ys" class="rc-lw" data-rc-f="12">called</span></div></div>
           </div>
         </div>
-        <!-- dim: #0A0A0A at 65% (the page shows at 35%) with a rounded, 20 px feathered hole on the boxed title
-             (both title lines "Race'n'Chase / Game Design", screen px at push 100%) -->
-        <div data-hf-id="hf-n5u3" id="b04-dim" class="clip rc-l7__dim" data-hole="715,296,488,212" data-radius="16" data-feather="20" data-start="0.0000" data-duration="1.5333" data-track-index="3"></div>
       </div>
 
-      <!-- ============ L9 / M3 calendar on the card (v03: the kit's dark card; hard cut at local 46 = beat f40) ============ -->
-      <div data-hf-id="hf-7ix9" id="b04-card" class="clip rc-card rc-full" data-start="1.5333" data-duration="2.2000" data-track-index="4" style="z-index: 2"></div>
-      <!-- untimed camera: v03 (note 13) v01's slow push 100% -> 104% on the calendar (sine.inOut, never linear); the v02
-           punch-in on the cut and the key punch on "eighteen" are gone. The uniform card ground stays still; the caption is
-           outside the camera (steady). -->
-      <div data-hf-id="hf-onvd" id="b04-cam" class="rc-full" style="z-index: 3">
-        <!-- the M3 component; B12 reuses it with identical geometry (grid top-left 748, 520; 64 px squares, 8 px gaps,
-             6 columns). No dates, month names or years on it (plan p.21 Watch out). -->
-        <div data-hf-id="hf-211p" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="5"></div>
+      <!-- ============ the grid (local 46..112): one camera = background + office + grid + caption block (the 110%
+           punch-in at 70 moves them together) ============ -->
+      <div data-hf-id="hf-gu97" id="b04-grid-cam" class="rc-cam" style="z-index: 2">
+        <div data-hf-id="hf-a9ps" id="b04-bg" class="clip" data-start="1.5333" data-duration="2.2000" data-track-index="5"></div>
+        <div data-hf-id="hf-lviv" id="b04-off-wrap" data-layout-allow-overflow="">
+          <div data-hf-id="hf-pid8" id="b04-off-scale">
+            <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0.04,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.666,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-wt2y" id="b04-off" class="clip" src="assets/footage/R3.8.mp4" data-start="1.5333" data-duration="2.2000" data-media-start="0.2" data-track-index="6" muted playsinline></video>
+          </div>
+        </div>
+        <!-- the M3 calendar (kit): 18 slots, 72 px cells, 9 px gaps, 6 columns = 477 x 234 at (901, 379); block ink x 542-1378 -->
+        <div data-hf-id="hf-0z3w" id="b04-cal" class="clip m3-cal" data-start="1.5333" data-duration="2.2000" data-track-index="7"></div>
+        <div data-hf-id="hf-6q6e" id="b04-lk-grid" class="clip rc-lk b04-free" data-start="1.6333" data-duration="2.1000" data-track-index="8">
+          <div data-hf-id="hf-tvji" id="b04-setup" class="rc-lk__row rc-lk__row--lead"><span data-hf-id="hf-mfe6" class="rc-lw" data-rc-f="49">and</span> <span data-hf-id="hf-qxj6" class="rc-lw" data-rc-f="52">it's</span> <span data-hf-id="hf-o4t4" class="rc-lw" data-rc-f="59">planned</span> <span data-hf-id="hf-djh8" class="rc-lw" data-rc-f="70">to</span> <span data-hf-id="hf-9pu0" class="rc-lw" data-rc-f="76">take</span></div>
+          <div data-hf-id="hf-ald5" id="b04-18"><span data-hf-id="hf-7ai0" class="rc-lw" data-rc-f="81">18</span></div>
+          <div data-hf-id="hf-3yr1" id="b04-months" class="rc-lk__row rc-lk__row--key"><span data-hf-id="hf-c0aj" class="rc-lw" data-rc-f="88">months.</span></div>
+        </div>
       </div>
-
-      <!-- ============ v03 caption (note 10 + notes 11, 16, 17): ONE lockup above the grid (kit RCK.type.lockups, the kit's own
-           B4 example): "planned to take" (small, stays on screen) over the big Coolvetica Italic keyword "18 months." ("18" =
-           the spoken "eighteen", loose); every word appears on its own spoken frame (planned 59, to 70, take 76, 18 81, months.
-           88); the keyword is this beat's one reveal: "18" and "months." pop + blur in (6f expo.out). Ink centred on x 960, y 330
-           (clears the grid, top y 520); white + glow on the dark card; hard cut out on the beat end (106). ============ -->
-      <div id="b04-lk-1" class="clip rc-lk" data-start="1.9666" data-duration="1.5667" data-track-index="6" style="--rc-y: 330px; --rc-lk-c: 108.02px; z-index: 4"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="59">planned</span> <span class="rc-lw" data-rc-f="70">to</span> <span class="rc-lw" data-rc-f="76">take</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -20.39px"><span class="rc-lw rc-lw--pop" data-rc-f="81">18</span> <span class="rc-lw rc-lw--pop" data-rc-f="88">months.</span></div></div></div>
     </div>
 
     <script src="assets/kit/type.js"></script>
@@ -89,29 +110,23 @@
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const T = RCK.type, S = RCK.screens, M = RCK.motifs, C = RCK.cam;
+      const T = RCK.type, M = RCK.motifs, C = RCK.cam;
       const L = (n) => n / 30;                       // local frame -> seconds (local frame = beat frame + 6)
-      // words.json comp_t (v02); every helper snaps to the nearest frame
-      const W = { Race: 0.75, eighteen: 2.699 };     // local 23 (22.5 rounds up), 81
 
-      // v03 caption: the .rc-lk lockup; plain words hard-cut on their frame, the starred keyword "18 months." pops + blurs in
-      T.lockupsWire(tl);
+      // ---- captions: every word hard-cuts on its own frame (kit v05: the pink -> white entry, inside lockupsWire)
+      T.lockupsWire(tl, '#b04-lk-called, #b04-lk-grid');
 
-      // L7 push toward the title: 100% on the beat's first frame (local 6) -> 118% on the cut (local 46), easeInOutSine,
-      // about the hole centre. Head handle (local 0-5) holds the opening state (100%): the push may never go below 100%, or
-      // the 1920 x 1080 dim layer (scaled with the page) would stop covering the frame edges (seen at 97.5% in v01 review).
-      S.spotPush(tl, '#b04-l7', L(6), { until: L(46), from: 1, to: 1.18 });
-      // T9: highlight swipes left to right over 8f, power3.out (easeOutQuart), on "Race"
-      T.highlight(tl, '#b04-hl', W.Race);
+      // ---- the page: push 100 -> 115% (doc 17.0-18.0), sine.inOut, from the beat start to the cut; head handle at 100%.
+      C.push(tl, '#b04-page-cam', L(6), { until: L(46), from: 1.0, to: 1.15 });
 
-      // L9 / M3: 18 empty slots appear with the card (cut, local 46), squares fill 2f apart from local 47 -> the 18th on 81,
-      // the frame "eighteen" is spoken (hard fills: one state per frame, a cut pattern)
-      M.calendarFill(tl, '#b04-cal', L(47), { slots: 18, filled: 0 });
-      // camera, v03 (note 13: back to v01's camera, eased): one slow push on the calendar 100% (the cut, local 46) -> 104% on
-      // the beat end (106), easeInOutSine, held through the tail handle. No punch-in on the cut, no key punch.
-      C.push(tl, '#b04-cam', L(46), { until: L(106), from: 1, to: 1.04 });
+      // ---- the grid: 18 cells, one every 2f from 47 -> the 18th on 81 ("eighteen"), hard fills (kit M3 calendar)
+      M.calendarFill(tl, '#b04-cal', L(47), { slots: 18, filled: 0, max: 18, cols: 6, sq: 72, gap: 9, x: 901, y: 379 });
 
-      tl.set({}, {}, L(112));                         // timeline spans the whole composition
+      // ---- 110% punch-in (doc 19.0 = local 70): a cut to a tighter framing of the same shot, held to the end.
+      gsap.set('#b04-grid-cam', { scale: 1.0, transformOrigin: '50% 50%', force3D: false });
+      tl.fromTo('#b04-grid-cam', { scale: 1.0 }, { scale: 1.1, duration: L(0.5), ease: 'steps(1)', immediateRender: false }, L(69.5));
+
+      tl.set({}, {}, L(112));
       window.__timelines["b04-racenchase"] = tl;
     </script>
   </body>

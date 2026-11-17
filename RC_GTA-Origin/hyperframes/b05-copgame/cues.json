@@ -1,1 +1,20 @@
-{"events": {}}
+{
+ "events": {},
+ "word_pops": [
+  1,
+  3,
+  14,
+  19,
+  25,
+  36,
+  47
+ ],
+ "key_words": [
+  27,
+  58
+ ],
+ "sfx": [],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (REVISION_v05 lane 2): word_pops = caption words (tick), key_words = the first word of each key phrase (whoosh-in + thump): 'police' (the 'police officer' keyword; 'officer' ticks) and 'criminals.'. No other sounds (the X9 wash stays visual only). No legacy events."
+}

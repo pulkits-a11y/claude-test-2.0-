@@ -1,1 +1,37 @@
-{"events": {"stamp1": 35, "stamp2": 56, "stamp3": 66}}
+{
+ "events": {},
+ "word_pops": [
+  0,
+  3,
+  7,
+  25,
+  29,
+  35,
+  42,
+  52,
+  62,
+  66
+ ],
+ "key_words": [
+  16,
+  56
+ ],
+ "sfx": [
+  {
+   "f": 51,
+   "name": "whip"
+  },
+  {
+   "f": 66,
+   "name": "stamp_thud"
+  }
+ ],
+ "dropouts": [],
+ "archival": [
+  [
+   0,
+   35
+  ]
+ ],
+ "note": "v05: whip = the whip-pan headline -> body copy (local 57-61; beat 51 = its first frame); stamp_thud = the red CANNED stamp on 'down.' (local 72 = beat 66, doc 30.3 'on shut it down'). archival = the 1990s office B-roll (R7.1, R7.3), beat 0-35. Legacy stamp1-3 (S06 hits) dropped: v05's stamp thud, whip and key-word thumps replace them."
+}

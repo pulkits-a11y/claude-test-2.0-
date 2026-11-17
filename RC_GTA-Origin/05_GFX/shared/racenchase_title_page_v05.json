@@ -1,0 +1,57 @@
+{
+ "what": "Race'n'Chase Game Design v1.05 title page (c) 1995 DMA Design Ltd, the light original, restyled on off-white paper",
+ "source": "04_Broll/B04/R4.5__source_grand-theft-auto-design-doc-1995.pdf page 1 (embedded 699x1024 JPEG)",
+ "size": [
+  2097,
+  3072
+ ],
+ "scale_from_native": 3,
+ "boxes_page_px_x0y0x1y1": {
+  "title_box": [
+   267,
+   348,
+   1920,
+   519
+  ],
+  "race_n_chase": [
+   918,
+   369,
+   1269,
+   417
+  ],
+  "game_design": [
+   909,
+   450,
+   1272,
+   498
+  ],
+  "version": [
+   999,
+   636,
+   1191,
+   663
+  ],
+  "march_22_1995": [
+   975,
+   687,
+   1212,
+   714
+  ],
+  "copyright": [
+   897,
+   843,
+   1287,
+   870
+  ]
+ },
+ "paper": "#F1ECE2",
+ "ink": "#1E1B17",
+ "levels": [
+  70.0,
+  212.0,
+  0.9
+ ],
+ "seed": 1995,
+ "recipe": "hyperframes/b04-racenchase/prep/race_page.py",
+ "use": "B4 (full frame, tilt -4 deg, push 100 -> 115%) and B15 (10-frame split-screen flash of the same page)"
+}

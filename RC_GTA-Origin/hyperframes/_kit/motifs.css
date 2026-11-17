@@ -323,3 +323,149 @@
   border: 0;
   padding: 0;
 }
+
+/* ======================================================================================================================
+   v05 MOTION-GRAPHICS KIT: RCK.fx (motifs.js; docs KIT_v05.md; REVISION_v05 G6, doc 2.4; px = doc @720 x 1.5).
+   Pattern: the beat writes one timed, empty host  <div id="..." class="clip fx-host" data-start data-duration
+   style="--x: 960px; --y: 540px; z-index: N"></div>  and the RCK.fx helper builds the graphic inside it (untimed
+   children) and animates those children only. Footage helpers return HTML (cardInsertHTML, darkCardHTML).
+   ====================================================================================================================== */
+.fx-host { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; }
+.fx-anchor { position: absolute; left: var(--x, 960px); top: var(--y, 540px); width: 0; height: 0;
+  display: flex; align-items: center; justify-content: center; }          /* a point; its child is centred on it */
+.fx-fill { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+
+/* 1-frame white flash */
+.fx-flash { background: #FFFFFF; opacity: 0; }
+
+/* flash-star burst: a white 4-point star flare */
+.fx-star { position: absolute; left: 0; top: 0; overflow: visible; opacity: 0; }
+
+/* highlight pill (doc: 10 px radius, #FF2E7E 92%, 3 px white inner stroke inset 6 px, 24 px glow 40%; Montserrat
+   ExtraBold uppercase +2%, 44-52 px; all x 1.5). --w (0..1) wipes it in from the left (RCK.fx.pill). */
+.fx-pill__box {
+  --w: 1;
+  position: relative; flex: 0 0 auto;
+  padding: 18px 42px 20px;
+  border-radius: 15px;
+  background: rgba(255, 46, 126, 0.92);
+  box-shadow: 0 0 36px rgba(255, 46, 126, 0.40);
+  clip-path: inset(-60px calc((1 - var(--w)) * (100% + 120px) - 60px) -60px -60px);
+  white-space: nowrap;
+}
+.fx-pill__box::before {                     /* the 4.5 px white inner stroke, inset 9 px */
+  content: ""; position: absolute; inset: 9px; border: 4.5px solid #FFFFFF; border-radius: 6px; pointer-events: none;
+}
+.fx-pill__text { position: relative; display: block; font-family: var(--font-pill); font-weight: 800; font-size: var(--pill-size, 72px);
+  line-height: 1.1; letter-spacing: 0.02em; text-transform: uppercase; color: #FFFFFF; }
+.fx-pill__ch { opacity: 0; }
+.fx-pill--name .fx-anchor { left: var(--x, 96px); top: auto; bottom: var(--b, 140px); width: auto; height: auto; display: block; }
+.fx-pill--name .fx-pill__box { padding: 14px 34px 16px; }
+.fx-pill--name .fx-pill__text { font-size: var(--pill-size, 45px); }
+.fx-pill__l2 { position: relative; display: block; margin-top: 4px; font-family: var(--font-pill); font-weight: 700; font-size: var(--pill-size2, 30px);
+  line-height: 1.15; letter-spacing: 0.02em; color: #FFFFFF; white-space: nowrap; }
+
+/* pink pixel glitch: pool of blocks (pink / white / streaks), placed per frame by transforms */
+.fx-glitch__layer { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.fx-glitch__b { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; transform-origin: 0 0; }
+.fx-glitch__b--p { background: #FF2E7E; }
+.fx-glitch__b--w { background: #FFFFFF; }
+.fx-glitch__b--s { background: linear-gradient(90deg, rgba(255, 46, 126, 0) 0%, rgba(255, 46, 126, 0.95) 35%, #FFFFFF 50%, rgba(255, 46, 126, 0.9) 70%, rgba(255, 46, 126, 0) 100%); }
+
+/* rubber stamp (#E3262B grunge, rough edge; Montserrat ExtraBold) */
+.fx-stamp__slam { position: relative; flex: 0 0 auto; }
+.fx-stamp__ink {
+  display: block; font-family: var(--font-pill); font-weight: 800; font-size: var(--stamp-size, 180px); line-height: 1;
+  letter-spacing: 0.04em; color: var(--danger); white-space: nowrap;
+  padding: 10px 44px 16px; border: 15px solid var(--danger); border-radius: 22px;
+  box-shadow: inset 0 0 0 7px rgba(0, 0, 0, 0), inset 0 0 0 11px var(--danger);
+  filter: url(#rcm-stamp-rough);
+}
+
+/* Win95-style error window (generic 1990s dialog; crisp, scalable: --s = scale, base width 640 px) */
+.fx-err__win {
+  --s: 1;
+  position: absolute; width: calc(640px * var(--s)); box-sizing: border-box;
+  background: #C3C3C3; padding: calc(3px * var(--s));
+  box-shadow: inset calc(-2px * var(--s)) calc(-2px * var(--s)) 0 0 #0A0A0A, inset calc(2px * var(--s)) calc(2px * var(--s)) 0 0 #FFFFFF,
+    inset calc(-4px * var(--s)) calc(-4px * var(--s)) 0 0 #808080, inset calc(4px * var(--s)) calc(4px * var(--s)) 0 0 #DFDFDF,
+    0 calc(10px * var(--s)) calc(30px * var(--s)) rgba(0, 0, 0, 0.35);
+  font-family: var(--font-dull); color: #0A0A0A; transform-origin: 50% 50%;
+}
+.fx-err__title { display: flex; align-items: center; justify-content: space-between; height: calc(36px * var(--s));
+  padding: 0 calc(5px * var(--s)) 0 calc(10px * var(--s)); background: linear-gradient(90deg, #000080, #1084D0);
+  color: #FFFFFF; font-family: var(--font-setup); font-weight: 600; font-size: calc(22px * var(--s)); white-space: nowrap; }
+.fx-err__x { width: calc(30px * var(--s)); height: calc(26px * var(--s)); background: #C3C3C3; display: flex; align-items: center; justify-content: center;
+  box-shadow: inset calc(-2px * var(--s)) calc(-2px * var(--s)) 0 0 #0A0A0A, inset calc(2px * var(--s)) calc(2px * var(--s)) 0 0 #FFFFFF;
+  color: #0A0A0A; font-family: var(--font-setup); font-weight: 600; font-size: calc(20px * var(--s)); line-height: 1; }
+.fx-err__body { display: flex; align-items: flex-start; gap: calc(24px * var(--s)); padding: calc(26px * var(--s)) calc(26px * var(--s)) calc(18px * var(--s)); }
+.fx-err__icon { flex: 0 0 auto; width: calc(56px * var(--s)); height: calc(56px * var(--s)); }
+.fx-err__msg { margin: 0; font-size: calc(24px * var(--s)); line-height: 1.35; }
+.fx-err__btns { display: flex; justify-content: center; gap: calc(16px * var(--s)); padding: 0 0 calc(18px * var(--s)); }
+.fx-err__btn { min-width: calc(130px * var(--s)); padding: calc(7px * var(--s)) calc(12px * var(--s)); text-align: center; background: #C3C3C3;
+  font-size: calc(22px * var(--s)); box-shadow: inset calc(-2px * var(--s)) calc(-2px * var(--s)) 0 0 #0A0A0A, inset calc(2px * var(--s)) calc(2px * var(--s)) 0 0 #FFFFFF,
+  inset calc(-4px * var(--s)) calc(-4px * var(--s)) 0 0 #808080; }
+.fx-err__btn--def { outline: calc(2px * var(--s)) solid #0A0A0A; }
+.fx-err--dark .fx-err__win { background: #2F2F2F; color: #FFFFFF; }
+.fx-err--dark .fx-err__title { background: #0A0A0A; }
+.fx-err--dark .fx-err__x, .fx-err--dark .fx-err__btn { background: #2F2F2F; color: #FFFFFF; }
+
+/* card insert: white 15 px border + shadow, tilted (static rotate on the untimed frame); the push scales .fx-card__cam */
+.fx-card { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.fx-card__bgwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.fx-card__bgscale { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.fx-card__bgscale > video, .fx-card__bgscale > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+.fx-card__cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+.fx-card__frame { position: absolute; }
+.fx-card__border { position: absolute; left: calc(-1 * var(--b, 15px)); top: calc(-1 * var(--b, 15px)); right: calc(-1 * var(--b, 15px)); bottom: calc(-1 * var(--b, 15px));
+  background: #FFFFFF; box-shadow: 0 27px 60px rgba(0, 0, 0, 0.5); }
+.fx-card__media { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* dark card v05: #0E0E10 base, a blurred darkened footage loop at 15-25%, grain + the v04 scanlines on top */
+.fx-dark { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.fx-dark__base { background: var(--card-bg); }
+.fx-dark__loop { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.fx-dark__tex { background-image: var(--rc-scan, var(--card-scan)), var(--grain); }
+
+/* highlighter sweep (#FF2E7E 55%, multiply on light pages, screen on dark pages); --w wipes it left -> right */
+.fx-hl { --w: 1; position: absolute; background: #FF2E7E; opacity: 0.55; mix-blend-mode: multiply; pointer-events: none;
+  clip-path: inset(0 calc((1 - var(--w)) * 100%) 0 0); }
+.fx-hl--dark { mix-blend-mode: screen; }
+
+/* hand-drawn annotations (SVG built by RCK.fx.annotate) */
+.fx-ann__svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+.fx-ann__label { position: absolute; font-family: var(--font-setup); font-weight: 600; font-size: 48px; line-height: 1; color: var(--annot);
+  text-shadow: var(--text-drop); white-space: nowrap; opacity: 0; }
+
+/* slot-machine counter (Playfair Display Black, white) */
+.fx-slot__row { display: flex; font-family: var(--font-display); font-weight: 900; color: #FFFFFF; text-shadow: var(--text-drop); }
+.fx-slot__col { position: relative; overflow: hidden; }
+.fx-slot__strip { display: flex; flex-direction: column; }
+.fx-slot__strip > span { display: block; text-align: center; }
+
+/* tear-off calendar page */
+.fx-cal__pad { position: relative; flex: 0 0 auto; }
+.fx-cal__page { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 900; white-space: nowrap; border-radius: 6px; }
+.fx-cal--dark .fx-cal__page { background-color: #1A1A1D; background-image: var(--grain); color: #FFFFFF; box-shadow: 0 27px 60px rgba(0, 0, 0, 0.55); }
+.fx-cal--paper .fx-cal__page { background-color: var(--paper); background-image: var(--paper-fibre), var(--paper-grain); color: #141414; box-shadow: 0 27px 60px rgba(0, 0, 0, 0.45); }
+.fx-cal__bind { position: absolute; left: -12px; right: -12px; top: -34px; height: 58px; border-radius: 8px; background: #0B0B0C;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5); display: flex; justify-content: space-evenly; align-items: center; }
+.fx-cal__ring { width: 22px; height: 70px; border-radius: 11px; background: linear-gradient(90deg, #8A8A8E, #E6E6EA 45%, #6E6E72); margin-top: -40px; }
+
+/* location tag: UK outline (white 3 px non-scaling stroke) + pink pin, zooming toward the pin */
+.fx-loc__box { position: absolute; overflow: hidden; border-radius: 10px; }
+.fx-loc__svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.fx-loc__label { position: absolute; font-family: var(--font-setup); font-weight: 600; font-size: 30px; color: #FFFFFF; text-shadow: var(--text-drop); white-space: nowrap; }
+
+/* VCR timestamp (VT323 42 px; the play triangle is drawn: VT323 has no U+25B6) */
+.fx-vcr__osd { position: absolute; display: flex; align-items: center; gap: 14px; font-family: var(--font-vcr); font-size: 42px; line-height: 1;
+  color: #FFFFFF; letter-spacing: 0.04em; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.55); white-space: nowrap; }
+.fx-vcr__tri { width: 24px; height: 28px; }
+
+/* year label (B1 tiles, B14 montage): serif 60 px bottom-left */
+.fx-year { position: absolute; left: var(--x, 30px); bottom: var(--b, 22px); font-family: var(--font-display); font-weight: 900; font-size: 60px;
+  line-height: 1; color: #FFFFFF; text-shadow: var(--text-drop); }
+
+/* 3D flip host: perspective on the root (RCK.fx.flipY sets it), faces hide their back */
+.fx-flip__face { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; backface-visibility: hidden; -webkit-backface-visibility: hidden; }

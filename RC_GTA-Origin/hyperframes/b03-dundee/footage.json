@@ -7,18 +7,18 @@
   "R3.3",
   "R3.6"
  ],
- "note": "v02 (REVISION_v02 B3, client note 2): R3.8, R3.7, R3.3 and R3.6 are now FULL-FRAME HF-owned B-roll in fast cuts on the words of 'DMA Design, the studio behind Lemmings,' (local 103-175; object-fit cover, never stretched; the 4:3 archive is cropped to 16:9 by the cover fit, note 2 'focus more on the broll'). R3.1 = Tesseract-owned L2 band (beat f55-97; synced here only as a reference for the T4 placement). The L2 band on 'starts a new game' (beat f169-203) is a different R3.7 moment, Tesseract-owned (tesseract_shots.json). v01's L12 cards, T8 card and the Lemming cut-out (assets/lemming/) are no longer used.",
+ "note": "v05 (REVISION_v05 lane 5): every B3 shot is HF-owned, full frame. R3.1 = the [DEPTH] Dundee shot from one still frame (prep/dundee_depth.py -> assets/footage/R3.1_plate.jpg + R3.1_hill_cutout.png; R3.1.mp4 stays as the synced reference). R3.8 door plate + staffer, R3.7 map, R3.3 box, R3.6 Lemmings intro: as v04 (re-timed -57f). R3.7 has a second moment, the BBC team shot for the card insert, cut by hand to assets/footage/R3.7_team.mp4 (the tool cuts one window per R-ID; see 'extra'). v04's R3.8 year-card moment (media 14.2 s) is no longer used (the 'It's 1995' card is cut).",
  "moments": {
   "R3.1": {
    "in": 21.0,
    "out": 24.0,
    "crop": "640:360:40:0",
-   "note": "Old Dundee in colour: 'La Hull from Hawkhill' slide, the Law hill with its monument centred against a dark sky, town below. Crop = top 360 px (16:9), keeps the burned-in caption (source y 365-398) out; centred on the monument."
+   "note": "Old Dundee in colour: 'La Hull from Hawkhill' slide (a still photograph, 20.2-25.1 s), the Law hill with its monument against an overcast sky, town below. v05: the plate is ONE frame at 21.6 s (prep/dundee_depth.py: same crop 640:360:40:0 = top 360 px, the burned-in caption at source y 365-398 stays out; Lanczos x3), pushed 100 -> 108% in HF; the hill cut-out is a sky colour key of the same frame. This working clip is kept as the synced reference only."
   },
   "R3.8": {
    "in": 13.0,
    "out": 45.9,
-   "note": "DMA Design office tour (Mike Dailly), one window for two shots: 13.4-13.63 s the door plate '21 DMA Design' sharp and centred-left on the black door (handheld; shot 1 on 'DMA', media-start 0.4) and 43.35-44.18 s a young staffer at his desk with two CRT monitors sweeping his hand toward them and turning to the camera (shot 2 on 'Design,', media-start 30.35; v01's card-1 moment). 384x288 4:3 source, upscaled (soft, archival). v04 (review #4): a third moment, media 14.2-16.23 s (source 27.2-29.2 s, inside one shot 26.53-31.73 s): the wide DMA office with CRT monitors at the desks and two staff, darkened behind the 'It's 1995' year card (local 0-61)."
+   "note": "DMA Design office tour (Mike Dailly), one window for two shots: 13.4-13.63 s the door plate '21 DMA Design' (shot 1 on 'DMA', media-start 0.4) and 43.35-44.18 s a young staffer at his desk with two CRT monitors (shot 2 on 'Design,', media-start 30.35). 384x288 4:3 source, upscaled (soft, archival)."
   },
   "R3.7": {
    "in": 51.3,
@@ -36,6 +36,24 @@
    "out": 17.8,
    "crop": "1160:720:59:0",
    "note": "Lemmings Amiga intro: lemmings walking along the grass under the brown rock wall while one floats down under its umbrella (15.4-17.8 s; shot 5 on 'Lemmings,', media-start 0.6 = 16.0 s). Crop 1160:720:59:0 removes the upload's black side borders (picture x 56-1222). v01's moment (23.2-25.9 s, the source of the v01 cut-out) is not used any more."
+  }
+ },
+ "extra": {
+  "R3.7_team": {
+   "file": "assets/footage/R3.7_team.mp4",
+   "source": "04_Broll/_originals/B03/R3.7__GRAND THEFT AUTO 1996 Making Of - GTA - ｜ Retro Gaming ｜ BBC Archive [7vWSi44ZTSw].mp4",
+   "in": 194.8,
+   "out": 196.8,
+   "crop": "1308:980:306:100",
+   "note": "BBC 1996: the presenter seated between two developers at their CRTs (v04's L2 band moment, source_in 195.0 = media-start 0.2). Crop = 4:3 below the BBC Archive channel bug (cropped out, not blurred). Cut by hand with sync_footage.py's settings: assets/footage/R3.7_team.SOURCE.txt"
+  },
+  "R3.1_depth": {
+   "files": [
+    "assets/footage/R3.1_plate.jpg",
+    "assets/footage/R3.1_hill_cutout.png"
+   ],
+   "recipe": "prep/dundee_depth.py",
+   "record": "assets/footage/R3.1_depth.SOURCE.json"
   }
  }
 }

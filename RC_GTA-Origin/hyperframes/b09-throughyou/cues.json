@@ -1,3 +1,54 @@
 {
- "events": {}
+ "events": {},
+ "word_pops": [
+  1,
+  5,
+  15,
+  28,
+  47,
+  49,
+  61,
+  69,
+  72,
+  95,
+  102,
+  120,
+  143,
+  168,
+  175,
+  191
+ ],
+ "key_words": [
+  21,
+  53,
+  80,
+  128,
+  149,
+  185
+ ],
+ "sfx": [
+  {
+   "f": 77,
+   "name": "whip",
+   "note": "whip-zoom on 'straight' (local 83-89, peak motion + blur on local 86 = beat 80)"
+  },
+  {
+   "f": 128,
+   "name": "hit",
+   "note": "'ram.'"
+  },
+  {
+   "f": 149,
+   "name": "hit",
+   "note": "'chase.'"
+  },
+  {
+   "f": 185,
+   "name": "hit",
+   "note": "'let go.'"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (REVISION_v05 S; beat frames, f0 = beat start = local 6). word_pops = every caption word that is not a key word; key_words = the lockup keywords stop / start / straight / ram. / chase. / let (of 'let go.'; 'go.' at 191 is a tick so the keyword does not thump twice). The freeze on 'stop' (beat 21-24) rides on the key-word whoosh + thump. No music event (music bed off). All game footage, nothing archival."
 }

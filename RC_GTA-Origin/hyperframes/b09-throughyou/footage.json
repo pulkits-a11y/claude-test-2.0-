@@ -3,21 +3,25 @@
  "rids": [
   "R9.1",
   "R9.3",
+  "R9.4",
   "R9.5"
  ],
- "note": "The three L3 strips (this composition, beat f120-202, continuing into b10-fun until 'fun'): R9.1 = strip 1 'They ram.' (SUBSTITUTE for the missing R9.2: the GTA 1 ram that ends the L1 shot, continued in the strip), R9.3 = strip 2 GTA 2 chase, R9.5 = strip 3 London 1969. Under the T1 captions everything is Tesseract-owned (tesseract_shots.json): v04 cut-ins R9.3 42.0-42.7 s (f0-21), R9.4 540.55-541.48 s (f21-49) and R9.4 573.2-573.87 s (f49-69), then the GTA 1 L1 shot R9.1 316.4-318.1 s (f69-120). v02: windows unchanged (the strips start on the new 'They' frames, media 0 = these in-points). R9.4 (GTA 1 in 4K) is used by two Tesseract cut-ins (v04), not synced here.",
+ "note": "v05 (REVISION_v05 lane 3; doc 33.0-41.4): B9 is now HyperFrames-owned for its whole length (tesseract_shots.json has no shots): the cut-ins, the freeze on 'stop', the whip-zoom on 'straight', the 'you' arrow and the sentence shots all need registration with the footage. Windows are cut UNCROPPED (sync_footage fits them to 1920x1080) and every framing is a positioned <video> in index.html (crop boxes given in source pixels there). Shots (local frames): A 0-27 R9.3 41.8-42.7 (crop 480:270:160:150) / B 27-55 R9.4 540.55 frozen 27-30 then 540.583-541.37 (crop 1440:810:0:90) / C 55-75 R9.4 573.2-573.87 (crop 1440:810:0:135) / GTA 1 75-126 R9.1 316.4-318.1 (wide 536:302:260:108, whip-zoom on 'straight' at 86 into a tighter crop on the player's car) / 'They ram.' 126-149 R9.1 318.1-318.87 (wide) / 'They chase.' 149-182 R9.3 55.6-56.7 full frame (640:360:0:10, the lightning) / 'They don't let go.' 174-214 the three L3 strips (R9.1 319.7 s+, R9.3 56.43 s+, R9.5 566.0 s+; same source times as v04 from local 174, so b10-fun's strip media-starts are unchanged). The R9.1 watermark ('Sakura240', x 100-258, y 352-385 of the 854x480 upload) is in the window but every R9.1 framing starts at x >= 260.",
  "moments": {
   "R9.1": {
-   "in": 318.1,
+   "in": 316.3,
    "out": 322.4,
-   "crop": "276:414:274:40",
-   "note": "GTA 1: a police car drives straight down into the player's purple Beast GTS and rams it (318.0-318.7 s), then the player breaks away and speeds off with the cops behind (319-322 s, the camera zooms out). Vertical strip crop centred on the player's car (excludes the uploader's 'Sakura240' watermark at the left)."
+   "note": "GTA 1 (HX8infRFBTc): 316.4-318.1 the player's purple Beast GTS stopped at a junction, a police car drives straight down into it (317.6-318.1); 318.1-318.9 the police car shoves it (They ram.); 319-322 the player breaks away with the cops behind (strip 1). Uncropped window: the uploader's watermark (x 100-258, y 352-385) must stay outside every framing (all crops start at x >= 260)."
   },
   "R9.3": {
-   "in": 55.6,
+   "in": 41.7,
    "out": 59.2,
-   "crop": "288:480:247:0",
-   "note": "GTA 2 (5 stars): several white-and-blue police cars swarm the junction around the player. Vertical strip crop of the 4:3 picture over the cops and the player."
+   "note": "GTA 2 five stars (LNqEGdO9HDI): 41.8-42.7 police cars swing into a junction (cut-in A); 55.6-56.7 the player's electric gun arcs lightning into the police cars swarming the junction (They chase., full frame, then strip 2)."
+  },
+  "R9.4": {
+   "in": 540.4,
+   "out": 574.0,
+   "note": "GTA 1 PC 4K (AvVqj-YCHi8, Bent Cop Blues), 1440x1080 60 fps: 540.55 a police car tailing the player's white van down a boulevard (cut-in B, frozen 4 f on 'stop' with a red outline glow on the police car); 573.2-573.87 a police car drives into the side of the van (cut-in C). No watermark."
   },
   "R9.5": {
    "in": 566.0,

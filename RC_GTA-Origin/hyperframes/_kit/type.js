@@ -1295,7 +1295,7 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     if (!els.length) throw new Error('RCK.type.glowFlicker: target not found: ' + target);
     var k = frame(at), n = opts.frames || 10, c = opts.color || '255, 255, 255', sF = opts.settleF != null ? opts.settleF : 4;
     els.forEach(function (el, ei) {
-      if (el.classList && el.classList.contains('rc-lw--pop') && window.console) console.warn('RCK.type.glowFlicker: ' + (el.id || el.textContent) + ' is a starred (pop + blur) word: both drive filter; remove the *');
+      if (el.classList && el.classList.contains('rc-lw')) el = fxInner(el);   // v05: layer on top of the word entry
       var pat = opts.pattern || glowPattern(n, opts.seed != null ? opts.seed + ei : seedOf((el.id || '') + el.textContent + ei));
       var states = Array.from(pat).map(function (ch) { var nm = GF_CODE[ch]; if (!nm) throw new Error('RCK.type.glowFlicker: pattern letters are F o h -'); return GF[nm]; });
       var before = opts.before === undefined ? 'off' : opts.before, prev = before ? GF[before] : GF.off;
@@ -1353,6 +1353,431 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     return end;
   }
 
+  /* ================= v05 captions (REVISION_v05 G1-G5, doc 2.2-2.3): three tiers, word entry, block drift ================= */
+  // Font metrics measured in the render Chrome (canvas measureText at 1000 px, fonts from fonts/): advance widths, glyph
+  // ink tops / bottoms (1/1000 em) for V5_CHARS, and the baseline position in a line box of height = font size (base).
+  var V5_CHARS = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u2019\u2018\u201c\u201d\u2026\u2013\u2014\u00e9\u00e8\u00e1\u00e0\u00fc\u00f6\u00e4\u20ac\u00a3\u00b7\u25b6";
+  var V5_FONT = {
+    inter600: { base: 0.864, cap: 0.735, digit: 0.750, asc: 0.969, desc: 0.241,
+      adv: '252,321,523,644,650,1004,663,326,373,373,540,673,319,465,319,379,660,423,623,636,666,612,640,576,640,640,319,329,673,673,673,543,999,728,659,737,722,605,588,749,746,277,580,703,565,922,759,769,645,773,652,650,660,736,728,1020,720,713,652,373,379,373,481,469,351,574,624,583,624,591,389,625,612,262,262,569,262,900,612,609,624,624,397,549,353,612,587,839,569,588,566,455,359,455,673,294,294,507,501,956,500,1000,591,591,574,574,612,609,574,679,629,319,940',
+      top: '0,735,735,735,829,750,750,735,782,782,735,547,110,360,157,766,750,735,750,750,735,735,750,735,750,750,532,532,579,469,579,750,719,735,735,750,735,735,735,750,735,735,735,735,735,735,735,750,735,750,735,750,735,735,735,735,735,735,735,782,766,782,719,0,766,563,735,563,735,563,766,563,735,766,766,735,735,563,563,563,563,563,563,563,688,547,547,547,547,547,547,782,969,782,407,735,735,735,735,157,360,360,766,766,766,766,766,766,766,750,750,438,829',
+      bot: '0,-16,421,0,-110,-16,-16,421,-141,-141,312,31,-188,250,-16,-110,-16,0,0,-16,0,-16,-16,0,-16,-16,-16,-188,0,109,0,-16,-219,0,0,-16,0,0,0,-16,0,0,-16,0,0,0,0,-16,0,-79,0,-16,0,-16,0,0,0,0,0,-141,-110,-141,390,-110,609,-16,-16,-16,-16,-16,0,-219,0,0,-219,0,0,0,0,-16,-219,-219,0,-16,-16,-16,0,0,0,-219,0,-141,-235,-141,171,421,421,421,421,-16,250,250,-16,-16,-16,-16,-16,-16,-16,-16,0,265,-94' },
+    pf900: { base: 0.915, cap: 0.719, digit: 0.735, asc: 1.082, desc: 0.251,
+      adv: '223,306,417,609,608,719,938,222,334,334,473,565,278,469,282,366,675,392,553,512,550,489,591,488,588,582,306,304,598,627,598,540,888,692,704,717,811,650,608,756,829,401,390,754,626,965,732,827,678,827,721,613,699,693,693,1010,729,644,607,340,366,340,524,591,304,531,601,503,609,503,365,570,622,330,317,609,328,916,625,576,612,600,481,472,350,622,520,798,547,529,472,353,274,353,681,258,265,495,488,842,623,917,503,503,531,531,622,576,531,676,699,288,917',
+      top: '0,797,735,610,844,829,735,735,813,813,735,610,172,329,172,735,547,532,547,547,547,563,735,532,735,547,547,547,594,454,594,797,672,719,719,735,719,719,719,735,719,719,719,719,719,719,719,735,719,735,719,735,719,719,719,719,719,719,719,782,735,782,532,-62,844,547,797,547,797,547,797,547,797,797,797,797,797,547,547,547,547,547,547,547,688,532,532,532,532,532,532,797,860,797,407,735,735,735,735,172,344,344,844,844,844,844,782,782,782,735,750,391,860',
+      bot: '0,-16,453,93,-141,-63,-16,453,-188,-188,296,93,-141,218,-16,-16,-16,0,-16,-157,-157,-157,-16,-157,-16,-157,-16,-141,125,265,125,-16,-172,0,0,-16,0,0,0,-16,0,0,-204,0,0,0,0,-16,0,-204,-16,-16,0,-16,0,0,0,0,0,-188,-16,-188,296,-204,593,-16,-32,-16,-16,-16,0,-204,0,0,-204,0,0,0,0,-16,-188,-188,0,-16,-16,-16,0,0,0,-204,-16,-204,-204,-204,187,421,421,421,421,-16,187,187,-16,-16,-16,-16,-16,-16,-16,-16,-16,203,-125' },
+    pf400i: { base: 0.915, cap: 0.719, digit: 0.735, asc: 1.082, desc: 0.251,
+      adv: '253,263,296,639,551,766,817,187,361,361,495,585,252,504,244,468,565,342,503,485,515,459,527,487,544,513,278,287,602,663,602,438,848,629,632,670,725,610,566,705,755,341,636,675,586,868,770,729,589,781,664,554,659,682,632,902,699,670,652,300,492,300,535,744,320,523,504,432,542,429,321,449,536,302,276,515,277,809,580,488,551,507,426,381,336,567,533,685,526,481,445,306,318,306,649,240,239,399,401,805,728,1002,429,429,523,523,567,488,523,601,624,258,917',
+      top: '0,797,735,610,844,829,735,735,813,813,735,610,125,297,125,735,532,532,532,532,532,547,735,532,735,532,532,532,594,454,610,797,672,719,719,735,719,719,719,735,719,719,750,735,719,719,766,735,719,735,719,735,829,719,719,719,735,735,735,782,735,782,532,-109,860,532,797,532,797,532,797,579,797,766,766,797,797,532,532,532,688,532,532,532,688,532,547,547,532,532,532,797,860,797,375,719,735,735,719,125,297,297,829,860,829,860,750,750,750,735,750,329,829',
+      bot: '0,-16,515,93,-141,-63,-16,515,-188,-188,296,93,-141,218,-16,-16,-16,0,-16,-157,-157,-157,-16,-157,-16,-204,-16,-141,140,265,140,-16,-172,0,0,-16,0,0,0,-16,0,0,-204,-16,0,-16,-79,-16,0,-204,-16,-16,0,-16,-16,-16,-16,0,-32,-188,-16,-188,312,-172,593,-16,-32,-16,-16,-16,-204,-204,-16,-16,-204,-16,-16,-16,-16,-16,-188,-188,0,-16,-16,-16,-16,-16,-16,-204,-16,-204,-204,-204,234,453,468,468,453,-16,234,234,-16,-16,-16,-16,-16,-16,-16,-16,-16,171,-94' },
+    arimo: { base: 0.846, cap: 0.704, digit: 0.704, asc: 0.905, desc: 0.212,
+      adv: '278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,222,222,333,333,1000,556,1000,556,556,556,556,556,556,556,556,556,333,917',
+      top: '0,704,704,688,750,704,704,704,735,735,704,579,110,313,110,735,704,704,704,704,704,704,704,704,704,704,532,532,594,500,594,704,735,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,704,735,735,735,704,-125,750,547,735,547,735,547,735,547,735,735,735,735,735,547,547,547,547,547,547,547,657,532,532,532,532,532,532,735,735,735,407,704,704,704,704,110,297,297,750,750,750,750,688,688,688,704,704,329,829',
+      bot: '0,0,468,0,-79,-16,-16,468,-219,-219,328,78,-141,218,0,-16,-16,0,0,-16,0,-16,-16,0,-16,-16,0,-141,62,156,62,0,-141,0,0,-16,0,0,0,-16,0,0,-16,0,0,0,0,-16,0,-204,0,-16,0,-16,0,0,0,0,0,-219,-16,-219,328,-204,578,-16,-16,-16,-16,-16,0,-219,0,0,-219,0,0,0,0,-16,-219,-219,0,-16,-16,-16,0,0,0,-219,0,-219,-219,-219,265,453,453,453,453,0,218,218,-16,-16,-16,-16,-16,-16,-16,-16,0,203,-94' }
+  };
+  var v5Idx = null, v5Parsed = {};
+  function v5Font(fk) {
+    if (!v5Idx) { v5Idx = {}; Array.from(V5_CHARS).forEach(function (c, i) { v5Idx[c] = i; }); }
+    if (!v5Parsed[fk]) {
+      var f = V5_FONT[fk];
+      if (!f) throw new Error('RCK.type: no metrics for font ' + fk);
+      var P = function (s) { return s.split(',').map(Number); };
+      v5Parsed[fk] = { adv: P(f.adv), top: P(f.top), bot: P(f.bot), base: f.base, cap: f.cap, digit: f.digit };
+    }
+    return v5Parsed[fk];
+  }
+  var ITALIC_OVER = { cvi: 0.12, pf400i: 0.08 };
+  // width (px) of `s` in font fk at `size` px (cvi / cvr = Coolvetica with kerning; the others advance widths only)
+  function fontWidth(fk, s, size) {
+    if (fk === 'cvi' || fk === 'cvr') return cvWidth(s, size);
+    var T = v5Font(fk), u = 0;
+    Array.from(String(s)).forEach(function (ch) { var i = v5Idx[ch]; u += i != null ? T.adv[i] : 560; });
+    return u * size / 1000;
+  }
+  // {top, bottom} (em) of the ink actually present in `s`
+  function fontExtent(fk, s) {
+    if (fk === 'cvi' || fk === 'cvr') return cvExtent(s, fk === 'cvi');
+    var T = v5Font(fk), top = 0, bot = 0;
+    Array.from(String(s)).forEach(function (ch) {
+      if (/\s/.test(ch)) return;
+      var i = v5Idx[ch];
+      top = Math.max(top, i != null ? T.top[i] : 750);
+      bot = Math.max(bot, i != null ? -T.bot[i] : 250);
+    });
+    return { top: top / 1000, bottom: Math.max(0, bot) / 1000 };
+  }
+  function fontBase(fk) { return fk === 'cvi' || fk === 'cvr' ? LK.base : v5Font(fk).base; }
+  function fontCapOf(fk, s) {
+    var digitsOnly = /\d/.test(s) && !/[A-Za-z]/.test(s);
+    if (fk === 'cvi' || fk === 'cvr') return digitsOnly ? 0.688 : LK.asc;
+    var T = v5Font(fk);
+    return digitsOnly ? T.digit : T.cap;
+  }
+  // cubic-bezier(x1, y1, x2, y2) as an ease function (the doc's entry curve 0.2, 0.8, 0.2, 1); deterministic bisection.
+  function cubicBezier(x1, y1, x2, y2) {
+    var bx = function (t) { return 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t; };
+    var by = function (t) { return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t; };
+    return function (x) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      var lo = 0, hi = 1, t = x;
+      for (var i = 0; i < 32; i++) { t = (lo + hi) / 2; if (bx(t) < x) lo = t; else hi = t; }
+      return by(t);
+    };
+  }
+  var ENTRY_EASE = cubicBezier(0.2, 0.8, 0.2, 1);
+  // v05 tiers (px @1080 = doc @720 x 1.5) and the word entry (doc 2.3).
+  var T5 = {
+    setup: { font: 'inter600', size: 54, card: 57 },          // A: Inter SemiBold 51-57, sentence case, tracking 0
+    key: { font: 'cvi', size: 190 },                          // B: Coolvetica Italic 165-210 (3.5 x setup)
+    hero: { size: 450 },                                      // C: tier B font, or Playfair Display Black for numbers / dates
+    quote: { font: 'pf400i', size: 105, key: 135 },           // Q: Playfair Display Italic 90-120 (key words 135)
+    dull: { font: 'arimo', size: 180 },                       // the B6 "dull." gag: Arimo (Arial metrics) grey, no entry
+    gap: 17, clear: 8, pitch: 1.12, wrap: 1.15, safeW: 1728,
+    pink: '#FF2E7E', white: '#FFFFFF', red: '#E3262B', blue: '#2E6BFF', grey: '#8A8A8A',
+    entry: { frames: 4, fadeF: 2, scale: 1.12, blur: 9, colorAt: 2, colorF: 4, keyColorAt: 4, keyColorF: 4 },
+    drift: 1.04, exitF: 3, exitBlur: 12
+  };
+  // Spec grammar (v03 + v05): [key] tier B; [[hero]] tier C; | line break; word suffix flags (also after ] / ]] for the
+  // whole group): * emphasis (the key-word colour timing), ! plain (no entry: hard cut), ~ siren entry (red / blue every
+  // 2f for 8f), # dull (no entry, Arimo grey; in a key group the row becomes the "dull." gag), ^ stays pink.
+  var FLAG = { '*': 'emph', '!': 'plain', '~': 'siren', '#': 'dull', '^': 'hold' };
+  function splitFlags(t) {
+    var f = {};
+    while (t.length > 1 && FLAG[t.charAt(t.length - 1)]) { f[FLAG[t.charAt(t.length - 1)]] = true; t = t.slice(0, -1); }
+    return { text: t, flags: f };
+  }
+  function parseLockup5(spec) {
+    var s = String(spec).trim(), toks = [], role = 'lead', big = null, inBig = null, gStart = 0, br = false, m;
+    var re = /\[\[|\]\][*!~#^]*|\[|\][*!~#^]*|\||[^\s\[\]|]+/g;
+    while ((m = re.exec(s))) {
+      var t = m[0];
+      if (t === '[[' || t === '[') {
+        if (big) throw new Error('RCK.type.lockups: one [key] or [[hero]] group per lockup: "' + s + '"');
+        big = inBig = t === '[[' ? 'hero' : 'key'; role = 'key'; gStart = toks.length; br = false;
+        continue;
+      }
+      if (t.charAt(0) === ']') {
+        var hero = t.slice(0, 2) === ']]';
+        if (!inBig || hero !== (inBig === 'hero')) throw new Error('RCK.type.lockups: unmatched "' + t + '" in "' + s + '"');
+        var gf = splitFlags('x' + t.slice(hero ? 2 : 1)).flags;
+        for (var q = gStart; q < toks.length; q++) for (var fk in gf) toks[q].flags[fk] = true;
+        inBig = null; role = 'tail'; br = false;
+        continue;
+      }
+      if (t === '|') { br = true; continue; }
+      var sf = splitFlags(t);
+      if (!norm(sf.text).length && toks.length) { toks[toks.length - 1].text += ' ' + sf.text; continue; }
+      toks.push({ text: sf.text, role: role, flags: sf.flags, br: br });
+      br = false;
+    }
+    if (inBig) throw new Error('RCK.type.lockups: unclosed [ in "' + s + '"');
+    if (!toks.length) throw new Error('RCK.type.lockups: empty lockup "' + s + '"');
+    toks.forEach(function (tk) { tk.pop = !!tk.flags.emph; if (!big) tk.role = 'solo'; });
+    return { spec: s, toks: toks, hasKey: !!big, big: big };
+  }
+  function specList5(specs) {
+    var arr = Array.isArray(specs) ? specs : String(specs).split(/\s+\/\s+|\n+/);
+    return arr.map(function (x) {
+      if (x && typeof x === 'object') { var o = Object.assign({}, x); var s = o.s != null ? o.s : o.spec; delete o.s; delete o.spec; return { spec: String(s).trim(), opts: o }; }
+      return { spec: String(x).trim(), opts: {} };
+    }).filter(function (x) { return x.spec.length; });
+  }
+  function lockupLines5(toks, fk, size, maxW) {
+    if (!toks.length) return [];
+    var segs = [[]];
+    toks.forEach(function (tk, i) { if (tk.br && i > 0) segs.push([]); segs[segs.length - 1].push(tk); });
+    var out = [];
+    segs.forEach(function (seg) {
+      var wOf = function (a, b) { return fontWidth(fk, seg.slice(a, b).map(function (t) { return t.text; }).join(' '), size); };
+      if (wOf(0, seg.length) <= maxW || seg.length === 1) { out.push(seg); return; }
+      for (var n = 2; n <= seg.length; n++) {
+        var best = null;
+        (function rec(start, left, cuts) {
+          if (left === 1) {
+            var parts = cuts.concat([[start, seg.length]]), worst = 0;
+            parts.forEach(function (p) { worst = Math.max(worst, wOf(p[0], p[1])); });
+            if (!best || worst < best.worst) best = { worst: worst, parts: parts };
+            return;
+          }
+          for (var e = start + 1; e <= seg.length - left + 1; e++) rec(e, left - 1, cuts.concat([[start, e]]));
+        })(0, n, []);
+        if (best.worst <= maxW || n === seg.length) { best.parts.forEach(function (p) { out.push(seg.slice(p[0], p[1])); }); return; }
+      }
+    });
+    return out;
+  }
+  function heroFontOf(text, o) {
+    var hf = String(o.heroFont || '').toLowerCase();
+    if (/play|serif|pf/.test(hf)) return 'pf900';
+    if (/cool|cvi|italic/.test(hf)) return 'cvi';
+    var t = String(text).trim();
+    if (/^[^A-Za-z]*\d[\d\s,.'’:\/-]*$/.test(t) || /^[A-Za-z]{3,9}\.?\s+\d{2,4}[,.]?$/.test(t)) return 'pf900';
+    return 'cvi';
+  }
+  // Tiers -> rows (font, size, class) for one lockup. o: the merged options of the lockup.
+  function tierRows5(lk, o, warnings) {
+    var txt = function (ts) { return ts.map(function (t) { return t.text; }).join(' '); };
+    var by = function (r) { return lk.toks.filter(function (t) { return t.role === r; }); };
+    var quote = o.tier === 'quote';
+    var sF = quote ? T5.quote.font : T5.setup.font;
+    var sS = quote ? (o.quoteSize || T5.quote.size) : (o.setupSize || o.smallSize || T5.setup.size);
+    var soloS = quote ? sS : (o.soloSize || (o.card ? T5.setup.card : sS));
+    var sCls = quote ? 'quote' : '';
+    var safeW = o.maxWidth || T5.safeW, rows = [];
+    if (!lk.hasKey) {
+      lockupLines5(by('solo'), sF, soloS, Math.min(safeW, o.soloMax || 1400)).forEach(function (ts) { rows.push({ kind: 'solo', toks: ts, font: sF, size: soloS, cls: sCls }); });
+      return rows;
+    }
+    var key = by('key'), kt = txt(key), kr;
+    if (lk.big === 'hero') { var hf = heroFontOf(kt, o); kr = { font: hf, size: o.hero || o.heroSize || T5.hero.size, cls: hf === 'pf900' ? 'num' : 'hero' }; }
+    else if (key.some(function (t) { return t.flags && t.flags.dull; })) kr = { font: T5.dull.font, size: o.dullSize || T5.dull.size, cls: 'dull' };
+    else if (quote) kr = { font: T5.quote.font, size: o.quoteKeySize || T5.quote.key, cls: 'quote' };
+    else kr = { font: T5.key.font, size: o.keySize || T5.key.size, cls: '' };
+    var over = ITALIC_OVER[kr.font] || 0, keyW = fontWidth(kr.font, kt, kr.size) + over * kr.size;
+    if (lk.big !== 'hero' && keyW > safeW) {
+      var K2 = Math.floor(kr.size * safeW / keyW);
+      warnings.push('lockup "' + lk.spec + '": key "' + kt + '" shrunk ' + kr.size + ' -> ' + K2 + ' px to stay inside title-safe');
+      kr.size = K2; keyW = fontWidth(kr.font, kt, kr.size) + over * kr.size;
+    }
+    var maxSmall = Math.min(safeW, Math.max(keyW * (o.wrap || T5.wrap), 420));
+    lockupLines5(by('lead'), sF, sS, maxSmall).forEach(function (ts) { rows.push({ kind: 'lead', toks: ts, font: sF, size: sS, cls: sCls }); });
+    rows.push({ kind: 'key', toks: key, font: kr.font, size: kr.size, cls: kr.cls });
+    lockupLines5(by('tail'), sF, sS, maxSmall).forEach(function (ts) { rows.push({ kind: 'tail', toks: ts, font: sF, size: sS, cls: sCls }); });
+    return rows;
+  }
+  // Vertical geometry (shared by Node and the runtime re-layout of v03 markup). Every row has line-height = its size;
+  // its baseline sits fontBase(font) x size below the row top. Small -> small rows: baseline pitch 1.12 em; small <->
+  // big rows: 17 px from the baseline to the next row's cap top; descender guard: a row's highest glyph clears the
+  // previous row's deepest glyph by 8 px. The ink centre (first cap top .. last baseline) is centred on --rc-y.
+  function geometry5(rows, o, spec, warnings) {
+    var gap = o.gap != null ? o.gap : T5.gap, clear = o.clear != null ? o.clear : T5.clear, pitch = o.pitch || T5.pitch;
+    var txt = function (ts) { return ts.map(function (t) { return t.text; }).join(' '); };
+    var prev = null, width = 0;
+    rows.forEach(function (r) {
+      var s = txt(r.toks), ext = fontExtent(r.font, s), B = fontBase(r.font), C = fontCapOf(r.font, s);
+      r.inkUp = ext.top * r.size; r.inkDown = ext.bottom * r.size;
+      if (!prev) { r.base = B * r.size; r.dropped = 0; }
+      else {
+        var small = r.kind !== 'key' && prev.kind !== 'key';
+        var dflt = small ? prev.base + pitch * r.size : prev.base + gap + C * r.size;
+        var guard = prev.base + prev.inkDown + clear + r.inkUp;
+        r.base = Math.max(dflt, guard);
+        r.dropped = r.base - dflt > 0.005 ? r2(r.base - dflt) : 0;
+      }
+      r.top = r.base - B * r.size;
+      r.capTop = r.base - C * r.size;
+      r.width = fontWidth(r.font, s, r.size) + (ITALIC_OVER[r.font] || 0) * r.size;
+      width = Math.max(width, r.width);
+      prev = r;
+    });
+    var inkTop = rows[0].capTop, inkBottom = rows[rows.length - 1].base;
+    var box = { width: width, inkTop: inkTop, inkBottom: inkBottom, centre: (inkTop + inkBottom) / 2, height: rows[rows.length - 1].top + rows[rows.length - 1].size };
+    var yC = o.y != null ? o.y : LK.y, hero = rows.some(function (r) { return r.cls === 'hero' || r.cls === 'num'; });
+    if (warnings && !hero && (yC - (box.centre - inkTop) < LK.safeTop || yC + (inkBottom - box.centre) > LK.safeBottom))
+      warnings.push('lockup "' + spec + '": ink y ' + Math.round(yC - box.centre + inkTop) + '-' + Math.round(yC - box.centre + inkBottom) + ' leaves title-safe 54-1026');
+    if (warnings && !hero && width > (o.maxWidth || T5.safeW)) warnings.push('lockup "' + spec + '": ' + Math.round(width) + ' px wide (title-safe ' + (o.maxWidth || T5.safeW) + ')');
+    return box;
+  }
+  // v05 caption plan. Same call as v03: lockupPlan(words, specs, opts); a spec may also be an object with per-lockup
+  // options: { s: '[[Why]] does', hero: 450, heroFont: 'coolvetica' | 'playfair', y: 600, exit: 'blur', tier: 'quote', card }.
+  function lockupPlan5(words, specs, opts) {
+    opts = opts || {};
+    var list = specList5(specs), wi = opts.from || 0, warnings = [];
+    var lks = list.map(function (it) {
+      var p = parseLockup5(it.spec);
+      p.opts = Object.assign({}, opts, it.opts);
+      p.toks.forEach(function (tk, k) {
+        var w = words[wi];
+        if (w == null) throw new Error('RCK.type.lockups: ran out of words at "' + tk.text + '" in "' + p.spec + '"');
+        if (!opts.loose && !p.opts.loose && w.text != null && norm(w.text) !== norm(tk.text))
+          throw new Error('RCK.type.lockups: "' + p.spec + '" word ' + (k + 1) + ' "' + tk.text + '" != words[' + wi + '] "' + w.text + '" (pass opts.loose to accept)');
+        var t = wordTime(w);
+        tk.i = wi; tk.voiceT = t; tk.frame = frame(t); wi++;
+      });
+      return p;
+    });
+    var nextW = words[wi], lastW = words[wi - 1];
+    var endT = opts.end != null ? opts.end : (nextW != null ? wordTime(nextW) : (lastW.comp_end_t != null ? lastW.comp_end_t : wordTime(lastW) + 0.5));
+    var endFrame = frame(endT);
+    lks.forEach(function (lk, i) {
+      lk.index = i;
+      lk.text = lk.toks.map(function (t) { return t.text; }).join(' ');
+      lk.startFrame = lk.toks[0].frame;
+      if (i === 0 && opts.start != null) lk.startFrame = Math.min(lk.startFrame, frame(opts.start));
+      lk.endFrame = i + 1 < lks.length ? lks[i + 1].toks[0].frame : endFrame;
+      if (lk.opts.end != null && i + 1 === lks.length) lk.endFrame = frame(lk.opts.end);
+      lk.frames = lk.endFrame - lk.startFrame;
+      if (lk.frames < 1) throw new Error('RCK.type.lockups: lockup "' + lk.spec + '" has no frames (the next lockup starts on its first frame)');
+      var lastF = lk.toks[lk.toks.length - 1].frame;
+      if (lastF >= lk.endFrame) throw new Error('RCK.type.lockups: "' + lk.toks[lk.toks.length - 1].text + '" (f' + lastF + ') starts after its lockup ends (f' + lk.endFrame + ')');
+      if (lk.toks.length > LK.maxWords) warnings.push('lockup "' + lk.spec + '" has ' + lk.toks.length + ' words (guideline 1-' + LK.maxWords + ')');
+      if (lk.frames < 6) warnings.push('lockup "' + lk.spec + '" is on screen only ' + lk.frames + 'f');
+      lk.start = lk.startFrame / FPS; lk.end = lk.endFrame / FPS;
+      lk.startAttr = attrF(lk.startFrame); lk.durAttr = durF(lk.startFrame, lk.endFrame);
+      var rows = tierRows5(lk, lk.opts, warnings);
+      var box = geometry5(rows, lk.opts, lk.spec, warnings);
+      lk.layout = { rows: rows, box: box, sizes: { setup: rows.filter(function (r) { return r.kind !== 'key'; }).map(function (r) { return r.size; })[0] || null, key: (rows.filter(function (r) { return r.kind === 'key'; })[0] || {}).size || null } };
+    });
+    return { lockups: lks, next: wi, endFrame: endFrame, warnings: warnings, v: 5 };
+  }
+  var FONT_NAME = { inter600: 'Inter SemiBold', cvi: 'Coolvetica Italic', pf900: 'Playfair Black', pf400i: 'Playfair Italic', arimo: 'Arimo' };
+  function lockupReport5(plan) {
+    return plan.lockups.map(function (lk) {
+      var L = lk.layout;
+      return (lk.index + 1) + ' f' + lk.startFrame + '-' + lk.endFrame + ' (' + lk.frames + 'f)  ' + L.rows.map(function (r) {
+        return '[' + r.kind + (r.cls ? ':' + r.cls : '') + ' ' + FONT_NAME[r.font] + ' ' + r.size + (r.dropped ? ' +' + Math.round(r.dropped) + 'px' : '') + '] ' +
+          r.toks.map(function (t) { var f = t.flags || {}; return t.text + '@' + t.frame + (f.emph ? '*' : '') + (f.plain ? '!' : '') + (f.siren ? '~' : '') + (f.dull ? '#' : '') + (f.hold ? '^' : ''); }).join(' ');
+      }).join(' | ') + '  | ' + Math.round(L.box.width) + ' x ' + Math.round(L.box.inkBottom - L.box.inkTop) + ' px ink';
+    }).join('\n') + (plan.warnings.length ? '\nwarnings: ' + plan.warnings.join('; ') : '');
+  }
+  function wordClass5(t, row) {
+    var f = t.flags || {}, c = 'rc-lw';
+    if (row.kind === 'key') c += ' rc-lw--key' + (row.cls === 'hero' || row.cls === 'num' ? ' rc-lw--hero' : '');
+    if (f.emph) c += ' rc-lw--pop';
+    if (f.plain) c += ' rc-lw--plain';
+    if (f.siren) c += ' rc-lw--siren';
+    if (f.dull) c += ' rc-lw--dull';
+    if (f.hold) c += ' rc-lw--hold';
+    return c;
+  }
+  function rowStyle5(r, prevEnd) {
+    var mt = r2(r.top - prevEnd);
+    return 'font-size: ' + r.size + 'px; line-height: ' + r.size + 'px; height: ' + r.size + 'px' + (mt ? '; margin-top: ' + mt + 'px' : '');
+  }
+  // v05 HTML: same call and options as v03 (idPrefix, z, track, y, cls, inline) + exit ('blur' = 3f blur-out before the
+  // clip end; default a hard cut). One timed element per lockup, data-rc-v="5".
+  function lockups5(words, specs, opts) {
+    opts = opts || {};
+    var plan = words && words.lockups ? words : lockupPlan5(words, specs, opts);
+    var prefix = opts.idPrefix || 'lk', track = opts.track != null ? ' data-track-index="' + opts.track + '"' : '';
+    return plan.lockups.map(function (lk) {
+      var o = Object.assign({}, opts, lk.opts || {}), L = lk.layout;
+      var css = [o.y != null ? '--rc-y: ' + o.y + 'px' : '', '--rc-lk-c: ' + r2(L.box.centre) + 'px', o.z != null ? 'z-index: ' + o.z : '', o.inline || ''].filter(Boolean).join('; ');
+      var prevEnd = 0;
+      var rows = L.rows.map(function (r) {
+        var st = rowStyle5(r, prevEnd); prevEnd = r.top + r.size;
+        return '<div class="rc-lk__row rc-lk__row--' + r.kind + (r.cls ? ' rc-lk__row--' + r.cls : '') + '" style="' + st + '">' +
+          r.toks.map(function (t) { return '<span class="' + wordClass5(t, r) + '" data-rc-f="' + t.frame + '">' + esc(t.text) + '</span>'; }).join(' ') + '</div>';
+      }).join('');
+      return '<div id="' + prefix + '-' + (lk.index + 1) + '" class="clip rc-lk' + (o.cls ? ' ' + o.cls : '') + '" data-rc-v="5"' + (o.exit === 'blur' ? ' data-rc-exit="blur"' : '') +
+        ' data-start="' + lk.startAttr + '" data-duration="' + lk.durAttr + '"' + track + ' style="' + css + '"><div class="rc-lk__box">' + rows + '</div></div>';
+    }).join('\n');
+  }
+  // v03 markup (no data-rc-v="5") pasted in a beat: re-laid out at wire time with the v05 tiers (same rows, same words,
+  // same frames), so a kit re-sync gives the v05 look without regenerating the HTML. Deterministic (metric tables).
+  function relayout5(root, opts) {
+    var rowsEl = $$('.rc-lk__row', root);
+    if (!rowsEl.length) return;
+    var rows = rowsEl.map(function (el) {
+      var kind = ['lead', 'key', 'tail', 'solo'].filter(function (k) { return el.classList.contains('rc-lk__row--' + k); })[0] || 'solo';
+      var toks = $$('.rc-lw', el).map(function (w) {
+        if (kind === 'key') w.classList.add('rc-lw--key');
+        return { text: w.textContent, frame: +w.getAttribute('data-rc-f'), flags: { emph: w.classList.contains('rc-lw--pop') } };
+      });
+      var r = kind === 'key' ? { font: T5.key.font, size: (opts && opts.keySize) || T5.key.size, cls: '' } : { font: T5.setup.font, size: (opts && opts.setupSize) || T5.setup.size, cls: '' };
+      return Object.assign(r, { el: el, kind: kind, toks: toks });
+    });
+    var box = geometry5(rows, opts || {}, root.id, null), prevEnd = 0;
+    rows.forEach(function (r) { r.el.setAttribute('style', rowStyle5(r, prevEnd)); prevEnd = r.top + r.size; });
+    root.style.setProperty('--rc-lk-c', r2(box.centre) + 'px');
+    root.setAttribute('data-rc-v', '5r');
+  }
+  // the inner span of a lockup word that glowFlicker / sirenFlicker / RCK.fx.rgbSplit drive, so they layer on top of the
+  // entry (which drives the word span itself)
+  function fxInner(w) {
+    for (var i = 0; i < w.children.length; i++) if (w.children[i].classList.contains('rc-lw__fx')) return w.children[i];
+    var inn = mk('span', 'rc-lw__fx');
+    while (w.firstChild) inn.appendChild(w.firstChild);
+    w.appendChild(inn);
+    return inn;
+  }
+  // The doc 2.3 entry on one word, f0 = frame k (the word's words.json frame): f0 opacity 0, scale 112%, blur 9 px,
+  // #FF2E7E; f0-2 opacity -> 1; f0-4 scale -> 100% + blur -> 0 (cubic-bezier 0.2, 0.8, 0.2, 1; the blur filter is
+  // dropped from f5 on); colour pink -> white f2-6 (key / hero / starred words: f4-8; o.keepPink: stays pink; o.siren:
+  // red / blue every 2f for 8f, white from f8). Returns the time the word is settled.
+  function wordEntry(tl, w, k, o) {
+    o = o || {};
+    var g = G(), E = T5.entry, t0 = k / FPS;
+    g.set(w, { opacity: 0, scale: E.scale, filter: 'blur(' + E.blur + 'px)', color: o.siren ? T5.red : T5.pink, transformOrigin: '50% 60%' });
+    tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: E.fadeF * F, ease: ENTRY_EASE, immediateRender: false }, t0);
+    tl.fromTo(w, { scale: E.scale, filter: 'blur(' + E.blur + 'px)' }, { scale: 1, filter: 'blur(0px)', duration: E.frames * F, ease: ENTRY_EASE, immediateRender: false }, t0);
+    tl.set(w, { filter: 'none' }, (k + E.frames + 0.5) / FPS);
+    if (o.siren) {
+      var seq = [T5.red, T5.blue, T5.red, T5.blue, T5.white];
+      for (var i = 1; i < seq.length; i++) hard(tl, w, { color: seq[i - 1] }, { color: seq[i] }, (k + 2 * i) / FPS);
+      return (k + 8) / FPS;
+    }
+    if (o.keepPink) return (k + E.frames) / FPS;
+    var c0 = k + (o.hold ? E.keyColorAt : E.colorAt), cf = o.hold ? E.keyColorF : E.colorF;
+    tl.fromTo(w, { color: T5.pink }, { color: T5.white, duration: cf * F, ease: 'sine.inOut', immediateRender: false }, c0 / FPS);
+    return (c0 + cf) / FPS;
+  }
+  // Wires every lockup (default all .rc-lk; scope = selector / element(s)): each word gets the v05 entry on its frame
+  // (plain / dull words: a hard cut), key / hero / starred words hold pink to f4, siren words flicker red / blue; the
+  // block drifts 100 -> 104% (sine.inOut) over the lockup's life; data-rc-exit="blur" (or opts.exit 'blur') = 3f blur-out
+  // (0 -> 12 px + opacity 0, power2.in) ending on the clip's last frame. opts.drift false = no drift. v03 markup is
+  // re-laid out first (relayout5). Call once after the lockup markup. Returns the time the last word has settled.
+  function lockupsWire5(tl, scope, opts) {
+    opts = opts || {};
+    var roots = scope == null ? list('.rc-lk') : list(scope), end = 0;
+    roots.forEach(function (root) {
+      if (root.__rckLk) return;
+      root.__rckLk = true;
+      if (root.getAttribute('data-rc-v') !== '5') relayout5(root, opts);
+      var box = root.querySelector('.rc-lk__box'), ws = $$('.rc-lw[data-rc-f]', root), anim = 0;
+      if (!ws.length && window.console) console.warn('RCK.type.lockupsWire: no .rc-lw[data-rc-f] words in ' + (root.id || root.className));
+      ws.forEach(function (w) {
+        var k = parseInt(w.getAttribute('data-rc-f'), 10), c = w.classList;
+        if (c.contains('rc-lw--plain') || c.contains('rc-lw--dull') || opts.entry === false) {
+          G().set(w, { opacity: 0 }); hard(tl, w, { opacity: 0 }, { opacity: 1 }, k / FPS); end = Math.max(end, k / FPS);
+          return;
+        }
+        anim++;
+        end = Math.max(end, wordEntry(tl, w, k, { hold: c.contains('rc-lw--key') || c.contains('rc-lw--pop'), siren: c.contains('rc-lw--siren'), keepPink: c.contains('rc-lw--hold') }));
+      });
+      var s0 = clipStart(root), e0 = clipEnd(root), sF = s0 != null ? frame(s0) : null, eF = e0 != null ? frame(e0) : null;
+      if (box && anim && opts.drift !== false && sF != null && eF != null && eF > sF) {
+        var cy = parseFloat(root.style.getPropertyValue('--rc-lk-c')) || 0;
+        G().set(box, { scale: 1, transformOrigin: '50% ' + cy + 'px' });
+        tl.fromTo(box, { scale: 1 }, { scale: opts.drift || T5.drift, duration: (eF - sF) * F, ease: 'sine.inOut', immediateRender: false }, sF / FPS);
+      }
+      var ex = root.getAttribute('data-rc-exit') || opts.exit;
+      if (box && ex === 'blur' && eF != null && sF != null && eF - T5.exitF > sF)
+        tl.fromTo(box, { filter: 'blur(0px)', opacity: 1 }, { filter: 'blur(' + T5.exitBlur + 'px)', opacity: 0, duration: T5.exitF * F, ease: 'power2.in', immediateRender: false }, (eF - T5.exitF) / FPS);
+    });
+    return end;
+  }
+  // Sound cues for cues.json v05 (REVISION_v05 S): every caption word's entry frame -> word_pops (tick), every key / hero /
+  // starred word -> key_words (whoosh-in + thump); plain words count as word_pops, "dull." (#) words as neither.
+  // offsetF: subtract to get beat-local frames when the words are composition-timed (default 0).
+  function lockupCues(plan, offsetF) {
+    var o = offsetF || 0, out = { word_pops: [], key_words: [] };
+    plan.lockups.forEach(function (lk) {
+      lk.toks.forEach(function (t) {
+        var f = t.flags || {};
+        if (f.dull) return;
+        (t.role === 'key' || f.emph ? out.key_words : out.word_pops).push(t.frame - o);
+      });
+    });
+    return out;
+  }
+  // Siren flicker (REVISION_v05 G6: "cops?", "chased.", "now?"): colour #E3262B / #2E6BFF alternating every 2f for 8f from
+  // `at`, then white. On a lockup word it drives the inner span (so it overrides the pink of the entry); with the spec
+  // flag ~ lockupsWire does it for you. opts: frames (8), every (2), colors, settle ('#FFFFFF'). Returns the end time.
+  function sirenFlicker(tl, target, at, opts) {
+    opts = opts || {};
+    var k = frame(at), n = opts.frames || 8, ev = opts.every || 2, cols = opts.colors || [T5.red, T5.blue], settle = opts.settle || T5.white;
+    list(target).forEach(function (el) {
+      if (el.classList && el.classList.contains('rc-lw')) el = fxInner(el);
+      var prev = cols[0];
+      G().set(el, { color: cols[0] });
+      for (var j = ev, i = 1; j < n; j += ev, i++) { var c = cols[i % cols.length]; hard(tl, el, { color: prev }, { color: c }, (k + j) / FPS); prev = c; }
+      hard(tl, el, { color: prev }, { color: settle }, (k + n) / FPS);
+    });
+    return (k + n) / FPS;
+  }
+
   RCK.type = {
     FPS: FPS,
     // Coolvetica metrics (em; hhea line metrics as Chrome uses them, glyph heights measured): for placement maths
@@ -1375,10 +1800,14 @@ window.RCK = window.RCK || {}; RCK.FPS = 30; RCK.f = RCK.f || (n => n / 30); RCK
     nameIn: nameIn, quoteType: quoteType, walk: walk,
     highlight: highlight, label: label,
     glitch: glitch,
-    // v03 caption lockups (notes 11, 16, 17) + word pops (B6 quote)
-    lockupPlan: lockupPlan, lockups: lockups, lockupsWire: lockupsWire, lockupReport: lockupReport, parseLockup: parseLockup,
+    // captions: v05 lockups (three tiers, word entry, drift; same names and calls as v03) + the v03 versions kept
+    lockupPlan: lockupPlan5, lockups: lockups5, lockupsWire: lockupsWire5, lockupReport: lockupReport5, parseLockup: parseLockup5,
+    lockupPlanV3: lockupPlan, lockupsV3: lockups, lockupsWireV3: lockupsWire, lockupReportV3: lockupReport,
+    wordEntry: wordEntry, sirenFlicker: sirenFlicker, fxInner: fxInner, relayout5: relayout5, lockupCues: lockupCues, T5: T5, ENTRY_EASE: ENTRY_EASE,
+    fontWidth: fontWidth, fontExtent: fontExtent, cubicBezier: cubicBezier,
     wordPops: wordPops, cvWidth: cvWidth, cvExtent: cvExtent, LK: LK, POP3: POP3,
     // v04 glow flicker (notes 3, 6, 15)
     glowFlicker: glowFlicker, glowPattern: glowPattern, GLOW_STATES: GF
   };
+  if (RCK.ease) { RCK.ease.trailer = ENTRY_EASE; RCK.ease.bezier = cubicBezier; }
 })();

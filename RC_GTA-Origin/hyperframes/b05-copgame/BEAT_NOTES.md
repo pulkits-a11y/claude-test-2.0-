@@ -1,5 +1,18 @@
 # B5 The cop game - `b05-copgame` (v03; timing v02: beat 83f = 2.767 s; composition 95f with 6f handles)
 
+## v05 phase 1 (REVISION_v05.md lane 2; doc 20.0-25.0) - in progress, phase 2 = kit v05 captions
+* **Divider** (doc 20.0): `#b05-divider` = a 6 px WHITE line (doc 4 px @720) over the 4 px gap (x 957-963), wiped
+  top -> bottom over 6f from the cut (local 6 -> 12, easeOutQuart; measured 0 / 80% / 99% / full on 6 / 8 / 10 / 12).
+  b06-dull keeps it, fully drawn, on its split part.
+* **Camera**: the shared split push is now 100 -> 108% (was 104%): the split is one 4.7 s shot and doc pacing rule 3 asks
+  a hold over 2.0 s for >= 8%. scale(B5 local L) = 1 + 0.08 x sine.inOut(L / 147) (B5 0-95, B6 83-147, 108% on "One").
+  **B11 (lane 3) copies this front camera: its front must use 0.08 too.**
+* **Arrow erase** (kit `arrowErase`, 76 -> 82, easeInQuart): the event between "criminals." (64) and B6's "But" (89)
+  (doc: a new event every <= 0.7 s on a long hold), and the arrow is gone before the cut instead of vanishing on it.
+* `cues.json` v05: word_pops [1, 3, 14, 19, 25, 36, 47], key_words [27 police, 58 criminals.] (one whoosh + thump per key
+  phrase), no sfx, no legacy events. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
+* Phase 2: the lockups in kit v05 tiers with the pink -> white entry (and the kit's annotation arrow if it replaces M2).
+
 ## v04 (kit refresh only)
 Kit refreshed to v04 (`python3 tools/new_beat.py B5 --refresh`); no element of this beat uses the new scanline surfaces:
 sample frames are pixel-identical to the v03 stills (mean difference 0.000). `check`: 0 errors. Everything below is current.

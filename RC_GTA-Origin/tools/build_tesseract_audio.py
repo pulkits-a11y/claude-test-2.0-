@@ -1,40 +1,57 @@
 #!/usr/bin/env python3
 """Build the AUDIO half of the RC_GTA-Origin Tesseract project, deterministically.
 
-Golden rule: 00_Brief/GTA_VI_Edit_Plan.pdf (Music plan p.32-35, SFX plan p.35-38, Audio mix
-and export settings p.38), with the client's v02 notes (REVISION_v02.md) where they override it.
+Golden rule: 00_Brief/GTA_VI_Edit_Plan.pdf (Music plan p.32-35, SFX plan p.35-38, Audio mix and export settings
+p.38), with the client's notes (REVISION_v02.md ... REVISION_v05.md) where they override it. v05: the client's
+instruction doc (REVISION_v05.md G9 + S, doc section 2.7) wins where it conflicts (X8: a sound on every caption word).
 Inputs (all established earlier, read-only here):
 
-  01_VO/VO_processed_115.wav      locked v02 voiceover (mono, 48 kHz, 115%, already through the plan's chain)
-  01_VO/VO_words_115.json          word timings -> ducking phrase spans, the 'fun' anchor of the music
-  timing/beat_map.json             beat clock (B1-B17 start frames, vo_end_s, edit_end_s): every duration
+  timing/beat_map.json             beat clock (B1-B18 start frames, vo_end_s, edit_end_s) and `vo_file`: every
+                                   duration, and the voiceover, come from it
+  <vo_file>                        locked voiceover (v05: 01_VO/VO_processed_v05.wav, mono, 48 kHz, 115%, both doc
+                                   cuts), with VO_words_<tag>.json (word timings -> ducking spans, the 'fun' anchor)
+                                   and VO_processing_<tag>.json beside it
+  timing/beat_map_v04.json +       v04 -> v05 frame map (the doc cuts A/B): cues written before v05 ("legacy", see
+  timing/v04_to_v05.json           below) are moved to v05 beat frames; an event inside a cut is dropped
   02_Music/music_plan.json         Black Vertigo analysis (drop downbeat 183.38 s, sections), cut points, levels
   03_SFX/sfx_plan.json             S01-S19 cue rules (event, align, offsets, trims, fades, peaks); the v02
                                    change to S10 (note 5) is CUE_OVERRIDES below
   03_SFX/sfx_analysis.json         measured file data
-  hyperframes/<comp>/cues.json     event frames per beat. A file whose events still equal the v01 snapshot
-                                   (.tesseract-work/cues_v01_snapshot.json) is v01-timed: its frames are scaled
-                                   to the v02 beat length until the beat builder rewrites it. Any event a beat
-                                   lacks comes from the STORYBOARD.md "Cues" lines (v01 frames, scaled the same
-                                   way; cached in .tesseract-work/cue_defaults.json, --refresh-cue-defaults)
+  03_SFX/v05/library.json          v05 SFX library (tools/build_tesseract_sfx_v05.py): canonical names -> files,
+                                   align (start|peak|end), default peak level, group, class
+  hyperframes/<comp>/cues.json     per beat (beat frames, f0 = beat start):
+                                   * v05 schema (any of word_pops/key_words/hook_cuts/sfx/dropouts/archival, or
+                                     "timing": "v05"): frames are v05 beat frames as written. `events` = the legacy
+                                     S01-S19 events the lane still wants (an event it leaves out = no sound; no
+                                     STORYBOARD fallback). word_pops -> tick (3 variants, rotating), key_words ->
+                                     whoosh_in ending on the frame + thump_low on it, hook_cuts -> swipe (peak on the
+                                     cut), sfx [{f, name, gain_db?, dur_f?, note?}] -> the library sound (gain_db = its
+                                     sample-peak level in dBFS), dropouts [{f, frames}] -> music bed AND riser/ambience
+                                     SFX silent for `frames` frames ending at f, archival -> picture only
+                                   * legacy (only `events`): v02/v04 beat frames, moved to v05 by the cut map; a file
+                                     whose events still equal the v01 snapshot (.tesseract-work/cues_v01_snapshot.json)
+                                     is v01-timed and scaled to the v04 beat first; an event it lacks comes from the
+                                     STORYBOARD.md "Cues" lines (v01 frames, scaled and mapped the same way; cached in
+                                     .tesseract-work/cue_defaults.json, --refresh-cue-defaults)
 
 Every run (deterministic; one Tesseract export at a time):
   1. prepares the FFmpeg derivatives the plan needs (MU6 low-pass 800 Hz excerpt in .tesseract-work/derived,
      S02/S14 300 Hz high-pass in 03_SFX/derived), recipes beside them, and measures the MP3
      decoder offset of Tesseract vs FFmpeg (cached in .tesseract-work/decoder_offsets.json);
   2. deletes and recreates .tesseract-work/audio.tsrct: one composition (1920x1080, edit_end_s from the
-     beat map, #0A0A0A), four groups "A1 Voiceover", "A2 Music", "A3 SFX hits & impacts", "A4 Risers,
-     whooshes & textures" (CONFLICTS.md C6), layer ids >= 9000, asset ids "aud-*", volume envelopes as
-     keyframe animators on propertyType "volume";
-  3. pass 1 (pre-master): exports the four group stems, corrects each SFX cue's gain so its rendered
-     sample peak sits at the plan's level, then solves the master: one static make-up gain on every
-     layer to reach -14 LUFS plus limiter-like gain dips only where the true peak would pass
-     MASTER_CEILING_DBTP (Tesseract has no limiter; CONFLICTS C20);
+     beat map, #0A0A0A), five groups "A1 Voiceover", "A2 Music", "A3 SFX hits & impacts", "A4 Risers,
+     whooshes & textures" (CONFLICTS.md C6), "A5 Caption pops & key words" (v05), layer ids >= 9000, asset ids
+     "aud-*", volume envelopes as keyframe animators on propertyType "volume";
+  3. pass 1 (pre-master): exports the group stems, corrects each S-cue's gain so its rendered sample peak sits
+     at the plan's level (the 48 kHz v05 library layers render exactly as modelled and keep their level), then
+     solves the master: one static make-up gain on every layer to reach -14 LUFS plus limiter-like gain dips
+     only where the true peak would pass MASTER_CEILING_DBTP (Tesseract has no limiter; CONFLICTS C20);
   4. pass 2: commits the final document, exports .tesseract-work/checks/mix.wav (+ final stems unless
      --no-stems), measures everything, draws waveform views and writes
      .tesseract-work/checks/audio_report.json and .tesseract-work/AUDIO_NOTES.md.
 
 Usage:  python3 tools/build_tesseract_audio.py [--no-stems] [--no-waveforms] [--refresh-cue-defaults]
+Test:   --cues-dir DIR reads DIR/<composition>/cues.json before hyperframes/<composition>/cues.json
 """
 from __future__ import annotations
 
@@ -63,10 +80,26 @@ TSRCT = Path("/root/.local/share/Tesseract/bin/tsrct")
 SKILL = ROOT.parent / ".claude/skills/tesseract-video"
 SOUND_HELPER = SKILL / "scripts/tesseract_sound.py"
 
-VO_FILE = ROOT / "01_VO/VO_processed_115.wav"          # v02: the 115% voiceover (REVISION_v02.md)
-WORDS_JSON = ROOT / "01_VO/VO_words_115.json"
-VO_REPORT = ROOT / "01_VO/VO_processing_115.json"
 BEAT_MAP = ROOT / "timing/beat_map.json"
+BEAT_MAP_V04 = ROOT / "timing/beat_map_v04.json"         # v05: the v04 beat clock (cues written before v05)
+CUTS_V04_V05 = ROOT / "timing/v04_to_v05.json"           # v05: the doc cuts A/B (v04 seconds removed, shifts)
+
+
+def vo_paths(beat_map_path: Path = BEAT_MAP):
+    """v05: the voiceover is the beat map's `vo_file` (not a hard-coded name); its word timings and processing
+    report sit beside it (VO_processed_<tag>.wav -> VO_words_<tag>.json, VO_processing_<tag>.json; a `words_file`
+    key in the beat map wins). Falls back to the v02 115% files if the beat map has no `vo_file`."""
+    try:
+        bm = json.loads(Path(beat_map_path).read_text())
+    except (OSError, ValueError):
+        bm = {}
+    vo = ROOT / (bm.get("vo_file") or "01_VO/VO_processed_115.wav")
+    tag = vo.stem[len("VO_processed_"):] if vo.stem.startswith("VO_processed_") else vo.stem
+    words = ROOT / bm["words_file"] if bm.get("words_file") else vo.with_name("VO_words_%s.json" % tag)
+    return vo, words, vo.with_name("VO_processing_%s.json" % tag), tag
+
+
+VO_FILE, WORDS_JSON, VO_REPORT, VO_TAG = vo_paths()
 CUE_DEFAULTS = WORK / "cue_defaults.json"               # STORYBOARD.md cues (v01 frames), scaled at load
 CUES_V01 = WORK / "cues_v01_snapshot.json"              # the v01 cues.json events (to spot v01-timed files)
 STORYBOARD = ROOT / "STORYBOARD.md"
@@ -76,6 +109,9 @@ SFX_ANALYSIS = ROOT / "03_SFX/sfx_analysis.json"
 SFX_DIR = ROOT / "03_SFX"
 MUSIC_DERIVED = WORK / "derived"                        # v02: the MU6 excerpt moves with the new offset
 SFX_DERIVED = ROOT / "03_SFX/derived"
+SFX_LIB_DIR = ROOT / "03_SFX/v05"                       # v05 library (tools/build_tesseract_sfx_v05.py)
+SFX_LIB = SFX_LIB_DIR / "library.json"
+CUES_DIR_TEST = None                                    # --cues-dir (test only)
 
 SR = 48000          # Tesseract mixes and exports at 48 kHz (measured)
 FPS = 30
@@ -147,10 +183,25 @@ CUE_OVERRIDES = {
                     "the flip whoosh: B8's glitch impact (S08a) at S08's level, starting on the glitch frame."},
 }
 
+# v05 (REVISION_v05.md G9 + S, doc 2.7): the cues.json v05 schema and the 03_SFX/v05 library. Overrides the plan's
+# "never a pop on every caption / a whoosh on every cut" (REVISION_v05 X8).
+V05_KEYS = ("word_pops", "key_words", "hook_cuts", "sfx", "dropouts", "archival")
+V05_LAYER_BASE = 20000         # v05 library layers: 20000 + n (edit order); S-cues stay 10000 + cue x 100 + n
+V05_GAIN_CAP_DBFS = -4.0       # a cue's gain_db is the sound's sample-peak level; never above S19's -4 (voice on top)
+V05_KEY_WORD_PAIR = ("whoosh_in", "thump_low")     # key_words: whoosh ending on the frame + thump on it
+V05_WORD_POP = "tick"                              # word_pops: 3 variants rotating in edit order
+V05_HOOK_CUT = "swipe"                             # hook_cuts: peak on the cut
+V05_DROPOUT_MAX_F = 15                             # doc: 2-6 frames; anything longer is clamped (plan MU4 = 15 f)
+# classes silenced inside cues.json `dropouts` (with the bed off "risers/ambience obey the same dropouts", G9):
+# the library's riser/ambience sounds and the plan's sustained S-cues
+DROPOUT_CLASSES = ("riser", "ambience")
+LEGACY_CLASS = {"S05": "ambience", "S07": "riser", "S18": "riser"}
+
 # Layer / group ids (>= 9000, picture script uses lower ids)
-GID = {"A1": 9001, "A2": 9002, "A3": 9003, "A4": 9004}
+GID = {"A1": 9001, "A2": 9002, "A3": 9003, "A4": 9004, "A5": 9005}
 GNAME = {"A1": "A1 Voiceover", "A2": "A2 Music", "A3": "A3 SFX hits & impacts",
-         "A4": "A4 Risers, whooshes & textures"}
+         "A4": "A4 Risers, whooshes & textures", "A5": "A5 Caption pops & key words"}
+SFX_GROUPS = ("A3", "A4", "A5")
 VO_LAYER_ID = 9101
 MUSIC_LAYER_ID = 9201
 MUSIC_B_LAYER_ID = 9203        # the main bed after the MU2 bar edit's seam
@@ -204,7 +255,17 @@ def ms(t_s: float) -> int:
     return int(round(t_s * 1000))
 
 
+_PROBE_CACHE: dict = {}
+
+
 def probe(path: Path) -> dict:
+    key = str(path)
+    if key not in _PROBE_CACHE:
+        _PROBE_CACHE[key] = _probe(path)
+    return dict(_PROBE_CACHE[key])
+
+
+def _probe(path: Path) -> dict:
     r = run(["ffprobe", "-v", "error", "-select_streams", "a:0", "-show_entries",
              "stream=channels,sample_rate,codec_name:format=duration", "-of", "json", path])
     j = json.loads(r.stdout)
@@ -337,11 +398,120 @@ def parse_storyboard_durations(text: str) -> dict:
     return {m.group(1): int(m.group(2)) for m in re.finditer(r"^##\s+(B\d+)\b[^\n(]*\((\d+)f\)", text, re.M)}
 
 
+class CutMap:
+    """v04 -> v05 beat frames (REVISION_v05.md section 0: doc cut A = 58 f at v04 10.06-11.99 s, the end of B2 and the
+    head of B3; cut B = 39 f at v04 54.7-56.0 s inside B13; B17's last 18 f went with the logo tail). A v04 beat frame
+    -> the same beat's v05 frame, or None when that frame was cut (or now lies past the beat's end). Identity for a
+    beat without v04 timing (B18) or when timing/v04_to_v05.json / beat_map_v04.json are missing."""
+
+    def __init__(self, beat_map: dict):
+        self.ok = False
+        self.b5 = {b["id"]: b for b in beat_map["beats"]}
+        try:
+            cut = load_json(CUTS_V04_V05)
+            self.b4 = {b["id"]: b for b in load_json(BEAT_MAP_V04)["beats"]}
+        except (OSError, ValueError, KeyError):
+            return
+        self.removed = [tuple(map(float, r)) for r in cut.get("removed", [])]
+        self.segments = sorted(cut.get("segments", []), key=lambda g: float(g["v04_from"]))
+        self.ok = bool(self.segments)
+
+    def v04_start(self, bid):
+        b = self.b5.get(bid, {})
+        if b.get("v04_start_frame") is not None:
+            return int(b["v04_start_frame"])
+        return int(self.b4[bid]["start_frame"]) if self.ok and bid in self.b4 and "v04_start_frame" not in b else None
+
+    def identity(self, bid) -> bool:
+        """True when every v04 beat frame keeps its number in v05 (the beat was not trimmed)."""
+        if not self.ok or self.v04_start(bid) is None:
+            return True
+        d4 = int((self.b4.get(bid) or self.b5[bid])["dur_frames"])
+        return all(self.map(bid, f) == f for f in range(d4 + 1))
+
+    def map(self, bid: str, f: int):
+        if not self.ok:
+            return f
+        s4 = self.v04_start(bid)
+        if s4 is None:
+            return f
+        t = (s4 + f) / FPS
+        if any(a - 1e-6 <= t < b - 1e-6 for a, b in self.removed):
+            return None
+        shift = 0
+        for g in self.segments:
+            if float(g["v04_from"]) - 1e-6 <= t:
+                shift = int(g["shift_f"])
+        f5 = s4 + f - shift - int(self.b5[bid]["start_frame"])
+        return None if f5 > int(self.b5[bid]["dur_frames"]) else f5
+
+
+def parse_v05_lists(doc: dict, bid: str, notes: list) -> dict:
+    """The v05 lists of a cues.json (REVISION_v05.md S), validated. A frame list item is an int or {"f": n, ...}
+    (gain_db / name / note pass through); sfx items need f and name; dropouts [{f, frames}] (or [f, frames]);
+    archival [[f0, f1], ...]. Missing keys = nothing."""
+    out = {k: [] for k in V05_KEYS}
+
+    def frame_items(key):
+        res = []
+        for it in doc.get(key) or []:
+            if isinstance(it, bool):
+                notes.append("%s %s: ignored item %r" % (bid, key, it))
+            elif isinstance(it, (int, float)):
+                res.append({"f": int(round(it))})
+            elif isinstance(it, dict) and isinstance(it.get("f"), (int, float)):
+                res.append(dict(it, f=int(round(it["f"]))))
+            else:
+                notes.append("%s %s: ignored item %r (needs a frame number or {\"f\": n})" % (bid, key, it))
+        return res
+    for key in ("word_pops", "key_words", "hook_cuts"):
+        out[key] = frame_items(key)
+    for it in frame_items("sfx"):
+        if it.get("name"):
+            out["sfx"].append(it)
+        else:
+            notes.append("%s sfx: ignored %r (no name)" % (bid, it))
+    for it in doc.get("dropouts") or []:
+        if isinstance(it, dict) and isinstance(it.get("f"), (int, float)):
+            f, n = int(round(it["f"])), int(round(it.get("frames", 4)))
+        elif isinstance(it, (list, tuple)) and len(it) == 2:
+            f, n = int(round(it[0])), int(round(it[1]))
+        else:
+            notes.append("%s dropouts: ignored %r (needs {\"f\": n, \"frames\": k})" % (bid, it))
+            continue
+        if n > V05_DROPOUT_MAX_F:
+            notes.append("%s dropout at f%d: %d frames clamped to %d" % (bid, f, n, V05_DROPOUT_MAX_F))
+        out["dropouts"].append({"f": f, "frames": max(1, min(n, V05_DROPOUT_MAX_F))})
+    for it in doc.get("archival") or []:
+        if isinstance(it, (list, tuple)) and len(it) == 2:
+            out["archival"].append([int(round(it[0])), int(round(it[1]))])
+        else:
+            notes.append("%s archival: ignored %r (needs [f0, f1])" % (bid, it))
+    return out
+
+
+def is_v05_cues(doc: dict) -> bool:
+    return any(k in doc for k in V05_KEYS) or str(doc.get("timing", "")).lower() == "v05"
+
+
+def cues_path(comp: str) -> Path:
+    if CUES_DIR_TEST and (Path(CUES_DIR_TEST) / comp / "cues.json").exists():
+        return Path(CUES_DIR_TEST) / comp / "cues.json"
+    return ROOT / "hyperframes" / comp / "cues.json"
+
+
 class Events:
-    """Event frames per beat (beat-relative, f0 = the beat's first word), in v02 beat lengths:
-    hyperframes/<comp>/cues.json as written by the beat builder; a cues.json whose events still equal the v01
-    snapshot is v01-timed, so its frames are scaled by (v02 dur_frames / v01 dur_frames); an event the beat does
-    not list comes from the STORYBOARD.md cues (v01 frames, scaled by v02 dur / the storyboard's beat length)."""
+    """Event frames per beat (beat-relative, f0 = the beat's first frame), in v05 beat lengths.
+
+    * v05 cues.json (REVISION_v05 S): `events` exactly as written (v05 frames), no STORYBOARD fallback (a legacy
+      event a lane leaves out has no sound), plus the v05 lists (self.v05[beat]).
+    * legacy cues.json (only `events`; v02/v04 frames): moved to v05 by the cut map (B3 -57 f, B13 after the cut
+      -39 f; an event inside a cut is dropped and not refilled from the STORYBOARD). One that still equals the v01
+      snapshot is scaled from the v01 to the v04 beat length first. Events it lacks come from the STORYBOARD.md cues
+      (v01 frames, scaled to the v04 beat, then mapped).
+    * no cues.json: the STORYBOARD.md cues (scaled + mapped).
+    The music marks read `music_table` (always with the STORYBOARD/legacy fallback), so a v05 file that drops a
+    legacy event never breaks the music automation."""
 
     def __init__(self, beat_map: dict, refresh_defaults: bool):
         self.beats = {b["id"]: b for b in beat_map["beats"]}
@@ -352,9 +522,9 @@ class Events:
             doc = {"_source": "STORYBOARD.md '**Cues**' lines (beat-relative frames in the storyboard's v01 beat "
                               "lengths, `_durations`). Fallback used by tools/build_tesseract_audio.py for every "
                               "event that the beat's hyperframes/<composition>/cues.json does not list (or when that "
-                              "file does not exist yet), scaled to the beat map's dur_frames. '~29'/'~48' are taken "
-                              "as 29/48; a range a..b is stored as name=a, name_end=b.",
-                   "_durations": sb_dur, **{b: sb.get(b, {}) for b in self.beats}}
+                              "file does not exist yet), scaled to the v04 beat length and moved to v05 by the cut "
+                              "map. '~29'/'~48' are taken as 29/48; a range a..b is stored as name=a, name_end=b.",
+                   "_durations": sb_dur, **{b: sb.get(b, {}) for b in self.beats if b in sb_dur}}
             CUE_DEFAULTS.write_text(json.dumps(doc, indent=1) + "\n")
             log("wrote", CUE_DEFAULTS.relative_to(ROOT))
         self.defaults = load_json(CUE_DEFAULTS)
@@ -364,37 +534,91 @@ class Events:
             log("WARNING: .tesseract-work/cue_defaults.json differs from STORYBOARD.md (use --refresh-cue-defaults):", drift)
         dflt_dur = self.defaults.get("_durations") or sb_dur
         v01 = load_json(CUES_V01)["beats"] if CUES_V01.exists() else {}
+        self.cut = CutMap(beat_map)
         self.source = {}          # beat -> where its events came from
         self.event_source = {}    # "B16.rewind_end" -> file
-        self.scaled = {}          # beat -> note on v01 frames scaled to the v02 beat
-        self.table = {}
+        self.scaled = {}          # beat -> note on v01 frames scaled to the v04 beat
+        self.remapped = {}        # beat -> note on v04 frames moved to v05
+        self.dropped = {}         # beat -> {event: v04 frame} cut by the v05 trims
+        self.schema = {}          # beat -> "v05" | "legacy" | "none"
+        self.v05 = {}             # beat -> parsed v05 lists
+        self.notes = []           # parse notes
+        self.table = {}           # SFX events
+        self.music_table = {}     # music marks (always with fallback)
         for bid, b in self.beats.items():
             comp = b["composition"]["id"]
             dur = int(b["dur_frames"])
-            cj = ROOT / "hyperframes" / comp / "cues.json"
-            k_sb = dur / float(dflt_dur.get(bid) or dur)
-            merged = {k: int(round(int(v) * k_sb)) for k, v in self.defaults.get(bid, {}).items()}
-            for k in merged:
-                self.event_source["%s.%s" % (bid, k)] = "STORYBOARD.md cues (x%.4f to the v02 beat)" % k_sb
-            if cj.exists():
-                raw = {k: int(v) for k, v in load_json(cj).get("events", {}).items()}
+            dur4 = int(b.get("v04_dur_frames") or dur)
+            cj = cues_path(comp)
+            # STORYBOARD defaults: v01 frames -> v04 beat length -> v05 frames
+            k_sb = dur4 / float(dflt_dur.get(bid) or dur4)
+            sb_map, sb_cut = {}, {}
+            for k, v in self.defaults.get(bid, {}).items():
+                f4 = int(round(int(v) * k_sb))
+                f5 = self.cut.map(bid, f4)
+                if f5 is None:
+                    sb_cut[k] = f4
+                else:
+                    sb_map[k] = f5
+                    self.event_source["%s.%s" % (bid, k)] = "STORYBOARD.md cues (x%.4f to the v04 beat%s)" % (
+                        k_sb, "" if self.cut.identity(bid) else ", moved to v05")
+            raw_doc = load_json(cj) if cj.exists() else None
+            if raw_doc is not None and is_v05_cues(raw_doc):
+                self.schema[bid] = "v05"
+                ev_cj = {k: int(v) for k, v in (raw_doc.get("events") or {}).items()}
+                self.v05[bid] = parse_v05_lists(raw_doc, bid, self.notes)
+                self.table[bid] = dict(ev_cj)
+                self.music_table[bid] = dict(sb_map, **ev_cj)
+                for k in ev_cj:
+                    self.event_source["%s.%s" % (bid, k)] = str(cj.relative_to(ROOT) if cj.is_relative_to(ROOT) else cj) + " (v05)"
+                self.source[bid] = "%s (v05 schema: events as written, no STORYBOARD fallback)" % (
+                    cj.relative_to(ROOT) if cj.is_relative_to(ROOT) else cj)
+                if sb_cut:
+                    self.dropped[bid] = {"STORYBOARD:" + k: v for k, v in sb_cut.items()}
+                continue
+            merged = dict(sb_map)
+            if raw_doc is not None:
+                self.schema[bid] = "legacy"
+                raw = {k: int(v) for k, v in (raw_doc.get("events") or {}).items()}
                 snap = (v01.get(bid) or {})
-                stale = bool(raw) and snap.get("events") == raw and int(snap.get("v01_dur_frames") or dur) != dur
-                k_cj = dur / float(snap["v01_dur_frames"]) if stale else 1.0
-                ev_cj = {k: int(round(v * k_cj)) for k, v in raw.items()}
+                stale = bool(raw) and snap.get("events") == raw and int(snap.get("v01_dur_frames") or dur4) != dur4
+                k_cj = dur4 / float(snap["v01_dur_frames"]) if stale else 1.0
+                ev4 = {k: int(round(v * k_cj)) for k, v in raw.items()}
                 if stale:
                     self.scaled[bid] = "%s is still v01-timed (= the v01 snapshot): %s scaled x%.4f (%d -> %d f) to %s" % (
-                        cj.relative_to(ROOT), raw, k_cj, int(snap["v01_dur_frames"]), dur, ev_cj)
+                        cj.relative_to(ROOT), raw, k_cj, int(snap["v01_dur_frames"]), dur4, ev4)
                     log("note: " + self.scaled[bid])
+                ev_cj, cut_ev = {}, {}
+                for k, f4 in ev4.items():
+                    f5 = self.cut.map(bid, f4)
+                    if f5 is None:
+                        cut_ev[k] = f4
+                    else:
+                        ev_cj[k] = f5
+                for k in set(cut_ev) | set(sb_cut):           # cut away: not refilled from the STORYBOARD
+                    merged.pop(k, None)
+                if cut_ev or sb_cut:
+                    self.dropped[bid] = dict(cut_ev, **{"STORYBOARD:" + k: v for k, v in sb_cut.items()})
+                if ev4 != ev_cj:
+                    self.remapped[bid] = "%s: legacy (v04) frames %s -> v05 %s%s" % (
+                        cj.relative_to(ROOT) if cj.is_relative_to(ROOT) else cj, ev4, ev_cj,
+                        "; cut by the v05 trims (no sound): %s" % cut_ev if cut_ev else "")
+                    log("note: " + self.remapped[bid])
                 for k, v in ev_cj.items():
                     merged[k] = v
-                    self.event_source["%s.%s" % (bid, k)] = str(cj.relative_to(ROOT)) + (" (v01, scaled)" if stale else "")
-                missing = sorted(set(self.defaults.get(bid, {})) - set(ev_cj))
-                self.source[bid] = str(cj.relative_to(ROOT)) + (" (v01-timed, scaled)" if stale else "") + (
+                    self.event_source["%s.%s" % (bid, k)] = str(cj.relative_to(ROOT) if cj.is_relative_to(ROOT) else cj) + (
+                        " (v01, scaled)" if stale else "") + ("" if self.cut.identity(bid) else " (v04, moved to v05)")
+                missing = sorted(set(sb_map) - set(ev_cj) - set(cut_ev))
+                self.source[bid] = str(cj.relative_to(ROOT) if cj.is_relative_to(ROOT) else cj) + (
+                    " (v01-timed, scaled)" if stale else "") + ("" if self.cut.identity(bid) else " (legacy, moved to v05)") + (
                     " (+ STORYBOARD cues for %s)" % ", ".join(missing) if missing else "")
             else:
-                self.source[bid] = "STORYBOARD.md cues (scaled)"
+                self.schema[bid] = "none"
+                self.source[bid] = "STORYBOARD.md cues (scaled)" if sb_map else "no cues"
+                if sb_cut:
+                    self.dropped[bid] = {"STORYBOARD:" + k: v for k, v in sb_cut.items()}
             self.table[bid] = merged
+            self.music_table[bid] = dict(merged)
 
     def beat_start_frame(self, beat: str) -> int:
         return int(self.beats[beat]["start_frame"])
@@ -403,21 +627,38 @@ class Events:
         beat, name = ref.split(".", 1)
         return name == "start" or name in self.table.get(beat, {})
 
-    def frame(self, ref: str) -> int:
+    def frame(self, ref: str, table=None) -> int:
         """'B8.first_black' -> edit frame; 'B15.start' -> beat start frame."""
         beat, name = ref.split(".", 1)
+        tab = self.table if table is None else table
         if name == "start":
             return self.beat_start_frame(beat)
-        if name not in self.table[beat]:
-            raise KeyError("event %s not found (source %s)" % (ref, self.source[beat]))
-        return self.beat_start_frame(beat) + self.table[beat][name]
+        if name not in tab.get(beat, {}):
+            raise KeyError("event %s not found (source %s)" % (ref, self.source.get(beat)))
+        return self.beat_start_frame(beat) + tab[beat][name]
 
     def t(self, ref: str) -> float:
         return frames_to_s(self.frame(ref))
 
+    def tm(self, ref: str) -> float:
+        """Music marks: the event with the STORYBOARD/legacy fallback even for v05 files; a mark that exists nowhere
+        falls back to its beat's start (recorded in self.notes)."""
+        try:
+            return frames_to_s(self.frame(ref, self.music_table))
+        except KeyError:
+            note = "music mark %s: no such event anywhere; its beat's start is used" % ref
+            if note not in self.notes:
+                self.notes.append(note)
+                log("WARNING: " + note)
+            return frames_to_s(self.beat_start_frame(ref.split(".", 1)[0]))
+
     def beat_frame(self, ref: str) -> int:
         beat, name = ref.split(".", 1)
-        return 0 if name == "start" else self.table[beat][name]
+        if name == "start":
+            return 0
+        if name in self.table.get(beat, {}):
+            return self.table[beat][name]
+        return self.music_table[beat][name]
 
 
 # --------------------------------------------------------------------------------------------
@@ -690,19 +931,22 @@ def bar_edit_plan(music_file: Path, music_plan: dict, anchor: dict) -> dict:
                            "MU5_after_seam": bool(seam < anchor["fun_onset_s"])}}
 
 
-def music_envelopes(ev: Events, beat_map: dict, spans):
+def music_envelopes(ev: Events, beat_map: dict, spans, dropouts=()):
+    """The bed's pre-master gain on a 1 ms grid. v05 (doc 2.7, G9): duck DUCK_DB under the voice, silent inside every
+    cues.json dropout window (2-6 f ending on the big word, 10 ms ramps), full level again from 'fun.' (MU5: the
+    drop, +3 dB for 2 s); the v02 marks MU4-MU8 as before. Marks read ev.tm (fallbacks, never a KeyError)."""
     t_end = float(beat_map["vo_end_s"])                       # MU8: hard stop at the end of "now?"
     tt = np.arange(0, ms(t_end) + 1) / 1000.0                  # 1 ms grid on the edit clock
     marks = {
         "MU1": 0.0,
-        "MU4_start": ev.t("B8.first_black"),
-        "MU4_end": ev.t("B8.first_black") + frames_to_s(MU4_FRAMES),
-        "MU5": ev.t("B10.fun"),
-        "MU6_start": ev.t("B15.start"),
-        "MU6_end": ev.t("B15.label"),
-        "MU7_start": ev.t("B16.rewind"),
-        "MU7_end": ev.t("B16.rewind_end"),
-        "MU7_return": ev.t("B17.start"),
+        "MU4_start": ev.tm("B8.first_black"),
+        "MU4_end": ev.tm("B8.first_black") + frames_to_s(MU4_FRAMES),
+        "MU5": ev.tm("B10.fun"),
+        "MU6_start": ev.tm("B15.start"),
+        "MU6_end": ev.tm("B15.label"),
+        "MU7_start": ev.tm("B16.rewind"),
+        "MU7_end": ev.tm("B16.rewind_end"),
+        "MU7_return": ev.tm("B17.start"),
         "MU8": t_end,
     }
     duck = duck_curve(tt, spans)
@@ -717,6 +961,9 @@ def music_envelopes(ev: Events, beat_map: dict, spans):
     for a, b in ((marks["MU4_start"], marks["MU4_end"]), (marks["MU7_start"], marks["MU7_end"])):
         mute = mute * np.maximum(ramp(tt, a - EDGE_S, a, 1.0, 0.0), ramp(tt, b, b + EDGE_S, 0.0, 1.0))
     mute = mute * ramp(tt, marks["MU8"] - EDGE_S, marks["MU8"], 1.0, 0.0)
+    if dropouts:                                                # v05: cues.json dropouts (doc 2.7 micro-silences)
+        mute = mute * mute_env(tt, [(a, b) for a, b, *_ in dropouts])
+        marks["dropouts"] = [[round(a, 3), round(b, 3)] for a, b, *_ in dropouts]
     # MU6: crossfade main -> low-passed copy (-6 dB) and back, EDGE_S each way
     x6 = ramp(tt, marks["MU6_start"] - EDGE_S, marks["MU6_start"], 0.0, 1.0) * \
         ramp(tt, marks["MU6_end"], marks["MU6_end"] + EDGE_S, 1.0, 0.0)
@@ -789,6 +1036,10 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
             decisions["%s_v02_override" % cid] = {k: v for k, v in CUE_OVERRIDES[cid].items() if v is not None}
         group = cue["group"]
         if cid == "S13":
+            if not ev.has(cue["event"]):
+                decisions.setdefault("skipped", []).append("S13 (%s `%s`, %s cues)" % (
+                    cue["event"].split(".")[0], cue["event"].split(".", 1)[1], ev.schema.get(cue["event"].split(".")[0])))
+                continue
             clips_s13, dec = build_s13(ev, cue)
             clips += clips_s13
             decisions["S13"] = dec
@@ -811,6 +1062,10 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
                     event.split(".")[0], event.split(".", 1)[1], ev.source[event.split(".")[0]], cue["fallback_event"])
                 log("note: %s %s" % (cid, fallback_note))
                 event = cue["fallback_event"]
+            if not ev.has(event):        # v05: a lane that leaves a legacy event out wants no sound there
+                decisions.setdefault("skipped", []).append("%s%s (%s `%s`, %s cues)" % (
+                    cid, L["sub"], event.split(".")[0], event.split(".", 1)[1], ev.schema.get(event.split(".")[0])))
+                continue
             t_ev = ev.t(event)
             align = L.get("align", cue.get("align", "start"))
             off = frames_to_s(L.get("offset_f", cue.get("offset_f", 0)))
@@ -834,7 +1089,7 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
             elif align == "end":
                 start = t_ev + off - dur
                 rule = "file end on %s" % event
-                if cue.get("from_event"):
+                if cue.get("from_event") and ev.has(cue["from_event"]):
                     span = t_ev - ev.t(cue["from_event"])
                     if dur > span:          # head trim so it starts on from_event
                         src_start += dur - span
@@ -874,6 +1129,16 @@ def build_sfx_clips(ev: Events, sfx_plan: dict, analysis: dict, edit_end: float)
                 c.fade_out = max(c.fade_out, frames_to_s(4))
                 c.notes.append("tail trimmed at the edit end (%.3f s) with a 4f fade" % edit_end)
             clips.append(c)
+    for c in clips:                  # a gain link to a cue that is not in this edit: its level becomes a target
+        if c.gain_link and not any(x.cue == c.gain_link for x in clips):
+            ref = next((q for q in sfx_plan["cues"] if q["cue"] == c.gain_link), {})
+            lvl = ref.get("peak_dbfs", ref.get("peak_dbfs_combined"))
+            c.target_dbfs = float(lvl if lvl is not None else (c.target_dbfs if c.target_dbfs is not None else -12.0))
+            c.notes.append("%s is not in this edit (its event was left out), so this cue is calibrated on its own at %s's "
+                           "plan level, %.1f dBFS" % (c.gain_link, c.gain_link, c.target_dbfs))
+            c.gain_link = None
+    if decisions.get("skipped"):
+        log("legacy S-cues without their event (no sound): " + ", ".join(decisions["skipped"]))
     return clips, decisions
 
 
@@ -929,8 +1194,190 @@ def build_s13(ev: Events, cue: dict):
     return clips, dec
 
 
-def clip_signal(c: Clip, lag_s: float = 0.0):
-    """Gainless signal of a clip as Tesseract will play it (fades amplitude-linear)."""
+# --------------------------------------------------------------------------------------------
+# v05: the SFX library layers (cues.json word_pops / key_words / hook_cuts / sfx) and the dropouts
+# --------------------------------------------------------------------------------------------
+def load_library():
+    """03_SFX/v05/library.json -> {name: entry} (None when the library has not been built)."""
+    if not SFX_LIB.exists():
+        return None
+    return load_json(SFX_LIB)["sounds"]
+
+
+def library_pick(lib: dict, name: str, counters: dict):
+    """'tick' / 'hit' rotate their variants in call order (edit order); 'tick_2' / 'hit_3' pick one.
+    -> (canonical name, entry, file) or (None, None, None)."""
+    if name in lib:
+        e = lib[name]
+        k = counters.get(name, 0)
+        counters[name] = k + 1
+        return name, e, e["files"][k % len(e["files"])]
+    m = re.fullmatch(r"(.+?)_(\d+)", name)
+    if m and m.group(1) in lib and 1 <= int(m.group(2)) <= len(lib[m.group(1)]["files"]):
+        e = lib[m.group(1)]
+        return m.group(1), e, e["files"][int(m.group(2)) - 1]
+    return None, None, None
+
+
+def build_v05_clips(ev: Events, lib, edit_end: float):
+    """One Clip per v05 sound request, in edit order. Placement by the library's align on the edit frame (beat start
+    + f): start = the sound's first sample on the frame, peak = its sample peak on the frame, end = its last sample
+    at the frame's start. Level = the library default (the file is written at it, so gain 0 dB), or the cue's gain_db
+    (sample-peak dBFS, capped at V05_GAIN_CAP_DBFS). A head before 0 s is cut (10 ms fade-in), a tail past the edit
+    end too (4f fade); `dur_f` on an sfx item shortens it (3f fade). Rules: one tick per frame (duplicates merged), no
+    tick on a frame that has a key word (the key word wins), word_pops/key_words/hook_cuts may carry {"f", "gain_db"}."""
+    info = {"requests": 0, "by_kind": {}, "by_beat": {}, "skipped": [], "merged_ticks": 0, "cap_hits": []}
+    if not any(ev.v05.values()):
+        return [], info
+    if lib is None:
+        info["skipped"].append("03_SFX/v05/library.json missing: run tools/build_tesseract_sfx_v05.py; no v05 sounds")
+        log("WARNING: " + info["skipped"][-1])
+        return [], info
+    reqs = []                                    # (edit_f, order, kind, name, beat, f, item)
+    for bid, L in ev.v05.items():
+        b0 = ev.beat_start_frame(bid)
+        keys = {it["f"] for it in L["key_words"]}
+        seen = set()
+        for it in L["word_pops"]:
+            if it["f"] in keys or it["f"] in seen:
+                info["merged_ticks"] += 1
+                continue
+            seen.add(it["f"])
+            reqs.append((b0 + it["f"], 2, "word_pop", it.get("name") or V05_WORD_POP, bid, it["f"], it))
+        for it in L["key_words"]:
+            reqs.append((b0 + it["f"], 0, "key_word", V05_KEY_WORD_PAIR[0], bid, it["f"], it))
+            reqs.append((b0 + it["f"], 1, "key_word", V05_KEY_WORD_PAIR[1], bid, it["f"], it))
+        for it in L["hook_cuts"]:
+            reqs.append((b0 + it["f"], 3, "hook_cut", it.get("name") or V05_HOOK_CUT, bid, it["f"], it))
+            if bid not in ("B1", "B2"):
+                ev.notes.append("%s hook_cuts f%d: outside the hook (B1-B2); placed anyway" % (bid, it["f"]))
+        for it in L["sfx"]:
+            reqs.append((b0 + it["f"], 4, "sfx", str(it["name"]).strip(), bid, it["f"], it))
+    reqs.sort(key=lambda r: (r[0], r[1]))
+    counters, clips = {}, []
+    for n_, (ef, _, kind, name, bid, f, it) in enumerate(reqs):
+        canon, e, fname = library_pick(lib, name, counters)
+        if e is None:
+            info["skipped"].append("%s f%d %s: no library sound named %r" % (bid, f, kind, name))
+            log("WARNING: " + info["skipped"][-1])
+            continue
+        path = SFX_LIB_DIR / fname
+        fi = next((x for x in e.get("file_info", []) if x["file"] == fname), {})
+        fdur = probe(path)["duration"]
+        t_ev = frames_to_s(ef)
+        align = e.get("align", "start")
+        if align == "peak":
+            start = t_ev - float(fi.get("peak_s", 0.0))
+        elif align == "end":
+            start = t_ev - fdur
+        else:
+            start = t_ev
+        src_start, dur, fade_in, fade_out, notes = 0.0, fdur, 0.0, 0.0, []
+        if kind == "sfx" and it.get("dur_f"):
+            want = frames_to_s(int(it["dur_f"]))
+            if want < dur - 1e-6:
+                dur, fade_out = want, min(frames_to_s(3), want / 3)
+                notes.append("shortened to %df (dur_f) with a %.0f ms fade" % (int(it["dur_f"]), fade_out * 1000))
+        if start < 0:
+            src_start, dur, start = -start, dur + start, 0.0
+            fade_in = EDGE_S
+            notes.append("head before 0 s cut (10 ms fade-in)")
+        if start + dur > edit_end + 1e-6:
+            dur = edit_end - start
+            fade_out = max(fade_out, min(frames_to_s(4), dur / 2))
+            notes.append("tail trimmed at the edit end (%.3f s) with a 4f fade" % edit_end)
+        if dur <= 0.002:
+            info["skipped"].append("%s f%d %s %s: nothing left inside the edit" % (bid, f, kind, name))
+            continue
+        dflt = float(e["default_peak_dbfs"])               # the sound's level (a variant set: its loudest variant)
+        level = dflt
+        if it.get("gain_db") is not None and (kind == "sfx" or (kind == "key_word" and canon == V05_KEY_WORD_PAIR[1])
+                                              or kind in ("word_pop", "hook_cut")):
+            level = float(it["gain_db"])
+        elif it.get("gain_db") is not None and kind == "key_word":      # the whoosh follows the thump's override
+            level = dflt + float(it["gain_db"]) - float(lib[V05_KEY_WORD_PAIR[1]]["default_peak_dbfs"])
+        if level > V05_GAIN_CAP_DBFS:
+            info["cap_hits"].append("%s f%d %s gain_db %.1f -> %.1f" % (bid, f, name, level, V05_GAIN_CAP_DBFS))
+            level = V05_GAIN_CAP_DBFS
+        file_peak = float(fi.get("sample_peak_dbfs", dflt))
+        offset = level - dflt                               # layer gain: variants keep their loudness match
+        rule = {"start": "start on the frame", "peak": "peak (%.3f s in) on the frame" % float(fi.get("peak_s", 0)),
+                "end": "end on the frame"}[align]
+        c = Clip(cue="v%04d" % n_, sub="", group=e.get("group", "A3"), file=fname, orig=path, asset_file=path,
+                 src_start=src_start, dur=dur, edit_start=start, event="%s.f%d" % (bid, f), event_t=t_ev,
+                 beat_f=f, rule="%s: %s" % (kind.replace("_", " "), rule), plan=(it.get("note") or e.get("notes", ""))[:200],
+                 file_dur=fdur, target_dbfs=round(file_peak + offset, 2), combined=False, v05=True, kind=kind,
+                 sound=canon, cls=e.get("class", "hit"), fade_in=fade_in, fade_out=fade_out, file_peak_dbfs=file_peak,
+                 level_offset_db=offset, level_dbfs=round(level, 2))
+        c.notes += notes
+        if it.get("gain_db") is not None:
+            c.notes.append("gain_db %+.1f dBFS (default %.1f)" % (float(it["gain_db"]), float(e["default_peak_dbfs"])))
+        clips.append(c)
+        info["by_kind"][kind] = info["by_kind"].get(kind, 0) + 1
+        info["by_beat"].setdefault(bid, {}).setdefault(kind, 0)
+        info["by_beat"][bid][kind] += 1
+    info["requests"] = len(reqs)
+    for k, c in enumerate(sorted(clips, key=lambda c: (c.edit_start, c.cue))):
+        c.layer_id = V05_LAYER_BASE + k
+    return clips, info
+
+
+def v05_gains(clips):
+    """v05 library layers play the FILE at its level: the files are written at their default level, so the layer gain
+    is 0 dB, or the cue's gain_db minus the default (a variant set moves together, keeping its loudness match). Not
+    re-normalised when a cue cuts its head or tail, so a cue never comes out louder than its sound's level. target_dbfs
+    = the file's own sample peak + that gain."""
+    for c in clips:
+        if not getattr(c, "v05", False):
+            continue
+        c.gain_db = float(c.level_offset_db)
+        sig = clip_signal(c, muted=False)
+        amp = np.max(np.abs(sig), axis=1)
+        c.raw_peak_dbfs = db(float(np.max(amp)))
+        c.peak_time = c.edit_start + int(np.argmax(amp)) / SR
+        c.gain_group = c.cue
+
+
+def dropout_windows(ev: Events):
+    """cues.json dropouts -> [(t0, t1, beat, f, frames)] edit seconds: silence for `frames` frames ENDING at f."""
+    out = []
+    for bid, L in ev.v05.items():
+        for d in L["dropouts"]:
+            f1 = ev.beat_start_frame(bid) + d["f"]
+            out.append((frames_to_s(f1 - d["frames"]), frames_to_s(f1), bid, d["f"], d["frames"]))
+    return sorted(out)
+
+
+def apply_dropouts(clips, windows):
+    """With the bed off (G9) the risers/ambience obey the dropouts: every clip of a DROPOUT_CLASSES class (library
+    class, or LEGACY_CLASS for the plan's S-cues) is silent inside each window it overlaps (10 ms ramps; the gain
+    is computed on the unmuted sound)."""
+    hits = []
+    for c in clips:
+        cls = getattr(c, "cls", None) or LEGACY_CLASS.get(c.cue)
+        c.mutes = []
+        if cls not in DROPOUT_CLASSES:
+            continue
+        for a, b, bid, f, n in windows:
+            if a < c.end - 1e-6 and b > c.edit_start + 1e-6:
+                c.mutes.append((max(a, c.edit_start), min(b, c.end)))
+                c.notes.append("silent %.3f-%.3f s (dropout %s f%d, %df)" % (a, b, bid, f, n))
+                label = ("%s (%s %s)" % (c.sound, c.event.replace(".f", " f"), c.kind.replace("_", " "))
+                         if getattr(c, "v05", False) else "%s%s %s" % (c.cue, c.sub, Path(c.file).stem))
+                hits.append({"clip": label, "cue": c.cue, "sound": getattr(c, "sound", c.cue),
+                             "window_s": [round(a, 3), round(b, 3)], "dropout": "%s f%d (%df)" % (bid, f, n)})
+    return hits
+
+
+def mute_env(tt, mutes):
+    g = np.ones_like(np.asarray(tt, float))
+    for a, b in mutes or []:
+        g = np.minimum(g, np.maximum(ramp(tt, a - EDGE_S, a, 1.0, 0.0), ramp(tt, b, b + EDGE_S, 0.0, 1.0)))
+    return g
+
+
+def clip_signal(c: Clip, lag_s: float = 0.0, muted: bool = True):
+    """Gainless signal of a clip as Tesseract will play it (fades amplitude-linear; dropout mutes unless muted=False)."""
     x = decode(c.asset_file)
     a = int(round(c.src_start * SR))
     n = int(round(c.dur * SR))
@@ -944,6 +1391,8 @@ def clip_signal(c: Clip, lag_s: float = 0.0):
     if c.fade_out > 0:
         k = int(round(c.fade_out * SR))
         env[n - k:] *= np.linspace(1, 0, k)
+    if muted and getattr(c, "mutes", None):
+        env *= mute_env(c.edit_start + np.arange(n) / SR, c.mutes)
     return seg * env[:, None]
 
 
@@ -968,7 +1417,7 @@ def gain_groups(clips):
 
 def sfx_model(clips, n_samples, master=None):
     """Per-group sum of every clip at its gain (x master), and each clip's own placed signal."""
-    model = {"A3": np.zeros((n_samples, 2)), "A4": np.zeros((n_samples, 2))}
+    model = {g: np.zeros((n_samples, 2)) for g in SFX_GROUPS}
     own = {}
     for c in clips:
         sig = clip_signal(c) * lin(c.gain_db)
@@ -1008,13 +1457,13 @@ def compute_sfx_gains(clips):
         key = c.cue if c.combined else (c.cue, c.sub)
         groups.setdefault(key, []).append(c)
     for key, cs in groups.items():
-        if cs[0].gain_link:
+        if cs[0].gain_link or getattr(cs[0], "v05", False):
             continue
         t0 = min(c.edit_start for c in cs)
         t1 = max(c.end for c in cs)
         buf = np.zeros((int(math.ceil((t1 - t0) * SR)) + 2, 2))
         for c in cs:
-            s = clip_signal(c) * lin(c.rel_gain_db)
+            s = clip_signal(c, muted=False) * lin(c.rel_gain_db)
             i = int(round((c.edit_start - t0) * SR))
             buf[i: i + len(s)] += s
         pk = float(np.max(np.abs(buf)))
@@ -1027,6 +1476,7 @@ def compute_sfx_gains(clips):
             c.peak_time = t0 + tp_idx / SR
             c.gain_group = key if isinstance(key, str) else key[0] + key[1]
     link_gains(clips)
+    v05_gains(clips)
     return groups
 
 
@@ -1038,7 +1488,7 @@ def link_gains(clips):
         if not c.gain_link:
             continue
         ref = next(x for x in clips if x.cue == c.gain_link)
-        sig = clip_signal(c)
+        sig = clip_signal(c, muted=False)
         amp = np.max(np.abs(sig), axis=1)
         c.raw_peak_dbfs = db(float(np.max(amp)))
         c.gain_db = ref.gain_db - ref.rel_gain_db + c.rel_gain_db
@@ -1091,6 +1541,8 @@ def clip_pre_curve(c, E, D):
         g *= np.clip(rel / c.fade_in, 0, 1)
     if c.fade_out > 0:
         g *= np.clip((D / 1000.0 - rel) / c.fade_out, 0, 1)
+    if getattr(c, "mutes", None):
+        g *= mute_env(tt, c.mutes)
     return tt, g
 
 
@@ -1112,7 +1564,7 @@ def to_layers(specs, master):
         if not static:
             off = sp.S0 - sp.E                                   # content clock = parent + offset
             entries.append(keyframes_entry(sp.id, [(int(t) + off, v) for t, v in zip(kt, kg)], sp.key))
-    for k in ("A3", "A4"):
+    for k in SFX_GROUPS:
         groups[k].sort(key=lambda L: (L["playback"]["inputRange"]["start"], L["id"]))
     return groups, entries
 
@@ -1127,6 +1579,9 @@ def commit_document(doc_base, groups, entries, edit_end, out_project, json_path)
                    "tools/build_tesseract_audio.py to bring a track back)"),
         group_json(GID["A3"], GNAME["A3"], groups["A3"], dur_ms, "A3: SFX hits and impacts (plan p.35-38)"),
         group_json(GID["A4"], GNAME["A4"], groups["A4"], dur_ms, "A4: risers, whooshes and textures (plan p.35-38)"),
+        group_json(GID["A5"], GNAME["A5"], groups["A5"], dur_ms, "A5 (v05, doc 2.7): a tick on every caption word "
+                   "(cues.json word_pops, 3 samples rotating, -24 dBFS) and a whoosh into + a low thump on every key/hero "
+                   "word (key_words, -16/-14 dBFS); 03_SFX/v05 library"),
     ]
     doc["composition"]["dynamics"] = {"entries": entries}
     json_path.write_text(json.dumps(doc, indent=1) + "\n")
@@ -1139,7 +1594,7 @@ def commit_document(doc_base, groups, entries, edit_end, out_project, json_path)
     return doc, json.loads(r.stdout).get("warnings", [])
 
 
-STEMS = (("voice", "A1"), ("music", "A2"), ("sfx_a3", "A3"), ("sfx_a4", "A4"))
+STEMS = (("voice", "A1"), ("music", "A2"), ("sfx_a3", "A3"), ("sfx_a4", "A4"), ("sfx_a5", "A5"))
 
 
 def export_stems(doc, prefix, only=None):
@@ -1238,7 +1693,10 @@ def main():
     ap.add_argument("--no-waveforms", action="store_true", help="skip the waveform PNGs")
     ap.add_argument("--refresh-cue-defaults", action="store_true",
                     help="rewrite timing/cue_defaults.json from STORYBOARD.md")
+    ap.add_argument("--cues-dir", help="test only: read DIR/<composition>/cues.json before hyperframes/")
     args = ap.parse_args()
+    global CUES_DIR_TEST
+    CUES_DIR_TEST = args.cues_dir
 
     WORK.mkdir(exist_ok=True)
     CHECKS.mkdir(exist_ok=True)
@@ -1253,8 +1711,19 @@ def main():
 
     # ---- SFX clips and their (pre-master) gains -------------------------------------------------
     clips, decisions = build_sfx_clips(ev, sfx_plan, analysis, edit_end)
+    lib = load_library()
+    clips_v05, v05_info = build_v05_clips(ev, lib, edit_end)          # v05: cues.json word_pops/key_words/...
+    clips += clips_v05
+    dropouts = dropout_windows(ev)
+    v05_info["dropouts"] = [{"beat": d[2], "f": d[3], "frames": d[4], "window_s": [round(d[0], 3), round(d[1], 3)]}
+                            for d in dropouts]
+    v05_info["dropout_mutes"] = apply_dropouts(clips, dropouts)
     quantize_clips(clips)
     compute_sfx_gains(clips)
+    if clips_v05:
+        log("v05 library layers: %d (%s); ticks merged %d; dropouts %d (%d SFX mutes); skipped %s" % (
+            len(clips_v05), v05_info["by_kind"], v05_info["merged_ticks"], len(dropouts),
+            len(v05_info["dropout_mutes"]), v05_info["skipped"] or "none"))
 
     # ---- MP3 decoder offsets (FFmpeg-made WAVs need none) ---------------------------------------
     music_file = ROOT / music_plan["track"]
@@ -1296,7 +1765,7 @@ def main():
 
     # ---- ducking phrases and music envelopes (pre-master) -----------------------------------------
     spans = phrase_spans(words, MERGE_GAP_S)
-    tt, main_env, lp_env, marks, duck = music_envelopes(ev, beat_map, spans)
+    tt, main_env, lp_env, marks, duck = music_envelopes(ev, beat_map, spans, dropouts)
 
     # ---- create the project and import every asset -------------------------------------------------
     for stale in [PROJECT] + list(WORK.glob("stem_*.tsrct")):
@@ -1312,11 +1781,12 @@ def main():
             assets[asset_id] = path
         return asset_id
 
-    a_vo = import_asset(VO_FILE, "aud-vo-processed-115")
+    a_vo = import_asset(VO_FILE, "aud-vo-processed-" + re.sub(r"[^a-z0-9]+", "-", VO_TAG.lower()).strip("-"))
     a_mu = import_asset(music_file, "aud-mu-black-vertigo") if MUSIC else None
     a_lp = import_asset(lp_file, "aud-mu-black-vertigo-mu6-lp%d" % MU6_LOWPASS_HZ) if MUSIC else None
     for c in clips:
-        c.asset_id = import_asset(c.asset_file, "aud-" + re.sub(r"[^a-z0-9]+", "-", c.asset_file.stem.lower()).strip("-"))
+        c.asset_id = import_asset(c.asset_file, ("aud-v05-" if getattr(c, "v05", False) else "aud-") +
+                                  re.sub(r"[^a-z0-9]+", "-", c.asset_file.stem.lower()).strip("-"))
     jpath = WORK / "audio.editable.json"
     tsrct("project", "checkout", "--project", PROJECT, "--output", jpath)
     doc_base = load_json(jpath)
@@ -1329,14 +1799,17 @@ def main():
     vo_ms = int(probe(VO_FILE)["duration"] * 1000)
     vt = np.arange(vo_ms + 1) / 1000.0
     vo_fm = (load_json(VO_REPORT).get("final_metrics") or {}) if VO_REPORT.exists() else {}
-    specs.append(Spec(group="A1", id=VO_LAYER_ID, name="VO processed 115 (locked v02)", asset=a_vo, E=0, D=vo_ms, S0=0,
-                      intr=vo_ms, modality="voiceover", source_name=VO_FILE.name, key="vo", tt=vt,
+    vo_rep = load_json(VO_REPORT) if VO_REPORT.exists() else {}
+    vo_cuts = "; ".join("cut %s %d f ('%s')" % (c_["name"], c_["frames"], c_["removed"]) for c_ in vo_rep.get("v05_cuts", []))
+    specs.append(Spec(group="A1", id=VO_LAYER_ID, name="VO processed %s (locked, beat map vo_file)" % VO_TAG, asset=a_vo,
+                      E=0, D=vo_ms, S0=0, intr=vo_ms, modality="voiceover", source_name=VO_FILE.name, key="vo", tt=vt,
                       pre=np.full(len(vt), lin(VO_GAIN_DB)),
-                      description="Locked v02 voiceover (115%%, client note 10) at unity, edit 0 = file 0. Already through "
-                                  "the plan's chain (HPF 80 Hz, de-esser, 3:1 compression; %s LUFS as a mono track, true "
-                                  "peak %s dBFS; %s). Volume = the master gain only." % (
-                                      vo_fm.get("integrated_lufs", "?"), vo_fm.get("true_peak_dbfs", "?"),
-                                      VO_REPORT.relative_to(ROOT))))
+                      description="Locked voiceover %s (the beat map's vo_file; %s%% speed%s) at unity, edit 0 = file 0. "
+                                  "Already through the plan's chain (HPF 80 Hz, de-esser, 3:1 compression; %s LUFS as a "
+                                  "mono track, true peak %s dBFS; %s). Volume = the master gain only." % (
+                                      VO_FILE.relative_to(ROOT), round(float(vo_rep.get("speed", 1.15)) * 100),
+                                      ("; " + vo_cuts) if vo_cuts else "", vo_fm.get("integrated_lufs", "?"),
+                                      vo_fm.get("true_peak_dbfs", "?"), VO_REPORT.relative_to(ROOT))))
     mu_D = ms(vo_end)
     mu_intr = int(probe(music_file)["duration"] * 1000)
     main_tt, main_pre, main_E, main_D, main_S0 = tt, main_env, 0, mu_D, mu_s0
@@ -1401,10 +1874,15 @@ def main():
         specs = [sp for sp in specs if sp.group != "A2"]
     sub_index = {}
     for c in clips:
+        c.lag_s = lags.get(str(c.asset_file), 0.0)
+        if getattr(c, "v05", False):                     # v05 library layer: id set in edit order, 48 kHz WAV
+            c.S0 = c.S0t
+            c.name = "%s %s f%d %s (%s)" % (Path(c.file).stem, c.event.split(".")[0], c.beat_f,
+                                            c.kind.replace("_", " "), c.cls)
+            continue
         k = sub_index.get(c.cue, 0)
         sub_index[c.cue] = k + 1
         c.layer_id = sfx_layer_id(c.cue, k)
-        c.lag_s = lags.get(str(c.asset_file), 0.0)
         c.S0 = c.S0t + ms(c.lag_s)                       # Tesseract source ms (decoder offset included)
         assert c.S0 + c.D <= c.intr_ms + ms(c.lag_s)
         label = file_stem_label(c.file)
@@ -1421,13 +1899,19 @@ def main():
         out = []
         for c in clips:
             ctt, cpre = clip_pre_curve(c, c.E, c.D)
+            if getattr(c, "v05", False):
+                desc = ("v05 %s | %s | %s beat f%d = edit %.3f s (f%d) | %s | %s dBFS sample peak (library %s%s)%s | %s" % (
+                    c.sound, c.kind, c.event.split(".")[0], c.beat_f, c.event_t, round(c.event_t * FPS), c.rule,
+                    c.target_dbfs, Path(c.file).name, ", cue gain_db" if any("gain_db" in n for n in c.notes) else "",
+                    (" | " + "; ".join(c.notes)) if c.notes else "", c.plan))
+            else:
+                desc = ("%s | event %s = edit %.3f s (f%d) | %s | pre-master gain %.2f dB -> sample peak %.1f dBFS%s | "
+                        "plan: %s%s" % (c.cue, c.event, c.event_t, round(c.event_t * FPS), c.rule, c.gain_db, c.target_dbfs,
+                                        " (combined)" if c.combined else "", c.plan,
+                                        (" | " + "; ".join(n for n in c.notes if "dropout" in n)) if getattr(c, "mutes", None) else ""))
             out.append(Spec(group=c.group, id=c.layer_id, name=c.name, asset=c.asset_id, E=c.E, D=c.D, S0=c.S0,
                             intr=c.intr_ms + ms(c.lag_s), modality="soundEffect", source_name=c.asset_file.name,
-                            key="%s%s" % (c.cue.lower(), c.sub), tt=ctt, pre=cpre, clip=c,
-                            description="%s | event %s = edit %.3f s (f%d) | %s | pre-master gain %.2f dB -> sample "
-                                        "peak %.1f dBFS%s | plan: %s" % (
-                                            c.cue, c.event, c.event_t, round(c.event_t * FPS), c.rule, c.gain_db,
-                                            c.target_dbfs, " (combined)" if c.combined else "", c.plan)))
+                            key="%s%s" % (c.cue.lower(), c.sub), tt=ctt, pre=cpre, clip=c, description=desc))
         return out
 
     # ---- pass 1: pre-master document -> pre-master stems --------------------------------------------
@@ -1440,9 +1924,13 @@ def main():
     calib = {}
     for it in range(2):
         model, own = sfx_model(clips, len(pre["sfx_a3"]))
-        iso = isolated_peaks(clips, {"A3": pre["sfx_a3"], "A4": pre["sfx_a4"]}, model, own)
-        fix = {k: d["clips"][0].target_dbfs - d["peak_dbfs"] for k, d in iso.items() if not d["clips"][0].gain_link}
+        iso = isolated_peaks(clips, {"A3": pre["sfx_a3"], "A4": pre["sfx_a4"], "A5": pre["sfx_a5"]}, model, own)
+        fix = {k: d["clips"][0].target_dbfs - d["peak_dbfs"] for k, d in iso.items()
+               if not d["clips"][0].gain_link and not getattr(d["clips"][0], "v05", False)
+               and not any(getattr(c_, "mutes", None) for c_ in d["clips"])}
         for k, d in iso.items():
+            if getattr(d["clips"][0], "v05", False):
+                continue
             calib.setdefault(k, {"computed_gain_db": round(d["clips"][0].gain_db - d["clips"][0].rel_gain_db, 3),
                                  "first_render_peak_dbfs": round(d["peak_dbfs"], 3)})
         todo = {k: v for k, v in fix.items() if abs(v) > 0.02}
@@ -1458,7 +1946,7 @@ def main():
         groups, entries = to_layers(specs, unity)
         commit_document(doc_base, groups, entries, edit_end, PROJECT, jpath)
         pre.update(export_stems(load_json(jpath), "premaster_", only=("sfx_a3", "sfx_a4")))
-    pre_mix = pre["voice"] + pre["music"] + pre["sfx_a3"] + pre["sfx_a4"]
+    pre_mix = pre["voice"] + pre["music"] + pre["sfx_a3"] + pre["sfx_a4"] + pre["sfx_a5"]
     master, minfo = solve_master(pre_mix)
     minfo["sfx_gain_calibration"] = calib
     for f in CHECKS.glob("premaster_stem_*.wav"):
@@ -1472,8 +1960,8 @@ def main():
     doc, warn = commit_document(doc_base, groups, entries, edit_end, PROJECT, jpath)
     chk = json.loads(run([TSRCT, "project", "check", "--project", PROJECT]).stdout)
     n_layers = sum(len(v) for v in groups.values())
-    log("committed %s: 4 groups, %d audio layers, %d volume animators; warnings=%s; check valid=%s" % (
-        PROJECT.relative_to(ROOT), n_layers, len(entries), warn, chk.get("valid")))
+    log("committed %s: %d groups, %d audio layers, %d volume animators; warnings=%s; check valid=%s" % (
+        PROJECT.relative_to(ROOT), len(GID), n_layers, len(entries), warn, chk.get("valid")))
     if not chk.get("valid"):
         raise SystemExit("project check failed: %s" % chk)
     m0 = minfo["static_makeup_db"]
@@ -1485,11 +1973,12 @@ def main():
     log("%-4s %-40s %-3s %-18s %5s %8s %7s %8s %6s %6s %6s %6s %7s %7s %6s" % (
         "cue", "layer", "grp", "event", "evf", "event s", "start f", "start s", "dur s", "fadeI", "fadeO", "srcIn",
         "gain dB", "final", "peak"))
-    for c in sorted(clips, key=lambda c: (c.edit_start, c.layer_id)):
+    for c in sorted((c for c in clips if not getattr(c, "v05", False)), key=lambda c: (c.edit_start, c.layer_id)):
         log("%-4s %-40s %-3s %-18s %5d %8.3f %7.1f %8.3f %6.3f %6.3f %6.3f %6.3f %+7.2f %+7.2f %6.1f" % (
             c.cue, c.name[:40], c.group, c.event, round(c.event_t * FPS), c.event_t, c.edit_start * FPS, c.edit_start,
             c.dur, c.fade_in, c.fade_out, c.src_start, c.gain_db, c.gain_db + c.master_db_at_peak, c.target_dbfs))
-    log("\nMusic marks: " + ", ".join("%s %.3f s (f%.1f)" % (k, v, v * FPS) for k, v in marks.items()))
+    log("\nMusic marks: " + ", ".join("%s %.3f s (f%.1f)" % (k, v, v * FPS) for k, v in marks.items()
+                                     if isinstance(v, float)) + ("; dropouts %s" % marks["dropouts"] if marks.get("dropouts") else ""))
 
     # ---- export and measure -------------------------------------------------------------------------
     mix = CHECKS / "mix.wav"
@@ -1500,7 +1989,16 @@ def main():
         "constants": {k: globals()[k] for k in (
             "VO_GAIN_DB", "MUSIC_BASE_DB", "DUCK_DB", "ATTACK_S", "RELEASE_S", "MERGE_GAP_S", "MU5_LIFT_DB",
             "MU5_HOLD_S", "MU5_RETURN_S", "MU6_DB", "MU6_LOWPASS_HZ", "MU7_DB", "MU7_RETURN_S", "MU4_FRAMES", "EDGE_S",
-            "MASTER_TARGET_LUFS", "MASTER_CEILING_DBTP", "MASTER_ATTACK_S", "MASTER_RELEASE_S")},
+            "MASTER_TARGET_LUFS", "MASTER_CEILING_DBTP", "MASTER_ATTACK_S", "MASTER_RELEASE_S", "MUSIC",
+            "V05_GAIN_CAP_DBFS", "V05_KEY_WORD_PAIR", "V05_WORD_POP", "V05_HOOK_CUT", "V05_DROPOUT_MAX_F",
+            "DROPOUT_CLASSES", "LEGACY_CLASS")},
+        "vo": {"file": str(VO_FILE.relative_to(ROOT)), "words": str(WORDS_JSON.relative_to(ROOT)),
+               "report": str(VO_REPORT.relative_to(ROOT)), "from": "timing/beat_map.json vo_file"},
+        "v05": dict(v05_info, library=str(SFX_LIB.relative_to(ROOT)) if lib else None,
+                    cues_schema=ev.schema, legacy_remapped_v04_to_v05=ev.remapped, cut_by_v05_trims=ev.dropped,
+                    cue_notes=ev.notes, legacy_s_cues_skipped=decisions.get("skipped", []),
+                    levels_dbfs={k: v["default_peak_dbfs"] for k, v in (lib or {}).items()},
+                    cues_dir_test=CUES_DIR_TEST),
         "master": minfo, "event_sources": ev.source, "music_marks_s": marks,
         "music_anchor": anchor, "cue_scaling_v01_to_v02": ev.scaled,
         "beat_start_s": {b: round(ev.beat_start_frame(b) / FPS, 4) for b in ev.beats},
@@ -1518,7 +2016,10 @@ def main():
     report["cues"] = [{
         "cue": c.cue, "sub": c.sub, "layer_id": c.layer_id, "layer": c.name, "group": c.group, "file": c.file,
         "asset": c.asset_id, "asset_file": str(c.asset_file.relative_to(ROOT)), "event": c.event,
-        "event_beat_frame": ev.beat_frame(c.event), "event_edit_frame": round(c.event_t * FPS),
+        "event_beat_frame": c.beat_f if getattr(c, "v05", False) else ev.beat_frame(c.event),
+        "event_edit_frame": round(c.event_t * FPS), "v05": getattr(c, "v05", False) and {
+            "kind": c.kind, "sound": c.sound, "class": c.cls} or None,
+        "dropout_mutes_s": [[round(a, 3), round(b, 3)] for a, b in getattr(c, "mutes", [])] or None,
         "event_s": round(c.event_t, 4), "rule": c.rule, "edit_start_s": round(c.edit_start, 4),
         "edit_start_frame": round(c.edit_start * FPS, 2), "edit_end_s": round(c.end, 4),
         "source_in_s": round(c.src_start, 4), "duration_s": round(c.dur, 4), "fade_in_s": c.fade_in,
@@ -1574,20 +2075,33 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
     report["mix"] = m
     if not args.no_waveforms:
         waves = []
-        s08 = next(c for c in clips if c.cue == "S08")
-        s18 = next(c for c in clips if c.cue == "S18")
-        s19 = next(c for c in clips if c.cue == "S19")
-        b9 = next(s_[0] for s_ in spans if s_[0] >= marks["MU4_end"] - 0.05)
-        report["waveform_markers_s"] = {"S08": s08.edit_start, "B9_voice": b9, "S18": s18.edit_start, "S19": s19.edit_start}
+        s08 = next((c for c in clips if c.cue == "S08"), None)
+        s18 = next((c for c in clips if c.cue == "S18"), None)
+        s19 = next((c for c in clips if c.cue == "S19"), None)
+        b9 = next((s_[0] for s_ in spans if s_[0] >= marks["MU4_end"] - 0.05), marks["MU4_end"])
+        report["waveform_markers_s"] = {"S08": s08 and s08.edit_start, "B9_voice": b9, "S18": s18 and s18.edit_start,
+                                        "S19": s19 and s19.edit_start}
         an_ = report["music_anchor"]
+        b8_0 = s08.edit_start if s08 else marks["MU4_start"] - 0.3
+        end_0 = (s18 or s19).edit_start if (s18 or s19) else max(0.0, marks["MU8"] - 2.0)
         views = [("mu5-drop-s09-fun", marks["MU5"] - 1.3, marks["MU5"] + 2.7, [marks["MU5"], marks["MU5"] + MU5_HOLD_S]),
-                 ("b8-break-mu4-mute", s08.edit_start - 0.55, b9 + 0.6,
-                  [s08.edit_start, marks["MU4_start"], marks["MU4_end"], b9]),
-                 ("b17-ending", s18.edit_start - 0.8, edit_end, [s18.edit_start, marks["MU8"], s19.edit_start]),
+                 ("b8-break-mu4-mute", b8_0 - 0.55, b9 + 0.6, [b8_0, marks["MU4_start"], marks["MU4_end"], b9]),
+                 ("b17-ending", end_0 - 0.8, edit_end, [end_0, marks["MU8"]] + ([s19.edit_start] if s19 else [])),
                  ("mu2-breakdown-on-broke", an_["MU2"]["edit_s"] - 1.5, an_["MU2"]["edit_s"] + 1.5,
                   [an_["MU2"]["broke_s"][0], an_["MU2"]["edit_s"]])]
         if not MUSIC:
             views = [v_ for v_ in views if not v_[0].startswith("mu2")]
+        v05c = [c for c in clips if getattr(c, "v05", False)]
+        if v05c:                                    # v05: the densest 4 s of auto layers, and every dropout
+            ts = np.array(sorted(c.event_t for c in v05c))
+            best = max(range(len(ts)), key=lambda i: int(np.sum((ts >= ts[i]) & (ts < ts[i] + 4.0))))
+            a_ = max(0.0, float(ts[best]) - 0.3)
+            views.append(("v05-densest-4s", a_, min(edit_end, a_ + 4.3),
+                          [round(float(t_), 3) for t_ in ts[(ts >= a_) & (ts < a_ + 4.3)]][:24]))
+            for d in report.get("v05", {}).get("dropouts", []):
+                w0, w1 = d["window_s"]
+                views.append(("v05-dropout-%s-f%d" % (d["beat"].lower(), d["f"]), max(0.0, w0 - 1.2),
+                              min(edit_end, w1 + 0.8), [w0, w1]))
         if MUSIC and an_["bar_edit"]["applied"]:
             x0_, x1_ = an_["bar_edit"]["xfade_s"]
             views.append(("mu2-bar-edit-seam", x0_ - 1.0, x1_ + 1.0, [x0_, x1_, an_["bar_edit"]["seam_bar_line_edit_s"]]))
@@ -1604,11 +2118,11 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
     if args.no_stems:
         return
     st_ = export_stems(doc, "")
-    v, mu, s3, s4 = st_["voice"], st_["music"], st_["sfx_a3"], st_["sfx_a4"]
+    v, mu, s3, s4, s5 = st_["voice"], st_["music"], st_["sfx_a3"], st_["sfx_a4"], st_["sfx_a5"]
     n = min(len(x), len(v))
     st = {"voice": {"integrated_lufs": integrated_lufs(v), "true_peak_dbtp": true_peak_dbtp(v),
                     "sample_peak_dbfs": db(float(np.max(np.abs(v))))},
-          "stems_sum_vs_mix_max_abs_diff": float(np.max(np.abs(x[:n] - (v + mu + s3 + s4)[:n])))}
+          "stems_sum_vs_mix_max_abs_diff": float(np.max(np.abs(x[:n] - (v + mu + s3 + s4 + s5)[:n])))}
     if MUSIC:
         # ---- music bed loudness: under the voice vs without voice ------------------------------------
         tc3, l3 = windowed_lufs(mu, 3.0)
@@ -1710,6 +2224,8 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
             "MU4_mute_peak_dbfs": region_peak(mu, marks["MU4_start"] + 0.01, marks["MU4_end"] - 0.01),
             "MU7_rewind_cut_peak_dbfs": region_peak(mu, marks["MU7_start"] + 0.01, marks["MU7_end"] - 0.01),
             "after_MU8_peak_dbfs": region_peak(mu, marks["MU8"] + 0.001, edit_end),
+            "dropouts_max_peak_dbfs": max([region_peak(mu, a_ + 0.011, b_ - 0.001) for a_, b_ in marks.get("dropouts", [])
+                                           if b_ - a_ > 0.03] or [-200.0]),
             "drop_offset_vs_track_clock_ms": xcorr_lag(mu[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
                                                        mref[int((marks["MU5"] - 0.5) * SR): int((marks["MU5"] + 1.5) * SR), 0],
                                                        int(0.05 * SR)) / SR * 1000,
@@ -1743,7 +2259,7 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         st["music_envelope_checks"] = {}
         st["music_stem_peak_dbfs"] = db(float(np.max(np.abs(mu))))
     # ---- SFX: each cue's rendered peak, isolated from overlapping cues of its group via the model ---
-    stems_g = {"A3": s3, "A4": s4}
+    stems_g = {"A3": s3, "A4": s4, "A5": s5}
     model, own = sfx_model(clips, len(s3), master)
     # sanity: residual energy of stem - model relative to the stem (placement is sample-exact; the rest
     # is the resampler of 44.1/96 kHz sources)
@@ -1758,9 +2274,14 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         pk, tpk = d["peak_dbfs"], d["peak_s"]
         target = cs_[0].target_dbfs
         final_target = target + db(float(master(np.array([tpk]))[0]))
+        exact = getattr(cs_[0], "v05", False) or any(getattr(c_, "mutes", None) for c_ in cs_)
+        if exact:       # v05 layers (head/tail cuts, dropout mutes): the model's own peak is the expectation
+            final_target = db(max(float(np.max(np.abs(own[id(c_)][1]))) for c_ in cs_))
         a_, b_ = d["window_s"]
         vloc = region_peak(v, a_, b_)
         per_cue.append({"cue": key, "group": d["group"], "window_s": [round(a_, 3), round(b_, 3)],
+                        "layer": cs_[0].name if getattr(cs_[0], "v05", False) else None,
+                        "expected_from": "model" if exact else "plan level + master",
                         "plan_peak_dbfs": target, "master_db_at_peak": round(final_target - target, 2),
                         "expected_final_peak_dbfs": round(final_target, 2), "measured_peak_dbfs": round(pk, 2),
                         "peak_at_s": round(tpk, 3), "error_db": round(pk - final_target, 2),
@@ -1786,15 +2307,109 @@ def measure(report, mix, clips, spans, marks, music_file, offset_s, master, args
         st["stems_sum_vs_mix_max_abs_diff"], resid))
     log("\nSFX rendered peaks (isolated from overlapping cues) vs plan, and vs the voice:")
     for r_ in per_cue:
+        if r_["layer"]:
+            continue
         log("  %-5s plan %6.1f  master %+5.2f  expected %6.2f  measured %6.2f (err %+.2f)  voice(window) %6.2f  %s" % (
             r_["cue"], r_["plan_peak_dbfs"], r_["master_db_at_peak"], r_["expected_final_peak_dbfs"],
             r_["measured_peak_dbfs"], r_["error_db"], r_["voice_peak_same_window_dbfs"],
             "ABOVE VOICE" if r_["above_voice_window"] else ""))
+    v5 = [r_ for r_ in per_cue if r_["layer"]]
+    if v5:
+        errs = np.array([r_["error_db"] for r_ in v5])
+        muted_ = {c.cue for c in clips if getattr(c, "mutes", None)}
+        errs_u = np.array([r_["error_db"] for r_ in v5 if r_["cue"] not in muted_] or [0.0])
+        st["v05_layers_check"] = {"layers": len(v5), "max_abs_error_db": round(float(np.max(np.abs(errs))), 3),
+                                  "max_abs_error_db_not_muted": round(float(np.max(np.abs(errs_u))), 3),
+                                  "muted_layers": len(muted_ & {r_["cue"] for r_ in v5}),
+                                  "median_error_db": round(float(np.median(errs)), 3),
+                                  "above_voice_window": [r_["layer"] for r_ in v5 if r_["above_voice_window"]],
+                                  "worst": sorted(v5, key=lambda r_: -abs(r_["error_db"]))[:3]}
+        log("  v05 library layers: %d, rendered vs model peak error max %.3f dB (%.3f dB without the %d dropout-muted "
+            "ones, whose remaining peak sits on a 10 ms mute ramp), median %+.3f; above the voice in their own window: %d" % (
+                len(v5), st["v05_layers_check"]["max_abs_error_db"], st["v05_layers_check"]["max_abs_error_db_not_muted"],
+                st["v05_layers_check"]["muted_layers"], st["v05_layers_check"]["median_error_db"],
+                len(st["v05_layers_check"]["above_voice_window"])))
 
 
 # --------------------------------------------------------------------------------------------
 # AUDIO_NOTES.md (generated from this run's numbers)
 # --------------------------------------------------------------------------------------------
+def v05_notes(R, clips, ev, beat_map, marks):
+    """The v05 section of AUDIO_NOTES.md (REVISION_v05.md G9 + S, doc 2.7)."""
+    L = []
+    w = L.append
+    v5 = R.get("v05", {})
+    lib = load_library() or {}
+    vo_rep = load_json(VO_REPORT) if VO_REPORT.exists() else {}
+    w("## v05 changes (REVISION_v05.md G9 + S, doc section 2.7)\n")
+    w("* **Voice and timing**: `%s` is the beat map's `vo_file` (no hard-coded name; words `%s`, report `%s`): %s. "
+      "Edit %d f = %.3f s, %d beats (%s), the voice ends %.3f s, the story at f%s; B18 is the CTA end card (no voice)." % (
+          VO_FILE.relative_to(ROOT), WORDS_JSON.name, VO_REPORT.name, "; ".join(
+              "cut %s %d f ('%s', %s)" % (c_["name"], c_["frames"], c_["removed"], c_["why"]) for c_ in vo_rep.get("v05_cuts", []))
+          or "no cut list", int(beat_map["edit_end_frame"]), float(beat_map["edit_end_s"]), len(beat_map["beats"]),
+          ", ".join("%s %d f" % (b["id"], b["dur_frames"]) for b in beat_map["beats"] if b.get("v04_dur_frames") not in (
+              b["dur_frames"],)), float(beat_map["vo_end_s"]), beat_map.get("story_end_frame", "?")))
+    sch = v5.get("cues_schema", {})
+    w("* **Cue files** (beat frames, f0 = beat start). v05 schema: %s. Legacy (only `events`, moved from v04 to v05 "
+      "frames by `timing/v04_to_v05.json`: B3 -57 f, B13 -39 f after its cut, B2/B17 tails): %s. None: %s.%s%s" % (
+          ", ".join(b for b, v in sch.items() if v == "v05") or "none",
+          ", ".join(b for b, v in sch.items() if v == "legacy") or "none",
+          ", ".join(b for b, v in sch.items() if v == "none") or "none",
+          (" Moved: " + "; ".join(v5.get("legacy_remapped_v04_to_v05", {}).values()) + ".") if v5.get(
+              "legacy_remapped_v04_to_v05") else "",
+          (" Cut by the v05 trims (no sound, no STORYBOARD refill): " + "; ".join(
+              "%s %s" % (b, d) for b, d in v5.get("cut_by_v05_trims", {}).items()) + ".") if v5.get("cut_by_v05_trims") else ""))
+    if v5.get("legacy_s_cues_skipped"):
+        w("* **Legacy S-cues left out** (their beat's cue file no longer lists the event, so no sound): " +
+          ", ".join(v5["legacy_s_cues_skipped"]) + ".")
+    w("* **Auto layers (as built)**: `word_pops` -> `tick` (tick_1/2/3 rotating in edit order; one tick per frame, none "
+      "on a frame that is also a key word), sound start on the frame, %s dBFS; `key_words` -> `whoosh_in` ENDING on the "
+      "frame (%s dBFS) + `thump_low` starting on it (%s dBFS); `hook_cuts` -> `swipe` with its peak on the cut (%s "
+      "dBFS); `sfx` -> the named library sound, aligned by its library `align` (start / peak / end on the frame) at its "
+      "default level or the item's `gain_db` (the sound's sample peak in dBFS, capped at %.0f), `dur_f` shortens it; "
+      "`dropouts` [{f, frames}] -> silence over the `frames` frames ending at f for the music bed (when on) and every "
+      "riser/ambience sound (whoosh_in, reverse_cymbal, riser, keyboard_clatter; S05, S07, S18); `archival` -> picture "
+      "only. Missing keys = nothing. Levels are pre-master; the master gain (below) comes on top. Group A5 holds the "
+      "ticks, whooshes-in and thumps; the rest go to A3 (hits) / A4 (sweeps, risers, textures)." % (
+          lib.get("tick", {}).get("default_peak_dbfs", "?"), lib.get("whoosh_in", {}).get("default_peak_dbfs", "?"),
+          lib.get("thump_low", {}).get("default_peak_dbfs", "?"), lib.get("swipe", {}).get("default_peak_dbfs", "?"),
+          V05_GAIN_CAP_DBFS))
+    bk = v5.get("by_kind", {})
+    w("* **This run**: %d v05 layers (%s), %d duplicate/key-word ticks merged; %d dropouts%s.%s%s" % (
+        sum(bk.values()), ", ".join("%s %d" % kv for kv in bk.items()) or "none", v5.get("merged_ticks", 0),
+        len(v5.get("dropouts", [])), (" (" + "; ".join("%s f%d %df = %.3f-%.3f s" % (
+            d["beat"], d["f"], d["frames"], d["window_s"][0], d["window_s"][1]) for d in v5["dropouts"]) + ")") if v5.get(
+            "dropouts") else "", (" Silenced by them: " + "; ".join("%s %s-%s s" % (
+                m_["clip"], m_["window_s"][0], m_["window_s"][1]) for m_ in v5.get("dropout_mutes", [])) + ".") if v5.get(
+            "dropout_mutes") else "", (" Skipped: " + "; ".join(v5["skipped"]) + ".") if v5.get("skipped") else ""))
+    if v5.get("by_beat"):
+        w("\n| Beat | Cues | Ticks | Key words (whoosh + thump) | Hook swipes | Named sfx |\n|---|---|---|---|---|---|")
+        for b in beat_map["beats"]:
+            d = v5["by_beat"].get(b["id"], {})
+            named = [c for c in clips if getattr(c, "v05", False) and c.kind == "sfx" and c.event.split(".")[0] == b["id"]]
+            if sch.get(b["id"]) != "v05" and not d:
+                continue
+            w("| %s | %s | %d | %d | %d | %s |" % (b["id"], sch.get(b["id"], "?"), d.get("word_pop", 0),
+                                                   d.get("key_word", 0) // 2, d.get("hook_cut", 0), ", ".join(
+                "%s f%d %s%.0f" % (c.sound, c.beat_f, "" if c.target_dbfs < 0 else "+", c.target_dbfs) for c in
+                sorted(named, key=lambda c: c.beat_f)) or "-"))
+        w("")
+    if lib:
+        w("**03_SFX/v05 library** (`tools/build_tesseract_sfx_v05.py`; 48 kHz 24-bit WAV written AT the default level; "
+          "recipes in library.json):\n")
+        w("| Name | Files | Align | Default dBFS | Group | Class | Source |\n|---|---|---|---|---|---|---|")
+        for k, e in lib.items():
+            w("| `%s` | %s | %s | %.0f | %s | %s | %s |" % (k, ", ".join(e["files"]), e["align"], e["default_peak_dbfs"],
+                                                         e["group"], e["class"], e["source"]))
+        w("")
+    w("* **Music automation** (built, bed off: MUSIC = False, client v04 note 1): duck %.0f dB under every VO phrase "
+      "(50/300 ms), silent inside every dropout window (10 ms ramps), full level again from 'fun.' (MU5: the drop on "
+      "its frame, +3 dB for 2 s), MU4/MU6/MU7/MU8 as in v02. `MUSIC = True` brings a bed back with all of it.\n" % DUCK_DB)
+    if ev.notes or v5.get("cap_hits"):
+        w("* Cue-file notes: " + "; ".join(ev.notes + v5.get("cap_hits", [])) + ".\n")
+    return L
+
+
 def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan, lp_file, lag_mu, mu_s0):
     R = report
     mi = R["master"]
@@ -1808,13 +2423,16 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     vo_fm = (load_json(VO_REPORT).get("final_metrics") or {}) if VO_REPORT.exists() else {}
     L = []
     w = L.append
-    w("# Audio half of the Tesseract project (A1-A4), v02\n")
+    w("# Audio half of the Tesseract project (A1-A5), v05\n")
     w("Generated by `tools/build_tesseract_audio.py` on every run (do not hand-edit; change the script's constants "
       "and re-run). Golden rule: the Master Edit Plan, Music plan p.32-35, SFX plan p.35-38, Audio mix and export "
-      "settings p.38, overridden only where the client's v02 notes (REVISION_v02.md) say so. Inputs: `%s`, `%s`, "
+      "settings p.38, overridden where the client's notes say so (REVISION_v02.md ... REVISION_v05.md; v05: the "
+      "instruction doc's section 2.7 wins, X8). Inputs: `%s` and `%s` (the beat map's `vo_file`), "
       "`timing/beat_map.json` (%s), `02_Music/music_plan.json`, `03_SFX/sfx_plan.json`, `03_SFX/sfx_analysis.json`, "
-      "event frames from each beat's `hyperframes/<composition>/cues.json` (else the STORYBOARD.md cues, scaled).\n" % (
+      "`03_SFX/v05/library.json`, each beat's `hyperframes/<composition>/cues.json` (v05 schema, or legacy events "
+      "moved to v05 frames, else the STORYBOARD.md cues).\n" % (
           VO_FILE.relative_to(ROOT), WORDS_JSON.relative_to(ROOT), beat_map.get("version", "?")))
+    L += v05_notes(R, clips, ev, beat_map, marks)
     w("## v02 changes\n")
     w("* **Voiceover 115%%** (note 10): `%s` (%.2f s, %s LUFS as a mono track, true peak %s dBFS) and its word times. "
       "Every duration comes from the beat map: edit %.3f s = %d frames, voice ends %.3f s." % (
@@ -1855,10 +2473,11 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
       "limiter dips), not an animation, and the engine interpolates gain linearly every 10 ms anyway.\n")
     w("## What was built\n")
     w("* `.tesseract-work/audio.tsrct`, deleted and recreated on each run. One composition `main`, 1920x1080, "
-      "%.1f s, background #0A0A0A. Four Group layers (CONFLICTS C6): `A1 Voiceover` (9001), `A2 Music` (9002), "
-      "`A3 SFX hits & impacts` (9003), `A4 Risers, whooshes & textures` (9004). Every layer id is >= 9000 (VO 9101, "
-      "music 9201/9202, SFX 10000 + cue x 100 + n), every asset id starts with `aud-`, so the picture half can "
-      "merge in with lower ids. %d audio layers, %d of them with volume keyframes." % (
+      "%.1f s, background #0A0A0A. Five Group layers (CONFLICTS C6 + v05): `A1 Voiceover` (9001), `A2 Music` (9002), "
+      "`A3 SFX hits & impacts` (9003), `A4 Risers, whooshes & textures` (9004), `A5 Caption pops & key words` (9005). "
+      "Every layer id is >= 9000 (VO 9101, music 9201-9203, S-cues 10000 + cue x 100 + n, v05 library layers 20000 + "
+      "n in edit order), every asset id starts with `aud-`, so the picture half can merge in with lower ids. %d audio "
+      "layers, %d of them with volume keyframes." % (
           beat_map["edit_end_s"], len(R["layers"]), sum(1 for x in R["layers"] if x["keyframes"])))
     w("* Volume envelopes are native keyframe animators in `composition.dynamics`: propertyType `volume`, the "
       "value is the final linear gain, timed on the layer's content clock (source ms). Measured engine behaviour "
@@ -1988,7 +2607,7 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     w("| Cue | Layer (id) | Grp | Event: beat f -> edit f (s) | Placement rule | Start s (frame) | Dur s | Src in s | Fades | Gain dB | Final dB | Plan dBFS | Measured dBFS |")
     w("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     meas = {r_["cue"]: r_ for r_ in st.get("sfx_cues", [])}
-    for c in sorted(clips, key=lambda c: (c.edit_start, c.layer_id)):
+    for c in sorted((c for c in clips if not getattr(c, "v05", False)), key=lambda c: (c.edit_start, c.layer_id)):
         beat, en = c.event.split(".")
         fades = []
         if c.fade_in:
@@ -2066,22 +2685,33 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
             st["stems_sum_vs_mix_max_abs_diff"], ", ".join("%s %.1f" % (k, v2) for k, v2 in st["sfx_model_vs_stem_residual_db"].items())))
         w("\n| Cue | Window s | Plan peak | Master at peak | Expected | Measured | Error | Voice peak, same window | Above the voice? |")
         w("|---|---|---|---|---|---|---|---|---|")
-        for r_ in st["sfx_cues"]:
+        for r_ in (r_ for r_ in st["sfx_cues"] if not r_.get("layer")):
             w("| %s | %.3f-%.3f | %.1f | %+.2f | %.2f | %.2f | %+.2f | %.2f | %s |" % (
                 r_["cue"], r_["window_s"][0], r_["window_s"][1], r_["plan_peak_dbfs"], r_["master_db_at_peak"],
                 r_["expected_final_peak_dbfs"], r_["measured_peak_dbfs"], r_["error_db"], r_["voice_peak_same_window_dbfs"],
                 ("yes (allowed: the final logo hit, no voice)" if r_["cue"].startswith("S19") else "**yes**")
                 if r_["above_voice_window"] else "no"))
-        w("\nVoice sample peak over the whole mix: %.2f dBFS. No SFX peak is above the voice except S19 (plan p.38)." %
-          st["sfx_cues"][0]["voice_peak_global_dbfs"] if not any(
-              r_["above_voice_window"] for r_ in st["sfx_cues"] if not r_["cue"].startswith("S19")) else
-          "\nVoice sample peak over the whole mix: %.2f dBFS. SEE ABOVE: an SFX peak is above the voice." %
-          st["sfx_cues"][0]["voice_peak_global_dbfs"])
+        leg_ = [r_ for r_ in st["sfx_cues"] if not r_.get("layer")]
+        vg_ = st["sfx_cues"][0]["voice_peak_global_dbfs"] if st["sfx_cues"] else float("nan")
+        w("\nVoice sample peak over the whole mix: %.2f dBFS. %s" % (vg_, "No S-cue peak is above the voice in its "
+          "window except S19 (plan p.38)." if not any(r_["above_voice_window"] for r_ in leg_ if not r_["cue"].startswith(
+              "S19")) else "SEE ABOVE: an S-cue peak is above the voice in its window."))
+        vc_ = st.get("v05_layers_check")
+        if vc_:
+            w("\nv05 library layers (%d): rendered sample peak vs the model's (isolated, master included) max error "
+              "%.3f dB without the %d dropout-muted ones (%.3f dB with them: their remaining peak sits on a mute ramp, "
+              "which the engine draws on its 10 ms gain clock), median %+.3f dB (48 kHz files: no resampling). Every one "
+              "is below the voice's global peak (%.2f dBFS): %s. %d of them peak above the voice inside their own short "
+              "window (whooshes before a word, ticks in pauses, the CTA's sounds: by design)." % (
+                  vc_["layers"], vc_["max_abs_error_db_not_muted"], vc_["muted_layers"], vc_["max_abs_error_db"],
+                  vc_["median_error_db"], vg_,
+                  "yes" if not any(r_["above_voice_global"] for r_ in st["sfx_cues"] if r_.get("layer")) else "NO",
+                  len(vc_["above_voice_window"])))
     if R.get("waveforms"):
         w("\n**Waveforms of the mix** (skill helper, edit clock): " + "; ".join(
             "`%s` (%.2f-%.2f s, markers %s)" % (x_["png"], x_["window_s"][0], x_["window_s"][1], x_["markers_s"])
             for x_ in R["waveforms"]) + ".\n")
-        wm = R.get("waveform_markers_s", {})
+        wm = {k: (v if v is not None else float("nan")) for k, v in R.get("waveform_markers_s", {}).items()}
         w("What to look for: (1) the drop: the bed and S09 together on the %.3f s marker ('fun'), the energy held "
           "through the +3 dB lift, easing after the %.3f s marker; (2) the break: S08 at %.3f s, its tail decaying "
           "through MU4's 15f mute (%.3f-%.3f s), the bed back at %.3f s and the B9 voice at %.3f s; (3) the ending: the "
@@ -2093,9 +2723,11 @@ def write_notes(report, clips, spans, marks, decisions, ev, beat_map, music_plan
     w("## Deviations and interpretations\n")
     for line in deviation_notes(clips, ev, marks, beat_map):
         w("* " + line)
+    leg_ids = sorted({c.cue for c in clips if not getattr(c, "v05", False)}, key=lambda k: int(k[1:]))
     w("\nChecked by measurement and waveform views only: no listening was possible in this container, so the plan's "
-      "'check on phone speakers and on earbuds' and 'If it feels busy, cut S12 first, then S15, then S05' are left "
-      "for a listening pass. All 19 cues are in.\n")
+      "'check on phone speakers and on earbuds' is left for a listening pass. S-cues in this edit (%d): %s%s.\n" % (
+          len(leg_ids), ", ".join(leg_ids), ("; left out by the lanes' v05 cue files: " + "; ".join(
+              decisions.get("skipped", []))) if decisions.get("skipped") else ""))
     w("## Re-run\n")
     w("`python3 tools/build_tesseract_audio.py` (about 1 minute; one export at a time). `--no-stems` skips the stem "
       "checks, `--no-waveforms` the PNGs, `--refresh-cue-defaults` rewrites `.tesseract-work/cue_defaults.json` from "
@@ -2109,7 +2741,7 @@ def deviation_notes(clips, ev, marks, beat_map):
     cue = lambda cid: [c for c in clips if c.cue == cid]
     out = []
     s07 = cue("S07")
-    if s07:
+    if s07 and all(ev.has(k) for k in ("B7.stamp2", "B7.stamp3", "B8.first_black")):
         c = s07[0]
         span = ev.t("B8.first_black") - ev.t("B7.stamp2")
         out.append("C17 S07: it ends exactly on B8's first black frame (%.3f s), %s" % (
@@ -2137,11 +2769,13 @@ def deviation_notes(clips, ev, marks, beat_map):
         "C21 voice level: A1 is at unity. The VO is about -16.4 LUFS as a mono track, but Tesseract sends mono at full "
         "level to both channels, so it reads about 3 dB louder on the stereo meter. Track levels are set before the "
         "master stage, as in a DAW.",
-        "C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice.",
-        "S03 keeps sfx_plan.json's reading: the error SOUND (0.11 s into the file) starts 3f before the tear, so the file "
-        "starts 0.21 s before it; the glitch starts on the tear at +12 dB. Plan p.35 can also be read as 'file 3f before "
-        "the tear, sound on it' (0.11 s later). Changing that means one field in sfx_plan.json.",
     ]
+    if cue("S19"):
+        out.append("C22 S19 is kept at the cue sheet's -4 dBFS: it is the highest SFX level and the only SFX above the voice.")
+    if cue("S03"):
+        out.append("S03 keeps sfx_plan.json's reading: the error SOUND (0.11 s into the file) starts 3f before the tear, so "
+                   "the file starts 0.21 s before it; the glitch starts on the tear at +12 dB. Plan p.35 can also be read as "
+                   "'file 3f before the tear, sound on it' (0.11 s later). Changing that means one field in sfx_plan.json.")
     s01 = cue("S01")
     if s01:
         c = s01[0]
@@ -2149,11 +2783,12 @@ def deviation_notes(clips, ev, marks, beat_map):
                    "therefore starts %.3f s (%.1ff) before the slam, the plan's '10f' to within %.0f ms." % (
                        c.event_t - c.edit_start, (c.event_t - c.edit_start) * FPS,
                        abs((c.event_t - c.edit_start) - 10 / FPS) * 1000))
-    out.append("S13 is sliced into single keystrokes, one every 2 letters (see the S13 decision above). The plan allows "
-               "this when the file does not sit with the letters.")
-    trimmed = [c for c in clips if any("tail trimmed" in n for n in c.notes)]
-    out.append("S02/S14: the 0.5-1.3 s slice starts inside the siren, so a 10 ms de-click fade-in comes before the "
-               "plan's 6f fade-out." + ("".join(" %s%s runs %.0f ms past the end of the edit, so it is trimmed at "
+    if cue("S13"):
+        out.append("S13 is sliced into single keystrokes, one every 2 letters (see the S13 decision above). The plan "
+                   "allows this when the file does not sit with the letters.")
+    trimmed = [c for c in clips if any("tail trimmed" in n for n in c.notes) and not getattr(c, "v05", False)]
+    out.append(("S02/S14: the 0.5-1.3 s slice starts inside the siren, so a 10 ms de-click fade-in comes before the "
+               "plan's 6f fade-out." if (cue("S02") or cue("S14")) else "") + ("".join(" %s%s runs %.0f ms past the end of the edit, so it is trimmed at "
                                                 "%.3f s with a 4f fade." % (c.cue, c.sub, (c.edit_start + c.file_dur -
                                                                                      c.src_start - float(beat_map["edit_end_s"])) * 1000,
                                                                             float(beat_map["edit_end_s"]))
@@ -2163,15 +2798,18 @@ def deviation_notes(clips, ev, marks, beat_map):
         "MU5's +3 dB returns over 0.3 s after its 2 s; MU7's -6 dB returns at the B17 cut over 30 ms.",
         "SFX gains are closed-loop: computed from FFmpeg decodes, then corrected once against Tesseract's own render "
         "(its resampler shaves up to 0.17 dB off some 44.1/96 kHz transients) so every cue's rendered peak is at the "
-        "plan's level. S10 (v02) is not calibrated on its own: it keeps S08's corrected gain (same file, same level).",
+        "plan's level. S10 (v02) is not calibrated on its own: it keeps S08's corrected gain (same file, same level), "
+        "or its own plan level when S08 is not in the edit. The v05 library layers are 48 kHz WAVs: Tesseract plays "
+        "them without resampling, exactly as modelled, so they keep their library level without a correction.",
         "The MP3s sit on Tesseract's decode clock. Black Vertigo's source start includes the measured decoder offset, "
         "so the drop lands on 'fun'. The SFX MP3s carry no encoder-delay tag and measured 0 ms.",
     ]
     used = {c.event for c in clips} | {"B8.first_black", "B10.fun", "B15.label", "B16.rewind", "B16.rewind_end"}
     fb = sorted(k for k in used if ev.event_source.get(k, "").startswith("STORYBOARD"))
-    out.append("Events come from the beats' cues.json files; v01-timed files are scaled to the v02 beat until their beat "
-               "builder rewrites them, and an event a beat does not list falls back to the STORYBOARD.md cue scaled the "
-               "same way%s. MU7's end is B16's `rewind_end` (%s)." % (
+    out.append("Events come from the beats' cues.json files. A v05 file is read as written (no fallback for the S-cues; "
+               "the music marks still fall back); a legacy file is moved from v04 to v05 frames (v01-timed ones are "
+               "scaled to the v04 beat first), and an event a legacy beat does not list falls back to the STORYBOARD.md "
+               "cue scaled and moved the same way%s. MU7's end is B16's `rewind_end` (%s)." % (
                    (" (this run: " + ", ".join(fb) + ")") if fb else "", ev.event_source.get("B16.rewind_end", "?")))
     return out
 

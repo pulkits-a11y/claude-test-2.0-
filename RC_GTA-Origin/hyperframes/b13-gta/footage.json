@@ -2,19 +2,27 @@
  "beat": "B13",
  "rids": [
   "R9.4",
-  "R13.2"
+  "R13.2",
+  "R3.7"
  ],
- "note": "v04: R9.4 = the B-roll under the lockup and the logo (beat f80-181, in this composition). R13.2 = the L2 unboxing, Tesseract-owned (tesseract_shots.json); synced here for reference AND the source of the logo cut-out assets/logo/gta1-logo.png (R13.2 @ 52.1 s: the box spine, the 1997 GRAND THEFT AUTO logo on the black spine, keyed by brightness, the '18' rating badge masked out).",
+ "note": "v05: R9.4 = the GTA 1 gameplay under 'it ships with a new name:' and the logo (beat f80-155). R13.2 = the box art card insert (beat f155-166, this composition; the v04 Tesseract L2 unboxing is gone) and the source of the logo cut-out assets/logo/gta1-logo.png (R13.2 @ 52.1 s, the box spine). R3.7 = the blurred, darkened 25% background loop behind the dark card (doc dead zone 4).",
  "moments": {
   "R13.2": {
-   "in": 101.4,
-   "out": 102.6,
-   "note": "reference copy only (Tesseract cuts its own from the original): the opened big box, GTA jewel case + San Andreas map, hands at the edges; facecam PIP top-left (x<500, y<352) cropped out in tesseract_shots.json (v02: Tesseract shot f181-205, framing v2 keys)"
+   "in": 16.65,
+   "out": 17.45,
+   "crop": "900:1050:600:30",
+   "note": "v05 (doc 0:55.5 'box art: card insert with a 3 deg tilt and shadow'): the GTA 1 PC big box FRONT (city canyon, police car, 'POLICE ARE ABOUT TO HAVE A REAL BAD DAY', the 1997 logo), held flat to camera, sharpest frames 16.8-17.1 s; crop x 600-1500, y 30-1080 keeps the uploader's facecam (top-left, x < 520, y < 352) out; hands at the bottom corners. Shown as the kit's card insert in B13's 0.386 s tail (beat f155-166 + tail handle). Was (v04) the reference copy of the L2 unboxing (101.4-102.6, Tesseract)."
   },
   "R9.4": {
    "in": 2272.0,
    "out": 2276.5,
    "note": "v04 (client note 16, 'can change this b roll'): GTA 1 (PC, 4K walkthrough 'Bent Cop Blues') @ 37:52.6-37:56.0: the player's yellow car speeding down the East Banana Grove highway (Vice City) with a police car on its tail, over the overpass, palm trees; 4:3 picture, cover-fitted full frame (the top HUD bar is cropped out by the 16:9 fit), darkened by media-treatment. Used 2272.6-2275.97 (beat f80-181, data-media-start 0.6) under 'it ships with | a new name:' and the 1997 logo. Replaces R13.1 (the D-man intro, v03)."
+  },
+  "R3.7": {
+   "in": 176.0,
+   "out": 179.4,
+   "note": "v05 (doc 0:46.5-0:52.0 'blurred, darkened office or GTA1 footage (25% opacity) behind the whole stretch'): BBC 1996 making-of at DMA (GTA in development): the wide office, the presenter and developers at their CRTs; blurred and darkened by media-treatment and shown at 25% behind the dark card (beat f-6..80). crop 1440:1080:240:0 = the 4:3 picture without the black pillars, cover-fitted (the blur hides the BBC logo).",
+   "crop": "1440:1080:240:0"
   }
  }
 }

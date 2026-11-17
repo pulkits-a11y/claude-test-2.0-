@@ -48,7 +48,7 @@
   justify-content: center;
   align-items: flex-start;
   color: var(--white);
-  text-shadow: var(--text-glow);
+  text-shadow: var(--text-drop);          /* v05: soft drop shadow 0 6px 18px 45% (v03: the ref 3 glow) */
   pointer-events: none;
 }
 .rc-lk__box {
@@ -57,12 +57,21 @@
   align-items: center;
   margin-top: calc(var(--rc-y, 540px) - var(--rc-lk-c, 0px));
 }
-.rc-lk__row { display: block; white-space: nowrap; font-family: var(--sans); font-weight: 400; }
+/* v05 tiers (REVISION_v05 G2): A setup = Inter SemiBold (lead / tail / solo rows), B key = Coolvetica Italic, C hero =
+   Coolvetica Italic (rc-lk__row--hero) or Playfair Display Black (rc-lk__row--num), Q quote = Playfair Display Italic,
+   the "dull." gag = Arimo grey without shadow. Sizes are inline (RCK.type.lockups / the runtime re-layout). */
+.rc-lk__row { display: block; white-space: nowrap; font-family: var(--font-setup); font-weight: 600; font-style: normal; letter-spacing: 0; }
 .rc-lk__row--lead { align-self: flex-start; }
 .rc-lk__row--tail { align-self: flex-end; }
-.rc-lk__row--key { align-self: center; font-family: var(--serif); font-style: italic; }
+.rc-lk__row--key { align-self: center; font-family: var(--serif); font-style: italic; font-weight: 400; }
 .rc-lk__row--solo { align-self: center; }
-.rc-lw { display: inline-block; }         /* one lockup word; GSAP: opacity (hard cut) or the pop (scale + filter) */
+.rc-lk__row--hero { font-family: var(--serif); font-style: italic; font-weight: 400; }
+.rc-lk__row--num { font-family: var(--font-display); font-style: normal; font-weight: 900; }
+.rc-lk__row--quote { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+.rc-lk__row--dull { font-family: var(--font-dull); font-style: normal; font-weight: 400; color: var(--dull-grey); text-shadow: none; }
+.rc-lw { display: inline-block; }         /* one lockup word; GSAP: the v05 entry (opacity, scale, blur, colour) */
+.rc-lw--dull { color: var(--dull-grey); }
+.rc-lw__fx { display: inline-block; }     /* inner span: glowFlicker / sirenFlicker / RCK.fx.rgbSplit layer on the entry */
 
 /* ---------- T1 Running caption: Coolvetica 46 px (plan: Inter Medium), white, soft shadow, centred at x 960, y 620 ---------- */
 .rc-t1 {

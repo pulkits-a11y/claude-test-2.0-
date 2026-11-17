@@ -1,1 +1,36 @@
-{"events": {"rewind": 0, "rewind_end": 28, "bug": 95}}
+{
+ "events": {
+  "rewind": 0,
+  "rewind_end": 28
+ },
+ "word_pops": [
+  1,
+  2,
+  12,
+  14,
+  22,
+  51,
+  55,
+  64,
+  74,
+  87,
+  94
+ ],
+ "key_words": [
+  30,
+  95
+ ],
+ "sfx": [
+  {
+   "f": 41,
+   "name": "error_chord"
+  },
+  {
+   "f": 95,
+   "name": "glitch_impact"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (beat frames, f0 = 'So'). Legacy: rewind 0 (S17 spinback with the VHS rewind), rewind_end 28 (MU7). word_pops = So 1, that's 2, why 12, you're 14, always 22, The 51, whole 55, series 64, started 74, with 87, a 94; key_words = running. 30 (tier B), bug. 95 (hero). 69.0 (doc) = f41: the hook's Win95 window slams in over GTA 1 top-down footage (error_chord, = B2's) and cascades; 95 = 'bug.': the windows snap shut (glitch_impact; match B2's snap-shut sound when lane 1 sets it), then the hard cut to GTA VI (B17) at 113. The v02 'bug' event (no SFX) is dropped (key_words has it)."
+}

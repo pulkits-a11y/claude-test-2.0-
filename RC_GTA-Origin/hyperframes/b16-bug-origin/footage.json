@@ -3,9 +3,10 @@
  "rids": [
   "R4.5",
   "RT1",
-  "RT6"
+  "RT6",
+  "R9.1"
  ],
- "note": "The VHS rewind (tools/make_rewind.py -> assets/rewind/b16-rewind.mp4, reversed at 8x) takes its frames straight from the ORIGINALS of the B14 shots (hyperframes/b14-since/tesseract_shots.json: source, source_in_s, crop), B9's GTA 1 (R9.1, read live from b09-throughyou/tesseract_shots.json) and the B4 design document (R4.5 real still, synced here). RT1 (VHS overlay, Screen blend over the rewind) and RT6 (light leak inside the X7 container) are real working clips.",
+ "note": "The VHS rewind (tools/make_rewind.py -> assets/rewind/b16-rewind.mp4, reversed at 8x) takes its frames straight from the ORIGINALS of the B14 shots (hyperframes/b14-since/tesseract_shots.json: source, source_in_s, crop), B9's GTA 1 (R9.1, read live from b09-throughyou/tesseract_shots.json) and the B4 design document (R4.5 real still, synced here). RT1 (VHS overlay, Screen blend over the rewind) and RT6 (light leak inside the X7 container) are real working clips. v05: R9.1 = the GTA 1 footage behind the callback cascade (beat 28 -> end).",
  "moments": {
   "RT1": {
    "in": 13.0,
@@ -17,6 +18,12 @@
    "in": 3.9,
    "out": 4.6,
    "note": "Light leak for X7: an orange leak rising out of black (4.00), peaking at 4.20, gone by 4.48 - one 14f dissolve. Used 3.98-4.38 on beat f28-40 (v02, 12f; media start 0.08) inside the kit X7 container (Screen blend, kit opacity envelope 0 -> 0.9 -> 0)."
+  },
+  "R9.1": {
+   "in": 129.4,
+   "out": 132.4,
+   "crop": "536:402:260:53",
+   "note": "v05 (doc 69.0-71.4 'replace the black: the hook's Win95 error-window cascade over GTA1 top-down footage'): GTA 1 (PlayStation) top-down, the white police car chasing the player's red car round a bend (the player fires back ~131.5), the continuation of B2's chase (B2: R9.1 @ 126.0, same crop 536:402:260:53 = the 4:3 picture without the black border and the uploader's mark). Beat 28-113 + tail handle (local 34-125): revealed by the X7 leak dissolve, under the Win95 cascade (TODO kit) and the lockups."
   }
  }
 }

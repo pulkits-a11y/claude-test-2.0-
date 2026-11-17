@@ -1,0 +1,651 @@
+{
+ "_what": "v05 SFX library (REVISION_v05.md G9 + S, client doc 2.7). Lanes name these in hyperframes/<composition>/cues.json; tools/build_tesseract_audio.py places them.",
+ "made_by": "tools/build_tesseract_sfx_v05.py (deterministic; re-run to rebuild)",
+ "format": "48 kHz, 24-bit PCM WAV; mono unless the sound moves in the stereo field (Tesseract plays a mono file at full level on both channels)",
+ "levels": "Each file is written at its default level: its sample peak = default_peak_dbfs (pre-master; the assembly's master gain, about -1 dB, comes on top). The audio build plays a cue at default_peak_dbfs, or at the cue's gain_db (an absolute sample-peak level in dBFS, capped at -4 dBFS) when the cue gives one. Variant sets are loudness-matched, the loudest at the default.",
+ "align": "start = the file's first sound on the cue frame (leading silence trimmed to 1 ms); peak = the file's sample peak (peak_s) on the frame; end = the file's last sample at the frame's start.",
+ "groups": {
+  "A3": "SFX hits & impacts",
+  "A4": "Risers, whooshes & textures",
+  "A5": "Caption pops & key words"
+ },
+ "classes": "pop/hit/tone: never touched by dropouts. sweep: transitions on cuts. riser/ambience (dropout_mute true): silenced inside every cues.json `dropouts` window they overlap (2-6 f before a big word), like the music bed would be.",
+ "sounds": {
+  "tick": {
+   "files": [
+    "tick_1.wav",
+    "tick_2.wav",
+    "tick_3.wav"
+   ],
+   "variants": "rotate",
+   "align": "start",
+   "default_peak_dbfs": -24.0,
+   "group": "A5",
+   "class": "pop",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): tick_1: band-passed noise 2500-7000 Hz (decay 4.0 ms) + 1850 Hz sine (decay 6 ms), 0.4 ms attack, 60 ms | tick_2: band-passed noise 3200-9000 Hz (decay 3.5 ms) + 2650 Hz sine (decay 5 ms), 0.4 ms attack, 60 ms | tick_3: band-passed noise 1500-5000 Hz (decay 5.0 ms) + 1200 Hz sine (decay 8 ms) + 2400 Hz sine (decay 4 ms), 0.4 ms attack, 60 ms",
+   "notes": "Every caption word that is not key/hero (cues.json word_pops). The three variants rotate in edit order, so two neighbouring words never share a sample. Doc 2.7: 'a soft tick or click at -24 dB'.",
+   "file_info": [
+    {
+     "file": "tick_1.wav",
+     "duration_s": 0.06,
+     "channels": 1,
+     "sample_peak_dbfs": -24.0,
+     "peak_s": 0.0008,
+     "max_momentary_100ms_db": -39.46
+    },
+    {
+     "file": "tick_2.wav",
+     "duration_s": 0.06,
+     "channels": 1,
+     "sample_peak_dbfs": -26.03,
+     "peak_s": 0.0006,
+     "max_momentary_100ms_db": -39.46
+    },
+    {
+     "file": "tick_3.wav",
+     "duration_s": 0.06,
+     "channels": 1,
+     "sample_peak_dbfs": -24.68,
+     "peak_s": 0.0006,
+     "max_momentary_100ms_db": -39.46
+    }
+   ]
+  },
+  "whoosh_in": {
+   "files": [
+    "whoosh_in.wav"
+   ],
+   "variants": null,
+   "align": "end",
+   "default_peak_dbfs": -16.0,
+   "group": "A5",
+   "class": "riser",
+   "dropout_mute": true,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): decorrelated noise through a band-pass (Q 1.2) sweeping 450 Hz -> 3.8 kHz, level swelling as (t/T)^2.4 to its peak at the very end (6 ms release), drifting from left to centre-right; 0.42 s; align END on the key word's frame",
+   "notes": "Key/hero words (cues.json key_words): ends on the word's entry frame, the thump starts there. Doc 2.7: 'a short whoosh into it plus a low thump at -14 dB': the thump carries the -14, the whoosh sits 2 dB under it (broadband noise reads louder than a low thump at the same peak).",
+   "file_info": [
+    {
+     "file": "whoosh_in.wav",
+     "duration_s": 0.42,
+     "channels": 2,
+     "sample_peak_dbfs": -16.0,
+     "peak_s": 0.4021,
+     "max_momentary_100ms_db": -23.69
+    }
+   ]
+  },
+  "thump_low": {
+   "files": [
+    "thump_low.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -14.0,
+   "group": "A5",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): sine with a pitch drop 110 -> 45 Hz (30 ms), decay 90 ms, tanh drive 1.6 (audible harmonics on phones) + a 3 ms low-passed noise click; 0.36 s; align start",
+   "notes": "Key/hero words (cues.json key_words), on the entry frame.",
+   "file_info": [
+    {
+     "file": "thump_low.wav",
+     "duration_s": 0.36,
+     "channels": 1,
+     "sample_peak_dbfs": -14.0,
+     "peak_s": 0.0074,
+     "max_momentary_100ms_db": -20.87
+    }
+   ]
+  },
+  "swipe": {
+   "files": [
+    "swipe.wav"
+   ],
+   "variants": null,
+   "align": "peak",
+   "default_peak_dbfs": -16.0,
+   "group": "A4",
+   "class": "sweep",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): decorrelated noise, band-pass centre riding the envelope (0.9 -> 6.1 kHz at the peak), fast rise / slower fall around a peak at 0.12 s, panned left -> right; 0.30 s; align PEAK on the cut",
+   "notes": "Hard cuts in the hook (cues.json hook_cuts, B1-B2); the swipe's peak on the cut frame.",
+   "file_info": [
+    {
+     "file": "swipe.wav",
+     "duration_s": 0.3,
+     "channels": 2,
+     "sample_peak_dbfs": -16.0,
+     "peak_s": 0.1156,
+     "max_momentary_100ms_db": -23.7
+    }
+   ]
+  },
+  "siren_whoop": {
+   "files": [
+    "siren_whoop.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -14.0,
+   "group": "A4",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S02_Siren.mp3",
+   "recipe": "S02_Siren.mp3 (the plan's S02/S14 slice): 48 kHz, high-pass 300 Hz (FFmpeg, 2-pole), slice 0.5-1.3 s, 10 ms de-click fade-in, 6f fade-out",
+   "notes": "Police siren sweep (doc: 0:00 with sub_hit on frame 0, and 0:03.6).",
+   "file_info": [
+    {
+     "file": "siren_whoop.wav",
+     "duration_s": 0.8,
+     "channels": 2,
+     "sample_peak_dbfs": -14.0,
+     "peak_s": 0.5012,
+     "max_momentary_100ms_db": -19.33
+    }
+   ]
+  },
+  "whoosh_flip": {
+   "files": [
+    "whoosh_flip.wav"
+   ],
+   "variants": null,
+   "align": "peak",
+   "default_peak_dbfs": -12.0,
+   "group": "A4",
+   "class": "sweep",
+   "dropout_mute": false,
+   "source": "03_SFX/S10_Flip.wav",
+   "recipe": "S10_Flip.wav at 48 kHz, leading silence trimmed (1 ms pre-roll)",
+   "notes": "3D flip / spin whoosh; its peak (about 0.36 s in) on the flip's midpoint.",
+   "file_info": [
+    {
+     "file": "whoosh_flip.wav",
+     "duration_s": 0.8094,
+     "channels": 2,
+     "sample_peak_dbfs": -12.0,
+     "peak_s": 0.3563,
+     "max_momentary_100ms_db": -20.68
+    }
+   ]
+  },
+  "whip": {
+   "files": [
+    "whip.wav"
+   ],
+   "variants": null,
+   "align": "peak",
+   "default_peak_dbfs": -12.0,
+   "group": "A4",
+   "class": "sweep",
+   "dropout_mute": false,
+   "source": "03_SFX/S15_23 Whip Hit.wav",
+   "recipe": "S15_23 Whip Hit.wav at 48 kHz, leading silence trimmed, cut at 0.40 s with an 80 ms fade (only 0.2-0.3 s is audible)",
+   "notes": "Whip-zooms; the peak on the whip's midpoint.",
+   "file_info": [
+    {
+     "file": "whip.wav",
+     "duration_s": 0.4,
+     "channels": 2,
+     "sample_peak_dbfs": -12.0,
+     "peak_s": 0.0622,
+     "max_momentary_100ms_db": -21.5
+    }
+   ]
+  },
+  "rewind": {
+   "files": [
+    "rewind.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -12.0,
+   "group": "A4",
+   "class": "sweep",
+   "dropout_mute": false,
+   "source": "03_SFX/S17_Spinback (2).wav",
+   "recipe": "S17_Spinback (2).wav at 48 kHz (= the plan's S17), leading silence trimmed",
+   "notes": "Tape rewind / spinback.",
+   "file_info": [
+    {
+     "file": "rewind.wav",
+     "duration_s": 0.9676,
+     "channels": 2,
+     "sample_peak_dbfs": -12.0,
+     "peak_s": 0.0801,
+     "max_momentary_100ms_db": -18.5
+    }
+   ]
+  },
+  "riser": {
+   "files": [
+    "riser.wav"
+   ],
+   "variants": null,
+   "align": "end",
+   "default_peak_dbfs": -12.0,
+   "group": "A4",
+   "class": "riser",
+   "dropout_mute": true,
+   "source": "03_SFX/S18_Riser Faster.wav",
+   "recipe": "S18_Riser Faster.wav at 48 kHz (= the plan's S18), ends at its peak",
+   "notes": "Short riser; its end on the hit frame.",
+   "file_info": [
+    {
+     "file": "riser.wav",
+     "duration_s": 1.0158,
+     "channels": 2,
+     "sample_peak_dbfs": -12.0,
+     "peak_s": 0.9528,
+     "max_momentary_100ms_db": -20.2
+    }
+   ]
+  },
+  "reverse_cymbal": {
+   "files": [
+    "reverse_cymbal.wav"
+   ],
+   "variants": null,
+   "align": "end",
+   "default_peak_dbfs": -14.0,
+   "group": "A4",
+   "class": "riser",
+   "dropout_mute": true,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): decorrelated L/R high-passed noise ring-modulated by five inharmonic partials (3.15-8.2 kHz) = crash colour, under a reversed exponential decay (tau 320 ms, peak at the end) and a low-pass opening 1.5 -> 14 kHz; 1.3 s; align END on the reveal",
+   "notes": "Doc 2.7: 'a reverse-cymbal riser into each big reveal (31.5 s, 53.0 s, 1:15.5)': ends ON its frame.",
+   "file_info": [
+    {
+     "file": "reverse_cymbal.wav",
+     "duration_s": 1.3,
+     "channels": 2,
+     "sample_peak_dbfs": -14.0,
+     "peak_s": 1.263,
+     "max_momentary_100ms_db": -23.35
+    }
+   ]
+  },
+  "keyboard_clatter": {
+   "files": [
+    "keyboard_clatter.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -20.0,
+   "group": "A4",
+   "class": "ambience",
+   "dropout_mute": true,
+   "source": "03_SFX/S13_v3) Type (A B C ).wav",
+   "recipe": "8 single keystrokes sliced from S13_v3) Type (A B C ).wav (onsets [0.089, 0.182, 0.354, 0.448, 0.533, 0.651, 0.814, 0.915] s) re-sequenced over 2.0 s: gaps 55-140 ms (+180 ms pauses 12% of the time), per-stroke level -4..0 dB, random stroke order (seed 3001), 150 ms fade-out",
+   "notes": "Typing bed under the CRT (doc: 4.5-6.4 s); 2.0 s, shorten with dur_f.",
+   "file_info": [
+    {
+     "file": "keyboard_clatter.wav",
+     "duration_s": 2.0,
+     "channels": 1,
+     "sample_peak_dbfs": -20.0,
+     "peak_s": 1.4234,
+     "max_momentary_100ms_db": -39.04
+    }
+   ]
+  },
+  "type_on": {
+   "files": [
+    "type_on.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -20.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S13_v3) Type (A B C ).wav",
+   "recipe": "4 keystrokes of S13 (file order) at 0/68/131/205 ms, 0/-2/-1/-3 dB; 0.32 s",
+   "notes": "One typed burst (place one per burst of typed text).",
+   "file_info": [
+    {
+     "file": "type_on.wav",
+     "duration_s": 0.32,
+     "channels": 1,
+     "sample_peak_dbfs": -20.0,
+     "peak_s": 0.1417,
+     "max_momentary_100ms_db": -40.95
+    }
+   ]
+  },
+  "click": {
+   "files": [
+    "click.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -20.0,
+   "group": "A3",
+   "class": "pop",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): mouse click: press (band-passed 2-6 kHz noise, 1.5 ms + a 3.2 kHz 4 ms ring) and release 55 ms later at 60% (3.6 kHz ring); 0.12 s; align start (press on the frame)",
+   "notes": "UI click (the CTA's 'Follow' button).",
+   "file_info": [
+    {
+     "file": "click.wav",
+     "duration_s": 0.12,
+     "channels": 1,
+     "sample_peak_dbfs": -20.0,
+     "peak_s": 0.0004,
+     "max_momentary_100ms_db": -36.96
+    }
+   ]
+  },
+  "sub_hit": {
+   "files": [
+    "sub_hit.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -8.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): sub sine 72 -> 38 Hz (50 ms), decay 250 ms, tanh drive 2.0 (2nd/3rd harmonics so phones hear it) + an 8 ms low-passed knock; 0.9 s; align start",
+   "notes": "Sub-bass hit (doc: frame 0 with the siren whoop).",
+   "file_info": [
+    {
+     "file": "sub_hit.wav",
+     "duration_s": 0.9,
+     "channels": 1,
+     "sample_peak_dbfs": -8.0,
+     "peak_s": 0.0189,
+     "max_momentary_100ms_db": -13.91
+    }
+   ]
+  },
+  "metal_crunch": {
+   "files": [
+    "metal_crunch.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -10.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): a 25 ms noise burst + thinning crackle (450/s, high-passed 1.5 kHz) exciting seven inharmonic metal modes (397/523/1088/1675/2470/3540/4960 Hz, 300-100 ms rings), plus the raw band-passed scrape and a 60 Hz thud, tanh drive 1.5; 0.8 s; align start",
+   "notes": "Doc hook beat 4: 'metal crunch on the flip'.",
+   "file_info": [
+    {
+     "file": "metal_crunch.wav",
+     "duration_s": 0.8,
+     "channels": 1,
+     "sample_peak_dbfs": -10.0,
+     "peak_s": 0.0451,
+     "max_momentary_100ms_db": -16.9
+    }
+   ]
+  },
+  "error_chord": {
+   "files": [
+    "error_chord.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -12.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): original synthesized alert chord, NOT Microsoft's file: F#4 C5 F5 B5 (stacked tritone / fourth / tritone), each note 5 partials (1, 2, 3, 4.01, 5.02; upper partials decaying faster), 4 ms attack, 150 ms fall to a 60% sustain, release from 0.25 s (350 ms), +-3 cents L/R detune, a 30 ms D7 ping on the attack; 1.0 s",
+   "notes": "Doc 2.7: the Windows 95 'critical stop' chord (7.5 s): an ORIGINAL chord in that role. 03_SFX/S03a_Windows Error.wav is the old S03 error sound; it is not used for this name.",
+   "file_info": [
+    {
+     "file": "error_chord.wav",
+     "duration_s": 1.0,
+     "channels": 2,
+     "sample_peak_dbfs": -12.0,
+     "peak_s": 0.0217,
+     "max_momentary_100ms_db": -18.26
+    }
+   ]
+  },
+  "glitch_stutter": {
+   "files": [
+    "glitch_stutter.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -10.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S03b_Glitch, Flicker, Text (14).wav",
+   "recipe": "S03b_Glitch, Flicker, Text (14).wav at 48 kHz, leading silence trimmed",
+   "notes": "Hard glitch stutter (doc: 8.8 s, 32.0 s).",
+   "file_info": [
+    {
+     "file": "glitch_stutter.wav",
+     "duration_s": 0.3667,
+     "channels": 2,
+     "sample_peak_dbfs": -10.0,
+     "peak_s": 0.132,
+     "max_momentary_100ms_db": -19.31
+    }
+   ]
+  },
+  "glitch_impact": {
+   "files": [
+    "glitch_impact.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -8.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S08a_Glitch, Impact.wav",
+   "recipe": "S08a_Glitch, Impact.wav at 48 kHz (= the plan's S08a, B8's glitch impact)",
+   "notes": "The X4 glitch impact (the S08a sound).",
+   "file_info": [
+    {
+     "file": "glitch_impact.wav",
+     "duration_s": 0.8,
+     "channels": 2,
+     "sample_peak_dbfs": -8.0,
+     "peak_s": 0.0185,
+     "max_momentary_100ms_db": -12.31
+    }
+   ]
+  },
+  "stamp_thud": {
+   "files": [
+    "stamp_thud.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -8.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): rubber stamp on paper on a desk: 85 -> 55 Hz thud (70 ms), a 10 ms band-passed (0.6-2.5 kHz) slap, a 180 Hz desk resonance (60 ms) and a 6 ms paper tick (3-8 kHz), tanh drive 1.4; 0.6 s; align start",
+   "notes": "Rubber stamp landing (doc: 30.4 s).",
+   "file_info": [
+    {
+     "file": "stamp_thud.wav",
+     "duration_s": 0.6,
+     "channels": 1,
+     "sample_peak_dbfs": -8.0,
+     "peak_s": 0.0037,
+     "max_momentary_100ms_db": -16.74
+    }
+   ]
+  },
+  "impact_boom": {
+   "files": [
+    "impact_boom.wav"
+   ],
+   "variants": null,
+   "align": "peak",
+   "default_peak_dbfs": -6.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S01_Cinematic Hit 1.wav",
+   "recipe": "S01_Cinematic Hit 1.wav at 48 kHz, trimmed to 2.5 s with a 20f fade (its tail fills the 0.4 s logo silence)",
+   "notes": "Big impact (doc: on 'Grand Theft Auto' 53.5 s, with sub_drop); its peak on the slam frame.",
+   "file_info": [
+    {
+     "file": "impact_boom.wav",
+     "duration_s": 2.5,
+     "channels": 2,
+     "sample_peak_dbfs": -6.0,
+     "peak_s": 0.2016,
+     "max_momentary_100ms_db": -12.16
+    }
+   ]
+  },
+  "sub_drop": {
+   "files": [
+    "sub_drop.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -8.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S09_Sub Drop.mp3",
+   "recipe": "S09_Sub Drop.mp3 decoded by FFmpeg at 48 kHz (encoder delay skipped), trimmed to 2.5 s with a 20f fade (the plan's S09 trim)",
+   "notes": "Bass drop (doc: 53.5 s).",
+   "file_info": [
+    {
+     "file": "sub_drop.wav",
+     "duration_s": 2.5,
+     "channels": 2,
+     "sample_peak_dbfs": -8.0,
+     "peak_s": 1.6783,
+     "max_momentary_100ms_db": -9.61
+    }
+   ]
+  },
+  "paper_rip": {
+   "files": [
+    "paper_rip.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -14.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): dense noise grains (15 samples each, Poisson rate 600 -> 1500/s, a louder snap cluster at 0.40-0.44 s) band-passed 0.9-6 kHz over a band-passed noise body (0.4-3 kHz, -12 dB), 20 ms attack, 80 ms release; 0.55 s; align start",
+   "notes": "Calendar page rip (doc: MAR 1995 -> NOV 1997).",
+   "file_info": [
+    {
+     "file": "paper_rip.wav",
+     "duration_s": 0.55,
+     "channels": 1,
+     "sample_peak_dbfs": -14.0,
+     "peak_s": 0.0494,
+     "max_momentary_100ms_db": -30.2
+    }
+   ]
+  },
+  "flatline_beep": {
+   "files": [
+    "flatline_beep.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -20.0,
+   "group": "A3",
+   "class": "tone",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): monitor flat-line tone: 1 kHz sine + 8% 3rd harmonic, steady, 8 ms attack/release; 1.2 s (a cue can shorten it with dur_f)",
+   "notes": "Flat-line monitor beep on 'dull.' (doc).",
+   "file_info": [
+    {
+     "file": "flatline_beep.wav",
+     "duration_s": 1.2,
+     "channels": 1,
+     "sample_peak_dbfs": -20.0,
+     "peak_s": 0.0088,
+     "max_momentary_100ms_db": -21.53
+    }
+   ]
+  },
+  "ding": {
+   "files": [
+    "ding.wav"
+   ],
+   "variants": null,
+   "align": "start",
+   "default_peak_dbfs": -18.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "synthesized",
+   "recipe": "synthesized (numpy): small bell: E6 (1318.5 Hz) with bell partials 1/2/2.76/5.4 (decays 0.9/0.5/0.35/0.15 s) + a 2 ms strike noise; 1.2 s; align start",
+   "notes": "Small ding per phrase (doc B17).",
+   "file_info": [
+    {
+     "file": "ding.wav",
+     "duration_s": 1.2,
+     "channels": 1,
+     "sample_peak_dbfs": -18.0,
+     "peak_s": 0.0034,
+     "max_momentary_100ms_db": -23.0
+    }
+   ]
+  },
+  "hit": {
+   "files": [
+    "hit_1.wav",
+    "hit_2.wav",
+    "hit_3.wav"
+   ],
+   "variants": "rotate",
+   "align": "peak",
+   "default_peak_dbfs": -10.0,
+   "group": "A3",
+   "class": "hit",
+   "dropout_mute": false,
+   "source": "03_SFX/S06a_Hit 1.mp3, S06b_Hit 2.mp3, S06c_Hit 3.mp3",
+   "recipe": "S06a/S06b/S06c (the plan's stamp hits) decoded by FFmpeg at 48 kHz, leading silence trimmed, cut at 0.8 s with an 8f fade (the plan's S06 trim), loudness-matched (max 100 ms K-weighted energy)",
+   "notes": "Short hits (doc: 'ram.', 'chase.', 'let go.'); 'hit' rotates hit_1 -> hit_2 -> hit_3 in edit order, 'hit_2' picks one; the peak on the frame.",
+   "file_info": [
+    {
+     "file": "hit_1.wav",
+     "duration_s": 0.8,
+     "channels": 1,
+     "sample_peak_dbfs": -10.0,
+     "peak_s": 0.0411,
+     "max_momentary_100ms_db": -21.87
+    },
+    {
+     "file": "hit_2.wav",
+     "duration_s": 0.8,
+     "channels": 2,
+     "sample_peak_dbfs": -13.11,
+     "peak_s": 0.1646,
+     "max_momentary_100ms_db": -18.86
+    },
+    {
+     "file": "hit_3.wav",
+     "duration_s": 0.8,
+     "channels": 2,
+     "sample_peak_dbfs": -10.71,
+     "peak_s": 0.0079,
+     "max_momentary_100ms_db": -18.86
+    }
+   ]
+  }
+ }
+}

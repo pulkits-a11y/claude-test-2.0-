@@ -1,5 +1,28 @@
 # B6 It's dull - `b06-dull` (v04; timing v02: beat 156f = 5.200 s; composition 168f with 6f handles)
 
+## v05 phase 1 (REVISION_v05.md lane 2; doc 23.0-27.6) - in progress, phase 2 = kit v05 captions + name pill
+* **70% slow-down** (doc 24.4): baked into new working clips `assets/footage/v05/R5.2_slow.mp4` / `R5.1_slow.mp4`
+  (`tools/make_slow.py`, from the b05 working clips): frame n = B6 local n; rate 1.0 to "dull." (46), eased to 0.70 at 52
+  (easeInOutCubic, the drain's curve and frames), nearest source frame, no blending; continuous source time across the
+  B5/B6 cut. The HyperFrames rate lanes are gone.
+* **"dull."** (doc 24.4 gag): Arimo Regular (06_Fonts, copied to `assets/fonts/`), #8A8A8A, 180 px, NO entry: its clip just
+  starts on 46; only G1's soft drop shadow (for the bright B&W road). Block "it's" over "dull.", left-aligned, centred
+  (x 795; "dull." baseline y 633). "it's" is a phase-1 placeholder until the kit v05 tier-A entry.
+* **Divider**: b05's white centre divider, static on the split part (local 0-64). Split push 8% (shared with b05).
+* **Gary Penn** (doc 25.0-26.3): push 100 -> 112% (easeInOutSine) across the whole hold (64 -> 168); on "too" (129) a hard
+  cut to a 140% crop (eyes and mouth; `#b06-tight` scaled about x 700 / y 450 so his face fills the left and the quote
+  keeps the right). The cut is on "too" (the audio), not v04 26.3, which falls before the quote starts.
+* **[DEPTH] quote mark** (doc 25.2): Playfair Display Black “, 540 px, #FF2E7E at 25%, fades in 0 -> 25% over 8f from 73;
+  stack inside the camera = plate video -> mark -> cut-out of him (`assets/footage/v05/R6.1_cut.webm`,
+  `tools/make_cutout_v05.sh`: `remove-background` of the same working-clip frames, same grade), so his shoulder hides the
+  mark's lower-left half (edge checked at 200%). `data-layout-allow-occlusion` on the mark (intended).
+* `cues.json` v05: flatline_beep on "dull." (beat 40) with a 6f dropout ending on it, no tick / thump for "dull.";
+  key_words [106 “awful…]; type_on 64 (name pill, doc 25.1); legacy `dull` (S05) dropped. Stills: `review/v05/sheet_p1.jpg`.
+  check: 0 errors.
+* Phase 2: captions for every word incl. "One developer later calls it" (tier A) and the quote in Playfair Italic
+  135 / 90 px with the kit entry; the kit name pill "GARY PENN" / "DMA Design · Gamasutra, 2011" (typed on, 70) replaces
+  the v04 lower third and its plate.
+
 ## v04 (REVISION_v04.md comments 8, 9) - the Gary Penn quote redesigned like a documentary interview
 Comments 8/9 (0:26-0:27): "this looks bad." / "take some inspirations from scenes of diff production houses". Only the card
 part changed (local 64-168, from the cut on "One"); the split screen, its push, the B&W drain + slow-down, "But there's a

@@ -15,15 +15,15 @@
       /* the R17.4 end card fills the frame (never stretched); the world wrapper is what X.zoom scales */
       #b17-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
       #b17-logo { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
-      /* v03: T10 inside the lockup keyword "now?" (row: Coolvetica Italic 170 px, line-height 170 px): the glitch word
-         inherits the row's face; the three slices cut its cap region (33 .. 147 px of the 170 px line: cap top 0.195 em,
-         baseline 0.867 em) in thirds at 71 / 109 px. The glitch layer carries no shadow (T10 on black); the clean word keeps
-         the lockup glow. */
-      #b17-key { position: relative; display: inline-block; font: inherit; line-height: inherit; white-space: nowrap; }
-      #b17-key .rc-t10__glitch { text-shadow: none; }
-      #b17-key .rc-t10__slice--1 { clip-path: inset(-80px -80px 99px -80px); }
-      #b17-key .rc-t10__slice--2 { clip-path: inset(71px -80px 61px -80px); }
-      #b17-key .rc-t10__slice--3 { clip-path: inset(109px -80px -80px -80px); }
+      /* v05 (doc 71.5-74.4 [DEPTH]): the Trailer 1 custody shots live in this composition now. Two camera wrappers get the
+         SAME push: #b17-plates (the shots) and #b17-cuts (Lucia cut out of the same frames by remove-background); the key word
+         sits between them (steady), so her head / shoulder passes in front of it. */
+      #b17-plates, #b17-cuts { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #b17-plates video, #b17-cuts video { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+      /* L2 letterbox bars (138 px), drawn here now that the shots are here; they slide in over 8 f on the first frame */
+      .b17-bar { position: absolute; left: 0; width: 1920px; height: 138px; background: var(--ink-black); }
+      #b17-bar-t { top: 0; transform-origin: 50% 0%; }
+      #b17-bar-b { bottom: 0; transform-origin: 50% 100%; }
     </style>
   </head>
   <body>
@@ -56,26 +56,48 @@
            z3   #b17-world  R17.4 end card (logo), push 100 -> 115% over 20f, accelerating, motion blur  local 147-174
            z1   #b17-black  ink black #0A0A0A                                                            local 135-197
            (transparent elsewhere: Tesseract footage shows through) -->
-    <div data-hf-id="hf-y7mb" id="root" data-composition-id="b17-loop" data-start="0" data-duration="6.6000000" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-y7mb" id="root" data-composition-id="b17-loop" data-start="0" data-duration="6.0000000" data-width="1920" data-height="1080">
+
+      <!-- ===== v05 beat f0-92 (local 0-98): the official GTA VI Trailer 1 custody shots (client Drive library, R17.1), moved
+           from Tesseract into this composition for the [DEPTH] words. Working clips cut from
+           04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4 (footage.json):
+             window  local 0-42  (beat -6..36): source 6.60-8.00 s, Lucia at the barred window, a silhouette in the window
+                     light turning to look over her shoulder  ("And GTA 6?": "GTA 6?" behind her silhouette)
+             officer local 42-60 (beat 36-54): source 8.567-9.133 s, the parole officer talking to her, her INMATE back
+                     ("It opens with")
+             facing  local 60-98 (beat 54-92): source 9.70-10.933 s, Lucia facing camera in the orange jumpsuit ("Lucia
+                     already caught.": "Lucia" partly behind her shoulder)
+           Cut-outs (assets/depth/, hyperframes remove-background, u2net_human_seg, transparent WebM; edges checked at 200%)
+           for the window and facing shots, frame-locked to their plates (same trims, same data-start). ===== -->
+      <div id="b17-plates" style="z-index: 1">
+        <video id="b17-win" class="clip" src="assets/footage/R17.1-window.mp4" data-start="0.0000" data-duration="1.4000" data-media-start="0" data-track-index="1" muted playsinline></video>
+        <video id="b17-off" class="clip" src="assets/footage/R17.1-officer.mp4" data-start="1.4000" data-duration="0.6000" data-media-start="0" data-track-index="1" muted playsinline></video>
+        <video id="b17-face" class="clip" src="assets/footage/R17.1-facing.mp4" data-start="2.0000" data-duration="1.2666" data-media-start="0" data-track-index="1" muted playsinline></video>
+      </div>
+      <!-- [DEPTH] word slot: the key-word copies of the lockups go HERE (between plates and cut-outs). TODO(kit v05 lockups) -->
+      <div id="b17-cuts" style="z-index: 3">
+        <video id="b17-win-cut" class="clip" src="assets/depth/R17.1-window-cut.webm" data-start="0.0000" data-duration="1.4000" data-media-start="0" data-track-index="2" muted playsinline></video>
+        <video id="b17-face-cut" class="clip" src="assets/depth/R17.1-facing-cut.webm" data-start="2.0000" data-duration="1.2666" data-media-start="0" data-track-index="2" muted playsinline></video>
+      </div>
+      <div id="b17-bars" class="clip" data-start="0.2000" data-duration="3.0666" data-track-index="4" style="z-index: 30">
+        <div id="b17-bar-t" class="b17-bar"></div><div id="b17-bar-b" class="b17-bar"></div>
+      </div>
 
       <!-- ===== f129 ->: black (HF opaque from the hard cut on "now?") ===== -->
-      <div data-hf-id="hf-3sf9" id="b17-black" class="clip rc-ink rc-full" data-start="4.5000" data-duration="2.1000" data-track-index="1" style="z-index: 1"></div>
+      <div data-hf-id="hf-3sf9" id="b17-black" class="clip rc-ink rc-full" data-start="4.5000" data-duration="1.5000" data-track-index="1" style="z-index: 1"></div>
 
       <!-- ===== f141-169: the GTA 6 logo = the end card of R17.4 (official launch trailer) (footage.json; the working clip
            starts at the window's in-point, media-start 0): the logo static on the trailer's navy card, letterbox bars kept.
            Never drawn or faked. ===== -->
       <div data-hf-id="hf-bdk0" id="b17-world" style="z-index: 3">
-        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-fd1u" id="b17-logo" class="clip" src="assets/footage/R17.4.mp4" data-start="4.9000" data-duration="0.9333" data-media-start="0" data-track-index="2" muted playsinline style="--hf-color-grading-blur: 0"></video>
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-fd1u" id="b17-logo" class="clip" src="assets/footage/R17.4.mp4" data-start="4.9000" data-duration="1.1000" data-media-start="0" data-track-index="2" muted playsinline style="--hf-color-grading-blur: 0"></video>
       </div>
 
       <!-- ===== f161: final X4 tear on the logo (8f, seed 8, still mode, as B8's v02 break), then black from f169.
            Still = assets/x4/b17-old.png (x4_still.sh) ===== -->
-      <div data-hf-id="hf-5wwh" id="b17-x4" class="rc-x4" style="z-index: 30">
-        <img data-hf-id="hf-2w85" class="rc-x4__still" src="assets/x4/b17-old.png" alt="">
-      </div>
 
       <!-- ===== f0-100: M1 wanted stars over the Trailer 1 opening (Lucia in custody) ===== -->
-      <div data-hf-id="hf-rai4" id="b17-stars" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="3.5333" data-track-index="3" style="z-index: 20"></div>
+      <div data-hf-id="hf-rai4" id="b17-stars" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="3.2666" data-track-index="3" style="z-index: 20"></div>
 
       <!-- ===== v03 captions (notes 11, 16, 17): lockups like ref 1, every word a hard cut on its frame. Over the Trailer 1
            opening the lockups sit low (ink centre y 820: Lucia's face fills the upper band, as the v02 low line did):
@@ -86,7 +108,7 @@
       <div id="b17-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.1667" data-track-index="10" style="--rc-y: 820px; --rc-lk-c: 104.2px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="7">And</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -28.03px"><span class="rc-lw" data-rc-f="13">GTA</span> <span class="rc-lw" data-rc-f="20">6?</span></div></div></div>
       <div id="b17-lk-2" class="clip rc-lk" data-start="1.4000" data-duration="2.0333" data-track-index="10" style="--rc-y: 820px; --rc-lk-c: 135.35px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--lead" style="font-size: 60px; line-height: 60px; height: 60px"><span class="rc-lw" data-rc-f="42">It</span> <span class="rc-lw" data-rc-f="45">opens</span> <span class="rc-lw" data-rc-f="54">with</span></div><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px; margin-top: -23.05px"><span class="rc-lw" data-rc-f="60">Lucia</span></div><div class="rc-lk__row rc-lk__row--tail" style="font-size: 60px; line-height: 60px; height: 60px; margin-top: -19.97px"><span class="rc-lw" data-rc-f="68">already</span> <span class="rc-lw" data-rc-f="80">caught.</span></div></div></div>
       <div id="b17-lk-c-1" class="clip rc-lk" data-start="3.4333" data-duration="1.0667" data-track-index="10" style="--rc-lk-c: 33.98px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="103">So</span> <span class="rc-lw" data-rc-f="106">who's</span> <span class="rc-lw" data-rc-f="115">chasing</span> <span class="rc-lw" data-rc-f="129">who</span></div></div></div>
-      <div id="b17-lk-now-1" class="clip rc-lk" data-start="4.5000" data-duration="1.3333" data-track-index="11" style="--rc-y: 960px; --rc-lk-c: 90.27px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 170px; line-height: 170px; height: 170px"><span class="rc-lw rc-lw--pop" data-rc-f="135"><span id="b17-key">now?</span></span></div></div></div>
+      <div id="b17-lk-now-1" class="clip rc-lk" data-start="4.5000" data-duration="1.5000" data-track-index="11" style="--rc-y: 960px; --rc-lk-c: 90.27px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 170px; line-height: 170px; height: 170px"><span class="rc-lw rc-lw--pop" data-rc-f="135"><span id="b17-key">now?</span></span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -97,48 +119,36 @@
       const tl = gsap.timeline({ paused: true });
       const T = RCK.type, M = RCK.motifs, X = RCK.transitions;
       const F = (n) => n / 30;
-      // x4_still.sh renders a copy of this page with data-x4-capture on <html>: the logo at its landed 115%, sharp,
-      // without text and without the tear = the X4 "old frame" still.
-      const CAPTURE = document.documentElement.hasAttribute("data-x4-capture");
-
-      // Word onsets on this composition's clock (v02 words.json comp_t, s): GTA 0.438, now? 4.490, end of "now?" 4.895
+      // Word onsets on this composition's clock (v05 words.json comp_t, s): GTA 0.438, now? 4.490, end of "now?" 4.895
       const W = { GTA: 0.438, now: 4.490, nowEnd: 4.895 };
-      const kNow = T.frame(W.now);                 // local 135 = beat 129: hard cut to black, keyword blur-in
-      const kLogo = T.frame(W.nowEnd);             // local 147 = beat 141: end of "now?" (MU8), the logo comes in
-      const kHit = kLogo + 20;                     // local 167 = beat 161: push lands, final hit (X4 + T10, S19); black from local 175
-      const kChase = 106;                          // local 106 = beat 100: first chase cut (Tesseract), on "who's"
+      const kNow = T.frame(W.now);                 // local 135 = beat 129: hard cut to black, "now?" (siren flicker: TODO kit)
+      const kLogo = T.frame(W.nowEnd);             // local 147 = beat 141: end of "now?": the GTA VI logo slam (TODO kit logoSlam)
+      const kChase = 98;                           // local 98 = beat 92: first chase cut (Tesseract), after "caught."
+      const kOff = 42, kFace = 60;                 // local cuts: window -> officer (beat 36, "It"), officer -> facing (beat 54, "Lucia")
 
-      // ---- captions (v03): lockup words hard-cut in on their frames; the starred keyword "now?" pops + blurs in (blur 20 px,
-      //      92% -> 100%, 6f easeOutExpo) on its frame (local 135 = beat 129, the cut to black)
-      if (CAPTURE) gsap.set('.rc-lk', { opacity: 0 });
-      else T.lockupsWire(tl);
+      // ---- captions (TODO kit v05: tiers, pink -> white entry, [DEPTH] key-word copies between #b17-plates and #b17-cuts)
+      T.lockupsWire(tl);
+
+      // ---- L2 bars slide in over the first 8 f (easeOutCubic), gone with the cut to the chase shots (full frame) ----
+      tl.fromTo(['#b17-bar-t', '#b17-bar-b'], { scaleY: 0 }, { scaleY: 1, duration: 8 / 30, ease: 'power2.out', immediateRender: true }, 6 / 30);
+
+      // ---- camera: plates and cut-outs move together (same tweens on both wrappers). Window shot: held-shot push
+      //      100 -> 104% (easeInOutSine) to the cut on "It"; then the doc's slow push 100 -> 110% (easeInOutSine) across
+      //      "It opens with Lucia already caught." (officer + facing shots, local 42-98) ----
+      const CAMS = ['#b17-plates', '#b17-cuts'];
+      gsap.set(CAMS, { scale: 1, transformOrigin: '960px 540px' });
+      tl.fromTo(CAMS, { scale: 1 }, { scale: 1.04, duration: kOff / 30, ease: 'sine.inOut', immediateRender: false }, 0);
+      tl.fromTo(CAMS, { scale: 1 }, { scale: 1.10, duration: (kChase - kOff) / 30, ease: 'sine.inOut', immediateRender: false }, kOff / 30);
 
       // ---- M1: five stars (40 px, row centred on x 1700, y 80) pop in on "GTA" (3f each, 3f apart, easeOutQuart), then
       //      blink (6f on / 6f off, hard) over the Trailer 1 opening until the first chase cut ----
       const starsIn = M.starsPopIn(tl, "#b17-stars", W.GTA);
       M.starsBlink(tl, "#b17-stars", starsIn, { until: F(kChase) });
 
-      // ---- the logo push-in: 100% -> 115% over 20f (beat 141 -> 161) about the frame centre, accelerating
-      //      (log-space easeInCubic) into the hit, with motion blur (kit X6 machinery: media-treatment blur control,
-      //      one value per frame; blurRef 2200 = a 360-degree shutter measured at the frame corner, so the blur reads,
-      //      peaking ~6.5 px on the last frames). Before beat 141 the world holds 100%. ----
-      X.zoom(tl, "#b17-world", F(kLogo), {
-        screen: { rect: [0, 0, 1920, 1080] }, scale: 1.15, frames: 20, dir: "in", ease: "power2.in",
-        blurRef: 2200, blur: !CAPTURE,
-      });
-
-      // ---- the final hit (beat 161): X4 tear on the logo (8f, seed 8, still mode = the same X4 settings as b08-break's
-      //      v02 break) and T10 on "now?" (6f glitch, hard per-frame cuts, seed 8 = the same slice pattern as b08's "breaks.";
-      //      it breaks apart, does not settle and holds its last broken frame while the tear finishes), then the hard cut
-      //      to black at beat 169 (local 175: all clips end there). ----
-      if (CAPTURE) {
-        document.getElementById("b17-x4").remove();
-      } else {
-        X.tear(tl, "#b17-x4", F(kHit), { frames: 8, seed: 8 });
-        T.glitch(tl, "#b17-key", F(kHit), { frames: 6, seed: 8, settle: false });
-      }
-
-      tl.set({}, {}, F(198));
+      // ---- the GTA VI logo (R17.4 end card) from the end of "now?" (beat 141) to the cut to B18 (beat 168) and the tail
+      //      handle. TODO(kit v05): RCK logoSlam, identical to B1 (150/160 -> 94 -> 100% over 6 f, white flash, flash-star,
+      //      shake). v04's push 100 -> 115%, X4 tear and T10 break at beat 161 are gone (the logo holds 27 f, then a hard cut).
+      tl.set({}, {}, F(180));
       window.__timelines["b17-loop"] = tl;
     </script>
   </body>

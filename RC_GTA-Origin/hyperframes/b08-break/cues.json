@@ -1,1 +1,28 @@
-{"events": {"breaks": 33, "first_black": 41}}
+{
+ "events": {},
+ "word_pops": [
+  1,
+  19
+ ],
+ "key_words": [
+  33
+ ],
+ "sfx": [
+  {
+   "f": 33,
+   "name": "reverse_cymbal"
+  },
+  {
+   "f": 33,
+   "name": "glitch_stutter"
+  }
+ ],
+ "dropouts": [
+  {
+   "f": 33,
+   "frames": 4
+  }
+ ],
+ "archival": [],
+ "note": "v05: 'breaks.' (beat 33) = hero word: whoosh-in + thump, reverse_cymbal ENDING on it (it rises under 'Then, something' while the article dims and blurs), glitch_stutter on it, a 4f dropout ending on it (doc: 2-6 f). Legacy 'breaks' (S08) and 'first_black' (S07 riser end / MU4) dropped: the reverse cymbal replaces the riser, the music bed is off."
+}

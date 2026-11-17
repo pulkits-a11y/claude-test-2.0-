@@ -12,6 +12,18 @@
 @font-face { font-family: "Coolvetica"; src: url("fonts/Coolvetica-Italic.otf") format("opentype"); font-weight: 100 900; font-style: italic; font-display: block; }
 @font-face { font-family: "Coolvetica Italic"; src: url("fonts/Coolvetica-Italic.otf") format("opentype"); font-weight: 100 900; font-style: normal; font-display: block; }
 @font-face { font-family: "Coolvetica Italic"; src: url("fonts/Coolvetica-Italic.otf") format("opentype"); font-weight: 100 900; font-style: italic; font-display: block; }
+/* v05 (REVISION_v05 G2): setup words Inter SemiBold, hero numbers / quotes Playfair Display, pills Montserrat, the VCR
+   timestamp VT323, the "dull." gag Arimo (Arial metrics). Kit-private family names ("RCK ...") so no bundled or remapped
+   face can stand in; every weight in a range maps to the one file (font-synthesis stays off: no faux bold / oblique). */
+@font-face { font-family: "RCK Inter"; src: url("fonts/Inter-SemiBold.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "RCK Playfair"; src: url("fonts/playfair-display-latin-900-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "RCK Playfair"; src: url("fonts/playfair-display-latin-400-italic.woff2") format("woff2"); font-weight: 100 549; font-style: italic; font-display: block; }
+@font-face { font-family: "RCK Playfair"; src: url("fonts/playfair-display-latin-700-italic.woff2") format("woff2"); font-weight: 550 799; font-style: italic; font-display: block; }
+@font-face { font-family: "RCK Playfair"; src: url("fonts/playfair-display-latin-900-italic.woff2") format("woff2"); font-weight: 800 900; font-style: italic; font-display: block; }
+@font-face { font-family: "RCK Montserrat"; src: url("fonts/montserrat-latin-700-normal.woff2") format("woff2"); font-weight: 100 749; font-style: normal; font-display: block; }
+@font-face { font-family: "RCK Montserrat"; src: url("fonts/montserrat-latin-800-normal.woff2") format("woff2"); font-weight: 750 900; font-style: normal; font-display: block; }
+@font-face { font-family: "RCK VT323"; src: url("fonts/vt323-latin-400-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: block; }
+@font-face { font-family: "RCK Arimo"; src: url("fonts/arimo-latin-400-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: block; }
 
 :root {
   /* Colours (plan: Style kit > Colours). Use nothing else. */
@@ -37,11 +49,30 @@
   /* Text on footage: soft shadow 0 px x, 2 px y, 12 px blur, black at 45%. No outlines, no caption boxes. */
   --text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
 
+  /* v05 (REVISION_v05 G1, G2, G8; doc px x 1.5): one accent, annotation yellow, danger red, siren pair, the text shadow,
+     the five font roles, the near-black card and the off-white paper. */
+  --accent: #FF2E7E;             /* GTA VI pink: word-entry flash, pills, highlighter sweeps, pixel glitch, the location pin */
+  --annot: #FFD23F;              /* hand-drawn arrows / circles / underlines only */
+  --danger: #E3262B;             /* rubber stamp, the red cells of the 18 -> 30 grid, the "cop" strike-through, siren red */
+  --siren-blue-v5: #2E6BFF;      /* siren flicker blue */
+  --dull-grey: #8A8A8A;          /* the "dull." gag */
+  --text-drop: 0 6px 18px rgba(0, 0, 0, 0.45);   /* all caption text (doc: 0 4px 12px @720) */
+  --font-setup: "RCK Inter", sans-serif;          /* tier A setup words, weight 600 */
+  --font-display: "RCK Playfair", serif;          /* tier C numbers / dates (900), quotes (italic 400) */
+  --font-pill: "RCK Montserrat", sans-serif;      /* pills, 800 (name pill line 2: 700) */
+  --font-vcr: "RCK VT323", monospace;             /* VCR timestamp */
+  --font-dull: "RCK Arimo", sans-serif;           /* the deliberately boring "dull." */
+  --paper: #F2EEE6;              /* off-white paper (B4 page, CTA card) */
+  /* static textures (generated SVG noise, seeded, identical every frame): card grain and paper grain / fibres */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='g' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 0.07'/></filter><rect width='256' height='256' filter='url(%23g)'/></svg>");
+  --paper-grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='p' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.37  0 0 0 0 0.29  0.22 0 0 0 -0.04'/></filter><rect width='320' height='320' filter='url(%23p)'/></svg>");
+  --paper-fibre: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='640'><filter id='f' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='0.006 0.09' numOctaves='3' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.44  0 0 0 0 0.34  0.3 0 0 0 -0.09'/></filter><rect width='640' height='640' filter='url(%23f)'/></svg>");
+
   /* v03 (REVISION_v03 note 12, ref 3 "so they approached"): every card is DARK. Cards = near-black ink with a very subtle
      charcoal radial lift in the middle (no new colour: white mixed into the ink), white text with a soft glow. Beats
      follow through the classes (.rc-card, .rc-on-card, .rc-t3, .rc-l5__ground, .rc-l12__ground, .m3-cal, T8 on a card)
      and through the two v01/v02 names kept below (--card-gray = the card background, --card-ink = text on a card). */
-  --card-bg: var(--ink-black);
+  --card-bg: #0E0E10;            /* v05 (G8): near-black #0E0E10 (v03: the ink #0A0A0A) */
   --card-lift: color-mix(in srgb, var(--white) 9%, var(--ink-black));      /* #202020: the centre of the lift */
   --card-surface: radial-gradient(ellipse 72% 78% at 50% 50%, var(--card-lift) 0%,
                     color-mix(in srgb, var(--white) 4.5%, var(--ink-black)) 46%, var(--card-bg) 100%);
@@ -79,7 +110,7 @@
 .rc-transparent { background: transparent; }
 .rc-ink { background: var(--ink-black); }
 .rc-ink.rc-full { background-image: var(--rc-scan, var(--card-scan)); }            /* v04: black text screens get the lines */
-.rc-card { background: var(--card-bg); background-image: var(--rc-scan, var(--card-scan)), var(--card-surface); }   /* v03 dark, v04 lines */
+.rc-card { background: var(--card-bg); background-image: var(--rc-scan, var(--card-scan)), var(--grain); }   /* v05: #0E0E10 + grain + v04 lines */
 .rc-noscan { --rc-scan: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)); }      /* v04: no scanlines on this surface */
 .rc-scan {                                                                         /* v04: the lines over a card's text */
   position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
@@ -92,3 +123,11 @@
 
 /* v02: never synthesize bold or oblique from the single Coolvetica faces */
 html, body, * { font-synthesis: none; }
+
+/* v05: off-white paper (doc X4: the Race'n'Chase page and the CTA card): generated grain + horizontal fibres + a soft
+   warm vignette on #F2EEE6. Static. */
+.fx-paper {
+  background-color: var(--paper);
+  background-image: radial-gradient(ellipse 80% 75% at 50% 46%, rgba(0, 0, 0, 0) 55%, rgba(110, 92, 64, 0.20) 100%),
+                    var(--paper-fibre), var(--paper-grain);
+}

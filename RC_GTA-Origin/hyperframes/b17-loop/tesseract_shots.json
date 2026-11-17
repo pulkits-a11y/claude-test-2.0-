@@ -4,112 +4,10 @@
  "render": "05_GFX/renders/b17-loop.mov",
  "shots": [
   {
-   "id": "B17-trailer1-a",
-   "rid": "R17.1",
-   "screen": "L2",
-   "start_f": 0,
-   "end_f": 40,
-   "source_in_s": 6.6,
-   "speed": 1.0,
-   "reverse": false,
-   "framing": {
-    "anchor": "center",
-    "keys": [
-     {
-      "f": 0,
-      "scale": 100
-     },
-     {
-      "f": 40,
-      "scale": 101.38,
-      "ease": "easeInOutSine"
-     }
-    ]
-   },
-   "enter": "X1",
-   "exit": "X1",
-   "letterbox": {
-    "bars_px": 138,
-    "slide_in_f": 8
-   },
-   "grade": "game",
-   "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4",
-   "client_supplied": true,
-   "notes": "v04 (REVISION_v04.md note 20 'change this its looking over texture'): the madebyajit fan edit (heavy pink grade, halftone texture) is replaced by Rockstar's official GTA VI Trailer 1 from the client's Drive library (file id 1mkXZU995el2fMTAbhDtAaqTbW7NiL6nn, 1920x1080 30 fps): its opening shows Lucia in custody, exactly the line 'It opens with Lucia already caught.' Full 16:9 picture under the L2 bars (no crop needed: every face sits inside the band y 138-942), grade 'game' like B17's other GTA 6 shots (no neutralize). Framing: v01's one band push 100 -> 104% across f0-100, eased (easeInOutSine), split at the cuts. Shot 1/3 (beat f0-40, source 6.60-7.93 s inside the trailer's shot 6.57-8.50): Lucia in an orange INMATE jumpsuit at a barred window, looking out at the prison yard and turning her head; the bars slide in over 8f (entering the cinematic moment, as before). 'And GTA 6?' (lockup, y 820) sits on her jumpsuit / the dark wall."
-  },
-  {
-   "id": "B17-trailer1-b",
-   "rid": "R17.1",
-   "screen": "L2",
-   "start_f": 40,
-   "end_f": 61,
-   "source_in_s": 8.55,
-   "speed": 1.0,
-   "reverse": false,
-   "framing": {
-    "anchor": "center",
-    "keys": [
-     {
-      "f": 0,
-      "scale": 101.38
-     },
-     {
-      "f": 21,
-      "scale": 102.68,
-      "ease": "easeInOutSine"
-     }
-    ]
-   },
-   "enter": "X1",
-   "exit": "X1",
-   "letterbox": {
-    "bars_px": 138,
-    "slide_in_f": 8
-   },
-   "grade": "game",
-   "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4",
-   "client_supplied": true,
-   "notes": "v04 (REVISION_v04.md note 20 'change this its looking over texture'): the madebyajit fan edit (heavy pink grade, halftone texture) is replaced by Rockstar's official GTA VI Trailer 1 from the client's Drive library (file id 1mkXZU995el2fMTAbhDtAaqTbW7NiL6nn, 1920x1080 30 fps): its opening shows Lucia in custody, exactly the line 'It opens with Lucia already caught.' Full 16:9 picture under the L2 bars (no crop needed: every face sits inside the band y 138-942), grade 'game' like B17's other GTA 6 shots (no neutralize). Framing: v01's one band push 100 -> 104% across f0-100, eased (easeInOutSine), split at the cuts. Shot 2/3 (beat f40-61, source 8.55-9.25 s inside 8.50-9.67): the parole officer at her desk talking to Lucia, whose back (INMATE printed on the jumpsuit) fills the right of the frame ('It opens with Lucia' lands here). Bars already in."
-  },
-  {
-   "id": "B17-trailer1-c",
-   "rid": "R17.1",
-   "screen": "L2",
-   "start_f": 61,
-   "end_f": 100,
-   "source_in_s": 9.6833,
-   "speed": 1.0,
-   "reverse": false,
-   "framing": {
-    "anchor": "center",
-    "keys": [
-     {
-      "f": 0,
-      "scale": 102.68
-     },
-     {
-      "f": 39,
-      "scale": 104,
-      "ease": "easeInOutSine"
-     }
-    ]
-   },
-   "enter": "X1",
-   "exit": "X1",
-   "letterbox": {
-    "bars_px": 138,
-    "slide_in_f": 8
-   },
-   "grade": "game",
-   "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4",
-   "client_supplied": true,
-   "notes": "v04 (REVISION_v04.md note 20 'change this its looking over texture'): the madebyajit fan edit (heavy pink grade, halftone texture) is replaced by Rockstar's official GTA VI Trailer 1 from the client's Drive library (file id 1mkXZU995el2fMTAbhDtAaqTbW7NiL6nn, 1920x1080 30 fps): its opening shows Lucia in custody, exactly the line 'It opens with Lucia already caught.' Full 16:9 picture under the L2 bars (no crop needed: every face sits inside the band y 138-942), grade 'game' like B17's other GTA 6 shots (no neutralize). Framing: v01's one band push 100 -> 104% across f0-100, eased (easeInOutSine), split at the cuts. Shot 3/3 (beat f61-100, source 9.683-10.95 s, the whole trailer shot 9.67-10.97): Lucia facing camera in the orange jumpsuit across the desk ('already caught.' on her); the hard cut on 'who's' (f100) to the chase cuts as before. Bars already in."
-  },
-  {
    "id": "B17-chase-1",
    "rid": "R17.2",
    "screen": "full",
-   "start_f": 100,
+   "start_f": 92,
    "end_f": 109,
    "source_in_s": 7.2,
    "speed": 1.0,
@@ -126,7 +24,7 @@
    "enter": "X1",
    "exit": "X1",
    "grade": "game",
-   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on \"who's\" (f100), 9f, full frame; framing v2: punch-in 112 -> 100% over the shot (easeOutExpo). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched).",
+   "notes": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129. Shot A (beat f92-109, 17 f = 0.57 s, after 'caught.' ends, 'So who's' on it): R17.2 @ 7.2 s, a shooter leaning out of the player's sedan while a police car and a police SUV with lights close in; static 100%. || v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on \"who's\" (f100), 9f, full frame; framing v2: punch-in 112 -> 100% over the shot (easeOutExpo). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched).",
    "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI： An Extended Look ｜ Now Playing ｜ Netflix [uphThaa97ig].mp4"
   },
   {
@@ -134,7 +32,7 @@
    "rid": "R17.4",
    "screen": "full",
    "start_f": 109,
-   "end_f": 119,
+   "end_f": 129,
    "source_in_s": 47.2,
    "speed": 1.0,
    "reverse": false,
@@ -150,32 +48,9 @@
    "enter": "X1",
    "exit": "X1",
    "grade": "game",
-   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on 'chasing' (f109, the frame the T2 lead-in 'chasing who' appears), 10f, full frame; framing v2: push 100 -> 106% (easeInOutSine). Official launch trailer (Rockstar) @ 0:47.2-0:47.53 (shot 46.33-48.23): a police car drifts round a street corner in pursuit of the green sports car. Not the logo end card (b17-loop uses that at f141-167).",
+   "notes": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129. Shot B (beat f109-129, 20 f = 0.67 s, cut on 'chasing', swipe sfx on the cut): R17.4 @ 47.2 s, a police car drifting round a street corner after the green sports car; static 100%; hard cut to black on 'now?' (129). || v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on 'chasing' (f109, the frame the T2 lead-in 'chasing who' appears), 10f, full frame; framing v2: push 100 -> 106% (easeInOutSine). Official launch trailer (Rockstar) @ 0:47.2-0:47.53 (shot 46.33-48.23): a police car drifts round a street corner in pursuit of the green sports car. Not the logo end card (b17-loop uses that at f141-167).",
    "source": "04_Broll/_originals/B17/R17.4__Grand Theft Auto VI Launch Trailer [rz1B4B2yBZY].mp4"
-  },
-  {
-   "id": "B17-chase-3",
-   "rid": "R17.2",
-   "screen": "full",
-   "start_f": 119,
-   "end_f": 129,
-   "source_in_s": 11.9,
-   "speed": 1.0,
-   "reverse": false,
-   "framing": {
-    "anchor": "center",
-    "keys": [
-     {
-      "f": 0,
-      "scale": 100
-     }
-    ]
-   },
-   "enter": "X1",
-   "exit": "X1",
-   "grade": "game",
-   "notes": "v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:11.9-0:12.23 (shot 11.63-12.80): shot at from the player's convertible, a pursuing police car slams into a pole (sparks, the car lifts). 10f; framing v2: a push 102 -> 110% accelerating into the cut (easeInQuart), then the hard cut to black on 'now?' at f129, where b17-loop becomes opaque (black, T2 'now?', the R17.4 logo push-in f141-161, the final X4 at f161, black tail to f186).",
-   "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI： An Extended Look ｜ Now Playing ｜ Netflix [uphThaa97ig].mp4"
   }
- ]
+ ],
+ "note": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129."
 }

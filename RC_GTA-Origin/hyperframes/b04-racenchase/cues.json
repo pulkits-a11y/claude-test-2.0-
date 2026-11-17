@@ -1,2 +1,93 @@
-{"events": {},
- "note": "v03 = v02: no SFX in B4 (plan p.38, silence by design; the words did not move). Beat frames for reference only: cut to the calendar f40, 18th square + 'eighteen' (the lockup keyword '18' pops) f75, 'months.' f82."}
+{
+ "events": {},
+ "word_pops": [
+  0,
+  6,
+  43,
+  46,
+  53,
+  64,
+  70
+ ],
+ "key_words": [
+  75,
+  82
+ ],
+ "sfx": [
+  {
+   "f": 41,
+   "name": "tick"
+  },
+  {
+   "f": 43,
+   "name": "tick"
+  },
+  {
+   "f": 45,
+   "name": "tick"
+  },
+  {
+   "f": 47,
+   "name": "tick"
+  },
+  {
+   "f": 49,
+   "name": "tick"
+  },
+  {
+   "f": 51,
+   "name": "tick"
+  },
+  {
+   "f": 53,
+   "name": "tick"
+  },
+  {
+   "f": 55,
+   "name": "tick"
+  },
+  {
+   "f": 57,
+   "name": "tick"
+  },
+  {
+   "f": 59,
+   "name": "tick"
+  },
+  {
+   "f": 61,
+   "name": "tick"
+  },
+  {
+   "f": 63,
+   "name": "tick"
+  },
+  {
+   "f": 65,
+   "name": "tick"
+  },
+  {
+   "f": 67,
+   "name": "tick"
+  },
+  {
+   "f": 69,
+   "name": "tick"
+  },
+  {
+   "f": 71,
+   "name": "tick"
+  },
+  {
+   "f": 73,
+   "name": "tick"
+  },
+  {
+   "f": 75,
+   "name": "tick"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 beat frames (f0 = 'It's' = local 6; beat 100f, unchanged locally). word_pops: 'It's' 0, 'called' 6 (on the page), 'and' 43, 'it's' 46, 'planned' 53, 'to' 64, 'take' 70 (on the grid). key_words: '18' 75 (Playfair Display Black, on 'eighteen') and 'months.' 82 (tier B). 'Race'n'Chase,' (17/24/29) has no caption tick: the printed, highlighted title on the page is the word (highlighter sweep 10-18, yellow circle round 'March 22, 1995' from 22; no SFX in REVISION_v05 S for either, add a marker sound if wanted). sfx: one tick per grid cell, 18 cells 2f apart, beat 41 ... 75 (the 18th on 'eighteen'; ticks on 43/46/53/64/70 coincide with the word ticks: one sound is enough there). The 110% punch-in at beat 64 (v04 19.0) and the cut to the grid at 40 are silent. archival: none full frame (the page is a document scan; the 1995 office behind the grid is a 25% blurred texture, not a picture). The v04 note 'no SFX in B4' is superseded by doc 2.7 / REVISION_v05 G9."
+}

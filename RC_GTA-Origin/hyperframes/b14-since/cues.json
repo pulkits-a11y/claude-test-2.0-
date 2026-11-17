@@ -1,1 +1,79 @@
-{"events": {"sirens": 132, "whip_mid": 154}}
+{
+ "events": {
+  "sirens": 132,
+  "whip_mid": 154
+ },
+ "word_pops": [
+  1,
+  9,
+  26,
+  33,
+  37,
+  47,
+  59,
+  91,
+  126,
+  153
+ ],
+ "key_words": [
+  18,
+  66,
+  96,
+  108,
+  132,
+  157
+ ],
+ "sfx": [
+  {
+   "f": 0,
+   "name": "whip"
+  },
+  {
+   "f": 12,
+   "name": "whip"
+  },
+  {
+   "f": 24,
+   "name": "whip"
+  },
+  {
+   "f": 36,
+   "name": "whip"
+  },
+  {
+   "f": 48,
+   "name": "whip"
+  },
+  {
+   "f": 59,
+   "name": "whip"
+  },
+  {
+   "f": 91,
+   "name": "ding"
+  },
+  {
+   "f": 94,
+   "name": "ding"
+  },
+  {
+   "f": 97,
+   "name": "ding"
+  },
+  {
+   "f": 100,
+   "name": "ding"
+  },
+  {
+   "f": 103,
+   "name": "ding"
+  },
+  {
+   "f": 106,
+   "name": "ding"
+  }
+ ],
+ "dropouts": [],
+ "archival": [],
+ "note": "v05 (beat frames, f0 = 'And'). Captions now cover every word (G11; v02-v04 left the burst uncaptioned per C15): word_pops = And 1, every 9, since 26, is 33, built 37, around 47, that 59, The 91, The 126, The 153; key_words = GTA 18, chase. 66, wanted 96, stars. 108, sirens. 132, running. 157. whip = a whoosh on the montage cuts, one per game (GTA III 0, Vice City 12, San Andreas 24, IV 36, V 48; the two 6 f clips of a game share one) and the cut to the five-star chase on 'that' (59). ding = each of the six hero stars as it glitches in (3 f apart from 'The' 91). Legacy: sirens 132 (S14 with the X9 wash), whip_mid 154 (S15, the X8 whip into the escape)."
+}

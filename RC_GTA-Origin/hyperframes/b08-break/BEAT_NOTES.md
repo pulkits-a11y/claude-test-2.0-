@@ -1,5 +1,15 @@
 # B8 The break - `b08-break` (v04 kit; v03 content; timing v02: beat 59f = 1.967 s; composition 71f with 6f handles)
 
+## v05 phase 1 (REVISION_v05.md lane 2; doc 31.0-33.0) - in progress, phase 2 = kit v05 components
+* b07's single article shot continued: `#b08-artCam` plays the push curve 49..88 of 88 (118% on "breaks").
+* **Dim + blur** (doc 31.0-32.0, "Then, something"): black over the page 0 -> 70% (= the article at 30%) and blur 0 -> 30 px
+  on screen (18.5 layout px at the ~1.6x page scale; page image through its media-treatment blur control with a custom ease
+  that follows the px curve, DOM layers by CSS), 7 -> 37, easeInOutSine. X4 still rebuilt (`x4_still.sh`).
+* `cues.json` v05: reverse_cymbal ending on "breaks." (33) + glitch_stutter 33 + a 4f dropout ending on it, key_words [33];
+  legacy breaks / first_black dropped. Stills: `review/v05/sheet_p1.jpg`. check: 0 errors.
+* Phase 2: "breaks." hero 450 px with the kit's pink pixel-glitch entry, the Win95 window flashed 2f behind it, the dark
+  card v05 (grain + faint footage) instead of flat black, the landed CANNED stamp on the page, the lockup in kit v05 tiers.
+
 ## v04 (kit refresh only)
 `python3 tools/new_beat.py B8 --refresh` (kit v04): the full-frame black screen behind T10 "breaks." (`.rc-ink.rc-full`,
 local 47-71) now carries the kit's static scanlines (REVISION_v04 note 7: scanlines only inside the dark text cards; 9 px

@@ -18,6 +18,10 @@
          is removed with the punch). The video is not a direct child of .rc-l11__half, so the kit's half > video fill rule
          is repeated on .lc-push > video (same box as before: the full 958 x 1080 half, object-fit cover). */
       .lc-push { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+      /* v05 (REVISION_v05 lane 2, doc 20.0): the centre divider is a 6 px WHITE line (doc 4 px @720) over the 4 px gap
+         between the halves (x 957-963), wiped top -> bottom over 6f from the cut into the beat. */
+      .b05-divider { position: absolute; left: 957px; top: 0; width: 6px; height: 1080px; pointer-events: none; }
+      .b05-divider__line { position: absolute; left: 0; top: 0; width: 6px; height: 1080px; background: var(--white); }
       .lc-push > video { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--rc-pos, 50% 50%); }
     </style>
   </head>
@@ -26,7 +30,8 @@
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.9667s (local frames 6 .. 89).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B5 p.22).
          v03 notes (REVISION_v03.md): 11/16/17 caption lockups (centred, words appear on their frames, only the keyword pops +
-         blurs in, bigger), 13 no random zooms (back to v01's camera: one slow eased 100 -> 104% push). Everything else v02.
+         blurs in, bigger), 13 no random zooms (back to v01's camera). v05 (REVISION_v05.md lane 2): white centre divider
+         wipe, push 8% (doc pacing rule 3), arrow erase before the cut. Everything else v02.
          Owner: HF for the whole beat (opaque). Into the beat: X1 (hard cut). Captions only. No SFX (the X9 wash is visual).
          Shared L11 frame: B6 (b06-dull) continues these two clips with continuous source time
          (B6 data-media-start = this beat's data-media-start + 83/30 s); B11 (b11-flip) returns to this exact frame. -->
@@ -55,6 +60,10 @@
           </div>
         </div>
       </div>
+
+      <!-- v05: the white centre divider (doc 20.0 "a 4px white line that wipes top->bottom over 6 frames"), from the cut
+           (local 6) to the end; b06-dull keeps it, fully drawn, on its split part. -->
+      <div id="b05-divider" class="clip b05-divider" data-start="0.2000" data-duration="2.9666" data-track-index="4" style="z-index: 2"><div id="b05-divider-line" class="b05-divider__line"></div></div>
 
       <!-- X9 siren wash on "police officer" (plan p.16, p.22; M5): 4f overlay, siren red 35% Overlay 2f, then siren blue 2f
            (hard frames = cuts, rule C exempts them). Above the footage, below the M2 arrow and the T1 captions. Visual only. -->
@@ -88,20 +97,28 @@
 
       // Word frames (local) from words.json: In 7, it, 9, you 20, play 25, a 31, police 33, officer 42, chasing 53, criminals. 64.
 
-      // ---- split-screen camera, v03 (note 13: the v02 zooms are gone, back to v01's camera): ONE slow push 100 -> 104%
-      //      inside each half (.lc-push, origin = the half's centre), easeInOutSine, across the whole L11 shot on the EDIT
-      //      clock shared with b06-dull (B5 local L = edit 600 + L, B6 local L = edit 683 + L): from B5 local 0 (edit 600)
-      //      to b06's cut to the quote card on "One" (B6 local 64 = edit 747) = 147 frames, 104% there.
-      //      scale(B5 local L) = 1 + 0.04 * sine.inOut(L / 147). This composition plays curve frames 0..95 (segment of the
+      // ---- split-screen camera: ONE slow push inside each half (.lc-push, origin = the half's centre), easeInOutSine,
+      //      across the whole L11 shot, shared with b06-dull (B6 local L = B5 local L + 83): from B5 local 0 to b06's cut on
+      //      "One" (B6 local 64 = B5 local 147) = 147 frames. scale(B5 local L) = 1 + 0.08 * sine.inOut(L / 147).
+      //      v05: 100 -> 108% (v03/v04: 104%): the split is one 4.7 s shot and the doc's pacing rule 3 asks a hold over
+      //      2.0 s for a push of at least 8% (REVISION_v05 G10). This composition plays curve frames 0..95 (segment of the
       //      same ease, not restarted); b06-dull plays 83..147, so the B5/B6 cut (B5 local 89 = B6 local 6) is seamless.
-      //      No keyword punch (v02's nested .lc-key wrapper is gone).
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
-      const SPAN = 147, PUSH = 0.04;                   // curve length (B5 local 0 -> B6 local 64), push amount
+      const SPAN = 147, PUSH = 0.08;                   // curve length (B5 local 0 -> B6 local 64), push amount (v05: 8%)
       C.push(tl, '#b05-split .lc-push', 0, { until: f(95), from: 1, to: 1 + PUSH * SIN(95 / SPAN), ease: seg(0, 95 / SPAN) });
 
       // M2: "you" label hard-cuts in on "you" (local 20), shaft + head drawn by local 28 (8f, easeOutQuart).
       M.arrowDraw(tl, '#b05-arrow', f(20), { from: [772, 900], to: [552, 728], bend: 0.16, seed: 7, label: 'you' });
+
+      // v05: the centre divider wipes top -> bottom over 6f from the cut (local 6 -> 12), easeOutQuart.
+      gsap.set('#b05-divider-line', { clipPath: 'inset(0% 0% 100% 0%)' });
+      tl.fromTo('#b05-divider-line', { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 6 / 30, ease: 'power3.out', immediateRender: false }, f(6));
+
+      // v05: the arrow retracts over 6f (local 76 -> 82, kit arrowErase, easeInQuart) after "criminals." (64): the event
+      //      between "criminals." and B6's "But" (89) on this 4.7 s shot (doc pacing rule 3: a new event every <= 0.7 s),
+      //      and the arrow is gone before the cut instead of vanishing on it.
+      M.arrowErase(tl, '#b05-arrow', f(76));
 
       // X9 on "police" (local 33): red 33-34, blue 35-36, gone on 37 (hard frames).
       X.sirenWash(tl, '#b05-x9', f(33));

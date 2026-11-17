@@ -12,7 +12,9 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
-      /* b07-shutdown's shot E, exactly: the article page in its own pixels with the same static base framing */
+      /* b07-shutdown's article shot, continued: the page in its own pixels at b07's body framing (static here); v05: the
+         camera is #b08-artCam (b07's push 100 -> 118% about the frame centre, continued) */
+      .b08-dimall { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #000000; opacity: 0; pointer-events: none; }
       .b08-page { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; transform-origin: 0 0; }
       #b08-pageE { transform: translate(-68.5714px, -2144.9143px) scale(1.3714286); }  /* page x 50-1450, y 1564-2351.5 */
       .b08-art, .b08-dim, .b08-hls { position: absolute; left: 0; top: 0; width: 2232px; height: 2352px; }
@@ -23,7 +25,10 @@
     </style>
   </head>
   <body>
-    <!-- B8 b08-break (v03; timing v02): beat 59f (1.967s) + 6f handle each end = 71f.
+    <!-- B8 b08-break (v05 phase 1; timing v02): beat 59f (1.967s) + 6f handle each end = 71f.
+         v05 (REVISION_v05.md lane 2): b07's single article shot continued (push to 118% on "breaks"); on "Then,
+         something" (7-37) the article dims to 30% and blurs to 30 px; "breaks." hero with the pink pixel glitch and the
+         Win95 window flash come with kit v05 (phase 2). The lines below describe v02-v04.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 2.1667s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B8 p.23).
 
@@ -41,47 +46,48 @@
          local 47-52  T10 glitch (6f, hard per-frame cuts), clean from 53, holds 12f to the hard cut at local 65 (beat end);
                       the tail handle 65-71 holds the clean word.
          Layer stack (top -> bottom): z40 caption lockup (y 840) | z30 T10 | z20 X4 tear canvas | z10 ink black |
-         z2 #b08-driftE > #b08-camE > the page (R7.GD + highlights + spotlight dim). -->
-    <div id="root" data-composition-id="b08-break" data-start="0" data-duration="2.3666667" data-width="1920" data-height="1080">
+         z3 the v05 dim (black 0 -> 70%) | z2 #b08-artCam > the page (R7.GD + highlights + spotlight dim). -->
+    <div data-hf-id="hf-k79d" id="root" data-composition-id="b08-break" data-start="0" data-duration="2.3666667" data-width="1920" data-height="1080">
 
       <!-- ===== local 0-47: b07-shutdown's shot E continued (Game Developer, Jan 31 2011, the sentence "It was almost canned.
            The publisher, BMG Interactive, wanted to can it" highlighted; R7.GD = live screenshot of
            https://www.gamedeveloper.com/pc/penn-first-i-grand-theft-auto-i-was-almost-canned- , never edited) ===== -->
-      <div id="b08-driftE" class="rc-cam" style="z-index: 2">
-        <div id="b08-camE" class="rc-cam">
-          <div id="b08-pageE" class="b08-page" data-layout-allow-overflow="">
-            <img id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.5666" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
+      <div data-hf-id="hf-tanh" id="b08-artCam" class="rc-cam" style="z-index: 2">
+          <div data-hf-id="hf-7vyw" id="b08-pageE" class="b08-page" data-layout-allow-overflow="">
+            <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0.01,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-mbgo" id="b08-e" class="clip b08-art" src="assets/footage/R7.GD.png" data-start="0.0000" data-duration="1.5666" data-track-index="1" alt="Game Developer, 2011: It was almost canned. The publisher, BMG Interactive, wanted to can it">
             <!-- the two T9 highlighter strokes, landed (b07 swipes them on "shut" and "down."); v03: dark-page group -->
-            <div id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.5666" data-track-index="2" data-layout-ignore="">
-              <div class="b08-hlgroup">
-                <div id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
-                <div id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
+            <div data-hf-id="hf-rcz0" id="b08-hlclip" class="clip b08-hls" data-start="0.0000" data-duration="1.5666" data-track-index="2" data-layout-ignore="">
+              <div data-hf-id="hf-u5ya" id="b08-hlgroup" class="b08-hlgroup">
+                <div data-hf-id="hf-6jch" id="b08-hl1" class="rc-t9-hl" style="left: 247px; top: 1987px; width: 360px; height: 48px"></div>
+                <div data-hf-id="hf-3cc4" id="b08-hl2" class="rc-t9-hl" style="left: 605px; top: 1987px; width: 784px; height: 48px"></div>
               </div>
             </div>
-            <div id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.5666" data-track-index="3" data-layout-ignore="">
-              <svg width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs>
-                <filter id="b08-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="3.6"/></filter>
-                <mask id="b08-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect x="0" y="0" width="2232" height="2352" fill="#FFFFFF"/><rect x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b08-dimE-f)"/></mask>
-              </defs><rect x="0" y="0" width="2232" height="2352" fill="#000000" fill-opacity="0.65" mask="url(#b08-dimE-m)"/></svg>
+            <div data-hf-id="hf-a249" id="b08-dimE" class="clip b08-dim" data-start="0.0000" data-duration="1.5666" data-track-index="3" data-layout-ignore="">
+              <svg data-hf-id="hf-buxh" width="2232" height="2352" viewBox="0 0 2232 2352" aria-hidden="true"><defs data-hf-id="hf-mh0t">
+                <filter data-hf-id="hf-aj0m" id="b08-dimE-f" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><fegaussianblur data-hf-id="hf-ajt9" stdDeviation="3.6" /></filter>
+                <mask data-hf-id="hf-kd0g" id="b08-dimE-m" maskUnits="userSpaceOnUse" x="0" y="0" width="2232" height="2352"><rect data-hf-id="hf-g9ea" x="0" y="0" width="2232" height="2352" fill="#FFFFFF" /><rect data-hf-id="hf-p0r5" x="241" y="1979" width="1154" height="64" rx="12" ry="12" fill="#000000" filter="url(#b08-dimE-f)" /></mask>
+              </defs><rect data-hf-id="hf-add3" x="0" y="0" width="2232" height="2352" fill="#000000" fill-opacity="0.65" mask="url(#b08-dimE-m)" /></svg>
             </div>
           </div>
-        </div>
       </div>
+      <!-- v05 (doc 31.0-32.0 "Then, something": the article dims to 30% and blurs): black over the page, 0 -> 70% (below the
+           caption lockup, above the page), with the page blur in the script -->
+      <div data-hf-id="hf-64dc" id="b08-dimall" class="clip b08-dimall" data-start="0.0000" data-duration="1.5666" data-track-index="4" style="z-index: 3"></div>
 
       <!-- ===== X4 pixel-block tear on "breaks" (local 39 = beat f33), 8f, then the hard cut to black ===== -->
       <!-- still mode: assets/x4/b08-old.png = this composition at local 39 WITHOUT the tear (made by x4_still.sh) -->
-      <div id="b08-x4" class="rc-x4" style="z-index: 20">
-        <img class="rc-x4__still" src="assets/x4/b08-old.png" alt="">
+      <div data-hf-id="hf-o4zi" id="b08-x4" class="rc-x4" style="z-index: 20">
+        <img data-hf-id="hf-ha5p" class="rc-x4__still" src="assets/x4/b08-old.png" alt="">
       </div>
 
       <!-- ===== local 47-71 (beat 41-59 + tail handle): black, T10 "breaks." ===== -->
-      <div id="b08-black" class="clip rc-ink rc-full" data-start="1.5666" data-duration="0.8000" data-track-index="7" style="z-index: 10"></div>
-      <div id="b08-t10" class="clip rc-t10" data-start="1.5666" data-duration="0.8000" data-track-index="8" style="z-index: 30"><span class="rc-t10__word">breaks.</span></div>
+      <div data-hf-id="hf-p09q" id="b08-black" class="clip rc-ink rc-full" data-start="1.5666" data-duration="0.8000" data-track-index="7" style="z-index: 10"></div>
+      <div data-hf-id="hf-08q9" id="b08-t10" class="clip rc-t10" data-start="1.5666" data-duration="0.8000" data-track-index="8" style="z-index: 30"><span data-hf-id="hf-iiag" class="rc-t10__word">breaks.</span></div>
 
       <!-- v03 caption lockup (REVISION_v03 notes 11, 16, 17), kit RCK.type.lockups from words.json: "Then, something" (one
            small line; "Then," on 7, "something" on 25, hard cuts), below the spotlit sentence (ink centre y 840, as b07's
            last lockup); it leaves at the tear (39). -->
-      <div id="b08-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.0667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 33.98px; z-index: 40"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="7">Then,</span> <span class="rc-lw" data-rc-f="25">something</span></div></div></div>
+      <div data-hf-id="hf-00mr" id="b08-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="1.0667" data-track-index="10" style="--rc-y: 840px; --rc-lk-c: 33.98px; z-index: 40"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-ut3s" class="rc-lw" data-rc-f="7">Then,</span> <span data-hf-id="hf-6hql" class="rc-lw" data-rc-f="25">something</span></div></div></div>
     </div>
     <script src="assets/kit/type.js"></script>
     <script src="assets/kit/motifs.js"></script>
@@ -99,17 +105,27 @@
       const kBreaks = 39;                 // beat 33: the X4 tear's first frame (cues.json "breaks")
       const kBlack = kBreaks + 8;         // beat 41: first black frame (cues.json "first_black")
 
-      // ---- b07-shutdown's article camera, continued: ONE easeInOutSine move on the EDIT clock from B7's cut on "to" (edit
-      //      897) to "breaks" (edit 968 = this local 39), 71f: scale 100 -> 118% about the sentence centre (1053.257, 613.029)
-      //      + drift (-93.257, -53.029) px. This composition (local L = edit 929 + L) plays frames 32..71 of it on the same curve
-      //      (segment of the ease, not restarted), so b07's last frame and this first frame match. From the tear on the page
-      //      is covered (X4 still mode) and holds the end state. ----
+      // ---- b07-shutdown's article shot, continued (v05): b07's push about the frame centre, ONE easeInOutSine move from b07's
+      //      cut on "keep" (b07 local 41) to "breaks" (this local 39 = b07 local 129), 88f, 100 -> 118%. This composition (local
+      //      L = b07 local 90 + L) plays curve frames 49..88 (segment of the same ease), so b07's last frame and this first frame
+      //      match. From the tear on, the page is covered (X4 still mode) and holds the end state. ----
       const SIN = gsap.parseEase('sine.inOut');
       const seg = (a, b) => (p) => (SIN(a + p * (b - a)) - SIN(a)) / (SIN(b) - SIN(a));
-      const E_LEN = 71, E_S = 1.18, E_DX = -93.257, E_DY = -53.029, k0 = 32 / E_LEN, p0 = SIN(k0);
-      C.push(tl, '#b08-camE', f(0), { until: f(kBreaks), from: 1 + (E_S - 1) * p0, to: E_S, ease: seg(k0, 1), origin: '1053.257px 613.029px' });
-      gsap.set('#b08-driftE', { x: E_DX * p0, y: E_DY * p0, force3D: false });
-      tl.fromTo('#b08-driftE', { x: E_DX * p0, y: E_DY * p0 }, { x: E_DX, y: E_DY, duration: kBreaks / 30, ease: seg(k0, 1), force3D: false, immediateRender: false }, 0);
+      const ART_LEN = 88, ART_S = 1.18, k0 = 49 / ART_LEN;
+      C.push(tl, '#b08-artCam', f(0), { until: f(kBreaks), from: 1 + (ART_S - 1) * SIN(k0), to: ART_S, ease: seg(k0, 1) });
+
+      // ---- v05 (doc 31.0-32.0): on "Then, something" the article dims to 30% (black 0 -> 70%) and blurs 0 -> 30 px on screen,
+      //      from "Then," (7) to just before "breaks" (37), easeInOutSine. The page is scaled ~1.6x on screen here, so 30 px =
+      //      18.5 layout px: the page image through its media-treatment blur control (kit blurValue), the DOM layers on it
+      //      (strokes, spotlight) by CSS. ----
+      tl.fromTo('#b08-dimall', { opacity: 0 }, { opacity: 0.7, duration: 30 / 30, ease: 'sine.inOut', immediateRender: false }, f(7));
+      const art = document.getElementById('b08-e'), BLUR_PX = 18.5, vEnd = X.blurValue(BLUR_PX);
+      art.style.setProperty('--hf-color-grading-blur', '0');
+      // the blur VALUE follows the px curve exactly: value(p) = blurValue(18.5 * sine.inOut(p)), normalised (plain tweens only,
+      // no callbacks, so any seek renders the same frame)
+      const pxEase = (p) => X.blurValue(BLUR_PX * SIN(p)) / vEnd;
+      tl.fromTo(art, { '--hf-color-grading-blur': 0 }, { '--hf-color-grading-blur': vEnd, duration: 30 / 30, ease: pxEase, immediateRender: false }, f(7));
+      tl.fromTo('#b08-hlgroup, #b08-dimE svg', { filter: 'blur(0px)' }, { filter: 'blur(' + BLUR_PX + 'px)', duration: 30 / 30, ease: 'sine.inOut', immediateRender: false }, f(7));
 
       // ---- X4 on "breaks": 8f tear as the X library defines it (16 x 9 blocks jumping +/-30 px, some freezing on the old
       //      frame, 6 px RGB split; per-frame cuts), then the hard cut to black on local 47. Seed 8 (as v01 and b17-loop). ----

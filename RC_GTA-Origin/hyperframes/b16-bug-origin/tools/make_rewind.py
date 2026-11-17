@@ -42,7 +42,7 @@ N_FRAMES = 48                     # local 0..47 (the clip is used to local 46, t
 
 # ---- source in-points of the shots being rewound (seconds into the R-ID file) ----
 B14 = {   # filled by load_inpoints() from hyperframes/b14-since/tesseract_shots.json (required)
-    "escape": None, "lights": None, "chase": None,
+    "escape": None, "lights": None, "roadblock": None, "chase": None,
     # burst: clip k (0..9) = edit frames 6k..6k+6; two moments per game (a = first, b = second clip)
     "burst": [],
 }
@@ -67,7 +67,8 @@ def load_inpoints():
     if os.path.exists(p14):
         shots = json.load(open(p14))["shots"]
         full = {s["id"]: s for s in shots}
-        for key, sid in (("escape", "B14-escape"), ("lights", "B14-police-lights"), ("chase", "B14-gta5-chase-stars")):
+        for key, sid in (("escape", "B14-escape"), ("lights", "B14-police-lights"), ("roadblock", "B14-gta5-roadblock-stars"),
+                         ("chase", "B14-gta5-chase-stars")):
             if sid in full:
                 B14[key] = {"rid": full[sid]["rid"], "start_f": full[sid]["start_f"], "end_f": full[sid]["end_f"],
                             "src_in": full[sid]["source_in_s"], "source": full[sid]["source"], "crop": full[sid].get("crop")}
@@ -108,9 +109,9 @@ def b4_zoom_at(f):
 def b14_source(e):
     """B14 edit frame e (beat-relative) -> (rid, source seconds in the original, original path, crop). The shot
     boundaries come from B14's tesseract_shots.json (v02: escape f154, lights f126, chase f59, burst 9 x 6f + 5f)."""
-    for key in ("escape", "lights", "chase"):
+    for key in ("escape", "lights", "roadblock", "chase"):      # v05: B14 split its chase shot at f91 (roadblock)
         s = B14[key]
-        if e >= s["start_f"]:
+        if s is not None and e >= s["start_f"]:
             return s["rid"], s["src_in"] + (e - s["start_f"]) / FPS, s["source"], s["crop"]
     for rid, src_in, source, crop, f0, f1 in B14["burst"]:
         if f0 <= e < f1:
