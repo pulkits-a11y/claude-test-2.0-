@@ -1,46 +1,22 @@
-◆  Capturing 16 frames at [0.008s, 0.208s, 0.642s, 1.508s, 1.542s, 1.575s, 1.642s, 1.775s, 2.608s, 3.042s, 3.342s, 3.908s, 3.942s, 4.375s, 4.508s, 5.242s] from b03-dundee
+◆  Capturing 22 frames at [0.008s, 0.242s, 0.442s, 0.475s, 0.542s, 0.675s, 1.008s, 1.275s, 1.375s, 1.875s, 2.742s, 2.775s, 2.808s, 2.875s, 2.942s, 3.842s, 4.575s, 5.142s, 5.175s, 5.742s, 6.308s, 6.475s] from b03-dundee
 [hyperframes] browserGpuMode probe → software (WebGL unavailable)
 
-   Fonts: 5 loaded
-[hyperframes] snapshot: frame 1/16 at 0.0083s
-[hyperframes] snapshot: frame 2/16 at 0.2083s
-[hyperframes] snapshot: frame 3/16 at 0.6417s
-[hyperframes] snapshot: frame 4/16 at 1.5083s
-[hyperframes] snapshot: frame 5/16 at 1.5417s
-[hyperframes] snapshot: frame 6/16 at 1.575s
-[hyperframes] snapshot: frame 7/16 at 1.6417s
-[hyperframes] snapshot: frame 8/16 at 1.775s
-[hyperframes] snapshot: frame 9/16 at 2.6083s
-[hyperframes] snapshot: frame 10/16 at 3.0417s
-[hyperframes] snapshot: frame 11/16 at 3.3417s
-[hyperframes] snapshot: frame 12/16 at 3.9083s
-[hyperframes] snapshot: frame 13/16 at 3.9417s
-[hyperframes] snapshot: frame 14/16 at 4.375s
-[hyperframes] snapshot: frame 15/16 at 4.5083s
-[hyperframes] snapshot: frame 16/16 at 5.2417s
-   Revision: none (inputs-changed)
-   State: /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/.hyperframes/video-state.json
-
-◇  16 snapshots saved to /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-00-at-0.008s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-01-at-0.208s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-02-at-0.642s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-03-at-1.508s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-04-at-1.542s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-05-at-1.575s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-06-at-1.642s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-07-at-1.775s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-08-at-2.608s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-09-at-3.042s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-10-at-3.342s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-11-at-3.908s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-12-at-3.942s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-13-at-4.375s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-14-at-4.508s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/frame-15-at-5.242s.png
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/contact-sheet-1.jpg (grid view for AI review)
-   /home/user/claude-test-2.0-/RC_GTA-Origin/hyperframes/b03-dundee/review/v05/raw/contact-sheet-2.jpg (grid view for AI review)
-
-  This project pins hyperframes@0.9.52 (latest 0.9.63).
-  Bump it: npx hyperframes@latest upgrade --project
-
+   Fonts: 4 loaded
+[hyperframes] snapshot: frame 1/22 at 0.0083s
+[hyperframes] snapshot: frame 2/22 at 0.2417s
+[hyperframes] snapshot: frame 3/22 at 0.4417s
+[hyperframes] snapshot: frame 4/22 at 0.475s
+[hyperframes] snapshot: frame 5/22 at 0.5417s
+[hyperframes] snapshot: frame 6/22 at 0.675s
+[hyperframes] snapshot: frame 7/22 at 1.0083s
+[hyperframes] snapshot: frame 8/22 at 1.275s
+[hyperframes] snapshot: frame 9/22 at 1.375s
+[hyperframes] snapshot: frame 10/22 at 1.875s
+[hyperframes] snapshot: frame 11/22 at 2.7417s
+[hyperframes] snapshot: frame 12/22 at 2.775s
+[hyperframes] snapshot: frame 13/22 at 2.8083s
+[hyperframes] snapshot: frame 14/22 at 2.875s
+[hyperframes] snapshot: frame 15/22 at 2.9417s
+[hyperframes] snapshot: frame 16/22 at 3.8417s
+[hyperframes] snapshot: frame 17/22 at 4.575s
+[hyperframes] snapshot: frame 18/22 at 5.1417s
