@@ -1,0 +1,27 @@
+{
+ "file": "07_Exports/RC_GTA-Origin_v05_preview.mp4",
+ "frames": 2326,
+ "1_frame0": {
+  "mean_luma": 18.4,
+  "mean_saturation": 0.651,
+  "near_black_share": 0.58
+ },
+ "2_hook_black_frames": [],
+ "5_black_half_frames": {
+  "count": 1,
+  "first": [
+   [
+    929,
+    30.97,
+    "left"
+   ]
+  ]
+ },
+ "5_flat_black_runs_over_0.8s": [],
+ "8_logo_silence_s": 0.386,
+ "8_loudness": {
+  "integrated_lufs": -14.0,
+  "true_peak_dbtp": -1.6
+ },
+ "9_loop_last_vs_first_mad": 3.09
+}
