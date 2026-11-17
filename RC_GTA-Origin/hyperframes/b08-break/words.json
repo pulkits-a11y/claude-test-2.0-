@@ -5,30 +5,30 @@
  "handle_frames": 6,
  "beat_frames": 59,
  "composition_frames": 71,
- "edit_start_s": 31.1667,
+ "edit_start_s": 29.2333,
  "voiceover": "Then, something breaks.",
  "words": [
   {
    "text": "Then,",
-   "comp_t": 0.217,
-   "comp_end_t": 0.574,
-   "beat_t": 0.017,
+   "comp_t": 0.218,
+   "comp_end_t": 0.575,
+   "beat_t": 0.018,
    "start_frame_local": 7,
    "punct": ","
   },
   {
    "text": "something",
-   "comp_t": 0.846,
-   "comp_end_t": 1.307,
-   "beat_t": 0.646,
+   "comp_t": 0.847,
+   "comp_end_t": 1.308,
+   "beat_t": 0.647,
    "start_frame_local": 25,
    "punct": ""
   },
   {
    "text": "breaks.",
-   "comp_t": 1.307,
-   "comp_end_t": 1.78,
-   "beat_t": 1.107,
+   "comp_t": 1.308,
+   "comp_end_t": 1.781,
+   "beat_t": 1.108,
    "start_frame_local": 39,
    "punct": "."
   }

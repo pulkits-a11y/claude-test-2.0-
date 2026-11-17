@@ -1,0 +1,706 @@
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  GTA Origin v04 — Edit Instructions for
+  Claude
+     Nov 17, 2026        ·   ​@Raw Canvas
+
+
+
+
+  How to use this + what's wrong
+  v04's overall cut rate already matches the references (1.3s average shot). What it lacks is
+  the hook energy, the type styling and the motion graphics, plus five dead zones where the
+  frame barely moves. Fix those and it reads like the references.
+
+  How to feed this to Claude: paste Section 2 (Global style system) first, then Section 3
+  (Hook), then Section 4 (Timestamped changes), then Section 5 (QA). Every timestamp
+  refers to RC_GTA-Origin_v04_preview.mp4 (77.6s, 1280x720, 30fps). Each item also
+  quotes the on-screen caption, so it can be found even after earlier edits shift the timing.
+  Apply Section 4 from the end of the video backwards, so earlier changes don't move later
+  timestamps.
+
+  Note: I read the voice-over from your on-screen captions, not from the audio, since there
+  was no speech-to-text in this workspace. If a caption differs from what's actually said, go
+  with the audio.
+
+
+  Measured: references vs v04
+
+     Measure                           Cluely (ref)   Trailer 1   Trailer 2   GTA v04
+                                                      (ref)       (ref)
+
+     Length                            67.8s          43.6s       47.9s       77.6s
+
+     Average shot                      1.9s           1.4s        1.3s        1.3s
+     length
+
+     Full-frame hard                   7              8           10          0 (the opening builds
+     cuts in first 10s                                                        over black, then one
+                                                                              shot holds 4.5–10.0s)
+
+     Longest static                    ~2.0s          ~2.5s       ~1.5s       5.5s (CRT over-
+     hold in first 12s                                                        shoulder, 4.5–10.0s)
+
+
+
+
+                                                                                               Page 1 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+     Measure                           Cluely (ref)         Trailer 1    Trailer 2     GTA v04
+                                                            (ref)        (ref)
+
+     Frame 0                           full-bleed image +   full-bleed   full-bleed    small inset on black
+                                       highlighted text     face +       set + giant
+                                                            caption      word
+
+     Integrated                        -13.1 LUFS           -21.2 LUFS   -18.6 LUFS    -14.0 LUFS (fine)
+     loudness
+
+     Silence mid-                      none                 none         none          1.65s at 54.5–56.2s
+     video
+
+
+
+  The five dead zones (low frame movement, from frame-difference analysis)
+      1. 4.5–10.0s: one CRT over-shoulder shot holds for 5.5s, right inside the hook.
+      2. 17.0–20.0s: Race'n'Chase doc and 18-month grid on near-black.
+      3. 25.0–27.5s: static Gary Penn shot, and the quote only appears at 26.5s.
+      4. 46.5–51.5s: 18→30 grid, "Until finally," and "In Nov 1997" all on black (~5s).
+      5. 69.0–71.5s: "running." and "The whole series started with a bug." on black.
+
+
+  What the references do that v04 doesn't
+          Words animate in with colour. In Trailer 1 and 2, every word enters in an accent colour
+          (pink-red), slightly blurred and scaled up, then settles to white within about 4 frames.
+          v04's words hard-pop in, already white, and then sit still.
+          Type contrast. The references mix a small upright sans for setup words with a big
+          display face for the key word, often an elegant serif (Didot-style: "Noah Politis",
+          "Marcus Ryu", years). v04 uses one italic face for everything.
+          Hero words are huge and sit behind the subject. "podcast", "today's guest", "killed"
+          and "Failure" fill most of the frame and are masked behind people. v04's biggest
+          words are about 14% of frame height and always sit on top.
+          Highlight pills and physical props. Cluely uses neon pill boxes with type-on text, a
+          rubber stamp slamming "SCAMMED", tilted paper documents, and an ERROR window.
+          v04 has almost none of this.
+          Archival media sits on designed backgrounds. The references show inserts as tilted
+          cards with borders and shadows on textured backgrounds. v04 drops 4:3 archival on
+          flat black.
+
+
+
+
+                                                                                                           Page 2 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+          Branded transitions. Cluely uses purple pixel-glitch wipes, and the trailers use white-
+          flash star bursts. v04 is mostly straight cuts.
+          CTA ending. Cluely ends on a follow and comment prompt. v04 ends on black.
+
+
+  What v04 already does well (keep it)
+  Word-by-word captions with key-word emphasis; split-screens (20–24s, 41–46s); yellow
+  hand-drawn "you" arrows; the article highlight (29.5–32s); the 18-month grid idea; the
+  wanted-stars animation (59–60s); the VHS-rewind transition (67.5–68.5s); the fast era
+  montage (55.5–58s); and the GTA VI bookend.
+
+
+  Section 2 — Global style system (paste this first)
+  Apply these rules across the whole video. Section 3 and 4 then say where each element
+  goes. Sizes are for the 1280x720 timeline; multiply by 1.5 for a 1080p export.
+
+
+  2.1 Colour
+          Accent (one colour only): GTA VI hot pink #FF2E7E . Use it for the word-entry flash,
+          highlight pills, highlighter sweeps and glitch transitions. It ties the edit to the GTA VI
+          logo that bookends the video, the same way Cluely ties everything to purple.
+          Annotation colour: keep your existing yellow (about #FFD23F ) for hand-drawn
+          arrows, circles and underlines only, like the "you" arrows at 21–24s and 45s.
+          Danger red #E3262B for the rubber stamp and the red cells in the 18→30 month grid
+          only.
+          Text body colour stays white #FFFFFF . Add a soft drop shadow (0px x, 4px y, 12px
+          blur, black at 45%) so it reads on bright gameplay.
+
+
+  2.2 Type system (three tiers instead of one)
+
+     Tier                     Use for             Font             Size @720p       Case / style
+
+     A. Setup                 the small lead-in   Upright sans:    34–38px          Sentence case,
+     words                    words ("a game      Inter SemiBold   (currently       tracking 0
+                              about", "Because    or Helvetica     ~28px; too
+                              back in", "So the   Neue Medium      small on
+                              people")                             phones)
+
+
+
+
+                                                                                                   Page 3 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+     Tier                     Use for                  Font                Size @720p     Case / style
+
+     B. Key                   the punch word of        Keep your           110–140px      As now, with
+     word                     each line ("broke.",     current bold                       the period
+                              "bug", "cops?",          italic display
+                              "criminals.", "flips",   font (it's the
+                              "chased.")               video's
+                                                       identity)
+
+     C. Hero                  6–8 moments max:         Tier B font, or a   220–400px,     Placed behind
+     word                     "Why", "1995",           Didot-style         may run off-   the subject
+                              "broke.", "dull.",       serif for years     frame          where there is
+                              "breaks.", "fun.",       and dates                          one (see 2.5)
+                              "30", "bug."             (Playfair Display
+                                                       Black / Bodoni)
+
+     Quote /                  Gary Penn quote,         Serif italic:       60–80px        Inside a
+     document                 article lines,           Playfair Display                   highlight pill or
+                              "Race'n'Chase            Italic or Times                    on paper
+                              Game Design"             Italic
+
+
+  Layout rule: the setup line sits directly above the key word, left-aligned to it, with the key
+  word 3.2–3.8x the setup size. That's the stacked "small over big" look of both trailers.
+
+
+  2.3 Word entry animation (apply to every caption word)
+  Right now words appear in one frame, already white, and don't move. Replace that with
+  the trailer-style entry:
+
+      1. Frame 0: word at opacity 0%, scale 112%, Gaussian blur 6px, colour #FF2E7E .
+      2. Frames 0–2: opacity to 100%.
+      3. Frames 0–4: scale 112%→100% and blur 6→0px, ease-out (cubic-bezier 0.2, 0.8, 0.2, 1).
+      4. Frames 2–6: colour cross-fades from #FF2E7E to white. Key words (tier B) hold pink
+         until frame 4, then fade by frame 8.
+      5. For the whole life of the caption block: slow drift scale 100%→104%, so the text is
+          never fully static.
+      6. Exit: cut with the shot. If the text has to leave before the cut, use a 3-frame blur-out
+          (0→8px) plus opacity to 0. No slow fades.
+      7. Time each word's frame 0 to the VO syllable onset, never early. A word appearing 1–2
+          frames after the sound feels punchier than one that arrives before it.
+
+
+
+                                                                                                         Page 4 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  2.4 Motion-graphics kit (build once, reuse)
+          Highlight pill (Cluely-style): rounded rectangle, 10px radius, fill #FF2E7E at 92%, 3px
+          white inner stroke inset 6px, outer glow 24px at 40%. Text: Montserrat ExtraBold,
+          uppercase, white, tracking +2%, 44–52px. Animate the box width 0→100% from the
+          left over 6 frames, then type the text on at about 30 characters per second. Exit with
+          the pixel-glitch transition.
+          Pixel-glitch transition (pink): 6–8 frames. Blocky rectangles of #FF2E7E and white
+          tear horizontally across the frame (datamosh/pixel-sort), with RGB-split 6px on
+          frames 2–5. Cluely uses this between beats at about 7.0s, 13.5s, 31.0s and 57.0s.
+          Rubber stamp: a red #E3262B grunge stamp with a rough edge, rotated -12°. Animate
+          scale 180%→95%→100% over 5 frames, then a 1-frame white flash and a 4px camera
+          shake for 4 frames. Optional: a 3D wooden stamp handle that lifts away, as Cluely does
+          at 1.9–2.4s. Paper-thud SFX.
+          Win95 error window: recreate the "This program has performed an illegal operation
+          and will be shut down." dialog (the one already visible on the CRT at 8.0s) as a crisp,
+          full-size graphic so it can be scaled big and duplicated.
+          Card insert: for any 4:3 or archival clip. White 10px border, 2–4° tilt, drop shadow (0,
+          18px, 40px blur, 50%), on a background of the same clip scaled 130%, blurred 40px
+          and darkened 50%. Or use an off-white paper texture (Trailer 1 style). Never on flat
+          black.
+          Highlighter sweep: #FF2E7E at 55% with multiply blend. Wipes left→right across the
+          line over 8 frames, with a 100%→110% push-in on the document underneath.
+          Hand-drawn annotation: your yellow marker arrow, circle or underline, written on over
+          8–10 frames (stroke trim path), slight jitter.
+          Flash-star burst (Trailer 1): a white 4-point star flare that pops at a cut point for 4–6
+          frames. Use it on 2–3 big reveals only.
+
+
+  2.5 Depth masking (text behind subject)
+  Rotoscope the subject (a person, car or hill) and place the hero word on a layer between
+  the background and the subject, so part of the word hides behind them. Trailer 1 does this
+  with "podcast" (1.75–2.25s) and Trailer 2 with "today's guest" (4.0s). Use it at the
+  timestamps flagged [DEPTH] in Sections 3 and 4.
+
+
+
+
+                                                                                                Page 5 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  2.6 Texture and grade
+          Keep the dark vignette. Add a global film grain at 3–5% (monochrome, size 1.2) so
+          gameplay, archival and black cards feel like one piece.
+          Archival 1995 footage: add 1–2px chromatic aberration and a light VHS line wobble.
+          Keep modern GTA V/VI gameplay clean, so the eras read differently.
+          Black text cards: replace pure black with near-black #0E0E10 plus grain, and put a
+          darkened, blurred loop of relevant footage behind at 15–25% opacity. The frame
+          should never be dead black for more than 0.5s (see Section 4).
+
+
+  2.7 Sound design (the references are dense with it)
+          Every word pop: a soft tick or click at -24 dB (vary between 3 samples so it doesn't
+          sound mechanical).
+          Every key word: a short whoosh into it plus a low thump at -14 dB.
+          Every hard cut in the hook: a whoosh or swipe.
+          Specific moments: police siren sweep (0:00, 0:03.6), keyboard clatter under the CRT
+          (4.5–6.4s), the Windows 95 "critical stop" chord (7.5s), glitch stutters (8.8s, 32.0s),
+          stamp thud (30.4s), a reverse-cymbal riser into each big reveal (31.5s, 53.0s, 1:15.5),
+          and a bass drop or impact on "Grand Theft Auto" (53.5s).
+          Music: duck the bed by 6–8 dB under VO. Cut the music to silence for 2–6 frames right
+          before "broke.", "breaks." and the GTA logo, then hit on the word. That's a micro-
+          silence, not 1.6s (see 54.5s).
+          Final mix: keep integrated loudness at -14 LUFS, true peak -1 dBTP (you're already at
+          -14.0).
+
+
+  Section 3 — The hook, 0:00–0:12 (rebuild shot by shot)
+  Goal: a full-frame visual change every 0.4–0.7s for the first 4.5s, then at most every 1.2s
+  until 0:12. Right now the video opens on a small inset over black, and from 4.5s to 10.0s it
+  holds one over-the-shoulder shot. The VO stays exactly as it is. Only the visuals, type and
+  SFX change.
+
+  Rule for frame 0: the first frame must be the brightest, most saturated and most full-
+  bleed image in the opening. It doubles as the feed preview. No black, no inset.
+
+
+
+
+                                                                                               Page 6 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  Beat 1 — "Why does" (0:00.00–0:00.60)
+          Now: a small police-car clip floats in the centre of a black frame, with "Why" next to it.
+          Change to: full-bleed close-up of police lightbar flashing red/blue (GTA VI or GTA V
+          night footage). Frame 0 gets a 1-frame white flash at 70%, then the shot punches in
+          120%→100% over 12 frames, ease-out.
+          Type: "Why" as a hero word, 300px, tier B italic, centred, with the pink→white entry
+          from 2.3. "does" in tier A at 36px, tucked under its right edge.
+          SFX: siren "whoop" plus sub-bass hit on frame 0.
+
+
+  Beat 2 — "every GTA," (0:00.60–0:01.65)
+          Now: the 2x3 grid builds tile by tile on black, and a black hole is still visible at 1.0s.
+          Change to: the full 2x3 grid, filling the frame edge to edge with 4px black gutters.
+          Tiles slam in on a 2-frame stagger, top-left to bottom-right, so the grid is complete by
+          0:00.80. Each tile scales 108%→100% as it lands.
+          Labels: each tile gets its release year in tier C serif, 40px, white, bottom-left corner,
+          popping in with its tile (1997, 2001, 2002, 2004, 2008, 2013, matching the games
+          shown).
+          Type: "every GTA," centred over the grid on a 60%-black pill so it reads over six busy
+          images. "GTA," is the key word at 120px.
+          SFX: six quick ticks, one per tile, rising in pitch.
+
+
+  Beat 3 — "even [GTA VI logo] have you running" (0:01.65–0:03.60)
+          Now: the GTA VI gameplay shot holds about 2s with the logo pop. Good shot, but the
+          logo just appears and "have you running" is tiny on the right.
+          Change logo: slam in at 0:02.15 from 150%→94%→100% over 6 frames (overshoot), 1-
+          frame white flash, 6px camera shake for 6 frames. Add the flash-star burst behind the
+          logo.
+          Speed: ramp the gameplay underneath to 85% speed while the logo is up, then back
+          to 100% at 0:03.0.
+          Type: "even" in tier A to the left of the logo. At 0:02.85, "have you" in tier A plus
+          "running" in tier B at 130px. [DEPTH] "running" sits behind the shooter in the
+          foreground (rotoscope his head and shoulder).
+          Cut: add a hard cut at 0:03.00 to a tighter crop (150% scale) of the same shot, so this
+          2s stretch becomes two shots.
+
+
+
+
+                                                                                                       Page 7 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  Beat 4 — "from the cops?" (0:03.60–0:04.50)
+          Now: the SUV flip. Great moment, keep it.
+          Change: speed-ramp the flip to 40% for the 8 frames where the SUV leaves the
+          ground, then back to 100%.
+          Type: "cops?" at 160px, centred-low. Its entry colour alternates red #E3262B and blue
+           #2E6BFF every 2 frames for 8 frames (siren flicker), then settles to white.
+          SFX: metal crunch on the flip, then a 4-frame music dropout right before "Because".
+
+
+  Beat 5 — "Because back in 1995," (0:04.50–0:06.45)
+          Now: one over-the-shoulder CRT shot, with small text on the right.
+          4.50–5.10: keep the CRT over-the-shoulder shot, but start it at 112% and push to 116%.
+          Add keyboard-clatter SFX.
+          5.10–6.45: hard cut to a reverse/close shot of the CRT screen (crop the monitor to fill
+          the frame, with scanline texture). "1995" becomes a hero word: Didot/Playfair Black,
+          320px, white, with a VHS timestamp in the bottom-right corner ("PLAY ▶ MAR 22
+          1995", VCR mono font, 28px). That date comes from the Race'n'Chase design doc you
+          show at 17s, so it's a real detail. "Because back in" in tier A above it.
+
+
+  Beat 6 — "a game about chasing criminals" (0:06.45–0:07.60)
+          Transition: zoom-through into the monitor, scaling 100%→400% over 8 frames
+          centred on the screen with motion blur. Land on full-screen GTA1/Race'n'Chase top-
+          down footage of a cop car chasing a car. The game footage must fill the frame here,
+          not sit inside the monitor.
+          Annotation: yellow hand-drawn arrows labelled "you" (pointing at the cop) and
+          "criminal", same style as your 21s arrow.
+          Type: "a game about" in tier A, then "chasing criminals" with "criminals" in tier B.
+
+
+  Beat 7 — "broke." (0:07.60–0:08.80) — the hook's money shot
+          Now: "broke." appears over the CRT and the error box is small on the monitor.
+          Freeze: at 0:07.60, freeze-frame the gameplay. Apply RGB split 8px and a pink pixel-
+          glitch tear across 30% of the frame.
+          Error window: the Win95 error window from 2.4 slams in centred at 180% scale (about
+          60% of frame width).
+
+
+
+
+                                                                                                 Page 8 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+          Window trail: from 0:07.80, add 10 duplicate windows on a 2-frame stagger, each
+          offset +24px x / +18px y. That's the classic Win95 window-trail bug, cascading down-
+          right off the frame.
+          Type: "broke." as a hero word at 260px, tier B, lower third. Jitter it ±3px randomly
+          every frame.
+          SFX: Windows 95 "critical stop" chord, then a hard glitch stutter.
+
+
+  Beat 8 — "And that bug saved it." (0:08.80–0:10.00)
+          8.80–9.30: keep the cascading windows. "And that" in tier A, then "bug" in tier B at
+          150px with RGB split 4px that never fully settles.
+          9.30: all the error windows snap shut (scale to 0 over 3 frames, staggered in reverse
+          order). 1-frame white flash. The image snaps to clean, un-glitched, full-colour
+          gameplay of a cop ramming the player.
+          9.30–10.00: a highlight pill types on "THAT BUG SAVED IT" (pill spec in 2.4). Exit with
+          the pink pixel-glitch into the next shot.
+
+
+  Beat 9 — "It's 1995" (0:10.00–0:11.95)
+          Recommended: trim this VO line. "Back in 1995" was said 5 seconds earlier, so cutting
+          it saves about 1.9s of hook time and removes the repeat. Go straight from "saved it." to
+          "Dundee, Scotland."
+          If the line stays: present the archival office clip as a card insert (2.4) instead of full-
+          frame with heavy darkening. [DEPTH] Put "1995" in tier C serif at 280px behind the
+          developer's head. Cut to a second archival angle at 0:11.00 so it's never one 2s shot.
+
+
+  Optional: a sharper opening line (only if you can re-record)
+  The current line "Why does every GTA, even GTA VI, have you running from the cops?"
+  works, but takes 4.5s to land. Two shorter alternatives that put the payoff tease up front:
+
+          "Every GTA has you running from the cops. That's because of a bug from 1995." (about
+          3.5s)
+          "Running from the cops in GTA was never supposed to happen." (about 2.5s, and the
+          "bug" reveal then pays it off)
+
+
+
+
+                                                                                                  Page 9 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  Section 4 — Timestamped changes, 0:12 to the end
+  These use the original v04 timestamps, with the caption quoted. Apply them from the
+  bottom up. Anything not mentioned stays as it is.
+
+
+  0:12.0–0:15.5 — "Dundee, Scotland." / DMA Design / "the studio behind
+  Lemmings,"
+          12.0–13.5 Dundee: slow push 100%→108%. [DEPTH] "Dundee," sits behind the hill's
+          ridge line, so the hilltop overlaps the bottom of the letters. Put "Scotland." in tier A.
+          Add a location tag in the bottom-left: a small UK outline (white, 2px stroke) that zooms
+          toward a pink #FF2E7E pin on Dundee over 12 frames.
+          13.5–14.5 DMA logo: the logo pops 140%→95%→100% over 5 frames. Change the
+          "DMA Design" label under it into a small highlight pill.
+          15.0–15.5 Lemmings: keep. Add a yellow hand-drawn circle around one lemming as
+          "Lemmings," lands.
+
+
+  0:15.5–0:17.0 — "starts a new game."
+          Now: 4:3 interview footage sits on black with visible borders.
+          Change: make it a card insert (2.4): white border, 3° tilt, shadow, on a blurred and
+          darkened copy of itself. Push the card 100%→106%. "new game." stays tier B.
+
+
+  0:17.0–0:20.0 — Race'n'Chase design doc + "planned to take 18 months." (dead
+  zone 2)
+          17.0–18.0 doc: remove the black. Put the Race'n'Chase Game Design page full-frame
+          on off-white paper texture, tilted 4°, with a push 100%→115%. At 17.2, run a pink
+          highlighter sweep across "Race'n'Chase". At 17.6, draw a yellow circle around "March
+          22, 1995".
+          18.0–20.0 grid: put the 18-cell grid over the 1995 office footage, blurred 30px and
+          darkened to 25%. Make the cells larger (about 48px squares, 6px gaps). Fill one cell
+          every 2 frames with a tick SFX per cell. "18" in Didot-style serif at 220px to the left of
+          the grid, and "months." in tier B. Add a hard cut or 110% punch-in at 19.0 so it doesn't
+          hold for 2s.
+
+
+
+
+                                                                                                Page 10 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  0:20.0–0:25.0 — "In it, you're a police officer chasing criminals. But there's a
+  problem: dull."
+          Keep the split-screen. Animate the centre divider: a 4px white line that wipes
+          top→bottom over 6 frames at 20.0.
+          23.0 "But there's a problem:" cut the music to silence for 6 frames before "dull."
+          24.4 "dull." (anti-style gag): desaturate (already done, keep it), and drop the
+          gameplay to 70% speed. Set "dull." in a deliberately boring font: Arial Regular, grey
+          #8A8A8A , 120px, with no entry animation. It just appears. Breaking the style system
+          here is the joke. Add a flat-line monitor beep SFX.
+
+
+  0:25.0–0:27.6 — Gary Penn "awful… too sim-y" (dead zone 3)
+          Now: a static shot, and the quote only appears at 26.5, so about 1.5s has nothing
+          happening.
+          25.0: slow push 100%→112% across the whole hold.
+          25.1: replace the tiny grey name text with a Cluely-style name pill, lower-left: "GARY
+          PENN" in Montserrat ExtraBold 30px, with a second line "DMA Design · Gamasutra,
+          2011" at 20px, typed on.
+          25.2: a giant serif opening quote mark (“, 360px, #FF2E7E at 25%) fades in behind his
+          shoulder [DEPTH].
+          Quote text: set “awful…” and “too sim-y” in serif italic (Playfair Italic, 90px / 60px),
+          synced to the VO syllable. If there is silence before he says it, trim it.
+          26.3: cut to a tighter crop (140%, eyes and mouth) for "too sim-y".
+
+
+  0:28.0–0:32.0 — "So the people above the team keep trying to shut it down."
+          28.0–29.5 archival office: card insert style. Draw a yellow hand-drawn arrow pointing
+          up at the managers, timed to "above".
+          29.5–32.0 article:
+                 Push in 100%→118% across the shot.
+                 The headline "First Grand Theft Auto Was 'Almost Canned'" gets a pink highlighter
+                 sweep at 29.6.
+                 Then cut or whip-pan to the body copy and sweep "It was almost canned." at
+                 about 30.0.
+          30.3 on "shut it down": slam the red rubber stamp "CANNED" over the article, rotated
+          -12°, at about 45% of frame width, with a stamp thud, 1-frame flash and 4px shake.
+
+
+
+                                                                                                Page 11 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+          31.0–32.0 "Then, something": the article dims to 30% and blurs 0→20px. Reverse-
+          cymbal riser underneath.
+
+
+  0:32.0–0:33.0 — "breaks."
+          "breaks." as a hero word at 300px, entering with the pink pixel-glitch.
+          Flash the Win95 error window for 2 frames behind it (a callback to the hook). Glitch-
+          stutter SFX.
+
+
+  0:33.0–0:41.4 — "The police cars stop following… start trying to drive straight
+  through you. They ram. They chase. They don't let go. And suddenly, it's fun."
+          33.0–36.5: pacing is good. On "stop" (34.0), freeze the cop car for 4 frames with a red
+          outline glow, then release. On "straight" (36.0), add a whip-zoom with motion blur.
+          Yellow "you" arrow: the player's car gets one from 35.5, so viewers can follow it.
+          37.0–38.0 "They ram.": the right half of the frame is black. Fill it with a second ram
+          angle, or go full-frame. No black halves anywhere.
+          38.0–40.5 "They chase. They don't let go.": keep the lightning effect. Cut so each
+          sentence gets its own shot (about 0.7s each), with a hit SFX on "ram.", "chase." and "let
+          go."
+          41.0 "fun.": a hero word at 300px, with the flash-star burst and a 1-frame white flash
+          on the explosion. Music returns at full level here.
+
+
+  0:41.5–0:46.4 — "So the team flips the whole game. You're not the cop anymore.
+  Now you're the one being chased."
+          42.0 on "flips" (signature move): a literal 3D flip transition. The whole frame rotates
+          180° on the Y axis over 10 frames, with perspective (camera distance about 1500px),
+          motion blur, and a short whoosh. Flip from the daytime cop split-screen to the night
+          "being chased" split-screen.
+          44.2 "You're not the cop anymore.": "cop" gets struck through with a red #E3262B
+          marker line drawn over 6 frames.
+          45.0–46.3 "chased.": reuse the red/blue siren-flicker entry from hook beat 4, as a
+          callback. Keep the yellow "you" arrow.
+
+
+
+
+                                                                                               Page 12 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  0:46.5–0:52.0 — "Of course, 18 turn into thirty. Until finally, in Nov 1997" (dead
+  zone 4)
+          Now: about 5 seconds on black.
+          Background: put the blurred, darkened office or GTA1 footage (25% opacity) behind
+          the whole stretch.
+          46.5–49.5 grid:
+                 Show the 18-month grid from 18s again, centred and larger.
+                 A slot-machine digit counter rolls "18"→"30" in Didot-style serif at 220px. The
+                 digits blur-roll for 14 frames and land on "30" with a thump.
+                 The 12 extra cells fill red #E3262B row by row, one row every 3 frames, with
+                 accelerating ticks.
+                 "thirty." in tier B.
+                 Trim the lone "Of" frame at 46.5 so "Of course," appears as one unit.
+          49.5 "Until finally,": keep it to 0.5s, over footage, not black.
+          50.0–52.0 "In Nov 1997": cut this hold from 2.0s to about 1.0s. Visual: a tear-off
+          calendar page rips from "MAR 1995" to "NOV 1997" (paper-rip SFX), in Didot-style serif
+          at 200px.
+
+
+  0:52.0–0:58.0 — "it ships with a new name: Grand Theft Auto" + era montage
+          52.0–53.4: "it ships with a new name:" is too small. Bump it to tier A at 38px. Add a 6-
+          frame music dropout before the logo.
+          53.5 GTA logo: slam it in 160%→94%→100% over 6 frames, with the flash-star burst, 1-
+          frame white flash, 8px camera shake for 8 frames, and an impact boom plus sub drop.
+          54.5–56.2 silence: cut it from 1.65s to 0.4s maximum. Fill that 0.4s with the impact's
+          reverb tail, then a reverse cymbal into the box art. This removes about 1.2s.
+          55.5 box art: card insert with a 3° tilt and shadow.
+          56.0–58.0 montage (GTA III, Vice City, San Andreas, IV): keep the 0.5s cuts. Add a
+          release-year label in serif at 40px in each shot's bottom-left (2001, 2002, 2004, 2008),
+          matching hook beat 2. A whoosh on every cut.
+
+
+
+
+                                                                                                Page 13 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  0:58.0–1:07.4 — "That chase. The wanted stars. The sirens. The running." / "Don't
+  believe me? Open GTA Online and buy an arcade. One of the machines is
+  called…"
+          58.0–61.5: strong already. Make the wanted stars pop in one by one, 3 frames apart,
+          each with a small ding SFX. Make sure each phrase lands on its own cut.
+          61.5–62.5 "Don't believe me?": a 115% punch-in on the character, and set the line in a
+          highlight pill. It's a fourth-wall moment, so make it feel like one.
+          65.0–67.0 "One of the machines is called Race and Chase: Street Legal" (the payoff):
+                 At 66.2, draw a yellow hand-drawn circle around the "RACE AND CHASE: STREET
+                 LEGAL" listing.
+                 At 66.4, zoom 100%→170% into that label.
+                 At 66.6, a highlight pill types on "RACE AND CHASE".
+                 At 66.8, flash a split-screen of the 1995 Race'n'Chase design doc title (from 17s)
+                 beside it for 10 frames. That's the callback that proves the story.
+
+
+  1:07.5–1:11.4 — "So that's why you're always running. The whole series started
+  with a bug." (dead zone 5)
+          67.5–69.0: keep the VHS-rewind transitions.
+          69.0–71.4: replace the black. Bring back the hook's Win95 error-window cascade over
+          GTA1 top-down footage, as a full callback. "The whole series started with a" in tier A,
+          then "bug." as a hero word at 300px with RGB split. On "bug.", the windows snap shut
+          (like hook beat 8) and the frame cuts straight to GTA VI.
+
+
+  1:11.5–1:17.0 — "And GTA 6? It opens with Lucia already caught. So who's chasing
+  now?"
+          71.5–72.3 "GTA 6?": [DEPTH] behind Lucia's silhouette in the window light.
+          72.5–74.4: "Lucia" in tier B and "already caught." with "caught." in pink. [DEPTH]
+          "Lucia" partially behind her shoulder. Slow push 100%→110%.
+          74.5–75.4 "So who's chasing": two shots, about 0.4s each, with a whoosh between.
+          75.5–77.0 "now?" + GTA VI logo: a logo slam identical to hook beat 3 (bookend).
+          "now?" as a hero word at 220px, with the siren red/blue flicker entry. Hard cut out. No
+          fade.
+
+
+
+
+                                                                                                Page 14 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+  NEW 1:17.0–1:19.5 — CTA end card (Cluely-style)
+          Card: an off-white card with grain. Your profile header (avatar, handle, follower count)
+          slides up from the bottom over 8 frames. An animated cursor clicks "Follow" at 1:17.6
+          (button turns grey with a click SFX).
+          Line: "Comment “BUG” for the full story" in serif italic at 54px, with “BUG” in
+          #FF2E7E , typed on. Swap in whatever keyword or DM automation you actually run.
+
+          Loop: the last 6 frames cross to the flashing police lightbar from frame 0, so the video
+          loops seamlessly on Reels/Shorts.
+
+
+  Section 5 — Pacing rules and final QA
+  After the trims ("It's 1995" about 1.9s, "Nov 1997" about 1.0s, the logo silence about 1.2s, the
+  lone "Of" about 0.1s), the story runs about 73.4s, plus 2.5s of CTA, for about 76s total.
+
+
+  Pacing rules (paste with the rest)
+      1. 0–4.5s: a full-frame visual change every 0.4–0.7s. No inset on black, no build-ups that
+         leave empty frame.
+      2. 4.5–12s: no shot longer than 1.2s.
+      3. Rest of video: no shot longer than 2.0s. If a shot must hold longer (an interview or
+         document), give it a push-in of at least 8% plus a new text or graphic event every 0.7s
+         or less.
+      4. Black or plain text cards: 0.8s maximum, always with grain and a faint footage layer
+         behind.
+      5. Silence: 2–6 frame music dropouts before big words are good. Any silence over 0.5s is
+         not.
+      6. Hero words: 6–8 in the whole video. More than that and nothing feels big.
+      7. Callbacks: the Win95 error window (7.6s, 32.0s, 69.0s), the siren-flicker entry
+         ("cops?", "chased.", "now?") and the logo slam (2.15s, 53.5s, 75.5s) must look identical
+         each time. Repetition is what makes them feel designed.
+
+
+  QA checklist before preview export
+          Frame 0 is full-bleed, bright and readable as a still thumbnail
+          Scrub 0–4.5s at 1 frame at a time: no frame shows empty black or a half-built grid
+
+
+
+
+                                                                                               Page 15 of 16
+GTA Origin v04 — Edit Instructions for Claude
+
+
+
+
+          Every caption word uses the pink→white entry; no word appears before its VO
+          syllable
+          Setup text is 34px or larger @720p. Check on a phone at 50% brightness that it reads
+          No black half-frames (37–38s) and no flat-black backgrounds over 0.8s anywhere
+          All [DEPTH] moments have clean roto edges (check at 200% zoom)
+          Stamp, error-window cascade, 3D flip, 18→30 counter, highlighter sweeps and pills are
+          all in
+          Logo silence is 0.4s or less; music ducks 6–8 dB under VO; mix is -14 LUFS, -1 dBTP
+          CTA card is in, and the last frames loop back to frame 0
+          Watch once on a phone with sound off: the story still makes sense from the captions
+          alone
+
+
+
+
+                                                                                            Page 16 of 16
+
