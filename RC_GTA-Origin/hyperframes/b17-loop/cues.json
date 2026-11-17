@@ -9,6 +9,7 @@
   39,
   48,
   62,
+  74,
   97,
   100,
   109,
@@ -16,11 +17,31 @@
  ],
  "key_words": [
   7,
+  14,
   54,
-  74,
   129
  ],
  "sfx": [
+  {
+   "f": 7,
+   "name": "ding"
+  },
+  {
+   "f": 10,
+   "name": "ding"
+  },
+  {
+   "f": 13,
+   "name": "ding"
+  },
+  {
+   "f": 16,
+   "name": "ding"
+  },
+  {
+   "f": 19,
+   "name": "ding"
+  },
   {
    "f": 109,
    "name": "swipe"
@@ -40,5 +61,5 @@
  ],
  "dropouts": [],
  "archival": [],
- "note": "v05 (beat frames, f0 = 'And'; B17 is 168 f, hard cut to B18 at 168). word_pops = And 1, It 36, opens 39, with 48, already 62, So 97, who's 100, chasing 109, who 123; key_words = GTA 7 ('GTA 6?' [DEPTH]), Lucia 54 ([DEPTH]), caught. 74 (held pink), now? 129 (hero, appears / pops + blurs in, white: no siren flicker, U2). swipe 109 = the whoosh between the two 'So who's chasing' shots. The GTA VI logo slams in at 141 (end of 'now?'; identical to B1's slam): reverse_cymbal ENDS at 141, impact_boom + sub_drop on it (same as B13's slam: align with lane 1's B1 slam sound), then it holds 27 f to the cut. Legacy kept: now 129, music_stop 141 (MU8). Dropped: logo_in (S18 riser -> reverse_cymbal) and final_hit 161 (S19: the X4 tear + T10 break at the end are gone, no room before the B18 cut)."
+ "note": "v05 phase 2 (beat frames, f0 = 'And'; B17 = 168 f, hard cut to B18 at 168; local = beat + 6). word_pops / key_words = T.lockupCues of the four kit lockups: And 1, GTA 7 + 6? 14 (key row 'GTA 6?' [DEPTH]), It 36, opens 39, with 48, Lucia 54 (key [DEPTH]), already 62, caught. 74 (static pink, a tick), So 97, who's 100, chasing 109, who 123, now? 129 (hero pop). U12: the five M1 stars glitch in one by one 3 f apart from 'GTA' (7, 10, 13, 16, 19), a ding each. swipe 109 = the whoosh between the two 'So who's chasing' shots (the Tesseract cut). Logo slam (B1's exact kit call, from 150) on the end of 'now?' 141: reverse_cymbal ENDS on 141, impact_boom + sub_drop on the slam frame 141 (lane 1's convention: B1 63, B13 124; the visual hit is 4 f later, 145: 85% white flash, flash-star, 9 px shake), then the logo holds 27 f to the hard cut. Legacy kept: now 129, music_stop 141 (MU8)."
 }

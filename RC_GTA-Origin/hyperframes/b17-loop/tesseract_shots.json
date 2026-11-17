@@ -25,7 +25,7 @@
    "exit": "X1",
    "grade": "game",
    "notes": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129. Shot A (beat f92-109, 17 f = 0.57 s, after 'caught.' ends, 'So who's' on it): R17.2 @ 7.2 s, a shooter leaning out of the player's sedan while a police car and a police SUV with lights close in; static 100%. || v03 (REVISION_v03.md note 13, 'remove the random zooms'): framing back to v01's (only the plan's own moves); static 100% (v01: the chase cuts are static; v02 punch-in / push / accelerating push removed). || v02 (REVISION_v02.md, VO 115%): re-timed to the v02 beat (186f). Hard cut on \"who's\" (f100), 9f, full frame; framing v2: punch-in 112 -> 100% over the shot (easeOutExpo). SUBSTITUTE (Rule 5) for R17.3 (Trailer 2, not downloaded): official R17.2 'An Extended Look' (Netflix) @ 0:07.2-0:07.53 (shot 6.80-7.87): gameplay chase, a shooter leans out of the player's sedan while a police car and a police SUV with lights close in behind (game HUD: wanted stars top right, minimap bottom left, colours untouched).",
-   "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI： An Extended Look ｜ Now Playing ｜ Netflix [uphThaa97ig].mp4"
+   "source": "04_Broll/_originals/B17/R17.2__Grand Theft Auto VI\uff1a An Extended Look \uff5c Now Playing \uff5c Netflix [uphThaa97ig].mp4"
   },
   {
    "id": "B17-chase-2",
@@ -52,5 +52,6 @@
    "source": "04_Broll/_originals/B17/R17.4__Grand Theft Auto VI Launch Trailer [rz1B4B2yBZY].mp4"
   }
  ],
- "note": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129."
+ "note": "v05 (doc 74.5-75.4 'So who's chasing: two shots, about 0.4s each, with a whoosh between'): two chase shots instead of three. The Trailer 1 custody shots (v04 B17-trailer1-a/b/c, beat 0-100) moved INTO b17-loop for the [DEPTH] words (plates + Lucia cut-outs), so beat 0-92 is opaque HyperFrames; Tesseract shows only these two shots, beat 92-129.",
+ "timing": "v05"
 }

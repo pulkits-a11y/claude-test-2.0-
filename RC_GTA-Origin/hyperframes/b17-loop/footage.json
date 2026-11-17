@@ -1,13 +1,15 @@
 {
  "beat": "B17",
  "rids": [
+  "R17.1",
   "R17.4"
  ],
  "moments": {
   "R17.4": {
-   "in": 76.5,
-   "out": 77.6,
-   "note": "GTA VI launch trailer (official Rockstar) end card: the GTA VI logo, fully formed and static on the dark navy card (the trailer's own 58 px letterbox bars kept), before the city fades in behind it at 1:17.7. HF plays it at beat f141-167 in v02 (push 100 -> 115%, local 147-173); 1:16.7 is after the logo's intro glow has settled."
+   "in": 46.7333,
+   "out": 48.2333,
+   "crop": "1712:964:104:58",
+   "note": "v05: the dark card's faint loop behind 'now?' and the logo slam (local 135-180): the launch trailer's police-car shot (46.33-48.23 s; the Tesseract chase-2 shot is its 47.2-47.87 s), its last 1.5 s, the trailer's 58 px letterbox cropped (crop 1712:964:104:58, scaled to 1920x1080), in the kit dark card at 25%, blurred 40 px, darkened 50%. Cut by hand (ffmpeg -ss 46.7333 -t 1.5, crf 18) into assets/footage/R17.4.mp4. The v02-v04 end card (76.5-77.6 s) is no longer used: the logo is now lane 1's B1 cut-out (assets/logo/GTA6-logo__cutout.png = 04_Broll/B01/GTA6-logo__cutout.png, keyed from this trailer's own end card 77.47-77.63 s), slammed with B1's exact call."
   },
   "R17.1": {
    "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4",
@@ -31,5 +33,5 @@
    "note": "v05: Rockstar's official GTA VI Trailer 1 (client Drive library), the custody opening, now inside this composition for the [DEPTH] words: window 6.60-8.03 s (43 f, beat -6..36: Lucia at the barred window, silhouette turning to camera), officer 8.567-9.167 s (18 f, beat 36-54: the parole officer, Lucia's INMATE back), facing 9.70-10.967 s (38 f, beat 54-92: Lucia facing camera in the jumpsuit; the trailer cuts away at 10.966). Cut by hand with sync_footage's recipe (ffmpeg -ss <in> -frames:v <n>, fit 1920x1080, 30 fps, crf 14); the file is not named R17.1__* so sync_footage.py cannot find it. Cut-outs assets/depth/R17.1-window-cut.webm and R17.1-facing-cut.webm = hyperframes@0.9.52 remove-background (u2net_human_seg, CPU, quality best) of the window and facing clips: same frames, frame-locked."
   }
  },
- "note": "v05: R17.1 = the Trailer 1 custody shots (this composition, f0-92, plates + cut-outs; see moments.R17.1). R17.4 = the logo end card (synced). The chase shots (R17.2, R17.4 @ 47.2) are Tesseract-owned."
+ "note": "v05: R17.1 = the Trailer 1 custody shots (this composition, f0-92, plates + cut-outs; see moments.R17.1). R17.4 = the faint dark-card loop behind 'now?' + the logo (moments.R17.4); the GTA VI logo = B1's cut-out (lane 1, from R17.4's end card). The chase shots (R17.2, R17.4 @ 47.2) are Tesseract-owned."
 }
