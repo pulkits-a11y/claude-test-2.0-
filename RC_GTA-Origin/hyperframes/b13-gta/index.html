@@ -12,16 +12,20 @@
     <style>
       html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: transparent; }
       #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
-      /* v03 (note 4): the GTA 1 intro plays FULL FRAME: the 4:3 picture is cover-fitted (top/bottom cropped, never
-         stretched), centred: the close-up D head and the run-over D-man both stay in; darkened by media-treatment */
+      /* v04 (note 16): GTA 1 gameplay (R9.4, PC 4K) FULL FRAME under the lockup and the logo: the 4:3 picture is
+         cover-fitted (top/bottom cropped, never stretched; the top HUD bar falls outside), darkened by media-treatment */
       #b13-clip { object-fit: cover; object-position: 50% 50%; }
+      /* v04 (note 17): the original 1997 GRAND THEFT AUTO logo (cut out of the R13.2 box spine, transparent PNG), centred */
+      #b13-logo { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: flex; align-items: center; justify-content: center; }
+      #b13-logo-pop { display: block; }
+      #b13-logo-img { display: block; width: 960px; height: auto; }
     </style>
   </head>
   <body>
-    <!-- B13 b13-gta (v03): beat 205f (6.833s) + 6f handle each end = 217f.
+    <!-- B13 b13-gta (v04): beat 205f (6.833s) + 6f handle each end = 217f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 7.0333s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/.
-         v02: ../../REVISION_v02.md. v03: ../../REVISION_v03.md (note 4 "something completely different", 11-13, 16, 17).
+         v02: ../../REVISION_v02.md. v03: ../../REVISION_v03.md (note 4, 11-13, 16, 17). v04: ../../REVISION_v04.md (notes 15, 16, 17).
 
          Plan p.25 (B13 build), STORYBOARD.md B13. Local frame = beat frame + 6.
          beat  local  what
@@ -30,14 +34,14 @@
          27     33     "In" hard cut in on "in"; the lockup out (hard cut, next text)
          30     36     "Nov" hard cut in on "November"
          45     51     year digits 1-9-9-7 roll up (odometer, 8f each, 2f stagger, easeOutQuart), landed beat 59 (local 65) = cue year_digits (S12);
-                       card push 100 -> 104% (v01 value, easeInOutSine) to the cut
+                       card push 100 -> 104% (v01 value, easeInOutSine) to the cut; v04: "Nov 1997" glow-flickers 10f from "1997," then holds
          77-84  83-90  X3 white flash centred on the cut at beat 80 (local 86; ramp easeInQuad, fade easeOutQuad), silent
-         80     86     cut to R13.1 FULL FRAME (the GTA 1 intro: the DMA D-man slams into the ground; darkened), held-shot push
+         80     86     cut to R9.4 FULL FRAME (v04: GTA 1 gameplay, a car chased by a police car down a highway; darkened), held-shot push
                        100 -> 104% (easeInOutSine) to the cut at beat 181. Lockup "it ships with | a new name:" (hard cuts: it 86,
                        ships 88, with 97, a 104, new 107, name: 111)
-         124    130    title lockup "Grand Theft Auto." (Coolvetica Italic 190 px, centred): each word pops + blurs in on its frame
-                       (Grand 130 = cue type_on, Theft 136, Auto. 146); no type-on any more (S13 typing: see BEAT_NOTES v03)
-         140-181 146-187 title holds 41f (>= 1 s, the title hold) ... hard cut at beat 181 (local 187)
+         124    130    v04: the original 1997 GRAND THEFT AUTO logo (cut out of the R13.2 box spine), centred, 960 px: pops + blurs
+                       in on "Grand" (130 = cue type_on); no type-on (S13 typing: see BEAT_NOTES v03)
+         124-181 130-187 the logo holds through the title hold (41f after "Auto.") ... hard cut at beat 181 (local 187)
          181-205 187-211  TS only: GTA 1 big-box unboxing R13.2 in the L2 band (tesseract_shots.json); this composition is transparent
          205-211 211-217  tail handle: transparent (closing state = Tesseract footage) -->
     <div data-hf-id="hf-iwki" id="root" data-composition-id="b13-gta" data-start="0" data-duration="7.2333333" data-width="1920" data-height="1080">
@@ -52,23 +56,27 @@
 
       <!-- v03 lockup on the dark year card (ref 3 size, card: true): "Until finally,", words hard-cut in on their frames;
            out (hard cut) when "In" arrives (local 33) -->
-      <div id="b13-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="0.8667" data-track-index="3" style="--rc-lk-c: 40.36px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span class="rc-lw" data-rc-f="7">Until</span> <span class="rc-lw" data-rc-f="16">finally,</span></div></div></div>
+      <div data-hf-id="hf-jb0g" id="b13-lk-1" class="clip rc-lk" data-start="0.2333" data-duration="0.8667" data-track-index="3" style="--rc-lk-c: 40.36px; z-index: 20"><div data-hf-id="hf-fsmu" class="rc-lk__box"><div data-hf-id="hf-682k" class="rc-lk__row rc-lk__row--solo" style="font-size: 76px; line-height: 76px; height: 76px"><span data-hf-id="hf-7dzl" class="rc-lw" data-rc-f="7">Until</span> <span data-hf-id="hf-ln84" class="rc-lw" data-rc-f="16">finally,</span></div></div></div>
 
-      <!-- ===== v03 (note 4: "something completely different"; no T6 stack, no L6 frame): R13.1, the GTA 1 intro (the DMA
-           D-man), FULL FRAME beat 80..181, darkened (media-treatment: archival colour + exposure/highlights down, dark
-           aesthetic note 12). #b13-cam = the camera (untimed): v01's held-shot push 100 -> 104%, eased (note 13). The D-man's
-           impact frame (source 48.333 s) still lands on the X3 cut (beat 80). ===== -->
+      <!-- ===== v04 (note 16 "can change this b roll"): R9.4, GTA 1 gameplay (PC, 4K walkthrough @ 37:52.6): the player's car
+           speeding down a highway with a police car on its tail, FULL FRAME beat 80..181, darkened (media-treatment). Was the
+           D-man intro (R13.1) in v03. #b13-cam = the camera (untimed): v01's held-shot push 100 -> 104%, eased. ===== -->
       <div data-hf-id="hf-ysam" id="b13-cam" class="rc-cam" style="z-index: 2">
-        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-0.8,&quot;contrast&quot;:0,&quot;highlights&quot;:-0.4,&quot;shadows&quot;:0.04,&quot;whites&quot;:-0.3,&quot;blacks&quot;:0,&quot;temperature&quot;:0.06,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.2},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-2fkt" id="b13-clip" class="clip rc-full" src="assets/footage/R13.1.mp4" data-start="2.8666" data-duration="3.3667" data-media-start="0.4333" data-track-index="2" muted playsinline></video>
+        <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:-1.4,&quot;contrast&quot;:0,&quot;highlights&quot;:-0.3,&quot;shadows&quot;:0,&quot;whites&quot;:-0.2,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:-0.1},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-2fkt" id="b13-clip" class="clip rc-full" src="assets/footage/R9.4.mp4" data-start="2.8666" data-duration="3.3667" data-media-start="0.6000" data-track-index="2" muted playsinline></video>
       </div>
 
-      <!-- v03 (note 4) title lockups over the full-frame R13.1 (white + the ref 3 glow; outside the camera wrapper, steady):
-           "it ships with | a new name:" (small, centred, every word a hard cut on its frame), then the title "Grand Theft Auto."
-           big in Coolvetica Italic, each word starred (pop + blur-in, 6f expo.out) on its spoken frame (Grand 130, Theft 136,
-           Auto. 146), centred like ref 1; it holds through the title hold to the hard cut at local 187 (beat 181). Under the
-           X3 flash (z 40), so the flash reveals "it" with the picture. -->
-      <div id="b13-title-1" class="clip rc-lk" data-start="2.8666" data-duration="1.4667" data-track-index="3" style="--rc-lk-c: 69.82px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span class="rc-lw" data-rc-f="86">it</span> <span class="rc-lw" data-rc-f="88">ships</span> <span class="rc-lw" data-rc-f="97">with</span></div><div class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px; margin-top: 7.68px"><span class="rc-lw" data-rc-f="104">a</span> <span class="rc-lw" data-rc-f="107">new</span> <span class="rc-lw" data-rc-f="111">name:</span></div></div></div>
-      <div id="b13-title-2" class="clip rc-lk" data-start="4.3333" data-duration="1.9000" data-track-index="3" style="--rc-lk-c: 100.89px; z-index: 20"><div class="rc-lk__box"><div class="rc-lk__row rc-lk__row--key" style="font-size: 190px; line-height: 190px; height: 190px"><span class="rc-lw rc-lw--pop" data-rc-f="130">Grand</span> <span class="rc-lw rc-lw--pop" data-rc-f="136">Theft</span> <span class="rc-lw rc-lw--pop" data-rc-f="146">Auto.</span></div></div></div>
+      <!-- lockup over the full-frame B-roll (white + the ref 3 glow; outside the camera wrapper, steady): "it ships with |
+           a new name:" (small, centred, every word a hard cut on its frame), out on "Grand" (local 130) where the 1997 logo
+           takes over. Under the X3 flash (z 40), so the flash reveals "it" with the picture. -->
+      <div data-hf-id="hf-cxvj" id="b13-title-1" class="clip rc-lk" data-start="2.8666" data-duration="1.4667" data-track-index="3" style="--rc-lk-c: 69.82px; z-index: 20"><div data-hf-id="hf-ze3e" class="rc-lk__box"><div data-hf-id="hf-8zfn" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px"><span data-hf-id="hf-5g17" class="rc-lw" data-rc-f="86">it</span> <span data-hf-id="hf-mnq3" class="rc-lw" data-rc-f="88">ships</span> <span data-hf-id="hf-uvpw" class="rc-lw" data-rc-f="97">with</span></div><div data-hf-id="hf-fmlh" class="rc-lk__row rc-lk__row--solo" style="font-size: 64px; line-height: 64px; height: 64px; margin-top: 7.68px"><span data-hf-id="hf-l0s4" class="rc-lw" data-rc-f="104">a</span> <span data-hf-id="hf-773s" class="rc-lw" data-rc-f="107">new</span> <span data-hf-id="hf-xu5e" class="rc-lw" data-rc-f="111">name:</span></div></div></div>
+      <!-- v04 (note 17 "GTA logo"): the ORIGINAL 1997 logo instead of the typed title: the real GRAND *** THEFT AUTO ***
+           box logo (flame, stars, TM) cut out of R13.2 @ 52.1 s (the PC big box's spine, black ground keyed by brightness,
+           the "18" rating badge masked; never redrawn), 960 px wide, centred; pops + blurs in on "Grand" (local 130,
+           kit wordPops: full opacity on the frame, blur 20 px / 92% settling in 6f easeOutExpo) and holds through the title
+           hold to the hard cut at local 187 (beat 181) -->
+      <div data-hf-id="hf-v1v8" id="b13-logo" class="clip" data-start="4.3333" data-duration="1.9000" data-track-index="3" style="z-index: 20">
+        <div data-hf-id="hf-15mn" id="b13-logo-pop" data-rc-f="130"><img data-hf-id="hf-3xmi" id="b13-logo-img" src="assets/logo/gta1-logo.png" alt="Grand Theft Auto (1997 logo)"></div>
+      </div>
 
       <!-- ===== X3 white flash centred on the cut (local 83..90; silent) ===== -->
       <div data-hf-id="hf-d3w7" id="b13-x3" class="clip rc-x3" data-start="2.7666" data-duration="0.2667" data-track-index="7" style="z-index: 40"></div>
@@ -100,6 +108,10 @@
       S.hard(tl, '#b13-t3-in', { opacity: 0 }, { opacity: 1 }, f(W.in));
       S.hard(tl, '#b13-t3-month', { opacity: 0 }, { opacity: 1 }, f(W.November));
       T.yearCard(tl, '#b13-t3', f(W.y1997), { pushFrom: 0, pushUntil: f(CUT_L6), pushTo: 1.04 });   // last digit lands local 65 (beat 59); v03: v01's 104% push, eased
+      // v04 (note 15 "glow flicker"): the year line "Nov 1997" flickers like a neon tube catching while the digits roll in
+      // on "1997," (local 51, 10f of stepped flare / on / half / off, seed 15), then settles (4f easeOutCubic) to the steady
+      // soft glow. Before that, "Nov" (cut in on "November", local 36) already shows the steady glow (before: 'steady').
+      T.glowFlicker(tl, '#b13-t3 .rc-t3__year', f(W.y1997), { seed: 15, before: 'steady' });
 
       // ---- X3 white flash, centred on the cut into L6 (ramp 83-86 easeInQuad, 100% on 86, fade 86-91 easeOutQuad). Silent.
       X.flash(tl, '#b13-x3', f(CUT_L6));
@@ -108,8 +120,8 @@
       //      eased (easeInOutSine)
       C.push(tl, '#b13-cam', f(CUT_L6), { until: f(CUT_TS), from: 1.0, to: 1.04 });
 
-      // ---- the title (v03 note 4): "Grand" / "Theft" / "Auto." pop + blur in on their spoken frames inside the lockup
-      //      (lockupsWire above); it holds from "Auto." (beat 140) through the title hold to the hard cut at local 187 (beat 181).
+      // ---- v04 (note 17): the 1997 logo pops + blurs in on "Grand" (local 130 = beat 124 = cue type_on) and holds to the cut
+      T.wordPops(tl, '#b13-logo', null);
 
       // keep the timeline as long as the composition (the tail handle is transparent)
       tl.set({}, {}, f(217));

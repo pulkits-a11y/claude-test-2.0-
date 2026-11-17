@@ -3,7 +3,6 @@
  "rids": [
   "R5.2",
   "R5.1",
-  "R9.1",
   "R5.4"
  ],
  "moments": {
@@ -19,11 +18,15 @@
    "crop": "819:923:405:0",
    "note": "Front right = B5's right half returned (same window, same crop, same in-point): the red target car chased by the police bike. v02: on screen local 0-31 (media 0-1.03 s), torn by the X4 glitch from local 23."
   },
-  "R9.1": {
-   "in": 312.0,
-   "out": 317.2,
-   "crop": "370:418:257:38",
-   "note": "Back left: the player's getaway car (purple 'Beast GTS', white stripes) fleeing in GTA 1: skids away from the police car, turns into a corner and is pinned there by the chasing police cars (5:14.8-5:17). Crop keeps the picture area only (no black border) and leaves the 'Sakura240' watermark out. v02: on screen from the glitch's cut (local 31) at media 0.4333 s (= 312.43 s) to local 164 (316.87 s); 'Now' (local 103) = 314.83 s, the same source moment as v01, so the arrow aim holds."
+  "R11.L1": {
+   "source": "04_Broll/_originals/Drive2/GTA 6 4K Gameplay Trailer FULL NETFLIX EXTENDED.mp4",
+   "drive_id": "1zWNJBRMB6wT-EselqoGDEyPCorsatWdU",
+   "in": 936.4,
+   "out": 941.6,
+   "crop": "1916:2160:900:0",
+   "used": "936.9-941.33 (working clip 0.5-4.93 s, local 31-164)",
+   "manifest_free": true,
+   "note": "v04 (REVISION_v04 #13 'same clip' on the GTA 1 half, #14 'use B rolls of chase scenes from gta 6 or 5 check my drive link'): back left = the player's car being chased in GTA 6, replacing R9.1 (GTA 1, which repeated B9). From the client's Drive library (https://drive.google.com/drive/folders/1Li0fFSxSyK9EHdm2Y2T8mp5Pjg2TYvHK): 'GTA 6 4K Gameplay Trailer FULL NETFLIX EXTENDED' (Rockstar gameplay, 3840x2160 AV1 30 fps, 26:50), downloaded with gdown. 935.0-943.07 s is one continuous third-person shot of the getaway after the robbery: the dark sedan from behind, the accomplice leaning out of the window shooting back, cars swerving round it at a junction (939.4-940.6 s, a police SUV with light bar ahead at 939.5 s); wanted stars and minimap at the frame corners fall outside the crop. Not the moments B1/B2 (R1.2 31.6-32.5 = this video ~948-949 s), B15 (Extended Look 14.1 s) or B17 (7.2 / 11.9 s) use. Crop 1916:2160:900:0 = the 958:1080 half (portrait, slightly left of centre). MANIFEST-FREE R-ID (like b15-proof's R15.L1): not in broll_manifest.json, so not in 'rids'; working clip assets/footage/R11.L1.mp4 cut by hand with sync_footage's recipe: ffmpeg -ss 936.4 -i <source> -t 5.2 -an -vf crop=1916:2160:900:0,scale=w=1920:h=1080:force_original_aspect_ratio=decrease:force_divisible_by=2:flags=lanczos,setsar=1,fps=30 -c:v libx264 -crf 14 -preset medium -pix_fmt yuv420p -movflags +faststart (958x1080, 156 frames)."
   },
   "R5.4": {
    "in": 702.5,

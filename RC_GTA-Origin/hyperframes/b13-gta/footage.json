@@ -1,21 +1,20 @@
 {
  "beat": "B13",
  "rids": [
-  "R13.1",
+  "R9.4",
   "R13.2"
  ],
- "note": "R13.1 = L6 framed clip + its blurred back copy (in this composition). R13.2 = the L2 unboxing, Tesseract-owned (tesseract_shots.json); synced here only for reference.",
+ "note": "v04: R9.4 = the B-roll under the lockup and the logo (beat f80-181, in this composition). R13.2 = the L2 unboxing, Tesseract-owned (tesseract_shots.json); synced here for reference AND the source of the logo cut-out assets/logo/gta1-logo.png (R13.2 @ 52.1 s: the box spine, the 1997 GRAND THEFT AUTO logo on the black spine, keyed by brightness, the '18' rating badge masked out).",
  "moments": {
-  "R13.1": {
-   "in": 47.9,
-   "out": 51.9,
-   "crop": "632:474:51:1",
-   "note": "GTA 1 intro (PS1 boot): the DMA Design D-man logo animation - he slams into the ground (first impact frame 48.333 s = working-clip frame 13, put on the X3 cut at beat f80 in v02 (v01 f85)), smoke, then he lies run over with tyre tracks across him (51.0-51.85). 4:3 picture cropped out of its 720x480 pillarbox (cropdetect 642:476:46:0 -> exact 4:3 632:474:51:1). Used 48.333-51.70 (v02 beat f80-181; v01 48.333-51.80, f85-190): data-media-start 0.4333 on both L6 videos"
-  },
   "R13.2": {
    "in": 101.4,
    "out": 102.6,
    "note": "reference copy only (Tesseract cuts its own from the original): the opened big box, GTA jewel case + San Andreas map, hands at the edges; facecam PIP top-left (x<500, y<352) cropped out in tesseract_shots.json (v02: Tesseract shot f181-205, framing v2 keys)"
+  },
+  "R9.4": {
+   "in": 2272.0,
+   "out": 2276.5,
+   "note": "v04 (client note 16, 'can change this b roll'): GTA 1 (PC, 4K walkthrough 'Bent Cop Blues') @ 37:52.6-37:56.0: the player's yellow car speeding down the East Banana Grove highway (Vice City) with a police car on its tail, over the overpass, palm trees; 4:3 picture, cover-fitted full frame (the top HUD bar is cropped out by the 16:9 fit), darkened by media-treatment. Used 2272.6-2275.97 (beat f80-181, data-media-start 0.6) under 'it ships with | a new name:' and the 1997 logo. Replaces R13.1 (the D-man intro, v03)."
   }
  }
 }

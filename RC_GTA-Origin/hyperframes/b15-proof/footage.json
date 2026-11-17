@@ -7,7 +7,7 @@
   "R15.3": {
    "in": 155.9,
    "out": 234.1,
-   "note": "v04: one window 155.9-234.1 for four moments: 156.0-157.27 (running past the PENETRATOR cabinet, rows of cabinets; the game's help text 'Your Arcade daily earnings are stored in the safe' top-left), 161.0-162.0 (two Street Crimes cabinets by the MANAGER'S OFFICE door), 229.4-230.43 and 232.0-233.03 (the arcade floor walk-through: down the stairs; the row of Street Crimes cabinets) = the four interior cuts beat f-6..124 (v04 note 18; v03 one take 229.4-233.73); 191.033-192.17 = the in-game Arcade Games catalogue on the arcade's laptop, RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS (static page, 35 frames) -> beat f124-158 L7 plate (+ v04 highlighter on 'RACE AND CHASE:', source x 408-537, y 806-824)"
+   "note": "v04: one window 155.9-234.1 for four moments: 156.0-157.27 (running past the PENETRATOR cabinet, rows of cabinets; the game's help text 'Your Arcade daily earnings are stored in the safe' top-left), 160.6-161.6 (past the jukebox to two Street Crimes cabinets by the MANAGER'S OFFICE door), 229.4-230.43 and 232.0-233.03 (the arcade floor walk-through: down the stairs; the row of Street Crimes cabinets) = the four interior cuts beat f-6..124 (v04 note 18; v03 one take 229.4-233.73); 191.033-192.17 = the in-game Arcade Games catalogue on the arcade's laptop, RACE AND CHASE: STREET LEGAL / GET TRUCKIN / CROTCH ROCKETS (static page, 35 frames) -> beat f124-158 L7 plate (+ v04 highlighter on 'RACE AND CHASE:', source x 408-537, y 806-824)"
   },
   "R15.L1": {
    "source": "04_Broll/_originals/Drive2/Grand Theft Auto VI An Extended Look   Now Playing   Netflix.mp4",

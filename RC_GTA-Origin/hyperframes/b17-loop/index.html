@@ -27,12 +27,12 @@
     </style>
   </head>
   <body>
-    <!-- B17 b17-loop (v03): beat 186f (6.200s, incl. the 45f logo tail after "now?") + 6f handle each end = 198f.
+    <!-- B17 b17-loop (v04): beat 186f (6.200s, incl. the 45f logo tail after "now?") + 6f handle each end = 198f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 6.4000s (local frame = beat frame + 6).
          Word timings: words.json (comp_t, v02 VO 115%, unchanged in v03). Spec: ../../PRODUCTION_SPEC.md. Plan: ../../00_Brief/ (B17 p.27-28).
          v03: ../../REVISION_v03.md (notes 11-13, 16, 17: lockups, no random zooms: the Tesseract shots are back to v01's framing).
-         v02: ../../REVISION_v02.md (note 9: the Trailer 1 opening is the client's clip "Video by madebyajit [0-29s].mp4",
-         Lucia in the prison yard, Tesseract-owned; rules A-E).
+         v02: ../../REVISION_v02.md (rules A-E). v04: ../../REVISION_v04.md note 20: the Trailer 1 opening is now the official
+         GTA VI Trailer 1 from the client's Drive library (Lucia in custody), replacing the madebyajit fan edit; Tesseract-owned.
 
          Plan B17 (p.27-28): T1: And GTA 6? / It opens with / Lucia already caught. / So who's -> T2: chasing who now?
          At the final hit "now?" breaks apart with T10. L2 letterbox on the opening seconds of Trailer 1 (Lucia in
@@ -40,9 +40,9 @@
          8-10f each; on "now?" hard cut to black with the T2 text, then the GTA 6 logo (end card of R17.4) pushes in
          100% -> 115% over 20f with motion blur; final X4 tear on the logo, T10 on "now?", then black (logo tail).
 
-         Owners (beat frames): f0-100 TS+HF (Tesseract: the madebyajit Trailer 1 opening in the L2 band, two shots: the guard
-         + Lucia walking in the yard f0-10 (16:9 crop, the bars slide in over it), Lucia walking toward camera f10-100 (2.39:1
-         crop inside the band); HF: transparent + M1 stars + T1), f100-129 TS+HF (Tesseract: R17.2 @ 7.2 / R17.4 @ 47.2 /
+         Owners (beat frames): f0-100 TS+HF (Tesseract, v04 note 20: Rockstar's official GTA VI Trailer 1 opening in the L2
+         band, three shots of Lucia in custody: at the prison window f0-40 (the bars slide in over it), with the parole
+         officer f40-61, facing camera in the orange jumpsuit f61-100; HF: transparent + M1 stars + lockups), f100-129 TS+HF (Tesseract: R17.2 @ 7.2 / R17.4 @ 47.2 /
          R17.2 @ 11.9, 9-10f each, R17.2 substituting for the missing R17.3; HF: transparent + T1 "So who's" + T2 "chasing who"),
          f129-186 HF opaque (black, T2 "now?", the R17.4 logo push-in, X4 (8f) + T10 at f161, black tail from f169). tesseract_shots.json.
 
@@ -74,7 +74,7 @@
         <img data-hf-id="hf-2w85" class="rc-x4__still" src="assets/x4/b17-old.png" alt="">
       </div>
 
-      <!-- ===== f0-100: M1 wanted stars over the Trailer 1 opening (Lucia in the prison yard) ===== -->
+      <!-- ===== f0-100: M1 wanted stars over the Trailer 1 opening (Lucia in custody) ===== -->
       <div data-hf-id="hf-rai4" id="b17-stars" class="clip m1-stars" data-preset="hud" data-start="0" data-duration="3.5333" data-track-index="3" style="z-index: 20"></div>
 
       <!-- ===== v03 captions (notes 11, 16, 17): lockups like ref 1, every word a hard cut on its frame. Over the Trailer 1

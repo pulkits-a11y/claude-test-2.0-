@@ -1,5 +1,22 @@
 # B13 Grand Theft Auto: beat notes (b13-gta)
 
+## v04 (REVISION_v04.md, Frame.io review of v03): what changed
+
+Same beat (205f), composition (217f), words and cues (`{"year_digits": 45, "type_on": 124}`) as v03. Frames = beat frames.
+
+| What | v03 | v04 | Why (note) |
+|---|---|---|---|
+| Year card "Nov 1997" | steady glow | **glow flicker** (kit v04 `T.glowFlicker`, seed 15, `before: 'steady'`): the year line flickers like a neon tube catching for 10f while the digits roll in on "1997," (f45), settles in 4f (easeOutCubic) to the steady soft glow; "Nov" (cut in on "November", f30) shows the steady glow before. Flickering on "1997," rather than from "November" keeps "Nov" / the digits on their spoken words (as B2 / B3 flicker their year) | #15 |
+| B-roll under "it ships with \| a new name:" (f80-181) | R13.1, the D-man intro | **R9.4, GTA 1 gameplay** (PC 4K walkthrough "Bent Cop Blues" @ 2272.6-2275.97 s = 37:52.6-37:55.97): the player's car speeding down the East Banana Grove highway with a police car on its tail, over an overpass, palm trees; 4:3 cover-fitted full frame (the top HUD bar falls outside), darkened with media-treatment (exposure -1.4, highlights -0.3, whites -0.2, saturation -0.1). Same push 100 -> 104% eased, X3 flash on the cut kept | #16 |
+| Title | lockup "Grand Theft Auto." (Coolvetica Italic, words starred) | **the original 1997 GRAND THEFT AUTO logo** (flame, stars, TM): cut out of R13.2 (the PC big-box unboxing) @ 52.1 s, the box's black spine, keyed by brightness, the "18" rating badge masked out; never redrawn. `assets/logo/gta1-logo.png` (1152 x 604, transparent), shown 960 px wide, centred; pops + blurs in on "Grand" (f124, kit `wordPops`: full opacity on the frame, blur 20 px / 92% settling in 6f easeOutExpo), holds through the title hold to the hard cut at f181, then the L2 unboxing as before | #17 |
+| Card texture | | the dark year card carries the kit's static 9 px scanlines (kit v04, note 7) | #7 |
+
+`footage.json`: rids R9.4 + R13.2 (R13.1 no longer used here; its working clip was removed). Checks: `check --json` 0 errors.
+Snapshots `review/v04/` (20 frames + `sheet.jpg`: "Nov" with the steady glow, every flicker frame, the settle, the cut, the
+new B-roll under the lockup, the logo's pop frames and hold). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes on v02): what changed
 
 Same beat (205f), composition (217f), words and cues as v02; only what the notes ask changed. Frames = v02/v03 beat frames

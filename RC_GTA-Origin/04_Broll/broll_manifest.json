@@ -689,9 +689,12 @@
    "official_required": false,
    "folder": "04_Broll/B09",
    "file": null,
-   "status": "downloaded, not used",
+   "status": "used",
    "source_in": null,
-   "source_out": null
+   "source_out": null,
+   "used_in": [
+    "b13-gta"
+   ]
   },
   {
    "rid": "R9.5",
@@ -799,12 +802,10 @@
    "official_required": false,
    "folder": "04_Broll/B13",
    "file": null,
-   "status": "used",
+   "status": "downloaded, not used (v04: B13 B-roll changed)",
    "source_in": null,
    "source_out": null,
-   "used_in": [
-    "b13-gta"
-   ],
+   "used_in": [],
    "channel": "gtavideos"
   },
   {
@@ -1077,11 +1078,14 @@
    "note": "Official GTA 6 Trailer 1: opening seconds with Lucia in custody (B17 L2); B1 police moment / GTA 6 cell.",
    "official_required": true,
    "folder": "04_Broll/B01",
-   "file": null,
-   "status": "missing",
+   "file": "04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4",
+   "status": "used",
    "source_in": null,
    "source_out": null,
-   "status_note": "not downloaded (BLOCKING: B17 f0-107 is a labelled stand-in)"
+   "used_in": [
+    "b17-loop"
+   ],
+   "channel": "Rockstar Games (official Trailer 1, from your Drive library)"
   },
   {
    "rid": "R17.2",

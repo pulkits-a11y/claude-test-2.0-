@@ -21,7 +21,7 @@
     </style>
   </head>
   <body>
-    <!-- B11 b11-flip v03 (REVISION_v03: caption lockups, no v02 zooms, front = B5 v03's camera; glitch as v02): beat 152f (5.067s) + 6f handle each end = 164f.
+    <!-- B11 b11-flip v04 (REVISION_v04 #13/#14: GTA 6 getaway on the back-left half; v03 lockups, B5 camera, glitch as v02): beat 152f (5.067s) + 6f handle each end = 164f.
          Local time 0 = beat start - 6f; the beat runs local 0.2000s .. 5.2667s (local frames 6 .. 158).
          Word timings: words.json (v02 beat map, VO 115%). Spec: ../../PRODUCTION_SPEC.md, ../../REVISION_v02.md. Plan: ../../00_Brief/ (B11 p.24-25).
          Owner: HF for the whole beat (opaque). Into the beat: X1. T1 only (rotation p.13).
@@ -33,7 +33,7 @@
                        local 0 -> B6's cut on "One"), so local 0-22 repeat B5 local 0-22 frame for frame.
          local 23-30 : on "flips" (beat f17 = cues.json "glitch"): X4 tears the front frame (still = this composition's own
                        frame at local 23 without captions, assets/x4/b11-old.png via tools/make_x4_stills.py, x4_stills.json)
-         local 31    : the cut (hard): back side = the chased roles: left the player's getaway car fleeing (R9.1), right the
+         local 31    : the cut (hard): back side = the chased roles: left the player's getaway car fleeing (v04: GTA 6, R11.L1), right the
                        police SUV chasing (R5.4); v03 (note 13): v01's held-shot push 100 -> 104% (now sine.inOut) from the
                        cut to the end; v02's punch-in on the cut and keyword punch on "chased." are removed.
          local 103   : on "Now" the M2 arrow redraws over 8f and points at the getaway car (same arrow as B5 and v01).
@@ -44,10 +44,8 @@
       <!-- L11 split screen (plan p.15). Look: the B5 game grade {"adjust":{"contrast":0.15}} (plan p.10 "Game footage: punchy
            contrast"); the media treatment still carries the v01 flip's blur control, held at 0 (no blur anywhere in v02).
            Front = B5's working clips at B5's in-points (R5.2 @ 3:50.5 left / R5.1 @ 0:41.2 right, same crops, media-start 0),
-           local 0-31. Back (local 31 on, media-start 0.4333 s so the source time on "Now" is v01's: R9.1 5:14.83, where the arrow
-           was aimed): left R9.1 @ 5:12.0 (GTA 1, the purple getaway car skids away from the police car, turns and is pinned at
-           a corner by the chasing police cars), right R5.4 @ 11:42.5 (police SUV, lights flashing, speeding down a night
-           street). footage.json has the windows. No flip: the two faces carry no --front/--back modifier, so the kit's L11 auto-init (which sets a
+           local 0-31. Back (local 31 on): left v04 R11.L1 (GTA 6 getaway, media-start 0.5 s = 936.9 s; "Now" = 939.3 s), right
+           R5.4 @ 11:42.5 + media-start 0.4333 s (police SUV, lights flashing, speeding down a night street). footage.json has the windows. No flip: the two faces carry no --front/--back modifier, so the kit's L11 auto-init (which sets a
            flip's back face to rotationY -180, i.e. mirrored) leaves both flat; the back face covers the front from 31. -->
       <div data-hf-id="hf-lh9f" id="b11-split" class="rc-l11" style="z-index: 1">
         <div data-hf-id="hf-pc6j" id="b11-ground" class="clip rc-l11__ground" data-start="0.0000" data-duration="5.4666" data-track-index="1"></div>
@@ -64,11 +62,15 @@
           </div>
         </div>
         <div data-hf-id="hf-zozp" class="rc-l11__face b11-back">
-          <!-- left: the player's getaway car fleeing (R9.1 GTA 1 police chase; the plan allows R10.2 or R9.1: R10.2 never
-               shows police near the player's car, R9.1 does) -->
+          <!-- left (v04, REVISION_v04 #13 "same clip" / #14 "use B rolls of chase scenes from gta 6 or 5 check my drive link"):
+               the player's getaway car fleeing in GTA 6 = R11.L1, from the client's Drive library ("GTA 6 4K Gameplay Trailer
+               FULL NETFLIX EXTENDED", Rockstar gameplay, 936.4-941.6 s, portrait crop 1916:2160:900:0 of the 3840x2160 picture
+               = this 958 x 1080 half; working clip cut by hand with sync_footage's recipe, see footage.json): the dark sedan from
+               behind, the accomplice leaning out shooting back, cars swerving round it at the junction (939.4-940.6 s); the
+               wanted stars and the minimap sit outside the crop. Replaces v01-v03's GTA 1 R9.1, which repeated B9. -->
           <div data-hf-id="hf-io3z" class="rc-l11__half rc-l11__half--left">
             <div data-hf-id="hf-kavc" class="lc-push" data-layout-allow-overflow=""><div class="lc-key">
-              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b11-bl" class="clip" src="assets/footage/R9.1.mp4" data-start="1.0333" data-duration="4.4333" data-media-start="0.4333" data-track-index="4" muted playsinline style="--hf-color-grading-blur: 0"></video>
+              <video data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0.15,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:1,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:null,&quot;colorSpace&quot;:&quot;rec709&quot;}" id="b11-bl" class="clip" src="assets/footage/R11.L1.mp4" data-start="1.0333" data-duration="4.4333" data-media-start="0.5000" data-track-index="4" muted playsinline style="--hf-color-grading-blur: 0"></video>
             </div></div>
           </div>
           <!-- right: police cars chasing (R5.4 LSPDFR: the police SUV with lights flashing at speed, from behind) -->
@@ -87,11 +89,11 @@
         <img class="rc-x4__still" src="assets/x4/b11-old.png" alt="">
       </div>
 
-      <!-- M2 the "you" arrow (plan p.17, p.24-25): the same arrow as B5 (same seed, same hand, same geometry) redraws on
-           "Now" over 8f and points at the getaway car (back side, left half). Screen space (outside the camera wrappers).
-           Aimed on the real R9.1 frames: from 5:14.8 to 5:17 the getaway car sits at screen x 330-700, y 375-490; the tip
-           lands on its lower-left corner, the shaft rises from the open road at the lower left (yellow on grey), clear of
-           the police car (x 425-830, y 775-930) and of the T1 line; "you" at the tail. -->
+      <!-- M2 the "you" arrow (plan p.17, p.24-25): the same arrow as B5 (same seed, same hand) redraws on "Now" over 8f and
+           points at the player's car (back side, left half). Screen space (outside the camera wrappers). v04: re-aimed on the
+           GTA 6 getaway (R11.L1): from local 103 to 164 the sedan's rear sits at screen x ~240-760, y ~590-1000, so the tail
+           starts on the open road at the lower left (150, 950) and the tip ends at the car's rear-left corner (285, 730);
+           v03's aim (175, 800) -> (335, 520) would now land on the police SUV ahead of it. "you" at the tail. -->
       <div data-hf-id="hf-wrpo" id="b11-arrow" class="clip m2-arrow" data-start="3.4333" data-duration="2.0333" data-track-index="6" style="z-index: 20"></div>
 
       <!-- v03 T1 caption lockups (REVISION_v03 notes 11, 16, 17; ref 1; kit RCK.type.lockups), centred on x 960 with the
@@ -144,7 +146,7 @@
 
       // ---- M2 on "Now" (local 103): "you" hard-cuts in, shaft + head drawn by 111 (8f, kit ease out). Same seed and
       //      geometry as b05-copgame (the same arrow), now on the getaway car ----
-      M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [175, 800], to: [335, 520], bend: 0.16, seed: 7, label: 'you' });
+      M.arrowDraw(tl, '#b11-arrow', f(NOW), { from: [150, 950], to: [285, 730], bend: 0.16, seed: 7, label: 'you' });
 
       // ---- v03 caption lockups (every .rc-lk above): plain words hard-cut in on their frames, "chased." pops + blurs in ----
       T.lockupsWire(tl);

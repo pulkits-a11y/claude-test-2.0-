@@ -1,5 +1,19 @@
 # B15 The proof — `b15-proof` (lane B)
 
+## v04 (REVISION_v04.md, Frame.io review of v03): what changed
+
+Same beat (167f), composition (179f), words, lockups and cues as v03. Frames = beat frames (local = beat + 6).
+
+| What | v03 | v04 | Why (note) |
+|---|---|---|---|
+| Arcade interior (f-6..124) | one 4.3 s take (R15.3 @ 229.4-233.73) | **four cuts** from R15.3, same total length, cut on the voice: f-6..25 @ 229.40 s (down the stairs onto the floor) / f25-63 @ 156.00 s (running past the PENETRATOR cabinet, rows of cabinets; the game's help text "Your Arcade daily earnings are stored in the safe" shows top-left) / f63-94 @ 232.00 s (the row of Street Crimes cabinets) / f94-124 @ 160.60 s (past the jukebox to the Street Crimes cabinets by the MANAGER'S OFFICE). One push 100 -> 104% (eased) across the section as before. Working clip window 155.9-234.1 (re-cut by `sync_footage.py`; the catalogue plate's media start moved to 35.1333 = the same 191.033 s) | #18 |
+| Catalogue (L7, f124-150) | spotlight on RACE AND CHASE: STREET LEGAL | + a **highlighter swipe** over the game's "RACE AND CHASE:" heading (kit dark-surface highlight `.rc-t9-hl`: yellow band, 50% Screen; source x 402-543, y 801-829 around the text measured at x 408-537, y 806-824), wiping left -> right on "Race" (f139, 8f easeOutQuart); it sits inside the 1.4x reframe, so it pushes with the page and takes the X6 zoom blur | #19 |
+
+Checks: `check --json` 0 errors. Snapshots `review/v04/` (19 frames + `sheet.jpg`: each cut's first / last frame, the catalogue
+cut, the highlight frames, the zoom, the landing). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes on v02): what changed
 
 Same beat (167f), composition (179f), words and cues (`{"label": 139, "zoom_mid": 154}`) as v02; only what the notes ask

@@ -1,5 +1,20 @@
 # B17 The loop - `b17-loop` (beat 196f = 6.533 s incl. the 46f logo tail; composition 208f with 6f handles)
 
+## v04 (REVISION_v04.md, Frame.io review of v03): what changed
+
+Same beat, composition, words, lockups and cues as v03. The overlay (lockups, stars, "now?", logo, X4) is unchanged; the
+kit v04 adds its static scanlines to the black screen (f129-186).
+
+| What | v03 | v04 | Why (note) |
+|---|---|---|---|
+| Trailer 1 opening (Tesseract, f0-100) | the madebyajit fan edit (pink grade, halftone texture), 2 shots | **Rockstar's official GTA VI Trailer 1** from the client's Drive library (`04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4`, Drive id 1mkXZU995el2fMTAbhDtAaqTbW7NiL6nn, 1920x1080 30 fps, R17.1), whose opening is Lucia in custody: **f0-40 @ 6.60-7.93 s** Lucia in an orange INMATE jumpsuit at a barred window over the prison yard, turning her head (the L2 bars slide in over it, 8f); **f40-61 @ 8.55-9.25 s** the parole officer talking to her, her INMATE back in frame; **f61-100 @ 9.683-10.95 s** Lucia facing camera in the jumpsuit ("already caught."). Full 16:9 picture under the bars (faces inside the band), grade `game` (no neutralize), one band push 100 -> 104% eased split at the cuts | #20 |
+
+Mock-ups `review/v04/mock/` (the v03 overlay composited over the new source frames with the bars): the lockups at y 820
+sit on her jumpsuit / the desk, her face stays clear. Checks: `check --json` 0 errors. Snapshots `review/v04/` (black screen
+with scanlines, logo). Not rendered.
+
+---
+
 ## v03 (REVISION_v03.md, client notes on v02): what changed
 
 Same beat (186f), composition (198f), words and cues (`{"now": 129, "music_stop": 141, "logo_in": 141, "final_hit": 161}`)

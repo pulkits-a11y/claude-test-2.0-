@@ -10,5 +10,5 @@
    "note": "GTA VI launch trailer (official Rockstar) end card: the GTA VI logo, fully formed and static on the dark navy card (the trailer's own 58 px letterbox bars kept), before the city fades in behind it at 1:17.7. HF plays it at beat f141-167 in v02 (push 100 -> 115%, local 147-173); 1:16.7 is after the logo's intro glow has settled."
   }
  },
- "note": "v02: the Trailer 1 opening is the client's clip 04_Broll/_originals/Drive2/Video by madebyajit [0-29s].mp4 (note 9; credit madebyajit), Tesseract-owned: tesseract_shots.json carries its source, in-points, crops and grade neutralize; it is not synced here. Only R17.4's end card (the logo) plays in this composition."
+ "note": "v04 (note 20): the Trailer 1 opening is Rockstar's official GTA VI Trailer 1 from the client's Drive library (04_Broll/_originals/Drive2/Grand Theft Auto VI Trailer 1.mp4, R17.1; Lucia in custody, source 6.60-7.93 / 8.55-9.25 / 9.68-10.95 s), Tesseract-owned: tesseract_shots.json carries its source, in-points and grade 'game'; it is not synced here (the madebyajit fan edit of v02/v03 is no longer used). Only R17.4's end card (the logo) plays in this composition."
 }
