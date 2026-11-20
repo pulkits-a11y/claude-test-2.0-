@@ -1,0 +1,286 @@
+{
+ "fps": 30,
+ "rows": [
+  {
+   "id": "CLIP_OLEARY",
+   "tag": "Half Cover (live clip)",
+   "text": "Kevin O'Leary: \"...They don't need retail.\"",
+   "src_in": null,
+   "src_out": null,
+   "edit_in": 0,
+   "edit_out": 150
+  },
+  {
+   "id": 1,
+   "tag": "Text Centerpiece",
+   "text": "Well, turns out, Nike needed retail more than anyone.",
+   "src_in": 0.0,
+   "src_out": 3.628,
+   "edit_in": 158,
+   "edit_out": 267
+  },
+  {
+   "id": 2,
+   "tag": "B-roll",
+   "text": "That was 2021.",
+   "src_in": 4.111,
+   "src_out": 5.338,
+   "edit_in": 272,
+   "edit_out": 309
+  },
+  {
+   "id": 3,
+   "tag": "Full Cover",
+   "text": "Nike was soaring at almost 280 billion dollars.",
+   "src_in": 5.693,
+   "src_out": 9.162,
+   "edit_in": 314,
+   "edit_out": 418
+  },
+  {
+   "id": 4,
+   "tag": "Full Cover",
+   "text": "Today? Less than 60 billion dollars.",
+   "src_in": 9.553,
+   "src_out": 12.012,
+   "edit_in": 423,
+   "edit_out": 497
+  },
+  {
+   "id": 5,
+   "tag": "Full Cover",
+   "text": "Down almost 80 percent.",
+   "src_in": 12.326,
+   "src_out": 13.924,
+   "edit_in": 502,
+   "edit_out": 550
+  },
+  {
+   "id": 6,
+   "tag": "Full Cover",
+   "text": "It even got kicked out of the S&P 100.",
+   "src_in": 14.381,
+   "src_out": 16.495,
+   "edit_in": 555,
+   "edit_out": 618
+  },
+  {
+   "id": 7,
+   "tag": "Text Centerpiece",
+   "text": "So what happened?",
+   "src_in": 16.952,
+   "src_out": 18.151,
+   "edit_in": 626,
+   "edit_out": 662
+  },
+  {
+   "id": 8,
+   "tag": "B-roll",
+   "text": "In 2020, Nike hired eBay's ex-CEO, John Donahoe.",
+   "src_in": 18.616,
+   "src_out": 22.303,
+   "edit_in": 667,
+   "edit_out": 778
+  },
+  {
+   "id": 9,
+   "tag": "Full Cover",
+   "text": "His plan? Cut out the middleman.",
+   "src_in": 22.769,
+   "src_out": 24.558,
+   "edit_in": 783,
+   "edit_out": 837
+  },
+  {
+   "id": 10,
+   "tag": "Full Cover",
+   "text": "Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker.",
+   "src_in": 24.979,
+   "src_out": 29.082,
+   "edit_in": 842,
+   "edit_out": 965
+  },
+  {
+   "id": 11,
+   "tag": "B-roll",
+   "text": "Covid made it look genius.",
+   "src_in": 29.436,
+   "src_out": 31.038,
+   "edit_in": 970,
+   "edit_out": 1018
+  },
+  {
+   "id": 12,
+   "tag": "B-roll",
+   "text": "Then shoppers went back to stores, and found Hoka and On where Nike used to be.",
+   "src_in": 31.355,
+   "src_out": 35.294,
+   "edit_in": 1023,
+   "edit_out": 1141
+  },
+  {
+   "id": 13,
+   "tag": "B-roll",
+   "text": "And at the gym, Alo and Vuori became the new flex.",
+   "src_in": 35.645,
+   "src_out": 38.551,
+   "edit_in": 1146,
+   "edit_out": 1233
+  },
+  {
+   "id": "CLIP_DONAHOE",
+   "tag": "Half Cover (live clip)",
+   "text": "John Donahoe: \"...we had over-rotated away from wholesale a little more than we intended.\"",
+   "src_in": null,
+   "src_out": null,
+   "edit_in": 1241,
+   "edit_out": 1421
+  },
+  {
+   "id": 14,
+   "tag": "Text Centerpiece",
+   "text": "And that was only half the problem.",
+   "src_in": 38.95,
+   "src_out": 40.482,
+   "edit_in": 1429,
+   "edit_out": 1475
+  },
+  {
+   "id": 15,
+   "tag": "B-roll",
+   "text": "Meanwhile, Nike drowned the market in the same shoes.",
+   "src_in": 40.824,
+   "src_out": 43.907,
+   "edit_in": 1480,
+   "edit_out": 1572
+  },
+  {
+   "id": 16,
+   "tag": "Full Cover",
+   "text": "Dunks.",
+   "src_in": 44.265,
+   "src_out": 44.72,
+   "edit_in": 1577,
+   "edit_out": 1591
+  },
+  {
+   "id": 17,
+   "tag": "Full Cover",
+   "text": "Air Force 1s.",
+   "src_in": 44.883,
+   "src_out": 45.727,
+   "edit_in": 1596,
+   "edit_out": 1621
+  },
+  {
+   "id": 18,
+   "tag": "Full Cover",
+   "text": "Retro Jordans.",
+   "src_in": 45.929,
+   "src_out": 46.91,
+   "edit_in": 1626,
+   "edit_out": 1655
+  },
+  {
+   "id": 19,
+   "tag": "Special B-roll",
+   "text": "Until there was no line, and no hype.",
+   "src_in": 47.181,
+   "src_out": 49.24,
+   "edit_in": 1660,
+   "edit_out": 1722
+  },
+  {
+   "id": 20,
+   "tag": "B-roll",
+   "text": "In 2024, Donahoe was out.",
+   "src_in": 49.719,
+   "src_out": 51.864,
+   "edit_in": 1727,
+   "edit_out": 1791
+  },
+  {
+   "id": 21,
+   "tag": "B-roll",
+   "text": "His replacement, Elliott Hill, put it simply:",
+   "src_in": 52.257,
+   "src_out": 54.426,
+   "edit_in": 1796,
+   "edit_out": 1861
+  },
+  {
+   "id": "CLIP_HILL",
+   "tag": "Text Centerpiece (live audio)",
+   "text": "Elliott Hill: \"We lost our obsession with sport.\"",
+   "src_in": null,
+   "src_out": null,
+   "edit_in": 1869,
+   "edit_out": 1959
+  },
+  {
+   "id": 22,
+   "tag": "B-roll",
+   "text": "The fix has been brutal.",
+   "src_in": 54.825,
+   "src_out": 56.406,
+   "edit_in": 1964,
+   "edit_out": 2011
+  },
+  {
+   "id": 23,
+   "tag": "Full Cover",
+   "text": "Tariffs.",
+   "src_in": 56.757,
+   "src_out": 57.365,
+   "edit_in": 2016,
+   "edit_out": 2034
+  },
+  {
+   "id": 24,
+   "tag": "Full Cover",
+   "text": "China down 26 percent in one quarter.",
+   "src_in": 57.635,
+   "src_out": 60.236,
+   "edit_in": 2039,
+   "edit_out": 2117
+  },
+  {
+   "id": 25,
+   "tag": "Full Cover",
+   "text": "And Nike says sales keep falling into 2028.",
+   "src_in": 60.559,
+   "src_out": 63.296,
+   "edit_in": 2122,
+   "edit_out": 2204
+  },
+  {
+   "id": 26,
+   "tag": "B-roll",
+   "text": "Nike didn't lose to one brand.",
+   "src_in": 63.764,
+   "src_out": 65.364,
+   "edit_in": 2209,
+   "edit_out": 2257
+  },
+  {
+   "id": 27,
+   "tag": "Half Cover",
+   "text": "It gave up the shelf, the hype and the athlete.",
+   "src_in": 65.664,
+   "src_out": 68.279,
+   "edit_in": 2262,
+   "edit_out": 2340
+  },
+  {
+   "id": 28,
+   "tag": "Half Cover",
+   "text": "All at once.",
+   "src_in": 68.626,
+   "src_out": 69.408,
+   "edit_in": 2345,
+   "edit_out": 2368
+  }
+ ],
+ "endcard_in": 2372,
+ "total": 2440
+}

@@ -14,3 +14,7 @@ snapshots/
 node_modules/
 
 .DS_Store
+# Nike reel: B-roll is 1.2 GB (two files over GitHub's 100 MB limit). Re-download with
+# nike-reel/.tesseract-work/download_broll.sh, which verifies sizes against nike-reel/Sources/broll/manifest.tsv.
+nike-reel/Sources/broll/*.mp4
+nike-reel/Sources/broll/*.part
