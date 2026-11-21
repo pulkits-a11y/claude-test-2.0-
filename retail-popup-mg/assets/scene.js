@@ -1078,7 +1078,7 @@ const POST_FRAG = /* glsl */ `
       vec4 r = zRect[i];
       vec4 dta = zData[i];
       if (dta.x > 0.00001 || dta.y > 0.00001){
-        float mx = smoothstep(r.x - 0.03, r.x + 0.005, uv.x) * (1.0 - smoothstep(r.z - 0.005, r.z + 0.03, uv.x));
+        float mx = smoothstep(r.x, r.x + 0.008, uv.x) * (1.0 - smoothstep(r.z - 0.008, r.z + 0.01, uv.x));
         float my = smoothstep(r.y - 0.03, r.y + 0.005, uv.y) * (1.0 - smoothstep(r.w - 0.005, r.w + 0.03, uv.y));
         float mask = mx * my;
         if (mask > 0.001){
@@ -1167,6 +1167,15 @@ async function build() {
   ];
   const stores = defs.map((def, i) => {
     const s = def.build();
+    // rest-pose bounds (local) for the screen-space effect zones; the soft AO quads are
+    // mostly transparent margin, so they stay out of the bounds
+    s.group.updateMatrixWorld(true);
+    s.localBox = new THREE.Box3();
+    s.group.traverse((o) => {
+      if (!o.isMesh || o.material === aoMat) return;
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      s.localBox.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld));
+    });
     const mover = new THREE.Group();
     mover.position.set(def.x, 0, def.z);
     const squashG = new THREE.Group();
@@ -1178,8 +1187,6 @@ async function build() {
     s.x = def.x;
     s.z = def.z;
     s.pop = makePop({ ...pops[i], depth: s.height + 0.06, halfW: s.pw / 2 });
-    // rest-pose bounds (local) for the screen-space effect zones
-    s.localBox = new THREE.Box3().setFromObject(s.group);
     // contact shadow
     const cs = new THREE.Mesh(
       new THREE.PlaneGeometry(1, 1),
@@ -1358,14 +1365,17 @@ async function build() {
     let y0 = 1e9;
     let x1 = -1e9;
     let y1 = -1e9;
-    for (const c of corners) {
+    // corners are ordered x-major, then y, then z: indices 1 and 3 are the front-left ones
+    corners.forEach((c, ci) => {
       c.y = Math.max(0, c.y);
       const [u, v] = toUV(c);
-      x0 = Math.min(x0, u);
+      // the camera sits right of centre, so a store's visible left edge is its front-left edge;
+      // the hidden back-left corners would push the zone over the neighbour on the left
+      if (ci >= 4 || ci === 1 || ci === 3) x0 = Math.min(x0, u);
       x1 = Math.max(x1, u);
       y0 = Math.min(y0, v);
       y1 = Math.max(y1, v);
-    }
+    });
     postU.zRect.value[i].set(x0, y0, x1, y1);
     // screen velocity from the roof point one frame apart
     const roof = new THREE.Vector3(s.x, st.yb + s.height, s.z);
