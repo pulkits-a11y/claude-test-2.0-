@@ -905,7 +905,6 @@
         {
           "scope": "full",
           "id": "0b4bbcc5-5a90-4cfc-9572-acb6efb7a714-0",
-          "image": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/snapshots/45dbffee-edd4-4719-932c-44437f3fe463/frame-00-at-2.72s.png",
           "time": 2.72,
           "metadata": {
             "width": 1920,
@@ -920,12 +919,13 @@
           "revision": "9dffa52b-589b-4f29-8d61-605f880407c8",
           "inputFingerprint": "1cde98968d5769dc769fa2f69b458c221613196d50bcf5e079cee8c214710739",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "e9528e6e-7dae-4534-b835-9ba3b8eee961"
         },
         {
           "scope": "full",
           "id": "0b4bbcc5-5a90-4cfc-9572-acb6efb7a714-1",
-          "image": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/snapshots/45dbffee-edd4-4719-932c-44437f3fe463/frame-01-at-2.8s.png",
           "time": 2.8,
           "metadata": {
             "width": 1920,
@@ -940,12 +940,13 @@
           "revision": "9dffa52b-589b-4f29-8d61-605f880407c8",
           "inputFingerprint": "1cde98968d5769dc769fa2f69b458c221613196d50bcf5e079cee8c214710739",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "e9528e6e-7dae-4534-b835-9ba3b8eee961"
         },
         {
           "scope": "full",
           "id": "0b4bbcc5-5a90-4cfc-9572-acb6efb7a714-2",
-          "image": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/snapshots/45dbffee-edd4-4719-932c-44437f3fe463/frame-02-at-2.88s.png",
           "time": 2.88,
           "metadata": {
             "width": 1920,
@@ -960,12 +961,13 @@
           "revision": "9dffa52b-589b-4f29-8d61-605f880407c8",
           "inputFingerprint": "1cde98968d5769dc769fa2f69b458c221613196d50bcf5e079cee8c214710739",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "e9528e6e-7dae-4534-b835-9ba3b8eee961"
         },
         {
           "scope": "full",
           "id": "0b4bbcc5-5a90-4cfc-9572-acb6efb7a714-3",
-          "image": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/snapshots/45dbffee-edd4-4719-932c-44437f3fe463/frame-03-at-1.25s.png",
           "time": 1.25,
           "metadata": {
             "width": 1920,
@@ -980,12 +982,13 @@
           "revision": "9dffa52b-589b-4f29-8d61-605f880407c8",
           "inputFingerprint": "1cde98968d5769dc769fa2f69b458c221613196d50bcf5e079cee8c214710739",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "e9528e6e-7dae-4534-b835-9ba3b8eee961"
         },
         {
           "scope": "full",
           "id": "0b4bbcc5-5a90-4cfc-9572-acb6efb7a714-4",
-          "image": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/snapshots/45dbffee-edd4-4719-932c-44437f3fe463/frame-04-at-6.305s.png",
           "time": 6.305,
           "metadata": {
             "width": 1920,
@@ -1000,7 +1003,9 @@
           "revision": "9dffa52b-589b-4f29-8d61-605f880407c8",
           "inputFingerprint": "1cde98968d5769dc769fa2f69b458c221613196d50bcf5e079cee8c214710739",
           "inputScope": "local-project-files",
-          "attribution": "recorded-revision"
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "e9528e6e-7dae-4534-b835-9ba3b8eee961"
         }
       ],
       "c4c6cf9a-aba3-479a-b49a-be47265756ae": [
@@ -1251,15 +1256,15 @@
   },
   "renders": {
     "latest": {
-      "id": "8710642e-acd1-46be-9ac6-ee21a626ca05",
-      "completedAt": 1795254650909,
+      "id": "e9528e6e-7dae-4534-b835-9ba3b8eee961",
+      "completedAt": 1795255284713,
       "output": "/home/user/claude-test-2.0-/retail-popup-mg/renders/retail-popup-mg_preview.mp4",
       "status": "completed",
-      "revision": "233b19e6-da1e-4097-9476-682f4e43f545"
+      "revision": "c4c6cf9a-aba3-479a-b49a-be47265756ae"
     },
     "retainedRevisions": [
-      "233b19e6-da1e-4097-9476-682f4e43f545",
-      "a745d5b1-c780-4ced-9b84-e1dbace95f07"
+      "c4c6cf9a-aba3-479a-b49a-be47265756ae",
+      "233b19e6-da1e-4097-9476-682f4e43f545"
     ]
   },
   "pendingArtifactCleanup": []
