@@ -114,8 +114,7 @@ SHOTS = {
               (13, 37.68, "B80", 23.7, "Alo storefront mannequins")],
     "B_L15": [(15, None, "B43", 11.3, "SB Dunk on the floor"),
               (15, 41.507, "B41", 3.40, "stacked orange Nike boxes"),
-              (15, 41.96, "B42", 4.4, "rows of identical Panda Dunks"),
-              (15, 42.68, "BURST", 0.0, "burst"),
+              (15, 41.96, "B42", 1.6, "Panda Dunk on a Nike box (restocked 15 times)"),
               (15, 43.02, "B53", 11.3, "warehouse stacks of identical Nike boxes (same shoes)")],
     "S_L19": [(19, None, "B52", 21.3, "huge release-day line (Concord 11)"),
               (19, 47.68, "B52", 60.0, "release-day line along the wall, freezes on 'no' (hype) and drains to B&W")],
@@ -124,7 +123,7 @@ SHOTS = {
               (20, 51.48, "B57", 11.0, "Nike store exterior"),
               (21, None, "B59", 20.7, "Hill intern-to-CEO photo collage"),
               (21, 53.047, "B60", 10.5, "Hill walking"),
-              (21, 53.80, "B61", 4.05, "walking into the LeBron James Innovation Center")],
+              (21, 53.80, "B59", 25.6, "Hill studying the athlete wall in a Nike space")],
     "B_L22": [(22, None, "B62", 2.0, "Nike socks in packaging (inventory)"),
               (22, 55.28, "B57", 19.1, "outlet shelves of shoe boxes"),
               (22, 55.84, "B62", 21.0, "Elliott Hill close-up")],
@@ -141,6 +140,6 @@ FREEZE = {"S_L19": {"freeze_vo": 48.66, "drain_end_vo": 48.94, "clip": "B52", "s
 REVERSE = {"B79": (13.6, 11.4)}
 
 # Live clips: (file, source in s, source out s, linear gain to match the VO)
-CLIPS = {"CLIP_OLEARY": ("oleary.mov", 253.90, 254.40, 260.95, 0.944),
-         "CLIP_DONAHOE": ("donahoe.mov", 472.12, 472.62, 476.35, 0.457),
-         "CLIP_HILL": ("hill.wav", 527.83, 528.33, 530.12, 0.55)}   # (file, file start in source, clip in, clip out, gain)
+CLIPS = {"CLIP_OLEARY": ("oleary_fast.mov", 253.90, 254.40, 261.60, 0.944, 1.15),
+         "CLIP_DONAHOE": ("donahoe_fast.mov", 472.12, 472.62, 476.38, 0.457, 1.15),
+         "CLIP_HILL": ("hill.wav", 527.83, 528.33, 530.12, 0.55, 1.0)}   # (file, file start in source s, in, out, gain, speed)
