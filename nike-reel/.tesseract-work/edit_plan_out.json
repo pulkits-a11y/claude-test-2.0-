@@ -334,12 +334,12 @@
   {
    "seg": "B_L11",
    "clip": "B31",
-   "src": 15.0,
+   "src": 13.3,
    "start": 1035,
    "end": 1061,
-   "note": "Nike quote: digital growth of 82 percent",
-   "mezz_start": 14.5,
-   "asset": "B31_0015_00"
+   "note": "Nike quote card lands; '82 percent' highlight wipes on",
+   "mezz_start": 12.8,
+   "asset": "B31_0013_30"
   },
   {
    "seg": "B_L11",
@@ -634,13 +634,13 @@
   },
   {
    "seg": "H_L27",
-   "clip": "B78",
-   "src": 2.0,
+   "clip": "WN",
+   "src": 117.6,
    "start": 2250,
    "end": 2265,
-   "note": "ATHLETE: sprinter celebrating",
-   "mezz_start": 1.5,
-   "asset": "B78_0002_00"
+   "note": "ATHLETE: Michael Jordan dunk (CNBC archival)",
+   "mezz_start": 117.1,
+   "asset": "WN_0117_60"
   },
   {
    "seg": "H_L27",
@@ -684,30 +684,9 @@
   ],
   [
    8,
-   4,
-   "eBay's",
-   750,
-   "Blur-to-sharp"
-  ],
-  [
-   8,
    5,
    "ex-CEO,",
    768,
-   "Blur-to-sharp"
-  ],
-  [
-   8,
-   6,
-   "John",
-   792,
-   "Blur-to-sharp"
-  ],
-  [
-   8,
-   7,
-   "Donahoe.",
-   801,
    "Blur-to-sharp"
   ],
   [
@@ -1221,7 +1200,7 @@
    "Well, turns out, Nike NEEDED RETAIL more than anyone.",
    "Size-contrast build",
    "Blur-to-sharp",
-   "Flicker-in; camera zooms to each word (eased, motion blur)",
+   "Flicker-in; camera follows each word (ease-out, motion blur); 3 retail stills pop in; slide right, hard cut wide",
    "Cut out",
    "centered"
   ],
@@ -1236,10 +1215,10 @@
   ],
   [
    "TC3",
-   "And that was only HALF the problem.",
-   "Connector + keyword",
-   "Blur-to-sharp; Ghost-to-solid (only)",
-   "Flash-in",
+   "and that was only HALF THE PROBLEM.",
+   "Connector + keyword (TC2 style)",
+   "Ghost-to-solid (connector)",
+   "Block-to-word (HALF), Random letter reveal (THE PROBLEM.)",
    "Cut out",
    "centered"
   ],
@@ -1254,39 +1233,39 @@
   ],
   [
    "CLIP_OLEARY",
-   "This is WHY / you should be WORRIED / about the FUTURE / of a WALMART / or a FOOT LOCKER / They don't NEED RETAIL",
-   "Connector + keyword (reference: italic serif + big serif)",
+   "2021 (hard) / This is WHY | you should be WORRIED | about the FUTURE | of a WALMART | or a FOOT LOCKER | They don't NEED RETAIL",
+   "Connector + keyword (reference style), alternating left / right",
    "Blur-to-sharp",
    "Blur-to-sharp + texture",
    "Cut out",
-   "centre"
+   "left / right of speaker"
   ],
   [
    "CLIP_DONAHOE",
-   "we had OVER-ROTATED / away from WHOLESALE / a little MORE than / we INTENDED",
-   "Connector + keyword (reference style)",
-   "Blur-to-sharp",
-   "Blur-to-sharp + texture",
+   "2024 (hard) / we had OVER-ROTATED / away from WHOLESALE / a little MORE than / we INTENDED",
+   "Connector + keyword (reference style), one line under the TV",
+   "Hard start",
+   "Hard start + subtle glow",
    "Cut out",
-   "centre"
+   "under the TV"
   ],
   [
    "TC4",
-   "We lost our OBSESSION with sport.",
-   "Connector + keyword",
+   "\u201cWE LOST OUR OBSESSION WITH SPORT.\u201d + photo, ELLIOTT HILL / NIKE CEO",
+   "Connector + keyword (TC2 style)",
    "Blur-to-sharp",
-   "Flicker-in",
+   "Block-to-word (OBSESSION); camera follows each element",
    "Cut out",
-   "centered with photo"
+   "photo left, quote right"
   ],
   [
    "FC2",
-   "HIS PLAN? CUT OUT THE MIDDLEMAN. NIKE PULLED OUT OF STORES LIKE DSW AND DILLARD'S, AND SENT LESS TO FOOT LOCKER.",
-   "Caption line (special, TC2 style)",
+   "HIS PLAN? / CUT OUT / THE MIDDLEMAN. / NIKE PULLED OUT / OF STORES LIKE / DSW / AND DILLARD'S, / AND SENT LESS / TO FOOT LOCKER.",
+   "Caption line (special, TC2 style), placed in the MG's empty space",
    "Blur-to-sharp",
    "Block-to-word",
    "Cut out",
-   "centre"
+   "context dependent"
   ]
  ]
 }

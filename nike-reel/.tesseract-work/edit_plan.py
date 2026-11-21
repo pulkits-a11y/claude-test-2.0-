@@ -88,7 +88,7 @@ SEGMENTS = [
 ]
 
 # Burned-in bug positions: tr = top-right (CNBC / WSJ / Bloomberg), br = bottom-right (ABC7, WSJ Live, CNBC breaking).
-BUG = {"B04": "tr", "B19": "tr", "B21": "tr", "B31": "tr", "B35": "tr", "B41": "tr", "B59": "tr", "B74": "tr",
+BUG = {"WN": "tr", "B04": "tr", "B19": "tr", "B21": "tr", "B31": "tr", "B35": "tr", "B41": "tr", "B59": "tr", "B74": "tr",
        "B32": "tr", "B60": "tr", "B62": "tr", "B78": "tr", "B33": "tr", "B37": "tr", "B44": "tr", "B61": "tr",
        "B39": "tr", "B43": "tr", "B58": "br", "B18": "br", "B51": "br"}
 
@@ -101,7 +101,7 @@ SHOTS = {
              (8, 21.564, "B21", 17.0, "Donahoe at FN Achievement Awards")],
     "B_L11": [(11, None, "B30", 0.6, "shuttered shop, empty street (Covid)"),
               (11, 29.78, "B32", 16.7, "shopping on a phone (e-commerce boom)"),
-              (11, 30.32, "B31", 15.0, "Nike quote: digital growth of 82 percent"),
+              (11, 30.32, "B31", 13.30, "Nike quote card lands; '82 percent' highlight wipes on"),
               (12, None, "B37", 36.0, "store reopening, 'practice social distancing'"),
               (12, 32.28, "B39", 3.3, "Foot Locker storefront"),
               (12, 33.00, "B39", 8.7, "shoe wall with shoppers"),
@@ -131,7 +131,7 @@ SHOTS = {
               (26, 64.74, "B75", 350.0, "Foot Locker wall of mixed brands")],
     "H_L27": [(27, None, "B76", 286.9, "SHELF: near-empty wall, Nike store NYC"),
               (27, 67.02, "B51", 28.0, "HYPE: release line on the street (B77 = other moment of B51)"),
-              (27, 67.94, "B78", 2.0, "ATHLETE: sprinter celebrating"),
+              (27, 67.94, "WN", 117.6, "ATHLETE: Michael Jordan dunk (CNBC archival)"),
               (28, None, "B79", 13.6, "ALL AT ONCE: Swoosh shattering (B79 reversed 13.6s -> 11.4s)")],
 }
 # 2-3 frame burst inside "in the same" (Act 3's one burst): clip, source second, frames
