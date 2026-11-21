@@ -21,7 +21,7 @@ MEZZ = os.path.join(W, "mezz")
 os.makedirs(MEZZ, exist_ok=True)
 random.seed(7)
 
-clip_frames = {"CLIP_OLEARY": 150, "CLIP_DONAHOE": 180, "CLIP_HILL": 90}
+clip_frames = {k: round((v[3] - v[2]) * FPS) for k, v in CLIPS.items()}
 if len(sys.argv) == 4:
     clip_frames = dict(zip(["CLIP_OLEARY", "CLIP_DONAHOE", "CLIP_HILL"], map(int, sys.argv[1:])))
 tl, endcard_in = timeline(clip_frames)
@@ -125,6 +125,11 @@ endcard = json.loads(run("project", "import-video", "--project", P, "--file",
 run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "logo", "RawCanvas_R_white_alpha.png"),
     "--asset-id", "logo_r_white", "--kind", "image")
 run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "caption_scrim.png"), "--asset-id", "caption_scrim", "--kind", "image")
+CLIPINFO = {}
+for k, name in (("CLIP_OLEARY", "oleary"), ("CLIP_DONAHOE", "donahoe")):
+    CLIPINFO[k] = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(W, "clips", f"{name}.mov"), "--asset-id", name))
+run("project", "import-asset", "--project", P, "--file", os.path.join(W, "clips", "hill.wav"), "--asset-id", "hill_audio", "--kind", "audio")
+run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "hill_photo_B60_16s.png"), "--asset-id", "hill_photo", "--kind", "image")
 for f in ["Archivo[wdth,wght].ttf", "InstrumentSerif-Regular.ttf", "InstrumentSerif-Italic.ttf"]:
     run("project", "import-font", "--project", P, "--file", os.path.join(R, "Sources", "fonts", f))
 
@@ -256,6 +261,7 @@ def scene_group(name, a, b, drift=True):
 
 SMALL = ("archivo", 58, {"wght": 520, "wdth": 100}, 0)
 plan_rows = []    # typography plan for the report
+CLIP_VIDEO_LAYERS = []
 
 # ================= 4a. TC1 =================
 (_, a, b) = SEG["TC1"]
@@ -353,6 +359,123 @@ D.keys(panel, "positionY", [(0, -512, "hold"), (STEP, -256, "hold"), (2 * STEP, 
 plan_rows.append(("H_L27", "It gave up the SHELF, the HYPE and the ATHLETE. ALL AT ONCE.", "Connector + keyword",
                   "Ghost-to-solid (connectors)", "Panel wipe (loud, panel); Block-to-word (shelf/hype/athlete); Blur-to-sharp (all at once.)",
                   "Cut out", "top panel, left"))
+
+
+# ================= 4f. live clips: Half Covers (speaker left, panel right), lower thirds, clip captions, Hill quote =================
+CW = {k: v for k, v in json.load(open(os.path.join(W, "clip_words.json"))).items()}
+def cw(name, lo, hi):
+    return [w for w in CW[name] if lo - 0.05 <= w["s"] < hi]
+def cframe(key, t):
+    return tl[key][0] + round((t - CLIPS[key][2]) * FPS)
+def clip_caption_phrases(key, words, groups, keyset=()):
+    out = []
+    for gi, (i0, i1) in enumerate(groups):
+        ws = words[i0:i1]
+        f0 = grid(cframe(key, ws[0]["s"]))
+        f1 = grid(cframe(key, words[groups[gi + 1][0]]["s"])) if gi + 1 < len(groups) else None
+        out.append((ws, max(tl[key][0], f0), f1))
+    return out
+def place_clip_captions(key, phrases, end, cx=480, y=960, keyset=()):
+    for k, (ws, f0, f1) in enumerate(phrases):
+        f1 = f1 or end
+        words = [w["w"] for w in ws]
+        xs, Wd = layout_line(words, [spec] * len(words))
+        x0 = cx - Wd / 2
+        for j, w in enumerate(ws):
+            fw = max(f0, grid(cframe(key, w["s"])))
+            lid = D.text(f"clipcap {key} '{w['w']}'", w["w"], x0 + xs[j], y, "archivo", CAP_SIZE,
+                         GREEN if w["w"].strip('.,').lower() in keyset else TEXT, min(fw, f1 - 1), f1, cap, wght=CAP_W)
+            D.keys(lid, "opacity", [(0, 0, "linear"), (5, 100, "linear")])
+            D.keys(lid, "positionY", [(0, y + 16, "linear"), (5, y, "linear")])
+
+def lower_third(g, name, role, f0, f1):
+    D.rect(f"LT accent bar ({name})", 1040, 846, 6, 84, GREEN, f0, f1, g)
+    l1 = D.text(f"LT name {name}", name, 1068, 884, "archivo", 44, TEXT, f0, f1, g, wght=600); D.blur_to_sharp(l1)
+    l2 = D.text(f"LT role {name}", role, 1068, 926, "archivo", 30, [0.75, 0.75, 0.75, 1], f0 + STEP, f1, g, wght=500); D.blur_to_sharp(l2)
+
+for key, nm, role, small, big, big_font, words_lo in (
+        ("CLIP_OLEARY", "Kevin O'Leary", "CNBC, June 2021", ["They", "don't"], "need retail", "serif", 260.10),
+        ("CLIP_DONAHOE", "John Donahoe", "Nike CEO, April 2024", ["a", "little", "more", "than"], "we intended", "serif_italic", 475.20)):
+    a = tl[key][0]
+    b = SEG["A1_OLEARY" if key == "CLIP_OLEARY" else "A2_DONAHOE"][2]
+    g = scene_group(f"HALF COVER live clip {nm}", a, b, drift=False)
+    srcname = "oleary" if key == "CLIP_OLEARY" else "donahoe"
+    allw = CW["oleary_head"] + CW["oleary"] if key == "CLIP_OLEARY" else CW["donahoe"]
+    seen, words = set(), []
+    for w in sorted(allw, key=lambda w: w["s"]):
+        if CLIPS[key][2] - 0.1 <= w["s"] < CLIPS[key][3] and round(w["s"], 1) not in seen and w["w"] not in ("-",):
+            if w["w"].startswith("-") and words:
+                words[-1] = dict(words[-1], w=words[-1]["w"] + w["w"]); continue
+            seen.add(round(w["s"], 1)); words.append(w)
+    # overlay words (in the panel) and caption words (before the overlay)
+    ov = [w for w in words if w["s"] >= words_lo - 0.02]
+    pre = [w for w in words if w["s"] < words_lo - 0.02]
+    # keyword lockup in the panel
+    SM = ("archivo", 58, {"wght": 520, "wdth": 100}, 0)
+    pos, _ = row([w["w"] for w in ov[:len(small)]], [SM] * len(small), 430, align="left", x_left=1040)
+    for w, (x, y) in zip(ov[:len(small)], pos):
+        lid = D.text(f"HC {nm} '{w['w']}'", w["w"], x, y, "archivo", 58, TEXT, max(a, grid(cframe(key, w["s"]))), b, g, wght=520); D.ghost_to_solid(lid)
+    bigw = ov[len(small)]
+    size = 190
+    while advance(big, big_font, size, None, 0) > 800: size -= 6
+    fb = max(a, grid(cframe(key, bigw["s"])))
+    lid = D.text(f"HC {nm} KEY '{big}'", big, 1036, 640, big_font, size, GREEN, fb, b, g); D.vox(lid, size); D.pop(lid) if False else None
+    D.blur_to_sharp(lid, 16)
+    lower_third(g, nm, role, a + STEP, b)
+    D.rect(f"HC {nm} panel right half", 960, 0, 960, 1080, BG, a, b, g)
+    # speaker video (left half, crops out CNBC chyron/stock box)
+    info = CLIPINFO[key]
+    f_start, s_in, s_out, gain = CLIPS[key][1], CLIPS[key][2], CLIPS[key][3], CLIPS[key][4]
+    lidv = D.nid()
+    pos_v, sc_v = ((801, 795), 150) if key == "CLIP_OLEARY" else ((1342, 840), 200)
+    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": lidv, "name": f"LIVE CLIP {nm} ({s_in:.2f}-{s_out:.2f}s, own audio)",
+           "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
+           "sourceRange": {"start": round((s_in - f_start) * 1000), "duration": min(ms(b) - ms(a), info["durationMs"] - round((s_in - f_start) * 1000))},
+           "sourceIntrinsicDuration": info["durationMs"], "transform": xf(pos=pos_v, scale=sc_v),
+           "source": {"assetId": srcname, "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": gain})
+    n = b - a
+    D.keys(lidv, "volume", [(0, 0, "linear"), (3, gain, "linear"), (tl[key][1] - a - 1, gain, "linear"), (tl[key][1] - a + 2, 0, "linear")])
+    ng = D.effect(lidv, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 5})
+    D.effect_script(lidv, ng, "seed", "return Math.floor(input.time.seconds * 24);")
+    CLIP_VIDEO_LAYERS.append(None)
+    # captions for the speech before the overlay, 2-4 words, centred on the speaker half
+    if key == "CLIP_OLEARY":
+        groups = [(0, 3), (3, 6), (6, 9), (9, 12), (12, 15), (15, 18)]
+        keyset = {"walmart", "locker"}
+    else:
+        groups = [(0, 2), (2, 4), (4, 6)]
+        keyset = {"over-rotated", "over-rotated,"}
+    groups = [(i, min(j, len(pre))) for i, j in groups if i < len(pre)]
+    ph = clip_caption_phrases(key, pre, groups)
+    place_clip_captions(key, ph, fb, keyset=keyset)
+    plan_rows.append((key, f"{' '.join(small)} {big.upper()}", "Connector + keyword", "Ghost-to-solid", "Blur-to-sharp", "Cut out", "right-half panel"))
+
+# Hill: Text Centerpiece with live audio, quote marks and a small photo
+key = "CLIP_HILL"
+a = tl[key][0]; b = SEG["TC4_HILL"][2]
+g = scene_group("TC4 Hill quote: We lost our OBSESSION with sport.", a, b)
+hw = [w for w in CW["hill"] if CLIPS[key][2] - 0.1 <= w["s"] < CLIPS[key][3]]
+ph = D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "name": "Hill photo (B60 still)", "parentLayerId": g,
+            "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
+            "transform": {"anchorPoint": [0, 0], "position": [250, 392], "scale": [44, 44], "rotation": 0, "opacity": 100},
+            "source": {"assetId": "hill_photo", "fit": "contain"}})
+D.blur_to_sharp(ph["layerId"], 14)
+cap1 = D.text("Hill photo caption", "Elliott Hill, Nike CEO", 252, 702, "archivo", 26, [0.75, 0.75, 0.75, 1], a + STEP, b, g, wght=500)
+q = D.text("Hill quote mark", "“", 610, 560, "serif", 300, GREEN, a, b, g); D.vox(q, 300); D.ghost_to_solid(q)
+SMQ = ("archivo", 58, {"wght": 520, "wdth": 100}, 0)
+pos, _ = row([w["w"] for w in hw[0:3]], [SMQ] * 3, 448, align="left", x_left=760)
+for w, (x, y) in zip(hw[0:3], pos):
+    lid = D.text(f"Hill '{w['w']}'", w["w"], x, y, "archivo", 58, TEXT, max(a, grid(cframe(key, w["s"]))), b, g, wght=520); D.vox(lid, 58); D.blur_to_sharp(lid)
+fo = max(a, grid(cframe(key, hw[3]["s"])))
+lid = D.text("Hill KEY 'obsession'", "obsession", 752, 650, "serif_italic", 210, GREEN, fo, b, g); D.vox(lid, 210); D.flicker_in(lid)
+pos, _ = row([hw[4]["w"], hw[5]["w"].rstrip(".") + ".”"], [SMQ] * 2, 748, align="left", x_left=760)
+for w, txt_, (x, y) in zip(hw[4:6], (hw[4]["w"], hw[5]["w"].rstrip(".") + ".”"), pos):
+    lid = D.text(f"Hill '{txt_}'", txt_, x, y, "archivo", 58, TEXT, max(a, grid(cframe(key, w["s"]))), b, g, wght=520); D.vox(lid, 58); D.blur_to_sharp(lid)
+D.add({"type": "createFxAudioLayer", "compositionId": C, "layerId": D.nid(), "name": "LIVE AUDIO Elliott Hill (earnings call)",
+       "activeRange": {"start": ms(a), "duration": ms(tl[key][1]) - ms(a) + 60},
+       "sourceRange": {"start": round((CLIPS[key][2] - CLIPS[key][1]) * 1000), "duration": ms(tl[key][1]) - ms(a) + 60},
+       "sourceIntrinsicDuration": 2800, "source": {"assetId": "hill_audio"}, "volume": CLIPS[key][4]})
+plan_rows.append(("TC4", "We lost our OBSESSION with sport.", "Connector + keyword", "Blur-to-sharp", "Flicker-in", "Cut out", "centered with photo"))
 
 # ================= 5. placeholder screens =================
 for (name, kind, first, label), a, b in zip(SEGMENTS, seg_start, seg_end):

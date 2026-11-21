@@ -108,7 +108,10 @@ SHOTS = {
               (12, 33.48, "B35", 20.85, "Hoka held up to camera"),
               (12, 34.08, "B39", 11.0, "On shoe close-up"),
               (12, 34.48, "B38", 54.4, "Hoka shelf, HOKA NYC flagship"),
-              (13, None, "MISSING", 0.0, "B80-B82 Alo / Vuori not available")],
+              (13, None, "B80", 164.5, "athleisure racks, Alo NYC"),
+              (13, 36.537, "B80", 13.4, "Alo storefront logo"),
+              (13, 37.04, "B82", 27.8, "inside the new Vuori store"),
+              (13, 37.68, "B80", 23.7, "Alo storefront mannequins")],
     "B_L15": [(15, None, "B43", 11.3, "SB Dunk on the floor"),
               (15, 41.507, "B41", 3.40, "stacked orange Nike boxes"),
               (15, 41.96, "B42", 4.4, "rows of identical Panda Dunks"),
@@ -136,3 +139,8 @@ SHOTS = {
 BURST = [("B42", 2.0, 3), ("B41", 9.25, 2), ("B42", 6.9, 3), ("B57", 24.0, 2)]
 FREEZE = {"S_L19": {"freeze_vo": 48.66, "drain_end_vo": 48.94, "clip": "B52", "src": 60.0}}   # second "no" -> "hype"
 REVERSE = {"B79": (13.6, 11.4)}
+
+# Live clips: (file, source in s, source out s, linear gain to match the VO)
+CLIPS = {"CLIP_OLEARY": ("oleary.mov", 253.90, 254.40, 260.95, 0.944),
+         "CLIP_DONAHOE": ("donahoe.mov", 472.12, 472.62, 476.35, 0.457),
+         "CLIP_HILL": ("hill.wav", 527.83, 528.33, 530.12, 0.55)}   # (file, file start in source, clip in, clip out, gain)

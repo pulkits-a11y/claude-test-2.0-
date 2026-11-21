@@ -1,263 +1,263 @@
 {
  "clip_frames": {
-  "CLIP_OLEARY": 150,
-  "CLIP_DONAHOE": 180,
-  "CLIP_HILL": 90
+  "CLIP_OLEARY": 196,
+  "CLIP_DONAHOE": 112,
+  "CLIP_HILL": 54
  },
  "timeline": {
   "CLIP_OLEARY": [
    0,
-   150
+   196
   ],
   "1": [
-   158,
-   267
+   204,
+   313
   ],
   "2": [
-   272,
-   309
+   318,
+   355
   ],
   "3": [
-   314,
-   418
+   360,
+   464
   ],
   "4": [
-   423,
-   497
+   469,
+   543
   ],
   "5": [
-   502,
-   550
+   548,
+   596
   ],
   "6": [
-   555,
-   618
+   601,
+   664
   ],
   "7": [
-   626,
-   662
+   672,
+   708
   ],
   "8": [
-   667,
-   778
+   713,
+   824
   ],
   "9": [
-   783,
-   837
+   829,
+   883
   ],
   "10": [
-   842,
-   965
+   888,
+   1011
   ],
   "11": [
-   970,
-   1018
+   1016,
+   1064
   ],
   "12": [
-   1023,
-   1141
+   1069,
+   1187
   ],
   "13": [
-   1146,
-   1233
+   1192,
+   1279
   ],
   "CLIP_DONAHOE": [
-   1241,
-   1421
+   1287,
+   1399
   ],
   "14": [
-   1429,
-   1475
+   1407,
+   1453
   ],
   "15": [
-   1480,
-   1572
+   1458,
+   1550
   ],
   "16": [
-   1577,
-   1591
+   1555,
+   1569
   ],
   "17": [
-   1596,
-   1621
+   1574,
+   1599
   ],
   "18": [
-   1626,
-   1655
+   1604,
+   1633
   ],
   "19": [
-   1660,
-   1722
+   1638,
+   1700
   ],
   "20": [
-   1727,
-   1791
+   1705,
+   1769
   ],
   "21": [
-   1796,
-   1861
+   1774,
+   1839
   ],
   "CLIP_HILL": [
-   1869,
-   1959
+   1847,
+   1901
   ],
   "22": [
-   1964,
-   2011
+   1906,
+   1953
   ],
   "23": [
-   2016,
-   2034
+   1958,
+   1976
   ],
   "24": [
-   2039,
-   2117
+   1981,
+   2059
   ],
   "25": [
-   2122,
-   2204
+   2064,
+   2146
   ],
   "26": [
-   2209,
-   2257
+   2151,
+   2199
   ],
   "27": [
-   2262,
-   2340
+   2204,
+   2282
   ],
   "28": [
-   2345,
-   2368
+   2287,
+   2310
   ]
  },
- "endcard_in": 2372,
- "total": 2439,
+ "endcard_in": 2314,
+ "total": 2381,
  "segments": [
   {
    "name": "A1_OLEARY",
    "kind": "CLIP",
    "label": "LIVE CLIP: Kevin O'Leary (Half Cover)",
    "start": 0,
-   "end": 158
+   "end": 204
   },
   {
    "name": "TC1",
    "kind": "TC",
    "label": "Text Centerpiece: Well, turns out, Nike needed retail more than anyone.",
-   "start": 158,
-   "end": 272
+   "start": 204,
+   "end": 318
   },
   {
    "name": "FC1",
    "kind": "FC",
    "label": "FULL COVER placeholder FC1 (lines 2-6)",
-   "start": 272,
-   "end": 626
+   "start": 318,
+   "end": 672
   },
   {
    "name": "TC2",
    "kind": "TC",
    "label": "Text Centerpiece: So what happened?",
-   "start": 626,
-   "end": 667
+   "start": 672,
+   "end": 713
   },
   {
    "name": "B_L8",
    "kind": "BROLL",
    "label": null,
-   "start": 667,
-   "end": 783
+   "start": 713,
+   "end": 829
   },
   {
    "name": "FC2",
    "kind": "FC",
    "label": "FULL COVER placeholder FC2 (lines 9-10)",
-   "start": 783,
-   "end": 970
+   "start": 829,
+   "end": 1016
   },
   {
    "name": "B_L11",
    "kind": "BROLL",
    "label": null,
-   "start": 970,
-   "end": 1241
+   "start": 1016,
+   "end": 1287
   },
   {
    "name": "A2_DONAHOE",
    "kind": "CLIP",
    "label": "LIVE CLIP: John Donahoe (Half Cover)",
-   "start": 1241,
-   "end": 1429
+   "start": 1287,
+   "end": 1407
   },
   {
    "name": "TC3",
    "kind": "TC",
    "label": "Text Centerpiece: And that was only half the problem.",
-   "start": 1429,
-   "end": 1480
+   "start": 1407,
+   "end": 1458
   },
   {
    "name": "B_L15",
    "kind": "BROLL",
    "label": null,
-   "start": 1480,
-   "end": 1577
+   "start": 1458,
+   "end": 1555
   },
   {
    "name": "FC3",
    "kind": "FC",
    "label": "FULL COVER placeholder FC3 (lines 16-18)",
-   "start": 1577,
-   "end": 1660
+   "start": 1555,
+   "end": 1638
   },
   {
    "name": "S_L19",
    "kind": "SPECIAL",
    "label": null,
-   "start": 1660,
-   "end": 1727
+   "start": 1638,
+   "end": 1705
   },
   {
    "name": "B_L20",
    "kind": "BROLL",
    "label": null,
-   "start": 1727,
-   "end": 1869
+   "start": 1705,
+   "end": 1847
   },
   {
    "name": "TC4_HILL",
    "kind": "CLIP",
    "label": "Text Centerpiece + LIVE AUDIO: Elliott Hill",
-   "start": 1869,
-   "end": 1964
+   "start": 1847,
+   "end": 1906
   },
   {
    "name": "B_L22",
    "kind": "BROLL",
    "label": null,
-   "start": 1964,
-   "end": 2016
+   "start": 1906,
+   "end": 1958
   },
   {
    "name": "FC4",
    "kind": "FC",
    "label": "FULL COVER placeholder FC4 (lines 23-25)",
-   "start": 2016,
-   "end": 2209
+   "start": 1958,
+   "end": 2151
   },
   {
    "name": "B_L26",
    "kind": "BROLL",
    "label": null,
-   "start": 2209,
-   "end": 2262
+   "start": 2151,
+   "end": 2204
   },
   {
    "name": "H_L27",
    "kind": "HALF",
    "label": null,
-   "start": 2262,
-   "end": 2372
+   "start": 2204,
+   "end": 2314
   }
  ],
  "shots": [
@@ -265,8 +265,8 @@
    "seg": "B_L8",
    "clip": "B19",
    "src": 13.4,
-   "start": 667,
-   "end": 694,
+   "start": 713,
+   "end": 740,
    "note": "Donahoe on CNBC set, 2020",
    "mezz_start": 12.9,
    "asset": "B19_0013_40"
@@ -275,8 +275,8 @@
    "seg": "B_L8",
    "clip": "B21",
    "src": 10.3,
-   "start": 694,
-   "end": 713,
+   "start": 740,
+   "end": 759,
    "note": "Donahoe portrait (Nike hired)",
    "mezz_start": 9.8,
    "asset": "B21_0010_30"
@@ -285,8 +285,8 @@
    "seg": "B_L8",
    "clip": "B21",
    "src": 13.7,
-   "start": 713,
-   "end": 730,
+   "start": 759,
+   "end": 776,
    "note": "eBay sign",
    "mezz_start": 13.2,
    "asset": "B21_0013_70"
@@ -295,8 +295,8 @@
    "seg": "B_L8",
    "clip": "B18",
    "src": 34.2,
-   "start": 730,
-   "end": 755,
+   "start": 776,
+   "end": 801,
    "note": "Donahoe as eBay CEO, WSJ 2014",
    "mezz_start": 33.7,
    "asset": "B18_0034_20"
@@ -305,8 +305,8 @@
    "seg": "B_L8",
    "clip": "B21",
    "src": 17.0,
-   "start": 755,
-   "end": 783,
+   "start": 801,
+   "end": 829,
    "note": "Donahoe at FN Achievement Awards",
    "mezz_start": 16.5,
    "asset": "B21_0017_00"
@@ -315,8 +315,8 @@
    "seg": "B_L11",
    "clip": "B30",
    "src": 0.6,
-   "start": 970,
-   "end": 980,
+   "start": 1016,
+   "end": 1026,
    "note": "shuttered shop, empty street (Covid)",
    "mezz_start": 0.09999999999999998,
    "asset": "B30_0000_60"
@@ -325,8 +325,8 @@
    "seg": "B_L11",
    "clip": "B32",
    "src": 16.7,
-   "start": 980,
-   "end": 997,
+   "start": 1026,
+   "end": 1043,
    "note": "shopping on a phone (e-commerce boom)",
    "mezz_start": 16.2,
    "asset": "B32_0016_70"
@@ -335,8 +335,8 @@
    "seg": "B_L11",
    "clip": "B31",
    "src": 15.0,
-   "start": 997,
-   "end": 1023,
+   "start": 1043,
+   "end": 1069,
    "note": "Nike quote: digital growth of 82 percent",
    "mezz_start": 14.5,
    "asset": "B31_0015_00"
@@ -345,8 +345,8 @@
    "seg": "B_L11",
    "clip": "B37",
    "src": 36.0,
-   "start": 1023,
-   "end": 1051,
+   "start": 1069,
+   "end": 1097,
    "note": "store reopening, 'practice social distancing'",
    "mezz_start": 35.5,
    "asset": "B37_0036_00"
@@ -355,8 +355,8 @@
    "seg": "B_L11",
    "clip": "B39",
    "src": 3.3,
-   "start": 1051,
-   "end": 1072,
+   "start": 1097,
+   "end": 1118,
    "note": "Foot Locker storefront",
    "mezz_start": 2.8,
    "asset": "B39_0003_30"
@@ -365,8 +365,8 @@
    "seg": "B_L11",
    "clip": "B39",
    "src": 8.7,
-   "start": 1072,
-   "end": 1087,
+   "start": 1118,
+   "end": 1133,
    "note": "shoe wall with shoppers",
    "mezz_start": 8.2,
    "asset": "B39_0008_70"
@@ -375,8 +375,8 @@
    "seg": "B_L11",
    "clip": "B35",
    "src": 20.85,
-   "start": 1087,
-   "end": 1105,
+   "start": 1133,
+   "end": 1151,
    "note": "Hoka held up to camera",
    "mezz_start": 20.35,
    "asset": "B35_0020_85"
@@ -385,8 +385,8 @@
    "seg": "B_L11",
    "clip": "B39",
    "src": 11.0,
-   "start": 1105,
-   "end": 1117,
+   "start": 1151,
+   "end": 1163,
    "note": "On shoe close-up",
    "mezz_start": 10.5,
    "asset": "B39_0011_00"
@@ -395,26 +395,58 @@
    "seg": "B_L11",
    "clip": "B38",
    "src": 54.4,
-   "start": 1117,
-   "end": 1146,
+   "start": 1163,
+   "end": 1192,
    "note": "Hoka shelf, HOKA NYC flagship",
    "mezz_start": 53.9,
    "asset": "B38_0054_40"
   },
   {
    "seg": "B_L11",
-   "clip": "MISSING",
-   "src": 0.0,
-   "start": 1146,
-   "end": 1241,
-   "note": "B80-B82 Alo / Vuori not available"
+   "clip": "B80",
+   "src": 164.5,
+   "start": 1192,
+   "end": 1219,
+   "note": "athleisure racks, Alo NYC",
+   "mezz_start": 164.0,
+   "asset": "B80_0164_50"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B80",
+   "src": 13.4,
+   "start": 1219,
+   "end": 1234,
+   "note": "Alo storefront logo",
+   "mezz_start": 12.9,
+   "asset": "B80_0013_40"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B82",
+   "src": 27.8,
+   "start": 1234,
+   "end": 1253,
+   "note": "inside the new Vuori store",
+   "mezz_start": 27.3,
+   "asset": "B82_0027_80"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B80",
+   "src": 23.7,
+   "start": 1253,
+   "end": 1287,
+   "note": "Alo storefront mannequins",
+   "mezz_start": 23.2,
+   "asset": "B80_0023_70"
   },
   {
    "seg": "B_L15",
    "clip": "B43",
    "src": 11.3,
-   "start": 1480,
-   "end": 1500,
+   "start": 1458,
+   "end": 1478,
    "note": "SB Dunk on the floor",
    "mezz_start": 10.8,
    "asset": "B43_0011_30"
@@ -423,8 +455,8 @@
    "seg": "B_L15",
    "clip": "B41",
    "src": 3.4,
-   "start": 1500,
-   "end": 1514,
+   "start": 1478,
+   "end": 1492,
    "note": "stacked orange Nike boxes",
    "mezz_start": 2.9,
    "asset": "B41_0003_40"
@@ -433,8 +465,8 @@
    "seg": "B_L15",
    "clip": "B42",
    "src": 4.4,
-   "start": 1514,
-   "end": 1536,
+   "start": 1492,
+   "end": 1514,
    "note": "rows of identical Panda Dunks",
    "mezz_start": 3.9000000000000004,
    "asset": "B42_0004_40"
@@ -443,8 +475,8 @@
    "seg": "B_L15",
    "clip": "B42",
    "src": 2.0,
-   "start": 1536,
-   "end": 1539,
+   "start": 1514,
+   "end": 1517,
    "note": "burst",
    "mezz_start": 1.5,
    "asset": "B42_0002_00"
@@ -453,8 +485,8 @@
    "seg": "B_L15",
    "clip": "B41",
    "src": 9.25,
-   "start": 1539,
-   "end": 1541,
+   "start": 1517,
+   "end": 1519,
    "note": "burst",
    "mezz_start": 8.75,
    "asset": "B41_0009_25"
@@ -463,8 +495,8 @@
    "seg": "B_L15",
    "clip": "B42",
    "src": 6.9,
-   "start": 1541,
-   "end": 1544,
+   "start": 1519,
+   "end": 1522,
    "note": "burst",
    "mezz_start": 6.4,
    "asset": "B42_0006_90"
@@ -473,8 +505,8 @@
    "seg": "B_L15",
    "clip": "B57",
    "src": 24.0,
-   "start": 1544,
-   "end": 1546,
+   "start": 1522,
+   "end": 1524,
    "note": "burst",
    "mezz_start": 23.5,
    "asset": "B57_0024_00"
@@ -483,8 +515,8 @@
    "seg": "B_L15",
    "clip": "B53",
    "src": 11.3,
-   "start": 1546,
-   "end": 1577,
+   "start": 1524,
+   "end": 1555,
    "note": "warehouse stacks of identical Nike boxes (same shoes)",
    "mezz_start": 10.8,
    "asset": "B53_0011_30"
@@ -493,8 +525,8 @@
    "seg": "S_L19",
    "clip": "B52",
    "src": 21.3,
-   "start": 1660,
-   "end": 1675,
+   "start": 1638,
+   "end": 1653,
    "note": "huge release-day line (Concord 11)",
    "mezz_start": 20.8,
    "asset": "B52_0021_30"
@@ -503,10 +535,10 @@
    "seg": "S_L19",
    "clip": "B52",
    "src": 60.0,
-   "start": 1675,
-   "end": 1727,
+   "start": 1653,
+   "end": 1705,
    "note": "release-day line along the wall, freezes on 'no' (hype) and drains to B&W",
-   "freeze_frame": 1704,
+   "freeze_frame": 1682,
    "mezz_start": 59.5,
    "asset": "B52_0060_00"
   },
@@ -514,8 +546,8 @@
    "seg": "B_L20",
    "clip": "B58",
    "src": 4.55,
-   "start": 1727,
-   "end": 1761,
+   "start": 1705,
+   "end": 1739,
    "note": "BREAKING NEWS slam",
    "mezz_start": 4.05,
    "asset": "B58_0004_55"
@@ -524,8 +556,8 @@
    "seg": "B_L20",
    "clip": "B19",
    "src": 4.8,
-   "start": 1761,
-   "end": 1780,
+   "start": 1739,
+   "end": 1758,
    "note": "Donahoe portrait",
    "mezz_start": 4.3,
    "asset": "B19_0004_80"
@@ -534,8 +566,8 @@
    "seg": "B_L20",
    "clip": "B57",
    "src": 11.0,
-   "start": 1780,
-   "end": 1796,
+   "start": 1758,
+   "end": 1774,
    "note": "Nike store exterior",
    "mezz_start": 10.5,
    "asset": "B57_0011_00"
@@ -544,8 +576,8 @@
    "seg": "B_L20",
    "clip": "B59",
    "src": 20.7,
-   "start": 1796,
-   "end": 1820,
+   "start": 1774,
+   "end": 1798,
    "note": "Hill intern-to-CEO photo collage",
    "mezz_start": 20.2,
    "asset": "B59_0020_70"
@@ -554,8 +586,8 @@
    "seg": "B_L20",
    "clip": "B60",
    "src": 10.5,
-   "start": 1820,
-   "end": 1842,
+   "start": 1798,
+   "end": 1820,
    "note": "Hill walking",
    "mezz_start": 10.0,
    "asset": "B60_0010_50"
@@ -564,8 +596,8 @@
    "seg": "B_L20",
    "clip": "B61",
    "src": 4.05,
-   "start": 1842,
-   "end": 1869,
+   "start": 1820,
+   "end": 1847,
    "note": "walking into the LeBron James Innovation Center",
    "mezz_start": 3.55,
    "asset": "B61_0004_05"
@@ -574,8 +606,8 @@
    "seg": "B_L22",
    "clip": "B62",
    "src": 2.0,
-   "start": 1964,
-   "end": 1978,
+   "start": 1906,
+   "end": 1920,
    "note": "Nike socks in packaging (inventory)",
    "mezz_start": 1.5,
    "asset": "B62_0002_00"
@@ -584,8 +616,8 @@
    "seg": "B_L22",
    "clip": "B57",
    "src": 19.1,
-   "start": 1978,
-   "end": 1994,
+   "start": 1920,
+   "end": 1936,
    "note": "outlet shelves of shoe boxes",
    "mezz_start": 18.6,
    "asset": "B57_0019_10"
@@ -594,8 +626,8 @@
    "seg": "B_L22",
    "clip": "B62",
    "src": 21.0,
-   "start": 1994,
-   "end": 2016,
+   "start": 1936,
+   "end": 1958,
    "note": "Elliott Hill close-up",
    "mezz_start": 20.5,
    "asset": "B62_0021_00"
@@ -604,8 +636,8 @@
    "seg": "B_L26",
    "clip": "B74",
    "src": 12.9,
-   "start": 2209,
-   "end": 2238,
+   "start": 2151,
+   "end": 2180,
    "note": "rivals' stock chart vs Nike",
    "mezz_start": 12.4,
    "asset": "B74_0012_90"
@@ -614,8 +646,8 @@
    "seg": "B_L26",
    "clip": "B75",
    "src": 350.0,
-   "start": 2238,
-   "end": 2262,
+   "start": 2180,
+   "end": 2204,
    "note": "Foot Locker wall of mixed brands",
    "mezz_start": 349.5,
    "asset": "B75_0350_00"
@@ -624,8 +656,8 @@
    "seg": "H_L27",
    "clip": "B76",
    "src": 286.9,
-   "start": 2262,
-   "end": 2301,
+   "start": 2204,
+   "end": 2244,
    "note": "SHELF: near-empty wall, Nike store NYC",
    "mezz_start": 286.4,
    "asset": "B76_0286_90"
@@ -634,8 +666,8 @@
    "seg": "H_L27",
    "clip": "B51",
    "src": 28.0,
-   "start": 2301,
-   "end": 2328,
+   "start": 2244,
+   "end": 2271,
    "note": "HYPE: release line on the street (B77 = other moment of B51)",
    "mezz_start": 27.5,
    "asset": "B51_0028_00"
@@ -644,8 +676,8 @@
    "seg": "H_L27",
    "clip": "B78",
    "src": 2.0,
-   "start": 2328,
-   "end": 2345,
+   "start": 2271,
+   "end": 2287,
    "note": "ATHLETE: sprinter celebrating",
    "mezz_start": 1.5,
    "asset": "B78_0002_00"
@@ -654,8 +686,8 @@
    "seg": "H_L27",
    "clip": "B79",
    "src": 13.6,
-   "start": 2345,
-   "end": 2372,
+   "start": 2287,
+   "end": 2314,
    "note": "ALL AT ONCE: Swoosh shattering (B79 reversed 13.6s -> 11.4s)",
    "mezz_start": 10.9,
    "asset": "B79_0011_40"
@@ -666,651 +698,651 @@
    8,
    0,
    "In",
-   667,
+   713,
    "Fade up"
   ],
   [
    8,
    1,
    "2020,",
-   669,
+   714,
    "Fade up"
   ],
   [
    8,
    2,
    "Nike",
-   693,
+   738,
    "Fade up"
   ],
   [
    8,
    3,
    "hired",
-   702,
+   747,
    "Fade up"
   ],
   [
    8,
    4,
    "eBay's",
-   711,
+   759,
    "Fade up"
   ],
   [
    8,
    5,
    "ex-CEO,",
-   729,
+   774,
    "Fade up"
   ],
   [
    8,
    6,
    "John",
-   753,
+   801,
    "Fade up"
   ],
   [
    8,
    7,
    "Donahoe.",
-   762,
+   810,
    "Fade up"
   ],
   [
    11,
    0,
    "Covid",
-   970,
+   1016,
    "Fade up"
   ],
   [
    11,
    1,
    "made",
-   978,
+   1026,
    "Fade up"
   ],
   [
    11,
    2,
    "it",
-   987,
+   1032,
    "Fade up"
   ],
   [
    11,
    3,
    "look",
-   990,
+   1035,
    "Fade up"
   ],
   [
    11,
    4,
    "genius.",
-   996,
+   1044,
    "Highlight-box wipe"
   ],
   [
    12,
    0,
    "Then",
-   1023,
+   1068,
    "Fade up"
   ],
   [
    12,
    1,
    "shoppers",
-   1032,
+   1077,
    "Fade up"
   ],
   [
    12,
    2,
    "went",
-   1044,
+   1089,
    "Fade up"
   ],
   [
    12,
    3,
    "back",
-   1050,
+   1095,
    "Fade up"
   ],
   [
    12,
    4,
    "to",
-   1056,
+   1101,
    "Fade up"
   ],
   [
    12,
    5,
    "stores,",
-   1062,
+   1107,
    "Fade up"
   ],
   [
    12,
    6,
    "and",
-   1071,
+   1116,
    "Fade up"
   ],
   [
    12,
    7,
    "found",
-   1080,
+   1125,
    "Fade up"
   ],
   [
    12,
    8,
    "Hoka",
-   1086,
+   1131,
    "Fade up"
   ],
   [
    12,
    9,
    "and",
-   1095,
+   1140,
    "Fade up"
   ],
   [
    12,
    10,
    "On",
-   1104,
+   1149,
    "Fade up"
   ],
   [
    12,
    11,
    "where",
-   1110,
+   1155,
    "Fade up"
   ],
   [
    12,
    12,
    "Nike",
-   1116,
+   1161,
    "Fade up"
   ],
   [
    12,
    13,
    "used",
-   1122,
+   1170,
    "Fade up"
   ],
   [
    12,
    14,
    "to",
-   1131,
+   1176,
    "Fade up"
   ],
   [
    12,
    15,
    "be.",
-   1134,
+   1182,
    "Fade up"
   ],
   [
    13,
    0,
    "And",
-   1146,
+   1191,
    "Fade up"
   ],
   [
    13,
    1,
    "at",
-   1149,
+   1194,
    "Fade up"
   ],
   [
    13,
    2,
    "the",
-   1152,
+   1197,
    "Fade up"
   ],
   [
    13,
    3,
    "gym,",
-   1155,
+   1203,
    "Fade up"
   ],
   [
    13,
    4,
    "Alo",
-   1179,
+   1224,
    "Fade up"
   ],
   [
    13,
    5,
    "and",
-   1182,
+   1227,
    "Fade up"
   ],
   [
    13,
    6,
    "Vuori",
-   1188,
+   1233,
    "Fade up"
   ],
   [
    13,
    7,
    "became",
-   1194,
+   1242,
    "Fade up"
   ],
   [
    13,
    8,
    "the",
-   1206,
+   1251,
    "Fade up"
   ],
   [
    13,
    9,
    "new",
-   1212,
+   1257,
    "Fade up"
   ],
   [
    13,
    10,
    "flex.",
-   1218,
+   1266,
    "Fade up"
   ],
   [
    15,
    0,
    "Meanwhile,",
-   1480,
+   1458,
    "Fade up"
   ],
   [
    15,
    1,
    "Nike",
-   1500,
+   1476,
    "Fade up"
   ],
   [
    15,
    2,
    "drowned",
-   1509,
+   1485,
    "Fade up"
   ],
   [
    15,
    3,
    "the",
-   1524,
+   1500,
    "Fade up"
   ],
   [
    15,
    4,
    "market",
-   1527,
+   1506,
    "Fade up"
   ],
   [
    15,
    5,
    "in",
-   1536,
+   1512,
    "Fade up"
   ],
   [
    15,
    6,
    "the",
-   1542,
+   1518,
    "Fade up"
   ],
   [
    15,
    7,
    "same",
-   1545,
+   1524,
    "Fade up"
   ],
   [
    15,
    8,
    "shoes.",
-   1554,
+   1533,
    "Fade up"
   ],
   [
    19,
    0,
    "Until",
-   1660,
+   1638,
    "Fade up"
   ],
   [
    19,
    1,
    "there",
-   1665,
+   1644,
    "Fade up"
   ],
   [
    19,
    2,
    "was",
-   1671,
+   1647,
    "Fade up"
   ],
   [
    19,
    3,
    "no",
-   1674,
+   1653,
    "Fade up"
   ],
   [
    19,
    4,
    "line,",
-   1680,
+   1659,
    "Fade up"
   ],
   [
    19,
    5,
    "and",
-   1692,
+   1671,
    "Fade up"
   ],
   [
    19,
    6,
    "no",
-   1701,
+   1677,
    "Fade up"
   ],
   [
    19,
    7,
    "hype.",
-   1713,
+   1689,
    "Highlight-box wipe"
   ],
   [
    20,
    0,
    "In",
-   1727,
+   1705,
    "Fade up"
   ],
   [
    20,
    1,
    "2024,",
-   1731,
+   1707,
    "Fade up"
   ],
   [
    20,
    2,
    "Donahoe",
-   1761,
+   1737,
    "Fade up"
   ],
   [
    20,
    3,
    "was",
-   1773,
+   1749,
    "Fade up"
   ],
   [
    20,
    4,
    "out.",
-   1779,
+   1758,
    "Fade up"
   ],
   [
    21,
    0,
    "His",
-   1794,
+   1773,
    "Fade up"
   ],
   [
    21,
    1,
    "replacement,",
-   1800,
+   1776,
    "Fade up"
   ],
   [
    21,
    2,
    "Elliott",
-   1818,
+   1797,
    "Fade up"
   ],
   [
    21,
    3,
    "Hill,",
-   1827,
+   1806,
    "Fade up"
   ],
   [
    21,
    4,
    "put",
-   1842,
+   1818,
    "Fade up"
   ],
   [
    21,
    5,
    "it",
-   1845,
+   1821,
    "Fade up"
   ],
   [
    21,
    6,
    "simply:",
-   1848,
+   1827,
    "Fade up"
   ],
   [
    22,
    0,
    "The",
-   1964,
+   1906,
    "Fade up"
   ],
   [
    22,
    1,
    "fix",
-   1968,
+   1908,
    "Fade up"
   ],
   [
    22,
    2,
    "has",
-   1977,
+   1920,
    "Fade up"
   ],
   [
    22,
    3,
    "been",
-   1986,
+   1929,
    "Fade up"
   ],
   [
    22,
    4,
    "brutal.",
-   1992,
+   1935,
    "Highlight-box wipe"
   ],
   [
    26,
    0,
    "Nike",
-   2209,
+   2151,
    "Fade up"
   ],
   [
    26,
    1,
    "didn't",
-   2217,
+   2157,
    "Fade up"
   ],
   [
    26,
    2,
    "lose",
-   2226,
+   2166,
    "Fade up"
   ],
   [
    26,
    3,
    "to",
-   2229,
+   2172,
    "Fade up"
   ],
   [
    26,
    4,
    "one",
-   2238,
+   2178,
    "Fade up"
   ],
   [
    26,
    5,
    "brand.",
-   2244,
+   2184,
    "Fade up"
   ],
   [
    27,
    0,
    "It",
-   2262,
+   2204,
    "Fade up"
   ],
   [
    27,
    1,
    "gave",
-   2265,
+   2205,
    "Fade up"
   ],
   [
    27,
    2,
    "up",
-   2268,
+   2211,
    "Fade up"
   ],
   [
    27,
    3,
    "the",
-   2274,
+   2217,
    "Fade up"
   ],
   [
    27,
    4,
    "shelf,",
-   2280,
+   2220,
    "Fade up"
   ],
   [
    27,
    5,
    "the",
-   2298,
+   2238,
    "Fade up"
   ],
   [
    27,
    6,
    "hype",
-   2301,
+   2244,
    "Fade up"
   ],
   [
    27,
    7,
    "and",
-   2316,
+   2259,
    "Fade up"
   ],
   [
    27,
    8,
    "the",
-   2325,
+   2265,
    "Fade up"
   ],
   [
    27,
    9,
    "athlete.",
-   2328,
+   2271,
    "Fade up"
   ],
   [
    28,
    0,
    "All",
-   2343,
+   2286,
    "Fade up"
   ],
   [
    28,
    1,
    "at",
-   2349,
+   2292,
    "Fade up"
   ],
   [
    28,
    2,
    "once.",
-   2355,
+   2295,
    "Fade up"
   ]
  ],
@@ -1350,6 +1382,33 @@
    "Panel wipe (loud, panel); Block-to-word (shelf/hype/athlete); Blur-to-sharp (all at once.)",
    "Cut out",
    "top panel, left"
+  ],
+  [
+   "CLIP_OLEARY",
+   "They don't NEED RETAIL",
+   "Connector + keyword",
+   "Ghost-to-solid",
+   "Blur-to-sharp",
+   "Cut out",
+   "right-half panel"
+  ],
+  [
+   "CLIP_DONAHOE",
+   "a little more than WE INTENDED",
+   "Connector + keyword",
+   "Ghost-to-solid",
+   "Blur-to-sharp",
+   "Cut out",
+   "right-half panel"
+  ],
+  [
+   "TC4",
+   "We lost our OBSESSION with sport.",
+   "Connector + keyword",
+   "Blur-to-sharp",
+   "Flicker-in",
+   "Cut out",
+   "centered with photo"
   ]
  ]
 }
