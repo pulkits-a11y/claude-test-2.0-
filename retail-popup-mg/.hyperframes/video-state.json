@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "0a3b0f1b-b6c4-4989-9f81-2fd1ee1eeba5",
-  "currentRevision": "42a6106a-2d9c-4a4c-bdbf-72dfbe8065c3",
+  "currentRevision": "233b19e6-da1e-4097-9476-682f4e43f545",
   "pendingChanges": false,
   "files": {
     "AGENTS.md": {
@@ -63,6 +63,10 @@
     "assets/lib/RoundedBoxGeometry.js": {
       "hash": "d20aeaf7077c459a8d952d215738d7b44fba028440bb862d84b622a34f0c80bb",
       "content": "/root/.cache/hyperframes/history/0a3b0f1b-b6c4-4989-9f81-2fd1ee1eeba5/blobs/d2/d20aeaf7077c459a8d952d215738d7b44fba028440bb862d84b622a34f0c80bb"
+    },
+    "README.md": {
+      "hash": "07db8663264349453c4ee12806c6b3313808c7e9d331ae4037259b48c7c37caf",
+      "content": "/root/.cache/hyperframes/history/0a3b0f1b-b6c4-4989-9f81-2fd1ee1eeba5/blobs/07/07db8663264349453c4ee12806c6b3313808c7e9d331ae4037259b48c7c37caf"
     }
   },
   "revisions": {
@@ -167,11 +171,62 @@
           "after": "/root/.cache/hyperframes/history/0a3b0f1b-b6c4-4989-9f81-2fd1ee1eeba5/blobs/c9/c90de3f5da4655a03d2b199674e29856b759c7f177999e534110e80a0b1c4258"
         }
       }
+    },
+    "233b19e6-da1e-4097-9476-682f4e43f545": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1795254249970,
+      "endedAt": 1795254249972,
+      "files": {
+        "README.md": {
+          "before": null,
+          "after": "/root/.cache/hyperframes/history/0a3b0f1b-b6c4-4989-9f81-2fd1ee1eeba5/blobs/07/07db8663264349453c4ee12806c6b3313808c7e9d331ae4037259b48c7c37caf"
+        }
+      }
     }
   },
   "checks": {
-    "latest": null,
-    "revisions": {},
+    "latest": {
+      "revision": "42a6106a-2d9c-4a4c-bdbf-72dfbe8065c3",
+      "id": "8d66d386-b075-455c-ad19-d48e583f112d"
+    },
+    "revisions": {
+      "42a6106a-2d9c-4a4c-bdbf-72dfbe8065c3": [
+        {
+          "id": "8d66d386-b075-455c-ad19-d48e583f112d",
+          "scope": "project",
+          "report": "/home/user/claude-test-2.0-/retail-popup-mg/.hyperframes/artifacts/checks/8d66d386-b075-455c-ad19-d48e583f112d.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 170000,
+              "cache": true,
+              "contrast": true,
+              "craft": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto",
+              "includeUnmounted": false
+            }
+          },
+          "createdAt": 1795254238622,
+          "contentHash": "97bd8d6e5e514d92c6b452da96df694d2e9f2486100bb0fea9c7438eb830edd6",
+          "revision": "42a6106a-2d9c-4a4c-bdbf-72dfbe8065c3",
+          "inputFingerprint": "01fa644cd1226a1203bf059d4737b3eb7a45dcdb4a4e2bb63fa57f22b0683ee9",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
     "unversioned": []
   },
   "snapshots": {
