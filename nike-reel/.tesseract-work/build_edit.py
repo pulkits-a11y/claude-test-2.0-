@@ -692,6 +692,9 @@ for segname, lst in seg_shots.items():
                "volume": 0.0})
         ng = D.effect(lid, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 3})
         D.effect_script(lid, ng, "seed", "return Math.floor(input.time.seconds * 24);")
+        if sh["clip"] == "B79":   # darken the pale mint so 'all at once.' and the watermark read
+            D.effect(lid, {"type": "hueSaturation", "hue": 0, "saturation": -10, "lightness": -45, "colorize": False,
+                           "colorizeHue": 0, "colorizeSaturation": 0, "colorizeLightness": 0})
         if sh["clip"] in REVERSE:
             hi, lo = REVERSE[sh["clip"]]
             D.add({"type": "setFxLayerTimeRemap", "compositionId": C, "layerId": lid, "timeRemap": {
