@@ -134,7 +134,7 @@ for name, f in (("m_oleary", "oleary_fast_matte.mp4"), ("m_B19", "B19_matte.mp4"
 run("project", "import-asset", "--project", P, "--file", os.path.join(W, "clips", "hill.wav"), "--asset-id", "hill_audio", "--kind", "audio")
 MGINFO = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "retail-popup-mg_preview-1.mp4"), "--asset-id", "mg_retail"))
 for aid, f in (("tv_frame", "tv/tv_frame_alpha.png"), ("tv_mask", "tv/tv_screen_mask.png"), ("st_footlocker", "stills/retail_footlocker_WN212.png"),
-               ("st_nikestore", "stills/retail_nikestore_WN170.png"), ("st_aisle", "stills/retail_aisle_WN250.png")):
+               ("st_nikestore", "stills/retail_nikestore_WN170.png"), ("st_aisle", "stills/retail_aisle_WN250.png"), ("logo_alo", "logos/alo_logo.png"), ("logo_vuori", "logos/vuori_logo.png")):
     run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", f), "--asset-id", aid, "--kind", "image")
 TV_POS, TV_SCALE = (1198, 594), 70      # frames the Donahoe picture-in-picture (fit x 284-836, y 136-700) on the screen
 run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "hill_photo_B60_16s.png"), "--asset-id", "hill_photo", "--kind", "image")
@@ -230,6 +230,8 @@ SPLITS = {8: [(0, 2), (2, 4), (5, 6)], 11: [(0, 2), (2, 5)],
           22: [(0, 2), (2, 5)], 26: [(0, 3), (3, 6)]}
 KEY = {8: [5], 11: [4], 12: [8, 9, 10], 13: [8, 9, 10], 15: [2], 19: [6, 7], 20: [4], 21: [2, 3], 22: [4], 26: [4, 5]}
 HIGHLIGHT = {(11, 4), (19, 7), (22, 4)}
+LOGO_W = {"logo_alo": 900, "logo_vuori": __import__("PIL.Image").Image.open(os.path.join(R, "Sources", "logos", "vuori_logo.png")).size[0]}
+LOGOS = {(13, 4): ("logo_alo", 76, 51, 8), (13, 6): ("logo_vuori", 150, 33, 2)}   # (asset, width, height, baseline drop)
 
 
 def seg_start_of(line):
@@ -265,6 +267,9 @@ phrases.sort(key=lambda p: p["start"])
 for k, p in enumerate(phrases):
     nxt = phrases[k + 1]["start"] if k + 1 < len(phrases) else endcard_in
     p["end"] = min(nxt, seg_end_of(p["line"]))
+    if (p["line"], p["i0"]) == (8, 2):          # nothing on screen over the eBay shot
+        ebay = [x for x in shots if x["clip"] == "B21" and x["src"] == 13.7][0]
+        p["end"] = max(p["start"] + 1, min(p["end"], ebay["start"]))
     if (p["line"], p["i0"]) == (8, 5):          # 'ex-CEO,' clears when JOHN / DONAHOE takes over
         p["end"] = max(p["start"] + 1, min(p["end"], wf(8, 6)))
 
@@ -274,6 +279,14 @@ cap_rows = []
 for p in phrases:
     ws = [WORDS[p["line"]][i]["w"] for i in range(p["i0"], p["i1"])]
     xs, Wd = layout_line(ws, [spec] * len(ws))
+    lg = {j: LOGOS[(p["line"], i)] for j, i in enumerate(range(p["i0"], p["i1"])) if (p["line"], i) in LOGOS}
+    if lg:      # words replaced by logos: lay out by actual widths
+        sp_w = advance(" ", *spec)
+        widths = [lg[j][1] if j in lg else advance(ws[j], *spec) for j in range(len(ws))]
+        xs, acc = [], 0.0
+        for wv in widths:
+            xs.append(acc); acc += wv + sp_w * 1.3
+        Wd = acc - sp_w * 1.3
     x0 = 960 - Wd / 2
     for j, i in enumerate(range(p["i0"], p["i1"])):
         f0 = max(p["start"], wf(p["line"], i))
@@ -282,6 +295,16 @@ for p in phrases:
         x = x0 + xs[j]
         key = i in KEY.get(p["line"], [])
         word = ws[j]
+        if j in lg:
+            asset, wl, hl, dy = lg[j]
+            img = D.nid()
+            D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": img, "name": f"cap L{p['line']}w{i} LOGO {asset}", "parentLayerId": cap,
+                   "activeRange": {"start": ms(f0), "duration": ms(p["end"]) - ms(f0)},
+                   "transform": {"anchorPoint": [0, 0], "position": [x, CAP_Y - hl + dy], "scale": [round(100 * wl / LOGO_W[asset], 3)] * 2, "rotation": 0, "opacity": 100},
+                   "source": {"assetId": asset, "fit": "contain"}})
+            D.blur_to_sharp(img)
+            cap_rows.append((p["line"], i, word, f0, "Logo (Blur-to-sharp)"))
+            continue
         if (p["line"], i) in HIGHLIGHT:
             w = advance(word, *spec)
             dark = D.text(f"cap L{p['line']}w{i} '{word}' inverted (matte)", word, x, CAP_Y, "archivo", CAP_SIZE, BG, f0, p["end"], cap, wght=CAP_W)
@@ -464,31 +487,55 @@ cam_keys(gB, [(f_cut, cam_vals(960, 560, 1.0), "linear"), (b, cam_vals(960, 560,
 plan_rows.append(("TC1", "Well, turns out, Nike NEEDED RETAIL more than anyone.", "Size-contrast build", "Blur-to-sharp",
                   "Flicker-in; camera follows each word (ease-out, motion blur); 3 retail stills pop in; slide right, hard cut wide", "Cut out", "centered"))
 
-# ================= 4b. TC2 =================
+# ================= 4b. TC2: camera follows So / WHAT / HAPPENED? (ease-out, motion blur), slides right, hard cut wide =================
 (_, a, b) = SEG["TC2"]
-g = scene_group("TC2 Text Centerpiece: So WHAT HAPPENED?", a, b)
 L = WORDS[7]
 BIG2 = ("archivo", 196, {"wght": 880, "wdth": 80}, 0)
 xs, Wd = layout_line(["WHAT", "HAPPENED?"], [BIG2, BIG2])
 x0 = 960 - Wd / 2
 y2 = 652
-lid = D.text("TC2 connector 'So'", "So", x0 + 6, 452, "serif_italic", 120, TEXT, wf(7, 0, a), b, g); D.vox(lid, 120); D.ghost_to_solid(lid)
-fw = wf(7, 1, a)
+fs, fw, fh = wf(7, 0, a), wf(7, 1, a), wf(7, 2, a)
 wW = advance("WHAT", *BIG2)
-D.rect("TC2 Block-to-word block (WHAT)", x0, y2 - 142, wW, 146, GREEN, fw, fw + STEP, g)
-lid = D.text("TC2 KEY 'WHAT'", "WHAT", x0, y2, "archivo", 196, TEXT, fw + STEP, b, g, wght=880, wdth=80); D.vox(lid, 196)
-fh = wf(7, 2, a)
 xh = x0 + xs[1]
 letters = list("HAPPENED?")
 order = list(range(len(letters))); random.shuffle(order)
-for n_, li in enumerate(order):
-    pre = "".join(letters[:li])
-    lx = xh + advance(pre, *BIG2) if pre else xh
-    batch = (n_ * 3) // len(letters)
-    col = GREEN if letters[li] == "?" else TEXT
-    lid = D.text(f"TC2 KEY letter '{letters[li]}'", letters[li], lx, y2, "archivo", 196, col, fh + batch * STEP, b, g, wght=880, wdth=80)
-    D.vox(lid, 196)
-plan_rows.append(("TC2", "So WHAT HAPPENED?", "Connector + keyword", "Ghost-to-solid (So)", "Block-to-word (WHAT), Random letter reveal (HAPPENED?)", "Cut out", "centered"))
+f_cut2 = min(b - 6, fh + 3 * STEP + 2)
+
+
+def tc2_build(g, lo, hi, tag):
+    if fs < hi:
+        lid = D.text(f"TC2{tag} connector 'So'", "So", x0 + 6, 452, "serif_italic", 120, TEXT, max(fs, lo), hi, g); D.vox(lid, 120)
+        if fs >= lo:
+            D.ghost_to_solid(lid)
+    if fw < hi:
+        if fw >= lo:
+            D.rect(f"TC2{tag} Block-to-word block (WHAT)", x0, y2 - 142, wW, 146, GREEN, fw, min(fw + STEP, hi), g)
+        if fw + STEP < hi:
+            lid = D.text(f"TC2{tag} KEY 'WHAT'", "WHAT", x0, y2, "archivo", 196, TEXT, max(fw + STEP, lo), hi, g, wght=880, wdth=80); D.vox(lid, 196)
+    for n_, li in enumerate(order):
+        f0 = fh + ((n_ * 3) // len(letters)) * STEP
+        if f0 >= hi:
+            continue
+        pre = "".join(letters[:li])
+        lx = xh + advance(pre, *BIG2) if pre else xh
+        lid = D.text(f"TC2{tag} KEY letter '{letters[li]}'", letters[li], lx, y2, "archivo", 196, GREEN if letters[li] == "?" else TEXT,
+                     max(f0, lo), hi, g, wght=880, wdth=80)
+        D.vox(lid, 196)
+
+
+gA = D.group("TC2 A: zoomed camera follows So / WHAT / HAPPENED?", 0, f_cut2)
+tc2_build(gA, 0, f_cut2, "A")
+v_so = cam_vals(x0 + 60, 410, 2.3)
+v_what = cam_vals(x0 + wW / 2, y2 - 72, 1.7)
+v_hap = cam_vals(xh + (Wd - xs[1]) / 2, y2 - 72, 1.45)
+slide = dict(v_hap); slide["positionX"] -= 150
+cam_keys(gA, [(a, v_so, "linear"), (max(a + 1, fw - 3), v_so, "linear"), (fw + 2, v_what, EOUT),
+              (max(fw + 3, fh - 3), v_what, "linear"), (fh + 2, v_hap, EOUT), (f_cut2, slide, EOUT)])
+gB = D.group("TC2 B: hard cut to the wide lockup", 0, b)
+tc2_build(gB, f_cut2, b, "B")
+cam_keys(gB, [(f_cut2, cam_vals(960, 560, 1.0), "linear"), (b, cam_vals(960, 560, 1.04), EOUT)])
+plan_rows.append(("TC2", "So WHAT HAPPENED?", "Connector + keyword", "Ghost-to-solid (So)",
+                  "Block-to-word (WHAT), Random letter reveal (HAPPENED?); camera follows each word, slides right, hard cut wide", "Cut out", "centered"))
 
 # ================= 4c. TC3 in the WHAT HAPPENED style =================
 (_, a, b) = SEG["TC3"]
@@ -516,7 +563,7 @@ L = WORDS[27]
 CONN = ("archivo", 50, {"wght": 520, "wdth": 100}, 0)
 KW = ("serif", 262, None, 0)
 c_hype = CUT[("H_L27", "B51", 28.0)]
-c_ath = CUT[("H_L27", "WN", 117.6)]
+c_ath = CUT[("H_L27", "B78", 3.1)]
 c_all = CUT[("H_L27", "B79", 13.6)]
 YC, YK = 418, 642
 for conn_idx, word, f_kw, f0, f1 in (((0, 1, 2, 3), "shelf", wf(27, 4, a), a, wf(27, 5, a)),
@@ -782,11 +829,13 @@ D.effect(ph["layerId"], {"type": "dropShadow", "enabled": True, "color": [0, 0, 
 wh_word("Hill title 'ELLIOTT HILL'", "ELLIOTT HILL", 192, 812, 78, TEXT, a + STEP, b, g)
 t2 = D.text("Hill title 'NIKE CEO'", "NIKE CEO", 196, 866, "archivo", 36, GREEN, a + 2 * STEP, b, g, wght=600, tracking=80); D.blur_to_sharp(t2)
 q = D.text("Hill quote mark", "“", 812, 488, "serif", 240, GREEN, a, b, g); D.vox(q, 240); D.ghost_to_solid(q)
-QX, Q1, Q2, Q3 = 900, 470, 684, 792
+QX, Q1 = 900, 470
 xsq, Wq1 = layout_line([w["w"].upper() for w in hw[0:3]], [WH(96)] * 3)
 for j, w in enumerate(hw[0:3]):
     wh_word(f"Hill '{w['w'].upper()}'", w["w"].upper(), QX + xsq[j], Q1, 96, TEXT, fr[j], b, g)
 SO = fit_size("OBSESSION", "archivo", 210, 860, {"wght": 880, "wdth": 80})
+Q2 = Q1 + round(0.725 * SO) + 22        # tight leading between the three lines
+Q3 = Q2 + round(0.725 * 96) + 22
 WO = advance("OBSESSION", *WH(SO))
 wh_word("Hill KEY 'OBSESSION'", "OBSESSION", QX - 6, Q2, SO, GREEN, fr[3], b, g, block=True)
 last = hw[5]["w"].upper().rstrip(".") + ".”"

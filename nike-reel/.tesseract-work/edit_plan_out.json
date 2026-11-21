@@ -473,13 +473,13 @@
   },
   {
    "seg": "B_L15",
-   "clip": "B53",
-   "src": 11.3,
+   "clip": "B54",
+   "src": 1.0,
    "start": 1502,
    "end": 1533,
-   "note": "warehouse stacks of identical Nike boxes (same shoes)",
-   "mezz_start": 10.8,
-   "asset": "B53_0011_30"
+   "note": "worker beside walls of stacked Nike boxes (same shoes)",
+   "mezz_start": 0.5,
+   "asset": "B54_0001_00"
   },
   {
    "seg": "S_L19",
@@ -564,13 +564,13 @@
   },
   {
    "seg": "B_L22",
-   "clip": "B62",
-   "src": 2.0,
+   "clip": "B54",
+   "src": 39.3,
    "start": 1884,
    "end": 1898,
-   "note": "Nike socks in packaging (inventory)",
-   "mezz_start": 1.5,
-   "asset": "B62_0002_00"
+   "note": "camera moves through a warehouse of boxes (inventory)",
+   "mezz_start": 38.8,
+   "asset": "B54_0039_30"
   },
   {
    "seg": "B_L22",
@@ -634,13 +634,13 @@
   },
   {
    "seg": "H_L27",
-   "clip": "WN",
-   "src": 117.6,
+   "clip": "B78",
+   "src": 3.1,
    "start": 2250,
    "end": 2265,
-   "note": "ATHLETE: Michael Jordan dunk (CNBC archival)",
-   "mezz_start": 117.1,
-   "asset": "WN_0117_60"
+   "note": "ATHLETE: WNBA All-Star game action",
+   "mezz_start": 2.6,
+   "asset": "B78_0003_10"
   },
   {
    "seg": "H_L27",
@@ -869,7 +869,7 @@
    4,
    "Alo",
    1215,
-   "Blur-to-sharp"
+   "Logo (Blur-to-sharp)"
   ],
   [
    13,
@@ -883,7 +883,7 @@
    6,
    "Vuori",
    1224,
-   "Blur-to-sharp"
+   "Logo (Blur-to-sharp)"
   ],
   [
    13,
@@ -1209,7 +1209,7 @@
    "So WHAT HAPPENED?",
    "Connector + keyword",
    "Ghost-to-solid (So)",
-   "Block-to-word (WHAT), Random letter reveal (HAPPENED?)",
+   "Block-to-word (WHAT), Random letter reveal (HAPPENED?); camera follows each word, slides right, hard cut wide",
    "Cut out",
    "centered"
   ],
