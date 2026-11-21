@@ -18,3 +18,15 @@ node_modules/
 # nike-reel/.tesseract-work/download_broll.sh, which verifies sizes against nike-reel/Sources/broll/manifest.tsv.
 nike-reel/Sources/broll/*.mp4
 nike-reel/Sources/broll/*.part
+# Nike reel: regenerable build outputs (rebuild with nike-reel/.tesseract-work/build_edit.py)
+nike-reel/*.tsrct
+nike-reel/.tesseract-work/mezz/
+nike-reel/.tesseract-work/checks/
+nike-reel/.tesseract-work/textcal/
+nike-reel/.tesseract-work/ref/
+nike-reel/.tesseract-work/broll_sheets/
+nike-reel/.tesseract-work/editable.json
+nike-reel/.tesseract-work/*actions.json
+nike-reel/.tesseract-work/F_detail1.png
+nike-reel/.tesseract-work/__pycache__/
+nike-reel/.tesseract-work/F_detail_B76.png

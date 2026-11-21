@@ -1,0 +1,691 @@
+{
+ "clip_frames": {
+  "CLIP_OLEARY": 150,
+  "CLIP_DONAHOE": 180,
+  "CLIP_HILL": 90
+ },
+ "timeline": {
+  "CLIP_OLEARY": [
+   0,
+   150
+  ],
+  "1": [
+   158,
+   267
+  ],
+  "2": [
+   272,
+   309
+  ],
+  "3": [
+   314,
+   418
+  ],
+  "4": [
+   423,
+   497
+  ],
+  "5": [
+   502,
+   550
+  ],
+  "6": [
+   555,
+   618
+  ],
+  "7": [
+   626,
+   662
+  ],
+  "8": [
+   667,
+   778
+  ],
+  "9": [
+   783,
+   837
+  ],
+  "10": [
+   842,
+   965
+  ],
+  "11": [
+   970,
+   1018
+  ],
+  "12": [
+   1023,
+   1141
+  ],
+  "13": [
+   1146,
+   1233
+  ],
+  "CLIP_DONAHOE": [
+   1241,
+   1421
+  ],
+  "14": [
+   1429,
+   1475
+  ],
+  "15": [
+   1480,
+   1572
+  ],
+  "16": [
+   1577,
+   1591
+  ],
+  "17": [
+   1596,
+   1621
+  ],
+  "18": [
+   1626,
+   1655
+  ],
+  "19": [
+   1660,
+   1722
+  ],
+  "20": [
+   1727,
+   1791
+  ],
+  "21": [
+   1796,
+   1861
+  ],
+  "CLIP_HILL": [
+   1869,
+   1959
+  ],
+  "22": [
+   1964,
+   2011
+  ],
+  "23": [
+   2016,
+   2034
+  ],
+  "24": [
+   2039,
+   2117
+  ],
+  "25": [
+   2122,
+   2204
+  ],
+  "26": [
+   2209,
+   2257
+  ],
+  "27": [
+   2262,
+   2340
+  ],
+  "28": [
+   2345,
+   2368
+  ]
+ },
+ "endcard_in": 2372,
+ "total": 2439,
+ "segments": [
+  {
+   "name": "A1_OLEARY",
+   "kind": "CLIP",
+   "label": "LIVE CLIP: Kevin O'Leary (Half Cover)",
+   "start": 0,
+   "end": 158
+  },
+  {
+   "name": "TC1",
+   "kind": "TC",
+   "label": "Text Centerpiece: Well, turns out, Nike needed retail more than anyone.",
+   "start": 158,
+   "end": 272
+  },
+  {
+   "name": "B_L2",
+   "kind": "BROLL",
+   "label": null,
+   "start": 272,
+   "end": 314
+  },
+  {
+   "name": "FC1",
+   "kind": "FC",
+   "label": "FULL COVER placeholder FC1 (lines 3-6)",
+   "start": 314,
+   "end": 626
+  },
+  {
+   "name": "TC2",
+   "kind": "TC",
+   "label": "Text Centerpiece: So what happened?",
+   "start": 626,
+   "end": 667
+  },
+  {
+   "name": "B_L8",
+   "kind": "BROLL",
+   "label": null,
+   "start": 667,
+   "end": 783
+  },
+  {
+   "name": "FC2",
+   "kind": "FC",
+   "label": "FULL COVER placeholder FC2 (lines 9-10)",
+   "start": 783,
+   "end": 970
+  },
+  {
+   "name": "B_L11",
+   "kind": "BROLL",
+   "label": null,
+   "start": 970,
+   "end": 1241
+  },
+  {
+   "name": "A2_DONAHOE",
+   "kind": "CLIP",
+   "label": "LIVE CLIP: John Donahoe (Half Cover)",
+   "start": 1241,
+   "end": 1429
+  },
+  {
+   "name": "TC3",
+   "kind": "TC",
+   "label": "Text Centerpiece: And that was only half the problem.",
+   "start": 1429,
+   "end": 1480
+  },
+  {
+   "name": "B_L15",
+   "kind": "BROLL",
+   "label": null,
+   "start": 1480,
+   "end": 1577
+  },
+  {
+   "name": "FC3",
+   "kind": "FC",
+   "label": "FULL COVER placeholder FC3 (lines 16-18)",
+   "start": 1577,
+   "end": 1660
+  },
+  {
+   "name": "S_L19",
+   "kind": "SPECIAL",
+   "label": null,
+   "start": 1660,
+   "end": 1727
+  },
+  {
+   "name": "B_L20",
+   "kind": "BROLL",
+   "label": null,
+   "start": 1727,
+   "end": 1869
+  },
+  {
+   "name": "TC4_HILL",
+   "kind": "CLIP",
+   "label": "Text Centerpiece + LIVE AUDIO: Elliott Hill",
+   "start": 1869,
+   "end": 1964
+  },
+  {
+   "name": "B_L22",
+   "kind": "BROLL",
+   "label": null,
+   "start": 1964,
+   "end": 2016
+  },
+  {
+   "name": "FC4",
+   "kind": "FC",
+   "label": "FULL COVER placeholder FC4 (lines 23-25)",
+   "start": 2016,
+   "end": 2209
+  },
+  {
+   "name": "B_L26",
+   "kind": "BROLL",
+   "label": null,
+   "start": 2209,
+   "end": 2262
+  },
+  {
+   "name": "H_L27",
+   "kind": "HALF",
+   "label": null,
+   "start": 2262,
+   "end": 2372
+  }
+ ],
+ "shots": [
+  {
+   "seg": "B_L2",
+   "clip": "B05",
+   "src": 2.6,
+   "start": 272,
+   "end": 284,
+   "note": "2021 hype: sneaker-release crowd rush",
+   "mezz_start": 2.1,
+   "asset": "B05_0002_60"
+  },
+  {
+   "seg": "B_L2",
+   "clip": "B44",
+   "src": 5.0,
+   "start": 284,
+   "end": 314,
+   "note": "WSJ Nike market-value line climbing to the late-2021 peak ('2021' overlay)",
+   "mezz_start": 4.5,
+   "asset": "B44_0005_00"
+  },
+  {
+   "seg": "B_L8",
+   "clip": "B19",
+   "src": 13.4,
+   "start": 667,
+   "end": 694,
+   "note": "Donahoe on CNBC set, 2020",
+   "mezz_start": 12.9,
+   "asset": "B19_0013_40"
+  },
+  {
+   "seg": "B_L8",
+   "clip": "B21",
+   "src": 10.3,
+   "start": 694,
+   "end": 713,
+   "note": "Donahoe portrait (Nike hired)",
+   "mezz_start": 9.8,
+   "asset": "B21_0010_30"
+  },
+  {
+   "seg": "B_L8",
+   "clip": "B21",
+   "src": 13.7,
+   "start": 713,
+   "end": 730,
+   "note": "eBay sign",
+   "mezz_start": 13.2,
+   "asset": "B21_0013_70"
+  },
+  {
+   "seg": "B_L8",
+   "clip": "B18",
+   "src": 34.2,
+   "start": 730,
+   "end": 755,
+   "note": "Donahoe as eBay CEO, WSJ 2014",
+   "mezz_start": 33.7,
+   "asset": "B18_0034_20"
+  },
+  {
+   "seg": "B_L8",
+   "clip": "B21",
+   "src": 17.0,
+   "start": 755,
+   "end": 783,
+   "note": "Donahoe at FN Achievement Awards",
+   "mezz_start": 16.5,
+   "asset": "B21_0017_00"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B30",
+   "src": 0.6,
+   "start": 970,
+   "end": 980,
+   "note": "shuttered shop, empty street (Covid)",
+   "mezz_start": 0.09999999999999998,
+   "asset": "B30_0000_60"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B32",
+   "src": 16.7,
+   "start": 980,
+   "end": 997,
+   "note": "shopping on a phone (e-commerce boom)",
+   "mezz_start": 16.2,
+   "asset": "B32_0016_70"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B31",
+   "src": 15.0,
+   "start": 997,
+   "end": 1023,
+   "note": "Nike quote: digital growth of 82 percent",
+   "mezz_start": 14.5,
+   "asset": "B31_0015_00"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B37",
+   "src": 36.0,
+   "start": 1023,
+   "end": 1051,
+   "note": "store reopening, 'practice social distancing'",
+   "mezz_start": 35.5,
+   "asset": "B37_0036_00"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B39",
+   "src": 3.3,
+   "start": 1051,
+   "end": 1072,
+   "note": "Foot Locker storefront",
+   "mezz_start": 2.8,
+   "asset": "B39_0003_30"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B39",
+   "src": 8.7,
+   "start": 1072,
+   "end": 1087,
+   "note": "shoe wall with shoppers",
+   "mezz_start": 8.2,
+   "asset": "B39_0008_70"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B35",
+   "src": 20.5,
+   "start": 1087,
+   "end": 1105,
+   "note": "Hoka held up to camera",
+   "mezz_start": 20.0,
+   "asset": "B35_0020_50"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B39",
+   "src": 11.0,
+   "start": 1105,
+   "end": 1117,
+   "note": "On shoe close-up",
+   "mezz_start": 10.5,
+   "asset": "B39_0011_00"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "B38",
+   "src": 54.4,
+   "start": 1117,
+   "end": 1146,
+   "note": "Hoka shelf, HOKA NYC flagship",
+   "mezz_start": 53.9,
+   "asset": "B38_0054_40"
+  },
+  {
+   "seg": "B_L11",
+   "clip": "MISSING",
+   "src": 0.0,
+   "start": 1146,
+   "end": 1241,
+   "note": "B80-B82 Alo / Vuori not available"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B43",
+   "src": 11.3,
+   "start": 1480,
+   "end": 1500,
+   "note": "SB Dunk on the floor",
+   "mezz_start": 10.8,
+   "asset": "B43_0011_30"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B41",
+   "src": 3.4,
+   "start": 1500,
+   "end": 1524,
+   "note": "stacked orange Nike boxes",
+   "mezz_start": 2.9,
+   "asset": "B41_0003_40"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B42",
+   "src": 4.4,
+   "start": 1524,
+   "end": 1536,
+   "note": "rows of identical Panda Dunks",
+   "mezz_start": 3.9000000000000004,
+   "asset": "B42_0004_40"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B42",
+   "src": 2.0,
+   "start": 1536,
+   "end": 1539,
+   "note": "burst",
+   "mezz_start": 1.5,
+   "asset": "B42_0002_00"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B41",
+   "src": 9.2,
+   "start": 1539,
+   "end": 1541,
+   "note": "burst",
+   "mezz_start": 8.7,
+   "asset": "B41_0009_20"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B42",
+   "src": 6.9,
+   "start": 1541,
+   "end": 1544,
+   "note": "burst",
+   "mezz_start": 6.4,
+   "asset": "B42_0006_90"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B57",
+   "src": 24.0,
+   "start": 1544,
+   "end": 1546,
+   "note": "burst",
+   "mezz_start": 23.5,
+   "asset": "B57_0024_00"
+  },
+  {
+   "seg": "B_L15",
+   "clip": "B44",
+   "src": 18.9,
+   "start": 1546,
+   "end": 1577,
+   "note": "grid of identical Jordan 1s (same shoes)",
+   "mezz_start": 18.4,
+   "asset": "B44_0018_90"
+  },
+  {
+   "seg": "S_L19",
+   "clip": "B52",
+   "src": 21.3,
+   "start": 1660,
+   "end": 1675,
+   "note": "huge release-day line (Concord 11)",
+   "mezz_start": 20.8,
+   "asset": "B52_0021_30"
+  },
+  {
+   "seg": "S_L19",
+   "clip": "B51",
+   "src": 36.0,
+   "start": 1675,
+   "end": 1727,
+   "note": "camp-out line, freezes on 'no' (hype) and drains to B&W",
+   "freeze_frame": 1704,
+   "mezz_start": 35.5,
+   "asset": "B51_0036_00"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B58",
+   "src": 4.55,
+   "start": 1727,
+   "end": 1761,
+   "note": "BREAKING NEWS slam",
+   "mezz_start": 4.05,
+   "asset": "B58_0004_55"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B19",
+   "src": 4.8,
+   "start": 1761,
+   "end": 1780,
+   "note": "Donahoe portrait",
+   "mezz_start": 4.3,
+   "asset": "B19_0004_80"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B57",
+   "src": 11.0,
+   "start": 1780,
+   "end": 1796,
+   "note": "Nike store exterior",
+   "mezz_start": 10.5,
+   "asset": "B57_0011_00"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B59",
+   "src": 20.7,
+   "start": 1796,
+   "end": 1820,
+   "note": "Hill intern-to-CEO photo collage",
+   "mezz_start": 20.2,
+   "asset": "B59_0020_70"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B60",
+   "src": 10.5,
+   "start": 1820,
+   "end": 1842,
+   "note": "Hill walking",
+   "mezz_start": 10.0,
+   "asset": "B60_0010_50"
+  },
+  {
+   "seg": "B_L20",
+   "clip": "B61",
+   "src": 4.0,
+   "start": 1842,
+   "end": 1869,
+   "note": "walking into the LeBron James Innovation Center",
+   "mezz_start": 3.5,
+   "asset": "B61_0004_00"
+  },
+  {
+   "seg": "B_L22",
+   "clip": "B62",
+   "src": 2.0,
+   "start": 1964,
+   "end": 1978,
+   "note": "Nike socks in packaging (inventory)",
+   "mezz_start": 1.5,
+   "asset": "B62_0002_00"
+  },
+  {
+   "seg": "B_L22",
+   "clip": "B57",
+   "src": 19.1,
+   "start": 1978,
+   "end": 1994,
+   "note": "outlet shelves of shoe boxes",
+   "mezz_start": 18.6,
+   "asset": "B57_0019_10"
+  },
+  {
+   "seg": "B_L22",
+   "clip": "B62",
+   "src": 21.0,
+   "start": 1994,
+   "end": 2016,
+   "note": "Elliott Hill close-up",
+   "mezz_start": 20.5,
+   "asset": "B62_0021_00"
+  },
+  {
+   "seg": "B_L26",
+   "clip": "B74",
+   "src": 12.9,
+   "start": 2209,
+   "end": 2238,
+   "note": "rivals' stock chart vs Nike",
+   "mezz_start": 12.4,
+   "asset": "B74_0012_90"
+  },
+  {
+   "seg": "B_L26",
+   "clip": "B75",
+   "src": 350.0,
+   "start": 2238,
+   "end": 2262,
+   "note": "Foot Locker wall of mixed brands",
+   "mezz_start": 349.5,
+   "asset": "B75_0350_00"
+  },
+  {
+   "seg": "H_L27",
+   "clip": "B76",
+   "src": 286.9,
+   "start": 2262,
+   "end": 2303,
+   "note": "SHELF: near-empty wall, Nike store NYC",
+   "mezz_start": 286.4,
+   "asset": "B76_0286_90"
+  },
+  {
+   "seg": "H_L27",
+   "clip": "B51",
+   "src": 28.0,
+   "start": 2303,
+   "end": 2330,
+   "note": "HYPE: release line on the street (B77 = other moment of B51)",
+   "mezz_start": 27.5,
+   "asset": "B51_0028_00"
+  },
+  {
+   "seg": "H_L27",
+   "clip": "B78",
+   "src": 2.0,
+   "start": 2330,
+   "end": 2345,
+   "note": "ATHLETE: sprinter celebrating",
+   "mezz_start": 1.5,
+   "asset": "B78_0002_00"
+  },
+  {
+   "seg": "H_L27",
+   "clip": "B79",
+   "src": 13.6,
+   "start": 2345,
+   "end": 2372,
+   "note": "ALL AT ONCE: Swoosh shattering (B79 reversed 13.6s -> 11.4s)",
+   "mezz_start": 10.9,
+   "asset": "B79_0011_40"
+  }
+ ]
+}
