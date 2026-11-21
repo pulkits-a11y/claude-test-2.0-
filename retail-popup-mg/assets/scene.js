@@ -17,16 +17,17 @@ const ACCENT = hex(V.accent, "#c4f0b4");
 const INK = hex(V.ink, "#eeeeea");
 
 // ---------------------------------------------------------------- timing (MG seconds)
-// Placed at 0:30.00 in the reel, the VO lands: "DSW" 1.21, "Dillard's" 1.61, "Foot Locker" 3.07.
+// Fills the reel's MG slot 0:27.633–0:33.867 (187 frames). VO in MG time: "Nike" 1.93,
+// "DSW" 3.58, "Dillard's" 3.98, "Foot Locker" 5.43.
 const T = {
-  plots: [0.06, 0.16, 0.26], // floor plan outlines draw on
-  dsw: 0.52, // emergence start: the roof breaks the floor here, slowly, then accelerates
-  dill: 1.05,
-  fl: 2.6,
-  swooshIn: 4.12,
-  swooshHold: 4.78,
-  swooshOut: 5.32,
-  swooshGone: 6.02,
+  plots: [0.08, 0.3, 0.52], // floor plan outlines draw on while the camera cranes down
+  dsw: 2.95, // emergence start: lands ~3.57, on "DSW"
+  dill: 3.38, // lands ~4.02, on "Dillard's"
+  fl: 4.83, // lands ~5.44, on "Foot Locker"
+  swooshIn: 5.36,
+  swooshHold: 5.68,
+  swooshOut: 5.78,
+  swooshGone: 6.08,
 };
 
 // ---------------------------------------------------------------- utilities
@@ -384,20 +385,51 @@ function makeSign(mask, width, color, { layers = 7, depth = 0.032, rough = 0.012
 const std = (color, roughness, metalness = 0, extra = {}) =>
   new THREE.MeshStandardMaterial({ color, roughness, metalness, ...extra });
 
+// Weathering: mottled albedo and roughness from object-space noise (stays put while a store moves).
+const DETAIL_GLSL = `
+  varying vec3 vObjP;
+  float dh(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+  float dn3(vec3 p){ vec3 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+    return mix(mix(mix(dh(i), dh(i+vec3(1,0,0)), f.x), mix(dh(i+vec3(0,1,0)), dh(i+vec3(1,1,0)), f.x), f.y),
+               mix(mix(dh(i+vec3(0,0,1)), dh(i+vec3(1,0,1)), f.x), mix(dh(i+vec3(0,1,1)), dh(i+vec3(1,1,1)), f.x), f.y), f.z); }
+`;
+function weather(mat, amp = 0.1, rAmp = 0.16) {
+  mat.onBeforeCompile = (sh) => {
+    sh.vertexShader = sh.vertexShader
+      .replace("#include <common>", "#include <common>\nvarying vec3 vObjP;")
+      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvObjP = position;");
+    sh.fragmentShader = sh.fragmentShader
+      .replace("#include <common>", "#include <common>\n" + DETAIL_GLSL)
+      .replace(
+        "#include <map_fragment>",
+        `#include <map_fragment>
+         float dn = dn3(vObjP * 7.0) * 0.55 + dn3(vObjP * 31.0) * 0.3 + dh(floor(vObjP * 260.0)) * 0.15;
+         diffuseColor.rgb *= 1.0 + (dn - 0.5) * ${amp.toFixed(3)};`,
+      )
+      .replace(
+        "#include <roughnessmap_fragment>",
+        `#include <roughnessmap_fragment>
+         roughnessFactor = clamp(roughnessFactor + (dn - 0.5) * ${rAmp.toFixed(3)}, 0.05, 1.0);`,
+      );
+  };
+  mat.customProgramCacheKey = () => `weather-${amp}-${rAmp}`;
+  return mat;
+}
+
 const M = {
-  concrete: std("#6d6a65", 0.95),
-  curb: std("#8f8b85", 0.9),
+  concrete: std("#5d5b57", 0.95),
+  curb: std("#75726d", 0.9),
   roof: std("#6e6b66", 0.95),
   hvac: std("#a3a19c", 0.55, 0.35),
   // DSW: light metal panels, charcoal sign panel, aluminium storefront
-  dswPanel: std("#c3c0ba", 0.6, 0.08),
+  dswPanel: std("#b7b5b0", 0.55, 0.12),
   dswSeam: std("#8e8b86", 0.7),
   charcoal: std("#2a2b2c", 0.55, 0.1),
   alu: std("#a9adb1", 0.3, 0.85),
   aluDark: std("#55585c", 0.35, 0.75),
   // Dillard's: warm limestone, bronze
-  stone: std("#d9cdb5", 0.9),
-  stoneDark: std("#bfb29a", 0.92),
+  stone: std("#cdc4b3", 0.88),
+  stoneDark: std("#b1a793", 0.9),
   stoneLine: std("#a99c84", 0.95),
   bronze: std("#5b4631", 0.4, 0.75),
   // Foot Locker: black, referee stripes
@@ -409,8 +441,8 @@ const M = {
     roughness: 0.05,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.34,
-    envMapIntensity: 2.4,
+    opacity: 0.3,
+    envMapIntensity: 3.2,
     depthWrite: false,
   }),
   doorGlass: new THREE.MeshStandardMaterial({
@@ -423,6 +455,21 @@ const M = {
     depthWrite: false,
   }),
 };
+
+for (const [k, amp, ra] of [
+  ["concrete", 0.22, 0.1],
+  ["curb", 0.18, 0.1],
+  ["roof", 0.2, 0.08],
+  ["hvac", 0.1, 0.2],
+  ["dswPanel", 0.07, 0.22],
+  ["charcoal", 0.12, 0.2],
+  ["stone", 0.12, 0.12],
+  ["stoneDark", 0.14, 0.12],
+  ["bronze", 0.12, 0.2],
+  ["flBlack", 0.16, 0.2],
+  ["flTrim", 0.12, 0.2],
+])
+  weather(M[k], amp, ra);
 
 function interiorMat(color, emissive) {
   return new THREE.MeshStandardMaterial({
@@ -443,7 +490,7 @@ function boxGeo(w, h, d) {
   if (!g) {
     const mn = Math.min(w, h, d);
     // model-making bevel: big masses catch a thin highlight on every edge
-    g = mn > 0.035 ? new RoundedBoxGeometry(w, h, d, 2, Math.min(0.011, mn * 0.22)) : new THREE.BoxGeometry(w, h, d);
+    g = mn > 0.035 ? new RoundedBoxGeometry(w, h, d, 2, Math.min(0.006, mn * 0.15)) : new THREE.BoxGeometry(w, h, d);
     geoCache.set(k, g);
   }
   return g;
@@ -535,6 +582,9 @@ function baseAO(parent, w, d, zc, y) {
 function plinth(parent, pw, pd, ph) {
   box(parent, pw, ph, pd, M.concrete, 0, 0, 0);
   box(parent, pw - 0.05, 0.014, 0.4, M.curb, 0, ph, pd / 2 - 0.225);
+  for (let x = -pw / 2 + 0.3; x < pw / 2 - 0.1; x += 0.3)
+    box(parent, 0.006, 0.002, 0.4, M.roof, x, ph + 0.014, pd / 2 - 0.225, { cast: false });
+  box(parent, pw - 0.05, 0.002, 0.006, M.roof, 0, ph + 0.014, pd / 2 - 0.08, { cast: false });
   // thin chamfer line at the top edge (reads as a model base)
   box(parent, pw + 0.004, 0.012, pd + 0.004, M.curb, 0, ph - 0.012, 0, { cast: false });
 }
@@ -618,6 +668,7 @@ function buildDSW(mask) {
   const sign = makeSign(mask, 1.3, INK, { depth: 0.03 });
   sign.group.position.set(px, py + panelH / 2, zf + 0.06);
   g.add(sign.group);
+  box(g, 0.03, h, 0.03, M.charcoal, w / 2 + 0.016, y0, zb + 0.18);
   // rooftop
   box(g, 0.36, 0.17, 0.3, M.hvac, -0.48, y0 + h + 0.05, zb + 0.42);
   box(g, 0.24, 0.12, 0.22, M.hvac, 0.42, y0 + h + 0.05, zb + 0.35);
@@ -726,6 +777,13 @@ function buildDillards(mask) {
   // warm uplights washing the sign
   const wash = std("#111", 0.5, 0, { emissive: "#ffe3bd", emissiveIntensity: 0 });
   for (const x of [-0.55, 0, 0.55]) box(g, 0.07, 0.025, 0.05, wash, x, y0 + 1.355, zf + 0.06, { cast: false });
+  box(g, 0.032, h, 0.032, M.bronze, w / 2 + 0.017, y0, zb + 0.2);
+  // ashlar joints on the upper storey
+  for (let r = 0, y = y0 + 1.5; y < y0 + h - 0.14; r++, y += 0.2) {
+    box(g, w - 0.24, 0.006, 0.003, M.stoneLine, 0, y, zf + 0.0015, { cast: false });
+    for (let x = -w / 2 + 0.12 + (r % 2 ? 0.18 : 0.36); x < w / 2 - 0.14; x += 0.36)
+      box(g, 0.006, 0.2, 0.003, M.stoneLine, x, y, zf + 0.0015, { cast: false });
+  }
   // rooftop penthouse
   box(g, 1.0, 0.3, 0.62, M.stoneDark, 0.18, y0 + h + 0.08, zb + 0.5);
   box(g, 0.3, 0.12, 0.25, M.hvac, -0.62, y0 + h + 0.08, zb + 0.4);
@@ -818,6 +876,7 @@ function buildFootLocker(mask) {
   const sign = makeSign(mask, 1.5, INK, { depth: 0.026 });
   sign.group.position.set(0, hb.y0 + hb.h / 2, zf + jd + 0.002);
   g.add(sign.group);
+  box(g, 0.03, h, 0.03, M.flTrim, w / 2 + 0.016, y0, zb + 0.16);
   // rooftop
   box(g, 0.42, 0.14, 0.32, M.hvac, 0.28, y0 + h + 0.045, zb + 0.4);
   box(g, 0.18, 0.2, 0.18, M.hvac, -0.45, y0 + h + 0.045, zb + 0.3);
@@ -946,10 +1005,10 @@ function makePop(o) {
 }
 
 // ---------------------------------------------------------------- set dressing
-const floorFade = { uCenter: { value: new THREE.Vector2(0, 0.2) }, uR: { value: new THREE.Vector2(2.4, 8.2) } };
+const floorFade = { uCenter: { value: new THREE.Vector2(0, 0.2) }, uR: { value: new THREE.Vector2(0.45, 2.5) } };
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(90, 90),
-  new THREE.MeshStandardMaterial({ color: "#222222", roughness: 0.96, metalness: 0 }),
+  new THREE.MeshStandardMaterial({ color: "#191919", roughness: 0.96, metalness: 0 }),
 );
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
@@ -971,7 +1030,7 @@ floor.material.onBeforeCompile = (shader) => {
     .replace(
       "#include <dithering_fragment>",
       `#include <dithering_fragment>
-       vec2 dd = (vFloorW.xz - uCenter) * vec2(0.62, 1.0);
+       vec2 dd = (vFloorW.xz - uCenter) * vec2(0.42, 1.0);
        float fade = smoothstep(uR.x, uR.y, length(dd));
        gl_FragColor.rgb = mix(gl_FragColor.rgb, uBg, fade);`,
     );
@@ -1132,9 +1191,6 @@ const POST_FRAG = /* glsl */ `
     col = uBg + (col - uBg) * uExposure * vig;
     col = shoulder(col);
     // restrained split tone: cool shadows, warm highlights (lifted only above the ground level)
-    float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
-    vec3 tint = mix(vec3(0.985, 1.0, 1.025), vec3(1.03, 1.0, 0.965), smoothstep(0.03, 0.5, lum));
-    col = mix(col, col * tint, smoothstep(0.008, 0.03, lum));
     vec3 s = toSRGB(col);
     // grain: barely in the blacks, more in mids and highs (the reel's type texture)
     float sl = dot(s, vec3(0.333));
@@ -1283,12 +1339,13 @@ async function build() {
   // 16:9: starts close on the DSW plot, trucks right as each store arrives (all three framed
   // before Foot Locker breaks the floor), then a slow pull back and crane up for the reveal.
   const CAM = {
-    tx: track([[0, -1.6], [1.55, -1.08], [2.55, -0.1], [6.5, -0.02]], 0.25, 0.0),
-    ty: track([[0, 1.05], [1.55, 1.38], [2.55, 1.42], [6.5, 1.5]], 0.1, 0.0),
-    dist: track([[0, 7.7], [1.55, 9.3], [2.55, 11.3], [6.5, 14.7]], 0.75, 0.18),
-    yaw: track([[0, 25], [6.5, 15.5]], -1.6, -1.2),
-    pitch: track([[0, 17], [2.55, 18], [6.5, 20]], 0.35, 0.3),
+    tx: track([[0, -0.6], [2.9, -1.6], [4.0, -1.08], [4.85, -0.1], [6.2333, -0.03]], -0.25, 0.0),
+    ty: track([[0, 0.2], [2.9, 1.05], [4.0, 1.38], [4.85, 1.42], [6.2333, 1.5]], 0.25, 0.0),
+    dist: track([[0, 10.6], [2.9, 7.9], [4.0, 9.3], [4.85, 11.2], [6.2333, 13.9]], -0.6, 0.3),
+    yaw: track([[0, 8], [2.9, 24], [6.2333, 16]], 6, -1.4),
+    pitch: track([[0, 52], [1.6, 35], [2.9, 17], [4.0, 18], [6.2333, 20]], -8, 0.4),
   };
+
   const tgt = new THREE.Vector3();
   function placeCamera(t) {
     tgt.set(CAM.tx(t), CAM.ty(t), 0);
@@ -1469,7 +1526,7 @@ async function build() {
       }
       // plot outline: draws on, then fades once the store has settled
       const tp = T.plots[i];
-      s.plot.uniforms.uProg.value = smooth(tp, tp + 0.55, t) * 1.02;
+      s.plot.uniforms.uProg.value = smooth(tp, tp + 0.9, t) * 1.02;
       s.plot.uniforms.uAlpha.value = 0.34 * smooth(tp, tp + 0.08, t) * (1 - smooth(s.pop.tImpact + 0.25, s.pop.tImpact + 0.9, t));
     });
 
@@ -1478,7 +1535,7 @@ async function build() {
     const out = smooth(T.swooshOut, T.swooshGone, t);
     swU.uReveal.value = rev;
     swU.uOut.value = out;
-    glowU.uAmt.value = 0.22 * smooth(T.swooshIn + 0.25, T.swooshHold + 0.1, t) * (1 - smooth(T.swooshOut, T.swooshOut + 0.45, t));
+    glowU.uAmt.value = 0.22 * smooth(T.swooshIn + 0.25, T.swooshHold + 0.1, t) * (1 - smooth(T.swooshOut, T.swooshGone - 0.06, t));
     swooshG.visible = t > T.swooshIn - 0.05 && t < T.swooshGone + 0.05;
     const rise = (1 - Math.pow(1 - smooth(T.swooshIn - 0.1, T.swooshHold + 0.3, t), 2)) * 0.12 + out * 0.14;
     swooshG.position.set(swooshBase.x, swooshBase.y - 0.12 + rise, swooshBase.z);

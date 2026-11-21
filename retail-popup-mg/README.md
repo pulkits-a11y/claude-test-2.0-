@@ -1,26 +1,25 @@
 # Retail Pop-Up MG (Raw Canvas / Nike reel)
 
-A 6.5 s, 1920×1080, 30 fps motion graphic for the MG slot at **0:30** in `NikeReel_v4`. Three miniature
-storefronts (DSW, Dillard's, Foot Locker) pop up through a studio floor, one per VO mention. Then the camera pulls
-back, a mint Nike swoosh appears above them and dissolves away. It ends on the three stores standing alone.
+A 6.233 s (187 frames), 1920×1080, 30 fps motion graphic that fills the reel's MG slot exactly:
+**0:27.633 → 0:33.867** in `NikeReel_v4` (the "MG" placeholder, measured frame by frame). Three miniature
+storefronts (DSW, Dillard's, Foot Locker) pop up through a studio floor, one per VO mention. Then the camera
+pulls back, a mint Nike swoosh flashes above them and dissolves away, and it ends on the three stores alone.
 
-VO: *"Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker."*
+VO: *"His plan? Cut out the middleman. Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker."*
 
-## Sync map (MG time → reel time when the clip starts at 0:30.00)
+## Sync map (place the clip at 0:27.633)
 
 | MG time | Reel | What happens |
 | --- | --- | --- |
-| 0.00–0.55 | 0:30.0 | Empty studio. Floor-plan outlines draw on for three plots; the camera is already drifting |
-| 0.52 → 1.17 | 0:30.5 → 0:31.2 | **DSW** breaks the floor, rises, overshoots, drops, bounces and settles. The sign switches on as "DSW" is spoken (0:31.21) |
-| 1.05 → 1.71 | 0:31.1 → 0:31.7 | **Dillard's** pops (heavier: lower hop, less bounce). It lands on "Dillard's" (0:31.61) |
-| 1.6 → 2.6 | 0:31.6 → 0:32.6 | Camera trucks right to frame the empty third plot |
-| 2.60 → 3.22 | 0:32.6 → 0:33.2 | **Foot Locker** pops. It lands on "Foot Locker" (0:33.07) |
-| 3.2 → 6.5 | 0:33.2 → 0:36.5 | Slow pull back and crane up. Reveal of all three |
-| 4.12 → 4.78 | 0:34.1 → 0:34.8 | Swoosh draws on (displacement-map wipe) |
-| 5.32 → 6.02 | 0:35.3 → 0:36.0 | Swoosh breaks up and fades (turbulent displace + dissolve) |
-| 6.0 → 6.5 | 0:36.0 → 0:36.5 | Clean hold of the three stores for the cut |
-
-To move a beat, edit `T` at the top of `assets/scene.js` (emergence start times; landing ≈ start + 0.6 s).
+| 0.00–2.9 | 0:27.6–0:30.5 | "Cut out the middleman": the camera cranes down from high over a dark floor while three plot outlines draw on |
+| 2.95 → 3.57 | 0:30.6 → 0:31.2 | **DSW** breaks the floor, rises, overshoots, drops, bounces and settles. The sign switches on at "DSW" (0:31.21) |
+| 3.38 → 4.03 | 0:31.0 → 0:31.7 | **Dillard's** pops (heavier: lower hop, less bounce). The sign switches on at "Dillard's" (0:31.61) |
+| 4.0 → 4.85 | 0:31.6 → 0:32.5 | Camera trucks right to frame the third plot |
+| 4.83 → 5.44 | 0:32.5 → 0:33.1 | **Foot Locker** pops. The sign switches on at "Foot Locker" (0:33.07) |
+| 4.85 → 6.23 | 0:32.5 → 0:33.87 | Slow pull back and crane up. Reveal of all three |
+| 5.36 → 5.68 | 0:33.0 → 0:33.3 | Swoosh draws on (displacement-map wipe) |
+| 5.78 → 6.08 | 0:33.4 → 0:33.7 | Swoosh breaks up and fades (turbulent displace + dissolve) |
+| 6.08 → 6.23 | 0:33.7 → 0:33.87 | Clean frame of the three stores for the cut |
 
 ## The three required effects
 
@@ -35,10 +34,12 @@ To move a beat, edit `T` at the top of `assets/scene.js` (emergence start times;
 
 ## Look
 
-Ground `#111111` (exact, same as the reel's cards), off-white sign ink, mint accent `#c4f0b4` for the swoosh only.
-Warm key light from front-left with soft shadows, cool rim from behind and a slowly turning environment, so glass
-reflections sweep. The models have bevelled edges, contact shadows and base occlusion. There's a light foreground
-depth of field and vertical motion blur on the pops.
+Flat `#111111` ground everywhere except a soft light pool under the stores, the same as the reel's title cards.
+There's no colour grade, so it cuts against footage without a colour jump. Off-white sign ink, and the mint accent
+`#c4f0b4` for the swoosh only. Grain matches the type at 0:23: inside the letters and on lit surfaces, but none on
+the ground. Warm key light from front-left with soft shadows, cool rim from behind and a slowly turning environment,
+so glass reflections sweep. The models have tight bevels, weathered/mottled materials, stone joints, paving joints,
+downpipes, contact shadows and base occlusion.
 
 ## Files
 
