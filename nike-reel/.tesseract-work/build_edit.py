@@ -134,7 +134,7 @@ for name, f in (("m_oleary", "oleary_fast_matte.mp4"), ("m_B19", "B19_matte.mp4"
 run("project", "import-asset", "--project", P, "--file", os.path.join(W, "clips", "hill.wav"), "--asset-id", "hill_audio", "--kind", "audio")
 MGINFO = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "retail-popup-mg_preview-1.mp4"), "--asset-id", "mg_retail"))
 for aid, f in (("tv_frame", "tv/tv_frame_alpha.png"), ("tv_mask", "tv/tv_screen_mask.png"), ("st_footlocker", "stills/retail_footlocker_WN212.png"),
-               ("st_nikestore", "stills/retail_nikestore_WN170.png"), ("st_aisle", "stills/retail_aisle_WN250.png"), ("logo_alo", "logos/alo_logo.png"), ("logo_vuori", "logos/vuori_logo.png")):
+               ("st_nikestore", "stills/retail_nikestore_WN170.png"), ("st_aisle", "stills/retail_aisle_WN250.png"), ("logo_alo", "logos/alo_logo.png"), ("hotspot", "hotspot.png"), ("logo_vuori", "logos/vuori_logo.png")):
     run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", f), "--asset-id", aid, "--kind", "image")
 TV_POS, TV_SCALE = (1198, 594), 70      # frames the Donahoe picture-in-picture (fit x 284-836, y 136-700) on the screen
 run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "hill_photo_B60_16s.png"), "--asset-id", "hill_photo", "--kind", "image")
@@ -169,12 +169,40 @@ D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "na
        "transform": {"anchorPoint": [0, 0], "position": [104, 74], "scale": [34, 34], "rotation": 0, "opacity": 80},
        "source": {"assetId": "logo_r_white", "fit": "contain"}})
 
-# ================= 2. film grain over the whole frame (Stepped look texture) =================
+# ================= 2. LOOK adjustment layer (top): grade -> orange push -> glow -> grain -> screen mesh -> vignette =================
 gid = D.nid()
-D.add({"type": "createFxAdjustmentLayer", "compositionId": C, "layerId": gid, "name": "LOOK: film grain (stepped 10 fps)",
+D.add({"type": "createFxAdjustmentLayer", "compositionId": C, "layerId": gid, "name": "LOOK: glow > grain > mesh > vignette (grade is on the footage layers)",
        "activeRange": {"start": 0, "duration": ms(endcard_in)}, "transform": xf()})
-ge = D.effect(gid, {"type": "grain", "amount": 0.09, "size": 1.5, "softness": 0.55, "aspectRatio": 1.0, "seed": 1})
-D.effect_script(gid, ge, "seed", "return Math.floor(input.time.seconds * 10);")
+D.effect(gid, {"type": "glow", "glowThreshold": 75, "glowRadius": 70, "glowIntensity": 0.35})
+ge = D.effect(gid, {"type": "grain", "amount": 0.14, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0, "seed": 1})
+D.effect_script(gid, ge, "seed", "return Math.floor(input.time.seconds * 24);")
+me = D.effect(gid, {"type": "customShader", "name": "screenMesh", "description": "Two Venetian Blinds passes (0 and 90 deg), 3 px, multiplied.",
+                    "wgsl": open(os.path.join(W, "shaders", "mesh.wgsl")).read(),
+                    "params": [{"name": "periodPx", "description": "Blind width in px.", "min": 1, "max": 12, "default": 3},
+                               {"name": "lineFrac", "description": "Dark part of each blind (0..1).", "min": 0, "max": 1, "default": 0.5},
+                               {"name": "strength", "description": "Mesh opacity (multiply).", "min": 0, "max": 1, "default": 0.15}]})
+TALK = [(tl["CLIP_OLEARY"][0], SEG["A1_OLEARY"][2])] + [(x["start"], x["end"]) for x in shots
+        if (x["clip"], x["src"]) in {("B59", 25.6), ("B60", 10.5), ("B62", 21.0), ("B19", 13.4), ("B21", 10.3), ("B18", 34.2)}]
+TALK += [(tl["CLIP_DONAHOE"][0], SEG["A2_DONAHOE"][2])]
+conds = " || ".join(f"(t >= {a_ / FPS:.3f} && t < {b_ / FPS:.3f})" for a_, b_ in TALK)
+D.effect_script(gid, me, "strength", f"var t = input.time.seconds; return ({conds}) ? 0.05 : 0.15;")
+D.effect(gid, {"type": "vignette", "amount": 0.28, "feather": 0.7, "radius": 0.8})
+
+
+
+def grade_fx(lid):
+    """B-roll grade: warm, more contrast, slightly crushed blacks, oranges pushed (footage only, not the charcoal/MG)."""
+    D.effect(lid, {"type": "primaryGrade", "semanticVersion": 1, "temperature": 0.22, "tint": 0, "exposure": 0, "contrast": 0.28,
+                   "highlights": 0, "shadows": -0.06, "whites": 0.05, "blacks": -0.18, "saturation": 0.04, "vibrance": 0})
+    eo = D.nid()
+    D.add({"type": "addFxLayerEffect", "compositionId": C, "layerId": lid, "effectId": eo,
+           "effect": {"type": "primaryGrade", "semanticVersion": 1, "temperature": 0, "tint": 0, "exposure": 0, "contrast": 0,
+                      "highlights": 0, "shadows": 0, "whites": 0, "blacks": 0, "saturation": 0.28, "vibrance": 0},
+           "compositingOptions": {"effectOpacity": 1, "maskReferences": [],
+                                  "qualifier": {"semanticVersion": 1, "hue": {"center": 25, "width": 34, "softness": 12},
+                                                "saturation": {"low": 0.2, "high": 1, "softness": 0.08}, "luminance": {"low": 0.08, "high": 1, "softness": 0.05},
+                                                "refine": {"denoise": 2, "blurRadius": 2, "choke": 0}, "invert": False}}})
+    D.effect(lid, {"type": "gaussianBlur", "blurriness": 0.75, "repeatEdgePixels": True})
 
 # ================= 3. captions (own group) =================
 EASE = {"type": "cubicBezier", "x1": 0.65, "y1": 0.0, "x2": 0.25, "y2": 1.0}     # ease in-out
@@ -758,8 +786,7 @@ D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": vO, "name": 
        "source": {"assetId": "oleary_fast", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": CLIPS[key][4]})
 end_rel = tl[key][1] - a
 D.keys(vO, "volume", [(0, 0, "linear"), (2, CLIPS[key][4], "linear"), (end_rel, CLIPS[key][4], "linear"), (end_rel + 3, 0, "linear")])
-ng = D.effect(vO, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 5})
-D.effect_script(vO, ng, "seed", "return Math.floor(input.time.seconds * 24);")
+grade_fx(vO)
 zoom_transition(gO, b - a, base=100, t_in=False, t_out=True, push_to=104)
 plan_rows.append(("CLIP_OLEARY", "2021 (hard) / This is WHY | you should be WORRIED | about the FUTURE | of a WALMART | or a FOOT LOCKER | They don't NEED RETAIL",
                   "Connector + keyword (reference style), alternating left / right", "Blur-to-sharp", "Blur-to-sharp + texture", "Cut out", "left / right of speaker"))
@@ -796,6 +823,7 @@ D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": vD, "name": 
 D.rect("TV screen black", 0, 0, 1920, 1080, [0.02, 0.02, 0.02, 1], 0, b - a, gS)
 end_rel = tl[key][1] - a
 D.keys(vD, "volume", [(0, 0, "linear"), (2, CLIPS[key][4], "linear"), (end_rel, CLIPS[key][4], "linear"), (end_rel + 3, 0, "linear")])
+grade_fx(gS)
 D.effect(gS, {"type": "chromaticAberration", "amount": 0.15, "direction": 0})
 D.effect(gS, {"type": "customShader", "name": "crtScanlines", "description": "CRT scanlines with a slow rolling band.",
               "wgsl": open(os.path.join(W, "shaders", "crt.wgsl")).read(),
@@ -905,6 +933,7 @@ wh_word("JOHN", "JOHN", 130, 500, SJ, TEXT, max(shj["start"], wf(8, 6)), shj["en
 wh_random("DONAHOE.", "DONAHOE.", 130, 500 + 0.84 * SJ, SJ, lambda c: GREEN if c == "." else TEXT, max(shj["start"], wf(8, 7)), shj["end"], gj)
 
 # ================= 5. placeholder screens =================
+GRUNGE = []
 for (name, kind, first, label), a, b in zip(SEGMENTS, seg_start, seg_end):
     if kind in ("FC", "TC", "CLIP"):
         nm = {"FC": f"{name} FULL COVER PLACEHOLDER (blank, VO + watermark)", "TC": f"{name} Text Centerpiece background",
@@ -912,6 +941,21 @@ for (name, kind, first, label), a, b in zip(SEGMENTS, seg_start, seg_end):
         if kind == "FC" and name != "FC2":
             w_mg = advance("MG", "archivo", 140, {"wght": 800, "wdth": 100}, 0)
             D.text(f"{name} preview label MG", "MG", 960 - w_mg / 2, 590, "archivo", 140, TEXT, a, b, wght=800)
+        if kind in ("FC", "TC"):
+            hs = D.nid()
+            D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": hs, "name": f"{name} soft hotspot behind text",
+                   "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)}, "transform": xf(pos=(0, 0), anchor=(0, 0), opacity=7),
+                   "source": {"assetId": "hotspot", "fit": "contain"}})
+            gr = D.nid()
+            D.add({"type": "createFxRectLayer", "compositionId": C, "layerId": gr, "name": f"{name} GRUNGE (procedural stand-in for Grunge 353), Soft Light 20%",
+                   "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
+                   "transform": {"anchorPoint": [960, 540], "position": [960, 540], "scale": [100, 100], "rotation": 0, "opacity": 20},
+                   "rect": {"size": [1920, 1080], "fillColor": [0.5, 0.5, 0.5, 1]}})
+            D.effect(gr, {"type": "turbulentNoise", "fractalType": "rocky", "contrast": 180, "brightness": -5, "complexity": 7,
+                          "scale": 260, "subInfluence": 75, "evolution": 0})
+            kk(gr, "scaleX", [(0, 100, "linear"), (b - a, 105, "linear")])
+            kk(gr, "scaleY", [(0, 100, "linear"), (b - a, 105, "linear")])
+            GRUNGE.append(gr)
         D.rect(nm, 0, 0, 1920, 1080, BG, a, b)
 
 # ================= 6. footage: one group per shot (punch-in, push, transitions, flicker, 3D chart) =================
@@ -955,8 +999,7 @@ for segname, lst in seg_shots.items():
                "sourceIntrinsicDuration": info["durationMs"], "transform": xf(),
                "source": {"assetId": sh["asset"], "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
                "volume": 0.0})
-        ng = D.effect(lid, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 3})
-        D.effect_script(lid, ng, "seed", "return Math.floor(input.time.seconds * 24);")
+        grade_fx(lid)
         if sh["clip"] == "B79":   # darken the pale mint so 'all at once.' and the watermark read
             D.effect(lid, {"type": "hueSaturation", "hue": 0, "saturation": -10, "lightness": -45, "colorize": False,
                            "colorizeHue": 0, "colorizeSaturation": 0, "colorizeLightness": 0})
@@ -1018,6 +1061,15 @@ res = json.loads(run("project", "apply", "--project", P, "--actions", os.path.jo
 print("apply warnings:", res.get("warnings"))
 run("project", "checkout", "--project", P, "--output", os.path.join(W, "editable.json"))
 _d = json.load(open(os.path.join(W, "editable.json"))); _d["duration"] = round(ms(TOTAL) / 1000, 3)
+def _blend(o):
+    if isinstance(o, dict):
+        n = o.get("name", "")
+        if "GRUNGE" in n: o["blendMode"] = "softLight"
+        elif "soft hotspot" in n: o["blendMode"] = "screen"
+        for v in o.values(): _blend(v)
+    elif isinstance(o, list):
+        for v in o: _blend(v)
+_blend(_d)
 json.dump(_d, open(os.path.join(W, "editable.json"), "w"))
 run("project", "commit", "--project", P, "--file", os.path.join(W, "editable.json"))
 json.dump(dict(clip_frames=clip_frames, timeline={str(k): v for k, v in tl.items()}, endcard_in=endcard_in, total=TOTAL,
