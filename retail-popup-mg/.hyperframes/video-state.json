@@ -2245,11 +2245,11 @@
   },
   "renders": {
     "latest": {
-      "id": "6c151cf2-a802-4870-ba81-dab60d75d400",
-      "completedAt": 1795263195498,
+      "id": "b9e9ba0c-62f2-4776-929f-44a351deec27",
+      "completedAt": 1795297050928,
       "output": "/home/user/claude-test-2.0-/retail-popup-mg/renders/retail-popup-mg_preview.mp4",
       "status": "completed",
-      "revision": "0e8fa508-bc3e-44a9-ae9c-906496129b66"
+      "revision": null
     },
     "retainedRevisions": [
       "0e8fa508-bc3e-44a9-ae9c-906496129b66",
