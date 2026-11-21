@@ -10,7 +10,7 @@ FPS = 30
 # id, tag, text, src_in, src_out   (speech onset/offset in the 1.07x VO)
 LINES = [
     (1, "TC", "Well, turns out, Nike needed retail more than anyone.", 0.000, 3.628),
-    (2, "BROLL", "That was 2021.", 4.111, 5.338),
+    (2, "FC", "That was 2021.", 4.111, 5.338),
     (3, "FC", "Nike was soaring at almost 280 billion dollars.", 5.693, 9.162),
     (4, "FC", "Today? Less than 60 billion dollars.", 9.553, 12.012),
     (5, "FC", "Down almost 80 percent.", 12.326, 13.924),
@@ -69,8 +69,7 @@ def timeline(clip_frames):
 SEGMENTS = [
     ("A1_OLEARY", "CLIP", "CLIP_OLEARY", "LIVE CLIP: Kevin O'Leary (Half Cover)"),
     ("TC1", "TC", 1, "Text Centerpiece: Well, turns out, Nike needed retail more than anyone."),
-    ("B_L2", "BROLL", 2, None),
-    ("FC1", "FC", 3, "FULL COVER placeholder FC1 (lines 3-6)"),
+    ("FC1", "FC", 2, "FULL COVER placeholder FC1 (lines 2-6)"),
     ("TC2", "TC", 7, "Text Centerpiece: So what happened?"),
     ("B_L8", "BROLL", 8, None),
     ("FC2", "FC", 9, "FULL COVER placeholder FC2 (lines 9-10)"),
@@ -95,8 +94,6 @@ BUG = {"B04": "tr", "B19": "tr", "B21": "tr", "B31": "tr", "B35": "tr", "B41": "
 
 # B-roll shots per segment: (cut line, cut time in VO seconds or None = segment start, clip, clip source second, note)
 SHOTS = {
-    "B_L2": [(2, None, "B05", 2.6, "2021 hype: sneaker-release crowd rush"),
-             (2, 4.52, "B44", 5.0, "WSJ Nike market-value line climbing to the late-2021 peak ('2021' overlay)")],
     "B_L8": [(8, None, "B19", 13.4, "Donahoe on CNBC set, 2020"),
              (8, 19.53, "B21", 10.3, "Donahoe portrait (Nike hired)"),
              (8, 20.16, "B21", 13.7, "eBay sign"),
@@ -116,7 +113,7 @@ SHOTS = {
               (15, 41.507, "B41", 3.40, "stacked orange Nike boxes"),
               (15, 41.96, "B42", 4.4, "rows of identical Panda Dunks"),
               (15, 42.68, "BURST", 0.0, "burst"),
-              (15, 43.02, "B44", 18.9, "grid of identical Jordan 1s (same shoes)")],
+              (15, 43.02, "B53", 11.3, "warehouse stacks of identical Nike boxes (same shoes)")],
     "S_L19": [(19, None, "B52", 21.3, "huge release-day line (Concord 11)"),
               (19, 47.68, "B52", 60.0, "release-day line along the wall, freezes on 'no' (hype) and drains to B&W")],
     "B_L20": [(20, None, "B58", 4.55, "BREAKING NEWS slam"),
@@ -124,7 +121,7 @@ SHOTS = {
               (20, 51.48, "B57", 11.0, "Nike store exterior"),
               (21, None, "B59", 20.7, "Hill intern-to-CEO photo collage"),
               (21, 53.047, "B60", 10.5, "Hill walking"),
-              (21, 53.80, "B61", 4.0, "walking into the LeBron James Innovation Center")],
+              (21, 53.80, "B61", 4.05, "walking into the LeBron James Innovation Center")],
     "B_L22": [(22, None, "B62", 2.0, "Nike socks in packaging (inventory)"),
               (22, 55.28, "B57", 19.1, "outlet shelves of shoe boxes"),
               (22, 55.84, "B62", 21.0, "Elliott Hill close-up")],

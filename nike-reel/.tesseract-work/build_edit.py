@@ -53,7 +53,7 @@ def dur(path):
 seg_start = [tl[s[2]][0] for s in SEGMENTS]
 seg_end = seg_start[1:] + [endcard_in]
 SEG = {s[0]: (s, a, b) for s, a, b in zip(SEGMENTS, seg_start, seg_end)}
-GRID_CUT_SEGS = {"B_L2", "H_L27"}           # cuts that overlays sync to land on the 10 fps grid
+GRID_CUT_SEGS = {"H_L27"}           # cuts that overlays sync to land on the 10 fps grid
 
 shots = []
 for name, plan in SHOTS.items():
@@ -101,7 +101,7 @@ for sh in shots:
     elif sh["seg"] in FREEZE and sh["clip"] == FREEZE[sh["seg"]]["clip"] and sh["src"] == FREEZE[sh["seg"]]["src"]:
         fr = round(FREEZE[sh["seg"]]["freeze_vo"] * FPS + off[19])
         sh["freeze_frame"] = fr
-        a, b = sh["src"], sh["src"] + (fr - sh["start"]) / FPS
+        a, b = sh["src"], sh["src"] + n / FPS
     else:
         a, b = sh["src"], sh["src"] + n / FPS
     sh["mezz"], sh["mezz_start"] = mezz_for(sh["clip"], a, b)
@@ -153,7 +153,7 @@ def punch(clip):
 # ================= 1. watermark (top) =================
 D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "name": "RawCanvas watermark (R, 65%, no animation)",
        "activeRange": {"start": 0, "duration": ms(endcard_in)},
-       "transform": {"anchorPoint": [0, 0], "position": [48, 48], "scale": [84.2, 84.2], "rotation": 0, "opacity": 65},
+       "transform": {"anchorPoint": [0, 0], "position": [104, 74], "scale": [34, 34], "rotation": 0, "opacity": 80},
        "source": {"assetId": "logo_r_white", "fit": "contain"}})
 
 # ================= 2. film grain over the whole frame (Stepped look texture) =================
@@ -164,16 +164,13 @@ ge = D.effect(gid, {"type": "grain", "amount": 0.09, "size": 1.5, "softness": 0.
 D.effect_script(gid, ge, "seed", "return Math.floor(input.time.seconds * 10);")
 
 # ================= 3. captions (own group) =================
-CAP_Y, CAP_SIZE, CAP_W = 962, 46, 640
-SPLITS = {2: [(0, 3)], 3: [(0, 3), (3, 8)], 4: [(0, 1), (1, 6)], 5: [(0, 4)], 6: [(0, 5), (5, 9)], 8: [(0, 4), (4, 6), (6, 8)],
-          9: [(0, 2), (2, 6)], 10: [(0, 5), (5, 9), (9, 15)], 11: [(0, 5)], 12: [(0, 3), (3, 6), (6, 11), (11, 16)],
-          13: [(0, 4), (4, 7), (7, 11)], 15: [(0, 3), (3, 9)], 16: [(0, 1)], 17: [(0, 3)], 18: [(0, 2)], 19: [(0, 5), (5, 8)],
-          20: [(0, 2), (2, 5)], 21: [(0, 2), (2, 4), (4, 7)], 22: [(0, 5)], 23: [(0, 1)], 24: [(0, 4), (4, 7)], 25: [(0, 4), (4, 8)],
-          26: [(0, 6)], 27: [(0, 5), (5, 7), (7, 10)], 28: [(0, 3)]}
-KEY = {2: [2], 3: [5, 6], 4: [3, 4], 5: [2, 3], 6: [3, 4], 8: [4, 5], 9: [5], 10: [1, 2], 11: [4], 12: [8, 9, 10], 13: [8, 9, 10],
-       15: [2], 16: [0], 17: [0, 1, 2], 18: [0, 1], 19: [6, 7], 20: [4], 21: [2, 3], 22: [4], 23: [0], 24: [2, 3], 25: [7],
-       26: [4, 5], 27: [9], 28: [0, 1, 2]}
-HIGHLIGHT = {(11, 4), (19, 7), (22, 4), (25, 7)}          # Highlight-box wipe on these key words
+CAP_Y, CAP_SIZE, CAP_W = 556, 50, 640
+SPLITS = {8: [(0, 2), (2, 4), (4, 6), (6, 8)], 11: [(0, 2), (2, 5)],
+          12: [(0, 3), (3, 6), (6, 9), (9, 11), (11, 13), (13, 16)], 13: [(0, 4), (4, 7), (7, 11)],
+          15: [(0, 2), (2, 5), (5, 9)], 19: [(0, 3), (3, 5), (5, 8)], 20: [(0, 2), (2, 5)], 21: [(0, 2), (2, 4), (4, 7)],
+          22: [(0, 2), (2, 5)], 26: [(0, 3), (3, 6)], 27: [(0, 3), (3, 5), (5, 7), (7, 10)], 28: [(0, 3)]}
+KEY = {8: [4, 5], 11: [4], 12: [8, 9, 10], 13: [8, 9, 10], 15: [2], 19: [6, 7], 20: [4], 21: [2, 3], 22: [4], 26: [4, 5], 27: [9], 28: [0, 1, 2]}
+HIGHLIGHT = {(11, 4), (19, 7), (22, 4)}          # Highlight-box wipe on these key words
 
 
 def seg_start_of(line):
@@ -233,8 +230,9 @@ for p in phrases:
             cap_rows.append((p["line"], i, word, f0, "Highlight-box wipe"))
         else:
             lid = D.text(f"cap L{p['line']}w{i} '{word}'", word, x, CAP_Y, "archivo", CAP_SIZE, GREEN if key else TEXT, f0, p["end"], cap, wght=CAP_W)
-            D.ghost_to_solid(lid)
-            cap_rows.append((p["line"], i, word, f0, "Ghost-to-solid"))
+            D.keys(lid, "opacity", [(0, 0, "linear"), (5, 100, "linear")])        # fade up: fade in while rising 16 px
+            D.keys(lid, "positionY", [(0, CAP_Y + 16, "linear"), (5, CAP_Y, "linear")])
+            cap_rows.append((p["line"], i, word, f0, "Fade up"))
 
 
 # ================= helpers for centred display rows =================
@@ -328,15 +326,6 @@ for i, (x, y) in zip(range(5, 7), pos):
     lid = D.text(f"TC3 '{L[i]['w']}'", L[i]["w"], x, y, "archivo", 58, TEXT, wf(14, i, a), b, g, wght=520); D.vox(lid, 58); D.blur_to_sharp(lid)
 plan_rows.append(("TC3", "And that was only HALF the problem.", "Connector + keyword", "Blur-to-sharp; Ghost-to-solid (only)", "Flash-in", "Cut out", "centered"))
 
-# ================= 4d. '2021' over the market-value chart =================
-(_, a, b) = SEG["B_L2"]
-g = scene_group("OVERLAY '2021' on B44 chart (B-roll keyword)", a, b, drift=False)
-f21 = CUT[("B_L2", "B44", 5.0)]
-Y21 = ("serif", 340, None, 0)
-w21 = advance("2021", *Y21)
-lid = D.text("2021 overlay", "2021", 1790 - w21, 712, "serif", 340, GREEN, f21, b, g); D.vox(lid, 340); D.motion_blur_slide(lid, 1790 - w21)
-plan_rows.append(("B_L2", "That was 2021. -> 2021", "Size-contrast build (single keyword)", "-", "Motion-blur slide (medium)", "Cut out", "right of chart"))
-
 # ================= 4e. Half Cover: shelf / hype / athlete / all at once =================
 (_, a, b) = SEG["H_L27"]
 g = scene_group("HALF COVER: It gave up the SHELF, the HYPE and the ATHLETE. ALL AT ONCE.", a, b, drift=False)
@@ -365,19 +354,14 @@ plan_rows.append(("H_L27", "It gave up the SHELF, the HYPE and the ATHLETE. ALL 
                   "Ghost-to-solid (connectors)", "Panel wipe (loud, panel); Block-to-word (shelf/hype/athlete); Blur-to-sharp (all at once.)",
                   "Cut out", "top panel, left"))
 
-# caption scrim: root layers under the captions/overlays, over footage only (outside the caption group so its shadow does not apply)
-for name in ["B_L2", "B_L8", "B_L11", "B_L15", "S_L19", "B_L20", "B_L22", "B_L26", "H_L27"]:
-    (_, a, b) = SEG[name]
-    D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "name": f"caption scrim {name}",            "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
-           "transform": {"anchorPoint": [0, 0], "position": [0, 660], "scale": [100, 100], "rotation": 0, "opacity": 100},
-           "source": {"assetId": "caption_scrim", "fit": "contain"}})
-
-
 # ================= 5. placeholder screens =================
 for (name, kind, first, label), a, b in zip(SEGMENTS, seg_start, seg_end):
     if kind in ("FC", "TC", "CLIP"):
         nm = {"FC": f"{name} FULL COVER PLACEHOLDER (blank, VO + watermark)", "TC": f"{name} Text Centerpiece background",
               "CLIP": f"{name} live clip slot (clip not supplied)"}[kind]
+        if kind == "FC":
+            w_mg = advance("MG", "archivo", 140, {"wght": 800, "wdth": 100}, 0)
+            D.text(f"{name} preview label MG", "MG", 960 - w_mg / 2, 590, "archivo", 140, TEXT, a, b, wght=800)
         D.rect(nm, 0, 0, 1920, 1080, BG, a, b)
 for sh in shots:
     if sh["clip"] == "MISSING":
@@ -404,21 +388,17 @@ for sh in shots:
            "source": {"assetId": sh["asset"], "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
            "volume": 0.0})
     n = sh["end"] - sh["start"]
+    ng = D.effect(lid, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 3})
+    D.effect_script(lid, ng, "seed", "return Math.floor(input.time.seconds * 24);")
+    ng = D.effect(lid, {"type": "grain", "amount": 0.22, "size": 1.6, "softness": 0.4, "aspectRatio": 1.0, "seed": 3})
+    D.effect_script(lid, ng, "seed", "return Math.floor(input.time.seconds * 24);")
     if sh["clip"] in REVERSE:
         hi, lo = REVERSE[sh["clip"]]
         D.add({"type": "setFxLayerTimeRemap", "compositionId": C, "layerId": lid, "timeRemap": {
             "keyframes": [{"id": f"rev-{lid}-a", "time": ms(sh["start"]), "value": round((hi - sh["mezz_start"]) * 1000), "easing": {"type": "linear"}},
                           {"id": f"rev-{lid}-b", "time": ms(sh["end"]), "value": round((lo - sh["mezz_start"]) * 1000), "easing": {"type": "linear"}}],
             "before": "inactive", "after": "inactive"}})
-    if "freeze_frame" in sh:
-        v0 = round((sh["src"] - sh["mezz_start"]) * 1000)
-        fz = ms(sh["freeze_frame"])
-        vf = v0 + (fz - ms(sh["start"]))
-        D.add({"type": "setFxLayerTimeRemap", "compositionId": C, "layerId": lid, "timeRemap": {
-            "keyframes": [{"id": f"fz-{lid}-a", "time": ms(sh["start"]), "value": v0, "easing": {"type": "linear"}},
-                          {"id": f"fz-{lid}-b", "time": fz, "value": vf, "easing": {"type": "linear"}},
-                          {"id": f"fz-{lid}-c", "time": ms(sh["end"]), "value": vf, "easing": {"type": "linear"}}],
-            "before": "inactive", "after": "inactive"}})
+    if "freeze_frame" in sh:   # no freeze (user): the shot keeps playing while it drains to B&W
         # drain to black and white over 9 frames, stepped (lands on 'hype')
         rel = sh["freeze_frame"] - sh["start"]
         hs = D.effect(lid, {"type": "hueSaturation", "hue": 0, "saturation": 0, "lightness": 0, "colorize": False,

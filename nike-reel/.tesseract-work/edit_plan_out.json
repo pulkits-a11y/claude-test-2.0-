@@ -148,17 +148,10 @@
    "end": 272
   },
   {
-   "name": "B_L2",
-   "kind": "BROLL",
-   "label": null,
-   "start": 272,
-   "end": 314
-  },
-  {
    "name": "FC1",
    "kind": "FC",
-   "label": "FULL COVER placeholder FC1 (lines 3-6)",
-   "start": 314,
+   "label": "FULL COVER placeholder FC1 (lines 2-6)",
+   "start": 272,
    "end": 626
   },
   {
@@ -268,26 +261,6 @@
   }
  ],
  "shots": [
-  {
-   "seg": "B_L2",
-   "clip": "B05",
-   "src": 2.6,
-   "start": 272,
-   "end": 282,
-   "note": "2021 hype: sneaker-release crowd rush",
-   "mezz_start": 2.1,
-   "asset": "B05_0002_60"
-  },
-  {
-   "seg": "B_L2",
-   "clip": "B44",
-   "src": 5.0,
-   "start": 282,
-   "end": 314,
-   "note": "WSJ Nike market-value line climbing to the late-2021 peak ('2021' overlay)",
-   "mezz_start": 4.5,
-   "asset": "B44_0005_00"
-  },
   {
    "seg": "B_L8",
    "clip": "B19",
@@ -508,13 +481,13 @@
   },
   {
    "seg": "B_L15",
-   "clip": "B44",
-   "src": 18.9,
+   "clip": "B53",
+   "src": 11.3,
    "start": 1546,
    "end": 1577,
-   "note": "grid of identical Jordan 1s (same shoes)",
-   "mezz_start": 18.4,
-   "asset": "B44_0018_90"
+   "note": "warehouse stacks of identical Nike boxes (same shoes)",
+   "mezz_start": 10.8,
+   "asset": "B53_0011_30"
   },
   {
    "seg": "S_L19",
@@ -590,12 +563,12 @@
   {
    "seg": "B_L20",
    "clip": "B61",
-   "src": 4.0,
+   "src": 4.05,
    "start": 1842,
    "end": 1869,
    "note": "walking into the LeBron James Innovation Center",
-   "mezz_start": 3.5,
-   "asset": "B61_0004_00"
+   "mezz_start": 3.55,
+   "asset": "B61_0004_05"
   },
   {
    "seg": "B_L22",
@@ -690,445 +663,88 @@
  ],
  "captions": [
   [
-   2,
-   0,
-   "That",
-   272,
-   "Ghost-to-solid"
-  ],
-  [
-   2,
-   1,
-   "was",
-   276,
-   "Ghost-to-solid"
-  ],
-  [
-   2,
-   2,
-   "2021.",
-   282,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   0,
-   "Nike",
-   314,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   1,
-   "was",
-   318,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   2,
-   "soaring",
-   327,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   3,
-   "at",
-   339,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   4,
-   "almost",
-   345,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   5,
-   "280",
-   354,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   6,
-   "billion",
-   381,
-   "Ghost-to-solid"
-  ],
-  [
-   3,
-   7,
-   "dollars.",
-   399,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   0,
-   "Today?",
-   423,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   1,
-   "Less",
-   444,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   2,
-   "than",
-   450,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   3,
-   "60",
-   459,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   4,
-   "billion",
-   471,
-   "Ghost-to-solid"
-  ],
-  [
-   4,
-   5,
-   "dollars.",
-   483,
-   "Ghost-to-solid"
-  ],
-  [
-   5,
-   0,
-   "Down",
-   501,
-   "Ghost-to-solid"
-  ],
-  [
-   5,
-   1,
-   "almost",
-   507,
-   "Ghost-to-solid"
-  ],
-  [
-   5,
-   2,
-   "80",
-   519,
-   "Ghost-to-solid"
-  ],
-  [
-   5,
-   3,
-   "percent.",
-   522,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   0,
-   "It",
-   555,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   1,
-   "even",
-   558,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   2,
-   "got",
-   561,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   3,
-   "kicked",
-   567,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   4,
-   "out",
-   573,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   5,
-   "of",
-   579,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   6,
-   "the",
-   582,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   7,
-   "S&P",
-   588,
-   "Ghost-to-solid"
-  ],
-  [
-   6,
-   8,
-   "100.",
-   600,
-   "Ghost-to-solid"
-  ],
-  [
    8,
    0,
    "In",
    667,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    1,
    "2020,",
    669,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    2,
    "Nike",
    693,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    3,
    "hired",
    702,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    4,
    "eBay's",
    711,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    5,
    "ex-CEO,",
    729,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    6,
    "John",
    753,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    8,
    7,
    "Donahoe.",
    762,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   0,
-   "His",
-   783,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   1,
-   "plan?",
-   786,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   2,
-   "Cut",
-   807,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   3,
-   "out",
-   813,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   4,
-   "the",
-   819,
-   "Ghost-to-solid"
-  ],
-  [
-   9,
-   5,
-   "middleman.",
-   822,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   0,
-   "Nike",
-   840,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   1,
-   "pulled",
-   849,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   2,
-   "out",
-   858,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   3,
-   "of",
-   864,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   4,
-   "stores",
-   870,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   5,
-   "like",
-   876,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   6,
-   "DSW",
-   882,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   7,
-   "and",
-   900,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   8,
-   "Dillard's,",
-   909,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   9,
-   "and",
-   924,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   10,
-   "sent",
-   930,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   11,
-   "less",
-   936,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   12,
-   "to",
-   942,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   13,
-   "Foot",
-   948,
-   "Ghost-to-solid"
-  ],
-  [
-   10,
-   14,
-   "Locker.",
-   954,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    11,
    0,
    "Covid",
    970,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    11,
    1,
    "made",
    978,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    11,
    2,
    "it",
    987,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    11,
    3,
    "look",
    990,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    11,
@@ -1142,343 +758,301 @@
    0,
    "Then",
    1023,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    1,
    "shoppers",
    1032,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    2,
    "went",
    1044,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    3,
    "back",
    1050,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    4,
    "to",
    1056,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    5,
    "stores,",
    1062,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    6,
    "and",
    1071,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    7,
    "found",
    1080,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    8,
    "Hoka",
    1086,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    9,
    "and",
    1095,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    10,
    "On",
    1104,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    11,
    "where",
    1110,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    12,
    "Nike",
    1116,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    13,
    "used",
    1122,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    14,
    "to",
    1131,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    12,
    15,
    "be.",
    1134,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    0,
    "And",
    1146,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    1,
    "at",
    1149,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    2,
    "the",
    1152,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    3,
    "gym,",
    1155,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    4,
    "Alo",
    1179,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    5,
    "and",
    1182,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    6,
    "Vuori",
    1188,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    7,
    "became",
    1194,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    8,
    "the",
    1206,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    9,
    "new",
    1212,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    13,
    10,
    "flex.",
    1218,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    0,
    "Meanwhile,",
    1480,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    1,
    "Nike",
    1500,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    2,
    "drowned",
    1509,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    3,
    "the",
    1524,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    4,
    "market",
    1527,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    5,
    "in",
    1536,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    6,
    "the",
    1542,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    7,
    "same",
    1545,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    15,
    8,
    "shoes.",
    1554,
-   "Ghost-to-solid"
-  ],
-  [
-   16,
-   0,
-   "Dunks.",
-   1577,
-   "Ghost-to-solid"
-  ],
-  [
-   17,
-   0,
-   "Air",
-   1596,
-   "Ghost-to-solid"
-  ],
-  [
-   17,
-   1,
-   "Force",
-   1602,
-   "Ghost-to-solid"
-  ],
-  [
-   17,
-   2,
-   "1s.",
-   1605,
-   "Ghost-to-solid"
-  ],
-  [
-   18,
-   0,
-   "Retro",
-   1626,
-   "Ghost-to-solid"
-  ],
-  [
-   18,
-   1,
-   "Jordans.",
-   1638,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    0,
    "Until",
    1660,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    1,
    "there",
    1665,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    2,
    "was",
    1671,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    3,
    "no",
    1674,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    4,
    "line,",
    1680,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    5,
    "and",
    1692,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
    6,
    "no",
    1701,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    19,
@@ -1492,112 +1066,112 @@
    0,
    "In",
    1727,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    20,
    1,
    "2024,",
    1731,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    20,
    2,
    "Donahoe",
    1761,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    20,
    3,
    "was",
    1773,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    20,
    4,
    "out.",
    1779,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    0,
    "His",
    1794,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    1,
    "replacement,",
    1800,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    2,
    "Elliott",
    1818,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    3,
    "Hill,",
    1827,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    4,
    "put",
    1842,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    5,
    "it",
    1845,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    21,
    6,
    "simply:",
    1848,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    22,
    0,
    "The",
    1964,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    22,
    1,
    "fix",
    1968,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    22,
    2,
    "has",
    1977,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    22,
    3,
    "been",
    1986,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    22,
@@ -1607,249 +1181,137 @@
    "Highlight-box wipe"
   ],
   [
-   23,
-   0,
-   "Tariffs.",
-   2016,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   0,
-   "China",
-   2037,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   1,
-   "down",
-   2046,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   2,
-   "26",
-   2055,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   3,
-   "percent",
-   2073,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   4,
-   "in",
-   2085,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   5,
-   "one",
-   2091,
-   "Ghost-to-solid"
-  ],
-  [
-   24,
-   6,
-   "quarter.",
-   2103,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   0,
-   "And",
-   2121,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   1,
-   "Nike",
-   2124,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   2,
-   "says",
-   2133,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   3,
-   "sales",
-   2142,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   4,
-   "keep",
-   2154,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   5,
-   "falling",
-   2163,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   6,
-   "into",
-   2175,
-   "Ghost-to-solid"
-  ],
-  [
-   25,
-   7,
-   "2028.",
-   2181,
-   "Highlight-box wipe"
-  ],
-  [
    26,
    0,
    "Nike",
    2209,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    26,
    1,
    "didn't",
    2217,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    26,
    2,
    "lose",
    2226,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    26,
    3,
    "to",
    2229,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    26,
    4,
    "one",
    2238,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    26,
    5,
    "brand.",
    2244,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    0,
    "It",
    2262,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    1,
    "gave",
    2265,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    2,
    "up",
    2268,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    3,
    "the",
    2274,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    4,
    "shelf,",
    2280,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    5,
    "the",
    2298,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    6,
    "hype",
    2301,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    7,
    "and",
    2316,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    8,
    "the",
    2325,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    27,
    9,
    "athlete.",
    2328,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    28,
    0,
    "All",
    2343,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    28,
    1,
    "at",
    2349,
-   "Ghost-to-solid"
+   "Fade up"
   ],
   [
    28,
    2,
    "once.",
    2355,
-   "Ghost-to-solid"
+   "Fade up"
   ]
  ],
  "typography": [
@@ -1879,15 +1341,6 @@
    "Flash-in",
    "Cut out",
    "centered"
-  ],
-  [
-   "B_L2",
-   "That was 2021. -> 2021",
-   "Size-contrast build (single keyword)",
-   "-",
-   "Motion-blur slide (medium)",
-   "Cut out",
-   "right of chart"
   ],
   [
    "H_L27",
