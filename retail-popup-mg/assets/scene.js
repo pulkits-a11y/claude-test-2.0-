@@ -19,10 +19,14 @@ const INK = hex(V.ink, "#eeeeea");
 // ---------------------------------------------------------------- timing (MG seconds)
 // Placed at 0:30.00 in the reel, the VO lands: "DSW" 1.21, "Dillard's" 1.61, "Foot Locker" 3.07.
 const T = {
-  plots: [0.06, 0.16, 0.26], // floor plan outlines draw on
-  dsw: 0.52, // emergence start: the roof breaks the floor here, slowly, then accelerates
-  dill: 1.05,
-  fl: 2.6,
+  // the stores rise lit, one after another, in the first second
+  dsw: 0.0,
+  dill: 0.12,
+  fl: 0.24,
+  // ...then each one dies on its name (VO at 0:30.00: "DSW" 1.21, "Dillard's" 1.61, "Foot Locker" 3.07)
+  dieDsw: 1.15,
+  dieDill: 1.56,
+  dimFl: 3.02,
 };
 
 // ---------------------------------------------------------------- utilities
@@ -102,6 +106,7 @@ renderer.outputColorSpace = THREE.LinearSRGBColorSpace; // the post pass encodes
 renderer.toneMapping = THREE.NoToneMapping;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false;
 
 const halfFloatOK =
   renderer.extensions.has("EXT_color_buffer_float") ||
@@ -118,7 +123,7 @@ scene.background = bgColor.clone();
 
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = 0.2;
+scene.environmentIntensity = 0.05;
 scene.environmentRotation = new THREE.Euler(0, 0, 0);
 
 // ---------------------------------------------------------------- procedural textures
@@ -305,7 +310,7 @@ const NOISE_GLSL = /* glsl */ `
 // Sign letters: turbulent-displaced, eroded edges, grain inside, displacement-map glitch on switch-on.
 const SIGN_FRAG = /* glsl */ `
   uniform sampler2D uMask; uniform sampler2D uBands;
-  uniform vec3 uColor; uniform float uShade, uBright, uGlitch, uSeed, uAspect, uRough, uErode;
+  uniform vec3 uColor, uDead; uniform float uShade, uBright, uGlitch, uSeed, uAspect, uRough, uErode, uOn;
   varying vec2 vUv;
   ${NOISE_GLSL}
   void main(){
@@ -325,7 +330,7 @@ const SIGN_FRAG = /* glsl */ `
     if (a < 0.03) discard;
     // noise inside the letters
     float grain = 0.7 + 0.3 * hash12(floor(gl_FragCoord.xy / 1.5) + floor(uSeed) * 3.31 + 11.0);
-    vec3 col = uColor * grain * uBright * uShade;
+    vec3 col = mix(uDead, uColor * uBright, uOn) * grain * uShade;
     gl_FragColor = vec4(col, a);
   }
 `;
@@ -341,12 +346,13 @@ const globalU = {
 };
 
 // A sign made of stacked layers: a cheap extruded channel-letter look from any angle.
-function makeSign(mask, width, color, { layers = 7, depth = 0.032, rough = 0.012, erode = 0.36, sideShade = 0.42 } = {}) {
+function makeSign(mask, width, color, { layers = 7, depth = 0.032, rough = 0.012, erode = 0.36, sideShade = 0.42, dead = "#3a3a38" } = {}) {
   const h = width / mask.aspect;
   const group = new THREE.Group();
   const shared = {
     uBright: { value: 1 },
     uGlitch: { value: 0 },
+    uOn: { value: 0 },
   };
   const geo = new THREE.PlaneGeometry(width, h);
   for (let i = 0; i < layers; i++) {
@@ -356,6 +362,8 @@ function makeSign(mask, width, color, { layers = 7, depth = 0.032, rough = 0.012
         uMask: { value: mask.tex },
         uBands: { value: bandTex },
         uColor: { value: new THREE.Color(color) },
+        uDead: { value: new THREE.Color(dead) },
+        uOn: shared.uOn,
         uShade: { value: front ? 1 : lerp(sideShade * 0.75, sideShade, i / layers) },
         uAspect: { value: mask.aspect },
         uRough: { value: rough },
@@ -419,6 +427,8 @@ const M = {
     depthWrite: false,
   }),
 };
+
+const nikeBoxMat = () => std("#b8481a", 0.6, 0, { emissive: "#ff5c16", emissiveIntensity: 0 });
 
 function interiorMat(color, emissive) {
   return new THREE.MeshStandardMaterial({
@@ -578,11 +588,12 @@ function buildDSW(mask) {
   pane(g, M.glass, store.x0, store.x1, store.y0, store.y1, zf - 0.035);
   // interior: low display tables + shoe wall
   const shoeRnd = mulberry32(11);
+  const boxes = nikeBoxMat();
   for (let i = 0; i < 9; i++) {
     const x = store.x0 + 0.08 + i * 0.105;
     for (let r = 0; r < 3; r++) {
-      const c = ["#d8d4cc", "#8b8780", "#2d2d2d", "#b9a58a"][Math.floor(shoeRnd() * 4)];
-      box(g, 0.07, 0.035, 0.05, std(c, 0.7), x, store.y0 + 0.2 + r * 0.17, zf - 0.52, { cast: false });
+      if (r === 2 && i > 2 && i < 6) continue; // swoosh display hangs here
+      box(g, 0.08, 0.042, 0.055, shoeRnd() < 0.85 ? boxes : M.curb, x, store.y0 + 0.06 + r * 0.13, zf - 0.52, { cast: false });
     }
   }
   box(g, 0.32, 0.12, 0.16, M.charcoal, -0.45, store.y0, zf - 0.3, { cast: false });
@@ -624,9 +635,10 @@ function buildDSW(mask) {
     pd: PD,
     height: y0 + h + 0.22,
     signs: [sign],
-    swooshAt: { x: -0.33, y: y0 + 0.5, z: zf + 0.004, w: 0.9 },
-    lights: [inner, strip],
-    lightGain: [0.42, 2.2],
+    swooshAt: { x: -0.33, y: y0 + 0.62, z: zf - 0.42, w: 0.6 },
+    front: { y: y0 + 0.5, z: zf + 0.45 },
+    lights: [inner, strip, boxes],
+    lightGain: [1.5, 3.2, 0.55],
   };
 }
 
@@ -697,7 +709,14 @@ function buildDillards(mask) {
   box(g, 0.84, 0.03, 0.34, M.bronze, 0, y0 + 1.26, zf + 0.17);
   // display windows
   const mannequinRnd = mulberry32(7);
+  const boxes = nikeBoxMat();
   for (const win of [winL, winR]) {
+    for (const [bx, by] of [
+      [0.08, 0],
+      [0.18, 0],
+      [0.13, 0.045],
+    ])
+      box(g, 0.085, 0.042, 0.06, boxes, win.x0 + bx, win.y0 + by, zf - 0.18, { cast: false });
     room(g, inner, win.x0, win.x1, win.y0, win.y1, zf - 0.06, 0.42);
     mullions(g, M.bronze, win.x0, win.x1, win.y0, win.y1, zf - 0.035, { t: 0.026 });
     pane(g, M.glass, win.x0, win.x1, win.y0, win.y1, zf - 0.04);
@@ -717,7 +736,7 @@ function buildDillards(mask) {
     }
   }
   // upper-storey shadow line + sign
-  const sign = makeSign(mask, 1.62, "#1a1714", { depth: 0.026, sideShade: 0.8, rough: 0.007, erode: 0.22 });
+  const sign = makeSign(mask, 1.62, "#f4ecdc", { depth: 0.026, sideShade: 0.5, rough: 0.007, erode: 0.22, dead: "#1c1915" });
   sign.group.position.set(0, y0 + 1.96, zf + 0.008);
   g.add(sign.group);
   // warm uplights washing the sign
@@ -732,9 +751,10 @@ function buildDillards(mask) {
     pd: PD,
     height: y0 + h + 0.4,
     signs: [sign],
-    swooshAt: { x: 0, y: y0 + 0.56, z: zf - 0.185, w: 0.62 },
-    lights: [inner, wash],
-    lightGain: [0.48, 1.6],
+    swooshAt: { x: 0, y: y0 + 0.97, z: zf - 0.5, w: 0.44 },
+    front: { y: y0 + 0.7, z: zf + 0.55 },
+    lights: [inner, wash, boxes],
+    lightGain: [1.5, 3.0, 0.55],
   };
 }
 
@@ -774,6 +794,7 @@ function buildFootLocker(mask) {
   box(g, 0.012, 0.24, 0.02, M.alu, 0.02, y0 + 0.32, zf - 0.01);
   // wall of kicks
   const kick = mulberry32(5);
+  const boxes = nikeBoxMat();
   const shelfMat = std("#cfd2d6", 0.5);
   for (let r = 0; r < 4; r++) {
     const y = y0 + 0.34 + r * 0.26;
@@ -781,8 +802,7 @@ function buildFootLocker(mask) {
     for (let i = 0; i < 7; i++) {
       if (kick() < 0.18) continue;
       const x = -0.5 + i * 0.167;
-      const c = ["#efefec", "#efefec", "#e2e2df", "#1e1e1e", "#c9c9c5"][Math.floor(kick() * 5)];
-      box(g, 0.1, 0.045, 0.055, std(c, 0.55), x, y + 0.012, zf - 0.5, { cast: false });
+      box(g, 0.1, 0.045, 0.055, kick() < 0.8 ? boxes : M.curb, x, y + 0.012, zf - 0.5, { cast: false });
     }
   }
   box(g, 0.5, 0.1, 0.18, std("#e7e7e4", 0.6), 0, y0, zf - 0.3, { cast: false });
@@ -825,9 +845,10 @@ function buildFootLocker(mask) {
     pd: PD,
     height: y0 + h + 0.25,
     signs: [sign],
-    swooshAt: { x: 0, y: y0 + 1.15, z: zf - 0.01, w: 0.82 },
-    lights: [inner],
-    lightGain: [0.32],
+    swooshAt: { x: 0, y: y0 + 1.27, z: zf - 0.44, w: 0.62 },
+    front: { y: y0 + 0.6, z: zf + 0.6 },
+    lights: [inner, boxes],
+    lightGain: [1.6, 0.55],
   };
 }
 
@@ -895,56 +916,263 @@ function makePop(o) {
 }
 
 // ---------------------------------------------------------------- set dressing
-// fade = 1 everywhere: the floor renders the plain ground colour (it only exists to hide the rise)
-const floorFade = { uCenter: { value: new THREE.Vector2(0, 0.2) }, uR: { value: new THREE.Vector2(-2.0, -1.0) } };
-const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(90, 90),
-  new THREE.MeshStandardMaterial({ color: "#222222", roughness: 0.96, metalness: 0 }),
-);
-floor.rotation.x = -Math.PI / 2;
-floor.receiveShadow = true;
-floor.material.onBeforeCompile = (shader) => {
-  shader.uniforms.uCenter = floorFade.uCenter;
-  shader.uniforms.uR = floorFade.uR;
-  shader.uniforms.uBg = { value: new THREE.Vector3(bgColor.r, bgColor.g, bgColor.b) };
-  shader.vertexShader = shader.vertexShader
-    .replace("#include <common>", "#include <common>\nvarying vec3 vFloorW;")
-    .replace(
-      "#include <project_vertex>",
-      "#include <project_vertex>\nvFloorW = (modelMatrix * vec4(transformed, 1.0)).xyz;",
-    );
-  shader.fragmentShader = shader.fragmentShader
-    .replace(
-      "#include <common>",
-      "#include <common>\nvarying vec3 vFloorW; uniform vec2 uCenter; uniform vec2 uR; uniform vec3 uBg;",
-    )
-    .replace(
-      "#include <dithering_fragment>",
-      `#include <dithering_fragment>
-       vec2 dd = (vFloorW.xz - uCenter) * vec2(0.62, 1.0);
-       float fade = smoothstep(uR.x, uR.y, length(dd));
-       gl_FragColor.rgb = mix(gl_FragColor.rgb, uBg, fade);`,
-    );
-};
-scene.add(floor);
+// ---------------------------------------------------------------- the street at night
+scene.fog = new THREE.FogExp2(bgColor.clone(), 0.024);
 
-// lights
-const key = new THREE.DirectionalLight("#ffead4", 3.2);
+// Mirror pass for the wet ground: the scene is rendered from the camera reflected in the
+// road plane, at half size with mipmaps so rough patches can sample it blurred.
+const MIRROR_Y = -0.065;
+const reflRT = new THREE.WebGLRenderTarget(Math.round(W / 2), Math.round(H / 2), {
+  type: halfFloatOK ? THREE.HalfFloatType : THREE.UnsignedByteType,
+  depthBuffer: true,
+});
+reflRT.texture.generateMipmaps = true;
+reflRT.texture.minFilter = THREE.LinearMipmapLinearFilter;
+const reflU = {
+  uRefl: { value: reflRT.texture },
+  uTexMat: { value: new THREE.Matrix4() },
+  uNoise: { value: noiseTex },
+  uTime: globalU.uTime,
+};
+function wetMaterial(color, roughness, { wet = 1, puddle = 0.55, scale = 0.11, map = null } = {}) {
+  const m = new THREE.MeshStandardMaterial({ color, roughness, metalness: 0, map });
+  m.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, reflU);
+    sh.uniforms.uWet = { value: wet };
+    sh.uniforms.uPuddle = { value: puddle };
+    sh.uniforms.uPScale = { value: scale };
+    sh.vertexShader = sh.vertexShader
+      .replace("#include <common>", "#include <common>\nuniform mat4 uTexMat; varying vec4 vReflUv; varying vec3 vWp;")
+      .replace(
+        "#include <project_vertex>",
+        "#include <project_vertex>\nvec4 wp4 = modelMatrix * vec4(transformed, 1.0); vWp = wp4.xyz; vReflUv = uTexMat * wp4;",
+      );
+    sh.fragmentShader = sh.fragmentShader
+      .replace(
+        "#include <common>",
+        "#include <common>\nuniform sampler2D uRefl; uniform sampler2D uNoise; uniform float uTime, uWet, uPuddle, uPScale; varying vec4 vReflUv; varying vec3 vWp;",
+      )
+      .replace(
+        "#include <dithering_fragment>",
+        `#include <dithering_fragment>
+        {
+          float pm = texture2D(uNoise, vWp.xz * uPScale).r * 0.7 + texture2D(uNoise, vWp.xz * uPScale * 3.1 + 0.37).r * 0.3;
+          float puddle = smoothstep(uPuddle - 0.07, uPuddle + 0.07, pm);
+          vec2 ruv = vReflUv.xy / vReflUv.w;
+          float rip = texture2D(uNoise, vWp.xz * 2.3 + vec2(uTime * 0.03, uTime * 0.07)).r - 0.5;
+          ruv += vec2(rip * 0.006, rip * 0.02) * (1.0 - 0.6 * puddle);
+          float lod = mix(4.6, 1.8, puddle);
+          float spread = mix(0.11, 0.035, puddle);
+          vec3 refl = vec3(0.0);
+          for (int k = 0; k < 7; k++) {
+            float o = (float(k) / 6.0 - 0.5) * spread;
+            refl += textureLod(uRefl, ruv + vec2(0.0, o), lod).rgb;
+          }
+          refl /= 7.0;
+          vec3 vd = normalize(cameraPosition - vWp);
+          float fres = 0.06 + 0.94 * pow(1.0 - clamp(vd.y, 0.0, 1.0), 4.0);
+          float k = uWet * mix(0.32, 1.25, puddle) * fres;
+          float fogK = 1.0;
+          #ifdef USE_FOG
+            fogK = 1.0 - fogFactor;
+          #endif
+          gl_FragColor.rgb = gl_FragColor.rgb * (1.0 - 0.55 * puddle * uWet) + refl * k * fogK;
+        }`,
+      );
+  };
+  m.customProgramCacheKey = () => `wet-${wet}-${puddle}-${scale}`;
+  return weatherKeep(m);
+}
+// (weathering is applied separately on dry materials; wet ones keep their own shader hook)
+function weatherKeep(m) {
+  return m;
+}
+
+const street = new THREE.Group();
+scene.add(street);
+// pavement slabs (0.6 m grid of joints)
+const slabTex = canvasTex(
+  256,
+  256,
+  (g2, w2, h2) => {
+    g2.fillStyle = "#ffffff";
+    g2.fillRect(0, 0, w2, h2);
+    g2.fillStyle = "#6f6f6f";
+    g2.fillRect(0, 0, w2, 5);
+    g2.fillRect(0, 0, 5, h2);
+    const img = g2.getImageData(0, 0, w2, h2);
+    const r2 = mulberry32(9);
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = 0.9 + r2() * 0.1;
+      img.data[i] *= v;
+      img.data[i + 1] *= v;
+      img.data[i + 2] *= v;
+    }
+    g2.putImageData(img, 0, 0);
+  },
+  { srgb: true, repeat: true },
+);
+slabTex.repeat.set(26 / 0.62, 4.9 / 0.62);
+slabTex.anisotropy = 8;
+const pave = new THREE.Mesh(
+  new THREE.PlaneGeometry(26, 4.9),
+  wetMaterial("#55534f", 0.55, { wet: 0.6, puddle: 0.66, scale: 0.16, map: slabTex }),
+);
+pave.rotation.x = -Math.PI / 2;
+pave.position.set(0, 0, 1.79 - 4.9 / 2);
+pave.receiveShadow = true;
+street.add(pave);
+// kerb
+const kerbMat = std("#5d5b57", 0.7);
+const kerb = new THREE.Mesh(new THREE.BoxGeometry(26, 0.14, 0.15), kerbMat);
+kerb.position.set(0, -0.07 + 0.0005, 1.79 + 0.075);
+kerb.receiveShadow = true;
+kerb.castShadow = true;
+street.add(kerb);
+// gutter + road
+const road = new THREE.Mesh(
+  new THREE.PlaneGeometry(60, 40),
+  wetMaterial("#1a1a1a", 0.62, { wet: 1.0, puddle: 0.58, scale: 0.13 }),
+);
+road.rotation.x = -Math.PI / 2;
+road.position.set(0, -0.13, 1.94 + 20);
+road.receiveShadow = true;
+street.add(road);
+const gutter = new THREE.Mesh(new THREE.PlaneGeometry(26, 0.22), wetMaterial("#121212", 0.4, { wet: 1.2, puddle: 0.3 }));
+gutter.rotation.x = -Math.PI / 2;
+gutter.position.set(0, -0.129, 1.94 + 0.11);
+street.add(gutter);
+
+// moonlight: dim, cool-green, the only shadow-casting fill
+const key = new THREE.DirectionalLight("#86ab9f", 0.24);
 key.position.set(-5.5, 9.5, 7.5);
 key.castShadow = true;
 key.shadow.mapSize.set(2048, 2048);
-Object.assign(key.shadow.camera, { left: -6.5, right: 6.5, top: 6.5, bottom: -6.5, near: 2, far: 30 });
+Object.assign(key.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 2, far: 30 });
 key.shadow.bias = -0.0005;
 key.shadow.normalBias = 0.018;
 scene.add(key);
 scene.add(key.target);
-const rim = new THREE.DirectionalLight("#cddcf5", 2.4);
+const rim = new THREE.DirectionalLight("#7f9ea8", 0.55);
 rim.position.set(2.2, 6.5, -9);
 scene.add(rim);
-const fill = new THREE.DirectionalLight("#e8eef7", 0.2);
-fill.position.set(6, 3, 8);
-scene.add(fill);
-scene.add(new THREE.HemisphereLight("#dfe3e8", "#15120e", 0.26));
+scene.add(new THREE.HemisphereLight("#2d3c37", "#0b0907", 0.1));
+
+// street lamps: warm sodium-white heads, soft shadows, a haze cone each
+const CONE_FRAG = /* glsl */ `
+  uniform vec3 uColor; uniform float uAmt, uTime;
+  varying float vY; varying vec3 vN; varying vec3 vV;
+  ${NOISE_GLSL}
+  void main(){
+    float edge = pow(abs(dot(normalize(vN), normalize(vV))), 3.0);
+    float dust = 0.75 + 0.5 * fbm(vec2(vY * 5.0, uTime * 0.25) + vV.xy * 0.4);
+    float a = uAmt * pow(vY, 2.2) * edge * dust;
+    gl_FragColor = vec4(uColor * a, 1.0);
+  }
+`;
+const CONE_VERT = /* glsl */ `
+  uniform float uH;
+  varying float vY; varying vec3 vN; varying vec3 vV;
+  void main(){
+    vY = clamp(position.y / uH + 0.5, 0.0, 1.0);
+    vN = normalMatrix * normal;
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vV = -mv.xyz;
+    gl_Position = projectionMatrix * mv;
+  }
+`;
+const lamps = [];
+function streetLamp(x, z) {
+  const LH = 2.72;
+  const g = new THREE.Group();
+  g.position.set(x, 0, z);
+  const metal = std("#1a1c1b", 0.42, 0.65);
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.043, LH, 14), metal);
+  pole.position.y = LH / 2;
+  pole.castShadow = true;
+  g.add(pole);
+  const foot = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.24, 14), metal);
+  foot.position.y = 0.12;
+  g.add(foot);
+  box(g, 0.028, 0.028, 0.58, metal, 0, LH - 0.07, 0.26);
+  box(g, 0.24, 0.07, 0.34, metal, 0, LH - 0.14, 0.56);
+  const bulb = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.19, 0.27),
+    new THREE.MeshBasicMaterial({ color: new THREE.Color(6.0, 4.3, 2.6), fog: false }),
+  );
+  bulb.rotation.x = Math.PI / 2;
+  bulb.position.set(0, LH - 0.145, 0.56);
+  g.add(bulb);
+  // frosted diffuser under the head: glows from any angle, so the bloom gives each lamp a halo
+  const diffuser = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.045, 0.25), bulb.material);
+  diffuser.position.set(0, LH - 0.17, 0.56);
+  g.add(diffuser);
+  const spot = new THREE.SpotLight("#ffc48a", 26, 10, 0.9, 0.9, 1.9);
+  spot.position.set(0, LH - 0.17, 0.56);
+  spot.target.position.set(0, 0, 0.7);
+  spot.castShadow = true;
+  spot.shadow.mapSize.set(1024, 1024);
+  spot.shadow.bias = -0.0008;
+  spot.shadow.camera.near = 0.3;
+  spot.shadow.camera.far = 8;
+  g.add(spot);
+  g.add(spot.target);
+  const coneH = LH - 0.2;
+  const cone = new THREE.Mesh(
+    new THREE.ConeGeometry(1.25, coneH, 40, 1, true),
+    new THREE.ShaderMaterial({
+      uniforms: { uColor: { value: new THREE.Color("#ffcf9a") }, uAmt: { value: 0.028 }, uTime: globalU.uTime, uH: { value: coneH } },
+      vertexShader: CONE_VERT,
+      fragmentShader: CONE_FRAG,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+    }),
+  );
+  cone.position.set(0, LH - 0.16 - coneH / 2, 0.58);
+  cone.renderOrder = 7;
+  g.add(cone);
+  scene.add(g);
+  lamps.push({ g, spot, cone });
+}
+streetLamp(-4.05, 1.5);
+streetLamp(3.95, 1.5);
+
+// neighbouring buildings, dark and quiet, so the three stores sit in a real street
+function neighbour(x, w, h, d, zf, litWindow) {
+  const g = new THREE.Group();
+  g.position.set(x, 0, 0);
+  const brick = std("#2e2723", 0.88);
+  box(g, w, h, d, brick, 0, 0, zf - d / 2);
+  box(g, w + 0.08, 0.08, d + 0.06, std("#3a3430", 0.85), 0, h, zf - d / 2);
+  const glassDark = std("#0b0d0f", 0.12, 0.6);
+  const cols = Math.max(2, Math.round(w / 0.62));
+  for (let r = 0; r < 2; r++)
+    for (let c = 0; c < cols; c++) {
+      const wx = -w / 2 + (c + 0.5) * (w / cols);
+      const wy = 1.35 + r * 0.85;
+      const lit = litWindow && r === 1 && c === litWindow;
+      box(
+        g,
+        0.3,
+        0.48,
+        0.03,
+        lit ? std("#2a1d10", 0.5, 0, { emissive: "#ffb46a", emissiveIntensity: 0.9 }) : glassDark,
+        wx,
+        wy,
+        zf + 0.002,
+        { cast: false },
+      );
+      box(g, 0.36, 0.035, 0.06, std("#3a3430", 0.85), wx, wy - 0.035, zf + 0.02, { cast: false });
+    }
+  // ground floor: a closed shop, shutter down
+  box(g, w - 0.4, 0.95, 0.03, std("#24262a", 0.55, 0.5), 0, 0.02, zf + 0.002);
+  for (let y = 0.08; y < 0.95; y += 0.06) box(g, w - 0.42, 0.006, 0.008, std("#17181a", 0.6), 0, y, zf + 0.02, { cast: false });
+  scene.add(g);
+}
+neighbour(-5.95, 2.6, 3.4, 2.2, 0.35, 1);
+neighbour(5.55, 2.5, 3.0, 2.0, 0.4, 0);
 
 // ---------------------------------------------------------------- swoosh material
 const SWOOSH_FRAG = /* glsl */ `
@@ -1010,8 +1238,9 @@ const PLOT_FRAG = /* glsl */ `
 const POST_FRAG = /* glsl */ `
   uniform sampler2D tScene;
   uniform vec2 uRes; uniform float uSeed, uTime, uExposure;
-  uniform vec3 uBg;
-  uniform float uFocusY, uDofPx;
+  uniform sampler2D tBloomA, tBloomB, tGrunge, tMesh;
+  uniform float uFocusY, uDofPx, uProg, uGrungeFit;
+  uniform vec2 uMeshRes;
   uniform vec4 zRect[3];  // building bbox in uv (x0, y0, x1, y1)
   uniform vec4 zFoot[3];  // footprint ellipse: centre.xy, radii.xy (uv)
   uniform vec4 zData[3];  // x: turbulence amp, y: vertical blur length, z: ring radius, w: ring amp
@@ -1076,21 +1305,66 @@ const POST_FRAG = /* glsl */ `
       }
       col = acc / wsum;
     }
-    // exposure + vignette act on the image above the ground colour, so the ground stays exact
-    vec2 vc = (uv - 0.5) * vec2(aspect, 1.0);
-    float vig = 1.0 - 0.28 * smoothstep(0.25, 0.95, length(vc) * 1.35);
-    col = uBg + (col - uBg) * uExposure * vig;
+    // glow (two bloom radii) on lit windows, signs and lamps
+    col *= uExposure;
+    col += texture2D(tBloomA, uv).rgb * 0.55 + texture2D(tBloomB, uv).rgb * 0.75;
     col = shoulder(col);
-    // restrained split tone: cool shadows, warm highlights (lifted only above the ground level)
-    float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
-    vec3 tint = mix(vec3(0.985, 1.0, 1.025), vec3(1.03, 1.0, 0.965), smoothstep(0.03, 0.5, lum));
-    col = mix(col, col * tint, smoothstep(0.008, 0.03, lum));
     vec3 s = toSRGB(col);
-    // grain: barely in the blacks, more in mids and highs (the reel's type texture)
+    // grade matched to the TV shot: crushed blacks, mint-leaning deep shadows,
+    // olive mids with the blue pulled out, cream highlights
+    s = max(s - 0.024, 0.0) / 0.976;
+    s = mix(s, s * s * (3.0 - 2.0 * s), 0.38);
+    float lum = dot(s, vec3(0.2126, 0.7152, 0.0722));
+    float shW = 1.0 - smoothstep(0.02, 0.26, lum);
+    float hiW = smoothstep(0.5, 0.95, lum);
+    float miW = clamp(1.0 - shW - hiW, 0.0, 1.0);
+    s *= shW * vec3(0.86, 1.06, 0.94) + miW * vec3(1.07, 1.0, 0.66) + hiW * vec3(1.03, 0.99, 0.85);
+    // vignette with a soft hotspot behind the stores
+    vec2 vc = (uv - vec2(0.5, 0.5)) * vec2(aspect, 1.0);
+    float rv = length(vc);
+    s *= mix(1.0, 0.36, smoothstep(0.32, 1.02, rv)) * (1.0 + 0.07 * (1.0 - smoothstep(0.0, 0.5, rv)));
+    // Grunge 353, Soft Light 18%, scaling 100 -> 105% over the shot
+    vec2 guv = (uv - 0.5) / (1.0 + 0.05 * uProg);
+    guv = vec2(guv.x, guv.y * uGrungeFit) + 0.5;
+    vec3 gb = texture2D(tGrunge, guv).rgb;
+    vec3 dS = mix(((16.0 * s - 12.0) * s + 4.0) * s, sqrt(s), step(0.25, s));
+    vec3 soft = mix(s - (1.0 - 2.0 * gb) * s * (1.0 - s), s + (2.0 * gb - 1.0) * (dS - s), step(0.5, gb));
+    s = mix(s, soft, 0.18);
+    // Grunge 351 halftone / screen mesh, Overlay 6%, locked to the pixel grid
+    vec3 mb = texture2D(tMesh, fract(gl_FragCoord.xy / uMeshRes)).rgb;
+    vec3 ov = mix(2.0 * s * mb, 1.0 - 2.0 * (1.0 - s) * (1.0 - mb), step(0.5, s));
+    s = mix(s, ov, 0.06);
+    // grain (the B-roll stack): a little everywhere, more in the mids
     float sl = dot(s, vec3(0.333));
     float gn = hash12(floor(gl_FragCoord.xy / 1.25) + uSeed * 17.0) - 0.5;
-    s += gn * 0.07 * smoothstep(0.08, 0.7, sl);
+    s += gn * (0.016 + 0.05 * smoothstep(0.05, 0.6, sl));
     gl_FragColor = vec4(s, 1.0);
+  }
+`;
+
+const BRIGHT_FRAG = /* glsl */ `
+  uniform sampler2D tSrc; uniform vec2 uTexel; uniform float uThr;
+  varying vec2 vUv;
+  void main(){
+    vec3 c = vec3(0.0);
+    c += texture2D(tSrc, vUv + uTexel * vec2(-1.0, -1.0)).rgb;
+    c += texture2D(tSrc, vUv + uTexel * vec2(1.0, -1.0)).rgb;
+    c += texture2D(tSrc, vUv + uTexel * vec2(-1.0, 1.0)).rgb;
+    c += texture2D(tSrc, vUv + uTexel * vec2(1.0, 1.0)).rgb;
+    c *= 0.25;
+    float l = max(c.r, max(c.g, c.b));
+    float k = smoothstep(uThr, uThr + 0.7, l);
+    gl_FragColor = vec4(c * k, 1.0);
+  }
+`;
+const BLUR_FRAG = /* glsl */ `
+  uniform sampler2D tSrc; uniform vec2 uDir;
+  varying vec2 vUv;
+  void main(){
+    vec3 c = texture2D(tSrc, vUv).rgb * 0.2270;
+    c += (texture2D(tSrc, vUv + uDir * 1.3846).rgb + texture2D(tSrc, vUv - uDir * 1.3846).rgb) * 0.3162;
+    c += (texture2D(tSrc, vUv + uDir * 3.2308).rgb + texture2D(tSrc, vUv - uDir * 3.2308).rgb) * 0.0703;
+    gl_FragColor = vec4(c, 1.0);
   }
 `;
 
@@ -1112,9 +1386,9 @@ async function build() {
   const pops = [
     // weight differences: Dillard's is the heaviest (lower hop, less bounce, slower)
     // Dillard's is the heaviest: most damped, slowest to arrive
-    { t0: T.dsw, land: 0.62, zeta: 0.78, yaw: -4 * DEG },
-    { t0: T.dill, land: 0.66, zeta: 0.85, yaw: 3 * DEG },
-    { t0: T.fl, land: 0.6, zeta: 0.74, yaw: -4.5 * DEG },
+    { t0: T.dsw, land: 0.5, zeta: 0.8, yaw: -3 * DEG },
+    { t0: T.dill, land: 0.53, zeta: 0.86, yaw: 2.5 * DEG },
+    { t0: T.fl, land: 0.5, zeta: 0.78, yaw: -3.5 * DEG },
   ];
   const stores = defs.map((def, i) => {
     const s = def.build();
@@ -1154,46 +1428,24 @@ async function build() {
     cs.renderOrder = 1;
     scene.add(cs);
     s.contact = cs;
-    // floor plan outline
-    const margin = 0.36;
-    const size = new THREE.Vector2(s.pw + margin * 2, s.pd + margin * 2);
-    const pm = new THREE.ShaderMaterial({
-      uniforms: {
-        uSize: { value: size },
-        uHalf: { value: new THREE.Vector2(s.pw / 2 + 0.05, s.pd / 2 + 0.05) },
-        uProg: { value: 0 },
-        uAlpha: { value: 0 },
-        uSeed: globalU.uSeed,
-        uColor: { value: new THREE.Color(INK) },
-      },
-      vertexShader: BASIC_VERT,
-      fragmentShader: PLOT_FRAG,
-      transparent: true,
-      depthWrite: false,
-    });
-    const plot = new THREE.Mesh(new THREE.PlaneGeometry(size.x, size.y), pm);
-    plot.rotation.x = -Math.PI / 2;
-    plot.position.set(def.x, 0.003, def.z);
-    plot.renderOrder = 1;
-    scene.add(plot);
-    s.plot = pm;
+    // warm light spilling out of the shop onto the pavement (and into the wet road)
+    const spill = new THREE.PointLight("#ffb978", 0, 3.6, 1.6);
+    spill.position.set(0, s.front.y, s.front.z);
+    s.group.add(spill);
+    s.spill = spill;
     return s;
   });
 
-  // Nike inside each store: a lit swoosh display. DSW's and Dillard's get pulled out of the
-  // building; Foot Locker's shrinks and dims ("sent less").
-  const PULL = [
-    { mode: "out", on: 0.1, pull: 0.48 },
-    { mode: "out", on: 0.1, pull: 0.42 },
-    { mode: "less", on: 0.1, pull: 0.42 },
-  ];
-  stores.forEach((s, i) => {
+  // Nike inside each store: a backlit swoosh display behind the glass (dies with the shop)
+  const mintOn = new THREE.Color(ACCENT).multiplyScalar(2.4);
+  const mintOff = new THREE.Color("#141816");
+  stores.forEach((s) => {
     const a = s.swooshAt;
     const u = {
       uMask: { value: nikeMask.tex },
       uNoise: { value: noiseTex },
-      uColor: { value: new THREE.Color(ACCENT).multiplyScalar(1.15) },
-      uReveal: { value: 0 },
+      uColor: { value: mintOff.clone() },
+      uReveal: { value: 1 },
       uOut: { value: 0 },
       uAlpha: { value: 1 },
       uTurb: { value: 0 },
@@ -1212,9 +1464,47 @@ async function build() {
       }),
     );
     m.position.set(a.x, a.y, a.z);
+    m.renderOrder = 0; // behind the glass: drawn before the panes
     s.group.add(m);
-    s.sw = { mesh: m, u, at: a, cfg: PULL[i] };
+    s.sw = { mesh: m, u };
   });
+
+  // each shop dies on its name; Foot Locker only dims ("sent less")
+  const deaths = [
+    { t: T.dieDsw, floor: 0 },
+    { t: T.dieDill, floor: 0 },
+    { t: T.dimFl, floor: 0.3 },
+  ];
+  const DIE_KEYS = [
+    [0, 1],
+    [0.04, 0.3],
+    [0.07, 0.95],
+    [0.11, 0.12],
+    [0.16, 0.85],
+    [0.21, 0.05],
+    [0.28, 0.6],
+    [0.32, 0.0],
+    [0.43, 0.32],
+    [0.47, 0.0],
+  ];
+  function dieLevel(d, t) {
+    const u = t - d.t;
+    if (u <= 0) return 1;
+    let k = 0;
+    if (u >= DIE_KEYS[DIE_KEYS.length - 1][0]) k = 0;
+    else
+      for (let i = 0; i < DIE_KEYS.length - 1; i++)
+        if (u < DIE_KEYS[i + 1][0]) {
+          k = lerp(DIE_KEYS[i][1], DIE_KEYS[i + 1][1], (u - DIE_KEYS[i][0]) / (DIE_KEYS[i + 1][0] - DIE_KEYS[i][0]));
+          break;
+        }
+    return d.floor + (1 - d.floor) * k;
+  }
+  function dieGlitch(d, t) {
+    const u = t - d.t;
+    if (u < 0 || u > 0.55) return 0;
+    return (1 - u / 0.55) * (0.45 + 0.55 * Math.abs(Math.sin(u * 83)));
+  }
 
   // ---------------------------------------------------------------- camera
   const aspect = W / H;
@@ -1222,12 +1512,15 @@ async function build() {
   // 16:9: starts close on the DSW plot, trucks right as each store arrives (all three framed
   // before Foot Locker breaks the floor), then a slow pull back and crane up for the reveal.
   const CAM = {
-    tx: track([[0, -1.6], [1.55, -1.08], [2.55, -0.1], [6.5, -0.02]], 0.25, 0.0),
-    ty: track([[0, 1.05], [1.55, 1.38], [2.55, 1.42], [6.5, 1.5]], 0.1, 0.0),
-    dist: track([[0, 7.7], [1.55, 9.3], [2.55, 11.3], [6.5, 14.7]], 0.75, 0.18),
-    yaw: track([[0, 25], [6.5, 15.5]], -1.6, -1.2),
-    pitch: track([[0, 17], [2.55, 18], [6.5, 20]], 0.35, 0.3),
+    tx: track([[0, -0.3], [6.5, -0.05]], 0.06, 0.02),
+    ty: track([[0, 1.22], [6.5, 1.38]], 0.03, 0.02),
+    dist: track([[0, 15.8], [3.2, 13.6], [6.5, 12.0]], -0.85, -0.3),
+    yaw: track([[0, 17], [6.5, 12]], -0.9, -0.6),
+    pitch: track([[0, 10.5], [6.5, 8.2]], -0.4, -0.3),
   };
+  const mirrorCam = new THREE.PerspectiveCamera();
+  const clipPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -MIRROR_Y);
+  const BIAS = new THREE.Matrix4().set(0.5, 0, 0, 0.5, 0, 0.5, 0, 0.5, 0, 0, 0.5, 0.5, 0, 0, 0, 1);
   const tgt = new THREE.Vector3();
   function placeCamera(t) {
     tgt.set(CAM.tx(t), CAM.ty(t), 0);
@@ -1244,6 +1537,22 @@ async function build() {
   }
 
   // ---------------------------------------------------------------- post pass
+  const [grungeImg, meshImg] = await Promise.all([
+    loadImage("assets/textures/grunge-353.jpg"),
+    loadImage("assets/textures/grunge-351-halftone.jpg"),
+  ]);
+  const plate = (img) => {
+    const tx = new THREE.Texture(img);
+    tx.colorSpace = THREE.NoColorSpace;
+    tx.wrapS = tx.wrapT = THREE.RepeatWrapping;
+    tx.needsUpdate = true;
+    return tx;
+  };
+  const grungeTex = plate(grungeImg);
+  const meshTex = plate(meshImg);
+  meshTex.magFilter = THREE.NearestFilter;
+  meshTex.minFilter = THREE.NearestFilter;
+  meshTex.generateMipmaps = false;
   const postU = {
     tScene: { value: sceneRT.texture },
     uRes: { value: new THREE.Vector2(W, H) },
@@ -1252,7 +1561,13 @@ async function build() {
     uExposure: { value: 1.0 },
     uFocusY: { value: 0.3 },
     uDofPx: { value: 6.0 },
-    uBg: { value: new THREE.Vector3(bgColor.r, bgColor.g, bgColor.b) },
+    tBloomA: { value: null },
+    tBloomB: { value: null },
+    tGrunge: { value: grungeTex },
+    tMesh: { value: meshTex },
+    uProg: { value: 0 },
+    uGrungeFit: { value: (grungeImg.naturalWidth / grungeImg.naturalHeight) / (W / H) },
+    uMeshRes: { value: new THREE.Vector2(meshImg.naturalWidth, meshImg.naturalHeight) },
     zRect: { value: [new THREE.Vector4(), new THREE.Vector4(), new THREE.Vector4()] },
     zFoot: { value: [new THREE.Vector4(), new THREE.Vector4(), new THREE.Vector4()] },
     zData: { value: [new THREE.Vector4(), new THREE.Vector4(), new THREE.Vector4()] },
@@ -1273,6 +1588,55 @@ async function build() {
   const postScene = new THREE.Scene();
   postScene.add(post);
   const postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const finalMat = post.material;
+  const rtOpts = { type: halfFloatOK ? THREE.HalfFloatType : THREE.UnsignedByteType, depthBuffer: false };
+  const bw = Math.round(W / 4);
+  const bh = Math.round(H / 4);
+  const bA = new THREE.WebGLRenderTarget(bw, bh, rtOpts);
+  const bA2 = new THREE.WebGLRenderTarget(bw, bh, rtOpts);
+  const bB = new THREE.WebGLRenderTarget(Math.round(bw / 2), Math.round(bh / 2), rtOpts);
+  const bB2 = new THREE.WebGLRenderTarget(Math.round(bw / 2), Math.round(bh / 2), rtOpts);
+  postU.tBloomA.value = bA.texture;
+  postU.tBloomB.value = bB.texture;
+  const fsVert = "varying vec2 vUv; void main(){ vUv = position.xy * 0.5 + 0.5; gl_Position = vec4(position.xy, 0.0, 1.0); }";
+  const brightMat = new THREE.ShaderMaterial({
+    uniforms: { tSrc: { value: sceneRT.texture }, uTexel: { value: new THREE.Vector2(1 / W, 1 / H) }, uThr: { value: 0.75 } },
+    vertexShader: fsVert,
+    fragmentShader: BRIGHT_FRAG,
+    depthTest: false,
+    depthWrite: false,
+  });
+  const blurMat = new THREE.ShaderMaterial({
+    uniforms: { tSrc: { value: null }, uDir: { value: new THREE.Vector2() } },
+    vertexShader: fsVert,
+    fragmentShader: BLUR_FRAG,
+    depthTest: false,
+    depthWrite: false,
+  });
+  function fsPass(mat, target) {
+    post.material = mat;
+    renderer.setRenderTarget(target);
+    renderer.render(postScene, postCam);
+  }
+  function blur(src, tmp, w2, h2, r) {
+    blurMat.uniforms.tSrc.value = src.texture;
+    blurMat.uniforms.uDir.value.set(r / w2, 0);
+    fsPass(blurMat, tmp);
+    blurMat.uniforms.tSrc.value = tmp.texture;
+    blurMat.uniforms.uDir.value.set(0, r / h2);
+    fsPass(blurMat, src);
+  }
+  function bloomPasses() {
+    fsPass(brightMat, bA);
+    blur(bA, bA2, bw, bh, 1.0);
+    blur(bA, bA2, bw, bh, 1.8);
+    blurMat.uniforms.tSrc.value = bA.texture;
+    blurMat.uniforms.uDir.value.set(0, 0);
+    fsPass(blurMat, bB);
+    blur(bB, bB2, bw / 2, bh / 2, 1.5);
+    blur(bB, bB2, bw / 2, bh / 2, 2.6);
+    post.material = finalMat;
+  }
 
   // ---------------------------------------------------------------- per-frame
   const v3 = new THREE.Vector3();
@@ -1396,61 +1760,20 @@ async function build() {
       s.contact.material.opacity = 0.7 * smooth(-0.12, 0.0, st.yb) * (1 - smooth(0, 0.2, hgt));
       s.contact.scale.set((s.pw + 0.3) * spread, (s.pd + 0.3) * spread, 1);
       s.contact.position.x = s.x + st.yb * 0.0;
-      // lights on after landing
-      const L = s.pop.lights(t);
+      // lights: flicker on after landing, then flicker and die on the shop's name
+      const d = deaths[i];
+      const L = s.pop.lights(t) * dieLevel(d, t);
       s.lights.forEach((m, k) => {
         m.emissiveIntensity = s.lightGain[k] * L;
       });
+      s.spill.intensity = 3.4 * L;
       for (const sign of s.signs) {
-        sign.u.uBright.value = lerp(0.62, 1.08, s.pop.lights(t, 0.0));
-        sign.u.uGlitch.value = s.pop.glitch(t);
+        sign.u.uOn.value = L;
+        sign.u.uBright.value = 1.9;
+        sign.u.uGlitch.value = Math.max(s.pop.glitch(t), dieGlitch(d, t));
       }
-      // plot outline: draws on, then fades once the store has settled
-      const tp = T.plots[i];
-      s.plot.uniforms.uProg.value = smooth(tp, tp + 0.55, t) * 1.02;
-      s.plot.uniforms.uAlpha.value = 0.34 * smooth(tp, tp + 0.08, t) * (1 - smooth(s.pop.tImpact + 0.25, s.pop.tImpact + 0.9, t));
-    });
-
-    // Nike leaving the stores
-    stores.forEach((s) => {
-      const { mesh, u, at, cfg } = s.sw;
-      const tOn = s.pop.tImpact + cfg.on;
-      const tPull = tOn + cfg.pull;
-      u.uReveal.value = smooth(tOn, tOn + 0.3, t);
-      mesh.visible = t > tOn - 0.02;
-      let dz = 0;
-      let dy = 0;
-      let sc = 1;
-      let out = 0;
-      let alpha = 1;
-      let turb = 0;
-      let dim = 0;
-      if (cfg.mode === "out") {
-        const p = clamp((t - tPull) / 0.72);
-        // a small tug back into the shop, then it slides out through the glass, rises and breaks up
-        const tug = p < 0.22 ? -0.06 * Math.sin((Math.PI * p) / 0.22) : 0;
-        const go = Math.pow(clamp((p - 0.16) / 0.84), 2.1);
-        dz = tug + 0.9 * go;
-        dy = 1.7 * go;
-        sc = 1 + 1.0 * go;
-        out = smooth(0.45, 1, p);
-        turb = 0.012 * smooth(0.1, 0.4, p);
-        dim = smooth(0.15, 0.6, p);
-      } else {
-        const p = clamp((t - tPull) / 0.6);
-        const e = p * p * (3 - 2 * p);
-        sc = 1 - 0.5 * e;
-        alpha = 1 - 0.3 * e;
-        turb = 0.02 * Math.sin(Math.PI * p);
-        dim = 0.35 * e;
-      }
-      mesh.position.set(at.x, at.y + dy, at.z + dz);
-      mesh.scale.setScalar(sc);
-      u.uOut.value = out;
-      u.uAlpha.value = alpha;
-      u.uTurb.value = turb;
-      mesh.renderOrder = 6; // on the glass, like window vinyl: drawn after the panes
-      s.lights[0].emissiveIntensity *= 1 - 0.55 * dim;
+      s.sw.u.uColor.value.copy(mintOff).lerp(mintOn, L);
+      s.sw.u.uTurb.value = 0.02 * dieGlitch(d, t);
     });
 
     // focus line just under the lowest landed plinth front edge
@@ -1461,8 +1784,28 @@ async function build() {
     });
     postU.uFocusY.value = fy - 0.015;
 
+    postU.uProg.value = t / host.duration;
+
+    // shadows once per frame, then the mirror pass for the wet ground, then the main pass
+    mirrorCam.copy(camera);
+    mirrorCam.position.set(camera.position.x, 2 * MIRROR_Y - camera.position.y, camera.position.z);
+    mirrorCam.up.set(0, 1, 0);
+    mirrorCam.lookAt(tgt.x, 2 * MIRROR_Y - tgt.y, tgt.z);
+    mirrorCam.updateMatrixWorld();
+    reflU.uTexMat.value.copy(BIAS).multiply(mirrorCam.projectionMatrix).multiply(mirrorCam.matrixWorldInverse);
+    street.visible = false;
+    stores.forEach((s) => (s.contact.visible = false));
+    renderer.clippingPlanes = [clipPlane];
+    renderer.shadowMap.needsUpdate = true;
+    renderer.setRenderTarget(reflRT);
+    renderer.render(scene, mirrorCam);
+    renderer.clippingPlanes = [];
+    street.visible = true;
+    stores.forEach((s) => (s.contact.visible = true));
+
     renderer.setRenderTarget(sceneRT);
     renderer.render(scene, camera);
+    bloomPasses();
     renderer.setRenderTarget(null);
     renderer.render(postScene, postCam);
   };

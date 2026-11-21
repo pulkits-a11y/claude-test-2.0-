@@ -1,9 +1,10 @@
 # Retail Pop-Up MG (Raw Canvas / Nike reel)
 
-A 6.5 s, 1920×1080, 30 fps motion graphic for the MG beat at **0:30** in `NikeReel_v4`. Three miniature storefronts
-(DSW, Dillard's, Foot Locker) rise through a plain `#111111` ground, one per VO mention. Each lands with a lit mint
-Nike swoosh on its glass. DSW's and Dillard's swooshes are pulled out of the stores and break apart. Foot Locker's
-shrinks and dims ("sent less"). The camera pulls back on three stores, with Nike gone from two and reduced in one.
+A 6.5 s, 1920×1080, 30 fps motion graphic for the MG beat at **0:30** in `NikeReel_v4`, styled to sit next to
+the reel's 3D TV-screen shot. It's a wet night street. Three miniature storefronts (DSW, Dillard's, Foot Locker)
+rise lit, with warm windows, orange Nike shoeboxes and a mint swoosh display inside. Then **each shop dies on its
+name**: the sign flickers and glitches out, the windows go dark and the warm spill vanishes from the pavement and
+road. Foot Locker only dims to ~30% ("sent less"). A slow push-in runs throughout.
 
 VO: *"Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker."*
 
@@ -11,32 +12,34 @@ VO: *"Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Lo
 
 | MG time | Reel | What happens |
 | --- | --- | --- |
-| 0.0–0.5 | 0:30.0 | Plain ground. Floor-plan outlines draw on; the camera is already drifting |
-| 0.52 → 1.14 | 0:30.5 → 0:31.1 | **DSW** rises on a damped spring (no bounce). The sign switches on at "DSW" (0:31.21) |
-| 1.05 → 1.71 | 0:31.1 → 0:31.7 | **Dillard's** rises (most damped, the heaviest). The sign switches on at "Dillard's" (0:31.61) |
-| ~1.25 → 2.5 | 0:31.3 → 0:32.5 | DSW's swoosh appears on its window, then gets tugged and pulled out, rising and breaking up |
-| ~1.8 → 3.0 | 0:31.8 → 0:33.0 | Dillard's swoosh: the same |
-| 2.60 → 3.20 | 0:32.6 → 0:33.2 | **Foot Locker** rises. The sign switches on at "Foot Locker" (0:33.07) |
-| ~3.3 → 4.3 | 0:33.3 → 0:34.3 | Foot Locker's swoosh appears, then shrinks to half and dims: "sent less" |
-| 3.2 → 6.5 | 0:33.2 → 0:36.5 | Slow pull back and crane up, holding on the three stores |
+| 0.0 → 1.0 | 0:30.0 → 0:31.0 | Night street. The three shops rise through the pavement in turn (damped spring) and flicker on |
+| 1.15 → 1.6 | 0:31.15 → 0:31.6 | **DSW** dies on "DSW" (0:31.21): sign flicker + displacement-map glitch, windows dark |
+| 1.56 → 2.0 | 0:31.56 → 0:32.0 | **Dillard's** dies on "Dillard's" (0:31.61) |
+| 3.02 → 3.5 | 0:33.0 → 0:33.5 | **Foot Locker** flickers down to ~30% on "Foot Locker" (0:33.07) |
+| 0 → 6.5 | | Slow push-in down the street, fog and lamp haze |
+
+Timing lives in `T` at the top of `assets/scene.js` (`dieDsw`, `dieDill`, `dimFl`).
 
 ## The three required effects
 
-- **Turbulent displace**: fractal-noise displacement on every sign's letter edges (organic, printed). A turbulent
-  ripple churns the floor where each building breaks through, then rings out on impact. The swoosh's edges
-  stay turbulent and break apart on exit. Code: `SIGN_FRAG`, `POST_FRAG` (zones/rings) and `SWOOSH_FRAG`.
-- **Displacement map**: a banded displacement plate (`bandTex`) glitches each sign into place as its store lands.
-  A noise displacement map (`noiseTex`) drives each swoosh's draw-on wipe and its dissolve as it's pulled out.
-- **Noise inside text**: every sign and the swoosh carry grain inside the letterforms, boiling on twos. It matches
-  the "WHAT HAPPENED?" title at 0:23. The post pass adds luminance-weighted grain and leaves the `#111111`
-  ground flat, so it matches the reel's title cards.
+- **Turbulent displace**: fractal-noise displacement on every sign's letter edges, a ripple through the pavement
+  as each shop breaks through, and turbulence in the swoosh displays as their shops die.
+- **Displacement map**: a banded displacement plate (`bandTex`) glitches each sign on as it lands and tears it
+  apart as it flickers and dies.
+- **Noise inside text**: grain inside every sign's letterforms, boiling on twos.
 
-## Look
+## Look (matched to the TV-screen shot) and the reel's adjustment stack
 
-Plain `#111111` everywhere, with no floor and no light pool, matching the reel's title cards. Off-white sign ink, and the mint
-accent `#c4f0b4` for the swooshes only. Grain sits inside the lettering and on lit surfaces, never on the ground.
-Warm key light from front-left, a cool rim from behind and a slowly turning environment, so glass reflections sweep.
-The stores rise on damped springs: no drop, bounce or squash.
+- Grade measured from the TV shot: crushed brown-black blacks with a mint lean, olive mids with the blue pulled
+  out, cream highlights, plus a heavy vignette with a soft hotspot behind the stores.
+- Night street: wet asphalt with real mirror reflections (a second, mirrored render pass) broken up by puddles,
+  ripples and vertical streaking. Wet slab pavement, a granite kerb, two street lamps with soft shadows and haze
+  cones, dark neighbouring buildings, and fog.
+- Glow: two-radius bloom on signs, windows and lamps.
+- `assets/textures/grunge-353.jpg`: Soft Light 18%, scaling 100 → 105% over the shot.
+- `assets/textures/grunge-351-halftone.jpg`: Overlay 6% as the screen mesh, locked to the pixel grid.
+- Grain: light everywhere, heavier in the mids. `grunge-352.jpg` is kept as the backup plate;
+  `style-ref-tv-shot.png` is the reference frame.
 
 ## Files
 
