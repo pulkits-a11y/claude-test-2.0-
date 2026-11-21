@@ -30,3 +30,5 @@ nike-reel/.tesseract-work/*actions.json
 nike-reel/.tesseract-work/F_detail1.png
 nike-reel/.tesseract-work/__pycache__/
 nike-reel/.tesseract-work/F_detail_B76.png
+nike-reel/.tesseract-work/export*.log
+nike-reel/.tesseract-work/download*.log

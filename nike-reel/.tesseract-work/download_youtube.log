@@ -1,6 +1,0 @@
-ERROR: unable to download video data: HTTP Error 403: Forbidden
-retry 1 /home/user/claude-test-2.0-/nike-reel/Sources/liveclips/SRC_CNBC_Why-Nike-Is-Struggling_jUzNEoI9PpE.mp4
-ERROR: unable to download video data: HTTP Error 403: Forbidden
-retry 2 /home/user/claude-test-2.0-/nike-reel/Sources/liveclips/SRC_CNBC_Why-Nike-Is-Struggling_jUzNEoI9PpE.mp4
-ERROR: unable to download video data: HTTP Error 403: Forbidden
-retry 3 /home/user/claude-test-2.0-/nike-reel/Sources/liveclips/SRC_CNBC_Why-Nike-Is-Struggling_jUzNEoI9PpE.mp4
