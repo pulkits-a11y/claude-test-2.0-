@@ -17,17 +17,12 @@ const ACCENT = hex(V.accent, "#c4f0b4");
 const INK = hex(V.ink, "#eeeeea");
 
 // ---------------------------------------------------------------- timing (MG seconds)
-// Fills the reel's MG slot 0:27.633–0:33.867 (187 frames). VO in MG time: "Nike" 1.93,
-// "DSW" 3.58, "Dillard's" 3.98, "Foot Locker" 5.43.
+// Placed at 0:30.00 in the reel, the VO lands: "DSW" 1.21, "Dillard's" 1.61, "Foot Locker" 3.07.
 const T = {
-  plots: [0.08, 0.3, 0.52], // floor plan outlines draw on while the camera cranes down
-  dsw: 2.95, // emergence start: lands ~3.57, on "DSW"
-  dill: 3.38, // lands ~4.02, on "Dillard's"
-  fl: 4.83, // lands ~5.44, on "Foot Locker"
-  swooshIn: 5.36,
-  swooshHold: 5.68,
-  swooshOut: 5.78,
-  swooshGone: 6.08,
+  plots: [0.06, 0.16, 0.26], // floor plan outlines draw on
+  dsw: 0.52, // emergence start: the roof breaks the floor here, slowly, then accelerates
+  dill: 1.05,
+  fl: 2.6,
 };
 
 // ---------------------------------------------------------------- utilities
@@ -385,51 +380,20 @@ function makeSign(mask, width, color, { layers = 7, depth = 0.032, rough = 0.012
 const std = (color, roughness, metalness = 0, extra = {}) =>
   new THREE.MeshStandardMaterial({ color, roughness, metalness, ...extra });
 
-// Weathering: mottled albedo and roughness from object-space noise (stays put while a store moves).
-const DETAIL_GLSL = `
-  varying vec3 vObjP;
-  float dh(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
-  float dn3(vec3 p){ vec3 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
-    return mix(mix(mix(dh(i), dh(i+vec3(1,0,0)), f.x), mix(dh(i+vec3(0,1,0)), dh(i+vec3(1,1,0)), f.x), f.y),
-               mix(mix(dh(i+vec3(0,0,1)), dh(i+vec3(1,0,1)), f.x), mix(dh(i+vec3(0,1,1)), dh(i+vec3(1,1,1)), f.x), f.y), f.z); }
-`;
-function weather(mat, amp = 0.1, rAmp = 0.16) {
-  mat.onBeforeCompile = (sh) => {
-    sh.vertexShader = sh.vertexShader
-      .replace("#include <common>", "#include <common>\nvarying vec3 vObjP;")
-      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvObjP = position;");
-    sh.fragmentShader = sh.fragmentShader
-      .replace("#include <common>", "#include <common>\n" + DETAIL_GLSL)
-      .replace(
-        "#include <map_fragment>",
-        `#include <map_fragment>
-         float dn = dn3(vObjP * 7.0) * 0.55 + dn3(vObjP * 31.0) * 0.3 + dh(floor(vObjP * 260.0)) * 0.15;
-         diffuseColor.rgb *= 1.0 + (dn - 0.5) * ${amp.toFixed(3)};`,
-      )
-      .replace(
-        "#include <roughnessmap_fragment>",
-        `#include <roughnessmap_fragment>
-         roughnessFactor = clamp(roughnessFactor + (dn - 0.5) * ${rAmp.toFixed(3)}, 0.05, 1.0);`,
-      );
-  };
-  mat.customProgramCacheKey = () => `weather-${amp}-${rAmp}`;
-  return mat;
-}
-
 const M = {
-  concrete: std("#5d5b57", 0.95),
-  curb: std("#75726d", 0.9),
+  concrete: std("#6d6a65", 0.95),
+  curb: std("#8f8b85", 0.9),
   roof: std("#6e6b66", 0.95),
   hvac: std("#a3a19c", 0.55, 0.35),
   // DSW: light metal panels, charcoal sign panel, aluminium storefront
-  dswPanel: std("#b7b5b0", 0.55, 0.12),
+  dswPanel: std("#c3c0ba", 0.6, 0.08),
   dswSeam: std("#8e8b86", 0.7),
   charcoal: std("#2a2b2c", 0.55, 0.1),
   alu: std("#a9adb1", 0.3, 0.85),
   aluDark: std("#55585c", 0.35, 0.75),
   // Dillard's: warm limestone, bronze
-  stone: std("#cdc4b3", 0.88),
-  stoneDark: std("#b1a793", 0.9),
+  stone: std("#d9cdb5", 0.9),
+  stoneDark: std("#bfb29a", 0.92),
   stoneLine: std("#a99c84", 0.95),
   bronze: std("#5b4631", 0.4, 0.75),
   // Foot Locker: black, referee stripes
@@ -441,8 +405,8 @@ const M = {
     roughness: 0.05,
     metalness: 0.1,
     transparent: true,
-    opacity: 0.3,
-    envMapIntensity: 3.2,
+    opacity: 0.34,
+    envMapIntensity: 2.4,
     depthWrite: false,
   }),
   doorGlass: new THREE.MeshStandardMaterial({
@@ -455,21 +419,6 @@ const M = {
     depthWrite: false,
   }),
 };
-
-for (const [k, amp, ra] of [
-  ["concrete", 0.22, 0.1],
-  ["curb", 0.18, 0.1],
-  ["roof", 0.2, 0.08],
-  ["hvac", 0.1, 0.2],
-  ["dswPanel", 0.07, 0.22],
-  ["charcoal", 0.12, 0.2],
-  ["stone", 0.12, 0.12],
-  ["stoneDark", 0.14, 0.12],
-  ["bronze", 0.12, 0.2],
-  ["flBlack", 0.16, 0.2],
-  ["flTrim", 0.12, 0.2],
-])
-  weather(M[k], amp, ra);
 
 function interiorMat(color, emissive) {
   return new THREE.MeshStandardMaterial({
@@ -490,7 +439,7 @@ function boxGeo(w, h, d) {
   if (!g) {
     const mn = Math.min(w, h, d);
     // model-making bevel: big masses catch a thin highlight on every edge
-    g = mn > 0.035 ? new RoundedBoxGeometry(w, h, d, 2, Math.min(0.006, mn * 0.15)) : new THREE.BoxGeometry(w, h, d);
+    g = mn > 0.035 ? new RoundedBoxGeometry(w, h, d, 2, Math.min(0.011, mn * 0.22)) : new THREE.BoxGeometry(w, h, d);
     geoCache.set(k, g);
   }
   return g;
@@ -582,9 +531,6 @@ function baseAO(parent, w, d, zc, y) {
 function plinth(parent, pw, pd, ph) {
   box(parent, pw, ph, pd, M.concrete, 0, 0, 0);
   box(parent, pw - 0.05, 0.014, 0.4, M.curb, 0, ph, pd / 2 - 0.225);
-  for (let x = -pw / 2 + 0.3; x < pw / 2 - 0.1; x += 0.3)
-    box(parent, 0.006, 0.002, 0.4, M.roof, x, ph + 0.014, pd / 2 - 0.225, { cast: false });
-  box(parent, pw - 0.05, 0.002, 0.006, M.roof, 0, ph + 0.014, pd / 2 - 0.08, { cast: false });
   // thin chamfer line at the top edge (reads as a model base)
   box(parent, pw + 0.004, 0.012, pd + 0.004, M.curb, 0, ph - 0.012, 0, { cast: false });
 }
@@ -668,7 +614,6 @@ function buildDSW(mask) {
   const sign = makeSign(mask, 1.3, INK, { depth: 0.03 });
   sign.group.position.set(px, py + panelH / 2, zf + 0.06);
   g.add(sign.group);
-  box(g, 0.03, h, 0.03, M.charcoal, w / 2 + 0.016, y0, zb + 0.18);
   // rooftop
   box(g, 0.36, 0.17, 0.3, M.hvac, -0.48, y0 + h + 0.05, zb + 0.42);
   box(g, 0.24, 0.12, 0.22, M.hvac, 0.42, y0 + h + 0.05, zb + 0.35);
@@ -679,6 +624,7 @@ function buildDSW(mask) {
     pd: PD,
     height: y0 + h + 0.22,
     signs: [sign],
+    swooshAt: { x: -0.33, y: y0 + 0.5, z: zf + 0.004, w: 0.9 },
     lights: [inner, strip],
     lightGain: [0.42, 2.2],
   };
@@ -777,13 +723,6 @@ function buildDillards(mask) {
   // warm uplights washing the sign
   const wash = std("#111", 0.5, 0, { emissive: "#ffe3bd", emissiveIntensity: 0 });
   for (const x of [-0.55, 0, 0.55]) box(g, 0.07, 0.025, 0.05, wash, x, y0 + 1.355, zf + 0.06, { cast: false });
-  box(g, 0.032, h, 0.032, M.bronze, w / 2 + 0.017, y0, zb + 0.2);
-  // ashlar joints on the upper storey
-  for (let r = 0, y = y0 + 1.5; y < y0 + h - 0.14; r++, y += 0.2) {
-    box(g, w - 0.24, 0.006, 0.003, M.stoneLine, 0, y, zf + 0.0015, { cast: false });
-    for (let x = -w / 2 + 0.12 + (r % 2 ? 0.18 : 0.36); x < w / 2 - 0.14; x += 0.36)
-      box(g, 0.006, 0.2, 0.003, M.stoneLine, x, y, zf + 0.0015, { cast: false });
-  }
   // rooftop penthouse
   box(g, 1.0, 0.3, 0.62, M.stoneDark, 0.18, y0 + h + 0.08, zb + 0.5);
   box(g, 0.3, 0.12, 0.25, M.hvac, -0.62, y0 + h + 0.08, zb + 0.4);
@@ -793,6 +732,7 @@ function buildDillards(mask) {
     pd: PD,
     height: y0 + h + 0.4,
     signs: [sign],
+    swooshAt: { x: 0, y: y0 + 0.56, z: zf - 0.185, w: 0.62 },
     lights: [inner, wash],
     lightGain: [0.48, 1.6],
   };
@@ -876,7 +816,6 @@ function buildFootLocker(mask) {
   const sign = makeSign(mask, 1.5, INK, { depth: 0.026 });
   sign.group.position.set(0, hb.y0 + hb.h / 2, zf + jd + 0.002);
   g.add(sign.group);
-  box(g, 0.03, h, 0.03, M.flTrim, w / 2 + 0.016, y0, zb + 0.16);
   // rooftop
   box(g, 0.42, 0.14, 0.32, M.hvac, 0.28, y0 + h + 0.045, zb + 0.4);
   box(g, 0.18, 0.2, 0.18, M.hvac, -0.45, y0 + h + 0.045, zb + 0.3);
@@ -886,6 +825,7 @@ function buildFootLocker(mask) {
     pd: PD,
     height: y0 + h + 0.25,
     signs: [sign],
+    swooshAt: { x: 0, y: y0 + 1.15, z: zf - 0.01, w: 0.82 },
     lights: [inner],
     lightGain: [0.32],
   };
@@ -912,66 +852,20 @@ function cubicBezier(x1, y1, x2, y2) {
 
 // Lowest point of the building follows: slow start under the floor → accelerating rise → long ease into an overshoot
 // above the floor → gravity drop → small bounce → rest. Tilt rocks on the low edge.
+// Damped-spring rise (step response): starts from rest under the floor, accelerates, eases in,
+// breathes a hair past its mark and settles. No drop, no bounce, no squash.
 function makePop(o) {
+  const z = o.zeta;
+  const wd0 = Math.sqrt(1 - z * z);
+  // pick the natural frequency so the store first reaches floor level `land` seconds after t0
+  const w = (Math.PI - Math.atan(wd0 / z)) / (o.land * wd0);
+  const wd = w * wd0;
+  const tImpact = o.t0 + o.land;
+  const tApex = o.t0 + Math.PI / wd;
+  const step = (u) => (u <= 0 ? 0 : 1 - Math.exp(-z * w * u) * (Math.cos(wd * u) + (z / wd0) * Math.sin(wd * u)));
   const yStart = -o.depth;
-  const tApex = o.t0 + o.tUp;
-  const tf = Math.sqrt((2 * o.apex) / o.g);
-  const tImpact = tApex + tf;
-  const vi = o.g * tf;
-  const v1 = o.e * vi;
-  const tImpact2 = tImpact + (2 * v1) / o.g;
-  const v2 = o.e * v1;
-  const tImpact3 = tImpact2 + (2 * v2) / o.g;
-  const riseEase = cubicBezier(...(o.rise || [0.42, 0, 0.16, 1]));
-
-  function ylow(t) {
-    if (t <= o.t0) return yStart;
-    if (t <= tApex) {
-      const s = (t - o.t0) / o.tUp;
-      return yStart + (o.apex - yStart) * riseEase(s);
-    }
-    if (t <= tImpact) {
-      const u = t - tApex;
-      return o.apex - 0.5 * o.g * u * u;
-    }
-    if (t <= tImpact2) {
-      const u = t - tImpact;
-      return v1 * u - 0.5 * o.g * u * u;
-    }
-    if (t <= tImpact3) {
-      const u = t - tImpact2;
-      return v2 * u - 0.5 * o.g * u * u;
-    }
-    return 0;
-  }
-  function tilt(t) {
-    if (t <= tImpact) return o.tilt * smooth(tApex - 0.22, tApex + 0.02, t);
-    const u = t - tImpact;
-    return o.tilt * Math.exp(-u / 0.1) * Math.cos(2 * Math.PI * 3.3 * u);
-  }
-  function yaw(t) {
-    if (t <= o.t0) return o.yaw;
-    const s = clamp((t - o.t0) / (o.tUp + 0.05));
-    return o.yaw * Math.pow(1 - s, 3);
-  }
-  function squash(t) {
-    let s = 0;
-    for (const [ti, v] of [
-      [tImpact, vi],
-      [tImpact2, v1],
-    ]) {
-      if (t < ti) continue;
-      const u = t - ti;
-      const amp = Math.min(0.03, v * 0.0085);
-      s += amp * Math.sin(2 * Math.PI * 4.6 * u) * Math.exp(-u / 0.085);
-    }
-    // stretch while shooting up
-    if (t > o.t0 && t < tApex) {
-      const s01 = (t - o.t0) / o.tUp;
-      s -= 0.022 * Math.pow(1 - s01, 2);
-    }
-    return s;
-  }
+  const ylow = (t) => yStart * (1 - step(t - o.t0));
+  const yaw = (t) => o.yaw * (1 - step(t - o.t0));
   // 0 → 1 "lights on" flicker after landing
   function lights(t, delay = 0.04) {
     const u = t - tImpact - delay;
@@ -995,20 +889,17 @@ function makePop(o) {
     return Math.exp(-u / 0.11) * (0.6 + 0.4 * Math.cos(u * 70));
   }
   function state(t) {
-    const th = tilt(t);
-    const yl = ylow(t);
-    const yb = yl + (o.halfW * Math.abs(Math.sin(th)) || 0);
-    const sq = squash(t);
-    return { yb, th, yaw: yaw(t), sy: 1 - sq, sxz: 1 + sq * 0.45 };
+    return { yb: ylow(t), th: 0, yaw: yaw(t), sy: 1, sxz: 1 };
   }
-  return { state, ylow, lights, glitch, tApex, tImpact, tEnd: tImpact3 + 0.35, o };
+  return { state, ylow, lights, glitch, tApex, tImpact, tEnd: tImpact + 0.9, o };
 }
 
 // ---------------------------------------------------------------- set dressing
-const floorFade = { uCenter: { value: new THREE.Vector2(0, 0.2) }, uR: { value: new THREE.Vector2(0.45, 2.5) } };
+// fade = 1 everywhere: the floor renders the plain ground colour (it only exists to hide the rise)
+const floorFade = { uCenter: { value: new THREE.Vector2(0, 0.2) }, uR: { value: new THREE.Vector2(-2.0, -1.0) } };
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(90, 90),
-  new THREE.MeshStandardMaterial({ color: "#191919", roughness: 0.96, metalness: 0 }),
+  new THREE.MeshStandardMaterial({ color: "#222222", roughness: 0.96, metalness: 0 }),
 );
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
@@ -1030,7 +921,7 @@ floor.material.onBeforeCompile = (shader) => {
     .replace(
       "#include <dithering_fragment>",
       `#include <dithering_fragment>
-       vec2 dd = (vFloorW.xz - uCenter) * vec2(0.42, 1.0);
+       vec2 dd = (vFloorW.xz - uCenter) * vec2(0.62, 1.0);
        float fade = smoothstep(uR.x, uR.y, length(dd));
        gl_FragColor.rgb = mix(gl_FragColor.rgb, uBg, fade);`,
     );
@@ -1058,7 +949,7 @@ scene.add(new THREE.HemisphereLight("#dfe3e8", "#15120e", 0.26));
 // ---------------------------------------------------------------- swoosh material
 const SWOOSH_FRAG = /* glsl */ `
   uniform sampler2D uMask; uniform sampler2D uNoise;
-  uniform vec3 uColor; uniform float uReveal, uOut, uSeed, uAspect, uTime;
+  uniform vec3 uColor; uniform float uReveal, uOut, uSeed, uAspect, uTime, uAlpha, uTurb;
   varying vec2 vUv;
   ${NOISE_GLSL}
   void main(){
@@ -1072,7 +963,7 @@ const SWOOSH_FRAG = /* glsl */ `
     uv += vec2(-(n - 0.5) * 0.05, (n - 0.5) * 0.16) * near;
     // turbulent displace: always a little, a lot as it leaves
     vec2 tw = vec2(fbm(q * 5.0 + uTime * 0.9), fbm(q * 5.0 + 9.4 - uTime * 0.7)) - 0.5;
-    uv += tw * (0.007 + 0.11 * uOut * uOut);
+    uv += tw * (0.007 + 0.11 * uOut * uOut + uTurb);
     uv.y -= uOut * 0.05;
     float m = texture2D(uMask, uv).a;
     float g = hash12(floor(gl_FragCoord.xy / 1.5) + floor(uSeed) * 5.7);
@@ -1084,7 +975,7 @@ const SWOOSH_FRAG = /* glsl */ `
     a *= smoothstep(uOut * 1.2 - 0.3, uOut * 1.2 + 0.05, n2 * 0.75 + 0.2);
     a *= 1.0 - smoothstep(0.25, 1.0, uOut);
     float grain = 0.8 + 0.2 * hash12(floor(gl_FragCoord.xy / 1.5) + floor(uSeed) * 2.9 + 4.0);
-    gl_FragColor = vec4(uColor * grain, a);
+    gl_FragColor = vec4(uColor * grain, a * uAlpha);
   }
 `;
 const GLOW_FRAG = /* glsl */ `
@@ -1191,11 +1082,14 @@ const POST_FRAG = /* glsl */ `
     col = uBg + (col - uBg) * uExposure * vig;
     col = shoulder(col);
     // restrained split tone: cool shadows, warm highlights (lifted only above the ground level)
+    float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
+    vec3 tint = mix(vec3(0.985, 1.0, 1.025), vec3(1.03, 1.0, 0.965), smoothstep(0.03, 0.5, lum));
+    col = mix(col, col * tint, smoothstep(0.008, 0.03, lum));
     vec3 s = toSRGB(col);
     // grain: barely in the blacks, more in mids and highs (the reel's type texture)
     float sl = dot(s, vec3(0.333));
     float gn = hash12(floor(gl_FragCoord.xy / 1.25) + uSeed * 17.0) - 0.5;
-    s += gn * (0.006 + 0.07 * smoothstep(0.08, 0.7, sl));
+    s += gn * 0.07 * smoothstep(0.08, 0.7, sl);
     gl_FragColor = vec4(s, 1.0);
   }
 `;
@@ -1217,9 +1111,10 @@ async function build() {
   ];
   const pops = [
     // weight differences: Dillard's is the heaviest (lower hop, less bounce, slower)
-    { t0: T.dsw, tUp: 0.5, apex: 0.26, g: 30, e: 0.3, tilt: 1.7 * DEG, yaw: -5 * DEG, rise: [0.42, 0, 0.16, 1] },
-    { t0: T.dill, tUp: 0.53, apex: 0.19, g: 34, e: 0.22, tilt: -1.2 * DEG, yaw: 4 * DEG, rise: [0.5, 0, 0.2, 1] },
-    { t0: T.fl, tUp: 0.47, apex: 0.3, g: 29, e: 0.34, tilt: 2.0 * DEG, yaw: -6 * DEG, rise: [0.36, 0, 0.14, 1] },
+    // Dillard's is the heaviest: most damped, slowest to arrive
+    { t0: T.dsw, land: 0.62, zeta: 0.78, yaw: -4 * DEG },
+    { t0: T.dill, land: 0.66, zeta: 0.85, yaw: 3 * DEG },
+    { t0: T.fl, land: 0.6, zeta: 0.74, yaw: -4.5 * DEG },
   ];
   const stores = defs.map((def, i) => {
     const s = def.build();
@@ -1285,53 +1180,41 @@ async function build() {
     return s;
   });
 
-  // swoosh, floating above the row
-  const swooshW = 1.45;
-  const swH = swooshW / nikeMask.aspect;
-  const swU = {
-    uMask: { value: nikeMask.tex },
-    uNoise: { value: noiseTex },
-    uColor: { value: new THREE.Color(ACCENT) },
-    uReveal: { value: 0 },
-    uOut: { value: 0 },
-    uSeed: globalU.uSeed,
-    uTime: globalU.uTime,
-    uAspect: { value: nikeMask.aspect },
-  };
-  const swoosh = new THREE.Mesh(
-    new THREE.PlaneGeometry(swooshW, swH),
-    new THREE.ShaderMaterial({
-      uniforms: swU,
-      vertexShader: BASIC_VERT,
-      fragmentShader: SWOOSH_FRAG,
-      transparent: true,
-      depthWrite: false,
-    }),
-  );
-  swoosh.renderOrder = 5;
-  const glowU = {
-    uMask: { value: blurredCopy(nikeMask.canvas, 34) },
-    uColor: { value: new THREE.Color(ACCENT) },
-    uAmt: { value: 0 },
-  };
-  const glow = new THREE.Mesh(
-    new THREE.PlaneGeometry(swooshW * 1.02, swH * 1.02),
-    new THREE.ShaderMaterial({
-      uniforms: glowU,
-      vertexShader: BASIC_VERT,
-      fragmentShader: GLOW_FRAG,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    }),
-  );
-  glow.renderOrder = 4;
-  const swooshG = new THREE.Group();
-  swooshG.add(glow);
-  swooshG.add(swoosh);
-  glow.position.z = -0.01;
-  scene.add(swooshG);
-  const swooshBase = new THREE.Vector3(-0.05, 3.72, -0.1);
+  // Nike inside each store: a lit swoosh display. DSW's and Dillard's get pulled out of the
+  // building; Foot Locker's shrinks and dims ("sent less").
+  const PULL = [
+    { mode: "out", on: 0.1, pull: 0.48 },
+    { mode: "out", on: 0.1, pull: 0.42 },
+    { mode: "less", on: 0.1, pull: 0.42 },
+  ];
+  stores.forEach((s, i) => {
+    const a = s.swooshAt;
+    const u = {
+      uMask: { value: nikeMask.tex },
+      uNoise: { value: noiseTex },
+      uColor: { value: new THREE.Color(ACCENT).multiplyScalar(1.15) },
+      uReveal: { value: 0 },
+      uOut: { value: 0 },
+      uAlpha: { value: 1 },
+      uTurb: { value: 0 },
+      uSeed: globalU.uSeed,
+      uTime: globalU.uTime,
+      uAspect: { value: nikeMask.aspect },
+    };
+    const m = new THREE.Mesh(
+      new THREE.PlaneGeometry(a.w, a.w / nikeMask.aspect),
+      new THREE.ShaderMaterial({
+        uniforms: u,
+        vertexShader: BASIC_VERT,
+        fragmentShader: SWOOSH_FRAG,
+        transparent: true,
+        depthWrite: false,
+      }),
+    );
+    m.position.set(a.x, a.y, a.z);
+    s.group.add(m);
+    s.sw = { mesh: m, u, at: a, cfg: PULL[i] };
+  });
 
   // ---------------------------------------------------------------- camera
   const aspect = W / H;
@@ -1339,13 +1222,12 @@ async function build() {
   // 16:9: starts close on the DSW plot, trucks right as each store arrives (all three framed
   // before Foot Locker breaks the floor), then a slow pull back and crane up for the reveal.
   const CAM = {
-    tx: track([[0, -0.6], [2.9, -1.6], [4.0, -1.08], [4.85, -0.1], [6.2333, -0.03]], -0.25, 0.0),
-    ty: track([[0, 0.2], [2.9, 1.05], [4.0, 1.38], [4.85, 1.42], [6.2333, 1.5]], 0.25, 0.0),
-    dist: track([[0, 10.6], [2.9, 7.9], [4.0, 9.3], [4.85, 11.2], [6.2333, 13.9]], -0.6, 0.3),
-    yaw: track([[0, 8], [2.9, 24], [6.2333, 16]], 6, -1.4),
-    pitch: track([[0, 52], [1.6, 35], [2.9, 17], [4.0, 18], [6.2333, 20]], -8, 0.4),
+    tx: track([[0, -1.6], [1.55, -1.08], [2.55, -0.1], [6.5, -0.02]], 0.25, 0.0),
+    ty: track([[0, 1.05], [1.55, 1.38], [2.55, 1.42], [6.5, 1.5]], 0.1, 0.0),
+    dist: track([[0, 7.7], [1.55, 9.3], [2.55, 11.3], [6.5, 14.7]], 0.75, 0.18),
+    yaw: track([[0, 25], [6.5, 15.5]], -1.6, -1.2),
+    pitch: track([[0, 17], [2.55, 18], [6.5, 20]], 0.35, 0.3),
   };
-
   const tgt = new THREE.Vector3();
   function placeCamera(t) {
     tgt.set(CAM.tx(t), CAM.ty(t), 0);
@@ -1510,10 +1392,9 @@ async function build() {
       const st = zonesFor(s, i, t);
       // contact shadow: tight and dark on the floor, soft and faint when airborne
       const hgt = Math.max(0, st.yb);
-      const spread = 1 + hgt * 0.9 + Math.abs(st.th) * 3;
-      const visible = st.yb + s.height > 0;
-      s.contact.material.opacity = visible ? 0.78 * (1 - smooth(0, 0.42, hgt)) + 0.12 : 0;
-      s.contact.scale.set((s.pw + 0.55) * spread, (s.pd + 0.55) * spread, 1);
+      const spread = 1 + hgt * 2.5;
+      s.contact.material.opacity = 0.7 * smooth(-0.12, 0.0, st.yb) * (1 - smooth(0, 0.2, hgt));
+      s.contact.scale.set((s.pw + 0.3) * spread, (s.pd + 0.3) * spread, 1);
       s.contact.position.x = s.x + st.yb * 0.0;
       // lights on after landing
       const L = s.pop.lights(t);
@@ -1526,20 +1407,51 @@ async function build() {
       }
       // plot outline: draws on, then fades once the store has settled
       const tp = T.plots[i];
-      s.plot.uniforms.uProg.value = smooth(tp, tp + 0.9, t) * 1.02;
+      s.plot.uniforms.uProg.value = smooth(tp, tp + 0.55, t) * 1.02;
       s.plot.uniforms.uAlpha.value = 0.34 * smooth(tp, tp + 0.08, t) * (1 - smooth(s.pop.tImpact + 0.25, s.pop.tImpact + 0.9, t));
     });
 
-    // swoosh
-    const rev = smooth(T.swooshIn, T.swooshHold, t);
-    const out = smooth(T.swooshOut, T.swooshGone, t);
-    swU.uReveal.value = rev;
-    swU.uOut.value = out;
-    glowU.uAmt.value = 0.22 * smooth(T.swooshIn + 0.25, T.swooshHold + 0.1, t) * (1 - smooth(T.swooshOut, T.swooshGone - 0.06, t));
-    swooshG.visible = t > T.swooshIn - 0.05 && t < T.swooshGone + 0.05;
-    const rise = (1 - Math.pow(1 - smooth(T.swooshIn - 0.1, T.swooshHold + 0.3, t), 2)) * 0.12 + out * 0.14;
-    swooshG.position.set(swooshBase.x, swooshBase.y - 0.12 + rise, swooshBase.z);
-    swooshG.quaternion.copy(camera.quaternion);
+    // Nike leaving the stores
+    stores.forEach((s) => {
+      const { mesh, u, at, cfg } = s.sw;
+      const tOn = s.pop.tImpact + cfg.on;
+      const tPull = tOn + cfg.pull;
+      u.uReveal.value = smooth(tOn, tOn + 0.3, t);
+      mesh.visible = t > tOn - 0.02;
+      let dz = 0;
+      let dy = 0;
+      let sc = 1;
+      let out = 0;
+      let alpha = 1;
+      let turb = 0;
+      let dim = 0;
+      if (cfg.mode === "out") {
+        const p = clamp((t - tPull) / 0.72);
+        // a small tug back into the shop, then it slides out through the glass, rises and breaks up
+        const tug = p < 0.22 ? -0.06 * Math.sin((Math.PI * p) / 0.22) : 0;
+        const go = Math.pow(clamp((p - 0.16) / 0.84), 2.1);
+        dz = tug + 0.9 * go;
+        dy = 1.7 * go;
+        sc = 1 + 1.0 * go;
+        out = smooth(0.45, 1, p);
+        turb = 0.012 * smooth(0.1, 0.4, p);
+        dim = smooth(0.15, 0.6, p);
+      } else {
+        const p = clamp((t - tPull) / 0.6);
+        const e = p * p * (3 - 2 * p);
+        sc = 1 - 0.5 * e;
+        alpha = 1 - 0.3 * e;
+        turb = 0.02 * Math.sin(Math.PI * p);
+        dim = 0.35 * e;
+      }
+      mesh.position.set(at.x, at.y + dy, at.z + dz);
+      mesh.scale.setScalar(sc);
+      u.uOut.value = out;
+      u.uAlpha.value = alpha;
+      u.uTurb.value = turb;
+      mesh.renderOrder = 6; // on the glass, like window vinyl: drawn after the panes
+      s.lights[0].emissiveIntensity *= 1 - 0.55 * dim;
+    });
 
     // focus line just under the lowest landed plinth front edge
     let fy = 1;

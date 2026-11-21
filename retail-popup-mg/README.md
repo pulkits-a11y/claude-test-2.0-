@@ -1,25 +1,24 @@
 # Retail Pop-Up MG (Raw Canvas / Nike reel)
 
-A 6.233 s (187 frames), 1920×1080, 30 fps motion graphic that fills the reel's MG slot exactly:
-**0:27.633 → 0:33.867** in `NikeReel_v4` (the "MG" placeholder, measured frame by frame). Three miniature
-storefronts (DSW, Dillard's, Foot Locker) pop up through a studio floor, one per VO mention. Then the camera
-pulls back, a mint Nike swoosh flashes above them and dissolves away, and it ends on the three stores alone.
+A 6.5 s, 1920×1080, 30 fps motion graphic for the MG beat at **0:30** in `NikeReel_v4`. Three miniature storefronts
+(DSW, Dillard's, Foot Locker) rise through a plain `#111111` ground, one per VO mention. Each lands with a lit mint
+Nike swoosh on its glass. DSW's and Dillard's swooshes are pulled out of the stores and break apart. Foot Locker's
+shrinks and dims ("sent less"). The camera pulls back on three stores, with Nike gone from two and reduced in one.
 
-VO: *"His plan? Cut out the middleman. Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker."*
+VO: *"Nike pulled out of stores like DSW and Dillard's, and sent less to Foot Locker."*
 
-## Sync map (place the clip at 0:27.633)
+## Sync map (MG time → reel time when the clip starts at 0:30.00)
 
 | MG time | Reel | What happens |
 | --- | --- | --- |
-| 0.00–2.9 | 0:27.6–0:30.5 | "Cut out the middleman": the camera cranes down from high over a dark floor while three plot outlines draw on |
-| 2.95 → 3.57 | 0:30.6 → 0:31.2 | **DSW** breaks the floor, rises, overshoots, drops, bounces and settles. The sign switches on at "DSW" (0:31.21) |
-| 3.38 → 4.03 | 0:31.0 → 0:31.7 | **Dillard's** pops (heavier: lower hop, less bounce). The sign switches on at "Dillard's" (0:31.61) |
-| 4.0 → 4.85 | 0:31.6 → 0:32.5 | Camera trucks right to frame the third plot |
-| 4.83 → 5.44 | 0:32.5 → 0:33.1 | **Foot Locker** pops. The sign switches on at "Foot Locker" (0:33.07) |
-| 4.85 → 6.23 | 0:32.5 → 0:33.87 | Slow pull back and crane up. Reveal of all three |
-| 5.36 → 5.68 | 0:33.0 → 0:33.3 | Swoosh draws on (displacement-map wipe) |
-| 5.78 → 6.08 | 0:33.4 → 0:33.7 | Swoosh breaks up and fades (turbulent displace + dissolve) |
-| 6.08 → 6.23 | 0:33.7 → 0:33.87 | Clean frame of the three stores for the cut |
+| 0.0–0.5 | 0:30.0 | Plain ground. Floor-plan outlines draw on; the camera is already drifting |
+| 0.52 → 1.14 | 0:30.5 → 0:31.1 | **DSW** rises on a damped spring (no bounce). The sign switches on at "DSW" (0:31.21) |
+| 1.05 → 1.71 | 0:31.1 → 0:31.7 | **Dillard's** rises (most damped, the heaviest). The sign switches on at "Dillard's" (0:31.61) |
+| ~1.25 → 2.5 | 0:31.3 → 0:32.5 | DSW's swoosh appears on its window, then gets tugged and pulled out, rising and breaking up |
+| ~1.8 → 3.0 | 0:31.8 → 0:33.0 | Dillard's swoosh: the same |
+| 2.60 → 3.20 | 0:32.6 → 0:33.2 | **Foot Locker** rises. The sign switches on at "Foot Locker" (0:33.07) |
+| ~3.3 → 4.3 | 0:33.3 → 0:34.3 | Foot Locker's swoosh appears, then shrinks to half and dims: "sent less" |
+| 3.2 → 6.5 | 0:33.2 → 0:36.5 | Slow pull back and crane up, holding on the three stores |
 
 ## The three required effects
 
@@ -27,19 +26,17 @@ VO: *"His plan? Cut out the middleman. Nike pulled out of stores like DSW and Di
   ripple churns the floor where each building breaks through, then rings out on impact. The swoosh's edges
   stay turbulent and break apart on exit. Code: `SIGN_FRAG`, `POST_FRAG` (zones/rings) and `SWOOSH_FRAG`.
 - **Displacement map**: a banded displacement plate (`bandTex`) glitches each sign into place as its store lands.
-  A noise displacement map (`noiseTex`) drives the swoosh's draw-on wipe and its dissolve.
+  A noise displacement map (`noiseTex`) drives each swoosh's draw-on wipe and its dissolve as it's pulled out.
 - **Noise inside text**: every sign and the swoosh carry grain inside the letterforms, boiling on twos. It matches
   the "WHAT HAPPENED?" title at 0:23. The post pass adds luminance-weighted grain and leaves the `#111111`
   ground flat, so it matches the reel's title cards.
 
 ## Look
 
-Flat `#111111` ground everywhere except a soft light pool under the stores, the same as the reel's title cards.
-There's no colour grade, so it cuts against footage without a colour jump. Off-white sign ink, and the mint accent
-`#c4f0b4` for the swoosh only. Grain matches the type at 0:23: inside the letters and on lit surfaces, but none on
-the ground. Warm key light from front-left with soft shadows, cool rim from behind and a slowly turning environment,
-so glass reflections sweep. The models have tight bevels, weathered/mottled materials, stone joints, paving joints,
-downpipes, contact shadows and base occlusion.
+Plain `#111111` everywhere, with no floor and no light pool, matching the reel's title cards. Off-white sign ink, and the mint
+accent `#c4f0b4` for the swooshes only. Grain sits inside the lettering and on lit surfaces, never on the ground.
+Warm key light from front-left, a cool rim from behind and a slowly turning environment, so glass reflections sweep.
+The stores rise on damped springs: no drop, bounce or squash.
 
 ## Files
 
