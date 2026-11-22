@@ -16,6 +16,7 @@ for a in dunk=standin/dunk_scan_lit.glb af1=cleaned/nike_air_force_1_uvfix.glb a
   "$TS" project import-asset --project "$OUT" --file "$M/${a#*=}" --asset-id "${a%%=*}" --kind model3d >/dev/null
 done
 "$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/beam_falloff.png" --asset-id beamfall --kind image >/dev/null
+"$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/grunge.png" --asset-id grunge --kind image >/dev/null
 "$TS" project import-video --project "$OUT" --file "$ROOT/assets/generated/gobo.mp4" --asset-id gobo > "$WORK/gobo-import.json"
 python3 - "$W" "$H" "$WORK/pre.json" <<'PY'
 import json, sys
@@ -32,5 +33,25 @@ PY
 "$TS" project apply --project "$OUT" --actions "$WORK/pre.json" >/dev/null
 python3 "$HERE/build_gallery.py" "$HERE/lamp_timeline.json" "$WORK/gallery.json" "$@"
 "$TS" project apply --project "$OUT" --actions "$WORK/gallery.json" > "$WORK/apply.json"
-python3 -c "import json,sys; w=json.load(open('$WORK/apply.json')).get('warnings'); print('warnings:', w if w else 'none')"
+python3 -c "import json,sys; w=json.load(open('$WORK/apply.json')).get('warnings'); print('scene warnings:', w if w else 'none')"
+if [ "${NO_POST:-0}" != "1" ]; then
+  python3 "$HERE/post.py" "$WORK/post.json" "$W" "$H" >/dev/null
+  "$TS" project apply --project "$OUT" --actions "$WORK/post.json" > "$WORK/post-apply.json"
+  # Blend modes are document fields (no action): haze layer -> soft light
+  "$TS" project checkout --project "$OUT" --output "$WORK/editable.json" >/dev/null
+  python3 - "$WORK/editable.json" <<'PY'
+import json, sys
+p = sys.argv[1]; d = json.load(open(p)); n = 0
+def walk(o):
+    global n
+    if isinstance(o, dict):
+        if o.get('id') == 22 and 'blendMode' in o or (o.get('id') == 22 and o.get('name', '').startswith('Haze')):
+            o['blendMode'] = 'softLight'; n += 1
+        for v in o.values(): walk(v)
+    elif isinstance(o, list):
+        for v in o: walk(v)
+walk(d); json.dump(d, open(p, 'w')); print('haze blend set on', n, 'layer(s)')
+PY
+  "$TS" project commit --project "$OUT" --file "$WORK/editable.json" >/dev/null && echo "post layers applied"
+fi
 ls -la "$OUT"

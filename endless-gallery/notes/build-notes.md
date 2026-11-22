@@ -38,8 +38,11 @@ This cloud machine renders on CPU only (no GPU), so every design choice is about
 - **Noise inside light:** fine grain plus slow mottling in the projector mask, re-seeded every frame. It shows up inside every pool, on the pedestal tops and inside every beam.
 - **Turbulent Displace:**
   - Built in: while a lamp catches or dies, its disc in the mask jitters and its edge wobbles with fresh fractal noise each frame, so the pool and beam physically shudder.
-  - Still to add: a full-frame custom-shader Turbulent Displace at a very low constant level on the haze.
-- **Displacement map:** still to add. It will be a custom-shader layer using **Grunge 353** (missing; please add it to the Drive folder) for 3-frame jolts at **f20–22** and **f50–52** (the fastest camera frames) and a slow crawl on the haze in Phase 4.
+  - Haze: the soft-light haze layer (`hazeTurbulence` shader) is displaced by evolving fractal turbulence all the time, rising slightly in Phase 4.
+- **Displacement map:** custom shader `grungeDisplaceJolt` on the "Displacement jolts" adjustment layer (`post.py`).
+  - Jolts: 3-frame bursts at **f20–22** and **f50–52**, the fastest frames of each snap; each frame samples a different patch of the map.
+  - Phase 4: the haze layer's shader crawls the same map slowly through the haze.
+  - Map: **currently a procedural PLACEHOLDER** (`assets/generated/grunge.png`, made by `make_placeholder_grunge.py`). Replace that file with Grunge 353 and rebuild.
 
 ## Timing (MG frames @ 30 fps; video time = 51.10 s + frame/30)
 
@@ -61,8 +64,12 @@ This cloud machine renders on CPU only (no GPU), so every design choice is about
 
 - **Dunk:** the phone scan is a temporary stand-in (unlit flag removed so it reacts to light). It gets swapped for the purchased Joe-Wall model as soon as it's in the Drive folder.
 - **Still missing:** ShoeboxTower_full_r2.mp4, vibe stills A and B, storefront still, Grunge 353/352. The look (colour, contrast, camera height in the final wide shot) is unconfirmed until these arrive.
-- **Still to build:**
-  - Post effects (displacement jolts, haze turbulence, Phase 4 grade drain)
-  - Dust motes
+- **Built since the first draft:**
+  - Post layers: displacement jolts, haze, Phase 4 grade drain (saturation to ~30%, cooler, -0.3 stops)
+  - Floating square dust motes, lit only where there is light
+  - Fill and rim lights split, so nothing outside the hero's pool is visible in Phase 1
+- **Still to do:**
+  - Look-match against the ShoeboxTower MG once it arrives
   - Floor reflections
+  - Swap in the purchased Dunk
   - Final 4K render

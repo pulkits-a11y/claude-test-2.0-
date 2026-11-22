@@ -316,6 +316,47 @@ def build(a, tl):
                 hero_shoe = iid
         b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER, "data": [], "items": items})
 
+    # --- Floating square dust motes (as in the ShoeboxTower MG) ------------------------------------------------
+    # Tiny tumbling squares drifting slowly, concentrated in the hero lamp's beam. They are lit by the same
+    # lights as everything else, so they only sparkle where there is light.
+    if a.motes > 0:
+        import random
+        mr = random.Random(77)
+        did = b.id()
+        items, anims = [], []
+        for i in range(a.motes):
+            if i < a.motes * 0.6:      # inside the hero beam
+                x, z = mr.gauss(0, 230), mr.gauss(0, 230)
+                y = -mr.uniform(1080, 2450)
+            else:                      # loosely around the hero row
+                x, z = mr.uniform(-5200, 5200), mr.uniform(-1800, 1800)
+                y = -mr.uniform(1050, 2550)
+            size = mr.uniform(3.5, 7.5)
+            iid = b.id()
+            items.append({"type": "Mesh3D", "id": iid, "parentId": None, "name": f"Mote {i}", "dataId": did, "packing": "whole",
+                          "transform": {"position": [x, y, z], "rotation": rot(mr.uniform(0, 360), mr.uniform(0, 360), 0),
+                                        "scale": [size / 6 * 100] * 3},
+                          "materialSlots": [], "regionSlots": [], "castsShadows": False, "receivesShadows": False})
+            dx, dy, dz = mr.uniform(-45, 45), mr.uniform(-10, 55), mr.uniform(-45, 45)
+            anims.append((iid, "position", [(0, {"type": "vector3", "value": [round(x, 1), round(y, 1), round(z, 1)]}, HOLD),
+                                            (83, {"type": "vector3", "value": [round(x + dx, 1), round(y + dy, 1), round(z + dz, 1)]},
+                                             bezier(0.3, 0.1, 0.7, 0.9))]))
+            r0 = mr.uniform(0, 360)
+            anims.append((iid, "rotationY", [(0, {"type": "float", "value": round(r0, 1)}, HOLD),
+                                             (83, {"type": "float", "value": round(r0 + mr.uniform(-160, 160), 1)},
+                                              bezier(0.25, 0.1, 0.75, 0.9))]))
+        # each mote gets its own (identical) material slot: slot ids must be unique per item
+        for it in items:
+            sid, bid, slot = b.material({"baseColor": const([0.85, 0.80, 0.72]), "roughness": const(0.55)}, double=True)
+            it["materialSlots"] = [slot]
+            it["regionSlots"] = [{"region": "primary", "slotId": sid}, {"region": "side", "slotId": sid}]
+        b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
+               "data": [{"type": "mesh", "id": did, "name": "Mote square", "geometry": {"type": "plane", "size": [6, 6]},
+                         "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}],
+               "items": items})
+        for iid, prop, keys in anims:
+            b.anim(iid, prop, keys)
+
     # --- Lights --------------------------------------------------------------------------------------------
     hero = cells["0,0"]
     hid = b.id()
@@ -335,32 +376,39 @@ def build(a, tl):
                                     "goboDensity": 1.0, "goboWrap": "black"},
                         "useTemperature": True, "temperature": a.kelvin, "castsShadows": False}})
 
-    # Cool teal-green rim from behind, separates shoes from the void
-    rim = b.id()
-    b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
-           "item": {"type": "Light3D", "id": rim, "parentId": None, "name": "Rim (teal-green, from behind)",
-                    "transform": {"position": [0, -5000, a.rim_z], "relationships": {"constraints": [
-                        {"type": "aim", "id": b.id(), "target": {"id": b.id(), "target": {"type": "world"},
-                                                                 "offset": [0, -800, 0], "offsetSpace": "local"},
-                         "up": [0, 1, 0], "upSpace": "world", "forwardAxis": "positiveZ", "influence": 1}]}},
-                    "emitter": {"type": "parallel", "irradiance": a.rim},
-                    "color": [0.55, 0.95, 0.85, 1], "castsShadows": False}})
-    # Soft warm front fill so the shoes read as forms (bounce light), shoes only
-    fill = b.id()
-    b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
-           "item": {"type": "Light3D", "id": fill, "parentId": None, "name": "Shoe fill (front, soft)",
-                    "transform": {"position": [-3000, -4000, -9000], "relationships": {"constraints": [
-                        {"type": "aim", "id": b.id(), "target": {"id": b.id(), "target": {"type": "world"},
-                                                                 "offset": [0, -1050, 0], "offsetSpace": "local"},
-                         "up": [0, 1, 0], "upSpace": "world", "forwardAxis": "positiveZ", "influence": 1}]}},
-                    "emitter": {"type": "parallel", "irradiance": a.fill},
-                    "useTemperature": True, "temperature": 4200, "castsShadows": False}})
-    # The rim touches the shoes only: no floor glare, no lit pedestal faces
+    # Cool teal-green rim from behind (separates shoes from the void) and a soft warm front fill (bounce).
+    # "A" lights touch only the hero shoe from f0; "B" lights touch every other shoe and stay at zero until
+    # the hall cascades (f50), so nothing outside the hero's pool is visible in Phase 1.
+    def aimed_parallel(name, pos, target, irr, extra):
+        lid = b.id()
+        item = {"type": "Light3D", "id": lid, "parentId": None, "name": name,
+                "transform": {"position": pos, "relationships": {"constraints": [
+                    {"type": "aim", "id": b.id(), "target": {"id": b.id(), "target": {"type": "world"},
+                                                             "offset": target, "offsetSpace": "local"},
+                     "up": [0, 1, 0], "upSpace": "world", "forwardAxis": "positiveZ", "influence": 1}]}},
+                "emitter": {"type": "parallel", "irradiance": irr}, "castsShadows": False}
+        item.update(extra)
+        b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER, "item": item})
+        return lid
+    teal = {"color": [0.55, 0.95, 0.85, 1]}
+    warm = {"useTemperature": True, "temperature": 4200}
+    rim_a = aimed_parallel("Rim A (hero)", [0, -5000, a.rim_z], [0, -800, 0], a.rim, teal)
+    rim_b = aimed_parallel("Rim B (hall)", [0, -5000, a.rim_z], [0, -800, 0], 0.0, teal)
+    fill_a = aimed_parallel("Fill A (hero)", [-3000, -4000, -9000], [0, -1050, 0], a.fill, warm)
+    fill_b = aimed_parallel("Fill B (front rows)", [-3000, -4000, -9000], [0, -1050, 0], 0.0, warm)
+    ramp = bezier(0.4, 0.0, 0.3, 1.0)
+    b.anim(rim_b, "irradiance", [(0, {"type": "float", "value": 0.0}, HOLD), (50, {"type": "float", "value": 0.0}, HOLD),
+                                 (60, {"type": "float", "value": a.rim}, ramp)])
+    b.anim(fill_b, "irradiance", [(0, {"type": "float", "value": 0.0}, HOLD), (50, {"type": "float", "value": 0.0}, HOLD),
+                                  (60, {"type": "float", "value": a.fill}, ramp)])
+    others = [i for i in shoe_ids if i != hero_shoe]
+    near_others = [i for i in near_shoe_ids if i != hero_shoe]
+    link = lambda lid, ids: {"lightId": lid, "illuminatedObjects": {"type": "objects", "items": ids},
+                             "shadowCasters": {"type": "all"}, "shadowReceivers": {"type": "all"}}
     b.add({"type": "setFxScene3DRenderSettings", "compositionId": "main", "layerId": SCENE_LAYER,
            "settings": {"id": 9003, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
-                        "lightLinks": [{"lightId": lid, "illuminatedObjects": {"type": "objects", "items": ids},
-                                        "shadowCasters": {"type": "all"}, "shadowReceivers": {"type": "all"}}
-                                       for lid, ids in ((rim, shoe_ids), (fill, near_shoe_ids))],
+                        "lightLinks": [link(rim_a, [hero_shoe]), link(fill_a, [hero_shoe]),
+                                       link(rim_b, others), link(fill_b, near_others)],
                         "outputs": [], "previewOutput": None}})
     return b.A, {"hero_shoe": hero_shoe, "camera": cam}
 
@@ -380,10 +428,11 @@ if __name__ == '__main__':
     ap.add_argument('--hero-power', type=float, default=1.2)
     ap.add_argument('--proj-power', type=float, default=15000.0)
     ap.add_argument('--kelvin', type=float, default=3600.0)
-    ap.add_argument('--rim', type=float, default=0.25)
+    ap.add_argument('--rim', type=float, default=0.12)
     ap.add_argument('--rim-z', type=float, default=60000)
-    ap.add_argument('--ambient', type=float, default=0.015)
+    ap.add_argument('--ambient', type=float, default=0.004)
     ap.add_argument('--exposure', type=float, default=0.0)
+    ap.add_argument('--motes', type=int, default=260)
     a = ap.parse_args()
     tl = json.load(open(a.timeline))
     actions, info = build(a, tl)
