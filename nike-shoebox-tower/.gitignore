@@ -4,7 +4,13 @@ assets/textures/
 assets/reference/
 
 # Large or regenerable working files
-.tesseract-work/checks/
-.tesseract-work/*.schema.json
-.tesseract-work/project.json
-.tesseract-work/editable.json
+
+# The packaged project and everything derived from licensed / brand media stay local
+*.tsrct
+assets/generated/
+assets/logo/
+Exports/
+Previews/
+.tesseract-work/
+build/physics/collapse_sheet.png
+build/__pycache__/
