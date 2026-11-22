@@ -1,3 +1,9 @@
 # Shoe models (~200 MB) are kept out of git. Source: the shared Google Drive folder.
 # Cleaned copies are rebuilt with .tesseract-work/strip_uv.py (removes unused TEXCOORD_2).
 assets/models/
+
+# Regenerable build outputs (run .tesseract-work/make_project.sh)
+.tesseract-work/build/
+.tesseract-work/lamp_timeline.json
+__pycache__/
+*.tsrct
