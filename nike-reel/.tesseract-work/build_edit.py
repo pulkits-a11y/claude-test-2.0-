@@ -287,10 +287,23 @@ def caption_group(name):
     return g
 
 
+import math
+from design import caption_word
+
+
+def wfc(line, i, floor=None):
+    """Regular captions: the frame the word's syllable starts (never early: ceil), not snapped to the 10 fps grid."""
+    f = math.ceil(WORDS[line][i]["s"] * FPS + off[line] - 1e-6)
+    return f if floor is None else max(floor, f)
+
+
+# one pop word and one glow-flicker word per B-roll scene (client spec)
+CAP_POP = {(8, 1), (11, 0), (15, 2), (19, 4), (20, 4), (22, 1), (26, 2)}
+CAP_GLOW = {(8, 5), (12, 8), (15, 8), (19, 6), (21, 3), (22, 4), (26, 5)}
 phrases = []
 for line, parts in SPLITS.items():
     for (i0, i1) in parts:
-        phrases.append(dict(line=line, i0=i0, i1=i1, start=wf(line, i0, floor=seg_start_of(line))))
+        phrases.append(dict(line=line, i0=i0, i1=i1, start=wfc(line, i0, floor=seg_start_of(line))))
 phrases.sort(key=lambda p: p["start"])
 for k, p in enumerate(phrases):
     nxt = phrases[k + 1]["start"] if k + 1 < len(phrases) else endcard_in
@@ -301,7 +314,8 @@ for k, p in enumerate(phrases):
     if (p["line"], p["i0"]) == (8, 5):          # 'ex-CEO,' clears when JOHN / DONAHOE takes over
         p["end"] = max(p["start"] + 1, min(p["end"], wf(8, 6)))
 
-cap = caption_group("CAPTIONS (regular: word-by-word, Blur-to-sharp)")
+CUT_FRAMES = {x["start"] for x in shots} | {x["end"] for x in shots} | set(seg_start) | set(seg_end)
+cap = caption_group("CAPTIONS (regular: appear on the syllable frame; pop / glow per scene; groups hard-cut)")
 spec = ("archivo", CAP_SIZE, {"wght": CAP_W, "wdth": 100}, 0)
 cap_rows = []
 for p in phrases:
@@ -316,8 +330,10 @@ for p in phrases:
             xs.append(acc); acc += wv + sp_w * 1.3
         Wd = acc - sp_w * 1.3
     x0 = 960 - Wd / 2
+    starts_next = {q["start"] for q in phrases}
+    blur_out = p["end"] not in CUT_FRAMES and p["end"] not in starts_next     # leaves before a cut without a replacement
     for j, i in enumerate(range(p["i0"], p["i1"])):
-        f0 = max(p["start"], wf(p["line"], i))
+        f0 = max(p["start"], wfc(p["line"], i))
         if f0 >= p["end"]:
             f0 = p["end"] - 1
         x = x0 + xs[j]
@@ -330,8 +346,7 @@ for p in phrases:
                    "activeRange": {"start": ms(f0), "duration": ms(p["end"]) - ms(f0)},
                    "transform": {"anchorPoint": [0, 0], "position": [x, CAP_Y - hl + dy], "scale": [round(100 * wl / LOGO_W[asset], 3)] * 2, "rotation": 0, "opacity": 100},
                    "source": {"assetId": asset, "fit": "contain"}})
-            D.blur_to_sharp(img)
-            cap_rows.append((p["line"], i, word, f0, "Logo (Blur-to-sharp)"))
+            cap_rows.append((p["line"], i, word, f0, "Logo (appear)"))
             continue
         if (p["line"], i) in HIGHLIGHT:
             w = advance(word, *spec)
@@ -342,12 +357,16 @@ for p in phrases:
             D.add({"type": "setFxLayerTrackMatte", "compositionId": C, "layerId": dark, "matteLayerId": matte, "mode": "alpha"})
             for lid in (matte, box):
                 D.keys(lid, "scaleX", [(0, 0, "hold"), (STEP, 50, "hold"), (2 * STEP, 100, "hold")])
-            D.keys(green, "opacity", [(0, 40, "hold"), (STEP, 100, "hold")])
-            cap_rows.append((p["line"], i, word, f0, "Highlight-box wipe"))
+            if (p["line"], i) in CAP_GLOW:
+                gl = D.text(f"cap L{p['line']}w{i} '{word}' (neon glow)", word, x, CAP_Y, "archivo", CAP_SIZE, [1, 1, 1, 1], f0, p["end"], cap, wght=CAP_W)
+                D.effect(gl, {"type": "gaussianBlur", "blurriness": 14})
+                D.keys(gl, "opacity", [(t, v, "hold") for t, v in __import__("design").GLOW_PATTERN if t < p["end"] - f0])
+            cap_rows.append((p["line"], i, word, f0, "Highlight-box wipe" + (" + glow flicker" if (p["line"], i) in CAP_GLOW else "")))
         else:
-            lid = D.text(f"cap L{p['line']}w{i} '{word}'", word, x, CAP_Y, "archivo", CAP_SIZE, GREEN if key else TEXT, f0, p["end"], cap, wght=CAP_W)
-            D.blur_to_sharp(lid)
-            cap_rows.append((p["line"], i, word, f0, "Blur-to-sharp"))
+            kind = "pop" if (p["line"], i) in CAP_POP else ("glow" if (p["line"], i) in CAP_GLOW else "plain")
+            caption_word(D, f"cap L{p['line']}w{i} '{word}'", word, x, CAP_Y, "archivo", CAP_SIZE, GREEN if key else TEXT, f0, p["end"], cap,
+                         kind=kind, exit_blur=blur_out, wght=CAP_W, width=advance(word, *spec))
+            cap_rows.append((p["line"], i, word, f0, {"pop": "Pop + blur-in", "glow": "Appear + glow flicker", "plain": "Appear"}[kind]))
 
 
 # ================= helpers for centred display rows =================
