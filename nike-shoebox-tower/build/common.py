@@ -169,38 +169,50 @@ def mat_to_quat(m):
 
 
 def project(Pw, cam):
-    P, L = cam
+    """cam = (P, L) or (P, L, focal_mm)."""
+    P, L = cam[0], cam[1]
+    fpx = F_PX * (cam[2] / FOCAL_MM if len(cam) > 2 else 1.0)
     _, (x, y, z) = look_quat(P, L)
     d = [Pw[i] - P[i] for i in range(3)]
     xc = sum(a * b for a, b in zip(d, x))
     yc = sum(a * b for a, b in zip(d, y))
     zc = sum(a * b for a, b in zip(d, z))
-    return (W / 2 + F_PX * xc / zc, H / 2 + F_PX * yc / zc, zc)
+    return (W / 2 + fpx * xc / zc, H / 2 + fpx * yc / zc, zc)
 
 
 # Street camera control poses (time, position, look-at). Tower at the origin, ground at y = 0.
 LAMP = {"x": 1150, "z": -260, "head_y": -2380}  # vintage lamp: right of the tower, slightly in front (= physics collider)
 
 STREET_KEYS_P = [
-    (0.00, [470, -136, -2560]),
-    (2.90, [440, -135, -2440]),     # slow push-in on the empty pool of light
-    (3.60, [560, -190, -2600]),
-    (4.30, [850, -300, -3600]),
-    (4.95, [1300, -420, -5200]),
-    (5.67, [1750, -500, -6800]),
-    (6.40, [1900, -520, -7300]),    # heroic low angle, full tower against the dark
-    (6.80, [1915, -522, -7350]),    # story-time drift target through "Today?"
+    (0.00, [470, -420, -2700]),     # low, looking slightly down: the wet sidewalk reads as a surface, the street below
+    (2.90, [440, -405, -2580]),     # slow push-in on the empty pool of light
+    (3.45, [600, -380, -2800]),
+    (4.13, [1000, -330, -3600]),    # pulls back, swings right and sinks as the stack climbs (box 28 lands 5.40)
+    (4.60, [1500, -290, -4400]),
+    (5.40, [1950, -265, -5000]),
+    (6.40, [2100, -255, -5250]),    # heroic low three-quarter angle: 26 mm, lens 25 cm off the sidewalk, tilted up
+    (6.80, [2110, -255, -5290]),    # story-time drift target through "Today?"
 ]
 STREET_KEYS_L = [
-    (0.00, [130, -300, 0]),
-    (2.90, [115, -290, 0]),
-    (3.60, [40, -420, 0]),
-    (4.30, [20, -850, 0]),
-    (4.95, [0, -1300, 0]),
-    (5.67, [0, -1600, 0]),
-    (6.40, [0, -1700, 0]),
-    (6.80, [0, -1705, 0]),
+    (0.00, [130, -150, 0]),
+    (2.90, [115, -160, 0]),
+    (3.45, [40, -420, 0]),
+    (4.13, [20, -880, 0]),
+    (4.60, [0, -1250, 0]),
+    (5.40, [0, -1520, 0]),
+    (6.40, [0, -1546, 0]),
+    (6.80, [0, -1550, 0]),
 ]
+# lens: 35 mm, widening to 26 mm as the tower tops out (stronger low-angle perspective), back to 35 mm as the
+# camera follows the collapse down
+FOCAL_KEYS = [(0.0, 35.0), (4.13, 35.0), (5.40, 26.0), (7.30, 26.0), (8.10, 35.0)]
+
+
+def street_focal(t):
+    for (t0, f0), (t1, f1) in zip(FOCAL_KEYS, FOCAL_KEYS[1:]):
+        if t <= t1:
+            return f0 + (f1 - f0) * smootherstep(t0, t1, t)
+    return FOCAL_KEYS[-1][1]
 POST_P = [
     (7.62, [1500, -420, -5600]),
     (8.10, [900, -430, -3300]),
@@ -232,14 +244,14 @@ def street_cam(t):
         P = hermite_path([(T["less"], p0)] + POST_P, t)
         L = hermite_path([(T["less"], l0)] + POST_L, t)
     # tiny decaying shake on the heaviest collapse impact (about 1-2 px on screen)
-    tau = t - 8.03
+    tau = t - 8.40
     if 0 <= tau < 0.4:
         a = 2.2 * math.exp(-tau / 0.09)
         P = [P[0] + a * math.sin(tau * 97), P[1] + a * 0.8 * math.sin(tau * 131 + 1.3), P[2]]
-    return P, L
+    return P, L, street_focal(t)
 
 
-WALL_CAM = {"p0": [0, -700, -2700], "p1": [0, -712, -2440], "l0": [0, -845, 0], "l1": [0, -850, 0]}
+WALL_CAM = {"p0": [0, -774, -3330], "p1": [0, -776, -3030], "l0": [0, -774, 0], "l1": [0, -776, 0]}   # the whole 10 x 10 wall stays in frame
 
 
 def wall_cam(t):

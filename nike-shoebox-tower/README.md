@@ -2,11 +2,12 @@
 
 3D motion graphic for MG section 0:09.10–0:22.40 of the Nike reel: Nike's market value as a physical tower of
 orange Nike shoeboxes (one box = $10B). 28 boxes rise (2021, ~$280B), collapse to 6 (today, ~$60B), then the
-orange box is shoved out of a wall of 100 grey boxes (S&P 100).
+orange box is shoved out of a 10 × 10 wall of 100 grey boxes (S&P 100), leaving 99 and a hole.
 
 Built with **Tesseract by Mirage** (CLI 0.8.0): every scene, light, camera, material, keyframe, text layer,
 effect and transition is native and editable in `ShoeboxTower.tsrct`. Blender 5.3 was used only as the
-rigid-body physics solver; its results are baked into ordinary Tesseract keyframes.
+rigid-body physics solver (collapse with breakable lid joints, wall ejection); its results are baked into ordinary
+Tesseract keyframes. The street camera's lens is keyed too (35 mm, widening to 26 mm for the hero angle).
 
 ## Folder
 
@@ -29,8 +30,8 @@ rigid-body physics solver; its results are baked into ordinary Tesseract keyfram
 - `200` Group — **TYPE** (all typography; hide this group for the clean version)
 - `400` Group — Opening card (charcoal) with the Grunge 353 displacement dissolve
 - `300` Adjustment — Film grain · `310` Adjustment — Grade (teal shadows / warm highlights, vignette, "Today?" desaturation)
-- `20` Scene3D — Stockroom wall (S&P 100), revealed by a Grunge 353 displacement wipe
-- `13` Ghost tower outline · `12` Wet-ground reflection (mirror pass, Add) · `14` Haze (lamp beam, Screen) · `11` Street (lit set + boxes) · `10` Backdrop (city bokeh)
+- `20` Scene3D — Stockroom wall (S&P 100): exactly 10 × 10 boxes, revealed by a Grunge 353 displacement wipe
+- `13` Ghost tower (dashed outline + faint volume, Add) · `12` Wet-street reflection (mirror pass across the asphalt, lit by a mirrored lamp, Add) · `14` Haze (lamp beam, Screen) · `11` Street (lit set + boxes, lids on simulated hinges) · `10` Backdrop (building silhouettes against the city glow, bokeh windows)
 - `901–906` Grunge 353 map layers, consumed as shader inputs (never painted)
 
 The three compulsory effects are Tesseract custom shaders (WGSL, editable parameters):
@@ -40,7 +41,7 @@ The three compulsory effects are Tesseract custom shaders (WGSL, editable parame
 ## Editing
 
 Open `ShoeboxTower.tsrct` in Tesseract, or edit via the CLI (`tsrct project checkout` → edit JSON → `tsrct project commit`).
-Typical tweaks: text layers `211/212/221/224/231/232/240/250`; effect params by effect id (e.g. `-80%` jolt is
+Typical tweaks: text layers `213/214` (the preceding card's lines), `211/215/212` ("more", "than", "anyone."), `221/224/231/232/240/250`; the "−80%" bracket is group `245`; effect params by effect id (e.g. `-80%` jolt is
 effect `2401` param `amount`); camera keys on Scene3D camera items `20003` (street) and `90003` (stockroom).
 
 ## Rebuilding from source

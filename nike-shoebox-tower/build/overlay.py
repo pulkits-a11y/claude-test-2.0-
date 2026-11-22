@@ -92,7 +92,10 @@ def param_js(lid, eid, name, code):
             "paramName": name, "dependencies": [], "animator": {"type": "jsScript", "layerTimeJsCode": code}}
 
 
-def grain_fx(lid, eid, amount=0.35, size=1.1):
+TYPE_GRAIN = dict(amount=2.2, size=1.8)
+
+
+def grain_fx(lid, eid, amount=2.2, size=1.8):
     return [fx(lid, eid, {"type": "grain", "amount": amount, "size": size, "softness": 0.25, "aspectRatio": 1.0, "seed": 1}),
             param_js(lid, eid, "seed", "return Math.floor(input.time.seconds * 24) % 997;")]
 
@@ -138,8 +141,12 @@ def build_overlay(fonts):
 
     # puddle ripples: first landing on "Nike", then the visible debris impacts. Each ring's centre is keyed to
     # follow its ground point through the camera move.
-    drops = [([0, 0, -60], T["nike"], 6.0), ([-1320, 0, -30], 8.70, 4.5), ([1170, 0, 1000], 8.90, 3.5), ([250, 0, 660], 9.20, 3.0)]
+    # ring centres sit on the reflected impact points (mirror of the sidewalk level in the wet street, y = 300),
+    # where the reflection layer actually has a picture to ripple
+    drops = [([0, 300, -60], T["nike"], 6.0), ([-110, 300, 340], 8.27, 4.5), ([-830, 300, -530], 8.37, 4.0),
+             ([330, 300, 60], 8.67, 3.5)]
     A.append(fx(12, 1201, ripples("puddleRipples", [(0, 0, t0, s) for _, t0, s in drops], aspect=0.14, decay=0.38)))
+    A.append(fx(12, 1202, turbulent("puddleShimmer", amount=2.2, size=70, evolution=0.5, seed=4)))
     for i, (wp, t0, s) in enumerate(drops):
         xs, ys = [], []
         for f in range(int(t0 * FPS) - 1, int((t0 + 1.2) * FPS)):
@@ -170,7 +177,7 @@ def build_overlay(fonts):
     A.append(fx(310, 3103, {"type": "vignette", "amount": 0.42, "radius": 0.78, "feather": 0.65}))
     A.append({"type": "createFxAdjustmentLayer", "compositionId": COMP, "layerId": 300, "name": "Film grain",
               "activeRange": rng_(0, DUR), "transform": dict(IDT), "insertIndex": 0})
-    A += grain_fx(300, 3001, amount=0.12, size=1.2)
+    A += grain_fx(300, 3001, amount=0.16, size=1.4)
 
     # ---------------- opening card (charcoal) and its dissolve into the street
     c0, c1 = T["card_out"]
@@ -184,22 +191,30 @@ def build_overlay(fonts):
     # ---------------- TYPE group
     A.append(group_layer(200, "TYPE (all typography)", None, 0, DUR, insert=0))
 
-    # card words (same style as the preceding kinetic card: small white sans, large mint serif)
-    A.append(group_layer(210, "Card words", 200, 0, c1 + 0.05))
-    s1, s2 = 52, 210
-    A.append(text_layer(211, "more than", 210, T["more_than"], c1 + 0.05, "more than", INT[0], INT[1], s1, WHITE,
-                        (W / 2, 452), just="center"))
-    A.append(text_layer(212, "anyone.", 210, T["anyone"], c1 + 0.05, "anyone.", SER[0], SER[1], s2, MINT,
-                        (W / 2, 668 - 0), anchor=(0, -cap_h(F_SERIF, s2) / 2), just="center"))
-    A.append(pkeys(211, "opacity", [(T["more_than"], 0, "linear"), (T["more_than"] + 0.16, 100, EASE_OUT)]))
-    A.append(pkeys(211, "positionY", [(T["more_than"], 466, "linear"), (T["more_than"] + 0.24, 452, EASE_OUT)]))
-    A.append(pkeys(212, "opacity", [(T["anyone"], 0, "linear"), (T["anyone"] + 0.08, 100, EASE_OUT)]))
-    A.append(pkeys(212, "scaleX", [(T["anyone"], 93, "linear"), (T["anyone"] + 0.30, 100, SNAP)]))
-    A.append(pkeys(212, "scaleY", [(T["anyone"], 93, "linear"), (T["anyone"] + 0.30, 100, SNAP)]))
-    A.append(fx(212, 2121, turbulent("anyoneJolt", size=26, evolution=9, seed=2)))
-    A.append(param_keys(212, 2121, "amount", jolt(T["anyone"], 14, 0.24)))
-    for lid, eid in ((211, 2111), (212, 2122)):
-        A += grain_fx(lid, eid, amount=0.55, size=1.0)
+    # card words. Frame 0 continues the preceding kinetic card exactly as it stands at the cut (measured from the
+    # v4 edit at 0:09.08): "Well, turns out, Nike" (sans, white) over "needed retail" (serif, mint). The card then
+    # finishes its sentence the way it was built, one word at a time with a blur-in: "more than anyone."
+    A.append(group_layer(210, "Card words", 200, 0, c1 + 0.05, transform=tf((W / 2, H / 2), (W / 2, H / 2))))
+    A.append(pkeys(210, "scaleX", [(0, 100, "linear"), (c1, 101.6, (0.3, 0.0, 0.7, 1.0))]))
+    A.append(pkeys(210, "scaleY", [(0, 100, "linear"), (c1, 101.6, (0.3, 0.0, 0.7, 1.0))]))
+    SS, SL = 55, 230
+    A.append(text_layer(213, "Well, turns out, Nike (previous card)", 210, 0, c1 + 0.05, "Well, turns out, Nike", INT[0], INT[1],
+                        SS, WHITE, (W / 2, 399), just="center"))
+    A.append(text_layer(214, "needed retail (previous card)", 210, 0, c1 + 0.05, "needed retail", SER[0], SER[1], SL, MINT,
+                        (W / 2, 619), just="center"))
+    line = "more than anyone."
+    x0 = W / 2 - text_w(F_INTER, SS, line) / 2
+    words = [(211, "more", 0.0, T["more_than"]), (215, "than", text_w(F_INTER, SS, "more "), T["more_than"] + 0.20),
+             (212, "anyone.", text_w(F_INTER, SS, "more than "), T["anyone"])]
+    for lid, wtxt, dx, t0 in words:
+        A.append(text_layer(lid, wtxt, 210, t0, c1 + 0.05, wtxt, INT[0], INT[1], SS, WHITE, (x0 + dx, 718)))
+        A.append(pkeys(lid, "opacity", [(t0 - 0.01, 0, "linear"), (t0 + 0.16, 100, EASE_OUT)]))
+        A.append(fx(lid, lid * 10 + 2, {"type": "gaussianBlur", "blurriness": 0}))
+        A.append(param_keys(lid, lid * 10 + 2, "blurriness", [(t0 - 0.01, 14, "linear"), (t0 + 0.22, 0, EASE_OUT)]))
+    A.append(fx(212, 2121, turbulent("anyoneJolt", size=40, evolution=9, seed=2)))
+    A.append(param_keys(212, 2121, "amount", jolt(T["anyone"], 5, 0.22)))
+    for lid in (211, 212, 213, 214, 215):
+        A += grain_fx(lid, lid * 10 + 5)
     A.append(fx(210, 2101, grunge("cardWordsDissolve", 902, softness=0.22, map_scale=1.7)))
     A.append(param_keys(210, 2101, "progress", [(0, 0, "hold"), (c0, 0, "hold"), (c1, 1.0, (0.55, 0.0, 0.45, 1.0))]))
     A.append(param_keys(210, 2101, "displace", [(0, 0, "hold"), (c0, 0, "hold"), (c0 + 0.12, 60, EASE_IN), (c1, 10, EASE_OUT)]))
@@ -232,12 +247,18 @@ def build_overlay(fonts):
                         (x0 + w202 - 4, 0), leading=lead))
     A.append({"type": "setFxLayerTrackMatte", "compositionId": COMP, "layerId": 224, "matteLayerId": 223, "mode": "alpha"})
     A.append(pkeys(220, "opacity", [(tY - 0.05, 0, "linear"), (tY + 0.03, 100, "linear")]))
-    A.append(pkeys(220, "scaleX", [(tY - 0.02, 138, "linear"), (tY + 0.26, 100, SNAP), (m0, 100, "hold"),
-                                   (m1, stamp_scale * 100, OVERSHOOT)]))
-    A.append(pkeys(220, "scaleY", [(tY - 0.02, 138, "linear"), (tY + 0.26, 100, SNAP), (m0, 100, "hold"),
-                                   (m1, stamp_scale * 100, OVERSHOOT)]))
-    A.append(pkeys(220, "positionX", [(m0, W / 2, "hold"), (m1, stamp_center[0], OVERSHOOT)]))
-    A.append(pkeys(220, "positionY", [(m0, H / 2 - 10, "hold"), (m1, stamp_center[1], OVERSHOOT)]))
+    # on "Today?" the stamp pops to ~1.9x for the 2021 -> 2026 flip so the change reads at phone size, then settles
+    rr0, rr1 = td, td + 0.42
+    pop = [(rr0 - 0.02, 1.0, "hold"), (rr0 + 0.12, 1.95, EASE_OUT), (rr0 + 0.24, 1.85, EASE_IN_OUT),
+           (rr1 + 0.18, 1.85, "hold"), (rr1 + 0.44, 1.0, EASE_IN_OUT)]
+    sc_keys = [(tY - 0.02, 138, "linear"), (tY + 0.26, 100, SNAP), (m0, 100, "hold"), (m1, stamp_scale * 100, OVERSHOOT)]
+    sc_keys += [(t, stamp_scale * 100 * k, e) for t, k, e in pop]
+    cx = lambda k: stamp_left + w_all * stamp_scale * k / 2
+    cy = lambda k: stamp_base - capB * stamp_scale * k / 2
+    A.append(pkeys(220, "scaleX", sc_keys))
+    A.append(pkeys(220, "scaleY", sc_keys))
+    A.append(pkeys(220, "positionX", [(m0, W / 2, "hold"), (m1, stamp_center[0], OVERSHOOT)] + [(t, cx(k), e) for t, k, e in pop]))
+    A.append(pkeys(220, "positionY", [(m0, H / 2 - 10, "hold"), (m1, stamp_center[1], OVERSHOOT)] + [(t, cy(k), e) for t, k, e in pop]))
     # slot roll 1 -> 6 (reel moves up five lines), with a turbulent jolt and a grunge displacement hit
     r0, r1 = td, td + 0.42
     A.append(pkeys(224, "positionY", [(r0, 0, "hold"), (r1, -5 * lead, (0.20, 0.0, 0.10, 1.06))]))
@@ -249,7 +270,7 @@ def build_overlay(fonts):
     A.append(param_keys(220, 2202, "displace", [(0, 0, "hold"), (r0 - 0.01, 0, "hold"), (r0 + 0.03, 120, "linear"),
                                                 (r0 + 0.17, 0, EASE_OUT)]))
     A.append(param_keys(220, 2202, "mapShift.x", [(0, 0, "hold"), (r0 + 0.04, 0.31, "hold"), (r0 + 0.08, 0.57, "hold"), (r0 + 0.12, 0.13, "hold")]))
-    A += grain_fx(220, 2203, amount=0.5, size=1.0)
+    A += grain_fx(220, 2203)
 
     # ---- the mint market-value counter: rises with the top box, $0B -> $280B, rolls down to $60B
     CS = 118
@@ -259,17 +280,20 @@ def build_overlay(fonts):
     for f in range(int(k0 * FPS), int(w1 * FPS) + 2):
         t = f / FPS
         n = sum(1 for x in L if x <= t)
-        if t < less + 0.02:
-            cam = street_cam(t)
-            u, v, _ = project([170, -122 * max(n, 1), -104], cam)
-            x = min(u + 64, 1500)
-            y = min(max(v + capC * 0.55, 210), 820)
+        cam = street_cam(t)
+        u, v, _ = project([170, -122 * max(n, 1), -104], cam)
+        x_rise, y_rise = min(u + 64, 1500), min(max(v + capC * 0.55, 210), 820)
+        if t < less:
+            x, y = x_rise, y_rise
         else:
-            u2 = smootherstep(less, 8.45, t)
-            x = x_last + (1300 - x_last) * u2
-            y = y_last + (452 - y_last) * u2
-        if t < less + 0.02:
+            us, vs, _ = project([169, -122 * 6, -104], cam)      # top of the six that stay standing
+            x_st, y_st = min(us + 80, 1480), min(max(vs + 30, 200), 960)
+            k = smootherstep(less, T["lock60"], t)
+            x, y = x_last + (x_st - x_last) * k, y_last + (y_st - y_last) * k
+        if t < less:
             x_last, y_last = x, y
+        else:
+            x_last, y_last = (x_last if t < T["lock60"] else x), (y_last if t < T["lock60"] else y)
         pos.append((t - k0, [x, y]))
     # smooth the follow (a camera operator's lag), then key it
     sm = []
@@ -282,8 +306,8 @@ def build_overlay(fonts):
     A.append(pkeys(230, "positionX", [(t + k0, p[0], "linear") for t, p in rdp(sm, 0.4)]))
     A.append(pkeys(230, "positionY", [(t + k0, p[1], "linear") for t, p in rdp(sm, 0.4)]))
     A.append(pkeys(230, "opacity", [(k0, 0, "linear"), (T["nike"] - 0.02, 100, EASE_OUT)]))
-    A.append(text_layer(231, "market value (label)", 230, k0, w1 + 0.05, "market value", SER_I[0], SER_I[1], 46, WHITE,
-                        (2, -capC - 26), opacity=88))
+    A.append(text_layer(231, "market value (label)", 230, k0, w1 + 0.05, "market value", SER_I[0], SER_I[1], 64, WHITE,
+                        (2, -capC - 30), opacity=92))
     lt = json.dumps([round(x, 4) for x in L])
     counter_js = (f"const L={lt};const t=input.time.seconds;let v;"
                   f"if(t<{less}){{let n=0;for(const x of L){{if(x<=t+1e-6)n++;}}v=n*10;}}"
@@ -293,32 +317,73 @@ def build_overlay(fonts):
     A.append({"type": "setFxAnimator", "compositionId": COMP,
               "target": {"type": "layerProperty", "property": {"layerId": 232, "propertyType": "textContent"}},
               "animator": {"type": "jsScript", "layerTimeJsCode": counter_js}, "dependencies": [], "layerRefBindings": []})
-    A.append(fx(232, 2321, turbulent("digitJitter", size=22, evolution=12, seed=7)))
+    A.append(fx(232, 2321, turbulent("digitJitter", size=60, evolution=12, seed=7)))
+    # a soft 3-4 frame wobble on each tick, a gentle constant wobble while it rolls down, none once it locks
     jitter_js = (f"const L={lt};const t=input.time.seconds;let tc=-9;"
                  f"for(const x of L){{if(x<=t)tc=x;}}let a=0.0;"
-                 f"if(t<{less}){{a=8*Math.exp(-(t-tc)/0.045);}}"
-                 f"else{{const u=Math.min(1,Math.max(0,(t-{less})/{T['lock60'] - less:.3f}));const roll=(u<1)?1:0;"
-                 f"a=roll*(16+10*Math.abs(Math.sin(t*61)))+22*Math.exp(-Math.max(0,t-{T['lock60']:.3f})/0.06)*(t>={T['lock60']:.3f}?1:0);}}"
+                 f"if(t<{less}){{a=3.5*Math.exp(-(t-tc)/0.05);}}"
+                 f"else if(t<{T['lock60']:.3f}){{a=3.0+1.0*Math.abs(Math.sin(t*61));}}"
                  "return a;")
     A.append(param_js(232, 2321, "amount", jitter_js))
-    A += grain_fx(232, 2322, amount=0.55, size=1.0)
-    A += grain_fx(231, 2311, amount=0.45, size=0.9)
+    A += grain_fx(232, 2322)
+    A += grain_fx(231, 2311)
+    # soft dark scrim behind the number while debris flies past it (contrast), from "Less" on
+    A.append({"type": "createFxRectLayer", "compositionId": COMP, "layerId": 233, "name": "Counter scrim (soft)", "parentLayerId": 230,
+              "activeRange": rng_(0, w1 + 0.05), "transform": tf((-80, -capC - 130), opacity=0),
+              "rect": {"size": [560, capC + 200], "fillColor": [0.0, 0.01, 0.01, 1.0]}})
+    A.append(fx(233, 2331, {"type": "gaussianBlur", "blurriness": 48}))
+    A.append(pkeys(233, "opacity", [(less, 0, "linear"), (less + 0.25, 58, EASE_OUT)]))
 
-    # ---- "-80%" slams in on "80 percent"
+    # ---- "-80%" slams in on "80 percent", labelling a mint bracket that spans the 22 missing boxes
+    #      (from the top of the ghost tower down to the top of the six left standing)
     m80 = T["minus80"]
-    S80 = 204
+    S80 = 190
     cap80 = cap_h(F_ARCHIVO, S80)
-    A.append(text_layer(240, "-80%", 205, m80 - 0.04, w1 + 0.05, "−80%", ARC[0], ARC[1], S80, MINT, (1336, 760),
-                        anchor=(text_w(F_ARCHIVO, S80, "−80%") / 2, -cap80 / 2), tracking=-12))
-    A.append(pkeys(240, "positionX", [(m80, 1336 + text_w(F_ARCHIVO, S80, "−80%") / 2, "hold")]))
-    A.append(pkeys(240, "positionY", [(m80, 760 - cap80 / 2, "hold")]))
+    w80 = text_w(F_ARCHIVO, S80, "−80%") - 3 * 12 * S80 / 1000
+    b0, b1 = m80 - 0.13, m80 - 0.01
+    brk = []
+    for f in range(int(b0 * FPS) - 1, int((w1 + 0.05) * FPS) + 2):
+        t = f / FPS
+        cam = street_cam(t)
+        xt, yt, _ = project([169, -28 * 122, -104], cam)
+        xb, yb, _ = project([169, -6 * 122, -104], cam)
+        brk.append((t, max(xt, xb) + 34, yt, yb))
+    bx_mid = sum(b[1] for b in brk) / len(brk)
+    left80 = bx_mid + 46
+    base80 = (brk[-1][2] + brk[-1][3]) / 2 + cap80 / 2 + 40
+    A.append(text_layer(240, "-80%", 205, m80 - 0.04, w1 + 0.05, "−80%", ARC[0], ARC[1], S80, MINT,
+                        (left80 + w80 / 2, base80 - cap80 / 2), anchor=(w80 / 2, -cap80 / 2), tracking=-12))
     A.append(pkeys(240, "opacity", [(m80 - 0.04, 0, "linear"), (m80 + 0.03, 100, "linear")]))
     A.append(pkeys(240, "scaleX", [(m80 - 0.04, 168, "linear"), (m80 + 0.20, 100, SNAP)]))
     A.append(pkeys(240, "scaleY", [(m80 - 0.04, 168, "linear"), (m80 + 0.20, 100, SNAP)]))
-    A.append(fx(240, 2401, turbulent("minus80Slam", size=30, evolution=11, seed=9)))
+    A.append(fx(240, 2401, turbulent("minus80Slam", size=40, evolution=11, seed=9)))
     A.append(param_keys(240, 2401, "amount", [(m80 - 0.05, 0, "hold"), (m80, 48, "linear"), (m80 + 0.10, 16, EASE_OUT),
                                               (m80 + 0.25, 0, EASE_OUT)]))
-    A += grain_fx(240, 2402, amount=0.55, size=1.1)
+    A += grain_fx(240, 2402)
+    # the bracket draws upward from the stack to the top of the ghost just before the number lands
+    A.append(group_layer(245, "Bracket: the 22 missing boxes", 205, b0, w1 + 0.05, transform=tf((brk[0][1], brk[0][3]))))
+    A.append({"type": "createFxRectLayer", "compositionId": COMP, "layerId": 246, "name": "Bracket line", "parentLayerId": 245,
+              "activeRange": rng_(0, w1 + 0.05), "transform": tf((-2, 0)), "rect": {"size": [4, 1], "fillColor": MINT}})
+    A.append({"type": "createFxRectLayer", "compositionId": COMP, "layerId": 247, "name": "Bracket tick (top)", "parentLayerId": 245,
+              "activeRange": rng_(0, w1 + 0.05), "transform": tf((-22, 0), opacity=0), "rect": {"size": [24, 4], "fillColor": MINT}})
+    A.append({"type": "createFxRectLayer", "compositionId": COMP, "layerId": 248, "name": "Bracket tick (bottom)", "parentLayerId": 245,
+              "activeRange": rng_(0, w1 + 0.05), "transform": tf((-22, -4)), "rect": {"size": [24, 4], "fillColor": MINT}})
+    gx, gy, ln_h, ln_y, tk_y = [], [], [], [], []
+    for t, bx, yt, yb in brk:
+        p = smootherstep(b0, b1, t)
+        h = max(1.0, (yb - yt) * p)
+        gx.append((t, [bx]))
+        gy.append((t, [yb]))
+        ln_h.append((t, [h]))
+        ln_y.append((t, [-h]))
+        tk_y.append((t, [-(yb - yt)]))
+    A.append(pkeys(245, "opacity", [(b0 - 0.01, 0, "linear"), (b0 + 0.02, 92, "linear")]))
+    A.append(pkeys(245, "positionX", [(t, v[0], "linear") for t, v in rdp(gx, 0.3)]))
+    A.append(pkeys(245, "positionY", [(t, v[0], "linear") for t, v in rdp(gy, 0.3)]))
+    A.append(pkeys(246, "positionY", [(t, v[0], "linear") for t, v in rdp(ln_y, 0.3)]))
+    A.append(pkeys(246, "rectSize", [(t, [4, v[0]], "linear") for t, v in rdp(ln_h, 0.3)], kind="vector2"))
+    A.append(pkeys(247, "positionY", [(t, v[0], "linear") for t, v in rdp(tk_y, 0.3)]))
+    A.append(pkeys(247, "opacity", [(b1 - 0.03, 0, "linear"), (b1, 100, "linear")]))
 
     # ---- "S&P 100" over the stockroom wall
     sp = T["sp_label"]
@@ -328,7 +393,7 @@ def build_overlay(fonts):
     A.append(pkeys(250, "positionY", [(sp - 0.05, 182, "linear"), (sp + 0.36, 166, EASE_OUT)]))
     A.append(fx(250, 2501, turbulent("spSettle", size=24, evolution=9, seed=11)))
     A.append(param_keys(250, 2501, "amount", jolt(sp, 12, 0.30)))
-    A += grain_fx(250, 2502, amount=0.5, size=1.0)
+    A += grain_fx(250, 2502)
 
     # ---------------- "Today?" glitch: displacement-map warp of the whole frame (3-4 frames)
     A.append({"type": "createFxAdjustmentLayer", "compositionId": COMP, "layerId": 100, "name": "Glitch warp (displacement map)",
@@ -337,8 +402,6 @@ def build_overlay(fonts):
     g = td
     A.append(param_keys(100, 1001, "displace", [(0, 0, "hold"), (g - 0.005, 0, "hold"), (g + 0.03, 34, "hold"), (g + 0.065, 18, "hold"),
                                                 (g + 0.10, 40, "hold"), (g + 0.135, 0, "hold")]))
-    A.append(param_keys(100, 1001, "rgbSplit", [(0, 0, "hold"), (g + 0.03, 4, "hold"), (g + 0.065, 2, "hold"),
-                                                (g + 0.10, 5, "hold"), (g + 0.135, 0, "hold")]))
     A.append(param_keys(100, 1001, "mapShift.y", [(0, 0, "hold"), (g + 0.03, 0.21, "hold"), (g + 0.065, -0.37, "hold"),
                                                   (g + 0.10, 0.52, "hold"), (g + 0.135, 0, "hold")]))
     return A

@@ -20,7 +20,7 @@ T_FIRST = 2.90          # first box lands on "Nike"
 rng = random.Random(20211)
 
 
-GAP_FRAMES = [10, 8, 6, 5, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+GAP_FRAMES = [9, 7, 5, 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]   # box 28 lands 5.40 s, start of "billion"
 
 
 def landing_times():

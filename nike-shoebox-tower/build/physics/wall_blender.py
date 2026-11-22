@@ -1,8 +1,8 @@
 """Stockroom wall: the orange box is shoved out of its slot and falls toward camera (Blender Bullet).
 
 Boxes are stacked end-out against a back wall: in Blender axes a box's long side runs along +Y
-(away from camera). The visible grid is 10 x 10; two extra columns either side continue into the
-darkness so the row can close its gap. Writes wall_layout.json and wall_track.json.
+(away from camera). The wall is exactly 10 x 10 = 100 boxes; when the row closes the gap its end slot stays
+empty (99 and a hole). Writes wall_layout.json and wall_track.json.
 """
 import json
 import math
@@ -16,7 +16,7 @@ D = sys.argv[-1] if len(sys.argv) > 1 else "."
 FPS = 30
 BW, BD, BH = 0.208, 0.338, 0.122          # end-out: width X = box depth, depth Y = box length
 PITCH_X = BW + 0.003                       # 3 mm seams between neighbouring boxes
-COLS, ROWS, EXTRA = 10, 10, 2
+COLS, ROWS, EXTRA = 10, 10, 0          # exactly 100 boxes, the whole wall in frame
 NCOL = COLS + 2 * EXTRA
 FRONT_Y = 0.0                             # front face of the wall of boxes
 ORANGE = (EXTRA + 5, 5)                   # (column, row): just right of centre, row 6 of 10
@@ -78,10 +78,10 @@ keys = [  # (frame offset from kick, dy, yaw deg). Anticipation: eased back 4 mm
     (-8, 0.000, 0.0),
     (-3, 0.004, 0.0),
     (0, 0.003, 0.0),
-    (3, -0.055, 0.0),
-    (6, -0.155, 0.0),
-    (9, -0.280, 0.0),
-    (10, -0.328, 0.0),
+    (3, -0.060, 0.0),
+    (6, -0.175, 0.0),
+    (8, -0.285, 0.0),
+    (9, -0.350, 0.0),     # leaves the slot at ~2 m/s: lands about a metre out, below the frame
 ]
 for off, dy, yaw in keys:
     f = F_KICK + off
@@ -101,9 +101,9 @@ for fc in fcs:            # linear keys so the shove keeps its speed through the
     if fc.data_path in ("location", "rotation_quaternion"):
         for kp in fc.keyframe_points:
             kp.interpolation = "LINEAR"
-sc.frame_set(F_KICK + 11)
+sc.frame_set(F_KICK + 10)
 target.rigid_body.kinematic = False
-target.rigid_body.keyframe_insert("kinematic", frame=F_KICK + 11)
+target.rigid_body.keyframe_insert("kinematic", frame=F_KICK + 10)
 
 track = {"fps": FPS, "kick_frame": F_KICK, "frames": {}}
 for f in range(F_KICK - 10, F_END + 1):
