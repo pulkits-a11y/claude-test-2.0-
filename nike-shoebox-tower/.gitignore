@@ -1,0 +1,10 @@
+# Licensed textures (Texture Labs), the client's reference stills, video and
+# narration stay local: they are not published to the repository.
+assets/textures/
+assets/reference/
+
+# Large or regenerable working files
+.tesseract-work/checks/
+.tesseract-work/*.schema.json
+.tesseract-work/project.json
+.tesseract-work/editable.json
