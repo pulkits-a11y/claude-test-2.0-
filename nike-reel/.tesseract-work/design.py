@@ -138,3 +138,58 @@ class Doc:
         ks = [(a + k * STEP, round(100 + (to - 100) * k / n, 3), "hold") for k in range(n + 1)]
         self.keys(lid, "scaleX", ks)
         self.keys(lid, "scaleY", ks)
+
+
+# ---------------- caption animation (client spec, Nov 2026) ----------------
+POP_EASE = {"type": "cubicBezier", "x1": 0.2, "y1": 0.8, "x2": 0.2, "y2": 1.0}
+OUT_EASE = {"type": "cubicBezier", "x1": 0.4, "y1": 0.0, "x2": 0.8, "y2": 0.6}
+GLOW_PATTERN = [(0, 55), (1, 0), (2, 75), (3, 15), (4, 90), (5, 0), (6, 70), (7, 35), (8, 100), (9, 25), (10, 80)]
+
+
+def _kk(D, lid, prop, keys):
+    D.add({"type": "setFxPropertyKeyframes", "compositionId": D.C, "property": {"layerId": lid, "propertyType": prop},
+           "keyframes": [{"id": f"{prop}-{lid}-{i}", "layerTime": ms(fr), "value": {"type": "float", "value": v},
+                          "easing": (e if isinstance(e, dict) else {"type": e})} for i, (fr, v, e) in enumerate(keys)]})
+
+
+def _ekk(D, lid, eid, param, keys):
+    D.add({"type": "setFxLayerEffectParamAnimator", "compositionId": D.C, "layerId": lid, "effectId": eid, "paramName": param,
+           "dependencies": [], "animator": {"type": "keyframes", "enabled": True, "keyframes": [
+               {"id": f"{param}-{eid}-{i}", "layerTime": ms(fr), "value": {"type": "float", "value": v},
+                "easing": (e if isinstance(e, dict) else {"type": e})} for i, (fr, v, e) in enumerate(keys)]}})
+
+
+def caption_word(D, name, s, x, y, font, size, color, f0, f1, parent, kind="plain", exit_blur=False, wght=None, wdth=100, width=None):
+    """One caption word, built to the client's caption spec.
+    kind: 'plain' = appears on its frame (no animation); 'pop' = opacity 0->100 over 0-2 f, scale 112->100 and blur 9->0 over 0-4 f,
+    cubic-bezier(0.2, 0.8, 0.2, 1); 'glow' = appears, then a soft white neon glow flickers for ~10 frames and holds.
+    exit_blur: leaves with a 3-frame blur-out (0->12 px) + opacity to 0, eased; otherwise it hard-cuts at f1.
+    (x, y) is the word's left baseline; width is its advance (for centring pop scale)."""
+    n = f1 - f0
+    anchor = (0, 0)
+    if kind == "pop" and width:
+        anchor = (width / 2, -0.35 * size)          # scale about the word's optical centre
+    lid = D.text(name, s, x, y, font, size, color, f0, f1, parent, wght=wght, wdth=wdth, anchor=anchor)
+    blur = None
+    if kind == "pop":
+        _kk(D, lid, "opacity", [(0, 0, "linear"), (2, 100, POP_EASE)])
+        _kk(D, lid, "scaleX", [(0, 112, "linear"), (4, 100, POP_EASE)])
+        _kk(D, lid, "scaleY", [(0, 112, "linear"), (4, 100, POP_EASE)])
+        blur = D.effect(lid, {"type": "gaussianBlur", "blurriness": 0})
+    if exit_blur and n > 6:
+        if blur is None:
+            blur = D.effect(lid, {"type": "gaussianBlur", "blurriness": 0})
+        _kk(D, lid, "opacity", ([(0, 0, "linear"), (2, 100, POP_EASE)] if kind == "pop" else [(0, 100, "linear")]) +
+            [(n - 3, 100, "linear"), (n, 0, OUT_EASE)])
+    bk = []
+    if kind == "pop":
+        bk += [(0, 9, "linear"), (4, 0, POP_EASE)]
+    if exit_blur and n > 6:
+        bk += ([] if bk else [(0, 0, "linear")]) + [(n - 3, 0, "linear"), (n, 12, OUT_EASE)]
+    if blur is not None and bk:
+        _ekk(D, lid, blur, "blurriness", bk)
+    if kind == "glow":
+        gl = D.text(name + " (neon glow)", s, x, y, font, size, [1, 1, 1, 1], f0, f1, parent, wght=wght, wdth=wdth)
+        D.effect(gl, {"type": "gaussianBlur", "blurriness": max(8, size * 0.28)})
+        _kk(D, gl, "opacity", [(t, v, "hold") for t, v in GLOW_PATTERN if t < n])
+    return lid
