@@ -358,15 +358,8 @@ def build(a, tl):
             b.anim(iid, prop, keys)
 
     # --- Lights --------------------------------------------------------------------------------------------
-    hero = cells["0,0"]
-    hid = b.id()
-    b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
-           "item": {"type": "Light3D", "id": hid, "parentId": None, "name": "Hero spotlight",
-                    "transform": {"position": [0, LAMP_Y, 0], "rotation": rot(-90)},
-                    "emitter": {"type": "spot", "power": a.hero_power, "coneAngle": 34, "coneFeather": 0.5, "sourceRadius": 25},
-                    "useTemperature": True, "temperature": a.kelvin, "castsShadows": True}})
-    b.anim(hid, "power", level_keys(hero['level'], lambda lv: {"type": "float", "value": round(lv * a.hero_power, 3)}))
-
+    # (No separate hero spotlight: the projector lights the hero at 1.2x via its mask disc. A real spot here
+    #  triggered an engine "invalid radiance" fault at f50-52 and only added shadows.)
     if a.gobo_layer is not None:
         b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
                "item": {"type": "Light3D", "id": b.id(), "parentId": None, "name": "Hall projector (every other lamp)",
@@ -433,6 +426,7 @@ if __name__ == '__main__':
     ap.add_argument('--ambient', type=float, default=0.004)
     ap.add_argument('--exposure', type=float, default=0.0)
     ap.add_argument('--motes', type=int, default=260)
+    ap.add_argument('--hero-shadows', action='store_true')
     a = ap.parse_args()
     tl = json.load(open(a.timeline))
     actions, info = build(a, tl)
