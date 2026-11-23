@@ -311,6 +311,28 @@ def build(a, tl):
                           "materialSlots": [smat[2]], "regionSlots": [{"region": "primary", "slotId": smat[0]}, {"region": "side", "slotId": smat[0]}],
                           "castsShadows": False, "receivesShadows": False}]})
 
+    # --- Contact shadows: a soft dark footprint under every shoe on its plinth top (grounds the shoes; the
+    # overhead light's shadow map is too coarse to do it alone at close range).
+    if not a.mirror:
+        g = b.grid("Contact shadows", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
+        yaw_g = b.id()
+        b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
+               "item": {"type": "Group3D", "id": yaw_g, "parentId": g, "name": "Contact shadow (shoe yaw)",
+                        "transform": {"position": [0, TOP_Y - 1.5, 0], "rotation": rot(0, THREE_QUARTER, 0)}}})
+        ctex = {"type": "texture", "factor": a.contact, "sample": {
+            "texture": {"source": {"type": "image", "assetId": "contactfall"}, "scale": [1, 1], "wrapU": "clampToEdge",
+                        "wrapV": "clampToEdge", "minFilter": "linear", "magFilter": "linear", "mipmaps": False},
+            "interpretation": {"type": "data"}, "selection": {"type": "alpha"}}}
+        cmat = b.material({"baseColor": const([0.0, 0.0, 0.0]), "roughness": const(1.0), "coverage": ctex}, alpha="blend", double=True)
+        cdid = b.id()
+        b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
+               "data": [{"type": "mesh", "id": cdid, "name": "Contact shadow plane", "geometry": {"type": "plane", "size": [600, 360]},
+                         "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}],
+               "items": [{"type": "Mesh3D", "id": b.id(), "parentId": yaw_g, "name": "Contact shadow", "dataId": cdid, "packing": "whole",
+                          "transform": {"position": [-20, 0, 90], "rotation": rot(90, 0, 0)},
+                          "materialSlots": [cmat[2]], "regionSlots": [{"region": "primary", "slotId": cmat[0]}, {"region": "side", "slotId": cmat[0]}],
+                          "castsShadows": False, "receivesShadows": False}]})
+
     # --- Shoes: every pedestal its own item (per-cell control), fixed detail tier per row -------------
     data = {}
     for k, (asset, _) in SHOES.items():
@@ -337,7 +359,7 @@ def build(a, tl):
                           "transform": {"position": [c * COL, TOP_Y + yoff, r * ROW],
                                         "rotation": rot(0, SHOE_YAW + THREE_QUARTER, 0), "scale": [100, 100, 100]},
                           "materialSlots": [], "modelRegionSlots": [],
-                          "castsShadows": r == 0 and abs(c) <= 1, "receivesShadows": True})
+                          "castsShadows": True, "receivesShadows": True})
             if (c, r) == (0, 0):
                 hero_shoe = iid
         b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER, "data": [], "items": items})
@@ -395,7 +417,7 @@ def build(a, tl):
                         "emitter": {"type": "spot", "power": a.proj_power, "coneAngle": PROJ_CONE, "coneFeather": 0.0,
                                     "sourceRadius": 0, "projectorSource": {"type": "layer", "layerId": a.gobo_layer},
                                     "goboDensity": 1.0, "goboWrap": "black"},
-                        "useTemperature": True, "temperature": a.kelvin, "castsShadows": False}})
+                        "useTemperature": True, "temperature": a.kelvin, "castsShadows": True}})
 
     # Cool teal-green rim from behind (separates shoes from the void) and a soft warm front fill (bounce).
     # "A" lights touch only the hero shoe from f0; "B" lights touch every other shoe and stay at zero until
@@ -463,6 +485,7 @@ if __name__ == '__main__':
     ap.add_argument('--proj-z', type=float, default=None)
     ap.add_argument('--canvas', type=int, nargs=2, default=[1920, 1080])
     ap.add_argument('--streaks', type=int, default=1)
+    ap.add_argument('--contact', type=float, default=0.95)
     ap.add_argument('--streak-alpha', type=float, default=0.95)
     a = ap.parse_args()
     tl = json.load(open(a.timeline))

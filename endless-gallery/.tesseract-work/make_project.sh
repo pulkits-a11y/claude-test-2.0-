@@ -17,6 +17,7 @@ for a in dunk=standin/dunk_scan_lit.glb af1=cleaned/nike_air_force_1_uvfix.glb a
 done
 "$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/beam_falloff.png" --asset-id beamfall --kind image >/dev/null
 "$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/streak_falloff.png" --asset-id streakfall --kind image >/dev/null
+"$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/contact_shadow.png" --asset-id contactfall --kind image >/dev/null
 "$TS" project import-asset --project "$OUT" --file "$ROOT/assets/generated/grunge.png" --asset-id grunge --kind image >/dev/null
 "$TS" project import-video --project "$OUT" --file "$ROOT/assets/generated/gobo.mp4" --asset-id gobo > "$WORK/gobo-import.json"
 python3 - "$W" "$H" "$WORK/pre.json" <<'PY'
