@@ -95,7 +95,10 @@ BUG = {"WN": "tr", "B04": "tr", "B19": "tr", "B21": "tr", "B31": "tr", "B35": "t
 # B-roll shots per segment: (cut line, cut time in VO seconds or None = segment start, clip, clip source second, note)
 SHOTS = {
     "B_L8": [(8, None, "B19", 13.4, "Donahoe on CNBC set, 2020"),
-             (8, 19.53, "B21", 10.3, "Donahoe portrait (Nike hired)"),
+             (8, 19.53, "WN", 156.2, "Donahoe montage 1 (CNBC evening interview)"),
+             (8, 19.53 + 4 / 30, "B18", 7.3, "Donahoe montage 2 (WSJ, eBay era)"),
+             (8, 19.53 + 8 / 30, "B18", 28.4, "Donahoe montage 3 (WSJ)"),
+             (8, 19.53 + 12 / 30, "B21", 10.3, "Donahoe portrait (Nike hired)"),
              (8, 20.16, "B21", 13.7, "eBay sign"),
              (8, 20.70, "B18", 34.2, "Donahoe as eBay CEO, WSJ 2014"),
              (8, 21.564, "B21", 17.0, "Donahoe at FN Achievement Awards")],
@@ -112,14 +115,16 @@ SHOTS = {
               (13, 36.537, "B80", 13.4, "Alo storefront logo"),
               (13, 37.04, "B82", 27.8, "inside the new Vuori store"),
               (13, 37.68, "B80", 23.7, "Alo storefront mannequins")],
-    "B_L15": [(15, None, "B43", 11.3, "SB Dunk on the floor"),
+    "B_L15": [(15, None, "WN", 446.3, "Nike store exterior: swoosh + shoppers"),
               (15, 41.507, "B41", 3.40, "stacked orange Nike boxes"),
               (15, 41.96, "B42", 1.6, "Panda Dunk on a Nike box (restocked 15 times)"),
               (15, 43.02, "B54", 1.0, "worker beside walls of stacked Nike boxes (same shoes)")],
     "S_L19": [(19, None, "B52", 21.3, "huge release-day line (Concord 11)"),
               (19, 47.68, "B52", 60.0, "release-day line along the wall, freezes on 'no' (hype) and drains to B&W")],
     "B_L20": [(20, None, "B58", 4.55, "BREAKING NEWS slam"),
-              (20, 50.847, "B19", 4.80, "Donahoe portrait"),
+              (20, 50.847, "B18", 17.8, "Donahoe montage A (WSJ)"),
+              (20, 50.847 + 4 / 30, "B18", 44.2, "Donahoe montage B (WSJ)"),
+              (20, 50.847 + 8 / 30, "B19", 4.80, "Donahoe portrait"),
               (20, 51.48, "B57", 11.0, "Nike store exterior"),
               (21, None, "B59", 20.7, "Hill intern-to-CEO photo collage"),
               (21, 53.047, "B60", 10.5, "Hill walking"),
@@ -132,7 +137,7 @@ SHOTS = {
     "H_L27": [(27, None, "B76", 286.9, "SHELF: near-empty wall, Nike store NYC"),
               (27, 67.02, "B51", 28.0, "HYPE: release line on the street (B77 = other moment of B51)"),
               (27, 67.94, "B78", 3.1, "ATHLETE: WNBA All-Star game action"),
-              (28, None, "B79", 13.6, "ALL AT ONCE: Swoosh shattering (B79 reversed 13.6s -> 11.4s)")],
+              (28, None, "WN", 36.4, "ALL AT ONCE: Nike value chart falling (-$28 billion)")],
 }
 # 2-3 frame burst inside "in the same" (Act 3's one burst): clip, source second, frames
 BURST = [("B42", 2.0, 3), ("B41", 9.25, 2), ("B42", 6.9, 3), ("B57", 24.0, 2)]
@@ -140,6 +145,6 @@ FREEZE = {"S_L19": {"freeze_vo": 48.66, "drain_end_vo": 48.94, "clip": "B52", "s
 REVERSE = {"B79": (13.6, 11.4)}
 
 # Live clips: (file, source in s, source out s, linear gain to match the VO)
-CLIPS = {"CLIP_OLEARY": ("oleary_fast.mov", 253.90, 254.40, 261.60, 0.944, 1.15),
+CLIPS = {"CLIP_OLEARY": ("oleary_fast.mov", 253.90, 253.90 + 1.15 * 5 / 30, 253.90 + 1.15 * 212 / 30, 0.944, 1.15),
          "CLIP_DONAHOE": ("donahoe_fast.mov", 472.12, 472.62, 476.38, 0.457, 1.15),
          "CLIP_HILL": ("hill.wav", 527.83, 528.33, 530.12, 0.55, 1.0)}   # (file, file start in source s, in, out, gain, speed)

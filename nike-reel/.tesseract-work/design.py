@@ -17,7 +17,10 @@ ARCHIVO_STYLE = {500: "Medium", 520: "Medium", 600: "SemiBold", 640: "SemiBold",
 
 
 def ms(f):
-    return round(f * 1000 / FPS)
+    """Frame -> ms, rounded DOWN so a layer starting on frame f is already active at that frame's exact time
+    (rounding up left a 1-frame gap at cuts whose frame time ends in .667 ms)."""
+    import math as _m
+    return _m.floor(f * 1000 / FPS + 1e-6)
 
 
 def grid(f):
