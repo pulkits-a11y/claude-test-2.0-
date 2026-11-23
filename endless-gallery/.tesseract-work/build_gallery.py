@@ -19,7 +19,7 @@ COL = 1500
 ROW = 2200
 PED_W, PED_H = 450, 1000
 TOP_Y = -PED_H
-LAMP_GAP = 1600
+LAMP_GAP = 2400
 LAMP_Y = TOP_Y - LAMP_GAP          # lens plane, -2600
 PROJ_H = 300_000
 PROJ_CONE = 12.0
@@ -32,7 +32,8 @@ THREE_QUARTER = -22     # extra yaw so every toe turns toward the camera (three-
 TIERS = [(0, ''), (1, '_mid'), (6, '_far')]
 
 WARM = (1.0, 0.70, 0.42)          # tungsten-ish glow, sRGB
-VOID = (0.006, 0.008, 0.010)
+VOID = (0.030, 0.026, 0.023)          # warm charcoal, never pure black
+HAZE = (0.115, 0.080, 0.050)          # what the far hall dissolves into
 
 
 def lin(v):
@@ -168,7 +169,7 @@ def build(a, tl):
     b.add({"type": "setFxScene3DWorld", "compositionId": "main", "layerId": SCENE_LAYER,
            "world": {"id": 9002, "background": {"type": "color", "color": [*VOID, 1]},
                      "light": {"source": {"type": "color", "color": [0.45, 0.70, 0.66, 1]}, "intensity": a.ambient},
-                     "fog": {"color": [*VOID, 1], "startDistance": 22, "endDistance": 78}}})
+                     "fog": {"color": [*HAZE, 1], "startDistance": 6, "endDistance": 62}}})
 
     # --- Camera rig: drift group -> camera + look target ----------------------------------------
     rig = b.id()
@@ -193,10 +194,10 @@ def build(a, tl):
 
     p0 = polar(750, -1.25, 1062)       # f0: Dunk ~40% of frame, low three-quarter
     p18 = polar(690, 1.25, 1058)       # f18: slow reverent push-in + 2.5 deg orbit
-    p48 = [0, -1850, -8400]            # f48: the row (after snap 1 + drift)
-    p83 = [0, -5300, -13600]           # f83: high wide hall (after snap 2 + drift)
-    t48 = [0, -1150, 0]
-    t83 = [0, -2710, 16290]            # pitch ~5 deg down: vanishing point just above centre
+    p48 = [0, -1450, -8400]            # f48: the row (after snap 1 + drift)
+    p83 = [0, -3000, -15500]           # f83: high wide hall (after snap 2 + drift)
+    t48 = [0, -1250, 0]
+    t83 = [0, -1150, 20000]            # pitch ~5 deg down: vanishing point just above centre
     v3 = lambda p: {"type": "vector3", "value": [round(x, 2) for x in p]}
     # Each snap segment starts one frame before its word so movement is visible ON f19 / f49.
     b.anim(cam, "position", [(0, v3(p0), HOLD), (18, v3(p18), PUSH_IN),
@@ -220,31 +221,38 @@ def build(a, tl):
     g = b.grid("Lamp hardware", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
     blk = b.material({"baseColor": const([0.008, 0.008, 0.008]), "roughness": const(0.38), "metallic": const(0.7)})
     b.mesh("Lamp housing", {"type": "cylinder", "radius": 60, "height": 200}, [0, LAMP_Y - 103, 0], blk, parent=g, cast=False)
-    b.mesh("Lamp cable", {"type": "cylinder", "radius": 4, "height": 7000}, [0, LAMP_Y - 3700, 0],
-           b.material({"baseColor": const([0.01, 0.01, 0.01]), "roughness": const(0.5)}), parent=g, cast=False)
+    # (No cables: at distance they alias into streaks; the lamps hang from darkness.)
 
     warm_lin = [lin(x) for x in WARM]
 
-    # --- Per-lamp lens (row 0 only: rows behind are only ever seen from above) and beam ----------------
-    dark_lens = b.material({"baseColor": const([0.02, 0.016, 0.012]), "roughness": const(0.2)})
-    g = b.grid("Lamp lenses (unlit rows)", [-C * COL, 0, ROW], [2 * C + 1, 1, R - 1], [COL, 0, ROW])
-    b.mesh("Lens", {"type": "cylinder", "radius": 52, "height": 6}, [0, LAMP_Y + 2, 0], dark_lens, parent=g, cast=False)
-    for c in range(-C, C + 1):
-        cell = cells[f"{c},0"]
-        sid, bid, slot = b.material({"baseColor": const([0.0, 0.0, 0.0]), "roughness": const(0.5),
-                                     "emissiveColor": const(warm_lin), "emissiveStrength": const(0.0)})
-        b.mesh(f"Lens c{c} r0", {"type": "cylinder", "radius": 52, "height": 6}, [c * COL, LAMP_Y + 2, 0],
-               (sid, bid, slot), cast=False, receive=False)
-        b.anim(bid, "emissiveStrength", level_keys(cell['level'],
-               lambda lv: {"type": "float", "value": round(min(lv, 1.2) * a.lens_gain, 4)}))
+    # --- Per-lamp glowing lens: every lamp in the hall, keyed to its own timeline ------------------------------
+    # (The final camera sits below the lamps, so the rows of glowing lenses converge on the vanishing point.)
+    lens_did = b.id()
+    b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
+           "data": [{"type": "mesh", "id": lens_did, "name": "Lens disc", "geometry": {"type": "sphere", "radius": 42},
+                     "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}], "items": []})
+    for r in range(R):
+        items, anims = [], []
+        for c in range(-C, C + 1):
+            cell = cells[f"{c},{r}"]
+            sid, bid, slot = b.material({"baseColor": const([0.0, 0.0, 0.0]), "roughness": const(0.5),
+                                         "emissiveColor": const(warm_lin), "emissiveStrength": const(0.0)})
+            iid = b.id()
+            items.append({"type": "Mesh3D", "id": iid, "parentId": None, "name": f"Lens c{c} r{r}", "dataId": lens_did,
+                          "packing": "whole", "transform": {"position": [c * COL, LAMP_Y - 10, r * ROW]},
+                          "materialSlots": [slot], "regionSlots": [{"region": "primary", "slotId": sid}, {"region": "side", "slotId": sid}],
+                          "castsShadows": False, "receivesShadows": False})
+            anims.append((bid, level_keys(cell['level'], lambda lv: {"type": "float", "value": round(min(lv, 1.2) * a.lens_gain, 4)})))
+        b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER, "data": [], "items": items})
+        for bid, keys in anims:
+            b.anim(bid, "emissiveStrength", keys)
 
     if not a.no_beams:
         # Beams are faint translucent cones LIT by the projector, so each one follows its lamp's
         # mask disc (on / flicker / off) and carries the mask's grain. One array, one material.
         # Row 0 without the hero column (two arrays), rows 1+ in one array
         beam_groups = [b.grid("Beams row 0 left", [-C * COL, 0, 0], [C, 1, 1], [COL, 0, ROW]),
-                       b.grid("Beams row 0 right", [COL, 0, 0], [C, 1, 1], [COL, 0, ROW]),
-                       b.grid("Beams rows 1+", [-C * COL, 0, ROW], [2 * C + 1, 1, R - 1], [COL, 0, ROW])]
+                       b.grid("Beams row 0 right", [COL, 0, 0], [C, 1, 1], [COL, 0, ROW])]  # no cones in the hall
         clear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
         fall = {"type": "texture", "factor": a.beam_alpha, "sample": {
             "texture": {"source": {"type": "image", "assetId": "beamfall"}, "scale": [1, 1], "wrapU": "repeat",
@@ -325,16 +333,17 @@ def build(a, tl):
         did = b.id()
         items, anims = [], []
         for i in range(a.motes):
-            if i < a.motes * 0.6:      # inside the hero beam
-                x, z = mr.gauss(0, 230), mr.gauss(0, 230)
-                y = -mr.uniform(1080, 2450)
-            else:                      # loosely around the hero row
-                x, z = mr.uniform(-5200, 5200), mr.uniform(-1800, 1800)
-                y = -mr.uniform(1050, 2550)
-            size = mr.uniform(3.5, 7.5)
+            if i < a.motes * 0.35:     # around the hero (Phase 1)
+                x, z = mr.gauss(0, 380), mr.gauss(-250, 300)
+                y = -mr.uniform(1000, 1900)
+                size = mr.uniform(9, 18)
+            else:                      # along the pull-back path (Phases 2-4)
+                x, z = mr.uniform(-9000, 9000), mr.uniform(-12000, 3000)
+                y = -mr.uniform(600, 5200)
+                size = mr.uniform(35, 90)
             iid = b.id()
             items.append({"type": "Mesh3D", "id": iid, "parentId": None, "name": f"Mote {i}", "dataId": did, "packing": "whole",
-                          "transform": {"position": [x, y, z], "rotation": rot(mr.uniform(0, 360), mr.uniform(0, 360), 0),
+                          "transform": {"position": [x, y, z], "rotation": rot(mr.uniform(-25, 25), mr.uniform(-40, 40), mr.uniform(0, 90)),
                                         "scale": [size / 6 * 100] * 3},
                           "materialSlots": [], "regionSlots": [], "castsShadows": False, "receivesShadows": False})
             dx, dy, dz = mr.uniform(-45, 45), mr.uniform(-10, 55), mr.uniform(-45, 45)
@@ -347,7 +356,8 @@ def build(a, tl):
                                               bezier(0.25, 0.1, 0.75, 0.9))]))
         # each mote gets its own (identical) material slot: slot ids must be unique per item
         for it in items:
-            sid, bid, slot = b.material({"baseColor": const([0.85, 0.80, 0.72]), "roughness": const(0.55)}, double=True)
+            sid, bid, slot = b.material({"baseColor": const([0.0, 0.0, 0.0]), "roughness": const(1.0),
+                                         "emissiveColor": const([1.0, 0.62, 0.30]), "emissiveStrength": const(1.6)}, double=True)
             it["materialSlots"] = [slot]
             it["regionSlots"] = [{"region": "primary", "slotId": sid}, {"region": "side", "slotId": sid}]
         b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
@@ -384,11 +394,11 @@ def build(a, tl):
         b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER, "item": item})
         return lid
     teal = {"color": [0.55, 0.95, 0.85, 1]}
-    warm = {"useTemperature": True, "temperature": 4200}
+    warm = {"useTemperature": True, "temperature": 3400}
     rim_a = aimed_parallel("Rim A (hero)", [0, -5000, a.rim_z], [0, -800, 0], a.rim, teal)
     rim_b = aimed_parallel("Rim B (hall)", [0, -5000, a.rim_z], [0, -800, 0], 0.0, teal)
-    fill_a = aimed_parallel("Fill A (hero)", [-3000, -4000, -9000], [0, -1050, 0], a.fill, warm)
-    fill_b = aimed_parallel("Fill B (front rows)", [-3000, -4000, -9000], [0, -1050, 0], 0.0, warm)
+    fill_a = aimed_parallel("Key A (hero)", [-4500, -5500, -7000], [0, -1050, 0], a.fill, warm)
+    fill_b = aimed_parallel("Key B (hall)", [-4500, -5500, -7000], [0, -1050, 0], 0.0, warm)
     ramp = bezier(0.4, 0.0, 0.3, 1.0)
     b.anim(rim_b, "irradiance", [(0, {"type": "float", "value": 0.0}, HOLD), (50, {"type": "float", "value": 0.0}, HOLD),
                                  (60, {"type": "float", "value": a.rim}, ramp)])
@@ -401,7 +411,7 @@ def build(a, tl):
     b.add({"type": "setFxScene3DRenderSettings", "compositionId": "main", "layerId": SCENE_LAYER,
            "settings": {"id": 9003, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
                         "lightLinks": [link(rim_a, [hero_shoe]), link(fill_a, [hero_shoe]),
-                                       link(rim_b, others), link(fill_b, near_others)],
+                                       link(rim_b, others), link(fill_b, others)],
                         "outputs": [], "previewOutput": None}})
     return b.A, {"hero_shoe": hero_shoe, "camera": cam}
 
@@ -414,18 +424,18 @@ if __name__ == '__main__':
     ap.add_argument('--cols', type=int, default=20)
     ap.add_argument('--gobo-layer', type=int, default=2)
     ap.add_argument('--no-beams', action='store_true')
-    ap.add_argument('--beam-alpha', type=float, default=0.06)
-    ap.add_argument('--fill', type=float, default=0.08)
+    ap.add_argument('--beam-alpha', type=float, default=0.022)
+    ap.add_argument('--fill', type=float, default=2.0)
     ap.add_argument('--beam-flip', type=float, default=0.0)
-    ap.add_argument('--lens-gain', type=float, default=6.0)
+    ap.add_argument('--lens-gain', type=float, default=30.0)
     ap.add_argument('--hero-power', type=float, default=1.2)
-    ap.add_argument('--proj-power', type=float, default=15000.0)
+    ap.add_argument('--proj-power', type=float, default=42000.0)
     ap.add_argument('--kelvin', type=float, default=3600.0)
     ap.add_argument('--rim', type=float, default=0.12)
     ap.add_argument('--rim-z', type=float, default=60000)
-    ap.add_argument('--ambient', type=float, default=0.004)
-    ap.add_argument('--exposure', type=float, default=0.0)
-    ap.add_argument('--motes', type=int, default=260)
+    ap.add_argument('--ambient', type=float, default=0.03)
+    ap.add_argument('--exposure', type=float, default=0.35)
+    ap.add_argument('--motes', type=int, default=140)
     ap.add_argument('--hero-shadows', action='store_true')
     a = ap.parse_args()
     tl = json.load(open(a.timeline))

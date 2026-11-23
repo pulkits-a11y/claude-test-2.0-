@@ -45,8 +45,10 @@ p = sys.argv[1]; d = json.load(open(p)); n = 0
 def walk(o):
     global n
     if isinstance(o, dict):
-        if o.get('id') == 22 and 'blendMode' in o or (o.get('id') == 22 and o.get('name', '').startswith('Haze')):
+        if o.get('id') == 22 and str(o.get('name', '')).startswith('Haze'):
             o['blendMode'] = 'softLight'; n += 1
+        if o.get('id') == 23 and str(o.get('name', '')).startswith('Atmosphere'):
+            o['blendMode'] = 'screen'; n += 1
         for v in o.values(): walk(v)
     elif isinstance(o, list):
         for v in o: walk(v)

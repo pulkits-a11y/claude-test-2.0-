@@ -149,6 +149,25 @@ fn author_frag(uv: vec2<f32>) -> vec4<f32> {
 """ + FS_TAIL
 
 
+GLOW_WGSL = VS + """
+struct Params {
+  strength: f32,
+  cx: f32,
+  cy: f32,
+  radius: f32,
+};
+@group(0) @binding(0) var t_content: texture_2d<f32>;
+@group(0) @binding(1) var s_sampler: sampler;
+@group(0) @binding(2) var<uniform> params: Params;
+fn author_frag(uv: vec2<f32>) -> vec4<f32> {
+  let d = length((uv - vec2<f32>(params.cx, params.cy)) * vec2<f32>(1.7778, 1.0)) / params.radius;
+  let g = params.strength * exp(-d * d * 1.6);
+  let c = vec3<f32>(1.0, 0.66, 0.38) * g;
+  return vec4<f32>(c, 1.0);
+}
+""" + FS_TAIL
+
+
 def anim(target, keys):
     return {"type": "setFxAnimator", "compositionId": "main", "target": target,
             "animator": {"type": "keyframes", "enabled": True,
@@ -187,6 +206,18 @@ def build(w, h):
                         {"name": "_pad0", "description": "Uniform padding.", "min": 0, "max": 1, "default": 0},
                         {"name": "_pad1", "description": "Uniform padding.", "min": 0, "max": 1, "default": 0}],
                     "textureInputs": [{"name": "map", "description": "Grunge 353: grayscale crawl map for the haze.", "sourceLayerId": 3}]}},
+        {"type": "createFxRectLayer", "compositionId": "main", "layerId": 23, "name": "Atmosphere glow (screen)",
+         "activeRange": rng, "transform": full, "insertIndex": {"type": "prepend"},
+         "rect": {"size": [w, h], "fillColor": [0, 0, 0, 1]}},
+        {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 23, "effectId": 2301,
+         "effect": {"type": "customShader", "name": "atmosphereGlow",
+                    "description": "Soft warm radial glow (screen blend): the warm haze the hall dissolves into.",
+                    "wgsl": GLOW_WGSL,
+                    "params": [
+                        {"name": "strength", "description": "Glow brightness.", "min": 0, "max": 1, "default": 0.16},
+                        {"name": "cx", "description": "Centre X (0-1).", "min": 0, "max": 1, "default": 0.5},
+                        {"name": "cy", "description": "Centre Y (0-1).", "min": 0, "max": 1, "default": 0.42},
+                        {"name": "radius", "description": "Glow size relative to frame height.", "min": 0.05, "max": 2, "default": 0.75}]}},
         {"type": "createFxAdjustmentLayer", "compositionId": "main", "layerId": 21, "name": "Displacement jolts (Grunge 353)",
          "activeRange": rng, "transform": full, "insertIndex": {"type": "prepend"}},
         {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 21, "effectId": 2101,
@@ -205,6 +236,8 @@ def build(w, h):
         {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 20, "effectId": 2001,
          "effect": {"type": "primaryGrade", "semanticVersion": 1, "exposure": 0.0, "contrast": 0.0, "saturation": 0.0, "temperature": 0.0,
                     "tint": 0.0, "vibrance": 0.0, "highlights": 0.0, "shadows": 0.0, "whites": 0.0, "blacks": 0.0}},
+        {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 20, "effectId": 2002, "index": 0,
+         "effect": {"type": "glow", "glowThreshold": 30, "glowRadius": 60, "glowIntensity": 1.1}},
     ]
     # Jolts: 3 frames each at the fastest point of each snap; each frame a different map patch
     jolt = [(0, 0.0, HOLD), (20, 9.0, HOLD), (21, 15.0, HOLD), (22, 6.0, HOLD), (23, 0.0, HOLD),
