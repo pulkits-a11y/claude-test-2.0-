@@ -24,8 +24,12 @@ from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gobo as G  # noqa: E402
 
-POOL_R = 0.62     # m, radius of each pool
-POOL_SOFT = 0.30  # m, soft edge width
+POOL_R = 0.95     # m, radius of each pool
+POOL_SOFT = 0.55  # m, soft edge width
+STREAK_OFF = 1.6   # m in front of the plinth centre
+STREAK_W = 0.32
+STREAK_L = 1.45
+STREAK_GAIN = 0.55
 GRAIN = 0.14      # grain contrast inside the light
 CLOUD = 0.10      # slow, larger "printed" mottling inside the light
 
@@ -88,6 +92,16 @@ def main():
             a_ = np.clip((radius + POOL_SOFT / 2 - d) / POOL_SOFT, 0, 1)
             a_ = a_ * a_ * (3 - 2 * a_)
             img[y0:y1, x0:x1] = np.maximum(img[y0:y1, x0:x1], a_ * lv)
+            # Faint lobe smeared toward the camera (-Z): lights the wet-floor streak in front of the plinth
+            ux, vy = G.world_to_uv(cell['c'] * G.COL_SPACING, cell['r'] * G.ROW_SPACING - STREAK_OFF, 0.5)
+            sx, sy = ux * W, vy * H
+            lx, ly = STREAK_W * ppx + 3, STREAK_L * ppy + 3
+            x0, x1 = max(0, int(sx - lx)), min(W, int(sx + lx) + 1)
+            y0, y1 = max(0, int(sy - ly)), min(H, int(sy + ly) + 1)
+            if x0 < x1 and y0 < y1:
+                yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float32)
+                e = ((xx + 0.5 - sx) / (STREAK_W * ppx)) ** 2 + ((yy + 0.5 - sy) / (STREAK_L * ppy)) ** 2
+                img[y0:y1, x0:x1] = np.maximum(img[y0:y1, x0:x1], np.exp(-2.2 * e) * STREAK_GAIN * lv)
         # Noise inside the light: fine grain + slow mottling, both re-seeded each frame
         grain = rng.random((H, W), dtype=np.float32) - 0.5
         cloud = value_noise((H, W), 24, rng) - 0.5

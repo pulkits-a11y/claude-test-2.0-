@@ -15,14 +15,14 @@ import math
 
 FPS = 30
 MS = 1000.0 / FPS
-COL = 1500
-ROW = 2200
-PED_W, PED_H = 450, 1000
+COL = 1900
+ROW = 2300
+PED_W, PED_H = 620, 900
 TOP_Y = -PED_H
-LAMP_GAP = 2400
+LAMP_GAP = 2900
 LAMP_Y = TOP_Y - LAMP_GAP          # lens plane, -2600
 PROJ_H = 300_000
-PROJ_CONE = 12.0
+PROJ_CONE = 14.6
 SCENE_LAYER = 1
 
 # Shoe placement: asset id, vertical offset so the sole meets the pedestal top, base yaw (toe -> +X)
@@ -33,7 +33,7 @@ TIERS = [(0, ''), (1, '_mid'), (6, '_far')]
 
 WARM = (1.0, 0.70, 0.42)          # tungsten-ish glow, sRGB
 VOID = (0.030, 0.026, 0.023)          # warm charcoal, never pure black
-HAZE = (0.115, 0.080, 0.050)          # what the far hall dissolves into
+HAZE = (0.040, 0.034, 0.026)          # what the far hall dissolves into
 
 
 def lin(v):
@@ -153,23 +153,30 @@ def level_keys(levels, to_value, settle_easing=EASE_IN_OUT):
 
 
 def build(a, tl):
+    global SCENE_LAYER
+    SCENE_LAYER = a.layer
     b = B()
+    b.n = a.id_base
+    vid = a.id_base - 100  # view/world/render-settings ids for this layer
+    MIR = -1 if a.mirror else 1
     C, R = a.cols, a.rows
     cells = tl['cells']
     depth = (R - 1) * ROW
 
     # --- Scene layer, world -------------------------------------------------------------------
-    b.add({"type": "createFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER, "name": "Endless Gallery",
-           "pixelsPerMeter": 1000, "view": {"id": 9001, "exposure": a.exposure},
+    b.add({"type": "createFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER, "name": "Endless Gallery" + (" (floor reflection)" if a.mirror else ""),
+           "pixelsPerMeter": 1000, "view": {"id": vid + 1, "exposure": a.exposure},
            "activeRange": {"start": 0, "duration": 2800},
-           "transform": {"anchorPoint": [0, 0], "position": [0, 0], "scale": [100, 100], "rotation": 0, "opacity": 100},
-           "world": {"id": 9002},
-           "renderSettings": {"id": 9003, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
+           "transform": ({"anchorPoint": [a.canvas[0] / 2, a.canvas[1] / 2], "position": [a.canvas[0] / 2, a.canvas[1] / 2],
+                          "scale": [100, -100], "rotation": 0, "opacity": 100} if a.mirror else
+                         {"anchorPoint": [0, 0], "position": [0, 0], "scale": [100, 100], "rotation": 0, "opacity": 100}),
+           "world": {"id": vid + 2},
+           "renderSettings": {"id": vid + 3, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
                               "lightLinks": [], "outputs": [], "previewOutput": None}})
     b.add({"type": "setFxScene3DWorld", "compositionId": "main", "layerId": SCENE_LAYER,
-           "world": {"id": 9002, "background": {"type": "color", "color": [*VOID, 1]},
+           "world": {"id": vid + 2, "background": {"type": "color", "color": [*HAZE, 1]},
                      "light": {"source": {"type": "color", "color": [0.45, 0.70, 0.66, 1]}, "intensity": a.ambient},
-                     "fog": {"color": [*HAZE, 1], "startDistance": 6, "endDistance": 62}}})
+                     "fog": {"color": [*HAZE, 1], "startDistance": 7, "endDistance": 46}}})
 
     # --- Camera rig: drift group -> camera + look target ----------------------------------------
     rig = b.id()
@@ -177,7 +184,7 @@ def build(a, tl):
            "item": {"type": "Group3D", "id": rig, "parentId": None, "name": "Camera drift rig", "transform": {"position": [0, 0, 0]}}})
     look = b.id()
     b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
-           "item": {"type": "Group3D", "id": look, "parentId": rig, "name": "Camera look target", "transform": {"position": [0, -1060, 0]}}})
+           "item": {"type": "Group3D", "id": look, "parentId": rig, "name": "Camera look target", "transform": {"position": [0, -960, 0]}}})
     cam = b.id()
     b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
            "item": {"type": "Camera3D", "id": cam, "parentId": rig, "name": "Camera",
@@ -188,21 +195,22 @@ def build(a, tl):
                     "lens": {"type": "physical", "focalLengthMm": 35, "sensorMm": [36, 20.25], "fNumber": 2.8}}})
     b.add({"type": "setFxScene3DActiveCamera", "compositionId": "main", "layerId": SCENE_LAYER, "cameraItemId": cam})
 
-    def polar(dist, az_deg, height_mm, tgt=(0, -1060, 0)):
+    def polar(dist, az_deg, height_mm, tgt=(0, -960, 0)):
         az = math.radians(az_deg)
         return [tgt[0] + dist * math.sin(az), -height_mm, tgt[2] - dist * math.cos(az)]
 
-    p0 = polar(750, -1.25, 1062)       # f0: Dunk ~40% of frame, low three-quarter
-    p18 = polar(690, 1.25, 1058)       # f18: slow reverent push-in + 2.5 deg orbit
-    p48 = [0, -1450, -8400]            # f48: the row (after snap 1 + drift)
-    p83 = [0, -3000, -15500]           # f83: high wide hall (after snap 2 + drift)
-    t48 = [0, -1250, 0]
-    t83 = [0, -1150, 20000]            # pitch ~5 deg down: vanishing point just above centre
-    v3 = lambda p: {"type": "vector3", "value": [round(x, 2) for x in p]}
+    p0 = polar(760, -1.25, 945)       # f0: Dunk ~40% of frame, low three-quarter
+    p18 = polar(700, 1.25, 940)       # f18: slow reverent push-in + 2.5 deg orbit
+    p48 = [0, -1350, -6200]            # f48: the row (after snap 1 + drift)
+    p83 = [0, -2250, -9200]           # f83: high wide hall (after snap 2 + drift)
+    t48 = [0, -1150, 0]
+    t83 = [0, -1350, 30000]            # pitch ~5 deg down: vanishing point just above centre
+    # Reflection pass: the same camera mirrored through the floor plane (y -> -y); the layer is flipped in 2D.
+    v3 = lambda p: {"type": "vector3", "value": [round(p[0], 2), round(p[1] * MIR, 2), round(p[2], 2)]}
     # Each snap segment starts one frame before its word so movement is visible ON f19 / f49.
     b.anim(cam, "position", [(0, v3(p0), HOLD), (18, v3(p18), PUSH_IN),
                              (48, v3(p48), SNAP_1), (83, v3(p83), SNAP_2)])
-    b.anim(look, "position", [(0, v3([0, -1060, 0]), HOLD), (18, v3([0, -1060, 0]), HOLD),
+    b.anim(look, "position", [(0, v3([0, -960, 0]), HOLD), (18, v3([0, -960, 0]), HOLD),
                               (48, v3(t48), SNAP_1), (83, v3(t83), SNAP_2)])
     # Never static: a slow extra creep from the end of snap 1 to the cut
     b.anim(rig, "position", [(0, v3([0, 0, 0]), HOLD), (52, v3([0, 0, 0]), HOLD), (83, v3([0, -160, -420]), DRIFT)])
@@ -210,17 +218,20 @@ def build(a, tl):
     b.anim(cam, "fNumber", [(0, fl(2.8), HOLD), (18, fl(2.8), HOLD), (30, fl(8.0), SNAP_1), (56, fl(14.0), SNAP_2)])
 
     # --- Floor, pedestals, lamp hardware -------------------------------------------------------------
-    b.mesh("Floor (polished dark concrete)", {"type": "box", "size": [2 * C * COL + 30000, 20, depth + 40000]},
-           [0, 10, depth / 2 + 4000],
-           b.material({"baseColor": const([0.011, 0.011, 0.012]), "roughness": const(0.28)}), cast=False)
+    if not a.mirror:
+        floor_inputs = {"baseColor": const([0.010, 0.009, 0.008]), "roughness": const(0.22)}
+        if a.reflect:
+            floor_inputs["coverage"] = const(a.floor_cover)   # the reflection layer below shows through
+        b.mesh("Floor (polished dark concrete)", {"type": "box", "size": [2 * C * COL + 30000, 20, depth + 40000]},
+               [0, 10, depth / 2 + 4000], b.material(floor_inputs, alpha="blend" if a.reflect else None), cast=False)
     g = b.grid("Pedestals", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
     b.mesh("Pedestal (black stone)", {"type": "box", "size": [PED_W, PED_H, PED_W]}, [0, -PED_H / 2, 0],
-           b.material({"baseColor": const([0.0085, 0.0085, 0.009]), "roughness": const(0.9),
-                       "specular": const(0.25)}), parent=g,
+           b.material({"baseColor": const([0.014, 0.012, 0.010]), "roughness": const(0.28),
+                       "specular": const(0.5)}), parent=g,
            modifiers=[{"type": "bevel", "id": b.id(), "width": 7, "segments": 2, "profile": 0.5, "limitAngle": 30}])
     g = b.grid("Lamp hardware", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
     blk = b.material({"baseColor": const([0.008, 0.008, 0.008]), "roughness": const(0.38), "metallic": const(0.7)})
-    b.mesh("Lamp housing", {"type": "cylinder", "radius": 60, "height": 200}, [0, LAMP_Y - 103, 0], blk, parent=g, cast=False)
+    b.mesh("Lamp housing", {"type": "cylinder", "radius": 115, "height": 340}, [0, LAMP_Y - 172, 0], blk, parent=g, cast=False)
     # (No cables: at distance they alias into streaks; the lamps hang from darkness.)
 
     warm_lin = [lin(x) for x in WARM]
@@ -229,7 +240,7 @@ def build(a, tl):
     # (The final camera sits below the lamps, so the rows of glowing lenses converge on the vanishing point.)
     lens_did = b.id()
     b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
-           "data": [{"type": "mesh", "id": lens_did, "name": "Lens disc", "geometry": {"type": "sphere", "radius": 42},
+           "data": [{"type": "mesh", "id": lens_did, "name": "Lens disc", "geometry": {"type": "cylinder", "radius": 98, "height": 8},
                      "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}], "items": []})
     for r in range(R):
         items, anims = [], []
@@ -239,7 +250,7 @@ def build(a, tl):
                                          "emissiveColor": const(warm_lin), "emissiveStrength": const(0.0)})
             iid = b.id()
             items.append({"type": "Mesh3D", "id": iid, "parentId": None, "name": f"Lens c{c} r{r}", "dataId": lens_did,
-                          "packing": "whole", "transform": {"position": [c * COL, LAMP_Y - 10, r * ROW]},
+                          "packing": "whole", "transform": {"position": [c * COL, LAMP_Y + 6, r * ROW]},
                           "materialSlots": [slot], "regionSlots": [{"region": "primary", "slotId": sid}, {"region": "side", "slotId": sid}],
                           "castsShadows": False, "receivesShadows": False})
             anims.append((bid, level_keys(cell['level'], lambda lv: {"type": "float", "value": round(min(lv, 1.2) * a.lens_gain, 4)})))
@@ -248,50 +259,57 @@ def build(a, tl):
             b.anim(bid, "emissiveStrength", keys)
 
     if not a.no_beams:
-        # Beams are faint translucent cones LIT by the projector, so each one follows its lamp's
-        # mask disc (on / flicker / off) and carries the mask's grain. One array, one material.
-        # Row 0 without the hero column (two arrays), rows 1+ in one array
-        beam_groups = [b.grid("Beams row 0 left", [-C * COL, 0, 0], [C, 1, 1], [COL, 0, ROW]),
-                       b.grid("Beams row 0 right", [COL, 0, 0], [C, 1, 1], [COL, 0, ROW])]  # no cones in the hall
-        clear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
-        fall = {"type": "texture", "factor": a.beam_alpha, "sample": {
-            "texture": {"source": {"type": "image", "assetId": "beamfall"}, "scale": [1, 1], "wrapU": "repeat",
-                        "wrapV": "clampToEdge", "minFilter": "linear", "magFilter": "linear", "mipmaps": False},
-            "interpretation": {"type": "data"}, "selection": {"type": "alpha"}}}
-        beam = b.material({"baseColor": const([1.0, 1.0, 1.0]), "roughness": const(1.0), "coverage": fall},
-                          alpha="blend", double=True)
+        # Soft volumetric beams: opacity = facing^k * top-to-bottom falloff * strength, so the cone's
+        # silhouette dissolves (no hard edges). Lit by the projector, so each beam follows its own lamp.
+        def soft_beam(strength):
+            n = [b.id() for _ in range(7)]
+            tex = {"source": {"type": "image", "assetId": "beamfall"}, "scale": [1, 1], "wrapU": "repeat",
+                   "wrapV": "clampToEdge", "minFilter": "linear", "magFilter": "linear", "mipmaps": False}
+            graph = {"graph": {"nodes": [
+                {"id": n[0], "operation": {"type": "facing", "exponent": 1.8}},
+                {"id": n[1], "operation": {"type": "uv", "set": 0}},
+                {"id": n[2], "operation": {"type": "image", "texture": n[6], "uv": n[1], "interpretation": {"type": "data"},
+                                            "selection": {"type": "alpha"}}},
+                {"id": n[3], "operation": {"type": "binary", "operation": "multiply", "a": n[0], "b": n[2]}},
+                {"id": n[4], "operation": {"type": "constant", "value": {"type": "scalar", "value": strength}}},
+                {"id": n[5], "operation": {"type": "binary", "operation": "multiply", "a": n[3], "b": n[4]}}]},
+                "definitions": [], "textures": [{"id": n[6], "texture": tex}]}
+            sid, bid = b.id(), b.id()
+            return sid, {"id": sid, "name": f"m{sid}", "binding": {"id": bid, "alphaMode": "blend", "doubleSided": True, "graph": graph,
+                         "inputs": {"baseColor": const([1.0, 0.86, 0.66]), "roughness": const(1.0),
+                                    "coverage": {"type": "connection", "node": n[5]}}}}
+        g = b.grid("Beams", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
         did = b.id()
+        clear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
+        bsid, bslot = soft_beam(a.beam_alpha)
         b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
-               "data": [{"type": "mesh", "id": did, "name": "Beam cone", "geometry": {"type": "cone", "radius": 420, "height": LAMP_GAP},
-                         "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}], "items": []})
-        for g in beam_groups:
-            clear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
-            beam = b.material({"baseColor": const([1.0, 1.0, 1.0]), "roughness": const(1.0), "coverage": json.loads(json.dumps(fall))},
-                              alpha="blend", double=True)
-            b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER, "data": [],
-                   "items": [{"type": "Mesh3D", "id": b.id(), "parentId": g, "name": "Beam", "dataId": did, "packing": "regions",
-                              "transform": {"position": [0, LAMP_Y + LAMP_GAP / 2, 0]},
-                              "materialSlots": [clear[2], beam[2]],
-                              "regionSlots": [{"region": "primary", "slotId": clear[0]}, {"region": "side", "slotId": beam[0]}],
-                              "modifiers": [{"type": "uvProject", "id": b.id(), "projection": {"type": "cylindrical", "axis": "y"}}],
-                              "castsShadows": False, "receivesShadows": False}]})
-        # The hero's beam is its own item: barely there while the camera sits inside it (Phase 1),
-        # building to the standard beam as the snap pulls out.
-        hfall = json.loads(json.dumps(fall))
-        hclear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
-        hbeam = b.material({"baseColor": const([1.0, 1.0, 1.0]), "roughness": const(1.0), "coverage": hfall},
-                           alpha="blend", double=True)
-        hid_ = b.id()
-        b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER, "data": [],
-               "items": [{"type": "Mesh3D", "id": hid_, "parentId": None, "name": "Hero beam", "dataId": did, "packing": "regions",
+               "data": [{"type": "mesh", "id": did, "name": "Beam cone", "geometry": {"type": "cone", "radius": 820, "height": LAMP_GAP},
+                         "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}],
+               "items": [{"type": "Mesh3D", "id": b.id(), "parentId": g, "name": "Beam", "dataId": did, "packing": "regions",
                           "transform": {"position": [0, LAMP_Y + LAMP_GAP / 2, 0]},
-                          "materialSlots": [hclear[2], hbeam[2]],
-                          "regionSlots": [{"region": "primary", "slotId": hclear[0]}, {"region": "side", "slotId": hbeam[0]}],
+                          "materialSlots": [clear[2], bslot],
+                          "regionSlots": [{"region": "primary", "slotId": clear[0]}, {"region": "side", "slotId": bsid}],
                           "modifiers": [{"type": "uvProject", "id": b.id(), "projection": {"type": "cylindrical", "axis": "y"}}],
                           "castsShadows": False, "receivesShadows": False}]})
-        b.anim(hbeam[1], "coverage", [(0, {"type": "float", "value": round(a.beam_alpha * 0.18, 5)}, HOLD),
-                                      (19, {"type": "float", "value": round(a.beam_alpha * 0.18, 5)}, HOLD),
-                                      (26, {"type": "float", "value": round(a.beam_alpha * 1.15, 5)}, SNAP_1)])
+
+    # --- Wet-floor streaks: soft bright smears from each plinth's pool toward the camera (the reflection read
+    # of a polished floor). Lit by the projector, so each streak lives and dies with its own lamp.
+    if a.streaks and not a.mirror:
+        g = b.grid("Floor streaks", [-C * COL, 0, 0], [2 * C + 1, 1, R], [COL, 0, ROW])
+        sdid = b.id()
+        stex = {"type": "texture", "factor": a.streak_alpha, "sample": {
+            "texture": {"source": {"type": "image", "assetId": "streakfall"}, "scale": [1, 1], "wrapU": "clampToEdge",
+                        "wrapV": "clampToEdge", "minFilter": "linear", "magFilter": "linear", "mipmaps": False},
+            "interpretation": {"type": "data"}, "selection": {"type": "alpha"}}}
+        smat = b.material({"baseColor": const([1.0, 0.85, 0.62]), "roughness": const(1.0), "coverage": stex},
+                          alpha="blend", double=True)
+        b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
+               "data": [{"type": "mesh", "id": sdid, "name": "Streak plane", "geometry": {"type": "plane", "size": [460, 2800]},
+                         "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}],
+               "items": [{"type": "Mesh3D", "id": b.id(), "parentId": g, "name": "Floor streak", "dataId": sdid, "packing": "whole",
+                          "transform": {"position": [0, -3, -PED_W / 2 - 1400], "rotation": rot(90, 0, 0)},
+                          "materialSlots": [smat[2]], "regionSlots": [{"region": "primary", "slotId": smat[0]}, {"region": "side", "slotId": smat[0]}],
+                          "castsShadows": False, "receivesShadows": False}]})
 
     # --- Shoes: every pedestal its own item (per-cell control), fixed detail tier per row -------------
     data = {}
@@ -373,7 +391,7 @@ def build(a, tl):
     if a.gobo_layer is not None:
         b.add({"type": "addFxScene3DLayer", "compositionId": "main", "layerId": SCENE_LAYER,
                "item": {"type": "Light3D", "id": b.id(), "parentId": None, "name": "Hall projector (every other lamp)",
-                        "transform": {"position": [0, -PROJ_H, depth / 2], "rotation": rot(-90)},
+                        "transform": {"position": [0, -PROJ_H, a.proj_z if a.proj_z is not None else depth / 2], "rotation": rot(-90)},
                         "emitter": {"type": "spot", "power": a.proj_power, "coneAngle": PROJ_CONE, "coneFeather": 0.0,
                                     "sourceRadius": 0, "projectorSource": {"type": "layer", "layerId": a.gobo_layer},
                                     "goboDensity": 1.0, "goboWrap": "black"},
@@ -397,8 +415,8 @@ def build(a, tl):
     warm = {"useTemperature": True, "temperature": 3400}
     rim_a = aimed_parallel("Rim A (hero)", [0, -5000, a.rim_z], [0, -800, 0], a.rim, teal)
     rim_b = aimed_parallel("Rim B (hall)", [0, -5000, a.rim_z], [0, -800, 0], 0.0, teal)
-    fill_a = aimed_parallel("Key A (hero)", [-4500, -5500, -7000], [0, -1050, 0], a.fill, warm)
-    fill_b = aimed_parallel("Key B (hall)", [-4500, -5500, -7000], [0, -1050, 0], 0.0, warm)
+    fill_a = aimed_parallel("Key A (hero)", [-4500, -5500, -7000], [0, -950, 0], a.fill, warm)
+    fill_b = aimed_parallel("Key B (hall)", [-4500, -5500, -7000], [0, -950, 0], 0.0, warm)
     ramp = bezier(0.4, 0.0, 0.3, 1.0)
     b.anim(rim_b, "irradiance", [(0, {"type": "float", "value": 0.0}, HOLD), (50, {"type": "float", "value": 0.0}, HOLD),
                                  (60, {"type": "float", "value": a.rim}, ramp)])
@@ -409,7 +427,7 @@ def build(a, tl):
     link = lambda lid, ids: {"lightId": lid, "illuminatedObjects": {"type": "objects", "items": ids},
                              "shadowCasters": {"type": "all"}, "shadowReceivers": {"type": "all"}}
     b.add({"type": "setFxScene3DRenderSettings", "compositionId": "main", "layerId": SCENE_LAYER,
-           "settings": {"id": 9003, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
+           "settings": {"id": vid + 3, "filmGate": None, "overscan": None, "lightGroups": [], "lightCollections": [],
                         "lightLinks": [link(rim_a, [hero_shoe]), link(fill_a, [hero_shoe]),
                                        link(rim_b, others), link(fill_b, others)],
                         "outputs": [], "previewOutput": None}})
@@ -424,7 +442,7 @@ if __name__ == '__main__':
     ap.add_argument('--cols', type=int, default=20)
     ap.add_argument('--gobo-layer', type=int, default=2)
     ap.add_argument('--no-beams', action='store_true')
-    ap.add_argument('--beam-alpha', type=float, default=0.022)
+    ap.add_argument('--beam-alpha', type=float, default=0.30)
     ap.add_argument('--fill', type=float, default=2.0)
     ap.add_argument('--beam-flip', type=float, default=0.0)
     ap.add_argument('--lens-gain', type=float, default=30.0)
@@ -437,6 +455,15 @@ if __name__ == '__main__':
     ap.add_argument('--exposure', type=float, default=0.35)
     ap.add_argument('--motes', type=int, default=140)
     ap.add_argument('--hero-shadows', action='store_true')
+    ap.add_argument('--layer', type=int, default=1)
+    ap.add_argument('--id-base', type=int, default=10000)
+    ap.add_argument('--mirror', action='store_true')
+    ap.add_argument('--reflect', action='store_true')
+    ap.add_argument('--floor-cover', type=float, default=0.62)
+    ap.add_argument('--proj-z', type=float, default=None)
+    ap.add_argument('--canvas', type=int, nargs=2, default=[1920, 1080])
+    ap.add_argument('--streaks', type=int, default=1)
+    ap.add_argument('--streak-alpha', type=float, default=0.95)
     a = ap.parse_args()
     tl = json.load(open(a.timeline))
     actions, info = build(a, tl)

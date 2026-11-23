@@ -214,10 +214,10 @@ def build(w, h):
                     "description": "Soft warm radial glow (screen blend): the warm haze the hall dissolves into.",
                     "wgsl": GLOW_WGSL,
                     "params": [
-                        {"name": "strength", "description": "Glow brightness.", "min": 0, "max": 1, "default": 0.16},
+                        {"name": "strength", "description": "Glow brightness.", "min": 0, "max": 1, "default": 0.24},
                         {"name": "cx", "description": "Centre X (0-1).", "min": 0, "max": 1, "default": 0.5},
-                        {"name": "cy", "description": "Centre Y (0-1).", "min": 0, "max": 1, "default": 0.42},
-                        {"name": "radius", "description": "Glow size relative to frame height.", "min": 0.05, "max": 2, "default": 0.75}]}},
+                        {"name": "cy", "description": "Centre Y (0-1).", "min": 0, "max": 1, "default": 0.46},
+                        {"name": "radius", "description": "Glow size relative to frame height.", "min": 0.05, "max": 2, "default": 0.55}]}},
         {"type": "createFxAdjustmentLayer", "compositionId": "main", "layerId": 21, "name": "Displacement jolts (Grunge 353)",
          "activeRange": rng, "transform": full, "insertIndex": {"type": "prepend"}},
         {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 21, "effectId": 2101,
@@ -238,6 +238,8 @@ def build(w, h):
                     "tint": 0.0, "vibrance": 0.0, "highlights": 0.0, "shadows": 0.0, "whites": 0.0, "blacks": 0.0}},
         {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 20, "effectId": 2002, "index": 0,
          "effect": {"type": "glow", "glowThreshold": 30, "glowRadius": 60, "glowIntensity": 1.1}},
+        {"type": "addFxLayerEffect", "compositionId": "main", "layerId": 20, "effectId": 2003,
+         "effect": {"type": "vignette", "amount": 0.55, "radius": 0.75, "feather": 0.6}},
     ]
     # Jolts: 3 frames each at the fastest point of each snap; each frame a different map patch
     jolt = [(0, 0.0, HOLD), (20, 9.0, HOLD), (21, 15.0, HOLD), (22, 6.0, HOLD), (23, 0.0, HOLD),

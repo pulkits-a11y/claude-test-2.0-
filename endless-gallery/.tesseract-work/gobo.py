@@ -12,8 +12,8 @@ import sys
 
 import numpy as np
 
-COL_SPACING = 1.5   # m
-ROW_SPACING = 2.2   # m
+COL_SPACING = 1.9   # m
+ROW_SPACING = 2.3   # m
 COLS = 20           # columns each side of centre
 ROWS = 27
 
@@ -21,7 +21,7 @@ ROWS = 27
 PROJ_X = 0.0
 PROJ_Z = (ROWS - 1) * ROW_SPACING / 2
 PROJ_H = 300.0          # height above the floor
-PROJ_CONE = 12.0        # full cone angle, degrees (mask covers the hall, x +-31.5 m)
+PROJ_CONE = 14.6        # full cone angle, degrees (mask covers the hall)
 FLIP_U = False          # set from the orientation test
 FLIP_V = True
 SWAP_UV = False
