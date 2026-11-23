@@ -1,0 +1,10 @@
+# Licensed textures (Texture Labs), client reference media and everything derived from them stay local
+assets/textures/
+assets/reference/
+assets/generated/
+assets/logo/
+*.tsrct
+Exports/
+Previews/
+.tesseract-work/
+build/__pycache__/
