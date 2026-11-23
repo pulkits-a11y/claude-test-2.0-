@@ -26,7 +26,7 @@ clip_frames = {k: round((v[3] - v[2]) / v[5] * FPS) for k, v in CLIPS.items()}
 OL_FIN = 5                                  # O'Leary fast-clip frames: in (silence before "This"), pauses removed, speech end
 OL_TRIMS = [(96, 101), (157, 160)]          # 7.3 f pause before "a Walmart" -> 2.3 f; 6.3 f pause before "They" -> 3.3 f
 OL_SPEECH_END = 201
-OL_LOSS = 30                                # the TV holds the signal loss for 1 s after "They don't need retail"
+OL_LOSS = 60                                # the TV holds the signal loss for 1 s after "They don't need retail"
 clip_frames["CLIP_OLEARY"] = (OL_SPEECH_END - OL_FIN - sum(t1 - t0 for t0, t1 in OL_TRIMS)) + OL_LOSS
 if len(sys.argv) == 4:
     clip_frames = dict(zip(["CLIP_OLEARY", "CLIP_DONAHOE", "CLIP_HILL"], map(int, sys.argv[1:])))
@@ -34,6 +34,10 @@ tl, endcard_in = timeline(clip_frames)
 TOTAL = endcard_in + ENDCARD_FRAMES
 off = {i: tl[i][0] - LINE[i][3] * FPS for i in tl if isinstance(i, int)}
 WORDS = {int(k): v for k, v in json.load(open(os.path.join(W, "vo_words_aligned.json"))).items()}
+for _ln, (_c0, _c1) in VO_CUTS.items():       # words after a removed pause move up by its length
+    for _w in WORDS[_ln]:
+        if _w["s"] >= _c1:
+            _w["s"] = round(_w["s"] - (_c1 - _c0), 3); _w["e"] = round(_w["e"] - (_c1 - _c0), 3)
 
 
 def wf(line, i, floor=None):
@@ -138,6 +142,11 @@ MATTES = {}
 for name, f in (("m_oleary", "oleary_fast_matte.mp4"), ("m_B19", "B19_matte.mp4"), ("m_B60", "B60_matte.mp4"), ("m_B21", "B21_17_matte.mp4")):
     MATTES[name] = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(W, "clips", f), "--asset-id", name))
 run("project", "import-asset", "--project", P, "--file", os.path.join(W, "clips", "hill.wav"), "--asset-id", "hill_audio", "--kind", "audio")
+THREEHITS = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "ThreeHits_full_r1.mp4"), "--asset-id", "mg_threehits"))
+GALLERY = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "EndlessGallery_preview_v12_with_VO.mp4"), "--asset-id", "mg_gallery"))
+for _aid, _f in (("tex_grain", "grain_2400.png"), ("tex_scan", "scanlines_1920.png"), ("tex_vig", "vignette_1920.png"), ("tex_halftone", "halftone_1920.png"),
+                 ("tex_grunge", "grunge_1920.png"), ("prism_pzA", "prism_pzA.png"), ("prism_pzB", "prism_pzB.png"), ("prism_pzC", "prism_pzC.png"), ("prism_pzD", "prism_pzD.png")):
+    run("project", "import-asset", "--project", P, "--file", os.path.join(R, "Sources", "tex", _f), "--asset-id", _aid, "--kind", "image")
 SHOEBOX = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "ShoeboxTower_full_r2.mp4"), "--asset-id", "mg_shoebox"))
 MGINFO = json.loads(run("project", "import-video", "--project", P, "--file", os.path.join(R, "Sources", "mg", "retail-popup-mg_preview-2.mp4"), "--asset-id", "mg_retail"))
 for aid, f in (("tv_frame", "tv/tv_frame_alpha.png"), ("tv_mask", "tv/tv_screen_mask.png"), ("st_footlocker", "stills/retail_footlocker_WN212.png"),
@@ -176,25 +185,58 @@ D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "na
        "transform": {"anchorPoint": [0, 0], "position": [104, 74], "scale": [34, 34], "rotation": 0, "opacity": 80},
        "source": {"assetId": "logo_r_white", "fit": "contain"}})
 
-# ================= 2. LOOK adjustment layer (top): grade -> orange push -> glow -> grain -> screen mesh -> vignette =================
+# ================= 2. FILM-WIDE OVERLAYS (build18 stack, above every scene and all text; watermark stays on top) =================
+#   top -> bottom: CRT scan lines, vignette, desaturate, lift, film grain, halftone, grunge
+def jitter_script(n_frames, seed, axis):
+    """Precomputed seeded offsets (build18 LCG), a new one every 2 frames; deterministic, no Math.random at render."""
+    xs, ys = [], []
+    s_ = seed
+    for _ in range(0, n_frames + 2, 2):
+        s_ = (s_ * 1664525 + 1013904223) % 4294967296; xs.append(-round(s_ / 4294967296 * 480))
+        s_ = (s_ * 1664525 + 1013904223) % 4294967296; ys.append(-round(s_ / 4294967296 * 320))
+    arr = xs if axis == "x" else ys
+    return ("var A=[" + ",".join(map(str, arr)) + "];var k=Math.floor(input.time.seconds*15+1e-6);"
+            "if(k<0)k=0;if(k>=A.length)k=A.length-1;return A[k];")
+
+
+def grain_layer(name, parent, f0, n, seed, opacity):
+    """grain.png as a 2400x1400 layer, overlay blend, jumped to a new seeded offset every 2 frames."""
+    lid = D.nid()
+    D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": lid, "name": f"{name} [blend:overlay]", "parentLayerId": parent,
+           "activeRange": {"start": ms(f0), "duration": ms(f0 + n) - ms(f0)},
+           "transform": {"anchorPoint": [0, 0], "position": [0, 0], "scale": [100, 100], "rotation": 0, "opacity": opacity},
+           "source": {"assetId": "tex_grain", "fit": "none"}})
+    for ax, prop in (("x", "positionX"), ("y", "positionY")):
+        D.add({"type": "setFxPropertyAnimator", "compositionId": C, "property": {"layerId": lid, "propertyType": prop}, "dependencies": [],
+               "animator": {"type": "jsScript", "layerTimeJsCode": jitter_script(n, seed, ax)}})
+    return lid
+
+
+def tex_layer(name, asset, f0, f1, opacity, parent=None):
+    lid = D.nid()
+    D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": lid, "name": name, "parentLayerId": parent,
+           "activeRange": {"start": ms(f0), "duration": ms(f1) - ms(f0)},
+           "transform": {"anchorPoint": [0, 0], "position": [0, 0], "scale": [100, 100], "rotation": 0, "opacity": opacity},
+           "source": {"assetId": asset, "fit": "none"}})
+    return lid
+
+
+FW = endcard_in            # the overlays run over the whole film; the attached end card stays as supplied
+tex_layer("FX 7 CRT scan lines (2px / 5px) [blend:multiply]", "tex_scan", 0, FW, 42)
+tex_layer("FX 6 vignette (ellipse 72%)", "tex_vig", 0, FW, 100)
+D.rect("FX 5 desaturate #808080 [blend:saturation]", 0, 0, 1920, 1080, [128 / 255, 128 / 255, 128 / 255, 1], 0, FW)
+D.A[-1]["transform"]["opacity"] = 20
+D.rect("FX 4 lift #2a2119 [blend:screen]", 0, 0, 1920, 1080, [0x2a / 255, 0x21 / 255, 0x19 / 255, 1], 0, FW)
+D.A[-1]["transform"]["opacity"] = 30
+grain_layer("FX 3 film grain (2400x1400, jitter every 2 f)", None, 0, FW, 1337, 22)
+tex_layer("FX 2 halftone [blend:overlay]", "tex_halftone", 0, FW, 20)
+tex_layer("FX 1 grunge [blend:overlay]", "tex_grunge", 0, FW, 60)
+
+# light glow stays as an adjustment under the overlays (grain, mesh and vignette now come from the stack above)
 gid = D.nid()
-D.add({"type": "createFxAdjustmentLayer", "compositionId": C, "layerId": gid, "name": "LOOK: glow > grain > mesh > vignette (grade is on the footage layers)",
+D.add({"type": "createFxAdjustmentLayer", "compositionId": C, "layerId": gid, "name": "LOOK: highlight glow",
        "activeRange": {"start": 0, "duration": ms(endcard_in)}, "transform": xf()})
 D.effect(gid, {"type": "glow", "glowThreshold": 75, "glowRadius": 70, "glowIntensity": 0.35})
-ge = D.effect(gid, {"type": "grain", "amount": 0.14, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0, "seed": 1})
-D.effect_script(gid, ge, "seed", "return Math.floor(input.time.seconds * 24);")
-me = D.effect(gid, {"type": "customShader", "name": "screenMesh", "description": "Two Venetian Blinds passes (0 and 90 deg), 3 px, multiplied.",
-                    "wgsl": open(os.path.join(W, "shaders", "mesh.wgsl")).read(),
-                    "params": [{"name": "periodPx", "description": "Blind width in px.", "min": 1, "max": 12, "default": 3},
-                               {"name": "lineFrac", "description": "Dark part of each blind (0..1).", "min": 0, "max": 1, "default": 0.5},
-                               {"name": "strength", "description": "Mesh opacity (multiply).", "min": 0, "max": 1, "default": 0.15}]})
-TALK = [(tl["CLIP_OLEARY"][0], SEG["A1_OLEARY"][2])] + [(x["start"], x["end"]) for x in shots
-        if (x["clip"], x["src"]) in {("B59", 25.6), ("B60", 10.5), ("B62", 21.0), ("B19", 13.4), ("B21", 10.3), ("B18", 34.2)}]
-TALK += [(tl["CLIP_DONAHOE"][0], SEG["A2_DONAHOE"][2])]
-conds = " || ".join(f"(t >= {a_ / FPS:.3f} && t < {b_ / FPS:.3f})" for a_, b_ in TALK)
-D.effect_script(gid, me, "strength", f"var t = input.time.seconds; return ({conds}) ? 0.05 : 0.15;")
-D.effect(gid, {"type": "vignette", "amount": 0.3, "feather": 0.6, "radius": 0.55})
-
 
 
 def shot_luma(path, t):
@@ -267,7 +309,8 @@ def zoom_transition(lid, n, base=100.0, end=None, t_in=True, t_out=False, push_t
 
 
 CAP_Y, CAP_SIZE, CAP_W = 556, 50, 640
-SPLITS = {8: [(0, 2), (2, 4)], 11: [(0, 2), (2, 5)],
+SPLITS = {8: [(0, 2), (2, 4)]}
+_OLD_SPLITS = {11: [(0, 2), (2, 5)],
           12: [(0, 3), (3, 6), (6, 9), (9, 11), (11, 13), (13, 16)], 13: [(0, 4), (4, 7), (7, 11)],
           15: [(0, 2), (2, 5), (5, 9)], 19: [(0, 3), (3, 5), (5, 8)], 20: [(0, 2), (2, 5)], 21: [(0, 2), (2, 4), (4, 7)],
           22: [(0, 2), (2, 5)], 26: [(0, 3), (3, 6)]}
@@ -561,6 +604,77 @@ for k_, (i, sp) in enumerate(zip((6, 7, 8), (MT, MT, AN))):
         D.vox(lid, 72); D.blur_to_sharp(lid)
 plan_rows.append(("TC1", "Well, turns out, Nike NEEDED RETAIL more than anyone.", "Size-contrast build", "Blur-to-sharp",
                   "Flicker-in; camera follows each word; 3 retail stills pop in; one eased move down (motion blur) to 'more than anyone.'", "Cut out", "centered"))
+
+# ================= 3b. B-roll captions in the 'shelf / hype / athlete' style (small connectors above a big serif keyword) =================
+# (line, connector word indices, keyword word indices) - every keyword gets the green block-to-word, groups hard-cut
+HC_GROUPS = {11: [([], [0]), ([1, 2, 3], [4])],
+             12: [([0], [1]), ([2, 3, 4], [5]), ([6, 7], [8]), ([9], [10]), ([11, 12], [13, 14, 15])],
+             13: [([0, 1, 2], [3]), ("LOGOS", [4, 5, 6]), ([7, 8, 9], [10])],
+             15: [([0, 1], [2]), ([3], [4]), ([5, 6, 7], [8])],
+             19: [([0, 1, 2, 3], [4]), ([5, 6], [7])],
+             20: [([0], [1]), ([2, 3], [4])],
+             21: [([0], [1]), ([], [2, 3]), ([4, 5], [6])],
+             22: [([0], [1]), ([2, 3], [4])],
+             26: [([0, 1, 2, 3], [4, 5])]}
+HCONN = ("archivo", 50, {"wght": 520, "wdth": 100}, 0)
+HYC, HYK = 418, 642
+hcg = D.group("B-ROLL CAPTIONS ('shelf / hype / athlete' style)", 0, endcard_in)
+D.effect(hcg, {"type": "dropShadow", "enabled": True, "color": [0, 0, 0, 0.6], "offset": [0, 0], "blurRadius": 46, "spreadRadius": 10, "blendMode": "normal"})
+hc_items = []
+for ln, groups in HC_GROUPS.items():
+    for conn, kws in groups:
+        idx = (kws if conn == "LOGOS" else conn + kws)
+        hc_items.append((wfc(ln, min(idx), floor=seg_start_of(ln)), ln, conn, kws))
+hc_items.sort()
+for k, (g0, ln, conn, kws) in enumerate(hc_items):
+    g1 = min(hc_items[k + 1][0] if k + 1 < len(hc_items) else endcard_in, seg_end_of(ln))
+    if g1 <= g0:
+        continue
+    W_ = WORDS[ln]
+    if conn == "LOGOS":       # alo  and  vuori - the logos are the keyword (block-to-word on each logo)
+        from PIL import Image as _P
+        szl = {k_: _P.open(os.path.join(R, "Sources", "logos", f_)).size for k_, f_ in (("logo_alo", "alo_logo.png"), ("logo_vuori", "vuori_logo.png"))}
+        HL = {"logo_alo": 150, "logo_vuori": 92}
+        seq = [("logo_alo", HL["logo_alo"] * szl["logo_alo"][0] / szl["logo_alo"][1]), ("and", advance("and", *HCONN)),
+               ("logo_vuori", HL["logo_vuori"] * szl["logo_vuori"][0] / szl["logo_vuori"][1])]
+        gap = 34
+        x = 960 - (sum(wv for _, wv in seq) + 2 * gap) / 2
+        base = HYK - 20
+        for (val, wv), fr_i in zip(seq, kws):
+            fw = min(max(g0, wfc(ln, fr_i)), g1 - 1)
+            if val == "and":
+                lid = D.text("HC cap 'and'", "and", x, base, "archivo", 50, TEXT, fw, g1, hcg, wght=520); D.blur_to_sharp(lid)
+            else:
+                hh = HL[val]
+                D.rect(f"HC block ({val})", x - 6, base - hh - 8, wv + 12, hh + 16, GREEN, fw, min(fw + STEP, g1), hcg)
+                f2 = min(fw + STEP, g1 - 1)
+                img = D.nid()
+                D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": img, "name": f"HC logo {val}", "parentLayerId": hcg,
+                       "activeRange": {"start": ms(f2), "duration": ms(g1) - ms(f2)},
+                       "transform": {"anchorPoint": [0, 0], "position": [x, base - hh], "rotation": 0, "opacity": 100,
+                                     "scale": [round(100 * wv / szl[val][0], 3)] * 2},
+                       "source": {"assetId": val, "fit": "contain"}})
+            x += wv + gap
+        cap_rows.extend((ln, i, W_[i]["w"], 0, "HC style (logos)") for i in kws)
+        continue
+    cws = [W_[i]["w"] for i in conn]
+    kw_words = [W_[i]["w"] for i in kws]
+    ksz = fit_size(" ".join(kw_words), "serif", 262, 1500)
+    KWS = ("serif", ksz, None, 0)
+    kxs, kwid = layout_line(kw_words, [KWS] * len(kw_words))
+    cxs, cwid = layout_line(cws, [HCONN] * len(cws)) if cws else ([], 0)
+    xl = 960 - max(cwid, kwid) / 2
+    for i, xo in zip(conn, cxs):
+        fw = min(max(g0, wfc(ln, i)), g1 - 1)
+        lid = D.text(f"HC connector '{W_[i]['w']}'", W_[i]["w"], xl + xo, HYC, "archivo", 50, TEXT, fw, g1, hcg, wght=520); D.blur_to_sharp(lid)
+    for j, (i, xo) in enumerate(zip(kws, kxs)):
+        fw = min(max(g0, wfc(ln, i)), g1 - 1)
+        ww = advance(W_[i]["w"], *KWS)
+        if j == 0:
+            D.rect(f"HC block-to-word ({W_[i]['w']})", xl + xo - 2, HYK - 0.65 * ksz, ww + 12, 0.672 * ksz, GREEN, fw, min(fw + STEP, g1), hcg)
+        lid = D.text(f"HC KEY '{W_[i]['w']}'", W_[i]["w"], xl + xo, HYK, "serif", ksz, GREEN, min(fw + (STEP if j == 0 else 0), g1 - 1), g1, hcg)
+        D.vox(lid, ksz)
+    cap_rows.extend((ln, i, W_[i]["w"], 0, "HC style") for i in (list(conn) + list(kws)))
 
 # ================= 4b. TC2: camera follows So / WHAT / HAPPENED? (ease-out, motion blur), slides right, hard cut wide =================
 (_, a, b) = SEG["TC2"]
@@ -898,7 +1012,7 @@ def ol_F(e):
 
 OLW = {"why": 28.8, "you": 40.2, "should": 45.9, "be": 51.6, "worried": 56.4, "about": 66.9, "the": 72.6, "future": 80.4,
        "of": 90.9, "a1": 102.0, "Walmart": 112.8, "or": 123.6, "a2": 130.5, "Foot": 137.1, "They": 161.7, "don't": 165.0,
-       "need": 171.6, "retail": 179.4}
+       "need": 171.6, "retail": 183.5}       # "retail": measured onset (the transcription was 4 f early)
 WE = {k: ol_e(math.ceil(v)) for k, v in OLW.items()}
 N = b - a
 LOSS0 = ol_e(OL_SPEECH_END)              # the TV loses its signal once he has finished "They don't need retail"
@@ -1008,7 +1122,7 @@ D.effect(gSO, {"type": "glow", "glowThreshold": 60, "glowRadius": 14, "glowInten
 D.effect(gO, {"type": "vignette", "amount": 0.55, "feather": 0.6, "radius": 0.75})
 ng2O = D.effect(gO, {"type": "grain", "amount": 0.12, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0, "seed": 9})
 D.effect_script(gO, ng2O, "seed", "return Math.floor(input.time.seconds * 24);")
-zkO = [(0, 100, "linear"), (N, 110, EASE)]          # slow push on the whole TV, like the Donahoe break
+zkO = [(0, 100, "linear"), (LOSS0, 118, EASE), (N, 120, EOUT)]     # eased push on the whole TV: 118% by the end of his line
 kk(gO, "scaleX", zkO); kk(gO, "scaleY", zkO)
 glitch(gO, N)
 
@@ -1056,13 +1170,6 @@ for (wd, f), xo in zip((("THEY", WE["They"]), ("DON'T", WE["don't"]), ("NEED", W
     D.text(f"CLIMAX '{wd}'", wd, 960 - wt / 2 + xo, top_y - 34, "archivo", TSZ, TEXT, a + f, b, RG, wght=640)
 R = D.text("CLIMAX 'RETAIL.'", "RETAIL.", 960 - rw / 2, base_y, "archivo", rs, TEXT, a + WE["retail"], b, RG, wght=880, wdth=80)
 D.vox(R, rs)
-st0 = a + WE["retail"] + 10
-th = 0.075 * rs
-line = D.nid()
-D.add({"type": "createFxRectLayer", "compositionId": C, "layerId": line, "name": "CLIMAX strike-through", "parentLayerId": RG,
-       "activeRange": {"start": ms(st0), "duration": ms(b) - ms(st0)}, "transform": xf(pos=(960 - rw / 2 - 14, base_y - 0.37 * rs - th / 2), anchor=(0, 0)),
-       "rect": {"size": [rw + 28, th], "fillColor": GREEN}})
-kk(line, "scaleX", [(0, 0, "linear"), (5, 100, EOUT)])
 plan_rows.append(("CLIP_OLEARY", "2021 / This is WHY / you should be WORRIED / about the FUTURE / of a [Walmart logo] / or a [Foot Locker logo] / THEY DON'T NEED RETAIL.",
                   "Kevin inside the TV (Donahoe placement); captions beside the TV, hard open; logos under their lead-ins",
                   "Hard open", "RETAIL. centred + strike-through; TV signal loss for 1 s", "Hard cut", "left / right of the TV, climax centre"))
@@ -1268,13 +1375,63 @@ MG_FC1_MAP = clean
 plan_rows.append(("FC1", "THAT WAS -> (MG) 2021 / $280B / 2026 / $60B / -80% / S&P 100", "Special type in the empty stage, then the supplied MG",
                   "Blur-to-sharp", "MG", "Hard cut", "centre"))
 
+# ================= FC3: supplied 'Endless Gallery' MG (its own VO muted) + special captions DUNKS. / AIR FORCE 1S. / RETRO JORDANS. =================
+(_, a, b) = SEG["FC3"]
+gs3 = D.group("FC3 SPECIAL CAPTIONS (Dunks / Air Force 1s / Retro Jordans)", 0, endcard_in)
+soft_shadow(gs3)
+SH3 = [(16, [0], {0}), (17, [0, 1, 2], {2}), (18, [0, 1], {1})]
+st3 = [max(a, wfc(ln, ix[0])) for ln, ix, _k in SH3]
+for k, (ln, ix, keys) in enumerate(SH3):
+    f1 = st3[k + 1] if k + 1 < len(SH3) else b
+    ws = [WORDS[ln][i]["w"].upper() for i in ix]
+    sz = fit_size(" ".join(ws), "archivo", 150, 1300, {"wght": 880, "wdth": 80})
+    xs_, lw = layout_line(ws, [WH(sz)] * len(ws))
+    for j, i in enumerate(ix):
+        wh_word(f"FC3 '{ws[j]}'", ws[j], 960 - lw / 2 + xs_[j], 250, sz, GREEN if i in keys else TEXT, min(max(st3[k], wfc(ln, i)), f1 - 1), f1, gs3, block=i in keys)
+g3 = D.nid()
+D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": g3, "name": "FC3 MG: Endless Gallery (supplied, its VO muted), retimed to the names",
+       "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)}, "sourceRange": {"start": 0, "duration": GALLERY["durationMs"]},
+       "sourceIntrinsicDuration": GALLERY["durationMs"], "transform": xf(),
+       "source": {"assetId": "mg_gallery", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
+k3 = [(a, 0), (st3[1], 750), (st3[2], 1750), (b, min(GALLERY["durationMs"] - 34, 1750 + round((b - st3[2]) * 1000 / FPS)))]
+D.add({"type": "setFxLayerTimeRemap", "compositionId": C, "layerId": g3, "timeRemap": {
+    "keyframes": [{"id": f"g3-{q}", "time": ms(e_), "value": v_, "easing": {"type": "linear"}} for q, (e_, v_) in enumerate(k3)],
+    "before": "inactive", "after": "inactive"}})
+plan_rows.append(("FC3", "DUNKS. / AIR FORCE 1S. / RETRO JORDANS.", "Special captions over the supplied MG", "Blur-to-sharp", "Block-to-word", "Hard cut", "top centre"))
+
+# ================= FC4: supplied 'Three Hits' MG retimed to Tariffs / China / -26% / in one quarter / 2025-2028 + TARIFFS. =================
+(_, a, b) = SEG["FC4"]
+fv4 = lambda line, t: math.ceil(t * FPS + off[line] - 1e-6)
+gs4 = D.group("FC4 SPECIAL CAPTION (TARIFFS.)", 0, endcard_in)
+soft_shadow(gs4)
+f_china = fv4(24, 57.635)
+tz = fit_size("TARIFFS.", "archivo", 170, 900, {"wght": 880, "wdth": 80})
+wh_word("FC4 'TARIFFS.'", "TARIFFS.", 960 - advance("TARIFFS.", *WH(tz)) / 2, 300, tz, TEXT, a, f_china, gs4, block=True)
+g4 = D.nid()
+D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": g4, "name": "FC4 MG: Three Hits (supplied), retimed to the VO",
+       "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)}, "sourceRange": {"start": 0, "duration": THREEHITS["durationMs"]},
+       "sourceIntrinsicDuration": THREEHITS["durationMs"], "transform": xf(),
+       "source": {"assetId": "mg_threehits", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
+f28 = fv4(25, 62.56)
+k4 = [(a, 0), (f_china, 750), (fv4(24, 58.16), 1250), (fv4(24, 59.44), 2500), (fv4(25, 60.559), 3500), (f28, 5250),
+      (b, min(THREEHITS["durationMs"] - 34, 5250 + round((b - f28) * 1000 / FPS)))]
+k4c = []
+for e_, v_ in k4:
+    if k4c and (e_ <= k4c[-1][0] or v_ < k4c[-1][1]):
+        continue
+    k4c.append((e_, v_))
+D.add({"type": "setFxLayerTimeRemap", "compositionId": C, "layerId": g4, "timeRemap": {
+    "keyframes": [{"id": f"g4-{q}", "time": ms(e_), "value": v_, "easing": {"type": "linear"}} for q, (e_, v_) in enumerate(k4c)],
+    "before": "inactive", "after": "inactive"}})
+plan_rows.append(("FC4", "TARIFFS. -> (MG) China -26% in one quarter / 2025-2028", "Special caption, then the supplied MG", "-", "Block-to-word", "Hard cut", "top centre"))
+
 # ================= 5. placeholder screens =================
 GRUNGE = []
 for (name, kind, first, label), a, b in zip(SEGMENTS, seg_start, seg_end):
     if kind in ("FC", "TC", "CLIP"):
         nm = {"FC": f"{name} FULL COVER PLACEHOLDER (blank, VO + watermark)", "TC": f"{name} Text Centerpiece background",
               "CLIP": f"{name} live clip background"}[kind]
-        if kind == "FC" and name not in ("FC1", "FC2"):
+        if kind == "FC" and name not in ("FC1", "FC2", "FC3", "FC4"):
             w_mg = advance("MG", "archivo", 140, {"wght": 800, "wdth": 100}, 0)
             D.text(f"{name} preview label MG", "MG", 960 - w_mg / 2, 590, "archivo", 140, TEXT, a, b, wght=800)
         if kind in ("FC", "TC"):
@@ -1353,6 +1510,15 @@ for segname, lst in seg_shots.items():
             kk(hl, "scaleX", [(0, 0, "linear"), (6, 0, "linear"), (13, 100, EOUT)])
         if not chart:
             FISHEYE_LIDS.append(sgp)
+        # grade_lite.json finish: its prism streaks (two of pzA-pzD, breathing 25% -> 45% -> 25%) and its own grain (overlay 60%)
+        grain_layer(f"clip grain {sh['clip']}@{sh['src']}", sgp, 0, n, 7919 * (len(FISHEYE_LIDS) + 3), 60)
+        for pzi, pzn in enumerate([("pzA", "pzC"), ("pzB", "pzD"), ("pzA", "pzB")][len(FISHEYE_LIDS) % 3]):
+            pl = D.nid()
+            D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": pl, "name": f"prism streak {pzn} [blend:screen]", "parentLayerId": sgp,
+                   "activeRange": {"start": 0, "duration": gdur}, "transform": xf(pos=(0, 0), anchor=(0, 0), opacity=25),
+                   "source": {"assetId": f"prism_{pzn}", "fit": "none"}})
+            mid_ = max(1, n // 2)
+            kk(pl, "opacity", [(0, 25 if pzi == 0 else 22, "linear"), (mid_, 45 if pzi == 0 else 40, EASE), (n, 25 if pzi == 0 else 22, EASE)])
         if (sh["clip"], sh["src"]) in FLICKER_SHOTS:
             m_asset, patt = FLICKER_SHOTS[(sh["clip"], sh["src"])]
             flicker(sgp, m_asset, 0, n, src_ms, xf(), patt, f"{sh['clip']}@{sh['src']}", dur_ms=gdur)
@@ -1364,6 +1530,8 @@ for segname, lst in seg_shots.items():
                "source": {"assetId": sh["asset"], "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
                "volume": 0.0})
         grade_fx(lid, lum=shot_luma(sh["mezz"], sh["src"] - sh["mezz_start"] + n / 2 / FPS))
+        D.effect(lid, {"type": "glow", "glowThreshold": 72, "glowRadius": 18, "glowIntensity": 0.2})          # grade_lite bloom 0.2 / r18
+        D.effect(lid, {"type": "chromaticAberration", "amount": 0.12, "direction": 0})                       # grade_lite colour split
         if not chart:
             D.effect(lid, {"type": "fisheye", "amount": 38, "centerX": 0.5, "centerY": 0.5})
             D.effect(lid, {"type": "vignette", "amount": 0.75, "feather": 0.3, "radius": 0.62})
@@ -1433,6 +1601,17 @@ for i in [x for x in ORDER if isinstance(x, int)]:
     src = round(s_in * 1000) - 40
     if src < 0:
         a_ms, src = a_ms - src, 0
+    if i in VO_CUTS:           # two pieces with the pause between them shortened
+        c0, c1 = VO_CUTS[i]
+        n1 = round(c0 * 1000) - src
+        D.add({"type": "createFxAudioLayer", "compositionId": C, "layerId": D.nid(), "name": f"VO L{i:02d} part 1 (to the trimmed pause)",
+               "activeRange": {"start": a_ms, "duration": n1}, "sourceRange": {"start": src, "duration": n1},
+               "sourceIntrinsicDuration": VO_MS, "source": {"assetId": "vo_107"}, "volume": 1.0})
+        n2 = round((s_out - c1) * 1000) + 60
+        D.add({"type": "createFxAudioLayer", "compositionId": C, "layerId": D.nid(), "name": f"VO L{i:02d} part 2 (after the trimmed pause)",
+               "activeRange": {"start": a_ms + n1, "duration": n2}, "sourceRange": {"start": round(c1 * 1000), "duration": min(n2, VO_MS - round(c1 * 1000))},
+               "sourceIntrinsicDuration": VO_MS, "source": {"assetId": "vo_107"}, "volume": 1.0})
+        continue
     n = round((s_out - s_in) * 1000) + 100
     D.add({"type": "createFxAudioLayer", "compositionId": C, "layerId": D.nid(), "name": f"VO L{i:02d} {text[:40]}",
            "activeRange": {"start": a_ms, "duration": n}, "sourceRange": {"start": src, "duration": min(n, VO_MS - src)},
@@ -1457,7 +1636,9 @@ _d = json.load(open(os.path.join(W, "editable.json"))); _d["duration"] = round(m
 def _blend(o):
     if isinstance(o, dict):
         n = o.get("name", "")
-        if "GRUNGE" in n: o["blendMode"] = "softLight"
+        _m = __import__("re").search(r"\[blend:(\w+)\]", n)
+        if _m: o["blendMode"] = _m.group(1)
+        elif "GRUNGE" in n: o["blendMode"] = "softLight"
         elif "soft hotspot" in n: o["blendMode"] = "screen"
         for v in o.values(): _blend(v)
     elif isinstance(o, list):

@@ -48,17 +48,21 @@ END_TAIL_FRAMES = 4                                      # after "once." before 
 ENDCARD_FRAMES = 67                                      # attached CTA: 67 video frames at 30 fps
 
 
+VO_CUTS = {1: (0.495, 0.495 + 5 / 30)}      # VO seconds removed inside a line (the pause after "Well,")
+GAP_FRAMES = 4                              # between VO lines (brief: 4-6); 8 before centrepieces and clips
+
+
 def timeline(clip_frames):
     """Return {item: (edit_in_frame, edit_out_frame)} and the end-card in-frame."""
     t, prev, out = 0, None, {}
     for it in ORDER:
         if prev is not None:
-            want = 8 if it in BREATH_BEFORE else 5
+            want = 8 if it in BREATH_BEFORE else GAP_FRAMES
             if isinstance(it, int) and isinstance(prev, int):
                 src_gap = round((LINE[it][3] - LINE[prev][4]) * FPS)
                 want = min(want, src_gap)
             t += want
-        dur = clip_frames[it] if isinstance(it, str) else round((LINE[it][4] - LINE[it][3]) * FPS)
+        dur = clip_frames[it] if isinstance(it, str) else round((LINE[it][4] - LINE[it][3] - (VO_CUTS[it][1] - VO_CUTS[it][0] if it in VO_CUTS else 0)) * FPS)
         out[it] = (t, t + dur)
         t += dur
         prev = it
