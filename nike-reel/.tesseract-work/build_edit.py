@@ -1057,17 +1057,18 @@ for si, e0 in enumerate(SUBS):
     F0 = ol_F(e0)
     src_ms = round(F0 * 1000 / 30)
     last = si == len(SUBS) - 1
+    lay = min(dur_, info["durationMs"] - src_ms, MATTES["m_oleary"]["durationMs"] - src_ms)   # never longer than the source left (no stretch)
     if si == 0:
         flicker(g, "m_oleary", YR, 6, round((YR + F_IN) * 1000 / 30), OL_T, FLICK_QUICK, "O'Leary", dur_ms=ms(YR + 6) - ms(YR))
     mv = D.nid()
     mi = MATTES["m_oleary"]
     D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": mv, "name": f"Kevin matte {si} (MODNet)", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, mi["durationMs"] - src_ms))},
+           "activeRange": {"start": 0, "duration": lay}, "sourceRange": {"start": src_ms, "duration": lay},
            "sourceIntrinsicDuration": mi["durationMs"], "transform": OL_T,
            "source": {"assetId": "m_oleary", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
     pv = D.nid()
     D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": pv, "name": f"Kevin person {si} + own audio", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, info["durationMs"] - src_ms))},
+           "activeRange": {"start": 0, "duration": lay}, "sourceRange": {"start": src_ms, "duration": lay},
            "sourceIntrinsicDuration": info["durationMs"], "transform": OL_T,
            "source": {"assetId": "oleary_fast", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
            "volume": CLIPS[key][4]})
@@ -1093,7 +1094,7 @@ for si, e0 in enumerate(SUBS):
                                                 "refine": {"denoise": 2, "blurRadius": 2, "choke": 0}, "invert": False}}})
     bv = D.nid()
     D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": bv, "name": f"Kevin background {si} (desat, darker, blurred)", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, info["durationMs"] - src_ms))},
+           "activeRange": {"start": 0, "duration": lay}, "sourceRange": {"start": src_ms, "duration": lay},
            "sourceIntrinsicDuration": info["durationMs"], "transform": OL_T,
            "source": {"assetId": "oleary_fast", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
     grade_fx(bv, lum=0.3)
@@ -1644,6 +1645,19 @@ def _blend(o):
     elif isinstance(o, list):
         for v in o: _blend(v)
 _blend(_d)
+_bad = []
+def _chk(o):
+    if isinstance(o, dict):
+        if o.get("type") in ("Video", "Audio"):
+            _mp = (o.get("playback") or {}).get("mapping") or {}
+            if _mp.get("type") == "linear" and abs(_mp["input"]["duration"] - _mp["output"]["duration"]) > 2:
+                _bad.append(o.get("name"))
+        for v in o.values(): _chk(v)
+    elif isinstance(o, list):
+        for v in o: _chk(v)
+_chk(_d)
+if _bad:
+    raise SystemExit("stretched layers (speed/pitch change): " + "; ".join(map(str, _bad)))
 json.dump(_d, open(os.path.join(W, "editable.json"), "w"))
 run("project", "commit", "--project", P, "--file", os.path.join(W, "editable.json"))
 json.dump(dict(clip_frames=clip_frames, timeline={str(k): v for k, v in tl.items()}, endcard_in=endcard_in, total=TOTAL,
