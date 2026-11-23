@@ -26,7 +26,8 @@ clip_frames = {k: round((v[3] - v[2]) / v[5] * FPS) for k, v in CLIPS.items()}
 OL_FIN = 5                                  # O'Leary fast-clip frames: in (silence before "This"), pauses removed, speech end
 OL_TRIMS = [(96, 101), (157, 160)]          # 7.3 f pause before "a Walmart" -> 2.3 f; 6.3 f pause before "They" -> 3.3 f
 OL_SPEECH_END = 201
-clip_frames["CLIP_OLEARY"] -= sum(t1 - t0 for t0, t1 in OL_TRIMS)
+OL_LOSS = 30                                # the TV holds the signal loss for 1 s after "They don't need retail"
+clip_frames["CLIP_OLEARY"] = (OL_SPEECH_END - OL_FIN - sum(t1 - t0 for t0, t1 in OL_TRIMS)) + OL_LOSS
 if len(sys.argv) == 4:
     clip_frames = dict(zip(["CLIP_OLEARY", "CLIP_DONAHOE", "CLIP_HILL"], map(int, sys.argv[1:])))
 tl, endcard_in = timeline(clip_frames)
@@ -155,7 +156,7 @@ def xf(pos=(960, 540), scale=100, anchor=(960, 540), opacity=100):
     return {"anchorPoint": list(anchor), "position": list(pos), "scale": [scale, scale], "rotation": 0, "opacity": opacity}
 
 
-CROP = {"B51": ((960, 705), 132), "B52": ((960, 500), 110), "B44": ((1104, 600), 115)}    # B51: ABC7 logo x1530-1720/y835-985 -> crop bottom; B52: "LilJohn504" channel mark top-left -> crop top
+CROP = {"CV": ((440, 671), 154), "BF": ((960, 686), 127), "B51": ((960, 705), 132), "B52": ((960, 500), 110), "B44": ((1104, 600), 115)}    # B51: ABC7 logo x1530-1720/y835-985 -> crop bottom; B52: "LilJohn504" channel mark top-left -> crop top
 
 
 def punch(clip):
@@ -266,7 +267,7 @@ def zoom_transition(lid, n, base=100.0, end=None, t_in=True, t_out=False, push_t
 
 
 CAP_Y, CAP_SIZE, CAP_W = 556, 50, 640
-SPLITS = {8: [(0, 2), (2, 4), (5, 6)], 11: [(0, 2), (2, 5)],
+SPLITS = {8: [(0, 2), (2, 4)], 11: [(0, 2), (2, 5)],
           12: [(0, 3), (3, 6), (6, 9), (9, 11), (11, 13), (13, 16)], 13: [(0, 4), (4, 7), (7, 11)],
           15: [(0, 2), (2, 5), (5, 9)], 19: [(0, 3), (3, 5), (5, 8)], 20: [(0, 2), (2, 5)], 21: [(0, 2), (2, 4), (4, 7)],
           22: [(0, 2), (2, 5)], 26: [(0, 3), (3, 6)]}
@@ -473,57 +474,32 @@ def cam_keys(g, keys):
         kk(g, prop, [(f, round(v[prop], 3), e) for (f, v, e) in clean])
     mblur(g)
 
-# ================= 4a. TC1: camera follows each word (ease-out, motion blur); retail stores pop in; slide right, then a true cut wide =================
+# ================= 4a. TC1: camera follows each word; retail stores pop in; then one eased move DOWN (motion blur) to 'more than anyone.' =================
 (_, a, b) = SEG["TC1"]
 L = WORDS[1]
-f_cut = wf(1, 6, a)
 big = ("serif", 230, None, 0)
 pos_s1, _ = row([w["w"] for w in L[0:4]], [SMALL] * 4, 404)
 pos_b, _ = row(["needed", "retail"], [big, big], 618)
-pos_s2, _ = row([w["w"] for w in L[6:9]], [SMALL] * 3, 714)
-
-
-def tc1_build(g, lo, hi, tag):
-    """Builds the lockup in group g, visible in [lo, hi). Words that started before lo skip their entrance."""
-    out = {}
-    for i, (x, y) in zip(range(0, 4), pos_s1):
-        f0 = wf(1, i, a)
-        if f0 >= hi:
-            continue
-        lid = D.text(f"TC1{tag} '{L[i]['w']}'", L[i]["w"], x, y, "archivo", 58, TEXT, max(f0, lo), hi, g, wght=520); D.vox(lid, 58)
-        if f0 >= lo:
-            D.blur_to_sharp(lid)
-        out[i] = (f0, x + advance(L[i]["w"], *SMALL) / 2, y - 21)
-    for k, (i, (x, y)) in enumerate(zip((4, 5), pos_b)):
-        f0 = wf(1, i, a)
-        if f0 >= hi:
-            continue
-        lid, w = centred_text(f"TC1{tag} KEY '{L[i]['w']}'", L[i]["w"], x, y, "serif", 230, GREEN, max(f0, lo), hi, g)
-        D.vox(lid, 230)
-        if f0 >= lo:
-            D.pop(lid)
-            if k == 0:
-                D.flicker_in(lid)
-        out[i] = (f0, x + w / 2, y - 78)
-    for i, (x, y) in zip(range(6, 9), pos_s2):
-        f0 = max(f_cut, wf(1, i, a))
-        if f0 >= hi:
-            continue
-        lid = D.text(f"TC1{tag} '{L[i]['w']}'", L[i]["w"], x, y, "archivo", 58, TEXT, max(f0, lo), hi, g, wght=520); D.vox(lid, 58)
-        if f0 >= lo:
-            D.blur_to_sharp(lid)
-    return out
-
-
-gA = D.group("TC1 A: zoomed camera follows each word (retail stores pop in)", 0, f_cut)
-fA = tc1_build(gA, 0, f_cut, "A")
+gA = D.group("TC1: camera follows each word, then moves down to 'more than anyone.'", 0, b)
+fA = {}
+for i, (x, y) in zip(range(0, 4), pos_s1):
+    f0 = wf(1, i, a)
+    lid = D.text(f"TC1 '{L[i]['w']}'", L[i]["w"], x, y, "archivo", 58, TEXT, f0, b, gA, wght=520); D.vox(lid, 58); D.blur_to_sharp(lid)
+    fA[i] = (f0, x + advance(L[i]["w"], *SMALL) / 2, y - 21)
+for k, (i, (x, y)) in enumerate(zip((4, 5), pos_b)):
+    f0 = wf(1, i, a)
+    lid, w = centred_text(f"TC1 KEY '{L[i]['w']}'", L[i]["w"], x, y, "serif", 230, GREEN, f0, b, gA)
+    D.vox(lid, 230); D.pop(lid)
+    if k == 0:
+        D.flicker_in(lid)
+    fA[i] = (f0, x + w / 2, y - 78)
 ret_c = fA[5][1:]
 f_ret = wf(1, 5, a)
 for k, (asset, dx, dy, rot) in enumerate((("st_footlocker", 360, -300, -3), ("st_nikestore", -430, 250, 2.5), ("st_aisle", 520, 215, -2))):
     f0 = f_ret + 1 + 3 * k
     lid = D.nid()
-    D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": lid, "name": f"TC1 retail pop-in {asset}", "parentLayerId": gA,
-           "activeRange": {"start": ms(f0), "duration": ms(f_cut) - ms(f0)},
+    D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": lid, "name": f"TC1 retail pop-in {asset} (scrolls up with the move)", "parentLayerId": gA,
+           "activeRange": {"start": ms(f0), "duration": ms(b) - ms(f0)},
            "transform": {"anchorPoint": [540, 310], "position": [ret_c[0] + dx, ret_c[1] + dy], "scale": [40, 40], "rotation": rot, "opacity": 100},
            "source": {"assetId": asset, "fit": "contain"}})
     kk(lid, "scaleX", [(0, 26, "linear"), (2, 43, EOUT), (4, 40, EOUT)])
@@ -540,24 +516,51 @@ for i in range(0, 6):
             keys.append((depart, prev_v, "linear"))
         keys.append((f + 2, v, EOUT)); prev_arr = f + 2
     prev_v = v
-slide = dict(prev_v); slide["positionX"] -= 170
-keys.append((f_cut, slide, EOUT))                       # zoomed in on 'retail', the camera slides right
-cam_keys(gA, keys)
-gB = D.group("TC1 B: hard cut to 'more than anyone.' alone", 0, b)
+# 'more than anyone.' sits below the lockup; the camera travels down to it (ease in-out, motion blur)
+DROP = 1180
 MT = ("archivo", 72, {"wght": 520, "wdth": 100}, 0)
 AN = ("serif_italic", 170, None, 0)
 xsB, WB = layout_line(["more", "than", "anyone."], [MT, MT, AN])
+Y_MT = 600 + DROP
+m0 = max(prev_arr + 1, f_ret + 8)                      # start moving once the stores have popped
+m1 = m0 + 14
+v_end = cam_vals(960, Y_MT - 40, 1.0)
+keys.append((m0, prev_v, "linear"))
+keys.append((m1, v_end, EASE))
+keys.append((b, cam_vals(960, Y_MT - 40, 1.03), EOUT))
+cam_keys(gA, keys)
+
+
+def _bez(x1, y1, x2, y2, t):
+    lo_, hi_ = 0.0, 1.0
+    for _ in range(40):
+        u = (lo_ + hi_) / 2
+        x = 3 * (1 - u) ** 2 * u * x1 + 3 * (1 - u) * u ** 2 * x2 + u ** 3
+        lo_, hi_ = (u, hi_) if x < t else (lo_, u)
+    u = (lo_ + hi_) / 2
+    return 3 * (1 - u) ** 2 * u * y1 + 3 * (1 - u) * u ** 2 * y2 + u ** 3
+
+
+LOCK_BOTTOM = ret_c[1] + 215 + 124 * 1.0              # lowest store image edge (local)
+f_clear = m1
+for fr_ in range(m0, m1 + 1):                          # first frame the whole lockup + images are off the top of the screen
+    p_ = _bez(EASE["x1"], EASE["y1"], EASE["x2"], EASE["y2"], (fr_ - m0) / (m1 - m0))
+    z = prev_v["scaleY"] / 100 + (1.0 - prev_v["scaleY"] / 100) * p_
+    py = prev_v["positionY"] + (v_end["positionY"] - prev_v["positionY"]) * p_
+    if py + z * (LOCK_BOTTOM - 540) < 0:
+        f_clear = fr_
+        break
+TC1_CLEAR = f_clear
 for k_, (i, sp) in enumerate(zip((6, 7, 8), (MT, MT, AN))):
-    f0 = max(f_cut, wf(1, i, a))
+    f0 = max(f_clear, wf(1, i, a))
     if sp is AN:
-        lid = D.text("TC1B 'anyone.' (Instrument Serif italic)", "anyone.", 960 - WB / 2 + xsB[k_], 600, "serif_italic", 170, GREEN, f0, b, gB)
+        lid = D.text("TC1 'anyone.' (Instrument Serif italic)", "anyone.", 960 - WB / 2 + xsB[k_], Y_MT, "serif_italic", 170, GREEN, f0, b, gA)
         D.vox(lid, 170); D.blur_to_sharp(lid, 16)
     else:
-        lid = D.text(f"TC1B '{L[i]['w']}'", L[i]["w"], 960 - WB / 2 + xsB[k_], 600, "archivo", 72, TEXT, f0, b, gB, wght=520)
+        lid = D.text(f"TC1 '{L[i]['w']}'", L[i]["w"], 960 - WB / 2 + xsB[k_], Y_MT, "archivo", 72, TEXT, f0, b, gA, wght=520)
         D.vox(lid, 72); D.blur_to_sharp(lid)
-cam_keys(gB, [(f_cut, cam_vals(960, 560, 1.0), "linear"), (b, cam_vals(960, 560, 1.04), EOUT)])
 plan_rows.append(("TC1", "Well, turns out, Nike NEEDED RETAIL more than anyone.", "Size-contrast build", "Blur-to-sharp",
-                  "Flicker-in; camera follows each word (ease-out, motion blur); 3 retail stills pop in; slide right, hard cut wide", "Cut out", "centered"))
+                  "Flicker-in; camera follows each word; 3 retail stills pop in; one eased move down (motion blur) to 'more than anyone.'", "Cut out", "centered"))
 
 # ================= 4b. TC2: camera follows So / WHAT / HAPPENED? (ease-out, motion blur), slides right, hard cut wide =================
 (_, a, b) = SEG["TC2"]
@@ -868,19 +871,19 @@ def tv_captions(key, words, groups, slot_a, slot_b, y=1012):
                    GREEN if (i0 + j) in keys else TEXT, fw, f1, cg)
 
 
-# --- O'Leary intro (v10): 2021 flash, continuous eye-anchored drift, hard punch-ins, trimmed pauses,
-#     matte-graded background, one caption idea at a time, RETAIL. climax behind his head ---
+# --- O'Leary intro (v11): 2021 flash, Kevin inside the vintage TV (same placement as the Donahoe break), his matte grade kept,
+#     no face zooms, trimmed pauses, hard-open captions beside the TV, store logos under their lead-ins,
+#     THEY DON'T NEED / RETAIL. in the centre, then the TV loses its signal for a second ---
 key = "CLIP_OLEARY"
 a, b = tl[key][0], SEG["A1_OLEARY"][2]
 info = CLIPINFO[key]
 year_flash("2021", a, a + YR)
 
-F_IN = OL_FIN                       # first fast-clip frame used (silence before "This")
-TRIMS = OL_TRIMS                    # fast-clip frame ranges removed (pauses), each hidden on a framing change
+F_IN = OL_FIN
+TRIMS = OL_TRIMS
 
 
 def ol_e(F):
-    """fast-clip frame -> edit frame (relative to clip start), accounting for trims."""
     rem = sum(min(max(F - t0, 0), t1 - t0) for t0, t1 in TRIMS)
     return F - F_IN - rem
 
@@ -895,78 +898,71 @@ def ol_F(e):
 
 OLW = {"why": 28.8, "you": 40.2, "should": 45.9, "be": 51.6, "worried": 56.4, "about": 66.9, "the": 72.6, "future": 80.4,
        "of": 90.9, "a1": 102.0, "Walmart": 112.8, "or": 123.6, "a2": 130.5, "Foot": 137.1, "They": 161.7, "don't": 165.0,
-       "need": 171.6, "retail": 179.4}            # word onsets in fast-clip frames (Whisper + energy check)
+       "need": 171.6, "retail": 179.4}
 WE = {k: ol_e(math.ceil(v)) for k, v in OLW.items()}
 N = b - a
-E = (1090.0, 474.0)                 # point between his eyes in the base framing
-OL_T = xf(pos=(1517, 853), scale=158)     # base framing: hides the CNBC chyron (y>770) and stock box (x>1230)
+LOSS0 = ol_e(OL_SPEECH_END)              # the TV loses its signal once he has finished "They don't need retail"
+OL_T = xf(pos=(1517, 853), scale=158)     # his framing inside the picture (hides the CNBC chyron and stock box)
 
-
-def drift(e):
-    u = max(0.0, min(1.0, e / N))
-    return 100 + 8 * (u * u * (3 - 2 * u))
-
-
-# (edit start, absolute scale %, eye x, eye y, note)
-SUBS = [(0, None, E[0], E[1], "base (drift only)"),
-        (WE["worried"], 115, E[0], E[1], "punch IN on 'worried'"),
-        (ol_e(TRIMS[0][1]), 106, 1150, E[1], "pull OUT, face right ('a Walmart', hides trim 1)"),
-        (WE["Foot"], 118, 920, E[1], "punch IN, face left on 'Foot Locker'"),
-        (ol_e(TRIMS[1][1]), 118, 1010, E[1], "re-angle on 'They' (hides trim 2)"),
-        (WE["retail"], 136, 980, 640, "TIGHTEST on 'retail' (slam)")]
-
-cg = D.group("O'LEARY CAPTIONS (one phrase at a time, open side)", 0, endcard_in)
+# captions group first, so it sits above the TV
+cg = D.group("O'LEARY CAPTIONS (hard open, one phrase at a time, beside the TV)", 0, endcard_in)
 D.effect(cg, {"type": "dropShadow", "enabled": True, "color": [0, 0, 0, 0.55], "offset": [0, 0], "blurRadius": 34, "spreadRadius": 4, "blendMode": "normal"})
-gO = D.nid()
-D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": gO, "name": "LIVE CLIP Kevin O'Leary (1.15x, drift 100->108 on his eyes)",
-       "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
-       "transform": {"anchorPoint": list(E), "position": list(E), "scale": [100, 100], "rotation": 0, "opacity": 100}})
-kk(gO, "scaleX", [(0, 100, "linear"), (N, 108, EASE)])
-kk(gO, "scaleY", [(0, 100, "linear"), (N, 108, EASE)])
-D.effect(gO, {"type": "vignette", "amount": 0.35, "feather": 0.6, "radius": 0.55})
-glitch(gO, N)
 
-for si, (e0, S, ex, ey, note) in enumerate(SUBS):
-    e1 = SUBS[si + 1][0] if si + 1 < len(SUBS) else N
-    d0 = drift(e0)
-    s = 1.0 if S is None else S / d0
-    T = (E[0] + (ex - E[0]) / (d0 / 100), E[1] + (ey - E[1]) / (d0 / 100))
+RG = D.group("CLIMAX: THEY DON'T NEED / RETAIL. (centre)", 0, endcard_in)
+D.effect(RG, {"type": "dropShadow", "enabled": True, "color": [0, 0, 0, 0.6], "offset": [0, 0], "blurRadius": 40, "spreadRadius": 6, "blendMode": "normal"})
+gO = D.nid()
+D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": gO, "name": "LIVE CLIP Kevin O'Leary inside the TV (1.15x)",
+       "activeRange": {"start": ms(a), "duration": ms(b) - ms(a)},
+       "transform": {"anchorPoint": [922, 468], "position": [922, 468], "scale": [100, 100], "rotation": 0, "opacity": 100}})
+tvdur = ms(b) - ms(a)
+D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": D.nid(), "name": "TV frame (supplied green-screen still, screen keyed out)",
+       "parentLayerId": gO, "activeRange": {"start": 0, "duration": tvdur}, "transform": xf(pos=(0, 0), anchor=(0, 0)),
+       "source": {"assetId": "tv_frame", "fit": "contain"}})
+maskO = D.nid()
+D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": maskO, "name": "TV screen matte", "parentLayerId": gO,
+       "activeRange": {"start": 0, "duration": tvdur}, "transform": xf(pos=(0, 0), anchor=(0, 0)), "source": {"assetId": "tv_mask", "fit": "contain"}})
+gSO = D.nid()
+D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": gSO, "name": "TV screen content (CRT, signal loss at the end)", "parentLayerId": gO,
+       "activeRange": {"start": 0, "duration": tvdur},
+       "transform": {"anchorPoint": [960, 540], "position": [960, 540], "scale": [100, 100], "rotation": 0, "opacity": 100}})
+D.add({"type": "setFxLayerTrackMatte", "compositionId": C, "layerId": gSO, "matteLayerId": maskO, "mode": "alpha"})
+# Kevin's picture (his matte-based grade kept) scaled onto the screen: eyes upper-middle of the screen
+gK = D.nid()
+D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": gK, "name": "Kevin picture on the screen", "parentLayerId": gSO,
+       "activeRange": {"start": 0, "duration": tvdur},
+       "transform": {"anchorPoint": [1090, 474], "position": [922, 440], "scale": [28, 28], "rotation": 0, "opacity": 100}})
+
+SUBS = [0, ol_e(TRIMS[0][1]), ol_e(TRIMS[1][1])]      # sub-shots only where the pauses were trimmed (no reframes)
+for si, e0 in enumerate(SUBS):
+    e1 = SUBS[si + 1] if si + 1 < len(SUBS) else N
     g = D.nid()
     dur_ = ms(e1) - ms(e0)
-    D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": g, "name": f"O'Leary sub-shot {si}: {note}", "parentLayerId": gO,
+    D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": g, "name": f"Kevin sub-shot {si} (trim join)", "parentLayerId": gK,
            "activeRange": {"start": ms(e0), "duration": dur_},
-           "transform": {"anchorPoint": list(E), "position": [round(T[0], 2), round(T[1], 2)], "scale": [round(100 * s, 3)] * 2, "rotation": 0, "opacity": 100}})
+           "transform": {"anchorPoint": [960, 540], "position": [960, 540], "scale": [100, 100], "rotation": 0, "opacity": 100}})
     F0 = ol_F(e0)
     src_ms = round(F0 * 1000 / 30)
     last = si == len(SUBS) - 1
-    if last:     # 2-frame white flash on the slam, same signature as the silhouette flash
-        fl = D.nid()
-        D.add({"type": "createFxRectLayer", "compositionId": C, "layerId": fl, "name": "retail slam flash (2 f)", "parentLayerId": g,
-               "activeRange": {"start": 0, "duration": ms(2)}, "transform": xf(pos=(-400, -300), anchor=(0, 0)),
-               "rect": {"size": [2800, 1800], "fillColor": [1, 0.97, 0.92, 1]}})
-        D.keys(fl, "opacity", [(0, 90, "hold"), (1, 45, "hold")])
     if si == 0:
         flicker(g, "m_oleary", YR, 6, round((YR + F_IN) * 1000 / 30), OL_T, FLICK_QUICK, "O'Leary", dur_ms=ms(YR + 6) - ms(YR))
-    # person (matted) on top of the background
     mv = D.nid()
     mi = MATTES["m_oleary"]
-    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": mv, "name": f"O'Leary matte {si} (MODNet)", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": min(dur_, mi["durationMs"] - src_ms)},
+    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": mv, "name": f"Kevin matte {si} (MODNet)", "parentLayerId": g,
+           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, mi["durationMs"] - src_ms))},
            "sourceIntrinsicDuration": mi["durationMs"], "transform": OL_T,
            "source": {"assetId": "m_oleary", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
     pv = D.nid()
-    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": pv, "name": f"O'Leary person {si} + own audio", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": min(dur_, info["durationMs"] - src_ms)},
+    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": pv, "name": f"Kevin person {si} + own audio", "parentLayerId": g,
+           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, info["durationMs"] - src_ms))},
            "sourceIntrinsicDuration": info["durationMs"], "transform": OL_T,
            "source": {"assetId": "oleary_fast", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
            "volume": CLIPS[key][4]})
     D.add({"type": "setFxLayerTrackMatte", "compositionId": C, "layerId": pv, "matteLayerId": mv, "mode": "luma"})
-    n_ = e1 - e0
     vk = []
     if si == 0:
         vk += [(0, 0, "linear"), (2, CLIPS[key][4], "linear")]
     if last:
-        se = ol_e(OL_SPEECH_END) - e0
+        se = LOSS0 - e0
         vk += [(0, CLIPS[key][4], "linear"), (se, CLIPS[key][4], "linear"), (se + 3, 0, "linear")]
     if vk:
         D.keys(pv, "volume", vk)
@@ -981,121 +977,95 @@ for si, (e0, S, ex, ey, note) in enumerate(SUBS):
                                   "qualifier": {"semanticVersion": 1, "hue": {"center": 12, "width": 34, "softness": 12},
                                                 "saturation": {"low": 0.25, "high": 1, "softness": 0.1}, "luminance": {"low": 0.1, "high": 1, "softness": 0.05},
                                                 "refine": {"denoise": 2, "blurRadius": 2, "choke": 0}, "invert": False}}})
-    if last:     # RETAIL. behind his head (between person and background)
-        RG = D.nid()
-        D.add({"type": "createFxGroupLayer", "compositionId": C, "layerId": RG, "name": "CLIMAX: THEY DON'T NEED / RETAIL. (behind his head)", "parentLayerId": g,
-               "activeRange": {"start": 0, "duration": dur_},
-               "transform": {"anchorPoint": [960, 540], "position": [960, 540], "scale": [100, 100], "rotation": 0, "opacity": 100}})
-        D.effect(RG, {"type": "dropShadow", "enabled": True, "color": [0, 0, 0, 0.5], "offset": [0, 0], "blurRadius": 36, "spreadRadius": 4, "blendMode": "normal"})
-        S_abs = s * drift(e0) / 100
-
-        def loc(qx, qy):      # final screen point -> local coords of this sub-shot group (drift taken at the slam)
-            dd = drift(e0) / 100
-            return (E[0] + ((qx - E[0]) / dd - (T[0] - E[0])) / s, E[1] + ((qy - E[1]) / dd - (T[1] - E[1])) / s)
-
-        RET = WH(100)
-        rs = fit_size("RETAIL.", "archivo", 520, 1150, {"wght": 880, "wdth": 80})
-        rw = advance("RETAIL.", *WH(rs))
-        base_y = 380          # the top of his head overlaps the lower half of the word
-        top_y = base_y - 0.725 * rs
-        ls = rs / S_abs
-        lx, ly = loc(960 - rw / 2, base_y)
-        lw = rw / S_abs
-        R = D.text("CLIMAX 'RETAIL.' (slam)", "RETAIL.", lx, ly, "archivo", ls, TEXT, 0, n_, RG, wght=880, wdth=80, anchor=(lw / 2, -0.36 * ls))
-        D.vox(R, ls)
-        SLAM = {"type": "cubicBezier", "x1": 0.1, "y1": 0.9, "x2": 0.2, "y2": 1.0}
-        kk(R, "scaleX", [(0, 120, "linear"), (3, 100, SLAM)])
-        kk(R, "scaleY", [(0, 120, "linear"), (3, 100, SLAM)])
-        # strike-through drawn 7 frames after it lands, over 5 frames
-        st0 = 3 + 7
-        th = 0.075 * rs
-        sx, sy = loc(960 - rw / 2 - 14, base_y - 0.37 * rs - th / 2)
-        line = D.nid()
-        D.add({"type": "createFxRectLayer", "compositionId": C, "layerId": line, "name": "CLIMAX strike-through", "parentLayerId": RG,
-               "activeRange": {"start": ms(st0), "duration": ms(n_) - ms(st0)}, "transform": xf(pos=(sx, sy), anchor=(0, 0)),
-               "rect": {"size": [(rw + 28) / S_abs, th / S_abs], "fillColor": GREEN}})
-        kk(line, "scaleX", [(0, 0, "linear"), (5, 100, EOUT)])
-        # THEY DON'T NEED: small, above the R, word by word on their frames (relative to this sub-shot they come earlier -> shown from 0)
-        tsz = 54
-        tx, ty = loc(960 - rw / 2 + 8, top_y - 26)
-        xs_t, _w = layout_line(["THEY", "DON'T", "NEED"], [("archivo", tsz, {"wght": 640, "wdth": 100}, 0)] * 3)
-        for wi, (wd, xo) in enumerate(zip(["THEY", "DON'T", "NEED"], xs_t)):
-            D.text(f"CLIMAX '{wd}'", wd, tx + xo / S_abs, ty, "archivo", tsz / S_abs, TEXT, 0, n_, RG, wght=640)
     bv = D.nid()
-    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": bv, "name": f"O'Leary background {si} (desat, darker, blurred)", "parentLayerId": g,
-           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": min(dur_, info["durationMs"] - src_ms)},
+    D.add({"type": "createFxVideoLayer", "compositionId": C, "layerId": bv, "name": f"Kevin background {si} (desat, darker, blurred)", "parentLayerId": g,
+           "activeRange": {"start": 0, "duration": dur_}, "sourceRange": {"start": src_ms, "duration": max(1, min(dur_, info["durationMs"] - src_ms))},
            "sourceIntrinsicDuration": info["durationMs"], "transform": OL_T,
            "source": {"assetId": "oleary_fast", "fit": "cover", "sourceRect": {"x": 0, "y": 0, "width": 1920, "height": 1080}}, "volume": 0.0})
     grade_fx(bv, lum=0.3)
     D.effect(bv, {"type": "primaryGrade", "semanticVersion": 1, "temperature": 0, "tint": 0, "exposure": -0.45, "contrast": 0,
                   "highlights": 0, "shadows": 0, "whites": 0, "blacks": 0, "saturation": -0.4, "vibrance": 0})
     D.effect(bv, {"type": "gaussianBlur", "blurriness": 12, "repeatEdgePixels": True})
+D.rect("TV screen black", 0, 0, 1920, 1080, [0.02, 0.02, 0.02, 1], 0, N, gSO)
+# the same screen treatment as the Donahoe break, with the signal loss in front of it
+lo = D.effect(gSO, {"type": "customShader", "name": "crtSignalLoss", "description": "CRT signal loss: collapse flash, then snow, tearing and a rolling bar.",
+                    "wgsl": open(os.path.join(W, "shaders", "crt_loss.wgsl")).read(),
+                    "params": [{"name": "animationTime", "description": "Engine clock (s).", "min": 0, "max": 3600, "default": 0},
+                               {"name": "loss", "description": "0 = picture, 1 = full static.", "min": 0, "max": 1, "default": 0},
+                               {"name": "flash", "description": "Bright collapse flash 0..1.", "min": 0, "max": 1, "default": 0}]})
+ekk(gSO, lo, "loss", [(0, 0, "hold"), (LOSS0, 0.55, "hold"), (LOSS0 + 1, 0.85, "hold"), (LOSS0 + 2, 1, "hold")])
+ekk(gSO, lo, "flash", [(0, 0, "hold"), (LOSS0, 0.9, "hold"), (LOSS0 + 1, 0.45, "hold"), (LOSS0 + 2, 0, "hold")])
+D.effect(gSO, {"type": "chromaticAberration", "amount": 0.15, "direction": 0})
+D.effect(gSO, {"type": "customShader", "name": "crtScanlines", "description": "CRT scanlines with a slow rolling band.",
+               "wgsl": open(os.path.join(W, "shaders", "crt.wgsl")).read(),
+               "params": [{"name": "animationTime", "description": "Engine clock (s).", "min": 0, "max": 3600, "default": 0},
+                          {"name": "linePx", "description": "Scanline period in px.", "min": 1, "max": 20, "default": 3.0},
+                          {"name": "strength", "description": "Scanline darkness 0..1.", "min": 0, "max": 1, "default": 0.38},
+                          {"name": "roll", "description": "Rolling band speed (screens/s).", "min": 0, "max": 2, "default": 0.35}]})
+ngO = D.effect(gSO, {"type": "grain", "amount": 0.30, "size": 1.4, "softness": 0.3, "aspectRatio": 1.0, "seed": 6})
+D.effect_script(gSO, ngO, "seed", "return Math.floor(input.time.seconds * 24);")
+D.effect(gSO, {"type": "glow", "glowThreshold": 60, "glowRadius": 14, "glowIntensity": 0.5})
+D.effect(gO, {"type": "vignette", "amount": 0.55, "feather": 0.6, "radius": 0.75})
+ng2O = D.effect(gO, {"type": "grain", "amount": 0.12, "size": 1.5, "softness": 0.5, "aspectRatio": 1.0, "seed": 9})
+D.effect_script(gO, ng2O, "seed", "return Math.floor(input.time.seconds * 24);")
+zkO = [(0, 100, "linear"), (N, 110, EASE)]          # slow push on the whole TV, like the Donahoe break
+kk(gO, "scaleX", zkO); kk(gO, "scaleY", zkO)
+glitch(gO, N)
 
-# --- captions: one phrase at a time, single position on the open side, hard cuts between phrases ---
-SNAP = {"type": "cubicBezier", "x1": 0.15, "y1": 0.85, "x2": 0.3, "y2": 1.0}
-
-
-def snap_word(name, s_, x, y, font, size, color, f0, f1, parent, wght=None, wdth=100):
-    """Appears on its frame: 4-frame ease-out, scale 110->100, blur 8->0, opacity 0->1. Hard cut at f1."""
-    w = advance(s_, font, size, {"wght": wght, "wdth": wdth} if font == "archivo" else None, 0)
-    lid = D.text(name, s_, x, y, font, size, color, f0, f1, parent, wght=wght, wdth=wdth, anchor=(w / 2, -0.35 * size))
-    kk(lid, "opacity", [(0, 0, "linear"), (3, 100, SNAP)])
-    kk(lid, "scaleX", [(0, 110, "linear"), (3, 100, SNAP)])
-    kk(lid, "scaleY", [(0, 110, "linear"), (3, 100, SNAP)])
-    bl = D.effect(lid, {"type": "gaussianBlur", "blurriness": 0})
-    ekk(lid, bl, "blurriness", [(0, 8, "linear"), (3, 0, SNAP)])
-    return lid, w
-
-
+# --- captions: hard open, one phrase at a time, beside the TV (left / right) ---
 LEAD = ("serif_italic", 66, None, 0)
-# (lead-in words with their frames, keyword, keyword font, colour, side, logo)
-PHR = [([("This", WE["why"]), ("is", WE["why"])], ("why", WE["why"]), "serif", TEXT, "L", None),
-       ([("you", WE["you"]), ("should", WE["should"]), ("be", WE["be"])], ("worried", WE["worried"]), "serif", GREEN, "L", None),
-       ([("about", WE["about"]), ("the", WE["the"])], ("future", WE["future"]), "serif", GREEN, "L", None),
-       ([("of", WE["of"]), ("a", WE["a1"])], ("WALMART", WE["Walmart"]), "wh", TEXT, "L", ("logo_walmart", 300)),
-       ([("or", WE["or"]), ("a", WE["a2"])], ("FOOT LOCKER.", WE["Foot"]), "wh", TEXT, "R", ("logo_footlocker", 300))]
+PHR = [([("This", WE["why"]), ("is", WE["why"])], ("why", WE["why"]), TEXT, "L", None),
+       ([("you", WE["you"]), ("should", WE["should"]), ("be", WE["be"])], ("worried", WE["worried"]), GREEN, "L", None),
+       ([("about", WE["about"]), ("the", WE["the"])], ("future", WE["future"]), GREEN, "L", None),
+       ([("of", WE["of"]), ("a", WE["a1"])], (None, WE["Walmart"]), TEXT, "L", ("logo_walmart", 430)),
+       ([("or", WE["or"]), ("a", WE["a2"])], (None, WE["Foot"]), TEXT, "R", ("logo_footlocker", 470))]
 ph_start = [YR] + [min([f for _, f in p[0]] + [p[1][1]]) for p in PHR[1:]]
 ph_end = ph_start[1:] + [WE["They"]]
-for pi, (lead, (kw, kf), kfont, kcol, side, logo) in enumerate(PHR):
+LEAD_Y = 430
+for pi, (lead, (kw, kf), kcol, side, logo) in enumerate(PHR):
     p0, p1 = a + ph_start[pi], a + ph_end[pi]
-    maxw = 700 if side == "L" else 540
-    if kfont == "wh":
-        ksz = fit_size(kw, "archivo", 300, maxw, {"wght": 880, "wdth": 80}); kspec = WH(ksz)
-    else:
-        ksz = fit_size(kw, "serif", 312, maxw); kspec = ("serif", ksz, None, 0)
-    kwid = advance(kw, *kspec)
     lws = [w for w, _ in lead]
     lxs, lwid = layout_line(lws, [LEAD] * len(lws))
-    lead_y = 430
-    kw_y = lead_y + 0.80 * ksz + 6
-    if side == "L":
-        x_lead, x_kw = 110, 104
-    else:
-        x_lead, x_kw = 1830 - lwid, 1830 - kwid
+    x_lead = 110 if side == "L" else 1830 - lwid
     for (w, f), xo in zip(lead, lxs):
-        snap_word(f"OL cap '{w}'", w, x_lead + xo, lead_y, "serif_italic", 66, TEXT, max(p0, a + f), p1, cg)
-    if kfont == "wh":
-        snap_word(f"OL KEY '{kw}'", kw, x_kw, kw_y, "archivo", ksz, kcol, max(p0, a + kf), p1, cg, wght=880, wdth=80)
-    else:
-        snap_word(f"OL KEY '{kw}'", kw, x_kw, kw_y, "serif", ksz, kcol, max(p0, a + kf), p1, cg)
-    if logo:      # the real store logo pops in small next to the word for ~0.5 s
+        D.text(f"OL cap '{w}'", w, x_lead + xo, LEAD_Y, "serif_italic", 66, TEXT, max(p0, a + f), p1, cg)
+    if kw:
+        ksz = fit_size(kw, "serif", 312, 520)
+        kwid = advance(kw, "serif", ksz, None, 0)
+        x_kw = 104 if side == "L" else 1830 - kwid
+        D.text(f"OL KEY '{kw}'", kw, x_kw, LEAD_Y + 0.80 * ksz + 6, "serif", ksz, kcol, max(p0, a + kf), p1, cg)
+    if logo:      # the store logo takes the keyword's place, a consistent gap under the lead-in
         asset, lw_ = logo
         lh = lw_ * LOGO_SZ[asset][1] / LOGO_SZ[asset][0]
-        lx_ = x_kw if side == "L" else 1830 - lw_
-        ly_ = kw_y + 34
+        lx_ = 110 if side == "L" else 1830 - lw_
+        ly_ = LEAD_Y + 34                    # lead-in baseline + 34 px (descender + breathing room)
         img = D.nid()
-        f0l = max(p0, a + kf)
-        D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": img, "name": f"OL logo {asset} (0.5 s)", "parentLayerId": cg,
-               "activeRange": {"start": ms(f0l), "duration": ms(min(f0l + 15, p1)) - ms(f0l)},
+        D.add({"type": "createFxImageLayer", "compositionId": C, "layerId": img, "name": f"OL logo {asset}", "parentLayerId": cg,
+               "activeRange": {"start": ms(max(p0, a + kf)), "duration": ms(p1) - ms(max(p0, a + kf))},
                "transform": {"anchorPoint": [0, 0], "position": [lx_, ly_], "scale": [round(100 * lw_ / LOGO_SZ[asset][0], 3)] * 2, "rotation": 0, "opacity": 100},
                "source": {"assetId": asset, "fit": "contain"}})
-        kk(img, "opacity", [(0, 0, "linear"), (3, 100, SNAP)])
-xs_t6, _w6 = layout_line(["THEY", "DON'T", "NEED"], [("archivo", 54, {"wght": 640, "wdth": 100}, 0)] * 3)
-for (wd, f), xo in zip((("THEY", WE["They"]), ("DON'T", WE["don't"]), ("NEED", WE["need"])), xs_t6):
-    snap_word(f"OL cap '{wd}'", wd, 960 - rw / 2 + 8 + xo, top_y - 26, "archivo", 54, TEXT, a + f, a + WE["retail"], cg, wght=640)
-plan_rows.append(("CLIP_OLEARY", "2021 / This is WHY / you should be WORRIED / about the FUTURE / of a WALMART / or a FOOT LOCKER. / THEY DON'T NEED RETAIL.",
-                  "One phrase at a time on the open side; serif keywords (green: worried, future), heavy condensed brands + logos",
-                  "Snap (4 f ease-out: 110->100, blur 8->0)", "RETAIL. slam behind head + strike-through", "Hard cut", "open side of framing"))
+# climax in the centre: THEY DON'T NEED / RETAIL. (hard open), held through the signal loss, then the strike-through
+rs = fit_size("RETAIL.", "archivo", 520, 1180, {"wght": 880, "wdth": 80})
+rw = advance("RETAIL.", *WH(rs))
+base_y = 540 + 0.36 * rs + 40
+top_y = base_y - 0.725 * rs
+TSZ = 64
+TSP = ("archivo", TSZ, {"wght": 640, "wdth": 100}, 0)
+xs_t, wt = layout_line(["THEY", "DON'T", "NEED"], [TSP] * 3)
+for (wd, f), xo in zip((("THEY", WE["They"]), ("DON'T", WE["don't"]), ("NEED", WE["need"])), xs_t):
+    D.text(f"CLIMAX '{wd}'", wd, 960 - wt / 2 + xo, top_y - 34, "archivo", TSZ, TEXT, a + f, b, RG, wght=640)
+R = D.text("CLIMAX 'RETAIL.'", "RETAIL.", 960 - rw / 2, base_y, "archivo", rs, TEXT, a + WE["retail"], b, RG, wght=880, wdth=80)
+D.vox(R, rs)
+st0 = a + WE["retail"] + 10
+th = 0.075 * rs
+line = D.nid()
+D.add({"type": "createFxRectLayer", "compositionId": C, "layerId": line, "name": "CLIMAX strike-through", "parentLayerId": RG,
+       "activeRange": {"start": ms(st0), "duration": ms(b) - ms(st0)}, "transform": xf(pos=(960 - rw / 2 - 14, base_y - 0.37 * rs - th / 2), anchor=(0, 0)),
+       "rect": {"size": [rw + 28, th], "fillColor": GREEN}})
+kk(line, "scaleX", [(0, 0, "linear"), (5, 100, EOUT)])
+plan_rows.append(("CLIP_OLEARY", "2021 / This is WHY / you should be WORRIED / about the FUTURE / of a [Walmart logo] / or a [Foot Locker logo] / THEY DON'T NEED RETAIL.",
+                  "Kevin inside the TV (Donahoe placement); captions beside the TV, hard open; logos under their lead-ins",
+                  "Hard open", "RETAIL. centred + strike-through; TV signal loss for 1 s", "Hard cut", "left / right of the TV, climax centre"))
 
 # --- Donahoe: 2024 owns the screen, then the clip plays inside a vintage TV (CRT look), captions under the TV ---
 key = "CLIP_DONAHOE"
@@ -1241,10 +1211,13 @@ plan_rows.append(("FC2", "HIS PLAN? / CUT OUT / THE MIDDLEMAN. / NIKE PULLED OUT
 
 # ================= 4h. JOHN / DONAHOE (left, TC2 style) with a quick flash on him =================
 shj = [x for x in shots if x["clip"] == "B21" and x["src"] == 17.0][0]
-gj = D.group("SPECIAL TEXT: JOHN / DONAHOE", 0, endcard_in)
+gj = D.group("SPECIAL TEXT: EX-CEO, / JOHN / DONAHOE", 0, endcard_in)
 soft_shadow(gj)
 SJ = fit_size("DONAHOE.", "archivo", 210, 640, {"wght": 880, "wdth": 80})
 wh_word("JOHN", "JOHN", 130, 500, SJ, TEXT, max(shj["start"], wf(8, 6)), shj["end"], gj, block=True)
+she = [x for x in shots if x["clip"] == "B18" and x["src"] == 34.2][0]
+SE = fit_size("EX-CEO,", "archivo", SJ, 560, {"wght": 880, "wdth": 80})
+wh_word("EX-CEO,", "EX-CEO,", 130, 620, SE, TEXT, max(she["start"], wf(8, 5)), she["end"], gj, block=True)
 wh_random("DONAHOE.", "DONAHOE.", 130, 500 + 0.84 * SJ, SJ, lambda c: GREEN if c == "." else TEXT, max(shj["start"], wf(8, 7)), shj["end"], gj)
 
 def light_leak(parent, f0, n, name, rel=True):
