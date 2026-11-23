@@ -10,8 +10,8 @@ M="$ROOT/assets/models"
 WORK="$HERE/build"; mkdir -p "$WORK"
 rm -f "$OUT"
 "$TS" project create --project "$OUT" --width "$W" --height "$H" >/dev/null
-for a in dunk=standin/dunk_scan_lit.glb af1=cleaned/nike_air_force_1_uvfix.glb aj1=cleaned/nike_air_jordan_1_left.glb \
-         dunk_mid=standin/dunk_scan_lit_mid.glb dunk_far=standin/dunk_scan_lit_far.glb af1_mid=lod/af1_mid.glb af1_far=lod/af1_far.glb \
+for a in dunk=dunk_supplied/nike_dunk.glb af1=cleaned/nike_air_force_1_uvfix.glb aj1=cleaned/nike_air_jordan_1_left.glb \
+         dunk_mid=dunk_supplied/nike_dunk_mid.glb dunk_far=dunk_supplied/nike_dunk_far.glb af1_mid=lod/af1_mid.glb af1_far=lod/af1_far.glb \
          aj1_mid=lod/aj1_mid.glb aj1_far=lod/aj1_far.glb; do
   "$TS" project import-asset --project "$OUT" --file "$M/${a#*=}" --asset-id "${a%%=*}" --kind model3d >/dev/null
 done

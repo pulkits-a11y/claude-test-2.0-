@@ -26,7 +26,8 @@ PROJ_CONE = 14.6
 SCENE_LAYER = 1
 
 # Shoe placement: asset id, vertical offset so the sole meets the pedestal top, base yaw (toe -> +X)
-SHOES = {0: ('dunk', -55), 1: ('af1', 0), 2: ('aj1', 0)}
+SHOES = {0: ('dunk', -59), 1: ('af1', 0), 2: ('aj1', 0)}
+SHOE_EXTRA_YAW = {0: 180, 1: 0, 2: 0}   # supplied Dunk is modelled toe -X
 SHOE_YAW = 90           # toe points +X (screen right)
 THREE_QUARTER = -22     # extra yaw so every toe turns toward the camera (three-quarter profile)
 TIERS = [(0, ''), (1, '_mid'), (6, '_far')]
@@ -283,10 +284,10 @@ def build(a, tl):
         clear = b.material({"baseColor": const([0, 0, 0]), "roughness": const(1.0), "coverage": const(0.0)}, alpha="blend")
         bsid, bslot = soft_beam(a.beam_alpha)
         b.add({"type": "addFxScene3DFragment", "compositionId": "main", "layerId": SCENE_LAYER,
-               "data": [{"type": "mesh", "id": did, "name": "Beam cone", "geometry": {"type": "cone", "radius": 820, "height": LAMP_GAP},
+               "data": [{"type": "mesh", "id": did, "name": "Beam cone", "geometry": {"type": "cone", "radius": 1080, "height": LAMP_GAP + PED_H},
                          "regions": [{"key": "primary", "name": "Primary"}, {"key": "side", "name": "Side"}]}],
                "items": [{"type": "Mesh3D", "id": b.id(), "parentId": g, "name": "Beam", "dataId": did, "packing": "regions",
-                          "transform": {"position": [0, LAMP_Y + LAMP_GAP / 2, 0]},
+                          "transform": {"position": [0, LAMP_Y + (LAMP_GAP + PED_H) / 2, 0]},
                           "materialSlots": [clear[2], bslot],
                           "regionSlots": [{"region": "primary", "slotId": clear[0]}, {"region": "side", "slotId": bsid}],
                           "modifiers": [{"type": "uvProject", "id": b.id(), "projection": {"type": "cylindrical", "axis": "y"}}],
@@ -357,7 +358,7 @@ def build(a, tl):
             items.append({"type": "Model3D", "id": iid, "parentId": None, "name": f"{asset}{sfx} c{c} r{r}",
                           "dataId": data[(k, sfx)],
                           "transform": {"position": [c * COL, TOP_Y + yoff, r * ROW],
-                                        "rotation": rot(0, SHOE_YAW + THREE_QUARTER, 0), "scale": [100, 100, 100]},
+                                        "rotation": rot(0, SHOE_YAW + THREE_QUARTER + SHOE_EXTRA_YAW[k], 0), "scale": [100, 100, 100]},
                           "materialSlots": [], "modelRegionSlots": [],
                           "castsShadows": True, "receivesShadows": True})
             if (c, r) == (0, 0):
