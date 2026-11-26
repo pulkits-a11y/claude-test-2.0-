@@ -59,7 +59,7 @@ for l, t0, path in walk(root):
 # 6 logo
 logo = [l for l in root if l["name"].startswith("Logo")][0]
 ok(root[0] is logo, "logo slot is not the top layer")
-if not logo["layers"]: fails.append("logo.png not supplied: the logo slot is empty (on purpose, see NOTES.md)")
+ok(logo["layers"] and logo["layers"][0]["transform"]["position"] == [56, 48] and logo["layers"][0]["transform"]["opacity"] == 90, "logo missing or misplaced")
 # 7 overlays on every frame
 ov = [l for l in root if l["name"] == "Film-wide overlays"][0]
 ok(ov["playback"]["inputRange"]["duration"] >= round(1057 * 1000 / 30) - 1 and len(ov["layers"]) == 7, "film-wide overlays incomplete")

@@ -47,6 +47,7 @@ def build_assets():
         g = cv2.imread(os.path.join(P, "textures", "grain.jpg"), cv2.IMREAD_GRAYSCALE).astype(np.float32)
         a = np.clip((g - 14) * 2.2, 0, 255).astype(np.uint8)
         prep.img("tex_grain_a", np.dstack([np.full_like(a, 255)] * 3 + [a]))
+    prep.img("logo", path=os.path.join(P, "logo", "logo.png"))
     prep.audio("vo", os.path.join(P, "audio", "GTA911_VO_tight_118.wav"))
     # ---- front pages (B01, 638x480; page column x199-439) - top of each page, masthead to main photo
     pages = {"pg_disaster": (31.14, 300), "pg_actofwar": (324.76, 262), "pg_warathome": (404.84, 250), "pg_siege": (413.74, 268),
@@ -888,7 +889,9 @@ def main():
                 pass
         scene_groups.append(D.group(f"S{i + 1:02d} {SCENE_NAMES[i]}", s0, s1, [relocal(s, s0) for s in reversed(shots)]))
         text_groups.append(D.group(f"S{i + 1:02d} text", s0, s1, texts))
-    root = [D.group("Logo slot - logo.png not supplied", 0, END, [], desc="Place logo.png here: x 56, y 48, 60 px tall, opacity 0.9")]
+    lg = R["logo"]; lw = lg["w"] * 60 / lg["h"]
+    root = [D.group("Logo (RawCanvas mark)", 0, END, [D.image("logo.png", "logo", 0, END, tr=T(56, 48, o=90), fit="stretch", rect=(0, 0, lw, 60))],
+                    desc="logo.png at x 56, y 48, 60 px tall, opacity 0.9; never animates, nothing above it")]
     root.append(overlays())
     root += flashes()
     root += list(reversed(text_groups))
