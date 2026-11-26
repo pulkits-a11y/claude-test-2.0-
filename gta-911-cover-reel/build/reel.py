@@ -729,7 +729,9 @@ def S12():
     sh.append(shot("S12.2 Live grid turns into the cover", 738, 747, lay2, dim=0))
     g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=98, cx=1421, cy=435)], dim=12)
     whip_out(g, 5, 3); sh.append(g)
-    tx += caption("and boxed them into a", [85, 86, 87, 88, 89], ["and", "boxed", "them", "into", "a"], 660, 745, s0, x=520, align="right", size=46)
+    # right-aligned to x 520 around y 660, set on two lines: one line would start left of the x 96 safe margin
+    tx += caption("and boxed", [85, 86], ["and", "boxed"], 630, 745, s0, x=520, align="right", size=46)
+    tx += caption("them into a", [87, 88, 89], ["them", "into", "a"], 690, 745, s0, x=520, align="right", size=46)
     l = IS_big("grid.", WF[90] - s0, s1 - s0, "grid.", 240, 1400, 640, just="left"); smear_out(l, s1 - WF[90], "y", -1, 3); tx.append(l)
     return sh, tx
 
