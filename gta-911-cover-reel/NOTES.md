@@ -59,8 +59,7 @@ To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. Th
 
 ## Export
 
-- Rendered in two halves in parallel (frames 0–527 and 528–1056), then joined.
-- The second half came back with 527 of its 529 frames. The last two frames (1055–1056, the final III/VI flicker) were rendered separately and appended, and the result was encoded once more as H.264 at CRF 14.
+- Rendered with motion blur in two halves in parallel (about 18 minutes each here), then joined. `build/export.sh` renders the last half second separately and tops up any frames the exporter drops at the very end of the timeline: one frame in v2, two in v1.
 - The final file is 1,057 frames, 35.233 s, 1920 × 1080, 30 fps. The audio is the voiceover WAV as AAC 256 kb/s, with no other audio.
 - The voiceover is left at its supplied level, −21.4 LUFS integrated. Raise it if the platform expects louder.
 - Checked: the duration, frame count and streams; levels across the join; and one frame from every shot (the contact sheet). I can't play audio here, so lip-free VO sync is checked by word timings, not by ear.
