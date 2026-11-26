@@ -6,9 +6,9 @@ All of these are in `gta-911-cover-reel/`.
 
 | File | What it is |
 |---|---|
-| `GTA911_CoverReel.tsrct` | The editable Tesseract project. It has one 1920 × 1080, 30 fps main composition, 35.23 s (1,057 frames). Media and fonts are embedded. |
+| `GTA911_CoverReel.tsrct` | The editable Tesseract project. It has one 1920 × 1080, 30 fps main composition, 37.73 s (1,132 frames: the 35.23 s voiceover plus a 2.5 s hold on the final covers). Media and fonts are embedded. |
 | `GTA911_CoverReel.mp4` | The render: 1920 × 1080, 30 fps, H.264, with the voiceover as the only audio. |
-| `contact_sheet.jpg` | One frame from the middle of each of the 92 shots, labelled with the shot name and frame. |
+| `contact_sheet.jpg` | One frame from the middle of each shot, labelled with the shot name and frame. |
 | `source/` | The supplied fonts, voiceover, plates, textures, logo, brief, `build18.mjs` and `grade_lite.json`. The B-roll lives in `source/broll/` (3.5 GB, not in git), and your montage clip in `source/montage/montage.mp4` (not in git). |
 | `build/` | The generator: `make.py`, `reel.py`, `lib.py`, `prep.py`, the WGSL shaders, `check.py` (the brief's checklist) and `export.sh`. |
 
@@ -262,7 +262,7 @@ The B48 gameplay is framed on Claude, with its frame-time graph cropped out.
 
 - **Rendering:** the two halves are rendered with motion blur in parallel (about 12 minutes each here for v5). The MP4 exporter drops a few frames at the end of a range, so `build/export.sh` renders each half's last 16 frames again as ProRes, puts the missing ones back in place, and joins the halves frame-exact.
 - **Check:** each restored and neighbouring frame matches its source render (mean difference 0.1–0.4).
-- **The file:** 1,057 frames, 35.233 s, 1920 × 1080, 30 fps, H.264 at CRF 14.
+- **The file:** 1,132 frames, 37.733 s (v6), 1920 × 1080, 30 fps, H.264 at CRF 14.
 - **Audio:** Tesseract's own mix of the voiceover, as AAC 256 kb/s stereo, padded to the last frame. It measures −18.4 LUFS integrated because the mono voice sits in both stereo channels; it sounds the same as the supplied file.
 - **Not checked:** I can't listen here, so voiceover sync is checked by word timings, not by ear.
 

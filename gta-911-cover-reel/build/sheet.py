@@ -16,10 +16,6 @@ def shots():
         for sh in sc["layers"]:
             if sh.get("type") != "Group": continue
             a = s0 + sh["playback"]["inputRange"]["start"]; d = sh["playback"]["inputRange"]["duration"]
-            if sh["name"].startswith("S9.6"):
-                for sub in sh["layers"]:
-                    b = a + sub["playback"]["inputRange"]["start"]; out.append((sub["name"], b, sub["playback"]["inputRange"]["duration"]))
-                continue
             out.append((sh["name"], a, d))
     return sorted(out, key=lambda x: x[1])
 
