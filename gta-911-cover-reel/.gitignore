@@ -1,0 +1,10 @@
+# Large media stays out of git (GitHub's 100 MB file limit); see NOTES.md for where it lives.
+source/broll/
+build/assets/
+build/assets.json
+build/base.tsrct
+build/stills/
+*.tsrct
+*.mp4
+.tesseract-work/
+__pycache__/
