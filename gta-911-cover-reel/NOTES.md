@@ -14,6 +14,36 @@ All of these are in `gta-911-cover-reel/`.
 
 To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. The layer tree is organised as scene groups containing shot groups, each with a graded media group, a look, a dim layer and prism streaks. Above the scenes are one text layer per word, the clip grain, the seven film-wide overlays, the five flash cuts, and the logo on top.
 
+## v4: changes from the third review
+
+**0:08–0:10.7, footage for what is said** (no cover crops, no split collage):
+- "It had": the European box in hand (B09, 49 s).
+- "guns": the GTA III key art of the crew with rifles (B25, 119.6 s), then Claude holding a gun (B48, 163.6 s).
+- "fire": an explosion behind Claude (B48, 166 s), then a burning car at night (B25, 123.3 s, lifted so the flames read).
+- "burning buildings": a street on fire between the buildings (B48, 172 s).
+- "all over it": the European cover.
+
+The B48 gameplay is framed on Claude, with its frame-time graph cropped out.
+
+**0:09:** the European-cover split and collage is gone.
+
+**Held still** (no drift or zoom): the CRT at 0:11, the PS2 box at 0:12, Bliss in the gallery at 0:15, and the heat-map face and Bliss cutout at 0:18.
+
+**Flicker-blink flashes:** the same rotoscoped effect on all of them, now an on / off / on blink that fades, about 8 frames. The flash layers skip motion blur so the blink stays crisp.
+- **0:05:** the "grand theft auto III" title on the European box. The box front is now a still frame (B09 at 50 s) so the title mask stays locked.
+- **0:18:** Stephen, as the cutout lands. His figure glows for a blink, with his face still readable.
+- **0:34:** the GTA III title, then the GTA VI title, on the split. Both masks are new and undilated, so the letter shapes stay crisp.
+
+**0:28 floating covers:** no caption over them. "for every GTA cover" clears as the animation starts, and "since." is not shown.
+
+**Vice City / San Andreas:** every box sits in the middle at one size (680 px). "Vice" and "San" go on its left, "City," and "Andreas," on its right. IV and V stay to one side.
+
+**0:33:** the carousel is replaced by a match cut: ten covers at the same spot and size, about 2 frames each, with a 1-frame white flash on every switch.
+
+**0:06–0:07 captions:** "six" and "months" sit either side of his face. "of painting." sits just left of him in the second shot, clear of his body.
+
+**CTA:** removed. The film ends with the voiceover at 35.23 s (1,057 frames).
+
 ## v3: changes from the second review
 
 **The hook (0:00–0:07.5), rebuilt on the reference video's first 6 seconds** (`source/reference/caption_hook_reference.mp4`). Code is in `build/v3.py`, groups H1–H4.
