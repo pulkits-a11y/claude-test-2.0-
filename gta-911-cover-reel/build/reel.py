@@ -132,8 +132,8 @@ def shot(name, f0, f1, media, look=None, dim=25, prism_on=True, top=(), bg=True)
     return D.group(name, f0, f1, lay)
 
 
-GRADE = lambda: [D.fx({"type": "glow", "glowThreshold": 72, "glowRadius": 36, "glowIntensity": 0.35}),
-                 D.fx({"type": "chromaticAberration", "amount": 0.35, "direction": 0})]
+GRADE = lambda: [D.fx({"type": "glow", "glowThreshold": 88, "glowRadius": 30, "glowIntensity": 0.12}),
+                 D.fx({"type": "chromaticAberration", "amount": 0.08, "direction": 0})]
 
 
 def vclip(name, b, t, d, idx=None, fit="cover", rect=FULL, scale=100, cx=960, cy=540, drift_on=True, effects=None, full=True,
@@ -614,11 +614,13 @@ def S09():
     g = D.group("Heat map + eye strip", 0, d, [eyes, strip_m, heat]); drift(g, d, 960, 540, 100)
     sh.append(shot("S9.4 Heat map + eye strip", 540, 550, [g], dim=0))
     # C05: person matte on the B26 still, over a dark blurred bed of his artwork; "Bliss" behind
-    d = 22; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 330 / fw
-    cx, cy = 960 + (a["w"] / 2 - fx) * s, 140 + 0.62 * fw * s + (a["h"] / 2 - fy) * s
-    cut = iclip("C05 Bliss cutout (person matte)", "bliss26", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy,
-                effects=[D.fx({"type": "personMatte", "emptyFallback": "hide"})], shadow=SHADOW)
-    name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 880); track_in(name)
+    # head top (y~100 in the still) at y 140, shirt running off the bottom of the frame
+    d = 22; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 960 / (a["h"] - 100)
+    cx, cy = 960 + (a["w"] / 2 - fx) * s, 140 - 100 * s + a["h"] * s / 2
+    prep.img("C05_bliss_cutout", path=os.path.join(ROOT, "build", "assets", "img", "C05_bliss_cutout.png"))
+    cut = iclip("C05 Bliss cutout (head and shoulders, B26 still)", "C05_bliss_cutout", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy,
+                shadow=SHADOW)
+    name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 760); track_in(name)   # baseline raised from 880 so the shoulders cover only its lower part
     arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(16)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
     sh.append(shot("S9.5 Cutout on collage", 550, 572, [cut, name, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55)] + arts, dim=0))
     burst = [(572, 577, 0.5, 12), (577, 581, 2.5, 45), (581, 585, 6.5, 12)]

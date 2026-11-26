@@ -47,6 +47,7 @@ class Doc:
         self.next_fx = 1
         self.next_kf = 0
         self.actions = []
+        self.tracks = {}
         self.root = []
 
     def nid(self):
@@ -156,24 +157,33 @@ class Doc:
                         "lowerRightX": lr[0] / W, "lowerRightY": lr[1] / H})
 
     # ------------------------------------------------------------ animation
+    # Keys are merged per property (a later call wins at the same time), then emitted once by finalize().
     def kf(self, layer, prop, keys):
         """keys: list of (frame_local, value, easing). value float or [x,y]."""
-        kfs = []
+        track = self.tracks.setdefault(("p", layer["id"], prop), {})
         for f, v, e in keys:
-            self.next_kf += 1
-            val = {"type": "float", "value": float(v)} if not isinstance(v, (list, tuple)) else {"type": "vector2", "value": list(v)}
-            kfs.append({"id": f"k{self.next_kf}", "layerTime": ms(f), "value": val, "easing": e})
-        self.actions.append({"type": "setFxPropertyKeyframes", "compositionId": "main",
-                             "property": {"layerId": layer["id"], "propertyType": prop}, "keyframes": kfs})
+            track[ms(f)] = (v, e)
 
     def kf_fx(self, layer, effect, param, keys):
-        kfs = []
+        track = self.tracks.setdefault(("fx", layer["id"], effect["id"], param), {})
         for f, v, e in keys:
-            self.next_kf += 1
-            kfs.append({"id": f"k{self.next_kf}", "layerTime": ms(f), "value": {"type": "float", "value": float(v)}, "easing": e})
-        self.actions.append({"type": "setFxLayerEffectParamAnimator", "compositionId": "main", "layerId": layer["id"],
-                             "effectId": effect["id"], "paramName": param,
-                             "animator": {"type": "keyframes", "enabled": True, "keyframes": kfs}})
+            track[ms(f)] = (v, e)
+
+    def finalize(self):
+        out = []
+        for key, track in self.tracks.items():
+            kfs = []
+            for t in sorted(track):
+                v, e = track[t]; self.next_kf += 1
+                val = {"type": "float", "value": float(v)} if not isinstance(v, (list, tuple)) else {"type": "vector2", "value": list(v)}
+                kfs.append({"id": f"k{self.next_kf}", "layerTime": t, "value": val, "easing": e})
+            if key[0] == "p":
+                out.append({"type": "setFxPropertyKeyframes", "compositionId": "main",
+                            "property": {"layerId": key[1], "propertyType": key[2]}, "keyframes": kfs})
+            else:
+                out.append({"type": "setFxLayerEffectParamAnimator", "compositionId": "main", "layerId": key[1], "effectId": key[2],
+                            "paramName": key[3], "dependencies": [], "animator": {"type": "keyframes", "enabled": True, "keyframes": kfs}})
+        return out + self.actions
 
 
 SHADOW = {"enabled": True, "color": [0, 0, 0, 0.55], "offset": [0, 18], "blurRadius": 60, "spreadRadius": 0,

@@ -15,7 +15,7 @@ def run(*a):
 t0 = time.time()
 doc = reel.main()
 json.dump(doc, open(os.path.join(WORK, "editable.json"), "w"))
-acts = [a for a in reel.D.actions]
+acts = reel.D.finalize()
 vo = reel.R["vo"]
 acts.append({"type": "createFxAudioLayer", "compositionId": "main", "layerId": reel.D.nid(), "name": "Voiceover (processed, tight 118%)",
              "activeRange": {"start": 0, "duration": ms(reel.END)}, "sourceRange": {"start": 0, "duration": 35230}, "sourceIntrinsicDuration": 35230,
