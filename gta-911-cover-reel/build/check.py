@@ -23,7 +23,7 @@ root = doc["composition"]["layers"]
 # 1 shot lengths
 shots = []
 for sc in root:
-    if sc["type"] != "Group" or not sc["name"][:2] == "S0" and not sc["name"][:2] == "S1" or sc["name"].endswith("text"): continue
+    if sc["type"] != "Group" or sc["name"][:2] not in ("S0", "S1", "H1", "H2", "H3", "H4"): continue
     for sh in sc["layers"]:
         if sh["type"] != "Group": continue
         subs = [x for x in sh["layers"] if x["type"] == "Group" and x["name"].startswith("Burst")] if sh["name"].startswith("S9.6") else [sh]
@@ -32,12 +32,10 @@ for sc in root:
 # v2: the 30-frame cap is relaxed on review (shots the client asked to breathe); listed, not failed
 notes.append("shots of 30+ frames (held on review): " + ", ".join(f"{n} ({f})" for n, f in shots if f >= 30))
 ok(not any("Instrument" in l["sourceText"]["fontFamily"] for l, _, _ in walk(root) if l["type"] == "Text"), "Instrument Serif still in use")
-first10 = [s for s in shots if s[0].split(".")[0] in ("S1", "S2", "S3", "S4", "S5")]
-notes.append(f"{len(shots)} shots; longest {max(f for _, f in shots)} frames; scenes 1-5 shots over 8 frames: " +
-             ", ".join(f"{n} ({f})" for n, f in first10 if f > 8))
+notes.append(f"{len(shots)} shots; longest {max(f for _, f in shots)} frames")
 # 2 flash cuts
 fl = [l for l in root if l["name"].startswith("Flash cut")]
-ok(len(fl) == 5, f"{len(fl)} flash cuts")
+ok(len(fl) == 4, f"{len(fl)} flash cuts (v3: the S2.1 one went with the old hook)")
 notes.append("flash cuts at frames " + ", ".join(l["name"].split("@")[1] for l in fl))
 # 4/5 type sizes, safe zone and logo box
 for l, t0, path in walk(root):
@@ -51,11 +49,11 @@ for l, t0, path in walk(root):
     if st["justification"] == "center": x -= w / 2
     elif st["justification"] == "right": x -= w
     top = y - tf.cap_height(key, size) * 1.05
-    is_caption = key == "AR" and ax.get("wght") == 500
-    is_label = key == "AR" and ax.get("wght") == 600
-    if is_caption: ok(size >= 46, f"caption under 46 px: {l['name']}")
-    if is_label: ok(size >= 30, f"label under 30 px: {l['name']}")
-    if is_caption or is_label:
+    is_caption = l["name"].startswith("Caption") or (path and path[-1].startswith("Caption:"))
+    hud = any(p.startswith("H1") or p.startswith("H3") for p in path)
+    ok(is_caption or hud, f"text outside the caption system: {l['name']}")
+    if is_caption: ok(size == 47 and ax.get("wght") == 600, f"caption not in the reference style: {l['name']}")
+    if is_caption:
         ok(x >= 96 and x + w <= 1824 and top >= 60 and y <= 1020, f"outside safe zone: {l['name']} ({x:.0f},{top:.0f})-({x + w:.0f},{y:.0f})")
     ok(not (x < 160 and x + w > 40 and top < 124 and y > 36), f"text in the logo box: {l['name']}")
 # 6 logo
@@ -65,7 +63,7 @@ ok(logo["layers"] and logo["layers"][0]["transform"]["position"] == [56, 48] and
 # 7 overlays on every frame
 ov = [l for l in root if l["name"] == "Film-wide overlays"][0]
 ok(ov["playback"]["inputRange"]["duration"] >= round(1057 * 1000 / 30) - 1 and len(ov["layers"]) == 7, "film-wide overlays incomplete")
-ok(root.index(ov) < min(root.index(l) for l in root if l["name"].endswith("text")), "text is not under the overlays")
+notes.append("captions sit above the film-wide overlays (v3, so the glow stays clean)")
 # 8 easing
 eas = set()
 for a in acts:
@@ -79,7 +77,11 @@ missing = [w["w"] for w in words if w["w"].strip(",.?!").lower().replace("-11", 
 notes.append("voiceover words not on screen: " + ", ".join(missing))
 # 10 audio
 vids = [l for l, _, _ in walk(root) if l["type"] == "Video" and l.get("volume")]
-ok(not vids, f"video layers with audio: {[v['name'] for v in vids]}")
+ok([v["name"] for v in vids] == ["CTA: RawCanvas logo sting"], f"video layers with audio: {[v['name'] for v in vids]}")
+rot = [l["name"] for l, _, _ in walk(root) if abs(l.get("transform", {}).get("rotation", 0)) > 0.01 and not l["name"].startswith("Prism")]
+ok(not rot, f"tilted layers: {rot[:8]}")
+rk = [a for a in acts if a.get("property", {}).get("propertyType") == "rotation"]
+ok(not rk, f"rotation keyframes: {len(rk)}")
 aud = [a for a in acts if a["type"] == "createFxAudioLayer"]
 ok(len(aud) == 1, "voiceover layer missing")
 

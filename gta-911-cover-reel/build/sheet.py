@@ -11,7 +11,7 @@ FONT = os.path.join(ROOT, "source", "fonts", "Archivo[wdth,wght].ttf")
 def shots():
     out = []
     for sc in doc["composition"]["layers"]:
-        if sc.get("type") != "Group" or not sc["name"][:1] == "S" or sc["name"].endswith("text"): continue
+        if sc.get("type") != "Group" or sc["name"][:2] not in ("S0", "S1", "H1", "H2", "H3", "H4"): continue
         s0 = sc["playback"]["inputRange"]["start"]
         for sh in sc["layers"]:
             if sh.get("type") != "Group": continue
@@ -21,6 +21,7 @@ def shots():
                     b = a + sub["playback"]["inputRange"]["start"]; out.append((sub["name"], b, sub["playback"]["inputRange"]["duration"]))
                 continue
             out.append((sh["name"], a, d))
+    out.append(("CTA", 1057 * 1000 / 30, 67 * 1000 / 30))
     return sorted(out, key=lambda x: x[1])
 
 

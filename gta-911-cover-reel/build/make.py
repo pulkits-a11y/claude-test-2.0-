@@ -16,6 +16,14 @@ t0 = time.time()
 doc = reel.main()
 json.dump(doc, open(os.path.join(WORK, "editable.json"), "w"))
 acts = reel.D.finalize()
+# drop keyframe tracks of layers that are not in the document (the old per-scene text, superseded by v3 captions)
+_ids = set()
+def _walk(ls):
+    for l in ls:
+        _ids.add(l["id"])
+        if l["type"] == "Group": _walk(l["layers"])
+_walk(doc["composition"]["layers"])
+acts = [a for a in acts if (a.get("property", {}).get("layerId") or a.get("layerId")) in _ids]
 vo = reel.R["vo"]
 acts.append({"type": "createFxAudioLayer", "compositionId": "main", "layerId": reel.D.nid(), "name": "Voiceover (processed, tight 118%)",
              "activeRange": {"start": 0, "duration": ms(reel.END)}, "sourceRange": {"start": 0, "duration": 35230}, "sourceIntrinsicDuration": 35230,
