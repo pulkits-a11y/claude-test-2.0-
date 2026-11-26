@@ -95,7 +95,7 @@ def captions(END):
         dict(L=[64, 65], R_=[66, 67], gap=(620, 1300), end=586),                        # had about | a week,
         dict(L=[68, 69], R_=[70], gap=HEAD, end=609),                                   # so he | chopped
         dict(L=[71, 72], R_=[73, 74], gap=HEAD, end=640),                               # up his | own painting.
-        dict(L=[75, 76], R_=[77], gap=HEAD, end=710),                                   # He only | kept
+        dict(L=[75, 76], R_=[77], gap=(500, 1420), end=710),                            # He only | kept (clear of the US cover)
         dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
         dict(L=[91, 92], R_=[93], gap=(940, 1620), end=782),                            # That rush | job?
         dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template

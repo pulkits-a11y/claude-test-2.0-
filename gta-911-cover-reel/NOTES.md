@@ -14,6 +14,50 @@ All of these are in `gta-911-cover-reel/`.
 
 To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. The layer tree is organised as scene groups containing shot groups, each with a graded media group, a look, a dim layer and prism streaks. Above the scenes are one text layer per word, the clip grain, the seven film-wide overlays, the five flash cuts, and the logo on top.
 
+## v3: changes from the second review
+
+**The hook (0:00–0:07.5), rebuilt on the reference video's first 6 seconds** (`source/reference/caption_hook_reference.mp4`). Code is in `build/v3.py`, groups H1–H4.
+- **0:00–0:00.8, "What if I told you":** 2–3 frame hits with computer-vision tracking boxes (coordinate labels, green centre dots). The boxes sit on each frame's strongest features, found with OpenCV. The hits:
+  1. the Sept 12 "TERROR HITS HOME" page as a cream negative
+  2. the towers on CNN
+  3. the TV room as a negative
+  4. the screen wall
+  5. a terminal readout, orange on cream, then cyan on black
+  6. the GTA III helicopter in a tracking circle
+  7. a black-and-white car chase
+  8. a motion-smeared pan
+
+  The terminal lines are decorative file and scan readouts, not factual claims.
+- **0:00.8–0:03.6, "9/11 is the reason GTA covers look like this?":** the A01 CRT cut out of its room and lifted to read as a grey set on black, growing slowly. It arrives on red light. The screen carries the 9/11 news, then the GTA covers, in black and white with scan lines and stepped row tears (`crtglitch.wgsl`). The captions build either side of it.
+- **"this?":** a red flash, as in the reference.
+- **0:03.7, wordmark:** the GTA III wordmark (cut from the US cover) with a tracking box on every letter and a split-second glow flash.
+- **0:04.1–0:04.8, "This was meant to be":** logos built from tiles that pop on in random order, with coordinate labels, small video thumbnails around them and a faint tile grid behind. First the GTA VI "VI", then the European cover.
+- **0:04.8–0:07.5, "the GTA III cover, six months of painting.":** full-frame cuts:
+  1. the European box in hand (B09)
+  2. its front
+  3. Bliss talking (B26, the call panel enlarged to fill the frame)
+  4. Bliss at his mural (B27)
+
+  This replaces the "Six months" type shot at 0:07.
+- **Overlays:** during the hook the film-wide overlays are mostly off (lift, desaturate and halftone off; grunge, vignette and scan lines light), so it is as clean as the reference. They return to full by 0:07.5.
+
+**Captions:** one style for every word, built from the reference.
+- **Type:** Archivo at 47 px (the reference's 32 px cap height; its "Every time you have" is 416 px wide, and ours is the same) and wght 600. The fill is warm white #FFF6EA.
+- **Glow:** three blurred copies of each word, screen-blended: 4 px and 10 px in #FFE6C2 and 24 px in #FFC98A. The layer-style glow from v2 was too faint once the overlays were on top, which is why it looked missing. Captions now sit above the film-wide overlays so the glow stays clean.
+- **Placement:** on the centre line. Each phrase splits into a left block, right-aligned to the subject's left edge, and a right block, left-aligned to its right edge, so the words move around what is on screen, as in the reference.
+- **Entrance:** each word drops in on its spoken frame, stretched to 520% tall, and snaps to size over 5 frames (ease-out expo), like the reference.
+- **Removed styles:** the tracked caps label ("This was"), the wide light face ("up his own painting"), the heavy condensed face (GUNS, FIRE, MEANT TO BE, PULLED, A WEEK, CHOPPED, VICE CITY, SAN ANDREAS) and all big-word layouts. FACES, CARS and HELICOPTER stay out as asked in v2.
+- **Numerals:** "Four, five, six" show as "IV, V, VI".
+
+**Other changes**
+- **No tilt:** no overlay is tilted at any point. Cards, cutouts, boxes and the floating collage are all straight. The checklist now fails on any rotation.
+- **"25 years later.":** centred between the III and VI covers, which hold to the end of the voiceover. The 2001/2026 numbers are gone.
+- **0:34 carousel:** the second whip carousel (the one that restarted) is removed.
+- **Slashes:** thinner (about 9 px), solid. The p5.brush charcoal stroke is rendered at 3× and its alpha thresholded to a solid core with a rough edge. Each is drawn on over 14 frames with ease-out expo, so it starts fast and slows.
+- **S8.2 paper card:** replaced by the US cover, because white captions don't read on cream paper.
+- **CTA:** the supplied RawCanvas logo sting (`source/cta/cta.mp4`) plays after the voiceover with its own sound, at 2.23 s. The film is now 37.47 s (1,124 frames).
+- **Flash cuts:** four now. The one on the old S2.1 went with the old hook.
+
 ## v2: changes from the review notes
 
 **Type**
