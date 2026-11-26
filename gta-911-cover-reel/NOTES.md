@@ -14,6 +14,49 @@ All of these are in `gta-911-cover-reel/`.
 
 To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. The layer tree is organised as scene groups containing shot groups, each with a graded media group, a look, a dim layer and prism streaks. Above the scenes are one text layer per word, the clip grain, the seven film-wide overlays, the five flash cuts, and the logo on top.
 
+## v2: changes from the review notes
+
+**Type**
+- **Instrument Serif:** replaced everywhere by the Archivo caption face. Each big word keeps the width the serif line had (it's never made larger than before). The font file is still embedded in the base project but isn't used by any layer.
+- **Soft glow:** every text layer has an outer glow in its own colour (34 px, 50%, screen; 35%, normal for the dark ink on the paper card) on top of the existing drop shadow.
+- **Entrance:** the letter-spacing entrance (used on 2001/2026 and elsewhere) is gone everywhere. Those words now blur in.
+- **Removed text:**
+  - "the GTA III cover."
+  - "Bliss" (his name is now in the label above his head: STEPHEN BLISS · GTA COVER ARTIST)
+  - FACES, CARS and HELICOPTER
+  - the big "VI"
+  - "25 YEARS LATER"
+  - the "GTA III · OCT 22, 2001" label
+- **0:12 "six weeks":** no stacked centred layout. The PS2 box is on the right, with one left-aligned block on the left: "six weeks", then "before launch".
+- **0:02 "9/11":** in Archivo, with its top half clear above the front page.
+
+**Removed shots** (neighbours lengthened to fill the time)
+- **Date-flip shots:**
+  - B15 calendar (S4)
+  - B22 years (S6) and its use as a background
+  - B29 days (S9)
+- **The red heat-map B27 silhouette:** both at 0:07 and its repeat at 0:25.
+- **The B14 brush macro on "painting".** "Six months of painting" is now one held shot, with the letters of "Six months" filled with the original cover painting.
+- **S6 Front-page headline and B20 box shots.** The CRT 9/11 shot now holds 1.5 s (44 frames, was 26).
+- **The 30-frame cap is relaxed** on four held shots: the painting in the type (42), the CRT (44), six weeks (36) and the Bliss cutout (35).
+
+**Pictures**
+- **0:03:** the VI logo is cut down to a window around the VI only, in the centre cell of the mosaic.
+- **Burning buildings and the split screen:** crops are about 2× (they were up to 9×). The full shot shows the upper cover (title, tower, characters); the split shows gun, fire and tower.
+- **Split screens:** no borders anywhere (3 × 640 and 2 × 960, edge to edge).
+- **No more tilted overlays:** photo cards have no white borders. Every overlay that comes in tilted settles straight within 10 frames (cards, cutouts, boxes, floating covers).
+- **0:33:** the III/VI switch is now a whip carousel. One strip slides one cover per step with ease-in-out expo, motion blur and a horizontal smear at mid-move, accelerating in the second run.
+
+**Effects**
+- **Logo glow flashes:** rotoscoped from the stills. Letter masks were cut in OpenCV:
+  - the GTA III title from the white letter fills inside their black outlines
+  - the GTA VI "VI" from the clean B06 logo frame, scaled onto the cover, with the "grand theft auto" lettering cut out of it
+
+  The flashing layers are the masks plus two blurred halos, on screen blend, locked to the cover. Each comes up in 2 frames and is gone in 5: on the title close-up (0:04.9), the cover (0:05.8) and the VI ("Six", 0:31.8).
+- **Strike-throughs:** hand-drawn charcoal slashes rendered with p5.brush 3.0.0 (MIT) in headless Chromium (`build/brush/`), coloured #D8322A, drawn on left to right with a wipe.
+- **Motion blur:** on for the composition (180° shutter, 6–24 adaptive samples) and on every layer.
+- **Edge blur** on fast switches: a radial (zoom) blur adjustment, clear at the centre, peaking on the switch. It's on the mosaic whip (0:03.5), the US box whip (0:25) and every carousel step.
+
 ## Export
 
 - Rendered in two halves in parallel (frames 0–527 and 528–1056), then joined.
