@@ -248,10 +248,16 @@ def card(name, asset, d, height, cx, cy, rot, move="drift"):
     img = D.image(name + " photo", asset, 0, d, tr=T(w / 2, height / 2, ax=w / 2, ay=height / 2), fit="stretch",
                   rect=(0, 0, w, height), effects=GRADE())
     g = D.group(name, 0, d, [img], tr=T(cx, cy, r=rot, ax=w / 2, ay=height / 2), shadow=SHADOW)
-    if move == "push": push(g, d)
+    if move == "settle": settle_zoom(g, d)
     else: drift(g, d, cx, cy, 100)
     settle(g, rot, min(10, d))
     return g
+
+
+def settle_zoom(layer, d, s=100):
+    """v5b: the v4 drift's zoom (119% -> 116% ratio, ease-out expo running past the cut) without its sideways move."""
+    s0 = s * 119 / 116; tot = (s - s0) / Y_AT_CUT
+    for p in ("scaleX", "scaleY"): D.kf(layer, p, [(0, s0, HOLD), (d * STRETCH, s0 + tot, E_OX)])
 
 
 def push(layer, d, s=100, amt=0.035):
@@ -794,7 +800,6 @@ def S09():
     # v5 movement (not the old sideways drift-zoom): the eye strip wipes in from the left, then a jump cut closer
     strip_m["transform"].update({"anchorPoint": [0, ey], "position": [0, ey]}); strip_m["rect"]["position"] = [0, ey - 80]
     D.kf(strip_m, "scaleX", [(0, 0, HOLD), (4, 100, E_OX)])
-    for p in ("scaleX", "scaleY"): D.kf(g, p, [(0, 100, HOLD), (5, 108, HOLD)])
     sh.append(shot("S9.4 Heat map + eye strip", 540, 550, [g], dim=0))
     # C05: person matte on the B26 still, over a dark blurred bed of his artwork; "Bliss" behind
     # head top (y~100 in the still) at y 140, shirt running off the bottom of the frame
@@ -811,7 +816,6 @@ def S09():
     # way (parallax), and a jump cut closer lands on "a week"
     him = D.group("Stephen (cutout + flash)", 0, d, stephen + [cut], tr=T(960, 540, ax=960, ay=540))
     D.kf(him, "positionY", [(0, 700, HOLD), (8, 540, E_OX)])
-    for p in ("scaleX", "scaleY"): D.kf(him, p, [(0, 100, HOLD), (WF[66] - 550, 107, HOLD)])
     bed = D.group("Artwork bed (parallax)", 0, d, arts, tr=T(960, 540, 106, ax=960, ay=540))
     D.kf(bed, "positionX", [(0, 1010, HOLD), (d * STRETCH, 1010 - 90 / Y_AT_CUT, E_OX)])
     sh.append(shot("S9.5 Cutout on collage + Stephen flash", 550, 585, [him, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), bed], dim=0))
@@ -940,7 +944,7 @@ def S12():
 def S13():
     s0, s1 = SCENES[12]; sh = []; tx = []
     for i, (f0, f1, asset, rot) in enumerate([(752, 760, "bliss26", -4), (760, 780, "bliss28", 3)]):   # v5: centred, slow push, no sideways drift
-        c = bliss_card(f"Bliss photo #{asset[-2:]}", asset, f1 - f0, rot, cx=960, move="push"); sh.append(shot(f"S13.{i + 1} Photo card", f0, f1, [c], dim=10))
+        c = bliss_card(f"Bliss photo #{asset[-2:]}", asset, f1 - f0, rot, cx=960, move="settle"); sh.append(shot(f"S13.{i + 1} Photo card", f0, f1, [c], dim=10))
     def box(d, h=760, cx=960, rot=-2):          # v5: held still - the sideways drift read as the cover wobbling left and right
         a = R["cov_III"]; w = a["w"] * h / a["h"]
         return iclip("C07 US GTA III box (cutout)", "cov_III", d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, rot=rot, shadow=SHADOW, drift_on=False)
@@ -980,7 +984,7 @@ def S14():
     s0, s1 = SCENES[13]; sh = []; tx = []
     def cut(k, d, cx, name, h=780):            # v5: a slow push-in, no sideways drift (it read as a wobble)
         a = R[k]; w = a["w"] * h / a["h"]
-        l = iclip(name, k, d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, shadow=SHADOW, drift_on=False); push(l, d)
+        l = iclip(name, k, d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, shadow=SHADOW, drift_on=False); settle_zoom(l, d)
         return l
     rows = [(853, 882, "cov_VC", 960, L_duo("vice"), "C08 Vice City box"), (882, 911, "cov_SA", 960, L_half(), "C09 San Andreas box"),
             (911, 920, "cov_IV", 960, L_heat(), "C10 GTA IV box"), (920, 936, "cov_V", 960, None, "C11 GTA V box")]
@@ -1060,7 +1064,7 @@ def S16():
         return shot(name, f0, f1, lay, dim=10)
     import v3
     sh.append(v3.matchcut("S16.2 Match cut: every cover", 998, 1019))
-    d = END - 1019; a = R["cov_III"]; h = 600; w = a["w"] * h / a["h"]      # v5: smaller, room for the bigger "25 years / later."
+    d = END - 1019; a = R["cov_III"]; h = 700; w = a["w"] * h / a["h"]
     sh.append(shot("S16.3 Split: III | VI, titles flash", 1019, END,
                    panel("Left", d, 0, 0, 960, H, [v3.flash_cover("GTA III cover", "cov_III", "cov_III_title_mask_v2", d, h, 480, 540, 2)]) +
                    panel("Right", d, 960, 0, 960, H, [v3.flash_cover("GTA VI cover", "cov_VI", "cov_VI_title_mask_v2", d, h, 1440, 540, 8)]), dim=10))
@@ -1122,8 +1126,8 @@ def flashes():
 
 # v5 transitions, curated: a digital glitch on cuts into or out of screens, gameplay and graphics, a quick white flash
 # on cuts that land on a hit (the box, the fire, Vice City, the final split). The four flash cuts above stay.
-GLITCH_AT = [25, 124, 227, 320, 364, 445, 585, 780, 882, 969]
-WFLASH_AT = [145, 258, 853, 1019]
+GLITCH_AT = [25, 320, 364, 585, 780, 969]          # v5b: fewer - only where a hard cut jars
+WFLASH_AT = [258, 853]
 
 
 def glitch_cut(f):

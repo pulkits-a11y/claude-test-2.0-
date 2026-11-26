@@ -24,6 +24,22 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 - the flash cuts and flash transitions
 - the logo, on top
 
+## v5b: changes from the v5 notes
+
+- **Every caption glows.** I read "make all captions bold" as the glow look in your screenshot ("six weeks" vs "before"). The font weight is unchanged (the reference's 600).
+- **No strike slashes** anywhere (guns, buildings, fire).
+- **0:05–0:07:** the tracking boxes are down to one faint box per shot (35% opacity).
+- **0:02 TV:** the jump-cut zooms are gone. It's back to the v4 move, a slow, subtle grow from its entry.
+- **0:18 Stephen:** both jump cuts are gone (the heat-map shot and "a week"). The rise-in and the slow artwork parallax stay.
+- **Match cuts (0:03 and 0:33):** the flash on each switch is now one frame at about 30% instead of 70–85%.
+- **Fewer transitions:**
+  - 6 glitches (0:00.8 into the CRT, 0:10.7 into the CRT, 0:12.1 out of it, 0:19.5, 0:26, 0:32.3).
+  - 2 white flashes ("fire" at 0:08.6, Vice City at 0:28.4).
+  - The 4 flash cuts stay.
+- **The zoom on the covers and Bliss cards (0:25–0:31)** is back to v4's ease-out zoom, minus the sideways drift that caused the wobble. It replaces the v5 push-in.
+- **No commas** on City, Andreas, IV and V.
+- **"25 years later."** is back on one line at caption size, between the covers at their original 700 px.
+
 ## v5: changes from the fourth review
 
 **Caption glow, where it matters.** The v4 glow measured almost nothing next to the reference "by definition,": about +14 brightness right at the letters and nothing beyond 6 px, against the reference's +92 falling to +18 at 60 px.

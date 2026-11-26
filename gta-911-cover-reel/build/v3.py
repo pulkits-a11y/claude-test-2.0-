@@ -18,7 +18,7 @@ CAP_AX = {"wdth": 100, "wght": 600}
 CAP_FILL = [0.992, 0.957, 0.89, 1]  # #FDF4E3, the reference caption's warm white
 CAP_MID = 540                       # caption cap-height centre: the frame's centre line
 PAD = 34                            # gap between a caption block and the subject's edge
-DISPLAY = {5: "9/11", 6: None, 22: "III", 39: "9/11", 40: None, 107: "IV,", 108: "V,", 111: "VI,"}
+DISPLAY = {5: "9/11", 6: None, 22: "III", 39: "9/11", 40: None, 104: "City", 106: "Andreas", 107: "IV", 108: "V", 111: "VI,"}   # v5b: no commas on the box names
 HUD_WHITE = [1, 1, 1, 0.78]
 HUD_DOT = hexc("#7CFF8A")
 # v5 glow, measured against the reference's "by definition," (light added around the letters, 1-60 px out): four blurred
@@ -27,7 +27,7 @@ GLOW_NEAR, GLOW_FAR = [1, 0.96, 0.88, 1], [1, 0.87, 0.66, 1]
 GLOW_TIERS = [(20, 25, GLOW_NEAR), (40, 45, GLOW_NEAR), (80, 55, GLOW_NEAR), (160, 50, GLOW_FAR)]
 # glow only where it matters: the hook's 9/11 and "this?", the list (guns, fire, burning buildings), the dates and
 # deadlines, the names, the cut, the grid, the rush job, the template, VI and the closing lines
-GLOW_WORDS = {5, 14, 24, 25, 30, 31, 33, 34, 39, 41, 42, 43, 47, 62, 63, 66, 67, 70, 73, 74, 90, 92, 93, 97, 111, 113, 115}
+GLOW_WORDS = set(range(200))      # v5b: every caption glows (client: "make all captions bold" - the glow look)
 CAP_SHADOW = {"enabled": True, "color": [0, 0, 0, 0.55], "offset": [0, 2], "blurRadius": 10, "spreadRadius": 0, "blendMode": "normal"}
 HOOK_END = 227                      # the stretched drop-in entrance is kept for the hook only
 
@@ -132,8 +132,8 @@ def captions(END):
         dict(L=[], R_=[49, 50, 51], gap=(560, 1040), end=448),                          # in the US.
         dict(L=[52, 53], R_=[54], gap=HEAD, end=462),                                   # The new | cover
         dict(L=[55], R_=[56], gap=COVER, end=476),                                      # couldn't | show
-        dict(L=[57], R_=[58], gap=HEAD, end=505, strike=(57, 58)),                      # guns, | buildings,
-        dict(L=[59], R_=[60], gap=HEAD, end=530, strike=(60,)),                         # or | fire.
+        dict(L=[57], R_=[58], gap=HEAD, end=505),                                       # guns, | buildings,  (v5b: no strike slashes)
+        dict(L=[59], R_=[60], gap=HEAD, end=530),                                       # or | fire.
         dict(L=[61], R_=[62, 63], gap=(620, 1300), end=558),                            # Artist | Stephen Bliss
         dict(L=[64, 65], R_=[66, 67], gap=(620, 1300), end=586),                        # had about | a week,
         dict(L=[68, 69], R_=[70], gap=HEAD, end=609),                                   # so he | chopped
@@ -150,12 +150,12 @@ def captions(END):
         dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
         dict(L=[112], R_=[113], gap=CENTRE, end=998),                                   # same | boxes,  (off before the match cut)
         dict(L=[114], R_=[115], gap=(500, 1420), end=1021),                             # same | grid,
-    ]                                                                                   # 25 years / later.: end_title()
+        dict(L=[116, 117, 118], center=True, end=END),                                  # 25 years later.  (v5b: back on one line)
+    ]
     sharp, glow = [], []
     for p in P:
         s, g = phrase(**p); sharp += s
         if g: glow += glow_stack(" ".join(x[0] for x in g), g)
-    s, g = end_title(END); sharp += s; glow += g
     return (D.group("Captions (reference style)", 0, END, sharp),
             D.group("Caption glow (blurred copies, added)", 0, END, glow, blend="add",
                     desc="Glow on the words that matter: per word run, four blurred copies (20/40/80/160 px) added over the picture."))
@@ -349,7 +349,7 @@ def H1():
 TVBODY = (710, 220, 590, 609)          # A01 TV body on the 1920 canvas (cover fit): x, y, w, h
 
 
-def tv(d, screens, zooms=((0, 74), (42, 86), (82, 92))):
+def tv(d, screens, s0=74, s1=84):
     """The A01 CRT cut out of its room and set on black: its body lifted to read as a grey set, footage pinned into the
     screen, scaled about the body's centre. v5: held, then hard jump cuts to a tighter zoom (reference 0:02.4) on
     "GTA" and on "this?" - never wider than the gap between the caption blocks. Tracking boxes on the set."""
@@ -361,9 +361,9 @@ def tv(d, screens, zooms=((0, 74), (42, 86), (82, 92))):
     body = np.zeros((1080, 1920), np.uint8); body[by + 10:by + bh - 10, bx + 10:bx + bw - 10] = 255; body[270:715, 750:1275] = 0
     boxes = hud_pts("TV set", cv2.cvtColor(cover_img(cv2.imread(R["A01"]["path"])), cv2.COLOR_BGR2GRAY), d, n=6, seed=4, big=0,
                     roi=body, min_dist=60, small=((40, 110), (34, 90)))
-    g = D.group("CRT", 0, d, scr + boxes + screens + [plate, m], tr=T(960, 540, zooms[0][1], ax=cx, ay=cy))
-    assert bw * max(z for _, z in zooms) / 100 < 1254 - 666, "TV wider than the gap between the caption blocks"
-    for p in ("scaleX", "scaleY"): D.kf(g, p, [(f, z, HOLD) for f, z in zooms])
+    g = D.group("CRT", 0, d, scr + boxes + screens + [plate, m], tr=T(960, 540, s0, ax=cx, ay=cy))
+    # v5b: back to the v4 move - a slow, subtle grow from its entry (the jump-cut zooms are gone)
+    for p in ("scaleX", "scaleY"): D.kf(g, p, [(0, s0, HOLD), (d * 1.4, s1 + (s1 - s0) * .4, E_OX)])
     return g
 
 
@@ -449,7 +449,7 @@ def hook_match(name, f0, f1, height=620):
         boxes = hud_pts(f"HUD {k[4:]} cover", g, dur, lambda p: (x0 + p[0] * s, y0 + p[1] * s), n=7, seed=21 + i, big=1, min_dist=60,
                         bounds=(x0 + 12, y0 + 12, x0 + w - 12, y0 + height - 12), big_size=((150, 260), (120, 200)), small=((36, 110), (30, 90)))
         lay.append(D.group(f"{k[4:]} cover + tracking boxes", t, t + dur, boxes + [im]))
-        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=70))
+        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=28))
         t += dur
     for r in flashes: r["motionBlur"] = False         # one crisp frame each
     return hit(name, f0, f1, flashes + lay + [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")])
@@ -472,6 +472,7 @@ def tracked_shot(name, b, t, d, roi, big=(), n=7, seed=1, scale=100, cx=960, cy=
     a = prep.sel(b, t, d / FPS + 0.2)
     v = rl.vclip(f"{b} at {t} s", b, t, d, scale=scale, cx=cx, cy=cy, drift_on=False)
     boxes = tracked_hud(f"Track {b}", a, d, vmap(a, scale, cx, cy), roi, n=n, seed=seed, big=big)
+    for l in boxes: l["transform"]["opacity"] = 35          # v5b: barely there
     g = D.group(f"{b} + tracking boxes", 0, d, boxes + [v], tr=T(960, 540, ax=960, ay=540))
     rl.drift(g, d, 960, 540, 100)
     return g
@@ -483,19 +484,20 @@ def H4():
     sh = []
     v = R[prep.sel("B09", 48.5, 16 / FPS + 0.2)]; bw_, bh_ = v["w"], v["h"]
     sh.append(rl.shot("H4.1 European box in hands", 145, 161, [tracked_shot("B09 European box in hands", "B09", 48.5, 16,
-                      roi=(0.08 * bw_, 0.02 * bh_, 0.8 * bw_, 0.9 * bh_), big=[(0.3 * bw_, 0.02 * bh_, 0.27 * bw_, 0.36 * bh_)], n=8, seed=5)], dim=10))
+                      roi=(0.08 * bw_, 0.02 * bh_, 0.8 * bw_, 0.9 * bh_), big=[(0.3 * bw_, 0.02 * bh_, 0.27 * bw_, 0.36 * bh_)], n=0, seed=5)], dim=10))
     a = R["b09_front"]; sc = W / a["w"]
     tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
     front = D.image("B09 European box, front (still frame at 50 s)", "b09_front", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
     g = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
-    boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=9, seed=8, big=1, min_dist=80,
+    boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=1, seed=8, big=0, min_dist=80,
                     big_size=((300, 460), (180, 280)), f0=3)
+    for l in boxes: l["transform"]["opacity"] = 35          # v5b: one faint box only
     sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
     # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill; boxes on his face
     sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [tracked_shot("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, roi=(640, 230, 420, 560),
-                      big=[(690, 250, 290, 300)], n=7, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))
+                      big=[(690, 250, 290, 300)], n=0, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))
     sh.append(rl.shot("H4.4 Bliss at his mural", 207, 227, [tracked_shot("B27 Bliss at his mural", "B27", 52.0, 20, roi=(560, 160, 1100, 780),
-                      big=[(930, 170, 230, 260)], n=8, seed=7, scale=108)], dim=10))
+                      big=[], n=1, seed=7, scale=108)], dim=10))
     return sh
 
 
@@ -517,7 +519,7 @@ def matchcut(name, f0, f1):
     durs = [d // n + (1 if i < d % n else 0) for i in range(n)]
     for k, dur in zip(MATCH, durs):
         lay.append(D.image(f"{k[4:]} cover", k, t, t + dur, tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"])))
-        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=85))
+        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=32))
         t += dur
     for r in flashes: r["motionBlur"] = False         # one crisp frame (motion blur smeared it over its neighbours)
     return rl.shot(name, f0, f1, flashes + lay, dim=8)
