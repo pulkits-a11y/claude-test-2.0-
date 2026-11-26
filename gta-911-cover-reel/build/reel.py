@@ -43,6 +43,10 @@ def build_assets():
                     t = (p - a) / (b - a); c = [ca[i] + (cb[i] - ca[i]) * t for i in range(4)]; break
             g[:, x] = [c[2], c[1], c[0], c[3] * 255]
         prep.img("prism", g.astype(np.uint8))
+    if "tex_grain_a" not in R:
+        g = cv2.imread(os.path.join(P, "textures", "grain.jpg"), cv2.IMREAD_GRAYSCALE).astype(np.float32)
+        a = np.clip((g - 14) * 2.2, 0, 255).astype(np.uint8)
+        prep.img("tex_grain_a", np.dstack([np.full_like(a, 255)] * 3 + [a]))
     prep.audio("vo", os.path.join(P, "audio", "GTA911_VO_tight_118.wav"))
     # ---- front pages (B01, 638x480; page column x199-439) - top of each page, masthead to main photo
     pages = {"pg_disaster": (31.14, 300), "pg_actofwar": (324.76, 262), "pg_warathome": (404.84, 250), "pg_siege": (413.74, 268),
@@ -65,6 +69,7 @@ def build_assets():
     # ---- Bliss stills: B26 solo panel (880 s), B27 close portrait (140.6 s), B28 right half (1720 s)
     prep.still("bliss26", "B26", 880.0, crop=(262, 142, 1416, 856))
     prep.still("bliss27", "B27", 140.6, crop=(0, 120, 1920, 840))
+    prep.still("bliss27b", "B27", 32.2, crop=(0, 100, 1920, 880))
     prep.still("bliss28", "B28", 1720.0, crop=(960, 0, 960, 1080))
     for n, t in [("art1", 74.0), ("art2", 78.0), ("art3", 82.0), ("art4", 120.0), ("art5", 42.3)]: prep.still("b27_" + n, "B27", t)
     prep.still("bed_cal_2001", "B22", 103.0)
@@ -95,6 +100,9 @@ def drift(layer, d, x0, y0, s_end, full=True):
     """46 px/s sideways (alternating) and 119%->116% (full-frame) or the same ratio on a sized still, ease-out expo."""
     SHOT_N[0] += 1
     sgn = 1 if SHOT_N[0] % 2 else -1
+    tr = layer["transform"]
+    if layer["type"] == "Group" and list(tr["anchorPoint"]) == [0, 0] and list(tr["position"]) == [0, 0]:
+        tr["anchorPoint"], tr["position"] = [x0, y0], [x0, y0]   # a group otherwise scales about its top-left corner
     move = 46 * d / FPS
     s_start = s_end * 119 / 116
     tot_m, tot_s = move / Y_AT_CUT, (s_end - s_start) / Y_AT_CUT
@@ -441,7 +449,8 @@ def S04():
     s0, s1 = SCENES[3]; sh = []; tx = []
     d = 22
     m = IS_big("Six months (matte)", 0, d, "Six months", 300, 960, 640, shadow=False); track_in(m)
-    foot = vclip("B13 brush strokes in the letters", "B13", 6.0, d, matte={"layer": m["id"], "mode": "alpha"}, scale=110)
+    foot = vclip("B13 brush strokes in the letters", "B13", 6.0, d, matte={"layer": m["id"], "mode": "alpha"}, scale=110,
+                 effects=[D.fx({"type": "levels", "inputBlack": 25, "inputWhite": 190, "gamma": 1.1, "outputBlack": 0, "outputWhite": 255})])
     sh.append(shot("S4.1 Footage in type", 185, 207, [foot, m], dim=0))
     sh.append(shot("S4.2 Calendar pages", 207, 213, [vclip("B15 calendar pages ripping", "B15", 12.6, 6)], dim=20))
     sh.append(shot("S4.3 Hand and brush", 213, 221, [vclip("B27 Bliss at the wall", "B27", 50.0, 8, scale=160, cx=900)], look=L_heat(), dim=0))
@@ -450,7 +459,7 @@ def S04():
     return sh, tx
 
 
-EURO = {"gun": (100, 320, 320, 200), "flames": (50, 730, 330, 250), "building": (590, 260, 260, 260), "building_wide": (520, 200, 380, 420),
+EURO = {"gun": (100, 320, 320, 200), "flames": (50, 730, 330, 250), "building": (700, 260, 200, 240), "building_wide": (640, 230, 260, 330),
         "face": (350, 470, 200, 160), "car": (140, 860, 500, 300), "title": (170, 40, 560, 330)}
 
 
@@ -601,7 +610,7 @@ def bliss_card(name, asset, d, rot, cx=960):
 
 def S09():
     s0, s1 = SCENES[8]; sh = []; tx = []
-    for i, (f0, f1, asset, rot) in enumerate([(528, 532, "bliss26", -4), (532, 536, "bliss27", 3), (536, 540, "bliss28", -2)]):
+    for i, (f0, f1, asset, rot) in enumerate([(528, 532, "bliss26", -4), (532, 536, "bliss27b", 3), (536, 540, "bliss28", -2)]):
         sh.append(shot(f"S9.{i + 1} Photo card", f0, f1, [bliss_card(f"Bliss photo #{asset[-2:]}", asset, f1 - f0, rot)], dim=10))
     # heat map + strip of the real eyes (same still, same framing)
     d = 10; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 520 / fw
@@ -620,7 +629,7 @@ def S09():
     prep.img("C05_bliss_cutout", path=os.path.join(ROOT, "build", "assets", "img", "C05_bliss_cutout.png"))
     cut = iclip("C05 Bliss cutout (head and shoulders, B26 still)", "C05_bliss_cutout", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy,
                 shadow=SHADOW)
-    name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 760); track_in(name)   # baseline raised from 880 so the shoulders cover only its lower part
+    name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 720); track_in(name)   # baseline raised from 880 so the shoulders cover only its lower part
     arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(30)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
     sh.append(shot("S9.5 Cutout on collage", 550, 572, [cut, name, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55)] + arts, dim=0))
     burst = [(572, 577, 0.5, 12), (577, 581, 2.5, 45), (581, 585, 6.5, 12)]
@@ -766,8 +775,8 @@ def S13():
 
 def S14():
     s0, s1 = SCENES[13]; sh = []; tx = []
-    def cut(k, d, cx, name):
-        a = R[k]; h = 780; w = a["w"] * h / a["h"]
+    def cut(k, d, cx, name, h=780):
+        a = R[k]; w = a["w"] * h / a["h"]
         return iclip(name, k, d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, shadow=SHADOW)
     rows = [(853, 882, "cov_VC", 1240, L_duo("vice"), "C08 Vice City box"), (882, 911, "cov_SA", 960, L_half(), "C09 San Andreas box"),
             (911, 920, "cov_IV", 960, L_heat(), "C10 GTA IV box"), (920, 936, "cov_V", 960, None, "C11 GTA V box")]
@@ -782,7 +791,7 @@ def S14():
             w = tf.advance("IS", "IV", 800); l = IS_big("IV", WF[107] - f0, d, "IV", 800, 960, 900); behind = [l]
             pop_in(l, w, tf.cap_height("IS", 800)); l["transform"]["position"][0] -= w / 2; l["transform"]["anchorPoint"][0] -= w / 2
         if i == 3: behind = [IS_big("V", 0, d, "V", 900, 960, 940)]
-        sh.append(shot(f"S14.{i + 1} {nm[4:]}", f0, f1, [cut(k, d, cx, nm + " (cutout, B07 cover)")] + behind + [table], dim=12))
+        sh.append(shot(f"S14.{i + 1} {nm[4:]}", f0, f1, [cut(k, d, cx, nm + " (cutout, B07 cover)", 780 if i == 0 else 560)] + behind + [table], dim=12))
     tx.append(HV_big("VICE / CITY", 0, 882 - s0, "VICE\nCITY", 260, 116, 440))
     return sh, tx
 
@@ -826,7 +835,7 @@ def S16():
 
 # ============================================================== film-wide layers
 def grain_layer(name, o, seed):
-    lay = D.image(name, "tex_grain", 0, END, tr=T(0, 0), fit="stretch", rect=(0, 0, 2400, 1400), blend="overlay", o=o)
+    lay = D.image(name, "tex_grain_a", 0, END, tr=T(0, 0), fit="stretch", rect=(0, 0, 2400, 1400), blend="overlay", o=o)
     rnd = random.Random(seed)
     keys = [(f, -round(rnd.random() * 480), HOLD) for f in range(0, END, 2)]
     D.kf(lay, "positionX", keys)
@@ -862,7 +871,7 @@ def flashes():
 # ============================================================== main
 def faces():
     """Face centre and width in each Bliss still, read off a pixel grid (used only to line the cards up)."""
-    FACE.update({"bliss26": (570, 362, 300), "bliss27": (880, 400, 520), "bliss28": (412, 410, 260)})
+    FACE.update({"bliss26": (570, 362, 300), "bliss27": (880, 400, 520), "bliss27b": (820, 200, 220), "bliss28": (412, 410, 260)})
 
 
 def main():
