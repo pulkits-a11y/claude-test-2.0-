@@ -77,7 +77,7 @@ missing = [w["w"] for w in words if w["w"].strip(",.?!").lower().replace("-11", 
 notes.append("voiceover words not on screen: " + ", ".join(missing))
 # 10 audio
 vids = [l for l, _, _ in walk(root) if l["type"] == "Video" and l.get("volume")]
-ok([v["name"] for v in vids] == ["CTA: RawCanvas logo sting"], f"video layers with audio: {[v['name'] for v in vids]}")
+ok(not vids, f"video layers with audio: {[v['name'] for v in vids]}")
 rot = [l["name"] for l, _, _ in walk(root) if abs(l.get("transform", {}).get("rotation", 0)) > 0.01 and not l["name"].startswith("Prism")]
 ok(not rot, f"tilted layers: {rot[:8]}")
 rk = [a for a in acts if a.get("property", {}).get("propertyType") == "rotation"]

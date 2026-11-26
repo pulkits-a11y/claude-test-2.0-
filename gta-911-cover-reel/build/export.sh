@@ -1,12 +1,12 @@
 #!/bin/bash
 # Renders the reel in two parallel halves (software Vulkan renderer here). The MP4 exporter drops a few frames at the
 # end of each range, so each half's missing tail frames are rendered again as a short ProRes clip and put back in
-# place; the halves are then joined frame-exact and muxed with the document's own audio mix (voiceover + CTA sound).
-# Output: GTA911_CoverReel.mp4 - 1920x1080, 30 fps, H.264 + AAC, 1124 frames.
+# place; the halves are then joined frame-exact and muxed with the document's own audio mix (the voiceover).
+# Output: GTA911_CoverReel.mp4 - 1920x1080, 30 fps, H.264 + AAC, 1057 frames.
 # Usage: build/export.sh [--join-only]   (--join-only reuses the rendered halves)
 cd "$(dirname "$0")/.."
 X=~/.local/share/Tesseract/bin/tsrct; E=.tesseract-work/export; mkdir -p $E
-TOTAL=1124; HALF=562                                  # frames; half 1 = 0-561, half 2 = 562-1123
+TOTAL=1057; HALF=528                                  # frames; half 1 = 0-527, half 2 = 528-1056
 ms() { python3 -c "print(round($1*1000/30))"; }
 seg() { $X export --project GTA911_CoverReel.tsrct --output $E/seg$1.mp4 --resolution 1080p --fps 30 --start-ms $(ms $2) --duration-ms $(( $(ms $3) - $(ms $2) )) \
         --encoder-backend external-ffmpeg-command --ffmpeg-path "$(command -v ffmpeg)" > $E/seg$1.log 2>&1; echo "seg$1 exit $?"; }

@@ -68,19 +68,21 @@ def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), star
         texts = [word_text(i) for i in idxs]
         xs, ws, _ = tf.line_layout("AR", texts, CAP_SIZE, CAP_AX, 0, x, align)
         for i, txt, xx in zip(idxs, texts, xs):
+            if WF[i] >= end: continue          # spoken after the phrase is cleared (e.g. "since." under the floating covers)
             out.append(caption_word(txt, WF[i] if start is None else max(start, WF[i]), end, xx, strike=i in strike))
     return out
 
 
 def captions(END):
-    TV = (700, 1220); COVER = (560, 1360); HEAD = (700, 1220); CENTRE = (900, 1020)
+    TV = (700, 1220); COVER = (560, 1360); HEAD = (700, 1220); CENTRE = (900, 1020); BOX = (680, 1240)
     P = [
         dict(L=range(0, 5), R_=[5], gap=TV, end=44),                                  # What if I told you | 9/11
         dict(L=[7, 8, 9], R_=range(10, 15), gap=TV, end=124),                           # is the reason | GTA covers look like this?
         dict(L=[15, 16], R_=[17, 18, 19], gap=(660, 1260), end=145),                    # This was | meant to be
         dict(L=[20, 21, 22], R_=[23], gap=(600, 1320), end=189),                        # the GTA III | cover,
-        dict(L=[24, 25], R_=[26, 27], gap=(560, 1080), end=230),                        # six months | of painting.
-        dict(L=[28, 29], R_=[30], gap=COVER, end=258),                                  # It had | guns,
+        dict(L=[24], R_=[25], gap=(600, 1060), end=207),                                # six | months  (either side of his face)
+        dict(L=[26, 27], R_=[], gap=(880, 1600), end=230),                              # of painting.  (just left of him, clear of his body)
+        dict(L=[28, 29], R_=[30], gap=(600, 1320), end=258),                            # It had | guns,
         dict(L=[31], R_=[32, 33, 34], gap=HEAD, end=295),                               # fire, | and burning buildings
         dict(L=[35, 36], R_=[37], gap=COVER, end=322),                                  # all over | it.
         dict(L=[38, 39], R_=[41], gap=(700, 1320), end=362),                            # Then 9/11 | hit,
@@ -99,12 +101,13 @@ def captions(END):
         dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
         dict(L=[91, 92], R_=[93], gap=(940, 1620), end=782),                            # That rush | job?
         dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template
-        dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=853),                 # for every | GTA cover since.
-        dict(L=[103, 104], R_=[], gap=(900, 1580), end=883),                            # Vice City,
-        dict(L=[105, 106], R_=[107], gap=(720, 1200), end=920),                         # San Andreas, | IV,
-        dict(L=[108], R_=[], gap=(720, 1200), end=940),                                 # V,
+        dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=838),                 # for every | GTA cover  (off before the floating covers)
+        dict(L=[103], R_=[104], gap=BOX, end=883),                                      # Vice | City,   (either side of the box)
+        dict(L=[105], R_=[106], gap=BOX, end=911),                                      # San | Andreas,
+        dict(L=[], R_=[107], gap=BOX, end=920),                                         # IV,
+        dict(L=[108], R_=[], gap=BOX, end=940),                                         # V,
         dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
-        dict(L=[112], R_=[113], gap=CENTRE, end=1001),                                  # same | boxes,
+        dict(L=[112], R_=[113], gap=CENTRE, end=998),                                   # same | boxes,  (off before the match cut)
         dict(L=[114], R_=[115], gap=(500, 1420), end=1021),                             # same | grid,
         dict(L=[116, 117, 118], center=True, end=END),                                  # 25 years later.
     ]
@@ -191,7 +194,7 @@ def stills():
     S = prep.still
     S("hud_b01", "B01", 300.0); S("hud_b04", "B04", 10.0, crop=(0, 0, 608, 342)); S("hud_b50", "B50", 10.0)
     S("hud_b49", "B49", 40.0); S("hud_b48", "B48", 60.0); S("hud_b25", "B25", 200.0); S("hud_b04b", "B04", 6.0, crop=(0, 380, 608, 342))
-    for k in ("logo_gta3", "logo_vi"):
+    for k in ("logo_gta3", "logo_vi", "b09_front", "b09_front_title_mask", "cov_III_title_mask_v2", "cov_VI_title_mask_v2", "C05_flash_mask"):
         prep.img(k, path=os.path.join(ROOT, "build", "assets", "img", k + ".png"))
     if "redleak" not in R:                       # red light leak (reference 0:01.4 / 0:04.4)
         y, x = np.mgrid[0:1080, 0:1920].astype(np.float32)
@@ -336,8 +339,34 @@ def H4():
     """145-227: full-frame footage, captions either side of the subject."""
     sh = []
     sh.append(rl.shot("H4.1 European box in hands", 145, 161, [rl.vclip("B09 European box in hands", "B09", 48.5, 16)], dim=10))
-    sh.append(rl.shot("H4.2 European box, front", 161, 189, [rl.vclip("B09 European box, front", "B09", 50.0, 28)], dim=10))
+    a = R["b09_front"]; sc = W / a["w"]
+    tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
+    front = D.image("B09 European box, front (still frame at 50 s)", "b09_front", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
     # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill
     sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [rl.vclip("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, scale=131, cx=960, cy=540 + (540 - 585) * 1.31)], dim=10))
     sh.append(rl.shot("H4.4 Bliss at his mural", 207, 227, [rl.vclip("B27 Bliss at his mural", "B27", 52.0, 20, scale=108)], dim=10))
     return sh
+
+
+def flash_cover(name, asset, mask, d, height, cx, cy, at):
+    """A cover held still at a given height, its title letters flicker-flashing at `at` (rotoscoped mask)."""
+    a = R[asset]; w = a["w"] * height / a["h"]
+    tr = lambda: T(w / 2, height / 2, 100 * height / a["h"], ax=a["w"] / 2, ay=a["h"] / 2)
+    im = D.image(name, asset, 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    return D.group(name + " + title flash", 0, d, rl.glow_flash(mask, d, tr, a, at, halo=14, scale=height / a["h"]) + [im],
+                   tr=T(cx, cy, ax=w / 2, ay=height / 2), shadow=rl.SHADOW)
+
+
+MATCH = ["cov_III", "cov_VC", "cov_SA", "cov_LCS", "cov_VCS", "cov_IV", "cov_TBOGT", "cov_CW", "cov_V", "cov_VI"]
+
+
+def matchcut(name, f0, f1):
+    """Every cover, one after another at the same spot and size (a match cut), with a one-frame white flash on each switch."""
+    d = f1 - f0; a = R["cov_III"]; s = H / a["h"]; n = len(MATCH); lay, flashes, t = [], [], 0
+    durs = [d // n + (1 if i < d % n else 0) for i in range(n)]
+    for k, dur in zip(MATCH, durs):
+        lay.append(D.image(f"{k[4:]} cover", k, t, t + dur, tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"])))
+        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=85))
+        t += dur
+    return rl.shot(name, f0, f1, flashes + lay, dim=8)
