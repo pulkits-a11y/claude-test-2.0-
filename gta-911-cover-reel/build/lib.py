@@ -66,7 +66,7 @@ class Doc:
                           "mapping": {"input": {"start": ms(f0), "duration": ms(f1) - ms(f0)},
                                       "output": {"start": 0, "duration": ms(f1) - ms(f0)}, "type": "linear"},
                           "type": "windowed"},
-             "layers": layers}
+             "layers": layers, "motionBlur": True}
         if tr is not None and o != 100:
             g["transform"]["opacity"] = o
         if effects: g["effects"] = effects
@@ -86,7 +86,7 @@ class Doc:
              "source": {"assetId": asset, "fit": fit,
                         "sourceRect": {"x": rect[0], "y": rect[1], "width": rect[2], "height": rect[3]}},
              "sourceIntrinsicDuration": intrinsic, "sourceRange": {"start": src_ms, "duration": min(sd, intrinsic - src_ms)},
-             "transform": tr or T(o=o)}
+             "transform": tr or T(o=o), "motionBlur": True}
         if effects: v["effects"] = effects
         if matte: v["trackMatte"] = matte
         return v
@@ -97,7 +97,7 @@ class Doc:
               "name": name, "type": "Image",
               "source": {"assetId": asset, "fit": fit,
                          "sourceRect": {"x": rect[0], "y": rect[1], "width": rect[2], "height": rect[3]}},
-              "transform": tr or T(o=o)}
+              "transform": tr or T(o=o), "motionBlur": True}
         if effects: im["effects"] = effects
         if matte: im["trackMatte"] = matte
         if shadow: im["dropShadow"] = shadow
@@ -106,7 +106,7 @@ class Doc:
     def rect(self, name, f0, f1, x, y, w, h, color, blend="normal", o=100, effects=None, roundness=0, tr=None,
              hidden=False):
         r = {"activeRange": {"start": ms(f0), "duration": ms(f1) - ms(f0)}, "blendMode": blend, "id": self.nid(),
-             "name": name, "type": "Rect", "transform": tr or T(o=o),
+             "name": name, "type": "Rect", "transform": tr or T(o=o), "motionBlur": True,
              "rect": {"position": [x, y], "size": [w, h], "fillEnabled": True, "fillColor": color,
                       "strokeEnabled": False, "strokeWidth": 0, "roundness": roundness}}
         if effects: r["effects"] = effects
@@ -120,9 +120,14 @@ class Doc:
         if axes: st["fontVariations"] = {"id": self.fxid(), "axes": axes}
         if leading: st["leading"] = leading
         t = {"activeRange": {"start": ms(f0), "duration": ms(f1) - ms(f0)}, "blendMode": blend, "id": self.nid(),
-             "name": name, "type": "Text", "sourceText": st, "transform": tr or T(x, y, o=o)}
-        if shadow: t["dropShadow"] = {"enabled": True, "color": [0, 0, 0, 0.45], "offset": [0, 4], "blurRadius": 32,
-                                      "spreadRadius": 0, "blendMode": "normal"}
+             "name": name, "type": "Text", "sourceText": st, "transform": tr or T(x, y, o=o), "motionBlur": True}
+        if shadow:
+            t["dropShadow"] = {"enabled": True, "color": [0, 0, 0, 0.45], "offset": [0, 4], "blurRadius": 32,
+                               "spreadRadius": 0, "blendMode": "normal"}
+            # the soft glow every caption carries: a wide outer glow in the text's own colour
+            light = (color[0] * .2126 + color[1] * .7152 + color[2] * .0722) > .5
+            t["layerStyles"] = [{"id": self.fxid(), "style": {"type": "outerGlow", "enabled": True, "color": [color[0], color[1], color[2], .5 if light else .35],
+                                                               "size": 34, "spread": 0, "range": 50, "blendMode": "screen" if light else "normal"}}]
         if effects: t["effects"] = effects
         return t
 

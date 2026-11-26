@@ -29,7 +29,9 @@ for sc in root:
         subs = [x for x in sh["layers"] if x["type"] == "Group" and x["name"].startswith("Burst")] if sh["name"].startswith("S9.6") else [sh]
         for s in subs:
             f = round(s["playback"]["inputRange"]["duration"] * 30 / 1000); shots.append((s["name"], f))
-ok(all(f < 30 for _, f in shots), "shots of 30+ frames: " + str([s for s in shots if s[1] >= 30]))
+# v2: the 30-frame cap is relaxed on review (shots the client asked to breathe); listed, not failed
+notes.append("shots of 30+ frames (held on review): " + ", ".join(f"{n} ({f})" for n, f in shots if f >= 30))
+ok(not any("Instrument" in l["sourceText"]["fontFamily"] for l, _, _ in walk(root) if l["type"] == "Text"), "Instrument Serif still in use")
 first10 = [s for s in shots if s[0].split(".")[0] in ("S1", "S2", "S3", "S4", "S5")]
 notes.append(f"{len(shots)} shots; longest {max(f for _, f in shots)} frames; scenes 1-5 shots over 8 frames: " +
              ", ".join(f"{n} ({f})" for n, f in first10 if f > 8))

@@ -75,6 +75,9 @@ def build_assets():
     for n, t in [("art1", 74.0), ("art2", 78.0), ("art3", 82.0), ("art4", 120.0), ("art5", 42.3)]: prep.still("b27_" + n, "B27", t)
     prep.still("bed_cal_2001", "B22", 103.0)
     for n, t in [("bed34a", 49.0), ("bed34b", 125.0), ("bed34c", 205.0)]: prep.still(n, "B34", t)
+    # rotoscoped logo letters (white, alpha = letter mask) for the glow flashes; built from the stills in build/stills, see NOTES
+    prep.img("C02_title_mask", path=os.path.join(ROOT, "build", "assets", "img", "C02_title_mask.png"))
+    prep.img("cov_VI_vi_mask", path=os.path.join(ROOT, "build", "assets", "img", "cov_VI_vi_mask.png"))
 
 
 def V(b, t, dur):
@@ -176,7 +179,13 @@ def iclip(name, asset, d, fit="cover", rect=FULL, scale=100, cx=960, cy=540, rot
     lay = D.image(name, asset, 0, d, tr=T(cx, cy, scale, r=rot, ax=ax, ay=ay, o=o), fit=fit, rect=rect,
                   effects=((GRADE() if grade else []) + (effects or [])), shadow=shadow, matte=matte)
     if drift_on: drift(lay, d, cx, cy, scale)
+    if rot: settle(lay, rot)
     return lay
+
+
+def settle(lay, rot, n=10):
+    """An overlay may come in at an angle but always settles straight."""
+    D.kf(lay, "rotation", [(0, rot, HOLD), (n, 0, E_OX)])
 
 
 def upright(name, asset, d, height=1080, cx=960, cy=540, blur_bed=True, rot=0):
@@ -189,15 +198,13 @@ def upright(name, asset, d, height=1080, cx=960, cy=540, blur_bed=True, rot=0):
     return out
 
 
-def card(name, asset, d, height, cx, cy, rot, border=14):
-    """A still printed as a card: off-white border, tilt, soft shadow, on black."""
+def card(name, asset, d, height, cx, cy, rot):
+    """A still as a borderless card with a soft shadow, coming in tilted and settling straight."""
     a = R[asset]; w = a["w"] * height / a["h"]
-    img = D.image(name + " photo", asset, 0, d, tr=T(border + w / 2, border + height / 2, ax=w / 2, ay=height / 2), fit="stretch",
+    img = D.image(name + " photo", asset, 0, d, tr=T(w / 2, height / 2, ax=w / 2, ay=height / 2), fit="stretch",
                   rect=(0, 0, w, height), effects=GRADE())
-    paper = D.rect(name + " border", 0, d, 0, 0, w + 2 * border, height + 2 * border, OFFWHITE)
-    gw, gh = w + 2 * border, height + 2 * border
-    g = D.group(name, 0, d, [img, paper], tr=T(cx, cy, r=rot, ax=gw / 2, ay=gh / 2), shadow=SHADOW)
-    drift(g, d, cx, cy, 100)
+    g = D.group(name, 0, d, [img], tr=T(cx, cy, r=rot, ax=w / 2, ay=height / 2), shadow=SHADOW)
+    drift(g, d, cx, cy, 100); settle(g, rot, min(10, d))
     return g
 
 
@@ -234,6 +241,8 @@ def shadowed(layer): return layer
 def words_line(prefix, idxs, texts, key, font, axes, size, y_center, x, align, color, tracking, out_f, scene0, entrance="hard",
                baseline=None):
     """One layer per word, laid out as the finished line; each appears on its spoken frame (scene-local)."""
+    if key == "IS":   # Instrument Serif dropped on review: same line in the Archivo caption face, at the old line's width
+        size = is_size(" ".join(texts), size); key, font, axes, tracking = "AR", AR, CAP, 0
     xs, ws, tot = tf.line_layout(key, texts, size, axes, tracking, x, align)
     base = baseline if baseline is not None else y_center + tf.cap_height(key, size) / 2
     out = []
@@ -286,17 +295,26 @@ def smear_out(lay, dur_f, axis="x", sign=1, n=4, e=None):
     D.kf(lay, prop, [(dur_f - n, v, HOLD), (dur_f, v + sign * 300, E_IOX)])
 
 
-def track_in(lay, n=10, final=-10):
-    D.kf(lay, "tracking", [(0, 400, HOLD), (n, final, E_OX)])
-    D.kf(lay, "opacity", [(0, 0, HOLD), (n, 100, E_OX)])
+def track_in(lay, n=8, final=None):
+    """(was a letter-spacing collapse - dropped on review) now the soft blur-in."""
+    return blur_in(lay, n)
 
 
 def big(name, f0, f1, txt, font, size, x, y, axes=None, color=WARM, just="left", tracking=-10, leading=None, shadow=True):
     return D.text(name, f0, f1, txt, font, size, color, x, y, axes=axes, just=just, tracking=tracking, leading=leading, shadow=shadow)
 
 
+def is_size(txt, size):
+    """Archivo size taking the width the old Instrument Serif line had (never larger than the size asked for)."""
+    wi = max(tf.advance("IS", l, size, None, -10) for l in txt.split("\n"))
+    wa = max(tf.advance("AR", l, size, CAP, 0) for l in txt.split("\n"))
+    return round(size * min(1.0, wi / wa))
+
+
 def IS_big(name, f0, f1, txt, size, x, y, just="center", color=WARM, shadow=True):
-    return big(name, f0, f1, txt, IS, size, x, y, color=color, just=just, tracking=-10, leading=size * 0.95, shadow=shadow)
+    """Big word, set in the Archivo caption face (Instrument Serif dropped on review)."""
+    sz = is_size(txt, size)
+    return big(name, f0, f1, txt, AR, sz, x, y, axes=CAP, color=color, just=just, tracking=0, leading=sz, shadow=shadow)
 
 
 def HV_big(name, f0, f1, txt, size, x, y, just="left"):
@@ -364,7 +382,7 @@ def S01():
     # 5 C01 cutout on collage; "9/11" behind the page's lower half
     d = 19; a = R["C01_outrage"]; w = 640; h = a["h"] * w / a["w"]
     cut = iclip("C01 Sept 12 front page (cutout)", "C01_outrage", d, fit="stretch", rect=(0, 0, w, h), cx=960, cy=430 + h / 2, rot=-1.5, shadow=SHADOW)
-    nine = IS_big("9/11", 0, d, "9/11", 380, 960, 560)
+    nine = big("9/11", 0, d, "9/11", AR, 300, 960, 520, axes=CAP, color=WARM, just="center", tracking=0)   # top half above the page
     bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60), vclip("B01 front pages (bed)", "B01", 200.0, d, effects=[D.gauss(70)])]
     sh.append(shot("S1.5 Cutout on collage", 25, 44, [cut, nine] + bed, dim=20))
     # 8 CRT, static on the last 3 frames
@@ -407,9 +425,13 @@ BOX = {}   # per-clip framing so boxes land in the same spot: (b, t, scale, cx, 
 def S02():
     s0, s1 = SCENES[1]; sh = []; tx = []
     sh.append(shot("S2.1 GTA VI cover", 67, 75, upright("GTA VI cover (B06 stand-in for #8)", "cov_VI", 8)))
-    d = 29; logo = iclip("GTA VI logo (B06)", "B06_vi_logo", d, fit="cover", scale=100 * 560 / 640, drift_on=False)
+    # VI letters in the B06 frame: x 576-1255, y 270-796 (centre 915.5, 533); scaled into the 632x352 centre hole of the mosaic
+    d = 29; sl = 0.6
+    hole = D.rect("VI window (matte)", 0, d, 644, 364, 632, 352, [1, 1, 1, 1])
+    logo = iclip("GTA VI logo (B06), VI only", "B06_vi_logo", d, fit="cover", scale=100 * sl, cx=960 + 44.5 * sl, cy=540 + 7 * sl, drift_on=False,
+                 matte={"layer": hole["id"], "mode": "alpha"})
     tiles = mosaic_tiles(d, 8, ["cov_III", "cov_VC", "cov_SA", "cov_LCS", "cov_IV", "cov_V", "cov_VCS", "cov_EFLC", "cov_TBOGT", "cov_CW", "cov_VONLINE", "cov_VI"])
-    g = shot("S2.2 Mosaic build", 75, 104, [logo] + tiles, dim=10)
+    g = shot("S2.2 Mosaic build", 75, 104, [logo, hole] + tiles, dim=10)
     whip_out(g, d, 4)
     sh.append(g)
     for i, (f0, f1, b, t, look, sc, cx, cy) in enumerate([(104, 110, "B36", 106.5, None, 98, 1221, 435), (110, 115, "B38", 11.0, L_half(), 94, 704, 498),
@@ -438,46 +460,76 @@ def S03():
     D.kf(photo, "opacity", [(0, 15, HOLD), (d, 85, E_IOC)])
     g = D.group("Polaroid", 0, d, [photo, pol]); drift(g, d, 960, 540, 100)
     sh.append(shot("S3.4 Polaroid", 136, 145, [g], dim=0))
-    sh.append(shot("S3.5 Detail: title", 145, 154, [detail("C02_euro", EURO["title"], 9)], dim=25))
+    sh.append(shot("S3.5 Detail: title + logo flash", 145, 154, [detail("C02_euro", EURO["title"], 9, flash="C02_title_mask", flash_at=2)], dim=25))
     sh.append(shot("S3.6 Detail: car", 154, 163, [detail("C02_euro", EURO["car"], 9)], look=L_half(), dim=15))
-    d = 22; a = R["C02_euro"]; h = 860; w = a["w"] * h / a["h"]
-    cut = iclip("C02 original cover (cutout)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=1320, cy=540, rot=-3, shadow=SHADOW)
-    border = D.rect("C02 border", 0, d, 1320 - w / 2 - 14, 540 - h / 2 - 14, w + 28, h + 28, OFFWHITE, tr=T(1320, 540, r=-3, ax=1320, ay=540))
+    d = 22
+    cut = flash_still("C02 original cover (cutout)", "C02_euro", "C02_title_mask", d, 860, 960, 540, rot=-3, flash_at=11)
     shelf = [D.rect("Shelf darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=50), iclip("A02 store shelf", "A02", d, effects=[D.gauss(14)])]
-    sh.append(shot("S3.7 Cutout on collage", 163, 185, [cut, border] + shelf, dim=10))
+    sh.append(shot("S3.7 Cutout on collage + logo flash", 163, 185, [cut] + shelf, dim=10))
     tx += [label("THIS", WF[15] - s0, 145 - s0, "THIS", 120, 250, 32, "left")]
     wx = 120 + tf.advance("AR", "THIS ", 32, LAB, 500)
     tx += [label("WAS", WF[16] - s0, 145 - s0, "WAS", wx, 250, 32, "left")]
     for wi, (t, yb) in zip([17, 18, 19], [("MEANT", 480), ("TO", 660), ("BE", 840)]):
         l = HV_big(t, WF[wi] - s0, 145 - s0, t, 200, 116, yb); blur_out(l, 145 - WF[wi]); tx.append(l)
-    l = IS_big("the GTA III cover.", WF[20] - s0, s1 - s0, "the GTA III cover.", 110, 120, 600, just="left"); track_in(l); tx.append(l)
     return sh, tx
 
 
-def detail(asset, box, d, name=None):
-    """A separate shot framed tight on one region of a still (x, y, w, h in the still's pixels), with drift."""
+def detail(asset, box, d, name=None, flash=None, flash_at=2):
+    """A separate shot framed on one region of a still (x, y, w, h in the still's pixels), with drift.
+    flash: a letter-mask asset of the same still; its letters glow-flash for a split second at flash_at."""
     a = R[asset]; x, y, w, h = box
     s = max(W / w, H / h)
-    return iclip(name or f"Detail of {asset}", asset, d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s,
-                 cx=960 - (x + w / 2 - a["w"] / 2) * s, cy=540 - (y + h / 2 - a["h"] / 2) * s)
+    cx, cy = 960 - (x + w / 2 - a["w"] / 2) * s, 540 - (y + h / 2 - a["h"] / 2) * s
+    if not flash:
+        return iclip(name or f"Detail of {asset}", asset, d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy)
+    tr = lambda: T(cx, cy, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
+    im = D.image(name or f"Detail of {asset}", asset, 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    g = D.group(f"Detail of {asset} + logo flash", 0, d, glow_flash(flash, d, tr, a, flash_at) + [im], tr=T(960, 540, ax=960, ay=540))
+    drift(g, d, 960, 540, 100)
+    return g
+
+
+def glow_flash(mask, d, tr, a, at, peak=100, halo=30, scale=1.0):
+    """Rotoscoped glow flash on the logo letters only: the letter mask (white) plus a soft halo of it, flashing up over
+    2 frames and dropping away over 5 (screen blend), locked to the still's transform."""
+    out = []
+    for nm, fx, o in [("Logo flash halo (wide)", [D.gauss(halo * 2.2 / scale)], peak), ("Logo flash halo", [D.gauss(halo / scale)], peak), ("Logo flash", [], peak * 0.85)]:
+        l = D.image(nm, mask, 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]), blend="screen", effects=fx or None, o=0)
+        D.kf(l, "opacity", [(0, 0, HOLD), (at, 0, HOLD), (at + 2, o, E_OX), (at + 7, 0, E_OX)])   # a split second: up in 2, gone in 5
+        out.append(l)
+    return out
+
+
+def flash_still(name, asset, mask, d, height, cx, cy, rot=0, flash_at=10, blur_bed=False):
+    """A still at a given height (straight once settled) whose logo letters glow-flash at flash_at."""
+    a = R[asset]; w = a["w"] * height / a["h"]
+    tr = lambda: T(w / 2, height / 2, ax=a["w"] / 2, ay=a["h"] / 2, s=100 * height / a["h"])
+    im = D.image(name, asset, 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    g = D.group(name + " + logo flash", 0, d, glow_flash(mask, d, tr, a, flash_at, halo=24, scale=height / a["h"]) + [im], tr=T(cx, cy, r=rot, ax=w / 2, ay=height / 2), shadow=SHADOW)
+    drift(g, d, cx, cy, 100)
+    if rot: settle(g, rot)
+    return g
 
 
 def S04():
     s0, s1 = SCENES[3]; sh = []; tx = []
-    d = 22
-    m = IS_big("Six months (matte)", 0, d, "Six months", 300, 960, 640, shadow=False); track_in(m)
-    foot = vclip("B13 brush strokes in the letters", "B13", 6.0, d, matte={"layer": m["id"], "mode": "alpha"}, scale=110,
-                 effects=[D.fx({"type": "levels", "inputBlack": 25, "inputWhite": 190, "gamma": 1.1, "outputBlack": 0, "outputWhite": 255})])
-    sh.append(shot("S4.1 Footage in type", 185, 207, [foot, m], dim=0))
-    sh.append(shot("S4.2 Calendar pages", 207, 213, [vclip("B15 calendar pages ripping", "B15", 12.6, 6)], dim=20))
-    sh.append(shot("S4.3 Hand and brush", 213, 221, [vclip("B27 Bliss at the wall", "B27", 50.0, 8, scale=160, cx=900)], look=L_heat(), dim=0))
-    sh.append(shot("S4.4 Brush macro", 221, 227, [vclip("B14 brush stroke macro", "B14", 3.0, 6)], dim=20))
+    # one held shot for the whole line: the letters of "Six months" filled with the painting itself (the European cover art)
+    d = 42
+    m = big("Six months (matte)", 0, d, "Six months", AR, 300, 960, 640, axes={"wdth": 100, "wght": 700}, color=WHITE, just="center", tracking=0, shadow=False)
+    m["sourceText"]["fontSize"] = round(1560 / tf.advance("AR", "Six months", 1, {"wdth": 100, "wght": 700}))
+    blur_in(m, 8)
+    a = R["C02_euro"]
+    paint = iclip("C02 cover painting in the letters", "C02_euro", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * 1920 / a["w"], cy=380,
+                  matte={"layer": m["id"], "mode": "alpha"})
+    sh.append(shot("S4.1 The painting in the type", 185, 227, [paint, m], dim=0))
     tx += wide("of painting.", [26, 27], ["of", "painting."], 940, 227, s0)
     return sh, tx
 
 
-EURO = {"gun": (100, 320, 320, 200), "flames": (50, 730, 330, 250), "building": (700, 260, 200, 240), "building_wide": (640, 230, 260, 330),
-        "face": (350, 470, 200, 160), "car": (140, 860, 500, 300), "title": (170, 40, 560, 330)}
+# crops kept to about 3x so the 720p-sourced cover still reads (they were up to 9x and turned to mush)
+EURO = {"gun": (20, 250, 600, 338), "flames": (0, 640, 620, 349), "building": (0, 170, 900, 506),
+        "face": (200, 400, 560, 315), "car": (100, 800, 700, 394), "title": (110, 20, 690, 388)}
+SPLIT = {"gun": (250, 420), "flames": (220, 830), "building": (660, 420)}   # panel centres for the borderless split
 
 
 def S05():
@@ -489,8 +541,7 @@ def S05():
     inv, setinv = L_inv(None)
     g = shot("S5.5 Gameplay: explosion", 260, 270, [vclip("B49 GTA III explosion", "B49", 99.4, 10)], look=inv, dim=12); setinv(g["layers"][-2])
     sh.append(g)
-    sh.append(shot("S5.6 Detail: burning building", 270, 281, [detail("C02_euro", EURO["building"], 11)]))
-    sh.append(shot("S5.7 Burning building, wider", 281, 294, [detail("C02_euro", EURO["building_wide"], 13)], look=L_duo("ember"), dim=0))
+    sh.append(shot("S5.6 Burning buildings", 270, 294, [detail("C02_euro", EURO["building"], 24)]))
     sh.append(shot("S5.8 Split screen", 294, 309, split3(15)))
     sh.append(shot("S5.9 Original cover, wider", 309, 320, upright("C02 original cover", "C02_euro", 11, height=980), dim=25))
     tx += caption("It had", [28, 29], ["It", "had"], 660, 236, s0)
@@ -513,34 +564,29 @@ def panel(name, d, x, y, w, h, content):
 
 
 def split3(d):
-    out = []
+    """Three 640 px panels edge to edge (no borders), each a ~1.8x crop of the cover."""
+    out = []; s = 1.8
     for i, k in enumerate(["gun", "flames", "building"]):
-        x0 = i * (634 + 8); a = R["C02_euro"]; bx, by, bw, bh = EURO[k]
-        s = max(634 / bw, H / bh)
-        im = D.image(f"Panel {k}", "C02_euro", 0, d, tr=T(x0 + 317, 540, 100 * s, ax=bx + bw / 2, ay=by + bh / 2), fit="stretch",
+        x0 = i * 640; a = R["C02_euro"]; px, py = SPLIT[k]
+        im = D.image(f"Panel {k}", "C02_euro", 0, d, tr=T(x0 + 320, 540, 100 * s, ax=px, ay=py), fit="stretch",
                      rect=(0, 0, a["w"], a["h"]), effects=GRADE())
-        drift(im, d, x0 + 317, 540, 100 * s)
-        out += panel(f"Panel {k}", d, x0, 0, 634, H, [im])
+        drift(im, d, x0 + 320, 540, 100 * s)
+        out += panel(f"Panel {k}", d, x0, 0, 640, H, [im])
     return out
 
 
 def S06():
     s0, s1 = SCENES[5]; sh = []; tx = []
-    sh.append(shot("S6.1 CRT: Sept 12 skyline", 320, 346, [crt(26, [pinned("B04 skyline (stand-in for #19 ITN)", "B04", 10.0, 26)], zoom=1.0, cy=491)], dim=12))
-    a = R["pg_savaged"]
-    sh.append(shot("S6.2 Front page headline", 346, 360, [iclip("Sept 12 headline (B01)", "pg_savaged", 14, fit="stretch", rect=(0, 0, a["w"], a["h"]),
-                   scale=100 * 1920 / a["w"], cx=960, cy=540 + (a["h"] / 2 - 85) * 1920 / a["w"])], look=L_half(), dim=15))
-    sh.append(shot("S6.3 PS2 box in hands", 360, 371, [vclip("B20 GTA III PS2 box in hands", "B20", 9.5, 11, scale=110)], dim=20))
-    sh.append(shot("S6.4 Calendar to 2001", 371, 383, [vclip("B22 calendar years", "B22", 102.8, 12)], dim=25))
-    d = 17; a = R["C04_ps2box"]
-    cut = iclip("C04 PS2 box (B21 still)", "C04_ps2box", d, fit="stretch", rect=(0, 0, a["w"] * 720 / a["h"], 720), cx=960, cy=540, rot=3, shadow=SHADOW)
-    behind = blur_in_layer(IS_big("six weeks (behind)", 0, d, "six weeks", 280, 960, 640))
-    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), iclip("B22 calendar still (bed)", "bed_cal_2001", d, effects=[D.gauss(50)])]
-    sh.append(shot("S6.5 Cutout on collage", 383, 400, [cut, behind] + bed, dim=15))
-    tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 360, s0, "hard", baseline=920)[0]
-    tx.append(label("GTA III · OCT 22, 2001", WF[42] - s0, s1 - s0, "GTA III · OCT 22, 2001", 960, 230, 30))
-    l = IS_big("six weeks", WF[42] - s0, 383 - s0, "six weeks", 280, 960, 640); blur_in(l); tx.append(l)
-    tx += caption("before launch", [44, 45], ["before", "launch"], 960, s1, s0)
+    sh.append(shot("S6.1 CRT: Sept 12 skyline", 320, 364, [crt(44, [pinned("B04 skyline (stand-in for #19 ITN)", "B04", 10.0, 44)], zoom=1.0, cy=491)], dim=12))
+    # six weeks: the PS2 box on the right (comes in tilted, settles straight); one left-aligned text block on the left
+    d = 36; a = R["C04_ps2box"]
+    cut = iclip("C04 PS2 box (B21 still)", "C04_ps2box", d, fit="stretch", rect=(0, 0, a["w"] * 760 / a["h"], 760), cx=1390, cy=540, rot=3, shadow=SHADOW)
+    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60), vclip("B20 GTA III boxes (blurred bed)", "B20", 9.5, d, effects=[D.gauss(55)], drift_on=False)]
+    sh.append(shot("S6.2 PS2 box, six weeks", 364, 400, [cut] + bed, dim=10))
+    tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 364, s0, "hard", baseline=920)[0]
+    sz = 150; l = big("six weeks", 364 - s0, s1 - s0, "six weeks", AR, sz, 160, 560, axes=CAP, color=WARM, just="left", tracking=0); blur_in(l); tx.append(l)
+    tx += caption("before launch", [44, 45], ["before", "launch"], 0, s1, s0, x=164, align="left", size=52)
+    for l in tx[-2:]: l["transform"]["position"][1] = 650
     return sh, tx
 
 
@@ -559,8 +605,8 @@ def S07():
     sh.append(shot("S7.2 Paper comp: the cover tears", 413, 422, [cov, mt, base], dim=0))
     sh.append(shot("S7.3 Torn pieces", 422, 426, [vclip("B24 torn paper", "B24", 1.25, 4, scale=190, cy=0)], look=L_duo("red"), dim=0))
     d = 19; ca = R["C02_euro"]; h = 900; w = ca["w"] * h / ca["h"]
-    left = iclip("C02 original cover (left panel)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=478, cy=540)
-    sh.append(shot("S7.4 Split: Europe | US", 426, 445, panel("Left panel", d, 0, 0, 956, H, [left]) + [D.rect("Right panel (black)", 0, d, 964, 0, 956, H, [0, 0, 0, 1])], dim=0))
+    left = iclip("C02 original cover (left panel)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=480, cy=540)
+    sh.append(shot("S7.4 Split: Europe | US", 426, 445, panel("Left panel", d, 0, 0, 960, H, [left]) + [D.rect("Right panel (black)", 0, d, 960, 0, 960, H, [0, 0, 0, 1])], dim=0))
     tx.append(label("ROCKSTAR", WF[46] - s0, 413 - s0, "ROCKSTAR", 960, 980, 32))
     l = HV_big("PULLED", 413 - s0, 422 - s0, "PULLED", 340, 960 - tf.advance("AR", "PULLED", 340, HEAVY) / 2, 680)
     e = smear_in(l, -1, 4); smear_out(l, 9, "x", 1, 3, e); tx.append(l)
@@ -568,6 +614,37 @@ def S07():
     tx.append(label("EUROPE", 426 - s0, s1 - s0, "EUROPE", 120, 980, 30, "left"))
     tx += words_line("in the US.", [49, 50, 51], ["in", "the", "US."], "IS", IS, None, 110, 0, 1440, "center", WARM, -10, s1, s0, "blur", baseline=600)[0]
     return sh, tx
+
+
+STROKES = []
+
+
+def brush_strike(name, f0, f1, x, w, base, size, n=6):
+    """A hand-drawn charcoal slash (rendered with p5.brush, build/brush) drawn on left to right with a wipe matte."""
+    key = "stroke_" + name.split(": ")[-1].strip(".")
+    cw, ch = int(w + 120), 220
+    STROKES.append({"name": key, "w": cw, "h": ch, "pad": 40, "color": "#ffffff", "brush": "charcoal", "weight": 7,
+                    "seed": 11 + len(STROKES) * 7, "angle": -5, "passes": 2, "gap": 10, "scale": 3})
+    make_strokes()
+    cx, cy = x + w / 2, base - tf.cap_height("AR", size) * 0.42
+    x0, y0 = cx - cw / 2, cy - ch / 2
+    wipe = D.rect(name + " (wipe matte)", f0, f1, x0, y0, cw, ch, [1, 1, 1, 1], tr=T(x0, y0, ax=x0, ay=y0))
+    D.kf(wipe, "scaleX", [(0, 0, HOLD), (n, 100, E_OX)])
+    img = D.image(name, key, f0, f1, tr=T(cx, cy, ax=cw / 2, ay=ch / 2), fit="stretch", rect=(0, 0, cw, ch),
+                  matte={"layer": wipe["id"], "mode": "alpha"})
+    return [img, wipe]
+
+
+def make_strokes():
+    """Renders any stroke not yet imported: white-on-black from p5.brush, then coloured #D8322A with the brightness as alpha."""
+    todo = [s for s in STROKES if s["name"] not in R]
+    if not todo: return
+    bdir = os.path.join(ROOT, "build", "brush"); out = os.path.join(ROOT, "build", "assets", "strokes"); os.makedirs(out, exist_ok=True)
+    subprocess.run(["node", os.path.join(bdir, "render.js"), json.dumps(todo), out], check=True, capture_output=True)
+    col = np.array([0x2A, 0x32, 0xD8], np.uint8)
+    for s_ in todo:
+        g = cv2.imread(os.path.join(out, s_["name"] + ".png"), cv2.IMREAD_GRAYSCALE)
+        prep.img(s_["name"], np.dstack([np.full_like(g, col[0]), np.full_like(g, col[1]), np.full_like(g, col[2]), g]))
 
 
 def strike(name, f0, f1, x, w, base, size):
@@ -601,12 +678,12 @@ def S08():
     sh.append(shot("S8.6 Screen wall + static", 521, 528, [wall], dim=10))
     tx += caption("The new cover", [52, 53, 54], ["The", "new", "cover"], 960, 462, s0, x=120, align="left")
     for wi, t, size, f1 in [(57, "guns", 280, 495), (58, "buildings", 260, 505)]:
-        f0 = WF[wi]; w = tf.advance("IS", t, size, None, -10)
-        tx.append(IS_big(t, f0 - s0, f1 - s0, t, size, 960, 640)); tx.append(strike(f"strike: {t}", f0 - s0, f1 - s0, 960 - w / 2, w, 640, size))
-    ws_, xs_ = ["or", "fire."], tf.line_layout("IS", ["or", "fire."], 280, None, -10, 960, "center")
-    tx.append(IS_big("or", 505 - s0, 521 - s0, "or", 280, xs_[0][0], 640, just="left"))
-    tx.append(IS_big("fire.", WF[60] - s0, 521 - s0, "fire.", 280, xs_[0][1], 640, just="left"))
-    tx.append(strike("strike: fire", WF[60] - s0, 521 - s0, xs_[0][1], xs_[1][1] - tf.advance("IS", ".", 280), 640, 280))
+        f0 = WF[wi]; sz = is_size(t, size); w = tf.advance("AR", t, sz, CAP)
+        tx.append(IS_big(t, f0 - s0, f1 - s0, t, size, 960, 640)); tx[0:0] = brush_strike(f"strike: {t}", f0 + 2 - s0, f1 - s0, 960 - w / 2, w, 640, sz)
+    sz = is_size("or fire.", 280); xs_, ws_, _ = tf.line_layout("AR", ["or", "fire."], sz, CAP, 0, 960, "center")
+    tx.append(big("or", 505 - s0, 521 - s0, "or", AR, sz, xs_[0], 640, axes=CAP, color=WARM, tracking=0))
+    tx.append(big("fire.", WF[60] - s0, 521 - s0, "fire.", AR, sz, xs_[1], 640, axes=CAP, color=WARM, tracking=0))
+    tx[0:0] = brush_strike("strike: fire", WF[60] + 2 - s0, 521 - s0, xs_[1], ws_[1] - tf.advance("AR", ".", sz, CAP), 640, sz)
     return sh, tx
 
 
@@ -644,17 +721,14 @@ def S09():
     d = 22; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 960 / (a["h"] - 100)
     cx, cy = 960 + (a["w"] / 2 - fx) * s, 140 - 100 * s + a["h"] * s / 2
     prep.img("C05_bliss_cutout", path=os.path.join(ROOT, "build", "assets", "img", "C05_bliss_cutout.png"))
+    d = 35
+    arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(30)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
     cut = iclip("C05 Bliss cutout (head and shoulders, B26 still)", "C05_bliss_cutout", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy,
                 shadow=SHADOW)
-    name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 720); track_in(name)   # baseline raised from 880 so the shoulders cover only its lower part
-    arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(30)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
-    sh.append(shot("S9.5 Cutout on collage", 550, 572, [cut, name, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55)] + arts, dim=0))
-    burst = [(572, 577, 0.5, 12), (577, 581, 2.5, 45), (581, 585, 6.5, 12)]
-    sub = [shot(f"Burst {i + 1}", a_ - 572, b_ - 572, [vclip("B29 days of the week", "B29", t, b_ - a_)], dim=dm) for i, (a_, b_, t, dm) in enumerate(burst)]
-    sh.append(D.group("S9.6 Burst: days flipping", 572 - s0, 585 - s0, sub))
+    sh.append(shot("S9.5 Cutout on collage", 550, 585, [cut, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55)] + arts, dim=0))
     tx += caption("Artist", [61], ["Artist"], 500, 550, s0, x=700, align="right")
     tx += caption("Stephen", [62], ["Stephen"], 500, 550, s0, x=1220, align="left")
-    tx.append(label("GTA COVER ARTIST", 550 - s0, 572 - s0, "GTA COVER ARTIST", 960, 590, 30))
+    tx.append(label("STEPHEN BLISS · GTA COVER ARTIST", 550 - s0, 585 - s0, "STEPHEN BLISS · GTA COVER ARTIST", 960, 96, 30))
     tx += caption("had about", [64, 65], ["had", "about"], 990, 572, s0)
     w = tf.advance("AR", "A WEEK", 320, HEAVY)
     l = HV_big("A WEEK", 572 - s0, s1 - s0, "A WEEK", 320, 960 - w / 2, 680); pop_in(l, w, tf.cap_height("AR", 320)); tx.append(l)
@@ -709,9 +783,6 @@ def S11():
     inv, setinv = L_inv(None)
     g = shot("S11.7 Police helicopter", 700, 710, [vclip("B49 helicopter in flight", "B49", 26.0, 10, scale=140, cy=640)], look=inv, dim=10); setinv(g["layers"][-2]); sh.append(g)
     tx += words_line("He only kept", [75, 76, 77], ["He", "only", "kept"], "IS", IS, None, 100, 0, 960, "center", WARM, -10, 652, s0, "blur", baseline=940)[0]
-    for wi, t, x, yb, f1, side, just in [(79, "FACES", 120, 300, 674, -1, "left"), (81, "CARS", 120, 990, 693, -1, "left"), (84, "HELICOPTER", 1800, 300, 710, 1, "right")]:
-        w = tf.advance("AR", t, 180, HEAVY); xl = x if just == "left" else x - w
-        l = HV_big(t, WF[wi] - s0, f1 - s0, t, 180, xl, yb); smear_in(l, side); tx.append(l)
     return sh, tx
 
 
@@ -755,9 +826,8 @@ def S12():
 
 def S13():
     s0, s1 = SCENES[12]; sh = []; tx = []
-    for i, (f0, f1, asset, rot) in enumerate([(752, 760, "bliss26", -4), (760, 768, "bliss28", 3)]):
+    for i, (f0, f1, asset, rot) in enumerate([(752, 760, "bliss26", -4), (760, 780, "bliss28", 3)]):
         c = bliss_card(f"Bliss photo #{asset[-2:]}", asset, f1 - f0, rot, cx=1280); sh.append(shot(f"S13.{i + 1} Photo card", f0, f1, [c], dim=10))
-    sh.append(shot("S13.3 Bliss at work", 768, 780, [vclip("B27 Bliss at work", "B27", 52.0, 12, scale=125)], look=L_heat(), dim=0))
     def box(d, h=760, cx=960, rot=-2):
         a = R["cov_III"]; w = a["w"] * h / a["h"]
         return iclip("C07 US GTA III box (cutout)", "cov_III", d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, rot=rot, shadow=SHADOW)
@@ -776,6 +846,7 @@ def S13():
         z = 0.35 + rnd.random() * 0.9; x = 960 + (rnd.random() - .5) * 1700; y = 540 + (rnd.random() - .5) * 900
         a = R[k]; h = 420 * z; w = a["w"] * h / a["h"]
         im = D.image(f"Floating {k[4:]}", k, 0, d, tr=T(x, y, 100, ax=w / 2, ay=h / 2, r=(rnd.random() - .5) * 14), fit="stretch", rect=(0, 0, w, h), effects=GRADE() + ([D.gauss(6 * (1.2 - z))] if z < .6 else []), shadow=SHADOW)
+        settle(im, im["transform"]["rotation"], 8)
         k2 = 1 + 1.6 * z
         D.kf(im, "scaleX", [(0, 100, HOLD), (d, 100 * k2, E_IOX)]); D.kf(im, "scaleY", [(0, 100, HOLD), (d, 100 * k2, E_IOX)])
         D.kf(im, "positionX", [(0, x, HOLD), (d, 960 + (x - 960) * k2, E_IOX)]); D.kf(im, "positionY", [(0, y, HOLD), (d, 540 + (y - 540) * k2, E_IOX)])
@@ -807,8 +878,8 @@ def S14():
         behind = []
         if i == 1: behind = [HV_big("SAN ANDREAS", WF[105] - f0, d, "SAN ANDREAS", 260, 960 - tf.advance("AR", "SAN ANDREAS", 260, HEAVY) / 2, 660)]
         if i == 2:
-            w = tf.advance("IS", "IV", 800); l = IS_big("IV", WF[107] - f0, d, "IV", 800, 960, 900); behind = [l]
-            pop_in(l, w, tf.cap_height("IS", 800)); l["transform"]["position"][0] -= w / 2; l["transform"]["anchorPoint"][0] -= w / 2
+            sz = is_size("IV", 800); w = tf.advance("AR", "IV", sz, CAP); l = IS_big("IV", WF[107] - f0, d, "IV", 800, 960, 900); behind = [l]
+            pop_in(l, w, tf.cap_height("AR", sz)); l["transform"]["position"][0] -= w / 2; l["transform"]["anchorPoint"][0] -= w / 2
         if i == 3: behind = [IS_big("V", 0, d, "V", 900, 960, 940)]
         sh.append(shot(f"S14.{i + 1} {nm[4:]}", f0, f1, [cut(k, d, cx, nm + " (cutout, B07 cover)", 780 if i == 0 else 560)] + behind + [table], dim=12))
     tx.append(HV_big("VICE / CITY", 0, 882 - s0, "VICE\nCITY", 260, 116, 440))
@@ -819,10 +890,35 @@ def S15():
     s0, s1 = SCENES[14]; sh = []; tx = []
     sh.append(shot("S15.1 GTA VI box in hands", 936, 944, [vclip("B52 GTA VI box", "B52", 13.0, 8, scale=110)], dim=12))
     sh.append(shot("S15.2 Second angle", 944, 953, [vclip("B52 GTA VI box, second angle (stand-in for #53)", "B52", 20.0, 9, scale=110)], dim=12))
-    sh.append(shot("S15.3 GTA VI cover", 953, 969, upright("GTA VI cover (B07 frame, stand-in for #41)", "cov_VI", 16)))
+    d = 16; bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=45), iclip("GTA VI cover (blurred bed)", "cov_VI", d, fit="cover", effects=[D.gauss(60)], drift_on=False, grade=False)]
+    sh.append(shot("S15.3 GTA VI cover + VI flash", 953, 969, [flash_still("GTA VI cover (B07 frame, stand-in for #41)", "cov_VI", "cov_VI_vi_mask", d, 1080, 960, 540, flash_at=WF[111] - 953 + 1)] + bed))
     tx += caption("Even GTA", [109, 110], ["Even", "GTA"], 660, 953, s0, size=50)
-    w = tf.advance("AR", "VI", 700, HEAVY); l = HV_big("VI", WF[111] - s0, s1 - s0, "VI", 700, 960 - w / 2, 860); pop_in(l, w, tf.cap_height("AR", 700)); tx.append(l)
     return sh, tx
+
+
+def carousel(name, f0, f1, steps, first):
+    """Covers side by side on one strip that whips one cover to the left per step (ease-in-out expo, motion-blurred,
+    with a directional smear at mid-move); each step ends settled on the next cover."""
+    d = f1 - f0; a = R["cov_III"]; s = H / a["h"]; cw = a["w"] * s; pitch = cw + 160
+    n = len(steps) + 1; order = [first if j % 2 == 0 else ("cov_VI" if first == "cov_III" else "cov_III") for j in range(n)]
+    covs = [D.image(f"{k[4:]} cover", k, 0, d, tr=T(960 + j * pitch, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch",
+                    rect=(0, 0, a["w"], a["h"])) for j, k in enumerate(order)]
+    strip = D.group("Cover strip", 0, d, covs)
+    smear = D.dirblur(0, 90); strip["effects"] = [smear]
+    pk, bk, t = [(0, 0, HOLD)], [(0, 0, HOLD)], 0
+    for j, st in enumerate(steps):
+        hold = 1 if st > 3 else 0; m = st - hold
+        if hold:   # a step without a held frame starts on the previous step's end key (same time) - don't overwrite its easing
+            pk.append((t + hold, -j * pitch, HOLD)); bk.append((t + hold, 0, HOLD))
+        pk.append((t + st, -(j + 1) * pitch, E_IOX))
+        bk += [(t + hold + m / 2, 90, E_IOX), (t + st, 0, E_IOX)]
+        RADIAL.append(f0 + t + hold + m / 2)
+        t += st
+    D.kf(strip, "positionX", pk); D.kf_fx(strip, smear, "blurLength", bk)
+    return shot(name, f0, f1, [strip], dim=10)
+
+
+RADIAL = []   # frames (absolute) where a fast switch peaks: the edge (radial) blur pulses there
 
 
 def S16():
@@ -830,7 +926,7 @@ def S16():
     d = 29
     L = vclip("B36 GTA III box", "B36", 106.5, d, scale=98, cx=939, cy=435)
     Rr = vclip("B52 GTA VI box", "B52", 13.4, d, scale=105, cx=1442, cy=540)
-    sh.append(shot("S16.1 Split: III | VI boxes", 969, 998, panel("Left", d, 0, 0, 956, H, [L]) + panel("Right", d, 964, 0, 956, H, [Rr]), dim=12))
+    sh.append(shot("S16.1 Split: III | VI boxes", 969, 998, panel("Left", d, 0, 0, 960, H, [L]) + panel("Right", d, 960, 0, 960, H, [Rr]), dim=12))
     def flick(name, f0, f1, step):
         d = f1 - f0; lay = []
         a = R["cov_III"]; s = H / a["h"]
@@ -839,14 +935,13 @@ def S16():
             k = "cov_III" if ((d - f - 1) // step) % 2 == 0 else "cov_VI"
             lay.append(D.image(f"{k[4:]} cover", k, f, min(d, f + step), tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]), effects=GRADE()))
         return shot(name, f0, f1, lay, dim=10)
-    sh.append(flick("S16.2 Flicker III / VI", 998, 1019, 2))
+    sh.append(carousel("S16.2 Whip carousel III / VI", 998, 1019, [5, 5, 4, 4], "cov_III"))
     d = 20; a = R["cov_III"]; h = 900; w = a["w"] * h / a["h"]
-    sh.append(shot("S16.3 Split: covers flat", 1019, 1039, panel("Left", d, 0, 0, 956, H, [iclip("GTA III cover", "cov_III", d, fit="stretch", rect=(0, 0, w, h), cx=478)]) +
-                   panel("Right", d, 964, 0, 956, H, [iclip("GTA VI cover", "cov_VI", d, fit="stretch", rect=(0, 0, w, h), cx=1442)]), dim=10))
-    sh.append(flick("S16.4 Flicker, every frame", 1039, END, 1))
+    sh.append(shot("S16.3 Split: covers flat", 1019, 1039, panel("Left", d, 0, 0, 960, H, [iclip("GTA III cover", "cov_III", d, fit="stretch", rect=(0, 0, w, h), cx=480)]) +
+                   panel("Right", d, 960, 0, 960, H, [iclip("GTA VI cover", "cov_VI", d, fit="stretch", rect=(0, 0, w, h), cx=1440)]), dim=10))
+    sh.append(carousel("S16.4 Whip carousel, faster", 1039, END, [4, 3, 3, 3, 3], "cov_VI"))
     tx += caption("Same boxes.", [112, 113], ["Same", "boxes."], 990, 998, s0)
     tx += words_line("Same grid.", [114, 115], ["Same", "grid."], "IS", IS, None, 220, 0, 960, "center", WARM, -10, 1019, s0, "hard", baseline=640)[0]
-    tx.append(label("25 YEARS LATER", WF[116] - s0, s1 - s0, "25 YEARS LATER", 960, 200, 30))
     for t, x, f in [("2001", 480, WF[116]), ("2026", 1440, WF[116] + 5)]:
         l = IS_big(t, f - s0, s1 - s0, t, 240, x, 1000); track_in(l); tx.append(l)
     return sh, tx
@@ -911,11 +1006,18 @@ def main():
     root.append(overlays())
     root += flashes()
     root += list(reversed(text_groups))
+    # edge blur on fast switches: a radial (zoom) blur adjustment over the picture, clear centre, peaking on the switch
+    for f in sorted(set([104, 752] + [round(x) for x in RADIAL])):
+        e = D.fx({"type": "radialBlur", "amount": 0, "centerX": 0.5, "centerY": 0.5})
+        adj = D.adjust(f"Edge blur @{f}", f - 3, f + 4, [e])
+        D.kf_fx(adj, e, "amount", [(0, 0, HOLD), (3, 22, E_IOX), (7, 0, E_IOX)])
+        root.append(adj)
     root.append(D.group("Clip grain (60% overlay)", 0, END, [grain_layer("grain.png", 100, 21)], blend="overlay", o=60))
     root += list(reversed(scene_groups))
     root.append(D.rect("Black", 0, END, 0, 0, W, H, [0, 0, 0, 1]))
     doc = {"$schema": "https://jerboa.dev/schemas/fx-composition/editable/v1/document.schema.json", "colorManagement": {"workingSpace": "legacyDisplay"},
-           "composition": {"id": "main", "layers": root, "name": "GTA 9/11 Cover Reel"}, "dimensions": {"width": W, "height": H}, "duration": END / FPS, "formatVersion": 1}
+           "composition": {"id": "main", "layers": root, "name": "GTA 9/11 Cover Reel",
+                           "motionBlur": {"enabled": True, "samplesPerFrame": 6, "adaptiveSampleLimit": 24, "shutterAngle": 180, "shutterPhase": -90}}, "dimensions": {"width": W, "height": H}, "duration": END / FPS, "formatVersion": 1}
     return doc
 
 

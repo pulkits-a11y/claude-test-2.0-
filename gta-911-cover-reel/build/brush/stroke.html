@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script src="node_modules/p5/lib/p5.min.js"></script>
+<script src="node_modules/p5.brush/dist/p5.brush.js"></script>
+</head><body style="margin:0;background:transparent">
+<script>
+// One strike stroke per call: window.SPEC = {w, h, color, brush, weight, seed, angle, passes, scale}
+const SPEC = JSON.parse(decodeURIComponent(location.hash.slice(1)));
+function setup() {
+  createCanvas(SPEC.w, SPEC.h, WEBGL);
+  setAttributes({ alpha: true, preserveDrawingBuffer: true });
+  pixelDensity(1);
+  background(0);
+  randomSeed(SPEC.seed); noiseSeed(SPEC.seed);
+  brush.scaleBrushes(SPEC.scale);
+  const L = SPEC.w / 2 - SPEC.pad, a = SPEC.angle * Math.PI / 180;
+  for (let p = 0; p < SPEC.passes; p++) {
+    brush.set(SPEC.brush, SPEC.color, SPEC.weight * (1 - p * 0.15));
+    const dy = (p - (SPEC.passes - 1) / 2) * SPEC.gap;
+    const x0 = -L, x1 = L, y0 = -Math.sin(a) * L + dy, y1 = Math.sin(a) * L + dy + (p % 2 ? 6 : -4);
+    brush.line(x0, y0, x1, y1);
+  }
+  noLoop();
+  window.DONE = true;
+}
+</script></body></html>

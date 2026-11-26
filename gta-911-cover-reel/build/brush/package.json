@@ -1,0 +1,6 @@
+{
+  "name": "gta911-strike-strokes",
+  "private": true,
+  "description": "Renders the hand-drawn strike strokes with p5.brush (MIT). Install: npm install; run via build/reel.py.",
+  "dependencies": { "p5": "2.2.0", "p5.brush": "3.0.0" }
+}
