@@ -136,7 +136,8 @@ def shot(name, f0, f1, media, look=None, dim=18, prism_on=True, top=(), bg=True)
     lay = list(top)
     if prism_on: lay += prism(d, k)
     if dim: lay.append(D.rect("Dim", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=dim))
-    lay.append(D.group("Look", 0, d, media, effects=look) if look else D.group("Media", 0, d, media))
+    # clip grade (grade_lite) on the framed picture, then the shot's Special B-roll look
+    lay.append(D.group("Graded media + look" if look else "Graded media", 0, d, media, effects=GRADE_FX() + (look or [])))
     if bg: lay.append(D.rect("Black", 0, d, 0, 0, W, H, [0, 0, 0, 1]))
     return D.group(name, f0, f1, lay)
 
@@ -145,14 +146,17 @@ def shot(name, f0, f1, media, look=None, dim=18, prism_on=True, top=(), bg=True)
 # adjust -> Primary Grade (same normalised scale), bloom -> Glow, chromaticAberration -> Chromatic Aberration,
 # vignette/grain -> Vignette/Grain. filmArtifacts (dust) has no native effect: it comes from the grunge and clip-grain layers.
 LITE = json.load(open(os.path.join(ROOT, "source", "reference", "grade_lite.json")))
-def GRADE():
+GRADE = lambda: []        # the grade is applied once per shot, on the framed picture (see shot()), not per layer
+def GRADE_FX():
     a, dt, ef = LITE["adjust"], LITE["details"], LITE["effects"]
     return [D.fx({"type": "primaryGrade", "semanticVersion": 1, "exposure": a["exposure"], "contrast": a["contrast"], "highlights": a["highlights"],
                   "shadows": a["shadows"], "whites": a["whites"], "blacks": a["blacks"], "temperature": a["temperature"], "tint": a["tint"],
                   "saturation": a["saturation"], "vibrance": a["vibrance"]}),
             D.fx({"type": "glow", "glowThreshold": 75, "glowRadius": ef["bloomRadius"], "glowIntensity": ef["bloom"]}),
             D.fx({"type": "chromaticAberration", "amount": ef["chromaticAberration"] * 0.5, "direction": ef["chromaticAngle"]}),
-            D.fx({"type": "vignette", "amount": dt["vignette"], "radius": dt["vignetteMidpoint"], "feather": dt["vignetteFeather"]}),
+            # Tesseract's vignette at the file's 0.42 / midpoint 0.5 darkens the whole frame (and the brief adds a film-wide one),
+            # so the radius is opened and the amount eased to keep the centre clear - the closest match to an edge-only vignette.
+            D.fx({"type": "vignette", "amount": dt["vignette"] * 0.6, "radius": dt["vignetteMidpoint"] + 0.3, "feather": dt["vignetteFeather"]}),
             D.fx({"type": "grain", "amount": dt["grain"], "size": dt["grainSize"], "softness": 1 - dt["grainRoughness"], "seed": 7})]
 
 
@@ -410,7 +414,8 @@ def S02():
     sh.append(g)
     for i, (f0, f1, b, t, look, sc, cx, cy) in enumerate([(104, 110, "B36", 106.5, None, 98, 1221, 435), (110, 115, "B38", 11.0, L_half(), 94, 704, 498),
                                                           (115, 120, "B39", 67.5, None, 76, 745, 540)]):
-        sh.append(shot(f"S2.{i + 3} Burst box", f0, f1, [vclip(f"{b} box in hands", b, t, f1 - f0, scale=sc, cx=cx, cy=cy)], look=look, dim=(12, 45, 12)[i]))
+        bed = [D.rect("Bed darken", 0, f1 - f0, 0, 0, W, H, [0, 0, 0, 1], o=50), vclip(f"{b} (blurred bed)", b, t, f1 - f0, drift_on=False, effects=[D.gauss(50)], scale=115)]
+        sh.append(shot(f"S2.{i + 3} Burst box", f0, f1, [vclip(f"{b} box in hands", b, t, f1 - f0, scale=sc, cx=cx, cy=cy)] + bed, look=look, dim=(12, 45, 12)[i]))
     tx_ = words_line("GTA covers look like", [10, 11, 12, 13], ["GTA", "covers", "look", "like"], "IS", IS, None, 100, 0, 960, "center", WARM, -10, 104, s0, "blur", baseline=920)[0]
     for l in tx_:
         dur = l["activeRange"]["duration"] * FPS // 1000
@@ -739,7 +744,7 @@ def S12():
         m2 = D.rect(f"Panel {k} (play)", 0, d, x, y, w, h, [1, 1, 1, 1]); c["trackMatte"] = {"layer": m2["id"], "mode": "alpha"}
         lay2 += [art, m, c, m2]
     sh.append(shot("S12.2 Live grid turns into the cover", 738, 747, lay2, dim=0))
-    g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=98, cx=1421, cy=435)], dim=12)
+    g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=110, cx=960, cy=540)], dim=12)
     whip_out(g, 5, 3); sh.append(g)
     # right-aligned to x 520 around y 660, set on two lines: one line would start left of the x 96 safe margin
     tx += caption("and boxed", [85, 86], ["and", "boxed"], 630, 745, s0, x=520, align="right", size=46)
