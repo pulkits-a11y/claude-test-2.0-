@@ -141,8 +141,19 @@ def shot(name, f0, f1, media, look=None, dim=18, prism_on=True, top=(), bg=True)
     return D.group(name, f0, f1, lay)
 
 
-GRADE = lambda: [D.fx({"type": "glow", "glowThreshold": 88, "glowRadius": 30, "glowIntensity": 0.12}),
-                 D.fx({"type": "chromaticAberration", "amount": 0.08, "direction": 0})]
+# grade_lite.json (the build18 look's light grade) recreated on every clip with native effects:
+# adjust -> Primary Grade (same normalised scale), bloom -> Glow, chromaticAberration -> Chromatic Aberration,
+# vignette/grain -> Vignette/Grain. filmArtifacts (dust) has no native effect: it comes from the grunge and clip-grain layers.
+LITE = json.load(open(os.path.join(ROOT, "source", "reference", "grade_lite.json")))
+def GRADE():
+    a, dt, ef = LITE["adjust"], LITE["details"], LITE["effects"]
+    return [D.fx({"type": "primaryGrade", "semanticVersion": 1, "exposure": a["exposure"], "contrast": a["contrast"], "highlights": a["highlights"],
+                  "shadows": a["shadows"], "whites": a["whites"], "blacks": a["blacks"], "temperature": a["temperature"], "tint": a["tint"],
+                  "saturation": a["saturation"], "vibrance": a["vibrance"]}),
+            D.fx({"type": "glow", "glowThreshold": 75, "glowRadius": ef["bloomRadius"], "glowIntensity": ef["bloom"]}),
+            D.fx({"type": "chromaticAberration", "amount": ef["chromaticAberration"] * 0.5, "direction": ef["chromaticAngle"]}),
+            D.fx({"type": "vignette", "amount": dt["vignette"], "radius": dt["vignetteMidpoint"], "feather": dt["vignetteFeather"]}),
+            D.fx({"type": "grain", "amount": dt["grain"], "size": dt["grainSize"], "softness": 1 - dt["grainRoughness"], "seed": 7})]
 
 
 def vclip(name, b, t, d, idx=None, fit="cover", rect=FULL, scale=100, cx=960, cy=540, drift_on=True, effects=None, full=True,
