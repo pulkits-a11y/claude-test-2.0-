@@ -26,6 +26,6 @@ V+="[2:v]setpts=PTS-STARTPTS,format=yuv420p[c];[3:v]trim=start_frame=$((16 - M2)
 V+="[a][b][c][d]concat=n=4:v=1:a=0,setpts=N/(30*TB)[v]"
 ffmpeg -v error -y -i $E/seg1.mp4 -i $E/tail1.mov -i $E/seg2.mp4 -i $E/tail2.mov -i $E/mix.wav -filter_complex "$V" \
   -map "[v]" -map 4:a -c:v libx264 -crf 14 -preset slow -pix_fmt yuv420p -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
-  -fps_mode passthrough -c:a aac -b:a 256k -shortest -movflags +faststart GTA911_CoverReel.mp4
+  -fps_mode passthrough -af apad -c:a aac -b:a 256k -shortest -movflags +faststart GTA911_CoverReel.mp4   # audio padded to the last frame
 ffprobe -v error -count_frames -show_entries stream=codec_name,width,height,r_frame_rate,nb_read_frames:format=duration -of compact GTA911_CoverReel.mp4
 echo EXPORT_DONE
