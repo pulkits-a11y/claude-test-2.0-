@@ -13,7 +13,10 @@ SHADERS = os.path.join(ROOT, "build", "shaders")
 
 
 def ms(f):
-    return int(round(f * 1000 / FPS))
+    """Frames -> ms, floored (v5). Times nest (scene > shot > layer), and rounding at each level could push a start a
+    millisecond past the frame it belongs to, so a 1-frame flash slipped a frame or vanished. Floored starts never land
+    late, and every frame still falls inside its own layer."""
+    return int(math.floor(f * 1000 / FPS + 1e-6))
 
 
 # ---------------------------------------------------------------- colours

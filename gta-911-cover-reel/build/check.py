@@ -49,10 +49,13 @@ for l, t0, path in walk(root):
     if st["justification"] == "center": x -= w / 2
     elif st["justification"] == "right": x -= w
     top = y - tf.cap_height(key, size) * 1.05
-    is_caption = l["name"].startswith("Caption") or (path and path[-1].startswith("Caption:"))
-    hud = any(p.startswith("H1") or p.startswith("H3") for p in path)
+    is_caption = l["name"].startswith("Caption") or any(p.startswith("Caption") for p in path)
+    end_title = any("end title" in p or p.endswith(": 25 years later.") for p in path)
+    # v5: tracking-box labels (x: .. y: ..) are allowed wherever the boxes are; the hook's terminal lines stay in H1
+    hud = any(p.startswith("H1") or p.startswith("H3") for p in path) or "label" in l["name"].lower()
     ok(is_caption or hud, f"text outside the caption system: {l['name']}")
-    if is_caption: ok(size == 47 and ax.get("wght") == 600, f"caption not in the reference style: {l['name']}")
+    if is_caption and not end_title: ok(size == 47 and ax.get("wght") == 600, f"caption not in the reference style: {l['name']}")
+    if end_title: ok(ax.get("wght") == 600 and size >= 47, f"end title not in the caption face: {l['name']}")
     if is_caption:
         ok(x >= 96 and x + w <= 1824 and top >= 60 and y <= 1020, f"outside safe zone: {l['name']} ({x:.0f},{top:.0f})-({x + w:.0f},{y:.0f})")
     ok(not (x < 160 and x + w > 40 and top < 124 and y > 36), f"text in the logo box: {l['name']}")
@@ -75,6 +78,17 @@ ok(eas <= allowed, f"easing outside the three curves: {eas - allowed}")
 shown = " ".join(l["sourceText"]["text"] for l, _, _ in walk(root) if l["type"] == "Text").lower()
 missing = [w["w"] for w in words if w["w"].strip(",.?!").lower().replace("-11", "11") not in shown.replace("/", " ")]
 notes.append("voiceover words not on screen: " + ", ".join(missing))
+# v5: glow only on chosen words, four tiers each; stretch entrance only in the hook
+glow = [l for l in root if l["name"].startswith("Caption glow")][0]
+tiers = [g for g in glow["layers"]]
+ok(len(tiers) % 4 == 0 and all(g["blendMode"] == "add" for g in tiers), "caption glow tiers incomplete")
+notes.append(f"caption glow: {len(tiers) // 4} glowing word runs x 4 blurred copies")
+caps = [l for l in root if l["name"].startswith("Captions")][0]
+ids_hook = {g["id"] for g in caps["layers"] if g["playback"]["inputRange"]["start"] < round(227 * 1000 / 30)}
+st = [a for a in acts if a.get("property", {}).get("propertyType") == "scaleY" and a["property"]["layerId"] in {g["id"] for g in caps["layers"]}]
+ok(all(a["property"]["layerId"] in ids_hook for a in st), "stretch entrance used outside the hook")
+notes.append(f"stretch entrance on {len(st)} hook words; quick fade after the hook")
+notes.append("transitions: " + ", ".join(l["name"].split(" @")[0].replace(" transition", "") + "@" + l["name"].split("@")[1] for l in root if " transition @" in l["name"]))
 # 10 audio
 vids = [l for l, _, _ in walk(root) if l["type"] == "Video" and l.get("volume")]
 ok(not vids, f"video layers with audio: {[v['name'] for v in vids]}")

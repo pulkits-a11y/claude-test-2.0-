@@ -9,10 +9,96 @@ All of these are in `gta-911-cover-reel/`.
 | `GTA911_CoverReel.tsrct` | The editable Tesseract project. It has one 1920 × 1080, 30 fps main composition, 35.23 s (1,057 frames). Media and fonts are embedded. |
 | `GTA911_CoverReel.mp4` | The render: 1920 × 1080, 30 fps, H.264, with the voiceover as the only audio. |
 | `contact_sheet.jpg` | One frame from the middle of each of the 92 shots, labelled with the shot name and frame. |
-| `source/` | The supplied fonts, voiceover, plates, textures, logo, brief, `build18.mjs` and `grade_lite.json`. The B-roll lives in `source/broll/` (3.5 GB, not in git). |
+| `source/` | The supplied fonts, voiceover, plates, textures, logo, brief, `build18.mjs` and `grade_lite.json`. The B-roll lives in `source/broll/` (3.5 GB, not in git), and your montage clip in `source/montage/montage.mp4` (not in git). |
 | `build/` | The generator: `make.py`, `reel.py`, `lib.py`, `prep.py`, the WGSL shaders, `check.py` (the brief's checklist) and `export.sh`. |
 
-To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. The layer tree is organised as scene groups containing shot groups, each with a graded media group, a look, a dim layer and prism streaks. Above the scenes are one text layer per word, the clip grain, the seven film-wide overlays, the five flash cuts, and the logo on top.
+To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`.
+
+The layer tree is organised as scene groups. Each scene group holds shot groups, and each shot group has a graded media group, a look, a dim layer and prism streaks. Above the scenes, from the bottom up:
+- the clip grain
+- the edge-blur pulses
+- the seven film-wide overlays
+- the glitch transitions
+- the caption glow
+- the captions, one group per word
+- the flash cuts and flash transitions
+- the logo, on top
+
+## v5: changes from the fourth review
+
+**Caption glow, where it matters.** The v4 glow measured almost nothing next to the reference "by definition,": about +14 brightness right at the letters and nothing beyond 6 px, against the reference's +92 falling to +18 at 60 px.
+- **How it's built:** each glowing word now has four blurred copies (20, 40, 80 and 160 px) added over the picture in warm white, under the sharp word. The falloff was measured against the reference frame: +88 at the letters, +43 at 6–10 px, +13 at 22–32 px. A version that matched the reference exactly at 60 px read as a blob on dark footage, so I used the tighter one.
+- **Which words glow:** 9/11, "this?", six months, guns, fire, burning buildings, 9/11 hit, six weeks, pulled, Stephen Bliss, a week, chopped, own painting, grid, rush job, template, VI, boxes, grid, and 25 years later. 19 word runs in all.
+- **Everything else:** plain warm white (#FDF4E3) with a small soft shadow.
+- **Where it lives:** the root group "Caption glow", one group per tier per word run.
+
+**Stretch entrance:** only on the hook's words (before 0:07.6). After that, words fade up over 3 frames with a 10 px rise.
+
+**0:03 → the match cut.** Seven covers (III, Vice City, San Andreas, Liberty City Stories, IV, V, VI) cut at the same spot, 2 frames each, with a 1-frame white flash on every switch.
+- They are 620 px tall so they sit between "is the reason" and "GTA covers look like this?". The captions are unchanged.
+- Each cover has its own tracking boxes.
+
+**The wordmark screen** (the x/y letter boxes, thumbnails and tile grid) moved to 0:26, "It's been the template". It replaces the US-cover cutout that repeated there.
+
+**More x,y tracking boxes, mostly in the hook.**
+- About twice as many per hit at 0:00–0:00.8.
+- Boxes on the TV set.
+- Labels on about 70% of the logo tiles.
+- At 0:04.8–0:07.6, boxes that follow the footage: on the box in his hands, on the box front, and on Bliss's face. These are tracked frame by frame with optical flow and keyed on every frame.
+
+**Hook TV (0:00.8–0:03.7):** held, then a hard jump cut tighter on "GTA" (74% → 86%) and again on "this?" (92%), like the reference. It never gets wider than the gap between the captions.
+
+**Gun flickers.** Each gun flashes white one after another for 3 frames (on, off, on at 70%) and gets a tracking box as it does.
+- **0:07.9, the key art:** rifle, then revolver, then pistol.
+- **0:08.2, Claude's gun:** B48 at 167.6 s, with the gun traced on its two flash frames.
+- **0:31.5, Jason's rifle:** in the GTA VI montage shot.
+- The shapes are in `build/masks.json`.
+
+**Attention flickers at 0:21.7–0:23.3:** the face, car and helicopter panels of the US cover flash white for 3 frames. The ink lines stay dark. Each panel gets tracking boxes.
+
+**Transitions, curated (18 in all).**
+- **10 digital glitches,** on cuts into or out of screens, graphics and gameplay: 0:00.8, 0:04.1, 0:07.6, 0:10.7, 0:12.1, 0:14.8, 0:19.5, 0:26, 0:29.4 and 0:32.3.
+  - Each is 4 frames of band tears, RGB split and a few displaced blocks, with a new pattern every frame.
+  - They're built natively as a shader (`build/shaders/glitch.wgsl`) on an adjustment layer, so they stay editable. I didn't download a YouTube glitch pack: re-uploading someone else's overlay is a licensing problem, and a baked clip can't be retimed.
+- **4 quick white flashes** (3 frames) on hits: the box front at 0:04.8, "fire" at 0:08.6, Vice City at 0:28.4 and the final split at 0:34.
+- **The 4 flash cuts** are shortened from 10 frames to 4.
+
+**Your montage.** I left it out of the hook, which we've already built to match the reference. It's used where it fits the words:
+- "He only kept the faces," (0:22): its wall of GTA character faces, replacing the B48 cutscene there.
+- "V, even GTA" (0:31.2–0:31.8): the GTA VI masked pair, then Jason with the rifle. These replace the two B52 box shots.
+
+**The B48 cutscene** moved to "before launch." (0:12.5–0:13.3), after the PS2 box. It keeps the purple duotone and is framed clear of the subtitles and the frame-time graph.
+
+**B48 framing:** every B48 shot now frames a rectangle measured to stay clear of the burned-in overlay:
+- the frame-time box and its label
+- the framerate chart and its label
+- the FPS readout
+- the game HUD
+
+Two of them also changed footage:
+- "Fire" (0:08.6): the van exploding behind Claude, at 169 s.
+- "Guns" (0:08.2): Claude with a clearly visible gun.
+
+**0:18, Stephen:** he rises into frame, the artwork behind him slides slowly the other way, and a jump cut punches in on "a week". The heat-map shot before it wipes the eye strip in, then jumps closer. None of this is the old sideways drift-zoom.
+
+**0:20, "up his own painting":** Bliss's own torn-poster painting (B27 at 74 s) replaces the European-cover face crop.
+- I chose it over the "Bliss" lettering at 42 s because the lettering is white paper, and the captions and glow wouldn't read on it.
+- The car detail and whiteout after it are unchanged.
+
+**0:25, "That rush job?":** the photo card is centred, with "That rush" on its left and "job?" on its right.
+
+**0:26–0:27, the moving GTA cover:** fixed. The cover in the mosaic and the box swaps that follow are now held still. They used to drift sideways in alternating directions, which read as a wobble. The covers at 0:28–0:31 and the two Bliss cards use a slow push-in instead.
+
+**Frame timing fix (affected v4 too).** Layer times were rounded to whole milliseconds at each nesting level (scene, shot, layer). On some frames the rounded start landed just after the frame it belonged to.
+- **What went wrong:** some 1-frame flashes slipped a frame or didn't show. In the 0:33 match cut, motion blur smeared the others into 3-frame grey washes, and some cover switches landed a frame late.
+- **The fix:** times are now floored, which never lands late. Flash layers skip motion blur.
+- **Checked on a test render:** every cover switches on its frame, with one crisp flash per switch, and each gun flickers on exactly its frames.
+- The same fix applies to the clip cuts. A few cuts that used to land one frame late are now on time.
+
+**0:35, the end:**
+- "25 years" is 90 px, about twice the caption size.
+- "later." sits underneath, scaled to exactly the same width.
+- Both glow, centred between the III and VI covers, which are now 600 px tall.
 
 ## v4: changes from the third review
 
@@ -133,7 +219,7 @@ The B48 gameplay is framed on Claude, with its frame-time graph cropped out.
 
 ## Export
 
-- **Rendering:** the two halves are rendered with motion blur in parallel (about 20 minutes each here). The MP4 exporter drops a few frames at the end of a range, so `build/export.sh` renders each half's last 16 frames again as ProRes, puts the missing ones back in place, and joins the halves frame-exact.
+- **Rendering:** the two halves are rendered with motion blur in parallel (about 12 minutes each here for v5). The MP4 exporter drops a few frames at the end of a range, so `build/export.sh` renders each half's last 16 frames again as ProRes, puts the missing ones back in place, and joins the halves frame-exact.
 - **Check:** each restored and neighbouring frame matches its source render (mean difference 0.1–0.4).
 - **The file:** 1,057 frames, 35.233 s, 1920 × 1080, 30 fps, H.264 at CRF 14.
 - **Audio:** Tesseract's own mix of the voiceover, as AAC 256 kb/s stereo, padded to the last frame. It measures −18.4 LUFS integrated because the mono voice sits in both stereo channels; it sounds the same as the supplied file.
@@ -233,6 +319,17 @@ Cuts I moved to keep within the rules:
 - High-resolution scans of the European and US GTA III covers and the GTA VI cover would sharpen every cover shot. Each one replaces a single still asset (`C02_euro`, `cov_III`, `cov_VI`) and needs a rerun of the build.
 
 ## Checklist (`build/check.py`, run on the final project)
+
+**v5 run: all checks pass.**
+- 77 shots.
+- 4 flash cuts (400, 528, 710, 936), plus 4 flash transitions and 10 glitch transitions.
+- 19 glowing word runs, each with 4 blurred copies.
+- The stretch entrance appears on hook words only.
+- No tilts or rotation keys.
+- The voiceover is the only audio.
+- Text outside the captions is limited to tracking-box labels and the hook's terminal lines.
+
+The table below is the original v1 run. Later reviews changed some of those rules: held shots over 30 frames, four flash cuts, and per-word captions.
 
 | Check | Result |
 |---|---|

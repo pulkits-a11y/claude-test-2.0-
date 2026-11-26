@@ -7,7 +7,7 @@
 cd "$(dirname "$0")/.."
 X=~/.local/share/Tesseract/bin/tsrct; E=.tesseract-work/export; mkdir -p $E
 TOTAL=1057; HALF=528                                  # frames; half 1 = 0-527, half 2 = 528-1056
-ms() { python3 -c "print(round($1*1000/30))"; }
+ms() { python3 -c "import math; print(math.floor($1*1000/30+1e-6))"; }   # floored, like build/lib.py ms()
 seg() { $X export --project GTA911_CoverReel.tsrct --output $E/seg$1.mp4 --resolution 1080p --fps 30 --start-ms $(ms $2) --duration-ms $(( $(ms $3) - $(ms $2) )) \
         --encoder-backend external-ffmpeg-command --ffmpeg-path "$(command -v ffmpeg)" > $E/seg$1.log 2>&1; echo "seg$1 exit $?"; }
 tailclip() { $X export --project GTA911_CoverReel.tsrct --output $E/tail$1.mov --format prores --resolution 1080p --fps 30 \

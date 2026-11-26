@@ -15,14 +15,21 @@ import textfit as tf
 
 CAP_SIZE = 47
 CAP_AX = {"wdth": 100, "wght": 600}
-CAP_FILL = hexc("#FFF6EA")
-GLOW_TIGHT = hexc("#FFE6C2")
-GLOW_WIDE = hexc("#FFC98A")
+CAP_FILL = [0.992, 0.957, 0.89, 1]  # #FDF4E3, the reference caption's warm white
 CAP_MID = 540                       # caption cap-height centre: the frame's centre line
 PAD = 34                            # gap between a caption block and the subject's edge
 DISPLAY = {5: "9/11", 6: None, 22: "III", 39: "9/11", 40: None, 107: "IV,", 108: "V,", 111: "VI,"}
 HUD_WHITE = [1, 1, 1, 0.78]
 HUD_DOT = hexc("#7CFF8A")
+# v5 glow, measured against the reference's "by definition," (light added around the letters, 1-60 px out): four blurred
+# copies of the word added on top of the picture - (blur px, opacity %, colour). The text itself stays sharp on top.
+GLOW_NEAR, GLOW_FAR = [1, 0.96, 0.88, 1], [1, 0.87, 0.66, 1]
+GLOW_TIERS = [(20, 25, GLOW_NEAR), (40, 45, GLOW_NEAR), (80, 55, GLOW_NEAR), (160, 50, GLOW_FAR)]
+# glow only where it matters: the hook's 9/11 and "this?", the list (guns, fire, burning buildings), the dates and
+# deadlines, the names, the cut, the grid, the rush job, the template, VI and the closing lines
+GLOW_WORDS = {5, 14, 24, 25, 30, 31, 33, 34, 39, 41, 42, 43, 47, 62, 63, 66, 67, 70, 73, 74, 90, 92, 93, 97, 111, 113, 115}
+CAP_SHADOW = {"enabled": True, "color": [0, 0, 0, 0.55], "offset": [0, 2], "blurRadius": 10, "spreadRadius": 0, "blendMode": "normal"}
+HOOK_END = 227                      # the stretched drop-in entrance is kept for the hook only
 
 
 def ctx(reel):
@@ -40,27 +47,45 @@ def baseline():
     return CAP_MID + tf.cap_height("AR", CAP_SIZE) / 2
 
 
-def caption_word(txt, f0, f1, x, strike=False):
-    """One word: a group (text + tight glow + wide glow [+ slash]) that drops in stretched, pivoting on its centre."""
-    d = f1 - f0; w = tf.advance("AR", txt, CAP_SIZE, CAP_AX); base = baseline()
-    def t(name, color, blend="normal", o=100, fx=None):
-        return D.text(name, 0, d, txt, rl.AR, CAP_SIZE, color, x, base, axes=CAP_AX, shadow=False, blend=blend, o=o, effects=fx)
-    lay = [t(txt, CAP_FILL),
-           t(txt + " (glow, tight)", GLOW_TIGHT, "screen", 100, [D.gauss(4)]),
-           t(txt + " (glow, mid)", GLOW_TIGHT, "screen", 100, [D.gauss(10)]),
-           t(txt + " (glow, wide)", GLOW_WIDE, "screen", 85, [D.gauss(24)])]
-    if strike:
-        lay[0:0] = slash("slash: " + txt.strip(",."), d, x, tf.advance("AR", txt.rstrip(",."), CAP_SIZE, CAP_AX))
-    cx, cy = x + w / 2, CAP_MID
-    g = D.group(f"Caption: {txt}", f0, f1, lay, tr=T(cx, cy, ax=cx, ay=cy))
-    D.kf(g, "scaleY", [(0, 520, HOLD), (5, 100, E_OX)])
-    D.kf(g, "scaleX", [(0, 85, HOLD), (5, 100, E_OX)])
+def word_unit(name, txt, f0, f1, x, color, hook, shadow=None, extra=(), size=CAP_SIZE, mid=CAP_MID, blur=True):
+    """One word as a group pivoting on its centre: drops in stretched (scaleY 520% -> 100%) in the hook, fades up with
+    a 10 px rise after it (v5: the stretch is kept for the hook only)."""
+    d = f1 - f0; w = tf.advance("AR", txt, size, CAP_AX); base = mid + tf.cap_height("AR", size) / 2
+    t = D.text(txt, 0, d, txt, rl.AR, size, color, x, base, axes=CAP_AX, shadow=False)
+    if shadow: t["dropShadow"] = shadow
+    cx, cy = x + w / 2, mid
+    g = D.group(name, f0, f1, list(extra) + [t], tr=T(cx, cy, ax=cx, ay=cy))
+    if not blur: g["motionBlur"] = t["motionBlur"] = False
+    if hook:
+        D.kf(g, "scaleY", [(0, 520, HOLD), (5, 100, E_OX)]); D.kf(g, "scaleX", [(0, 85, HOLD), (5, 100, E_OX)])
+    else:
+        D.kf(g, "opacity", [(0, 0, HOLD), (3, 100, E_OX)]); D.kf(g, "positionY", [(0, cy + 10, HOLD), (4, cy, E_OX)])
     return g
 
 
+def caption_word(txt, f0, f1, x, strike=False, glow=False):
+    """A sharp caption word (+ slash). Words without glow carry a small soft shadow so they read on bright footage."""
+    extra = slash("slash: " + txt.strip(",."), f1 - f0, x, tf.advance("AR", txt.rstrip(",."), CAP_SIZE, CAP_AX)) if strike else ()
+    return word_unit(f"Caption: {txt}", txt, f0, f1, x, CAP_FILL, f0 < HOOK_END, shadow=None if glow else CAP_SHADOW, extra=extra)
+
+
+def glow_stack(label, items, k=1.0):
+    """The glow of a run of words: per tier one group of copies of the words (same timing and entrance), blurred and
+    added on top of the picture. items: (text, f0, f1, x, size, mid)."""
+    f0 = min(it[1] for it in items); f1 = max(it[2] for it in items); out = []
+    for blur, o, col in GLOW_TIERS:
+        units = [word_unit(f"Glow copy: {t}", t, a - f0, b - f0, x, col, a < HOOK_END, size=sz, mid=mid, blur=False) for t, a, b, x, sz, mid in items]
+        g = D.group(f"Glow {blur * k:.0f} px at {o}%: {label}", f0, f1, units, blend="add", o=o,
+                    effects=[D.fx({"type": "gaussianBlur", "blurriness": blur * k, "repeatEdgePixels": False})])
+        g["motionBlur"] = False
+        out.append(g)
+    return out
+
+
 def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), start=None):
-    """L / R_: word indices for the left and right blocks. The phrase holds until `end`."""
-    out = []
+    """L / R_: word indices for the left and right blocks. The phrase holds until `end`. Returns the sharp words and
+    the glowing ones (text, f0, f1, x, size, mid)."""
+    sharp, glow = [], []
     blocks = [(list(L), "right", gap[0] - PAD), (list(R_), "left", gap[1] + PAD)] if not center else [(list(L) + list(R_), "center", 960)]
     for idxs, align, x in blocks:
         idxs = [i for i in idxs if word_text(i) is not None]
@@ -69,8 +94,24 @@ def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), star
         xs, ws, _ = tf.line_layout("AR", texts, CAP_SIZE, CAP_AX, 0, x, align)
         for i, txt, xx in zip(idxs, texts, xs):
             if WF[i] >= end: continue          # spoken after the phrase is cleared (e.g. "since." under the floating covers)
-            out.append(caption_word(txt, WF[i] if start is None else max(start, WF[i]), end, xx, strike=i in strike))
-    return out
+            f0 = WF[i] if start is None else max(start, WF[i])
+            sharp.append(caption_word(txt, f0, end, xx, strike=i in strike, glow=i in GLOW_WORDS))
+            if i in GLOW_WORDS: glow.append((txt, f0, end, xx, CAP_SIZE, CAP_MID))
+    return sharp, glow
+
+
+def end_title(END, s1=90):
+    """v5 closing title: "25 years" larger, "later." underneath it scaled to exactly the same width, both centred in
+    the gap between the III and VI covers, glowing."""
+    w1 = tf.advance("AR", "25 years", s1, CAP_AX); s2 = round(s1 * w1 / tf.advance("AR", "later.", s1, CAP_AX), 1)
+    c1, c2 = tf.cap_height("AR", s1), tf.cap_height("AR", s2); gap = 0.62 * c1       # clears the descender of the y
+    top = 540 - (c1 + gap + c2) / 2; mid1, mid2 = top + c1 / 2, top + c1 + gap + c2 / 2
+    xs, ws, _ = tf.line_layout("AR", ["25", "years"], s1, CAP_AX, 0, 960, "center")
+    x2 = 960 - tf.advance("AR", "later.", s2, CAP_AX) / 2
+    assert xs[0] > 745 and x2 > 745, "end title wider than the gap between the covers"
+    items = [("25", WF[116], END, xs[0], s1, mid1), ("years", WF[117], END, xs[1], s1, mid1), ("later.", WF[118], END, x2, s2, mid2)]
+    sharp = [word_unit(f"Caption (end title): {t}", t, a, b, x, CAP_FILL, False, size=sz, mid=mid) for t, a, b, x, sz, mid in items]
+    return sharp, glow_stack("25 years later.", items, k=1.5)
 
 
 def captions(END):
@@ -99,7 +140,7 @@ def captions(END):
         dict(L=[71, 72], R_=[73, 74], gap=HEAD, end=640),                               # up his | own painting.
         dict(L=[75, 76], R_=[77], gap=(500, 1420), end=710),                            # He only | kept (clear of the US cover)
         dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
-        dict(L=[91, 92], R_=[93], gap=(940, 1620), end=782),                            # That rush | job?
+        dict(L=[91, 92], R_=[93], gap=(620, 1300), end=782),                            # That rush | job?  (v5: card centred)
         dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template
         dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=838),                 # for every | GTA cover  (off before the floating covers)
         dict(L=[103], R_=[104], gap=BOX, end=883),                                      # Vice | City,   (either side of the box)
@@ -109,12 +150,15 @@ def captions(END):
         dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
         dict(L=[112], R_=[113], gap=CENTRE, end=998),                                   # same | boxes,  (off before the match cut)
         dict(L=[114], R_=[115], gap=(500, 1420), end=1021),                             # same | grid,
-        dict(L=[116, 117, 118], center=True, end=END),                                  # 25 years later.
-    ]
-    out = []
+    ]                                                                                   # 25 years / later.: end_title()
+    sharp, glow = [], []
     for p in P:
-        out += phrase(**p)
-    return D.group("Captions (reference style)", 0, END, out)
+        s, g = phrase(**p); sharp += s
+        if g: glow += glow_stack(" ".join(x[0] for x in g), g)
+    s, g = end_title(END); sharp += s; glow += g
+    return (D.group("Captions (reference style)", 0, END, sharp),
+            D.group("Caption glow (blurred copies, added)", 0, END, glow, blend="add",
+                    desc="Glow on the words that matter: per word run, four blurred copies (20/40/80/160 px) added over the picture."))
 
 
 # =================================================================== slashes (p5.brush, thin, solid)
@@ -156,24 +200,79 @@ def cover_img(im):
     return r[y0:y0 + 1080, x0:x0 + 1920]
 
 
-def hud(name, im, d, n=7, seed=1, big=1):
-    """Computer-vision tracking boxes on the strongest features of a frame: thin white boxes, a coordinate label at
-    each box's corner, a green dot at its centre."""
-    g = cv2.cvtColor(cover_img(im), cv2.COLOR_BGR2GRAY)
-    pts = cv2.goodFeaturesToTrack(g, 60, 0.03, 110)
+def hud_box(name, k, d, x, y, bw, bh, px, py, f0=0, label=True, size=13):
+    """One tracking box: thin white outline, coordinate label on its top-left corner, green dot at the tracked point."""
+    r = D.rect(f"{name}: box {k}", f0, d, x, y, bw, bh, HUD_WHITE)
+    r["rect"].update({"fillEnabled": False, "strokeEnabled": True, "strokeColor": HUD_WHITE, "strokeWidth": 1.5})
+    out = [r, D.rect(f"{name}: dot {k}", f0, d, px - 2, py - 2, 4, 4, HUD_DOT)]
+    if label and not (x < 190 and y < 170):          # keep the logo corner clear
+        out.insert(0, D.text(f"{name}: label {k}", f0, d, f"x: {int(px)} y: {int(py)}", rl.AR, size, HUD_WHITE, x, y - 5,
+                             axes={"wdth": 100, "wght": 500}, shadow=False))
+    for l in out: l["motionBlur"] = False
+    return out
+
+
+def hud_pts(name, gray, d, mapf=lambda p: p, n=7, seed=1, big=1, bounds=(150, 120, 1770, 960), min_dist=90, roi=None,
+            big_size=((380, 620), (220, 380)), small=((50, 170), (40, 130)), f0=0):
+    """Computer-vision tracking boxes on the strongest corners of an image (gray, in its own pixels; mapf maps them
+    to the canvas): thin white boxes, a coordinate label at each box's corner, a green dot at its centre."""
+    pts = cv2.goodFeaturesToTrack(gray, 120, 0.02, min_dist, mask=roi)
     rnd = random.Random(seed)
-    pts = [tuple(map(int, p.ravel())) for p in (pts if pts is not None else [])]
-    pts = [p for p in pts if 150 < p[0] < 1770 and 120 < p[1] < 960] or [(960, 540)]
+    pts = [mapf(tuple(map(float, p.ravel()))) for p in (pts if pts is not None else [])]
+    pts = [p for p in pts if bounds[0] < p[0] < bounds[2] and bounds[1] < p[1] < bounds[3]] or [((bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2)]
     rnd.shuffle(pts); out = []
     for k, (px, py) in enumerate(pts[:n + big]):
-        if k < big: bw, bh = rnd.randint(380, 620), rnd.randint(220, 380)
-        else: bw, bh = rnd.randint(50, 170), rnd.randint(40, 130)
-        x, y = px - bw / 2, py - bh / 2
-        r = D.rect(f"{name}: box {k + 1}", 0, d, x, y, bw, bh, HUD_WHITE)
-        r["rect"].update({"fillEnabled": False, "strokeEnabled": True, "strokeColor": HUD_WHITE, "strokeWidth": 1.5})
-        lab = D.text(f"{name}: label {k + 1}", 0, d, f"x: {px} y: {py}", rl.AR, 13, HUD_WHITE, x, y - 5, axes={"wdth": 100, "wght": 500}, shadow=False)
-        dot = D.rect(f"{name}: dot {k + 1}", 0, d, px - 2, py - 2, 4, 4, HUD_DOT)
-        out += [lab, r, dot]
+        sz = big_size if k < big else small
+        bw, bh = rnd.randint(*sz[0]), rnd.randint(*sz[1])
+        out += hud_box(name, k + 1, d, px - bw / 2, py - bh / 2, bw, bh, px, py, f0=f0)
+    return out
+
+
+def hud(name, im, d, n=7, seed=1, big=1):
+    """Tracking boxes on a full-frame still (fit=cover)."""
+    return hud_pts(name, cv2.cvtColor(cover_img(im), cv2.COLOR_BGR2GRAY), d, n=n, seed=seed, big=big, min_dist=70)
+
+
+def vmap(asset, scale=100, cx=960, cy=540):
+    """Select pixels -> canvas for a video layer framed with fit=cover in the full frame, scaled about the centre."""
+    a = R[asset]; s0 = max(W / a["w"], H / a["h"]) * scale / 100
+    return lambda p: ((p[0] - a["w"] / 2) * s0 + cx, (p[1] - a["h"] / 2) * s0 + cy)
+
+
+def tracked_hud(name, asset, d, mapf, roi, n=7, seed=1, big=(), min_dist=55, f0=0, labels=True):
+    """Tracking boxes that follow the footage: corners found on the shot's first frame (inside roi, select pixels)
+    and followed frame by frame with Lucas-Kanade optical flow; every box, label and dot is keyed on every frame.
+    big: extra boxes (x, y, w, h in select pixels) that follow their centre."""
+    a = R[asset]; start = int(round(a["lead"] * FPS)); cap = cv2.VideoCapture(a["path"]); frames, i = [], 0
+    while len(frames) < d:
+        ok, f = cap.read()
+        if not ok: break
+        if i >= start: frames.append(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY))
+        i += 1
+    m = np.zeros_like(frames[0]); x, y, w, h = map(int, roi); m[y:y + h, x:x + w] = 255
+    pts = cv2.goodFeaturesToTrack(frames[0], 80, 0.02, min_dist, mask=m)
+    pts = [] if pts is None else [tuple(map(float, p.ravel())) for p in pts]
+    rnd = random.Random(seed); rnd.shuffle(pts); pts = pts[:n]
+    anchors = [(bx + bw / 2, by + bh / 2) for bx, by, bw, bh in big] + pts
+    P = np.float32(anchors).reshape(-1, 1, 2); track = [P.reshape(-1, 2).copy()]
+    for k in range(1, len(frames)):
+        Q, st, _ = cv2.calcOpticalFlowPyrLK(frames[k - 1], frames[k], P, None, winSize=(41, 41), maxLevel=3)
+        lost = st.ravel() == 0; Q[lost] = P[lost]; P = Q; track.append(P.reshape(-1, 2).copy())
+    while len(track) < d: track.append(track[-1])
+    out = []
+    for j, (sx, sy) in enumerate(anchors):
+        px, py = mapf((sx, sy))
+        if j < len(big):
+            bx, by, bw, bh = big[j]; (x0, y0), (x1, y1) = mapf((bx, by)), mapf((bx + bw, by + bh)); bw, bh = x1 - x0, y1 - y0
+        else:
+            bw, bh = rnd.randint(46, 150), rnd.randint(36, 110)
+        lay = hud_box(name, j + 1, d, px - bw / 2, py - bh / 2, bw, bh, px, py, f0=f0, label=labels)
+        dx = [mapf(track[k][j])[0] - px for k in range(d)]; dy = [mapf(track[k][j])[1] - py for k in range(d)]
+        for l in lay:
+            ox, oy = l["transform"]["position"]
+            D.kf(l, "positionX", [(k - f0, ox + dx[k], HOLD) for k in range(f0, d)])
+            D.kf(l, "positionY", [(k - f0, oy + dy[k], HOLD) for k in range(f0, d)])
+        out += lay
     return out
 
 
@@ -229,11 +328,12 @@ def H1():
     """0-25: the tracking-box montage under "What if I told you" - 2-3 frame hits."""
     sh = []
     def img(k): return cv2.imread(R[k]["path"])
-    spec = [(0, 3, "hud_b01", hikey(1), 7), (3, 6, "hud_b04", None, 6), (6, 8, "A01", hikey(1, .08, .45), 5), (8, 11, "hud_b50", None, 9),
-            (15, 18, "hud_b49", None, 7), (18, 21, "hud_b48", hikey(0, .2, .8), 7), (21, 24, "hud_b25", None, 8), (24, 25, "hud_b04b", hikey(1), 4)]
+    # v5: about twice the boxes per hit (the tracking-box look is the hook's style)
+    spec = [(0, 3, "hud_b01", hikey(1), 15), (3, 6, "hud_b04", None, 14), (6, 8, "A01", hikey(1, .08, .45), 12), (8, 11, "hud_b50", None, 18),
+            (15, 18, "hud_b49", None, 15), (18, 21, "hud_b48", hikey(0, .2, .8), 15), (21, 24, "hud_b25", None, 16), (24, 25, "hud_b04b", hikey(1), 10)]
     for k, (f0, f1, a, lk, n) in enumerate(spec):
         d = f1 - f0
-        lay = hud(f"HUD {a}", img(a), d, n=n, seed=k + 3) + [still_layer(a, a, d)]
+        lay = hud(f"HUD {a}", img(a), d, n=n, seed=k + 3, big=2) + [still_layer(a, a, d)]
         if a == "hud_b49":     # the radar circle of the reference's top-down car shot
             c = D.rect("Tracking circle", 0, d, 760, 340, 400, 400, HUD_WHITE, roundness=200)
             c["rect"].update({"fillEnabled": False, "strokeEnabled": True, "strokeColor": HUD_WHITE, "strokeWidth": 1.5}); lay.insert(0, c)
@@ -249,15 +349,21 @@ def H1():
 TVBODY = (710, 220, 590, 609)          # A01 TV body on the 1920 canvas (cover fit): x, y, w, h
 
 
-def tv(d, screens, s0=74, s1=84):
+def tv(d, screens, zooms=((0, 74), (42, 86), (82, 92))):
     """The A01 CRT cut out of its room and set on black: its body lifted to read as a grey set, footage pinned into the
-    screen, scaled about the body's centre and growing slowly (reference 0:01.5-0:04.4)."""
+    screen, scaled about the body's centre. v5: held, then hard jump cuts to a tighter zoom (reference 0:02.4) on
+    "GTA" and on "this?" - never wider than the gap between the caption blocks. Tracking boxes on the set."""
     bx, by, bw, bh = TVBODY; cx, cy = bx + bw / 2, by + bh / 2
     m = D.rect("TV body (matte)", 0, d, bx, by, bw, bh, [1, 1, 1, 1], roundness=34)
     plate = D.image("A01 TV (lifted)", "A01", 0, d, effects=[D.fx({"type": "levels", "inputBlack": 2, "inputWhite": 62, "gamma": 1.35, "outputBlack": 6, "outputWhite": 225})],
                     matte={"layer": m["id"], "mode": "alpha"})
-    g = D.group("CRT", 0, d, screens + [plate, m], tr=T(960, 540, s0, ax=cx, ay=cy))
-    D.kf(g, "scaleX", [(0, s0, HOLD), (d * 1.4, s1 + (s1 - s0) * .4, E_OX)]); D.kf(g, "scaleY", [(0, s0, HOLD), (d * 1.4, s1 + (s1 - s0) * .4, E_OX)])
+    scr = hud_box("TV screen", 1, d, 756, 280, 512, 424, 1012, 491)
+    body = np.zeros((1080, 1920), np.uint8); body[by + 10:by + bh - 10, bx + 10:bx + bw - 10] = 255; body[270:715, 750:1275] = 0
+    boxes = hud_pts("TV set", cv2.cvtColor(cover_img(cv2.imread(R["A01"]["path"])), cv2.COLOR_BGR2GRAY), d, n=6, seed=4, big=0,
+                    roi=body, min_dist=60, small=((40, 110), (34, 90)))
+    g = D.group("CRT", 0, d, scr + boxes + screens + [plate, m], tr=T(960, 540, zooms[0][1], ax=cx, ay=cy))
+    assert bw * max(z for _, z in zooms) / 100 < 1254 - 666, "TV wider than the gap between the caption blocks"
+    for p in ("scaleX", "scaleY"): D.kf(g, p, [(f, z, HOLD) for f, z in zooms])
     return g
 
 
@@ -310,10 +416,10 @@ def thumbs(d, k=5, seed=1):
     return out
 
 
-def H3():
-    """110-145: the GTA III wordmark with tracking boxes, then logos built from tiles (VI, then the European cover)."""
-    sh = []
-    d = 14; a = R["logo_gta3"]; width = 520; s = width / a["w"]; x0, y0 = 960 - width / 2, 540 - a["h"] * s / 2
+def wordmark(d):
+    """The GTA III wordmark with a tracking box on every letter, thumbnails around it, the tile grid and a title flash
+    (the hook's 0:03 screen until v4; v5 moves it to "It's been the template")."""
+    a = R["logo_gta3"]; width = 520; s = width / a["w"]; x0, y0 = 960 - width / 2, 540 - a["h"] * s / 2
     letters = json.load(open(os.path.join(ROOT, "build", "assets", "logo_gta3_letters.json")))["letters"]
     lay = []
     for k, (lx, ly, lw, lh) in enumerate(letters):
@@ -325,27 +431,71 @@ def H3():
     tr = lambda: T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
     word = D.image("GTA III wordmark (from the US cover)", "logo_gta3", 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]), effects=glitch(0.02))
     flash = rl.glow_flash("logo_gta3", d, tr, a, 2, halo=14, scale=s)
-    sh.append(hit("H3.1 GTA III wordmark + tracking", 110, 124, lay + flash + [word] + thumbs(d, 3)[:9] + [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")]))
+    return lay + flash + [word] + thumbs(d, 5) + [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")]
+
+
+HOOK_MATCH = ["cov_III", "cov_VC", "cov_SA", "cov_LCS", "cov_IV", "cov_V", "cov_VI"]
+
+
+def hook_match(name, f0, f1, height=620):
+    """The match cut (every cover at the same spot and size, a one-frame white flash on each switch) sized to sit
+    between the "is the reason | GTA covers look like this?" caption blocks, tracking boxes on every cover."""
+    d = f1 - f0; a = R["cov_III"]; s = height / a["h"]; w = a["w"] * s; x0, y0 = 960 - w / 2, 540 - height / 2
+    n = len(HOOK_MATCH); durs = [d // n + (1 if i < d % n else 0) for i in range(n)]
+    lay, flashes, t = [], [], 0
+    for i, (k, dur) in enumerate(zip(HOOK_MATCH, durs)):
+        im = D.image(f"{k[4:]} cover", k, 0, dur, tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+        g = cv2.cvtColor(cv2.imread(R[k]["path"]), cv2.COLOR_BGR2GRAY)
+        boxes = hud_pts(f"HUD {k[4:]} cover", g, dur, lambda p: (x0 + p[0] * s, y0 + p[1] * s), n=7, seed=21 + i, big=1, min_dist=60,
+                        bounds=(x0 + 12, y0 + 12, x0 + w - 12, y0 + height - 12), big_size=((150, 260), (120, 200)), small=((36, 110), (30, 90)))
+        lay.append(D.group(f"{k[4:]} cover + tracking boxes", t, t + dur, boxes + [im]))
+        if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=70))
+        t += dur
+    for r in flashes: r["motionBlur"] = False         # one crisp frame each
+    return hit(name, f0, f1, flashes + lay + [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")])
+
+
+def H3():
+    """110-145: the match cut through the covers (v5), then logos built from tiles (VI, then the European cover)."""
+    sh = [hook_match("H3.1 Match cut: every cover (tracking boxes)", 110, 124)]
     d = 9
-    sh.append(hit("H3.2 VI built from tiles", 124, 133, tile_logo("GTA VI logo (B06)", "logo_vi", d, 960, 540, 560, 4, 5) + thumbs(d, 5, 2) +
+    sh.append(hit("H3.2 VI built from tiles", 124, 133, tile_logo("GTA VI logo (B06)", "logo_vi", d, 960, 540, 560, 4, 5, .7) + thumbs(d, 5, 2) +
                   [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")]))
     d = 12; c = R["C02_euro"]
-    sh.append(hit("H3.3 European cover built from tiles", 133, 145, tile_logo("European GTA III cover (C02)", "C02_euro", d, 960, 540, c["w"] * 720 / c["h"], 6, 9, .25) +
+    sh.append(hit("H3.3 European cover built from tiles", 133, 145, tile_logo("European GTA III cover (C02)", "C02_euro", d, 960, 540, c["w"] * 720 / c["h"], 6, 9, .7) +
                   thumbs(d, 5, 3) + [D.image("Tile grid", "tilegrid", 0, d, fit="stretch")]))
     return sh
 
 
+def tracked_shot(name, b, t, d, roi, big=(), n=7, seed=1, scale=100, cx=960, cy=540):
+    """Footage with tracking boxes locked to it: the clip and its boxes in one group, which carries the drift."""
+    a = prep.sel(b, t, d / FPS + 0.2)
+    v = rl.vclip(f"{b} at {t} s", b, t, d, scale=scale, cx=cx, cy=cy, drift_on=False)
+    boxes = tracked_hud(f"Track {b}", a, d, vmap(a, scale, cx, cy), roi, n=n, seed=seed, big=big)
+    g = D.group(f"{b} + tracking boxes", 0, d, boxes + [v], tr=T(960, 540, ax=960, ay=540))
+    rl.drift(g, d, 960, 540, 100)
+    return g
+
+
 def H4():
-    """145-227: full-frame footage, captions either side of the subject."""
+    """145-227: full-frame footage, captions either side of the subject; v5: tracking boxes locked to the box in his
+    hands, the box front and Bliss's face."""
     sh = []
-    sh.append(rl.shot("H4.1 European box in hands", 145, 161, [rl.vclip("B09 European box in hands", "B09", 48.5, 16)], dim=10))
+    v = R[prep.sel("B09", 48.5, 16 / FPS + 0.2)]; bw_, bh_ = v["w"], v["h"]
+    sh.append(rl.shot("H4.1 European box in hands", 145, 161, [tracked_shot("B09 European box in hands", "B09", 48.5, 16,
+                      roi=(0.08 * bw_, 0.02 * bh_, 0.8 * bw_, 0.9 * bh_), big=[(0.3 * bw_, 0.02 * bh_, 0.27 * bw_, 0.36 * bh_)], n=8, seed=5)], dim=10))
     a = R["b09_front"]; sc = W / a["w"]
     tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
     front = D.image("B09 European box, front (still frame at 50 s)", "b09_front", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
-    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
-    # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill
-    sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [rl.vclip("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, scale=131, cx=960, cy=540 + (540 - 585) * 1.31)], dim=10))
-    sh.append(rl.shot("H4.4 Bliss at his mural", 207, 227, [rl.vclip("B27 Bliss at his mural", "B27", 52.0, 20, scale=108)], dim=10))
+    g = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
+    boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=9, seed=8, big=1, min_dist=80,
+                    big_size=((300, 460), (180, 280)), f0=3)
+    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
+    # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill; boxes on his face
+    sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [tracked_shot("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, roi=(640, 230, 420, 560),
+                      big=[(690, 250, 290, 300)], n=7, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))
+    sh.append(rl.shot("H4.4 Bliss at his mural", 207, 227, [tracked_shot("B27 Bliss at his mural", "B27", 52.0, 20, roi=(560, 160, 1100, 780),
+                      big=[(930, 170, 230, 260)], n=8, seed=7, scale=108)], dim=10))
     return sh
 
 
@@ -369,4 +519,5 @@ def matchcut(name, f0, f1):
         lay.append(D.image(f"{k[4:]} cover", k, t, t + dur, tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"])))
         if t: flashes.append(D.rect(f"White flash @{f0 + t}", t, t + 1, 0, 0, W, H, rl.FLASH, o=85))
         t += dur
+    for r in flashes: r["motionBlur"] = False         # one crisp frame (motion blur smeared it over its neighbours)
     return rl.shot(name, f0, f1, flashes + lay, dim=8)

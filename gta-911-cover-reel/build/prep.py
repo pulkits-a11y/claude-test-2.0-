@@ -33,13 +33,14 @@ def srcfile(b):
 def sel(b, t, dur, name=None):
     """A select of clip b from t seconds for dur seconds (plus handles). Returns asset id;
     the wanted moment starts at HANDLE seconds into the select (or at t if t < HANDLE)."""
-    name = name or f"{b}_{int(round(t * 1000)):07d}"
+    stem = os.path.splitext(os.path.basename(b))[0] + ("_v5" if os.path.isabs(b) else "")   # files outside source/broll (the montage)
+    name = name or f"{stem}_{int(round(t * 1000)):07d}"
     if name in reg: return name
     p = os.path.join(OUT, "sel", name + ".mp4")
     lead = min(HANDLE, t)
     if not os.path.exists(p):
         run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t - lead:.3f}", "-i", srcfile(b), "-t", f"{dur + lead + 0.6:.3f}",
-             "-vf", "fps=30,scale='min(iw,trunc(iw*1080/ih/2)*2)':'min(ih,1080)'", "-c:v", "libx264", "-crf", "17",
+             "-vf", "fps=30,scale='min(iw,trunc(iw*1080/ih/2)*2)':'min(ih,1080)',setpts=PTS-STARTPTS", "-c:v", "libx264", "-crf", "17",
              "-preset", "veryfast", "-pix_fmt", "yuv420p", "-an", p])
     out = json.loads(run([X, "project", "import-video", "--project", BASE, "--file", p, "--asset-id", name]))
     reg[name] = {"kind": "video", "path": p, "lead": lead, "dur": out["durationMs"], "w": out["width"], "h": out["height"]}
