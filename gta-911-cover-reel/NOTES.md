@@ -14,6 +14,14 @@ All of these are in `gta-911-cover-reel/`.
 
 To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. The layer tree is organised as scene groups containing shot groups, each with a graded media group, a look, a dim layer and prism streaks. Above the scenes are one text layer per word, the clip grain, the seven film-wide overlays, the five flash cuts, and the logo on top.
 
+## Export
+
+- Rendered in two halves in parallel (frames 0–527 and 528–1056), then joined.
+- The second half came back with 527 of its 529 frames. The last two frames (1055–1056, the final III/VI flicker) were rendered separately and appended, and the result was encoded once more as H.264 at CRF 14.
+- The final file is 1,057 frames, 35.233 s, 1920 × 1080, 30 fps. The audio is the voiceover WAV as AAC 256 kb/s, with no other audio.
+- The voiceover is left at its supplied level, −21.4 LUFS integrated. Raise it if the platform expects louder.
+- Checked: the duration, frame count and streams; levels across the join; and one frame from every shot (the contact sheet). I can't play audio here, so lip-free VO sync is checked by word timings, not by ear.
+
 ## Voiceover
 
 Your message said "[raw / already processed]" without choosing one. I treated the file as already processed: it runs 35.23 s (the brief expects about 35 s after processing, against 48.8 s raw), it has no pause longer than 120 ms, and its filename says `tight_118`. I did not cut or speed it up again.
