@@ -21,7 +21,7 @@ def shots():
                     b = a + sub["playback"]["inputRange"]["start"]; out.append((sub["name"], b, sub["playback"]["inputRange"]["duration"]))
                 continue
             out.append((sh["name"], a, d))
-    out.append(("CTA", 1057 * 1000 / 30, 67 * 1000 / 30))
+    out.append(("CTA (RawCanvas sting)", 1057 * 1000 / 30, 86 * 1000 / 30))   # tile at frame 1100, clear of the sting's negative flicker
     return sorted(out, key=lambda x: x[1])
 
 

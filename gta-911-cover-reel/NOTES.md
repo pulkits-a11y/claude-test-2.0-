@@ -103,10 +103,12 @@ To rebuild from `source/`, run `build/make.py` followed by `build/export.sh`. Th
 
 ## Export
 
-- Rendered with motion blur in two halves in parallel (about 18 minutes each here), then joined. `build/export.sh` renders the last half second separately and tops up any frames the exporter drops at the very end of the timeline: one frame in v2, two in v1.
-- The final file is 1,057 frames, 35.233 s, 1920 × 1080, 30 fps. The audio is the voiceover WAV as AAC 256 kb/s, with no other audio.
-- The voiceover is left at its supplied level, −21.4 LUFS integrated. Raise it if the platform expects louder.
-- Checked: the duration, frame count and streams; levels across the join; and one frame from every shot (the contact sheet). I can't play audio here, so lip-free VO sync is checked by word timings, not by ear.
+- **Rendering:** the two halves are rendered with motion blur in parallel (about 22 minutes each here). The MP4 exporter drops a few frames at the end of each range (3 and 2 in v3), so `build/export.sh` renders each half's last 16 frames again as ProRes, puts the missing ones back in place, and joins the halves frame-exact.
+- **Check:** the restored and neighbouring frames matched their sources (mean difference 0.1–0.3, against 3.3 for a 3-frame shift). Earlier versions topped up only at the end, so v2's second half may have sat a frame early.
+- **The file:** 1,124 frames, 37.467 s, 1920 × 1080, 30 fps, H.264 at CRF 14.
+- **Audio:** Tesseract's own mix (`export-audio`): the voiceover plus the CTA's sound, as AAC 256 kb/s stereo. The voiceover is at its supplied level. It measures −18.4 LUFS integrated because the mono voice now sits in both stereo channels; it sounds the same as before.
+- **CTA flicker:** the CTA's brief negative flickers (its frames 31, 34 and 35) are in the supplied clip.
+- **Not checked:** I can't listen here, so voiceover sync is checked by word timings, not by ear.
 
 ## Voiceover
 
