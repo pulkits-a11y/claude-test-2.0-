@@ -50,11 +50,11 @@ for l, t0, path in walk(root):
     elif st["justification"] == "right": x -= w
     top = y - tf.cap_height(key, size) * 1.05
     is_caption = l["name"].startswith("Caption") or any(p.startswith("Caption") for p in path)
-    end_title = any("end title" in p or p.endswith(": 25 years later.") for p in path)
+    end_title = any("end title" in p or "lower third" in p for p in path)
     # v5: tracking-box labels (x: .. y: ..) are allowed wherever the boxes are; the hook's terminal lines stay in H1
     hud = any(p.startswith("H1") or p.startswith("H3") for p in path) or "label" in l["name"].lower()
     ok(is_caption or hud, f"text outside the caption system: {l['name']}")
-    if is_caption and not end_title: ok(size == 47 and ax.get("wght") == 600, f"caption not in the reference style: {l['name']}")
+    if is_caption and not end_title: ok(size >= 47 and ax.get("wght") == 600, f"caption not in the reference style: {l['name']}")
     if end_title: ok(ax.get("wght") == 600 and size >= 47, f"end title not in the caption face: {l['name']}")
     if is_caption:
         ok(x >= 96 and x + w <= 1824 and top >= 60 and y <= 1020, f"outside safe zone: {l['name']} ({x:.0f},{top:.0f})-({x + w:.0f},{y:.0f})")
@@ -65,7 +65,7 @@ ok(root[0] is logo, "logo slot is not the top layer")
 ok(logo["layers"] and logo["layers"][0]["transform"]["position"] == [56, 48] and logo["layers"][0]["transform"]["opacity"] == 90, "logo missing or misplaced")
 # 7 overlays on every frame
 ov = [l for l in root if l["name"] == "Film-wide overlays"][0]
-ok(ov["playback"]["inputRange"]["duration"] >= round(1057 * 1000 / 30) - 1 and len(ov["layers"]) == 7, "film-wide overlays incomplete")
+ok(ov["playback"]["inputRange"]["duration"] >= int(doc["duration"] * 1000) - 1 and len(ov["layers"]) == 7, "film-wide overlays incomplete")
 notes.append("captions sit above the film-wide overlays (v3, so the glow stays clean)")
 # 8 easing
 eas = set()

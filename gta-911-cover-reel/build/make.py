@@ -26,7 +26,7 @@ _walk(doc["composition"]["layers"])
 acts = [a for a in acts if (a.get("property", {}).get("layerId") or a.get("layerId")) in _ids]
 vo = reel.R["vo"]
 acts.append({"type": "createFxAudioLayer", "compositionId": "main", "layerId": reel.D.nid(), "name": "Voiceover (processed, tight 118%)",
-             "activeRange": {"start": 0, "duration": ms(reel.END)}, "sourceRange": {"start": 0, "duration": 35230}, "sourceIntrinsicDuration": 35230,
+             "activeRange": {"start": 0, "duration": 35230}, "sourceRange": {"start": 0, "duration": 35230}, "sourceIntrinsicDuration": 35230,
              "source": {"assetId": "vo"}, "volume": 1.0})
 json.dump(acts, open(os.path.join(WORK, "edits.json"), "w"))
 print("layers/actions built", len(acts), "actions", round(time.time() - t0, 1), "s")

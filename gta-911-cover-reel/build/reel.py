@@ -17,7 +17,7 @@ import v3
 X = prep.X
 D = Doc()
 R = prep.reg
-END = 1057                      # 35.233 s, the processed voiceover's length
+END = 1132                      # v6: the voiceover runs 35.233 s (1,057 frames); the final shot holds 2.5 s past it
 WORDS = json.load(open(os.path.join(ROOT, "build", "words.json")))
 WF = [int(round(w["s"] * FPS)) for w in WORDS]     # onset frame of each word
 AR, IS = "Archivo SemiBold", "Instrument Serif"
@@ -79,6 +79,19 @@ def build_assets():
     # rotoscoped logo letters (white, alpha = letter mask) for the glow flashes; built from the stills in build/stills, see NOTES
     prep.img("C02_title_mask", path=os.path.join(ROOT, "build", "assets", "img", "C02_title_mask.png"))
     prep.img("cov_VI_vi_mask", path=os.path.join(ROOT, "build", "assets", "img", "cov_VI_vi_mask.png"))
+    # v6: the client's AI plates with the real art composited in (build/ai.py)
+    if "ai_crt_desk" not in R:
+        import ai
+        euro = cv2.imread(R["C02_euro"]["path"]); cov = cv2.imread(R["cov_III"]["path"])
+        rgba = lambda m: np.dstack([np.full_like(m, 255)] * 3 + [m])
+        crt, xm = ai.crt_desk(euro); prep.img("ai_crt_desk", crt); prep.img("ai_crt_xmarks", rgba(xm))
+        prep.img("ai_cutting_mat", ai.cutting_mat(euro))
+        tb, last = ai.light_table(cov, [P3[k] for k in TABLE_ORDER]); prep.img("ai_light_table", tb); prep.img("ai_table_last", rgba(last))
+    for n, b, t in [("bliss26b", "B26", 600.0), ("bliss26c", "B26", 300.0), ("bliss28b", "B28", 1650.0), ("bliss28c", "B28", 1760.0)]: prep.still(n, b, t)
+    if "shade_bottom" not in R:     # a soft dark ramp under a lower-third caption
+        a = np.zeros((1080, 1920), np.float32); y = np.arange(1080, dtype=np.float32)
+        a[:] = (np.clip((y - 560) / 520, 0, 1) ** 1.4 * 0.62 * 255)[:, None]
+        prep.img("shade_bottom", np.dstack([np.zeros((1080, 1920, 3), np.uint8), a.astype(np.uint8)]))
 
 
 def V(b, t, dur):
@@ -251,6 +264,28 @@ def card(name, asset, d, height, cx, cy, rot, move="drift"):
     if move == "settle": settle_zoom(g, d)
     else: drift(g, d, cx, cy, 100)
     settle(g, rot, min(10, d))
+    return g
+
+
+def push_in(layer, d, amt=6):
+    """A slow push-in that eases out and is still moving at the cut (the drift's curve, no sideways move)."""
+    for p in ("scaleX", "scaleY"): D.kf(layer, p, [(0, 100, HOLD), (d * STRETCH, 100 + amt / Y_AT_CUT, E_OX)])
+
+
+def shade(d):
+    return D.image("Soft bottom shade (under the lower-third caption)", "shade_bottom", 0, d, fit="stretch")
+
+
+TABLE_ORDER = ["L1", "M1", "R1", "L2", "M2", "R2", "L3", "M4", "R3", "L4", "M5", "R4"]
+
+
+def plate(name, asset, d, px, py, extra=None, amt=6):
+    """A still plate filling the frame (fit=cover) with a slow push toward a point of it (plate pixels)."""
+    a = R[asset]; s = max(W / a["w"], H / a["h"]); tr = lambda: T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
+    rect = (0, 0, a["w"], a["h"])
+    im = D.image(name, asset, 0, d, tr=tr(), fit="stretch", rect=rect)
+    mx, my = (px - a["w"] / 2) * s + 960, (py - a["h"] / 2) * s + 540
+    g = D.group(name + " (push)", 0, d, (extra(tr, rect) if extra else []) + [im], tr=T(mx, my, ax=mx, ay=my)); push_in(g, d, amt)
     return g
 
 
@@ -659,12 +694,17 @@ def S06():
     s0, s1 = SCENES[5]; sh = []; tx = []
     sh.append(shot("S6.1 CRT: Sept 12 skyline", 320, 364, [crt(44, [pinned("B04 skyline (stand-in for #19 ITN)", "B04", 10.0, 44)], zoom=1.0, cy=491, still=True)], dim=12))
     # six weeks: the PS2 box on the right (comes in tilted, settles straight); one left-aligned text block on the left
-    d = 12; a = R["C04_ps2box"]
-    cut = iclip("C04 PS2 box (B21 still)", "C04_ps2box", d, fit="stretch", rect=(0, 0, a["w"] * 760 / a["h"], 760), cx=960, cy=540, shadow=SHADOW, drift_on=False)
-    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60), vclip("B20 GTA III boxes (blurred bed)", "B20", 9.5, d, effects=[D.gauss(55)], drift_on=False)]
-    sh.append(shot("S6.2 PS2 box, six weeks", 364, 376, [cut] + bed, dim=10))
+    # v6: the studio desk (client's AI plate) with the European cover open on the CRT; the calendar's crossed-off days
+    # flicker on "weeks"; slow push toward the monitor
+    d = 12; a = R["ai_crt_desk"]; s = W / a["w"]
+    tr = lambda: T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
+    desk = D.image("Studio desk (AI plate; the European cover on the screen)", "ai_crt_desk", 0, d, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    xs = flicker("Calendar: crossed-off days flicker", "ai_crt_xmarks", d, WF[43] - 364, tr, (0, 0, a["w"], a["h"]), peak=85)
+    mx, my = (565 - a["w"] / 2) * s + 960, (380 - a["h"] / 2) * s + 540
+    g = D.group("Studio desk + calendar flicker", 0, d, xs + [desk], tr=T(mx, my, ax=mx, ay=my)); push_in(g, d, 6)
+    sh.append(shot("S6.2 Studio desk, six weeks", 364, 376, [g], dim=8, top=[shade(d)]))
     # v5: the GTA III cutscene the client liked (was under "He only kept") moves here, framed clear of the fps overlay
-    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0))
+    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0, top=[shade(24)]))
     tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 364, s0, "hard", baseline=920)[0]
     sz = 150; l = big("six weeks", 364 - s0, s1 - s0, "six weeks", AR, sz, 160, 560, axes=CAP, color=WARM, just="left", tracking=0); blur_in(l); tx.append(l)
     tx += caption("before launch", [44, 45], ["before", "launch"], 0, s1, s0, x=164, align="left", size=52)
@@ -786,10 +826,13 @@ def bliss_card(name, asset, d, rot, cx=960, move="drift"):
 
 def S09():
     s0, s1 = SCENES[8]; sh = []; tx = []
-    for i, (f0, f1, asset, rot) in enumerate([(528, 532, "bliss26", -4), (532, 536, "bliss27b", 3), (536, 540, "bliss28", -2)]):
-        sh.append(shot(f"S9.{i + 1} Photo card", f0, f1, [bliss_card(f"Bliss photo #{asset[-2:]}", asset, f1 - f0, rot)], dim=10))
+    # v6: a denser match cut - seven photos of him, 2 frames each, every face at the same spot and size
+    run = ["bliss26", "bliss28b", "bliss27b", "bliss26b", "bliss28", "bliss26c", "bliss28c"]
+    for i, asset in enumerate(run):
+        f0 = 528 + 2 * i
+        sh.append(shot(f"S9.{i + 1} Photo card", f0, f0 + 2, [bliss_card(f"Bliss photo ({asset})", asset, 2, 0)], dim=10))
     # heat map + strip of the real eyes (same still, same framing)
-    d = 10; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 520 / fw
+    d = 8; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 520 / fw
     cx, cy = 960 + (a["w"] / 2 - fx) * s, 540 + (a["h"] / 2 - fy) * s
     heat = D.group("Heat map face", 0, d, [D.image("Bliss #26 (heat)", "bliss26", 0, d, tr=T(cx, cy, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]))], effects=L_heat())
     ey = 540 - 0.12 * 520
@@ -800,7 +843,7 @@ def S09():
     # v5 movement (not the old sideways drift-zoom): the eye strip wipes in from the left, then a jump cut closer
     strip_m["transform"].update({"anchorPoint": [0, ey], "position": [0, ey]}); strip_m["rect"]["position"] = [0, ey - 80]
     D.kf(strip_m, "scaleX", [(0, 0, HOLD), (4, 100, E_OX)])
-    sh.append(shot("S9.4 Heat map + eye strip", 540, 550, [g], dim=0))
+    sh.append(shot("S9.8 Heat map + eye strip", 542, 550, [g], dim=0))
     # C05: person matte on the B26 still, over a dark blurred bed of his artwork; "Bliss" behind
     # head top (y~100 in the still) at y 140, shirt running off the bottom of the frame
     d = 22; a = R["bliss26"]; fx, fy, fw = FACE["bliss26"]; s = 960 / (a["h"] - 100)
@@ -818,7 +861,7 @@ def S09():
     D.kf(him, "positionY", [(0, 700, HOLD), (8, 540, E_OX)])
     bed = D.group("Artwork bed (parallax)", 0, d, arts, tr=T(960, 540, 106, ax=960, ay=540))
     D.kf(bed, "positionX", [(0, 1010, HOLD), (d * STRETCH, 1010 - 90 / Y_AT_CUT, E_OX)])
-    sh.append(shot("S9.5 Cutout on collage + Stephen flash", 550, 585, [him, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), bed], dim=0))
+    sh.append(shot("S9.9 Cutout on collage + Stephen flash", 550, 585, [him, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), bed], dim=0))
     tx += caption("Artist", [61], ["Artist"], 500, 550, s0, x=700, align="right")
     tx += caption("Stephen", [62], ["Stephen"], 500, 550, s0, x=1220, align="left")
     tx.append(label("STEPHEN BLISS · GTA COVER ARTIST", 550 - s0, 585 - s0, "STEPHEN BLISS · GTA COVER ARTIST", 960, 96, 30))
@@ -837,9 +880,10 @@ def S10():
     cov = D.image("C02 on the paper", "C02_euro", 0, d, tr=T(960, 540, 100 * 1500 / a["w"], ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]),
                   blend="multiply", matte={"layer": mt["id"], "mode": "luma"})
     sh.append(shot("S10.2 Paper comp: blade and cover", 604, 609, [cov, mt, base], dim=0))
-    sh.append(shot("S10.3 Hands working", 609, 619, [vclip("B31 Bliss working", "B31", 51.0, 10, scale=130)], look=L_half(), dim=10))
+    sh.append(shot("S10.3 Hands working", 609, 616, [vclip("B31 Bliss working", "B31", 51.0, 7, scale=130)], look=L_half(), dim=10))
     # v5: "his own painting" over his own work - Bliss's torn-poster painting (B27), not a crop of the cover
-    sh.append(shot("S10.4 His own painting (B27 torn-poster art)", 619, 627, [vclip("B27 Bliss's torn-poster painting", "B27", 74.0, 8, scale=125, cy=535)]))
+    # v6: his own painting, cut up on the mat (client's AI plate with the real European cover painting on the pieces)
+    sh.append(shot("S10.4 His own painting, cut up", 616, 627, [plate("Cutting mat (AI plate; the European cover painting cut up)", "ai_cutting_mat", 11, 600, 560)], dim=6))
     d = 10; wt = D.rect("Whiteout", 0, d, 0, 0, W, H, FLASH)
     D.kf(wt, "opacity", [(0, 0, HOLD), (4, 0, HOLD), (10, 95, E_IOX)])
     sh.append(shot("S10.5 Detail: a car, whiteout", 627, 637, [detail("C02_euro", EURO["car"], 10)], top=[wt], dim=0))
@@ -914,13 +958,18 @@ def S12():
     order = ["L1", "M1", "R1", "L2", "R2", "M2", "L3", "M3", "R3", "M4", "L4", "M5", "R4"]
     srcs = [("B48", 30), ("B49", 26), ("B48", 102), ("B48", 150), ("B49", 28.5), ("B48", 200), ("B48", 250), ("B48", 300), ("B49", 31), ("B48", 350),
             ("B48", 400), ("B48", 450), ("B48", 500)]
-    d = 28; lay = []
+    # v6: the cut panels boxed into a grid on a light table (client's AI plate, the real US cover panels on the
+    # pieces); the last piece flickers as the hand sets it down
+    d = 14; pl = plate("Light table (AI plate; the US cover panels on the pieces)", "ai_light_table", d, 1250, 760,
+                      extra=lambda tr, rect: flicker("Last piece flicker", "ai_table_last", d, 8, tr, rect, peak=80))
+    sh.append(shot("S12.1 Light table: boxed into a grid", 710, 724, [pl], dim=34))
+    d = 14; lay = []
     for i, k in enumerate(order):
-        x, y, w, h = G[k]; f = i * 2
+        x, y, w, h = G[k]; f = i
         c = vclip(f"Panel {k} gameplay", srcs[i][0], srcs[i][1], d - f, drift_on=False, fit="cover", rect=(0, 0, w, h), cx=x + w / 2, cy=y + h / 2)
         m = D.rect(f"Panel {k}", 0, d - f, x, y, w, h, [1, 1, 1, 1]); c["trackMatte"] = {"layer": m["id"], "mode": "alpha"}
         lay.append(D.group(f"Panel {k}", f, d, [c, m]))
-    sh.append(shot("S12.1 Live grid", 710, 738, lay, dim=0))
+    sh.append(shot("S12.2 Live grid", 724, 738, lay, dim=0))
     d = 9; lay2 = []
     cover = D.image("US GTA III cover (full)", "cov_III", 7, d, tr=T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]))
     lay2.append(cover)
@@ -931,8 +980,8 @@ def S12():
         c = vclip(f"Panel {k} gameplay", srcs[i][0], srcs[i][1] + 0.9, d, drift_on=False, fit="cover", rect=(0, 0, w, h), cx=x + w / 2, cy=y + h / 2)
         m2 = D.rect(f"Panel {k} (play)", 0, d, x, y, w, h, [1, 1, 1, 1]); c["trackMatte"] = {"layer": m2["id"], "mode": "alpha"}
         lay2 += [art, m, c, m2]
-    sh.append(shot("S12.2 Live grid turns into the cover", 738, 747, lay2, dim=0))
-    g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=110, cx=960, cy=540)], dim=12)
+    sh.append(shot("S12.3 Live grid turns into the cover", 738, 747, lay2, dim=0))
+    g = shot("S12.4 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=110, cx=960, cy=540)], dim=12)
     whip_out(g, 5, 3); sh.append(g)
     # right-aligned to x 520 around y 660, set on two lines: one line would start left of the x 96 safe margin
     tx += caption("and boxed", [85, 86], ["and", "boxed"], 630, 745, s0, x=520, align="right", size=46)
@@ -1065,9 +1114,12 @@ def S16():
     import v3
     sh.append(v3.matchcut("S16.2 Match cut: every cover", 998, 1019))
     d = END - 1019; a = R["cov_III"]; h = 700; w = a["w"] * h / a["h"]
-    sh.append(shot("S16.3 Split: III | VI, titles flash", 1019, END,
-                   panel("Left", d, 0, 0, 960, H, [v3.flash_cover("GTA III cover", "cov_III", "cov_III_title_mask_v2", d, h, 480, 540, 2)]) +
-                   panel("Right", d, 960, 0, 960, H, [v3.flash_cover("GTA VI cover", "cov_VI", "cov_VI_title_mask_v2", d, h, 1440, 540, 8)]), dim=10))
+    covers = D.group("III | VI covers (slow push)", 0, d,
+                     panel("Left", d, 0, 0, 960, H, [v3.flash_cover("GTA III cover", "cov_III", "cov_III_title_mask_v2", d, h, 480, 540, 2)]) +
+                     panel("Right", d, 960, 0, 960, H, [v3.flash_cover("GTA VI cover", "cov_VI", "cov_VI_title_mask_v2", d, h, 1440, 540, 8)]),
+                     tr=T(960, 540, ax=960, ay=540))
+    for p in ("scaleX", "scaleY"): D.kf(covers, p, [(0, 100, HOLD), (d, 105, E_IOC)])    # v6: the ending holds on the covers
+    sh.append(shot("S16.3 Split: III | VI, titles flash, hold", 1019, END, [covers], dim=10))
 
     tx += caption("Same boxes.", [112, 113], ["Same", "boxes."], 990, 998, s0)
     tx += words_line("Same grid.", [114, 115], ["Same", "grid."], "IS", IS, None, 220, 0, 960, "center", WARM, -10, 1019, s0, "hard", baseline=640)[0]
@@ -1151,7 +1203,8 @@ def white_flash(f):
 # ============================================================== main
 def faces():
     """Face centre and width in each Bliss still, read off a pixel grid (used only to line the cards up)."""
-    FACE.update({"bliss26": (570, 362, 300), "bliss27": (880, 400, 520), "bliss27b": (820, 200, 220), "bliss28": (412, 410, 260)})
+    FACE.update({"bliss26": (570, 362, 300), "bliss27": (880, 400, 520), "bliss27b": (820, 200, 220), "bliss28": (412, 410, 260),
+                 "bliss26b": (907, 500, 300), "bliss26c": (960, 520, 310), "bliss28b": (1353, 560, 340), "bliss28c": (1440, 580, 340)})
 
 
 def main():

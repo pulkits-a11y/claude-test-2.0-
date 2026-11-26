@@ -24,6 +24,31 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 - the flash cuts and flash transitions
 - the logo, on top
 
+## v6: AI plates, placed captions, the Stephen run, a held ending
+
+**Your three AI images** are in `source/ai/`. Bliss's real art is composited onto their blank pieces and screen (`build/ai.py`). Each piece's artwork is warped to its corners and lit by the plate's own paper, so the lamp light, texture and cut lines stay.
+- **0:12.1, "six weeks":** the studio desk replaces the PS2 box. The European cover is open on the CRT, the cover that was meant to ship. I didn't use the US cover there, because it didn't exist yet six weeks before launch. The calendar's crossed-off days flicker on "weeks", with a slow push toward the monitor.
+- **0:20.5, "own painting.":** the cutting mat. The European cover painting is cut into the 3×3 block, with three loose pieces and the knife beside them. It replaces the torn-poster shot. The Bliss working shot before it is 7 frames instead of 10.
+- **0:23.7, "and boxed":** the light table. The real US cover panels sit on the 12 pieces, and the last one flickers as the hand sets it down. It's darkened so the caption reads.
+  - The live gameplay grid follows at 0:24.1. Its panels pop in twice as fast so the scene keeps its length.
+- I didn't change the AI images themselves.
+
+**Captions placed by what they describe (0:07.9–0:09.8):**
+- "guns," sits by the rifle on the key art, then by Claude's gun.
+- "fire," sits above the blast, then on the burning car, then over the street fires.
+- "and burning buildings" builds up in the sky by the skyline.
+- "It had" is unchanged.
+
+**"six weeks / before launch." (0:12–0:13.4):** one statement, stacked in the lower third at 62 px. A soft dark ramp at the bottom of both shots keeps it readable.
+
+**The banned list (0:15.9–0:17.6):** "guns,", "buildings," and "or fire." stack one per line, each appearing on its word. Same caption style.
+
+**Stephen match cut (0:17.6–0:18.1):** seven photos of him, 2 frames each, instead of three at 4 frames. The new frames are B26 at 300 and 600 s and B28 at 1650 and 1760 s. Every face is at the same spot and size. The heat-map shot after it is 8 frames instead of 10, so the run is only 2 frames longer.
+
+**The ending:** the final split now holds 2.5 s past the voiceover (the film is 37.73 s, 1,132 frames).
+- The covers push in slowly (to 105%).
+- "25 years later." fades out about 1 s before the end, so it ends on the covers alone.
+
 ## v5b: changes from the v5 notes
 
 - **Every caption glows.** I read "make all captions bold" as the glow look in your screenshot ("six weeks" vs "before"). The font weight is unchanged (the reference's 600).
