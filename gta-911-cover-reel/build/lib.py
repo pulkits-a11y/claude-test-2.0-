@@ -107,7 +107,7 @@ class Doc:
              hidden=False):
         r = {"activeRange": {"start": ms(f0), "duration": ms(f1) - ms(f0)}, "blendMode": blend, "id": self.nid(),
              "name": name, "type": "Rect", "transform": tr or T(o=o),
-             "rect": {"position": [x + w / 2, y + h / 2], "size": [w, h], "fillEnabled": True, "fillColor": color,
+             "rect": {"position": [x, y], "size": [w, h], "fillEnabled": True, "fillColor": color,
                       "strokeEnabled": False, "strokeWidth": 0, "roundness": roundness}}
         if effects: r["effects"] = effects
         if hidden: r["isHidden"] = True

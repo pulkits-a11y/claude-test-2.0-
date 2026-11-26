@@ -67,7 +67,7 @@ def build_assets():
     prep.still("bliss27", "B27", 140.6, crop=(0, 120, 1920, 840))
     prep.still("bliss28", "B28", 1720.0, crop=(960, 0, 960, 1080))
     for n, t in [("art1", 74.0), ("art2", 78.0), ("art3", 82.0), ("art4", 120.0), ("art5", 42.3)]: prep.still("b27_" + n, "B27", t)
-    prep.still("bed_cal", "B22", 118.8)
+    prep.still("bed_cal_2001", "B22", 103.0)
     for n, t in [("bed34a", 49.0), ("bed34b", 125.0), ("bed34c", 205.0)]: prep.still(n, "B34", t)
 
 
@@ -120,7 +120,7 @@ def prism(d, k):
     return out
 
 
-def shot(name, f0, f1, media, look=None, dim=25, prism_on=True, top=(), bg=True):
+def shot(name, f0, f1, media, look=None, dim=18, prism_on=True, top=(), bg=True):
     """A shot group: [top extras] > prism streaks > dim > look group(media) > black bed. Times local to the shot."""
     d = f1 - f0
     k = SHOT_N[0]
@@ -160,7 +160,7 @@ def upright(name, asset, d, height=1080, cx=960, cy=540, blur_bed=True, rot=0):
     a = R[asset]; w = a["w"] * height / a["h"]
     out = [iclip(name, asset, d, fit="stretch", rect=(0, 0, w, height), cx=cx, cy=cy, rot=rot, shadow=SHADOW)]
     if blur_bed:
-        out.append(D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55))
+        out.append(D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=45))
         out.append(iclip(name + " (blurred bed)", asset, d, fit="cover", effects=[D.gauss(60)], drift_on=False, grade=False))
     return out
 
@@ -341,7 +341,7 @@ def S01():
     d = 19; a = R["C01_outrage"]; w = 640; h = a["h"] * w / a["w"]
     cut = iclip("C01 Sept 12 front page (cutout)", "C01_outrage", d, fit="stretch", rect=(0, 0, w, h), cx=960, cy=430 + h / 2, rot=-1.5, shadow=SHADOW)
     nine = IS_big("9/11", 0, d, "9/11", 380, 960, 560)
-    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60), vclip("B01 front pages (bed)", "B01", 200.0, d, effects=[D.gauss(28)])]
+    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60), vclip("B01 front pages (bed)", "B01", 200.0, d, effects=[D.gauss(70)])]
     sh.append(shot("S1.5 Cutout on collage", 25, 44, [cut, nine] + bed, dim=20))
     # 8 CRT, static on the last 3 frames
     st, setst = L_static(10)
@@ -388,8 +388,8 @@ def S02():
     g = shot("S2.2 Mosaic build", 75, 104, [logo] + tiles, dim=10)
     whip_out(g, d, 4)
     sh.append(g)
-    for i, (f0, f1, b, t, look, sc, cx, cy) in enumerate([(104, 110, "B36", 106.5, None, 135, 900, 560), (110, 115, "B38", 15.0, L_half(), 120, 760, 540),
-                                                          (115, 120, "B39", 67.5, None, 125, 760, 520)]):
+    for i, (f0, f1, b, t, look, sc, cx, cy) in enumerate([(104, 110, "B36", 106.5, None, 98, 1221, 435), (110, 115, "B38", 11.0, L_half(), 94, 704, 498),
+                                                          (115, 120, "B39", 67.5, None, 76, 745, 540)]):
         sh.append(shot(f"S2.{i + 3} Burst box", f0, f1, [vclip(f"{b} box in hands", b, t, f1 - f0, scale=sc, cx=cx, cy=cy)], look=look, dim=(12, 45, 12)[i]))
     tx_ = words_line("GTA covers look like", [10, 11, 12, 13], ["GTA", "covers", "look", "like"], "IS", IS, None, 100, 0, 960, "center", WARM, -10, 104, s0, "blur", baseline=920)[0]
     for l in tx_:
@@ -408,17 +408,17 @@ def S03():
     sh.append(shot("S3.2 Glowing disc", 126, 132, [disc], dim=0))
     sh.append(shot("S3.3 Polaroid flash", 132, 136, [vclip("B11 Polaroid flash", "B11", 120.1, 4)], dim=0))
     # polaroid developing (B10) with C02 comped into the print
-    d = 9; pol = vclip("B10 Polaroid developing", "B10", 14.0, d, scale=170, cx=1320, cy=540, drift_on=False)
-    photo = D.image("C02 as the photo", "C02_euro", 0, d, tr=T(1320, 520, 100 * 430 / 900, ax=450, ay=625), fit="stretch", rect=(0, 0, 900, 1250), blend="multiply")
+    d = 9; pol = vclip("B10 Polaroid developing", "B10", 14.0, d, scale=100, cx=1255, cy=540, drift_on=False)
+    photo = D.image("C02 as the photo", "C02_euro", 0, d, tr=T(1320, 565, 100 * 600 / 1250, r=-3, ax=450, ay=625), fit="stretch", rect=(0, 0, 900, 1250), blend="multiply")
     D.kf(photo, "opacity", [(0, 15, HOLD), (d, 85, E_IOC)])
     g = D.group("Polaroid", 0, d, [photo, pol]); drift(g, d, 960, 540, 100)
     sh.append(shot("S3.4 Polaroid", 136, 145, [g], dim=0))
-    sh.append(shot("S3.5 Detail: title", 145, 154, [detail("C02_euro", (300, 60, 600, 360), 9)], dim=25))
-    sh.append(shot("S3.6 Detail: car", 154, 163, [detail("C02_euro", (150, 860, 650, 320), 9)], look=L_half(), dim=15))
+    sh.append(shot("S3.5 Detail: title", 145, 154, [detail("C02_euro", EURO["title"], 9)], dim=25))
+    sh.append(shot("S3.6 Detail: car", 154, 163, [detail("C02_euro", EURO["car"], 9)], look=L_half(), dim=15))
     d = 22; a = R["C02_euro"]; h = 860; w = a["w"] * h / a["h"]
     cut = iclip("C02 original cover (cutout)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=1320, cy=540, rot=-3, shadow=SHADOW)
     border = D.rect("C02 border", 0, d, 1320 - w / 2 - 14, 540 - h / 2 - 14, w + 28, h + 28, OFFWHITE, tr=T(1320, 540, r=-3, ax=1320, ay=540))
-    shelf = [D.rect("Shelf darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=50), iclip("A02 store shelf", "A02", d, effects=[D.gauss(6)])]
+    shelf = [D.rect("Shelf darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=50), iclip("A02 store shelf", "A02", d, effects=[D.gauss(14)])]
     sh.append(shot("S3.7 Cutout on collage", 163, 185, [cut, border] + shelf, dim=10))
     tx += [label("THIS", WF[15] - s0, 145 - s0, "THIS", 120, 250, 32, "left")]
     wx = 120 + tf.advance("AR", "THIS ", 32, LAB, 500)
@@ -450,8 +450,8 @@ def S04():
     return sh, tx
 
 
-EURO = {"gun": (60, 360, 420, 250), "flames": (60, 640, 460, 300), "building": (430, 120, 420, 300), "building_wide": (300, 60, 600, 520),
-        "face": (360, 380, 240, 200), "car": (150, 860, 650, 320)}
+EURO = {"gun": (100, 320, 320, 200), "flames": (50, 730, 330, 250), "building": (590, 260, 260, 260), "building_wide": (520, 200, 380, 420),
+        "face": (350, 470, 200, 160), "car": (140, 860, 500, 300), "title": (170, 40, 560, 330)}
 
 
 def S05():
@@ -509,7 +509,7 @@ def S06():
     d = 17; a = R["C04_ps2box"]
     cut = iclip("C04 PS2 box (B21 still)", "C04_ps2box", d, fit="stretch", rect=(0, 0, a["w"] * 720 / a["h"], 720), cx=960, cy=540, rot=3, shadow=SHADOW)
     behind = blur_in_layer(IS_big("six weeks (behind)", 0, d, "six weeks", 280, 960, 640))
-    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), iclip("B22 calendar still (bed)", "bed_cal", d, effects=[D.gauss(24)])]
+    bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55), iclip("B22 calendar still (bed)", "bed_cal_2001", d, effects=[D.gauss(50)])]
     sh.append(shot("S6.5 Cutout on collage", 383, 400, [cut, behind] + bed, dim=15))
     tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 360, s0, "hard", baseline=920)[0]
     tx.append(label("GTA III · OCT 22, 2001", WF[42] - s0, s1 - s0, "GTA III · OCT 22, 2001", 960, 230, 30))
@@ -523,15 +523,15 @@ def blur_in_layer(l): return l
 
 def S07():
     s0, s1 = SCENES[6]; sh = []; tx = []
-    sh.append(shot("S7.1 CRT: Rockstar logo", 400, 413, [crt(13, [pinned("Rockstar logo (B39 stand-in for #25 boot)", "B39", 537.6, 13)], zoom=1.0)], dim=12))
+    sh.append(shot("S7.1 CRT: Rockstar logo", 400, 413, [crt(13, [pinned("Rockstar logo (B39 stand-in for #25 boot)", "B39", 537.6, 13)], zoom=1.45, cx=960, cy=560)], dim=12))
     d = 9
-    base = vclip("B24 paper tear", "B24", 0.9, d, effects=[D.fx({"type": "levels", "inputBlack": 150, "inputWhite": 255, "gamma": 1, "outputBlack": 0, "outputWhite": 255})], drift_on=False, rate=0.5)
-    mt = vclip("B24 paper (matte)", "B24", 0.9, d, effects=[D.fx({"type": "levels", "inputBlack": 185, "inputWhite": 215, "gamma": 1, "outputBlack": 0, "outputWhite": 255})], drift_on=False, rate=0.5)
+    base = vclip("B24 paper tear", "B24", 0.9, d, effects=[D.fx({"type": "levels", "inputBlack": 150, "inputWhite": 255, "gamma": 1, "outputBlack": 0, "outputWhite": 255})], drift_on=False, rate=0.5, scale=170, cy=40)
+    mt = vclip("B24 paper (matte)", "B24", 0.9, d, effects=[D.fx({"type": "levels", "inputBlack": 185, "inputWhite": 215, "gamma": 1, "outputBlack": 0, "outputWhite": 255})], drift_on=False, rate=0.5, scale=170, cy=40)
     a = R["C02_euro"]
     cov = D.image("C02 on the paper", "C02_euro", 0, d, tr=T(960, 540, 100 * 1080 / a["h"], ax=a["w"] / 2, ay=a["h"] / 2), fit="stretch", rect=(0, 0, a["w"], a["h"]),
                   blend="multiply", matte={"layer": mt["id"], "mode": "luma"}, effects=GRADE())
     sh.append(shot("S7.2 Paper comp: the cover tears", 413, 422, [cov, mt, base], dim=0))
-    sh.append(shot("S7.3 Torn pieces", 422, 426, [vclip("B24 torn pieces", "B24", 3.1, 4)], look=L_duo("red"), dim=0))
+    sh.append(shot("S7.3 Torn pieces", 422, 426, [vclip("B24 torn paper", "B24", 1.25, 4, scale=190, cy=0)], look=L_duo("red"), dim=0))
     d = 19; ca = R["C02_euro"]; h = 900; w = ca["w"] * h / ca["h"]
     left = iclip("C02 original cover (left panel)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=478, cy=540)
     sh.append(shot("S7.4 Split: Europe | US", 426, 445, panel("Left panel", d, 0, 0, 956, H, [left]) + [D.rect("Right panel (black)", 0, d, 964, 0, 956, H, [0, 0, 0, 1])], dim=0))
@@ -621,7 +621,7 @@ def S09():
     cut = iclip("C05 Bliss cutout (head and shoulders, B26 still)", "C05_bliss_cutout", d, fit="stretch", rect=(0, 0, a["w"], a["h"]), scale=100 * s, cx=cx, cy=cy,
                 shadow=SHADOW)
     name = IS_big("Bliss", 0, d, "Bliss", 340, 960, 760); track_in(name)   # baseline raised from 880 so the shoulders cover only its lower part
-    arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(16)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
+    arts = [iclip(f"Artwork {k}", f"b27_art{k}", d, fit="cover", rect=(i * 480, 0, 480, H), cx=i * 480 + 240, effects=[D.gauss(30)], drift_on=False) for i, k in enumerate([1, 2, 3, 4])]
     sh.append(shot("S9.5 Cutout on collage", 550, 572, [cut, name, D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=55)] + arts, dim=0))
     burst = [(572, 577, 0.5, 12), (577, 581, 2.5, 45), (581, 585, 6.5, 12)]
     sub = [shot(f"Burst {i + 1}", a_ - 572, b_ - 572, [vclip("B29 days of the week", "B29", t, b_ - a_)], dim=dm) for i, (a_, b_, t, dm) in enumerate(burst)]
@@ -718,7 +718,7 @@ def S12():
         m2 = D.rect(f"Panel {k} (play)", 0, d, x, y, w, h, [1, 1, 1, 1]); c["trackMatte"] = {"layer": m2["id"], "mode": "alpha"}
         lay2 += [art, m, c, m2]
     sh.append(shot("S12.2 Live grid turns into the cover", 738, 747, lay2, dim=0))
-    g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 107.0, 5, scale=135, cx=900, cy=560)], dim=12)
+    g = shot("S12.3 US box in hands", 747, 752, [vclip("B36 GTA III box in hands", "B36", 106.5, 5, scale=98, cx=1421, cy=435)], dim=12)
     whip_out(g, 5, 3); sh.append(g)
     tx += caption("and boxed them into a", [85, 86, 87, 88, 89], ["and", "boxed", "them", "into", "a"], 660, 745, s0, x=520, align="right", size=46)
     l = IS_big("grid.", WF[90] - s0, s1 - s0, "grid.", 240, 1400, 640, just="left"); smear_out(l, s1 - WF[90], "y", -1, 3); tx.append(l)
@@ -733,15 +733,14 @@ def S13():
     def box(d, h=760, cx=960, rot=-2):
         a = R["cov_III"]; w = a["w"] * h / a["h"]
         return iclip("C07 US GTA III box (cutout)", "cov_III", d, fit="stretch", rect=(0, 0, w, h), cx=cx, cy=540, rot=rot, shadow=SHADOW)
-    d = 16; bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60)] + [iclip(f"#34 still {k}", k, d, fit="cover", rect=(i * 640, 0, 640, H), cx=i * 640 + 320, effects=[D.gauss(22)], drift_on=False) for i, k in enumerate(["bed34a", "bed34b", "bed34c"])]
+    d = 16; bed = [D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=60)] + [iclip(f"#34 still {k}", k, d, fit="cover", rect=(i * 640, 0, 640, H), cx=i * 640 + 320, effects=[D.gauss(45)], drift_on=False) for i, k in enumerate(["bed34a", "bed34b", "bed34c"])]
     sh.append(shot("S13.4 Cutout on collage", 780, 796, [box(d)] + bed, dim=0))
     d = 20
     tiles = mosaic_tiles(d, 0, ["cov_VC", "cov_SA", "cov_LCS", "cov_VCS", "cov_IV", "cov_EFLC", "cov_TBOGT", "cov_CW", "cov_V", "cov_VONLINE", "cov_VI"], skip=((2, 0), (3, 0), (2, 1), (3, 1), (2, 2), (3, 2)))
     behind = IS_big("template", 0, d, "template", 360, 960, 660)
     sh.append(shot("S13.5 Mosaic build", 796, 816, [box(d, rot=0), behind] + tiles, dim=0))
-    for i, (f0, f1, b, t, sc, cx, cy) in enumerate([(816, 821, "B36", 3.0, 150, 980, 620), (821, 827, "B38", 15.0, 120, 960, 540), (827, 832, None, None, None, None, None), (832, 838, "B39", 67.5, 125, 960, 520)]):
-        if b: m = [vclip(f"{b} box", b, t, f1 - f0, scale=sc, cx=cx, cy=cy)]
-        else: m = [box(f1 - f0, rot=0)]; m[0]["source"]["assetId"] = "cov_IV"; m[0]["name"] = "GTA IV cover (B07, stand-in for #35)"
+    for i, (f0, f1, k, nm) in enumerate([(816, 821, "cov_VC", "Vice City"), (821, 827, "cov_SA", "San Andreas"), (827, 832, "cov_IV", "GTA IV"), (832, 838, "cov_V", "GTA V")]):
+        m = [box(f1 - f0, rot=0)]; m[0]["source"]["assetId"] = k; m[0]["name"] = f"{nm} box face (B07 cover, same spot and size as the III box)"
         sh.append(shot(f"S13.{6 + i} Burst box", f0, f1, m, dim=(12, 45, 12, 45)[i]))
     d = 15; fl = []
     rnd = random.Random(3)
@@ -801,7 +800,7 @@ def S15():
 def S16():
     s0, s1 = SCENES[15]; sh = []; tx = []
     d = 29
-    L = vclip("B36 GTA III box", "B36", 107.0, d, scale=120, cx=478, cy=560)
+    L = vclip("B36 GTA III box", "B36", 106.5, d, scale=98, cx=939, cy=435)
     Rr = vclip("B52 GTA VI box", "B52", 13.4, d, scale=105, cx=1442, cy=540)
     sh.append(shot("S16.1 Split: III | VI boxes", 969, 998, panel("Left", d, 0, 0, 956, H, [L]) + panel("Right", d, 964, 0, 956, H, [Rr]), dim=12))
     def flick(name, f0, f1, step):
