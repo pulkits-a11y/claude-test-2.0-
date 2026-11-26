@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "skills": {
+    "tesseract-3d": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-3d/SKILL.md",
+      "computedHash": "ba045e1f3b93dd0cc2792b717f4ec137fbce06627a80a768394699ae36efe420"
+    },
+    "tesseract-audio": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-audio/SKILL.md",
+      "computedHash": "68c0c0f09af66aace7826f1caf7e678e3d26730d40a83f9cf70a103e73e1182f"
+    },
+    "tesseract-design": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-design/SKILL.md",
+      "computedHash": "dcad9cf5bc7a54da5c9ef7c7d2761bbe051602764a0b222d1ed9596760302efd"
+    },
+    "tesseract-editor": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-editor/SKILL.md",
+      "computedHash": "84fa445e6fc74d39b9c6c5947ef26518df3271047c87e482e31a9f93ec52664e"
+    },
+    "tesseract-motion": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-motion/SKILL.md",
+      "computedHash": "9219d8af1487d8d5543cd1349f921bd4e79e844c92fed6227082c4f45e3edb70"
+    },
+    "tesseract-video": {
+      "source": "mirage-hq/Tesseract",
+      "commit": "d3d271d574c017a485521962a457559ec279a85f",
+      "sourceType": "github",
+      "skillPath": "skills/tesseract-video/SKILL.md",
+      "computedHash": "57135322b0f3059bd0b2c22c01e0ca1dbbf80cd0a14142c9f2d5ef70e3771f99"
+    }
+  }
+}
