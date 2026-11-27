@@ -127,15 +127,45 @@ def captions(END):
         dict(L=[15, 16], R_=[17, 18, 19], gap=(660, 1260), end=145),                    # This was | meant to be
         dict(L=[20, 21, 22], R_=[23], gap=(600, 1320), end=189),                        # the GTA III | cover,
         dict(L=[24], R_=[25], gap=(600, 1060), end=207),                                # six | months  (either side of his face)
+        dict(L=[26, 27], R_=[], gap=(880, 1600), end=230),                              # of painting.  (just left of him, clear of his body)
+        dict(L=[28, 29], gap=(600, 1320), end=258),                                     # It had  (guns, fire, burning buildings: placed below)
+        dict(L=[35, 36], R_=[37], gap=COVER, end=322),                                  # all over | it.
         dict(L=[38, 39], R_=[41], gap=(700, 1320), end=362),                            # Then 9/11 | hit,
+        dict(L=[46], R_=[47, 48], gap=(560, 1370), end=426),                            # Rockstar | pulled it
+        dict(L=[], R_=[49, 50, 51], gap=(560, 1040), end=448),                          # in the US.
+        dict(L=[52, 53], R_=[54], gap=HEAD, end=462),                                   # The new | cover
+        dict(L=[55], R_=[56], gap=COVER, end=476),                                      # couldn't | show
+        dict(L=[61], R_=[62, 63], gap=(620, 1300), end=558),                            # Artist | Stephen Bliss
+        dict(L=[64, 65], R_=[66, 67], gap=(620, 1300), end=586),                        # had about | a week,
+        dict(L=[68, 69], R_=[70], gap=HEAD, end=609),                                   # so he | chopped
+        dict(L=[71, 72], R_=[73, 74], gap=HEAD, end=640),                               # up his | own painting.
+        dict(L=[75, 76], R_=[77], gap=(500, 1420), end=710),                            # He only | kept (clear of the US cover)
+        dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
+        dict(L=[91, 92], R_=[93], gap=(620, 1300), end=782),                            # That rush | job?  (v5: card centred)
+        dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template
+        dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=838),                 # for every | GTA cover  (off before the floating covers)
+        dict(L=[103], R_=[104], gap=BOX, end=883),                                      # Vice | City,   (either side of the box)
+        dict(L=[105], R_=[106], gap=BOX, end=911),                                      # San | Andreas,
+        dict(L=[], R_=[107], gap=BOX, end=920),                                         # IV,
+        dict(L=[108], R_=[], gap=BOX, end=940),                                         # V,
+        dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
+        dict(L=[112], R_=[113], gap=CENTRE, end=998),                                   # same | boxes,  (off before the match cut)
+        dict(L=[114], R_=[115], gap=(500, 1420), end=1021),                             # same | grid,
+        dict(L=[116, 117, 118], center=True, end=END - 28, fade=10),                     # 25 years later.  (v6: fades, the end holds on the covers)
     ]
-    # v7: from 00:07.0 on, the client's scene-by-scene typography spec - build/typo.py
-    import typo
+    # v6: placed next to what they describe (frames and positions read off the shots)
+    L62 = dict(size=62, align="center", tag="Caption (lower third)")
+    Q = [placed([30], [(236, 820, 760), (247, 1290, 860)], 258),                      # guns, - by the rifle, then by Claude's gun
+         placed([31], [(258, 960, 470), (268, 760, 600), (275, 760, 470)], 295, align="center"),   # fire, - over the blast, the car, the street
+         placed([32, 33, 34], [(271, 1100, 250)], 295, align="center"),                # and burning buildings - up by the skyline
+         placed([42, 43], [(362, 960, 820)], 403, **L62),                              # six weeks /
+         placed([44, 45], [(362, 960, 896)], 403, **L62),                              # before launch.  - one statement, lower third
+         placed([57], [(476, 760, 474)], 528), placed([58], [(476, 760, 540)], 528),   # the banned list, one item per line,
+         placed([59, 60], [(476, 760, 606)], 528)]                                     # each on its word
     sharp, glow = [], []
-    for s, g in [phrase(**p) for p in P]:
+    for s, g in [phrase(**p) for p in P] + Q:
         sharp += s
         if g: glow += glow_stack(" ".join(x[0] for x in g), g)
-    s, g = typo.scenes(END); sharp += s; glow += g
     return (D.group("Captions (reference style)", 0, END, sharp),
             D.group("Caption glow (blurred copies, added)", 0, END, glow, blend="add",
                     desc="Glow on the words that matter: per word run, four blurred copies (20/40/80/160 px) added over the picture."))
