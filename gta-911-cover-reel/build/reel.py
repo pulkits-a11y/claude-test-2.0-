@@ -488,13 +488,14 @@ def S01():
     return sh, tx
 
 
-def mosaic_tiles(d, start_pop, order, skip=((2, 1), (3, 1)), step=2, per=2):
+def mosaic_tiles(d, start_pop, order, skip=((2, 1), (3, 1)), step=2, per=2, hole=None):
     cw, ch = W / 6, H / 3; lay = []; k = 0
     cells = [(c, r) for r in range(3) for c in range(6) if (c, r) not in skip]
     rnd = random.Random(7); rnd.shuffle(cells)
     for i, (c, r) in enumerate(cells):
         f = start_pop + (i // per) * step
         cov = order[i % len(order)]
+        if (c, r) == hole: continue          # v7: a gap left in the wall for "for every GTA cover"
         a = R[cov]; gw, gh = cw - 8, ch - 8
         im = D.image(f"Tile {cov[4:]}", cov, f, d, tr=T(c * cw + cw / 2, r * ch + ch / 2, ax=gw / 2, ay=gh / 2), fit="cover", rect=(0, 0, gw, gh), effects=GRADE())
         lay.append(im)
@@ -702,9 +703,9 @@ def S06():
     xs = flicker("Calendar: crossed-off days flicker", "ai_crt_xmarks", d, WF[43] - 364, tr, (0, 0, a["w"], a["h"]), peak=85)
     mx, my = (565 - a["w"] / 2) * s + 960, (380 - a["h"] / 2) * s + 540
     g = D.group("Studio desk + calendar flicker", 0, d, xs + [desk], tr=T(mx, my, ax=mx, ay=my)); push_in(g, d, 6)
-    sh.append(shot("S6.2 Studio desk, six weeks", 364, 376, [g], dim=8, top=[shade(d)]))
+    sh.append(shot("S6.2 Studio desk, six weeks", 364, 376, [g], dim=8))
     # v5: the GTA III cutscene the client liked (was under "He only kept") moves here, framed clear of the fps overlay
-    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0, top=[shade(24)]))
+    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0))
     tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 364, s0, "hard", baseline=920)[0]
     sz = 150; l = big("six weeks", 364 - s0, s1 - s0, "six weeks", AR, sz, 160, 560, axes=CAP, color=WARM, just="left", tracking=0); blur_in(l); tx.append(l)
     tx += caption("before launch", [44, 45], ["before", "launch"], 0, s1, s0, x=164, align="left", size=52)
@@ -1000,7 +1001,7 @@ def S13():
     # v5: the GTA III wordmark tracking screen (was the hook's 0:03) replaces the repeated US-cover cutout here
     sh.append(shot("S13.4 GTA III wordmark + tracking (the template)", 780, 796, v3.wordmark(16), dim=0, prism_on=False))
     d = 20
-    tiles = mosaic_tiles(d, 0, ["cov_VC", "cov_SA", "cov_LCS", "cov_VCS", "cov_IV", "cov_EFLC", "cov_TBOGT", "cov_CW", "cov_V", "cov_VONLINE", "cov_VI"], skip=((2, 0), (3, 0), (2, 1), (3, 1), (2, 2), (3, 2)))
+    tiles = mosaic_tiles(d, 0, ["cov_VC", "cov_SA", "cov_LCS", "cov_VCS", "cov_IV", "cov_EFLC", "cov_TBOGT", "cov_CW", "cov_V", "cov_VONLINE", "cov_VI"], skip=((2, 0), (3, 0), (2, 1), (3, 1), (2, 2), (3, 2)), hole=(1, 1))
     sh.append(shot("S13.5 Mosaic build", 796, 816, [box(d, rot=0)] + tiles, dim=0))
     for i, (f0, f1, k, nm) in enumerate([(816, 821, "cov_VC", "Vice City"), (821, 827, "cov_SA", "San Andreas"), (827, 832, "cov_IV", "GTA IV"), (832, 838, "cov_V", "GTA V")]):
         m = [box(f1 - f0, rot=0)]; m[0]["source"]["assetId"] = k; m[0]["name"] = f"{nm} box face (B07 cover, same spot and size as the III box)"
@@ -1119,7 +1120,9 @@ def S16():
                      panel("Right", d, 960, 0, 960, H, [v3.flash_cover("GTA VI cover", "cov_VI", "cov_VI_title_mask_v2", d, h, 1440, 540, 8)]),
                      tr=T(960, 540, ax=960, ay=540))
     for p in ("scaleX", "scaleY"): D.kf(covers, p, [(0, 100, HOLD), (d, 105, E_IOC)])    # v6: the ending holds on the covers
-    sh.append(shot("S16.3 Split: III | VI, titles flash, hold", 1019, END, [covers], dim=10))
+    out = D.rect("Fade to black (after the title fades)", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=0)
+    D.kf(out, "opacity", [(0, 0, HOLD), (1110 - 1019, 0, HOLD), (d, 100, E_IOC)])          # v7: the covers fade after the text
+    sh.append(shot("S16.3 Split: III | VI, titles flash, hold", 1019, END, [covers], dim=10, top=[out]))
 
     tx += caption("Same boxes.", [112, 113], ["Same", "boxes."], 990, 998, s0)
     tx += words_line("Same grid.", [114, 115], ["Same", "grid."], "IS", IS, None, 220, 0, 960, "center", WARM, -10, 1019, s0, "hard", baseline=640)[0]
@@ -1153,10 +1156,11 @@ def overlays():
     half = D.image("2 Halftone", "tex_halftone", 0, END, fit="stretch", blend="overlay", o=20); ease(half, 20, 0)
     grunge = D.image("1 Grunge", "tex_grunge", 0, END, fit="cover", blend="overlay", o=60); ease(grunge, 60, 12)
     ease(vig, 100, 45); ease(scan, 42, 26)
+    # v7 (client): the darkening textures are gone - grunge, halftone and the film-wide vignette. Kept: scan lines, film
+    # grain, the warm lift and the light desaturation (and the rainbow streaks in the shots).
     return D.group("Film-wide overlays", 0, END, [
-        scan, vig, desat, lift,
-        D.group("3 Film grain", 0, END, [grain_layer("grain.png 2400x1400", 100, 11)], blend="overlay", o=22),
-        half, grunge])
+        scan, desat, lift,
+        D.group("3 Film grain", 0, END, [grain_layer("grain.png 2400x1400", 100, 11)], blend="overlay", o=22)])
     return D.group("Film-wide overlays", 0, END, [
         scan, vig,
         D.rect("5 Desaturate", 0, END, 0, 0, W, H, hexc("#808080"), blend="saturation", o=20),

@@ -24,6 +24,51 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 - the flash cuts and flash transitions
 - the logo, on top
 
+## v7: the typography spec and the Frame.io notes
+
+**Every caption from 0:07 on follows your scene-by-scene spec**, built in `build/typo.py`.
+- **Entrances (your codes):**
+  - A: rise
+  - B: bloom (the glow blooms in with it)
+  - C: slide out from behind the cover, matted so it really comes from behind it
+  - D: push (earlier lines step up)
+  - F: hard cut
+  - G: settle
+  - H: wipe
+  - S: stretch-pop
+- **Exits:**
+  - cut
+  - fade with a 10 px upward drift
+  - wipe off
+  - slide back
+  - static noise through the text (a small shader, `textnoise.wgsl`)
+  - the glitch slicing through the words
+  - dim to grey
+  - close into the cell
+  - push off
+  - the blade line splitting 8 px apart
+- **Hero size (112 px):** used three times: "six", "VI," and "25".
+- **Unchanged:** the hook captions up to 0:06.9 and "Then 9/11 hit,".
+- **Glow:** every word's glow is built from the same moves, so it follows each animation.
+
+**Decisions on the spec:**
+- **"six weeks before launch."** is in the middle of the frame, as your note says. "six" is at hero size, with "weeks", "before" and "launch." pushing in on their own lines. The block re-centres as it grows.
+- **Three notes put text "under" or at the "top edge" of a cover that fills the frame height** ("all over it.", "couldn't show", "VI,"). The covers are unchanged, so those words sit at the bottom or top of the frame over the cover.
+- **"had about a week,"** comes in on the spoken words, not 3 frames apart.
+- **"He only kept" rises in once at 0:21.33,** so "only" and "kept" show a few frames before they're said.
+- **"and boxed / them into / a grid." appear with their cells** (0:24.1–0:24.5), so nothing is on screen over the light table before them.
+- **"It's been the"** is small (34 px) under the logo. "template" joins "for every GTA cover" in the gap on the wall.
+- **The gap:** one cell of that wall is left empty so the words have a gap to sit in.
+- **"for every GTA cover":** "GTA" and "cover" are spoken after the Vice City box cuts in, so that block holds until 0:27.9 and is pushed off there.
+- **The knife line is tilted to the blade's angle (−45°).** It's the only tilted text in the film, and it doesn't rotate during the shot.
+- **"fire,", "same boxes," and "same grid,"** sit on bright areas (the blast core, white cover titles), so they carry a dark soft shadow to stay readable.
+- **The ending:** "25 years later." fades over 20 frames (0:36.2–0:36.8), then the frame fades to black over the last 0.7 s.
+
+**Frame.io notes:**
+- **0:05.5, "the screen is stuck":** the box-front shot was a held still. It's now the live footage, and the title flash is tracked to the moving box frame by frame, so it stays on the letters.
+- **"remove textures":** the grunge, the halftone, the film-wide vignette and the bottom shade are gone, since those were darkening the picture. The film grain, scan lines and rainbow streaks stay, as you asked.
+- **0:08.9 "typography is off", 0:10.3 and 0:25.5 "can be better", 0:15.8 "better animation":** all covered by the spec above.
+
 ## v6: AI plates, placed captions, the Stephen run, a held ending
 
 **Your three AI images** are in `source/ai/`. Bliss's real art is composited onto their blank pieces and screen (`build/ai.py`). Each piece's artwork is warped to its corners and lit by the plate's own paper, so the lamp light, texture and cut lines stay.

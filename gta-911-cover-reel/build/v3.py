@@ -127,45 +127,15 @@ def captions(END):
         dict(L=[15, 16], R_=[17, 18, 19], gap=(660, 1260), end=145),                    # This was | meant to be
         dict(L=[20, 21, 22], R_=[23], gap=(600, 1320), end=189),                        # the GTA III | cover,
         dict(L=[24], R_=[25], gap=(600, 1060), end=207),                                # six | months  (either side of his face)
-        dict(L=[26, 27], R_=[], gap=(880, 1600), end=230),                              # of painting.  (just left of him, clear of his body)
-        dict(L=[28, 29], gap=(600, 1320), end=258),                                     # It had  (guns, fire, burning buildings: placed below)
-        dict(L=[35, 36], R_=[37], gap=COVER, end=322),                                  # all over | it.
         dict(L=[38, 39], R_=[41], gap=(700, 1320), end=362),                            # Then 9/11 | hit,
-        dict(L=[46], R_=[47, 48], gap=(560, 1370), end=426),                            # Rockstar | pulled it
-        dict(L=[], R_=[49, 50, 51], gap=(560, 1040), end=448),                          # in the US.
-        dict(L=[52, 53], R_=[54], gap=HEAD, end=462),                                   # The new | cover
-        dict(L=[55], R_=[56], gap=COVER, end=476),                                      # couldn't | show
-        dict(L=[61], R_=[62, 63], gap=(620, 1300), end=558),                            # Artist | Stephen Bliss
-        dict(L=[64, 65], R_=[66, 67], gap=(620, 1300), end=586),                        # had about | a week,
-        dict(L=[68, 69], R_=[70], gap=HEAD, end=609),                                   # so he | chopped
-        dict(L=[71, 72], R_=[73, 74], gap=HEAD, end=640),                               # up his | own painting.
-        dict(L=[75, 76], R_=[77], gap=(500, 1420), end=710),                            # He only | kept (clear of the US cover)
-        dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
-        dict(L=[91, 92], R_=[93], gap=(620, 1300), end=782),                            # That rush | job?  (v5: card centred)
-        dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template
-        dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=838),                 # for every | GTA cover  (off before the floating covers)
-        dict(L=[103], R_=[104], gap=BOX, end=883),                                      # Vice | City,   (either side of the box)
-        dict(L=[105], R_=[106], gap=BOX, end=911),                                      # San | Andreas,
-        dict(L=[], R_=[107], gap=BOX, end=920),                                         # IV,
-        dict(L=[108], R_=[], gap=BOX, end=940),                                         # V,
-        dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
-        dict(L=[112], R_=[113], gap=CENTRE, end=998),                                   # same | boxes,  (off before the match cut)
-        dict(L=[114], R_=[115], gap=(500, 1420), end=1021),                             # same | grid,
-        dict(L=[116, 117, 118], center=True, end=END - 28, fade=10),                     # 25 years later.  (v6: fades, the end holds on the covers)
     ]
-    # v6: placed next to what they describe (frames and positions read off the shots)
-    L62 = dict(size=62, align="center", tag="Caption (lower third)")
-    Q = [placed([30], [(236, 820, 760), (247, 1290, 860)], 258),                      # guns, - by the rifle, then by Claude's gun
-         placed([31], [(258, 960, 470), (268, 760, 600), (275, 760, 470)], 295, align="center"),   # fire, - over the blast, the car, the street
-         placed([32, 33, 34], [(271, 1100, 250)], 295, align="center"),                # and burning buildings - up by the skyline
-         placed([42, 43], [(362, 960, 820)], 403, **L62),                              # six weeks /
-         placed([44, 45], [(362, 960, 896)], 403, **L62),                              # before launch.  - one statement, lower third
-         placed([57], [(476, 760, 474)], 528), placed([58], [(476, 760, 540)], 528),   # the banned list, one item per line,
-         placed([59, 60], [(476, 760, 606)], 528)]                                     # each on its word
+    # v7: from 00:07.0 on, the client's scene-by-scene typography spec - build/typo.py
+    import typo
     sharp, glow = [], []
-    for s, g in [phrase(**p) for p in P] + Q:
+    for s, g in [phrase(**p) for p in P]:
         sharp += s
         if g: glow += glow_stack(" ".join(x[0] for x in g), g)
+    s, g = typo.scenes(END); sharp += s; glow += g
     return (D.group("Captions (reference style)", 0, END, sharp),
             D.group("Caption glow (blurred copies, added)", 0, END, glow, blend="add",
                     desc="Glow on the words that matter: per word run, four blurred copies (20/40/80/160 px) added over the picture."))
@@ -488,6 +458,44 @@ def tracked_shot(name, b, t, d, roi, big=(), n=7, seed=1, scale=100, cx=960, cy=
     return g
 
 
+def front_live(d, t=50.0):
+    """B09 from 50 s playing (it was a still): the rotoscoped title mask (drawn on the 50 s frame) is carried along with
+    the box - a similarity transform per frame from Lucas-Kanade tracking of the title's corners, from the still onto
+    each frame of the select - so the flash stays on the letters while the box moves in his hands."""
+    a = R["b09_front"]; sc = W / a["w"]
+    sel = prep.sel("B09", t, d / FPS + 0.2); sa = R[sel]
+    v = rl.vclip("B09 European box, front (live)", "B09", t, d, drift_on=False)
+    still = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
+    m = cv2.imread(R["b09_front_title_mask"]["path"], cv2.IMREAD_UNCHANGED)[..., 3]
+    ys, xs = np.nonzero(m > 128); roi = np.zeros_like(still); roi[max(0, ys.min() - 20):ys.max() + 20, max(0, xs.min() - 20):xs.max() + 20] = 255
+    c0 = np.float32([(xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2])
+    cap = cv2.VideoCapture(sa["path"]); frames, i, st = [], 0, int(round(sa["lead"] * FPS))
+    while len(frames) < d:
+        ok, f = cap.read()
+        if not ok: break
+        if i >= st: frames.append(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY))
+        i += 1
+    p0 = cv2.goodFeaturesToTrack(still, 120, 0.01, 6, mask=roi)
+    prev, pp = still, p0; keys = []
+    for k, fr in enumerate(frames):
+        q, stt, _ = cv2.calcOpticalFlowPyrLK(prev, fr, pp, None, winSize=(31, 31), maxLevel=3)
+        good = stt.ravel() == 1
+        M, _ = cv2.estimateAffinePartial2D(p0[good], q[good]) if good.sum() >= 6 else (None, None)
+        if M is None: M = np.float32([[1, 0, 0], [0, 1, 0]])
+        s_ = float(np.hypot(M[0, 0], M[1, 0])); c = M @ np.float32([c0[0], c0[1], 1])
+        keys.append((k, float((c[0] - a["w"] / 2) * sc + 960), float((c[1] - a["h"] / 2) * sc + 540), 100 * s_))
+        prev, pp, p0 = fr, q[good].reshape(-1, 1, 2), p0[good].reshape(-1, 1, 2)
+    cx0, cy0 = float((c0[0] - a["w"] / 2) * sc + 960), float((c0[1] - a["h"] / 2) * sc + 540)
+    tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
+    fl = D.group("Title flash (tracked to the box)", 0, d, rl.glow_flash("b09_front_title_mask", d, tr, a, 1, halo=16, scale=sc),
+                 tr=T(cx0, cy0, ax=cx0, ay=cy0))
+    D.kf(fl, "positionX", [(k, x, HOLD) for k, x, y, s_ in keys]); D.kf(fl, "positionY", [(k, y, HOLD) for k, x, y, s_ in keys])
+    for p in ("scaleX", "scaleY"): D.kf(fl, p, [(k, s_, HOLD) for k, x, y, s_ in keys])
+    boxes = tracked_hud("Track B09 front", sel, d, vmap(sel), (int(xs.min()), int(ys.min()), int(xs.max() - xs.min()), int(ys.max() - ys.min())), n=1, seed=8, f0=3)
+    for l in boxes: l["transform"]["opacity"] = 35
+    return boxes + [fl, v]
+
+
 def H4():
     """145-227: full-frame footage, captions either side of the subject; v5: tracking boxes locked to the box in his
     hands, the box front and Bliss's face."""
@@ -495,14 +503,8 @@ def H4():
     v = R[prep.sel("B09", 48.5, 16 / FPS + 0.2)]; bw_, bh_ = v["w"], v["h"]
     sh.append(rl.shot("H4.1 European box in hands", 145, 161, [tracked_shot("B09 European box in hands", "B09", 48.5, 16,
                       roi=(0.08 * bw_, 0.02 * bh_, 0.8 * bw_, 0.9 * bh_), big=[(0.3 * bw_, 0.02 * bh_, 0.27 * bw_, 0.36 * bh_)], n=0, seed=5)], dim=10))
-    a = R["b09_front"]; sc = W / a["w"]
-    tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
-    front = D.image("B09 European box, front (still frame at 50 s)", "b09_front", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
-    g = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
-    boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=1, seed=8, big=0, min_dist=80,
-                    big_size=((300, 460), (180, 280)), f0=3)
-    for l in boxes: l["transform"]["opacity"] = 35          # v5b: one faint box only
-    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
+    # v7 (client: "the screen is stuck here"): the live footage instead of a held still; the title flash follows the box
+    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, front_live(28), dim=10))
     # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill; boxes on his face
     sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [tracked_shot("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, roi=(640, 230, 420, 560),
                       big=[(690, 250, 290, 300)], n=0, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))
