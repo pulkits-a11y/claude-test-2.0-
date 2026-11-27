@@ -176,8 +176,8 @@ def captions(END):
     L62 = dict(size=62, align="center", tag="Caption (lower third)")
     G60 = dict(size=60, align="center")                                                # v8: one word at a time, centred, a little bigger
     Q = [placed([30], [(236, 960, 540)], 258, **G60),                                 # guns
-         placed([31], [(258, 960, 470), (268, 760, 600), (275, 760, 470)], 295, align="center"),   # fire, - over the blast, the car, the street
-         placed([32, 33, 34], [(271, 1100, 250)], 295, align="center"),                # and burning buildings - up by the skyline
+         placed([31], [(258, 960, 540)], 271, **G60),                                  # fire      (v8b: like 0:16 - one at a time,
+         placed([32, 33, 34], [(271, 960, 540)], 295, **G60),                          # and burning buildings   centred, 60 px)
          *six_weeks(),                                                                 # 6 | weeks / before launch  (v8: centred, like the sketch)
          placed([57], [(476, 960, 540)], 495, **G60), placed([58], [(495, 960, 540)], 505, **G60),   # guns / buildings / or fire:
          placed([59, 60], [(505, 960, 540)], 528, **G60),                              # one at a time, centred

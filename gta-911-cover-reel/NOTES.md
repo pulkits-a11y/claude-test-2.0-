@@ -28,7 +28,7 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 
 - **No punctuation:** commas, periods and question marks are gone from every caption. Apostrophes ("couldn't", "It's") and the slash in 9/11 stay.
 - **0:05:** the box-front shot opens as before. After about a quarter second, everything around the box dims (to about 60%) so the cover is the highlight.
-- **0:07.9–0:08.6, "guns":** "It had" clears when "guns" lands. "guns" is then the only word on screen, centred, at 60 px.
+- **0:07.9–0:09.8, "guns / fire / and burning buildings" (v8b):** the same typography as the 0:16 list. "It had" clears when "guns" lands, then "guns", "fire" and "and burning buildings" each stand alone, one at a time, centred, at 60 px. "and burning buildings" builds word by word, like "or fire".
 - **0:12, "6 weeks before launch":** centred on the frame, like your sketch. A big numeral 6, with "weeks" beside its top and "before launch" under that. The 6 is as tall as the two lines together.
 - **0:14:** a waving US flag on the US side of the split, with "the US" under it. The flag is drawn from the official proportions and rippled frame by frame (`build/flag.py`).
 - **0:15:** "The new" and "cover" are tucked in close to him and a little bigger (56 px).
