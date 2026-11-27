@@ -8,7 +8,7 @@ stretched (scaleY 520% -> 100%) on the frame they are spoken, like the reference
 Hook (frames 0-227): tracking-box montage of 2-3 frame hits -> CRT on black with the line either side -> red flash ->
 GTA III wordmark with tracking boxes -> logos built from tiles with thumbnails around -> full-frame footage.
 """
-import json, os, random
+import json, os, random, re
 import cv2, numpy as np
 from lib import *
 import textfit as tf
@@ -18,7 +18,7 @@ CAP_AX = {"wdth": 100, "wght": 600}
 CAP_FILL = [0.992, 0.957, 0.89, 1]  # #FDF4E3, the reference caption's warm white
 CAP_MID = 540                       # caption cap-height centre: the frame's centre line
 PAD = 34                            # gap between a caption block and the subject's edge
-DISPLAY = {5: "9/11", 6: None, 22: "III", 39: "9/11", 40: None, 104: "City", 106: "Andreas", 107: "IV", 108: "V", 111: "VI,"}   # v5b: no commas on the box names
+DISPLAY = {5: "9/11", 6: None, 22: "III", 39: "9/11", 40: None, 42: "6", 104: "City", 106: "Andreas", 107: "IV", 108: "V", 111: "VI,"}   # v5b: no commas on the box names
 HUD_WHITE = [1, 1, 1, 0.78]
 HUD_DOT = hexc("#7CFF8A")
 # v5 glow, measured against the reference's "by definition," (light added around the letters, 1-60 px out): four blurred
@@ -40,23 +40,31 @@ def ctx(reel):
 
 # =================================================================== captions
 def word_text(i):
-    return DISPLAY.get(i, rl.WORDS[i]["w"])
+    """v8: no punctuation in any caption (commas, periods, question marks); apostrophes and the 9/11 slash stay."""
+    t = DISPLAY.get(i, rl.WORDS[i]["w"])
+    return None if t is None else re.sub(r"[.,?!;:]", "", t)
 
 
 def baseline():
     return CAP_MID + tf.cap_height("AR", CAP_SIZE) / 2
 
 
-def word_unit(name, txt, f0, f1, x, color, hook, shadow=None, extra=(), size=CAP_SIZE, mid=CAP_MID, blur=True, enter=True, fade=0):
+def word_unit(name, txt, f0, f1, x, color, hook, shadow=None, extra=(), size=CAP_SIZE, mid=CAP_MID, blur=True, enter=True, fade=0, wipe=None):
     """One word as a group pivoting on its centre: drops in stretched (scaleY 520% -> 100%) in the hook, fades up with
     a 10 px rise after it (v5: the stretch is kept for the hook only)."""
     d = f1 - f0; w = tf.advance("AR", txt, size, CAP_AX); base = mid + tf.cap_height("AR", size) / 2
     t = D.text(txt, 0, d, txt, rl.AR, size, color, x, base, axes=CAP_AX, shadow=False)
     if shadow: t["dropShadow"] = shadow
     cx, cy = x + w / 2, mid
-    g = D.group(name, f0, f1, list(extra) + [t], tr=T(cx, cy, ax=cx, ay=cy))
+    lay = list(extra) + [t]
+    if wipe:                           # v8: wiped on left to right and off again (the cover labels), through a matte
+        n_in, n_out = wipe; ch = tf.cap_height("AR", size); mx, my, mw, mh = x - 14, mid - ch / 2 - 0.42 * size, w + 28, ch + 0.84 * size
+        m = D.rect(f"{name} (wipe matte)", 0, d, mx, my, mw, mh, [1, 1, 1, 1], tr=T(mx, my, ax=mx, ay=my))
+        D.kf(m, "scaleX", [(0, 0, HOLD), (n_in, 100, E_OX), (d - n_out, 100, HOLD), (d, 0, E_IOX)])
+        lay = [D.group(f"{name} (text)", 0, d, lay, matte={"layer": m["id"], "mode": "alpha"}), m]
+    g = D.group(name, f0, f1, lay, tr=T(cx, cy, ax=cx, ay=cy))
     if not blur: g["motionBlur"] = t["motionBlur"] = False
-    if not enter: pass                 # v6: a word carried on to a new spot at a cut just appears there
+    if not enter or wipe: pass                 # v6: a word carried on to a new spot at a cut just appears there
     elif hook:
         D.kf(g, "scaleY", [(0, 520, HOLD), (5, 100, E_OX)]); D.kf(g, "scaleX", [(0, 85, HOLD), (5, 100, E_OX)])
     else:
@@ -65,10 +73,10 @@ def word_unit(name, txt, f0, f1, x, color, hook, shadow=None, extra=(), size=CAP
     return g
 
 
-def caption_word(txt, f0, f1, x, strike=False, glow=False, fade=0):
+def caption_word(txt, f0, f1, x, strike=False, glow=False, fade=0, size=CAP_SIZE):
     """A sharp caption word (+ slash). Words without glow carry a small soft shadow so they read on bright footage."""
     extra = slash("slash: " + txt.strip(",."), f1 - f0, x, tf.advance("AR", txt.rstrip(",."), CAP_SIZE, CAP_AX)) if strike else ()
-    return word_unit(f"Caption: {txt}", txt, f0, f1, x, CAP_FILL, f0 < HOOK_END, shadow=None if glow else CAP_SHADOW, extra=extra, fade=fade)
+    return word_unit(f"Caption: {txt}", txt, f0, f1, x, CAP_FILL, f0 < HOOK_END, shadow=None if glow else CAP_SHADOW, extra=extra, fade=fade, size=size)
 
 
 def glow_stack(label, items, k=1.0):
@@ -76,8 +84,8 @@ def glow_stack(label, items, k=1.0):
     added on top of the picture. items: (text, f0, f1, x, size, mid, enter, fade)."""
     f0 = min(it[1] for it in items); f1 = max(it[2] for it in items); out = []
     for blur, o, col in GLOW_TIERS:
-        units = [word_unit(f"Glow copy: {t}", t, a - f0, b - f0, x, col, a < HOOK_END, size=sz, mid=mid, blur=False, enter=en, fade=fd)
-                 for t, a, b, x, sz, mid, en, fd in items]
+        units = [word_unit(f"Glow copy: {it[0]}", it[0], it[1] - f0, it[2] - f0, it[3], col, it[1] < HOOK_END, size=it[4], mid=it[5], blur=False,
+                           enter=it[6], fade=it[7], wipe=it[8] if len(it) > 8 else None) for it in items]
         g = D.group(f"Glow {blur * k:.0f} px at {o}%: {label}", f0, f1, units, blend="add", o=o,
                     effects=[D.fx({"type": "gaussianBlur", "blurriness": blur * k, "repeatEdgePixels": False})])
         g["motionBlur"] = False
@@ -85,7 +93,7 @@ def glow_stack(label, items, k=1.0):
     return out
 
 
-def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), start=None, fade=0):
+def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), start=None, fade=0, size=CAP_SIZE):
     """L / R_: word indices for the left and right blocks. The phrase holds until `end`. Returns the sharp words and
     the glowing ones (text, f0, f1, x, size, mid)."""
     sharp, glow = [], []
@@ -94,16 +102,16 @@ def phrase(L=(), R_=(), gap=(700, 1220), end=None, center=False, strike=(), star
         idxs = [i for i in idxs if word_text(i) is not None]
         if not idxs: continue
         texts = [word_text(i) for i in idxs]
-        xs, ws, _ = tf.line_layout("AR", texts, CAP_SIZE, CAP_AX, 0, x, align)
+        xs, ws, _ = tf.line_layout("AR", texts, size, CAP_AX, 0, x, align)
         for i, txt, xx in zip(idxs, texts, xs):
             if WF[i] >= end: continue          # spoken after the phrase is cleared (e.g. "since." under the floating covers)
             f0 = WF[i] if start is None else max(start, WF[i])
-            sharp.append(caption_word(txt, f0, end, xx, strike=i in strike, glow=i in GLOW_WORDS, fade=fade))
-            if i in GLOW_WORDS: glow.append((txt, f0, end, xx, CAP_SIZE, CAP_MID, True, fade))
+            sharp.append(caption_word(txt, f0, end, xx, strike=i in strike, glow=i in GLOW_WORDS, fade=fade, size=size))
+            if i in GLOW_WORDS: glow.append((txt, f0, end, xx, size, CAP_MID, True, fade))
     return sharp, glow
 
 
-def placed(idxs, segs, end, size=CAP_SIZE, align="left", tag="Caption"):
+def placed(idxs, segs, end, size=CAP_SIZE, align="left", tag="Caption", together=False, wipe=None):
     """v6: words set next to what they describe instead of on the centre line, moving to a new spot at a cut.
     segs: [(from_frame, x, mid)] - x is the line's left edge (align left) or centre (align center), mid its cap centre."""
     sharp, glow = [], []
@@ -113,10 +121,25 @@ def placed(idxs, segs, end, size=CAP_SIZE, align="left", tag="Caption"):
         xs, _, _ = tf.line_layout("AR", texts, size, CAP_AX, 0, x, align)
         for i, txt, xx in zip(idxs, texts, xs):
             if WF[i] >= fb: continue
-            f0 = max(WF[i], fa); enter = WF[i] >= fa
-            sharp.append(word_unit(f"{tag}: {txt}", txt, f0, fb, xx, CAP_FILL, enter and f0 < HOOK_END, size=size, mid=mid, enter=enter))
-            glow.append((txt, f0, fb, xx, size, mid, enter, 0))
+            f0 = fa if together else max(WF[i], fa); enter = together or WF[i] >= fa
+            sharp.append(word_unit(f"{tag}: {txt}", txt, f0, fb, xx, CAP_FILL, enter and f0 < HOOK_END, size=size, mid=mid, enter=enter, wipe=wipe))
+            glow.append((txt, f0, fb, xx, size, mid, enter, 0, wipe))
     return sharp, glow
+
+
+FLAG = (1250, 470)          # v8: the waving US flag at 0:14 (centre), where "in the US." used to sit
+
+
+def six_weeks():
+    """v8: "6 weeks before launch" centred on the frame like the client's sketch: a big numeral 6, "weeks" beside its
+    top and "before launch" under that, the numeral as tall as the two lines together."""
+    sw, sb, gap, gx = 96, 64, 22, 30
+    cw, cb = tf.cap_height("AR", sw), tf.cap_height("AR", sb); th = cw + gap + cb
+    s6 = round(th / (tf.cap_height("AR", 100) / 100))
+    w6 = tf.advance("AR", "6", s6, CAP_AX); wt = max(tf.advance("AR", "weeks", sw, CAP_AX), tf.advance("AR", "before launch", sb, CAP_AX))
+    x0 = 960 - (w6 + gx + wt) / 2; top = 540 - th / 2; xt = x0 + w6 + gx
+    return [placed([42], [(362, x0, 540)], 403, size=s6), placed([43], [(362, xt, top + cw / 2)], 403, size=sw),
+            placed([44, 45], [(362, xt, top + cw + gap + cb / 2)], 403, size=sb)]
 
 
 def captions(END):
@@ -128,24 +151,20 @@ def captions(END):
         dict(L=[20, 21, 22], R_=[23], gap=(600, 1320), end=189),                        # the GTA III | cover,
         dict(L=[24], R_=[25], gap=(600, 1060), end=207),                                # six | months  (either side of his face)
         dict(L=[26, 27], R_=[], gap=(880, 1600), end=230),                              # of painting.  (just left of him, clear of his body)
-        dict(L=[28, 29], gap=(600, 1320), end=258),                                     # It had  (guns, fire, burning buildings: placed below)
+        dict(L=[28, 29], gap=(600, 1320), end=236),                                     # It had  (v8: off when "guns" lands alone)
         dict(L=[35, 36], R_=[37], gap=COVER, end=322),                                  # all over | it.
         dict(L=[38, 39], R_=[41], gap=(700, 1320), end=362),                            # Then 9/11 | hit,
         dict(L=[46], R_=[47, 48], gap=(560, 1370), end=426),                            # Rockstar | pulled it
-        dict(L=[], R_=[49, 50, 51], gap=(560, 1040), end=448),                          # in the US.
-        dict(L=[52, 53], R_=[54], gap=HEAD, end=462),                                   # The new | cover
+        dict(L=[52, 53], R_=[54], gap=(790, 1130), end=462, size=56),                   # The new | cover  (v8: tucked in to him, bigger)
         dict(L=[55], R_=[56], gap=COVER, end=476),                                      # couldn't | show
         dict(L=[61], R_=[62, 63], gap=(620, 1300), end=558),                            # Artist | Stephen Bliss
         dict(L=[64, 65], R_=[66, 67], gap=(620, 1300), end=586),                        # had about | a week,
         dict(L=[68, 69], R_=[70], gap=HEAD, end=609),                                   # so he | chopped
-        dict(L=[71, 72], R_=[73, 74], gap=HEAD, end=640),                               # up his | own painting.
-        dict(L=[75, 76], R_=[77], gap=(500, 1420), end=710),                            # He only | kept (clear of the US cover)
+        dict(L=[75, 76], R_=[77], gap=(500, 1420), end=657),                            # He only | kept  (v8: off once it's said)
         dict(L=[85, 86], R_=[87, 88, 89, 90], gap=(500, 1420), end=755),                # and boxed | them into a grid.
         dict(L=[91, 92], R_=[93], gap=(620, 1300), end=782),                            # That rush | job?  (v5: card centred)
         dict(L=[94, 95, 96], R_=[97], gap=(630, 1290), end=803),                        # It's been the | template
         dict(L=[98, 99], R_=[100, 101, 102], gap=(630, 1290), end=838),                 # for every | GTA cover  (off before the floating covers)
-        dict(L=[103], R_=[104], gap=BOX, end=883),                                      # Vice | City,   (either side of the box)
-        dict(L=[105], R_=[106], gap=BOX, end=911),                                      # San | Andreas,
         dict(L=[], R_=[107], gap=BOX, end=920),                                         # IV,
         dict(L=[108], R_=[], gap=BOX, end=940),                                         # V,
         dict(L=[109, 110], R_=[111], gap=COVER, end=974),                               # even GTA | VI,
@@ -155,13 +174,16 @@ def captions(END):
     ]
     # v6: placed next to what they describe (frames and positions read off the shots)
     L62 = dict(size=62, align="center", tag="Caption (lower third)")
-    Q = [placed([30], [(236, 820, 760), (247, 1290, 860)], 258),                      # guns, - by the rifle, then by Claude's gun
+    G60 = dict(size=60, align="center")                                                # v8: one word at a time, centred, a little bigger
+    Q = [placed([30], [(236, 960, 540)], 258, **G60),                                 # guns
          placed([31], [(258, 960, 470), (268, 760, 600), (275, 760, 470)], 295, align="center"),   # fire, - over the blast, the car, the street
          placed([32, 33, 34], [(271, 1100, 250)], 295, align="center"),                # and burning buildings - up by the skyline
-         placed([42, 43], [(362, 960, 820)], 403, **L62),                              # six weeks /
-         placed([44, 45], [(362, 960, 896)], 403, **L62),                              # before launch.  - one statement, lower third
-         placed([57], [(476, 760, 474)], 528), placed([58], [(476, 760, 540)], 528),   # the banned list, one item per line,
-         placed([59, 60], [(476, 760, 606)], 528)]                                     # each on its word
+         *six_weeks(),                                                                 # 6 | weeks / before launch  (v8: centred, like the sketch)
+         placed([57], [(476, 960, 540)], 495, **G60), placed([58], [(495, 960, 540)], 505, **G60),   # guns / buildings / or fire:
+         placed([59, 60], [(505, 960, 540)], 528, **G60),                              # one at a time, centred
+         placed([50, 51], [(429, FLAG[0], FLAG[1] + 235)], 445, align="center"),        # the US  (under the waving flag)
+         placed([103, 104], [(853, 960, 925)], 882, align="center", together=True, wipe=(6, 4)),   # Vice City   (under the cover, as in v7)
+         placed([105, 106], [(883, 960, 925)], 911, align="center", together=True, wipe=(6, 4))]   # San Andreas
     sharp, glow = [], []
     for s, g in [phrase(**p) for p in P] + Q:
         sharp += s
@@ -502,7 +524,13 @@ def H4():
     boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=1, seed=8, big=0, min_dist=80,
                     big_size=((300, 460), (180, 280)), f0=3)
     for l in boxes: l["transform"]["opacity"] = 35          # v5b: one faint box only
-    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
+    # v8: after a beat the background around the box dims, so the cover is the highlight
+    if "b09_front_dim" not in R:
+        q = np.int32([(236, 0), (936, 0), (944, 720), (262, 720)]); al = np.full((a["h"], a["w"]), 255, np.uint8); cv2.fillPoly(al, [q], 0, cv2.LINE_AA)
+        al = cv2.GaussianBlur(al, (0, 0), 6); prep.img("b09_front_dim", np.dstack([np.zeros((a["h"], a["w"], 3), np.uint8), al]))
+    dim = D.image("Dim around the cover", "b09_front_dim", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]), o=0)
+    D.kf(dim, "opacity", [(0, 0, HOLD), (8, 0, HOLD), (16, 62, E_IOC)])
+    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [dim, front], dim=10))
     # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill; boxes on his face
     sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [tracked_shot("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, roi=(640, 230, 420, 560),
                       big=[(690, 250, 290, 300)], n=0, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))

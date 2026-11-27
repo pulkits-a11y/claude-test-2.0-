@@ -24,6 +24,25 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 - the flash cuts and flash transitions
 - the logo, on top
 
+## v8: changes on top of v6
+
+- **No punctuation:** commas, periods and question marks are gone from every caption. Apostrophes ("couldn't", "It's") and the slash in 9/11 stay.
+- **0:05:** the box-front shot opens as before. After about a quarter second, everything around the box dims (to about 60%) so the cover is the highlight.
+- **0:07.9–0:08.6, "guns":** "It had" clears when "guns" lands. "guns" is then the only word on screen, centred, at 60 px.
+- **0:12, "6 weeks before launch":** centred on the frame, like your sketch. A big numeral 6, with "weeks" beside its top and "before launch" under that. The 6 is as tall as the two lines together.
+- **0:14:** a waving US flag on the US side of the split, with "the US" under it. The flag is drawn from the official proportions and rippled frame by frame (`build/flag.py`).
+- **0:15:** "The new" and "cover" are tucked in close to him and a little bigger (56 px).
+- **0:15.9–0:17.6:** "guns", then "buildings", then "or fire", one at a time, centred, at 60 px.
+- **0:20, the cutting mat:**
+  - "up his own painting" is removed.
+  - The plate is zoomed out a little; a blurred copy fills the edges.
+  - The nine grid pieces flicker-flash one after another, rows top to bottom, each left to right.
+- **0:20.9, the car shot:** zoomed out a little.
+- **0:21.3:** "He only kept" clears once it's said instead of staying through the next shots.
+- **0:28–0:30:** "Vice City" and "San Andreas" sit centred under their covers again (as in v7), wiped on and off. The covers don't move. "IV" and "V" are unchanged.
+
+Nothing else changed.
+
 ## Restored to v6
 
 At your request the project is back to v6 exactly. Everything after it is undone:

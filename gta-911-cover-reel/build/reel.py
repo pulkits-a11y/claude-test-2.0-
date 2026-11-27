@@ -49,6 +49,8 @@ def build_assets():
         a = np.clip((g - 14) * 2.2, 0, 255).astype(np.uint8)
         prep.img("tex_grain_a", np.dstack([np.full_like(a, 255)] * 3 + [a]))
     prep.img("logo", path=os.path.join(P, "logo", "logo.png"))
+    if not os.path.exists(os.path.join(P, "flag", "us_flag_wave.mp4")):    # v8: the waving flag clip, drawn by build/flag.py
+        import flag; flag.main()
     prep.audio("vo", os.path.join(P, "audio", "GTA911_VO_tight_118.wav"))
     # ---- front pages (B01, 638x480; page column x199-439) - top of each page, masthead to main photo
     pages = {"pg_disaster": (31.14, 300), "pg_actofwar": (324.76, 262), "pg_warathome": (404.84, 250), "pg_siege": (413.74, 268),
@@ -279,9 +281,27 @@ def shade(d):
 TABLE_ORDER = ["L1", "M1", "R1", "L2", "M2", "R2", "L3", "M4", "R3", "L4", "M5", "R4"]
 
 
-def plate(name, asset, d, px, py, extra=None, amt=6):
+def piece_flickers(d, tr, rect):
+    """v8: the cutting mat's 3x3 grid pieces flash white one after another (rows top to bottom, each left to right)."""
+    import ai
+    a = R["ai_cutting_mat"]; out = []
+    for k, quad in enumerate(ai.MAT[:9]):
+        key = f"mat_piece_{k + 1}"
+        if key not in R:
+            m = np.zeros((a["h"], a["w"]), np.uint8); cv2.fillConvexPoly(m, np.int32(quad), 255, cv2.LINE_AA); m = cv2.GaussianBlur(m, (0, 0), 1.2)
+            prep.img(key, np.dstack([np.full_like(m, 255)] * 3 + [m]))
+        at = 1 + k
+        for nm, b, blend, o in [(" (halo, wide)", 18, "add", 50), (" (halo)", 6, "add", 70), ("", 0, "normal", 85)]:
+            l = D.image(f"Piece {k + 1} flicker{nm}", key, 0, d, tr=tr(), fit="stretch", rect=rect, blend=blend, effects=[D.gauss(b)] if b else None, o=0)
+            l["motionBlur"] = False
+            D.kf(l, "opacity", [(0, 0, HOLD), (at, o, HOLD), (at + 1, o * .35, HOLD), (at + 2, 0, HOLD)])
+            out.append(l)
+    return out
+
+
+def plate(name, asset, d, px, py, extra=None, amt=6, zoom=1.0):
     """A still plate filling the frame (fit=cover) with a slow push toward a point of it (plate pixels)."""
-    a = R[asset]; s = max(W / a["w"], H / a["h"]); tr = lambda: T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
+    a = R[asset]; s = max(W / a["w"], H / a["h"]) * zoom; tr = lambda: T(960, 540, 100 * s, ax=a["w"] / 2, ay=a["h"] / 2)
     rect = (0, 0, a["w"], a["h"])
     im = D.image(name, asset, 0, d, tr=tr(), fit="stretch", rect=rect)
     mx, my = (px - a["w"] / 2) * s + 960, (py - a["h"] / 2) * s + 540
@@ -728,7 +748,10 @@ def S07():
     sh.append(shot("S7.3 Torn pieces", 422, 426, [vclip("B24 torn paper", "B24", 1.25, 4, scale=190, cy=0)], look=L_duo("red"), dim=0))
     d = 19; ca = R["C02_euro"]; h = 900; w = ca["w"] * h / ca["h"]
     left = iclip("C02 original cover (left panel)", "C02_euro", d, fit="stretch", rect=(0, 0, w, h), cx=480, cy=540)
-    sh.append(shot("S7.4 Split: Europe | US", 426, 445, panel("Left panel", d, 0, 0, 960, H, [left]) + [D.rect("Right panel (black)", 0, d, 960, 0, 960, H, [0, 0, 0, 1])], dim=0))
+    # v8: a waving US flag on the US side (build/flag.py), "the US" under it
+    fw, fh = 680, 408; flag = vclip("US flag, waving (drawn)", os.path.join(ROOT, "source", "flag", "us_flag_wave.mp4"), 0.5, d, fit="stretch",
+                                    rect=(0, 0, fw, fh), cx=v3.FLAG[0], cy=v3.FLAG[1], drift_on=False)
+    sh.append(shot("S7.4 Split: Europe | US", 426, 445, panel("Left panel", d, 0, 0, 960, H, [left]) + [flag, D.rect("Right panel (black)", 0, d, 960, 0, 960, H, [0, 0, 0, 1])], dim=0))
     tx.append(label("ROCKSTAR", WF[46] - s0, 413 - s0, "ROCKSTAR", 960, 980, 32))
     l = HV_big("PULLED", 413 - s0, 422 - s0, "PULLED", 340, 960 - tf.advance("AR", "PULLED", 340, HEAVY) / 2, 680)
     e = smear_in(l, -1, 4); smear_out(l, 9, "x", 1, 3, e); tx.append(l)
@@ -883,10 +906,14 @@ def S10():
     sh.append(shot("S10.3 Hands working", 609, 616, [vclip("B31 Bliss working", "B31", 51.0, 7, scale=130)], look=L_half(), dim=10))
     # v5: "his own painting" over his own work - Bliss's torn-poster painting (B27), not a crop of the cover
     # v6: his own painting, cut up on the mat (client's AI plate with the real European cover painting on the pieces)
-    sh.append(shot("S10.4 His own painting, cut up", 616, 627, [plate("Cutting mat (AI plate; the European cover painting cut up)", "ai_cutting_mat", 11, 600, 560)], dim=6))
+    # v8: zoomed out a little (a blurred copy fills the edges) and each grid piece flicker-flashes in turn, top to bottom, left to right
+    d = 11; a = R["ai_cutting_mat"]
+    bed = iclip("Cutting mat (blurred bed)", "ai_cutting_mat", d, fit="cover", effects=[D.gauss(45)], drift_on=False, grade=False)
+    sh.append(shot("S10.4 His own painting, cut up", 616, 627, [plate("Cutting mat (AI plate; the European cover painting cut up)", "ai_cutting_mat", d, 600, 560,
+                   extra=lambda tr, rect: piece_flickers(d, tr, rect), amt=3, zoom=0.9), D.rect("Bed darken", 0, d, 0, 0, W, H, [0, 0, 0, 1], o=45), bed], dim=6))
     d = 10; wt = D.rect("Whiteout", 0, d, 0, 0, W, H, FLASH)
     D.kf(wt, "opacity", [(0, 0, HOLD), (4, 0, HOLD), (10, 95, E_IOX)])
-    sh.append(shot("S10.5 Detail: a car, whiteout", 627, 637, [detail("C02_euro", EURO["car"], 10)], top=[wt], dim=0))
+    sh.append(shot("S10.5 Detail: a car, whiteout", 627, 637, [detail("C02_euro", (60, 735, 800, 450), 10)], top=[wt], dim=0))   # v8: zoomed out a little
     tx += caption("So he", [68, 69], ["So", "he"], 660, 602, s0)
     # CHOPPED splits along the blade's line at 606: two copies, each matted to one side of a tilted line
     w = tf.advance("AR", "CHOPPED", 340, HEAVY); x0 = 960 - w / 2; f0, f1 = 602 - s0, 609 - s0
