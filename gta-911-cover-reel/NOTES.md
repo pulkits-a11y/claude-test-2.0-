@@ -24,17 +24,14 @@ The layer tree is organised as scene groups. Each scene group holds shot groups,
 - the flash cuts and flash transitions
 - the logo, on top
 
-## v7b: typography back to v6, the other v7 changes kept
+## Restored to v6
 
-**Typography:** every caption is exactly as it was in v6: positions, sizes, entrances, timing and glow. The v7 typography spec is fully reverted. The caption code is byte-identical to v6, and the v7 caption engine and its noise shader are removed.
+At your request the project is back to v6 exactly. Everything after it is undone:
+- the v7 typography spec
+- the removal of the grunge, halftone, vignette and bottom-shade layers
+- the live box-front shot at 0:05.5
 
-**Also reverted, because they only existed to serve the v7 typography:**
-- the empty cell in the cover wall at 0:26
-- the fade to black at the very end (the film ends holding on the covers, as in v6)
-
-**Kept from v7 (not typography):**
-- **0:05.5, "the screen is stuck":** the box-front shot is the live footage, with the title flash tracked to the moving box.
-- **Textures:** the grunge, the halftone, the film-wide vignette and the soft bottom shade under "six weeks / before launch." are still removed. These were the layers darkening the picture. The film grain, scan lines and rainbow streaks stay.
+The build files are identical to the v6 commit (`6e076e8`), and the render was made again from them. The v7 and v7b work is still in the git history if you ever want any of it back.
 
 ## v6: AI plates, placed captions, the Stephen run, a held ending
 

@@ -65,7 +65,7 @@ ok(root[0] is logo, "logo slot is not the top layer")
 ok(logo["layers"] and logo["layers"][0]["transform"]["position"] == [56, 48] and logo["layers"][0]["transform"]["opacity"] == 90, "logo missing or misplaced")
 # 7 overlays on every frame
 ov = [l for l in root if l["name"] == "Film-wide overlays"][0]
-ok(ov["playback"]["inputRange"]["duration"] >= int(doc["duration"] * 1000) - 1 and len(ov["layers"]) == 4, "film-wide overlays incomplete")
+ok(ov["playback"]["inputRange"]["duration"] >= int(doc["duration"] * 1000) - 1 and len(ov["layers"]) == 7, "film-wide overlays incomplete")
 notes.append("captions sit above the film-wide overlays (v3, so the glow stays clean)")
 # 8 easing
 eas = set()

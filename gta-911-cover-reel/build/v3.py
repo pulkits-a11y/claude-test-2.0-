@@ -488,44 +488,6 @@ def tracked_shot(name, b, t, d, roi, big=(), n=7, seed=1, scale=100, cx=960, cy=
     return g
 
 
-def front_live(d, t=50.0):
-    """B09 from 50 s playing (it was a still): the rotoscoped title mask (drawn on the 50 s frame) is carried along with
-    the box - a similarity transform per frame from Lucas-Kanade tracking of the title's corners, from the still onto
-    each frame of the select - so the flash stays on the letters while the box moves in his hands."""
-    a = R["b09_front"]; sc = W / a["w"]
-    sel = prep.sel("B09", t, d / FPS + 0.2); sa = R[sel]
-    v = rl.vclip("B09 European box, front (live)", "B09", t, d, drift_on=False)
-    still = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
-    m = cv2.imread(R["b09_front_title_mask"]["path"], cv2.IMREAD_UNCHANGED)[..., 3]
-    ys, xs = np.nonzero(m > 128); roi = np.zeros_like(still); roi[max(0, ys.min() - 20):ys.max() + 20, max(0, xs.min() - 20):xs.max() + 20] = 255
-    c0 = np.float32([(xs.min() + xs.max()) / 2, (ys.min() + ys.max()) / 2])
-    cap = cv2.VideoCapture(sa["path"]); frames, i, st = [], 0, int(round(sa["lead"] * FPS))
-    while len(frames) < d:
-        ok, f = cap.read()
-        if not ok: break
-        if i >= st: frames.append(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY))
-        i += 1
-    p0 = cv2.goodFeaturesToTrack(still, 120, 0.01, 6, mask=roi)
-    prev, pp = still, p0; keys = []
-    for k, fr in enumerate(frames):
-        q, stt, _ = cv2.calcOpticalFlowPyrLK(prev, fr, pp, None, winSize=(31, 31), maxLevel=3)
-        good = stt.ravel() == 1
-        M, _ = cv2.estimateAffinePartial2D(p0[good], q[good]) if good.sum() >= 6 else (None, None)
-        if M is None: M = np.float32([[1, 0, 0], [0, 1, 0]])
-        s_ = float(np.hypot(M[0, 0], M[1, 0])); c = M @ np.float32([c0[0], c0[1], 1])
-        keys.append((k, float((c[0] - a["w"] / 2) * sc + 960), float((c[1] - a["h"] / 2) * sc + 540), 100 * s_))
-        prev, pp, p0 = fr, q[good].reshape(-1, 1, 2), p0[good].reshape(-1, 1, 2)
-    cx0, cy0 = float((c0[0] - a["w"] / 2) * sc + 960), float((c0[1] - a["h"] / 2) * sc + 540)
-    tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
-    fl = D.group("Title flash (tracked to the box)", 0, d, rl.glow_flash("b09_front_title_mask", d, tr, a, 1, halo=16, scale=sc),
-                 tr=T(cx0, cy0, ax=cx0, ay=cy0))
-    D.kf(fl, "positionX", [(k, x, HOLD) for k, x, y, s_ in keys]); D.kf(fl, "positionY", [(k, y, HOLD) for k, x, y, s_ in keys])
-    for p in ("scaleX", "scaleY"): D.kf(fl, p, [(k, s_, HOLD) for k, x, y, s_ in keys])
-    boxes = tracked_hud("Track B09 front", sel, d, vmap(sel), (int(xs.min()), int(ys.min()), int(xs.max() - xs.min()), int(ys.max() - ys.min())), n=1, seed=8, f0=3)
-    for l in boxes: l["transform"]["opacity"] = 35
-    return boxes + [fl, v]
-
-
 def H4():
     """145-227: full-frame footage, captions either side of the subject; v5: tracking boxes locked to the box in his
     hands, the box front and Bliss's face."""
@@ -533,8 +495,14 @@ def H4():
     v = R[prep.sel("B09", 48.5, 16 / FPS + 0.2)]; bw_, bh_ = v["w"], v["h"]
     sh.append(rl.shot("H4.1 European box in hands", 145, 161, [tracked_shot("B09 European box in hands", "B09", 48.5, 16,
                       roi=(0.08 * bw_, 0.02 * bh_, 0.8 * bw_, 0.9 * bh_), big=[(0.3 * bw_, 0.02 * bh_, 0.27 * bw_, 0.36 * bh_)], n=0, seed=5)], dim=10))
-    # v7 (client: "the screen is stuck here"): the live footage instead of a held still; the title flash follows the box
-    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, front_live(28), dim=10))
+    a = R["b09_front"]; sc = W / a["w"]
+    tr = lambda: T(960, 540, 100 * sc, ax=a["w"] / 2, ay=a["h"] / 2)
+    front = D.image("B09 European box, front (still frame at 50 s)", "b09_front", 0, 28, tr=tr(), fit="stretch", rect=(0, 0, a["w"], a["h"]))
+    g = cv2.cvtColor(cv2.imread(a["path"]), cv2.COLOR_BGR2GRAY)
+    boxes = hud_pts("HUD box front", g, 28, lambda p: ((p[0] - a["w"] / 2) * sc + 960, (p[1] - a["h"] / 2) * sc + 540), n=1, seed=8, big=0, min_dist=80,
+                    big_size=((300, 460), (180, 280)), f0=3)
+    for l in boxes: l["transform"]["opacity"] = 35          # v5b: one faint box only
+    sh.append(rl.shot("H4.2 European box, front + title flash", 161, 189, boxes + rl.glow_flash("b09_front_title_mask", 28, tr, a, 1, halo=16, scale=sc) + [front], dim=10))
     # B26 at 875: Bliss alone in the call panel (x 228-1692, y 150-1020): panel scaled to fill; boxes on his face
     sh.append(rl.shot("H4.3 Stephen Bliss talking", 189, 207, [tracked_shot("B26 Bliss talking (call panel, filled)", "B26", 875.0, 18, roi=(640, 230, 420, 560),
                       big=[(690, 250, 290, 300)], n=0, seed=6, scale=131, cy=540 + (540 - 585) * 1.31)], dim=10))

@@ -702,9 +702,9 @@ def S06():
     xs = flicker("Calendar: crossed-off days flicker", "ai_crt_xmarks", d, WF[43] - 364, tr, (0, 0, a["w"], a["h"]), peak=85)
     mx, my = (565 - a["w"] / 2) * s + 960, (380 - a["h"] / 2) * s + 540
     g = D.group("Studio desk + calendar flicker", 0, d, xs + [desk], tr=T(mx, my, ax=mx, ay=my)); push_in(g, d, 6)
-    sh.append(shot("S6.2 Studio desk, six weeks", 364, 376, [g], dim=8))
+    sh.append(shot("S6.2 Studio desk, six weeks", 364, 376, [g], dim=8, top=[shade(d)]))
     # v5: the GTA III cutscene the client liked (was under "He only kept") moves here, framed clear of the fps overlay
-    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0))
+    sh.append(shot("S6.3 GTA III cutscene, before launch", 376, 400, [b48("B48 GTA III cutscene", 30.0, 24, (415, 140, 1010))], look=L_duo("vice"), dim=0, top=[shade(24)]))
     tx += words_line("Then 9/11 hit.", [38, 39, 41], ["Then", "9/11", "hit."], "IS", IS, None, 90, 0, 960, "center", WARM, -10, 364, s0, "hard", baseline=920)[0]
     sz = 150; l = big("six weeks", 364 - s0, s1 - s0, "six weeks", AR, sz, 160, 560, axes=CAP, color=WARM, just="left", tracking=0); blur_in(l); tx.append(l)
     tx += caption("before launch", [44, 45], ["before", "launch"], 0, s1, s0, x=164, align="left", size=52)
@@ -1153,11 +1153,10 @@ def overlays():
     half = D.image("2 Halftone", "tex_halftone", 0, END, fit="stretch", blend="overlay", o=20); ease(half, 20, 0)
     grunge = D.image("1 Grunge", "tex_grunge", 0, END, fit="cover", blend="overlay", o=60); ease(grunge, 60, 12)
     ease(vig, 100, 45); ease(scan, 42, 26)
-    # v7 (client): the darkening textures are gone - grunge, halftone and the film-wide vignette. Kept: scan lines, film
-    # grain, the warm lift and the light desaturation (and the rainbow streaks in the shots).
     return D.group("Film-wide overlays", 0, END, [
-        scan, desat, lift,
-        D.group("3 Film grain", 0, END, [grain_layer("grain.png 2400x1400", 100, 11)], blend="overlay", o=22)])
+        scan, vig, desat, lift,
+        D.group("3 Film grain", 0, END, [grain_layer("grain.png 2400x1400", 100, 11)], blend="overlay", o=22),
+        half, grunge])
     return D.group("Film-wide overlays", 0, END, [
         scan, vig,
         D.rect("5 Desaturate", 0, END, 0, 0, W, H, hexc("#808080"), blend="saturation", o=20),
